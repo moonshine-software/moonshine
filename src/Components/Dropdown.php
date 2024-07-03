@@ -29,8 +29,8 @@ final class Dropdown extends MoonShineComponent
         protected bool $isSearchable = false,
         public string $placement = 'bottom-start',
     ) {
-        if(empty($this->searchPlaceholder)){
-            $this->searchPlaceholder =  __('moonshine::ui.search');
+        if(empty($this->searchPlaceholder)) {
+            $this->searchPlaceholder = __('moonshine::ui.search');
         }
     }
 

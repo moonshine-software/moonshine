@@ -24,6 +24,8 @@ trait WithAsyncSearch
 
     protected ?Closure $asyncSearchQuery = null;
 
+    protected bool $asyncSearchReplaceQuery = false;
+
     protected ?Closure $asyncSearchValueCallback = null;
 
     protected array $withImage = [];
@@ -111,6 +113,11 @@ trait WithAsyncSearch
         return $this->asyncSearchQuery;
     }
 
+    public function isAsyncSearchReplaceQuery(): bool
+    {
+        return $this->asyncSearchReplaceQuery;
+    }
+
     public function asyncSearchValueCallback(): ?Closure
     {
         return $this->asyncSearchValueCallback;
@@ -169,6 +176,7 @@ trait WithAsyncSearch
         ?Closure $asyncSearchValueCallback = null,
         ?string $associatedWith = null,
         ?string $url = null,
+        bool $replaceQuery = false,
     ): static {
         $this->asyncSearch = true;
         $this->searchable = true;
@@ -178,6 +186,7 @@ trait WithAsyncSearch
         $this->asyncSearchValueCallback = $asyncSearchValueCallback ?? $this->formattedValueCallback();
         $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
+        $this->asyncSearchReplaceQuery = $replaceQuery;
 
         if ($this->associatedWith) {
             $this->customAttributes([
@@ -199,13 +208,14 @@ trait WithAsyncSearch
     /**
      * @param  ?Closure(Builder $query, mixed $value, self $field): Builder  $asyncSearchQuery
      */
-    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null): static
+    public function associatedWith(string $column, ?Closure $asyncSearchQuery = null, bool $replaceQuery = false): static
     {
         $searchQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->input($column));
 
         return $this->asyncSearch(
             asyncSearchQuery: is_null($asyncSearchQuery) ? $searchQuery : $asyncSearchQuery,
-            associatedWith: $column
+            associatedWith: $column,
+            replaceQuery: $replaceQuery
         );
     }
 }
