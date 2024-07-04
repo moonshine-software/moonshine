@@ -8,9 +8,11 @@ class TinyMce extends Textarea
 {
     protected string $view = 'moonshine::fields.tinymce';
 
-    public string $plugins = 'anchor autolink autoresize charmap codesample code emoticons image link lists advlist media searchreplace table visualblocks wordcount directionality fullscreen help nonbreaking pagebreak preview visualblocks visualchars';
-
-    public string $addedPlugins = '';
+    public array $plugins = [
+        'anchor', 'autolink', 'autoresize', 'charmap', 'codesample', 'code', 'emoticons', 'image', 'link',
+        'lists', 'advlist', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount', 'directionality',
+        'fullscreen', 'help', 'nonbreaking', 'pagebreak', 'preview', 'visualblocks', 'visualchars'
+    ];
 
     public string $menubar = 'file edit insert view format table tools';
 
@@ -23,6 +25,8 @@ class TinyMce extends Textarea
     public string $commentAuthor = '';
 
     public string $locale = '';
+
+    public array $config = [];
 
     public function getAssets(): array
     {
@@ -59,11 +63,21 @@ class TinyMce extends Textarea
         return $this;
     }
 
-    public function plugins(string $plugins): self
+    public function plugins(string|array $plugins): self
     {
+        if (is_string($plugins)) {
+            $plugins = explode(' ', $plugins);
+        }
+
         $this->plugins = $plugins;
 
         return $this;
+    }
+
+    public function getPlugins(): array
+    {
+        $plugins = $this->plugins;
+        return collect($plugins)->unique()->toArray();
     }
 
     public function menubar(string $menubar): self
@@ -80,9 +94,10 @@ class TinyMce extends Textarea
         return $this;
     }
 
-    public function addConfig(string $name, bool|int|float|string $value): self
+    public function addConfig(string $name, mixed $value): self
     {
         $name = str($name)->lower()->value();
+
         $reservedNames = [
             'selector',
             'path_absolute',
@@ -101,15 +116,28 @@ class TinyMce extends Textarea
         ];
 
         if (! in_array($name, $reservedNames)) {
-            $this->customAttributes(["data-$name" => $value]);
+            $this->config[$name] = $value;
         }
 
         return $this;
     }
 
-    public function addPlugins(string $plugins): self
+    public function addPlugins(string|array $plugins): self
     {
-        $this->addedPlugins = $plugins;
+        if (is_string($plugins)) {
+            $plugins = explode(' ', $plugins);
+        }
+        $this->plugins = array_merge($this->plugins, $plugins);
+
+        return $this;
+    }
+
+    public function removePlugins(string|array $plugins): self
+    {
+        if (is_string($plugins)) {
+            $plugins = explode(' ', $plugins);
+        }
+        $this->plugins = array_diff($this->plugins, $plugins);
 
         return $this;
     }
@@ -134,5 +162,26 @@ class TinyMce extends Textarea
             ['&amp;', '&lt;', '&gt;', '&nbsp;', '&quot;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;', '&amp;nbsp;', '&amp;quot;']
         )->value();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function viewData(): array
+    {
+        return [
+            'config' => [
+                'toolbar_mode' => 'sliding',
+                'language' => !empty($this->locale) ? $this->locale : app()->getLocale(),
+                'plugins' => implode(' ', $this->getPlugins()),
+                'menubar' => trim($this->menubar),
+                'toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
+                'tinycomments_mode' => !empty($this->commentAuthor) ? 'embedded' : null,
+                'tinycomments_author' => !empty($this->commentAuthor) ? $this->commentAuthor : null,
+                'mergetags_list' => !empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
+                'file_manager' => config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null,
+                ...$this->config
+            ],
+        ];
     }
 }

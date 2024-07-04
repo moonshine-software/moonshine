@@ -1,6 +1,8 @@
 /* Tinymce */
 
-export default () => ({
+export default (config = {}) => ({
+  config: config,
+
   async init() {
     await this.$nextTick()
 
@@ -34,19 +36,6 @@ export default () => ({
 
     let editorInstance = null
 
-    const tinyDataset = {}
-    for (let i in this.$el.dataset) {
-      if (this.$el.dataset[i].toLowerCase() === 'true') {
-        tinyDataset[i] = true
-        continue
-      }
-      if (this.$el.dataset[i].toLowerCase() === 'false') {
-        tinyDataset[i] = false
-        continue
-      }
-      tinyDataset[i] = this.$el.dataset[i]
-    }
-
     const config = darkMode => ({
       selector: '#' + this.$el.getAttribute('id'),
       path_absolute: '/',
@@ -55,7 +44,7 @@ export default () => ({
       branding: false,
       skin: darkMode ? 'oxide-dark' : 'oxide',
       content_css: darkMode ? 'dark' : 'default',
-      ...tinyDataset,
+      ...this.config,
       file_picker_callback: this.$el.dataset.file_manager ? fileManager : null,
       init_instance_callback: editor =>
         editor.on('blur', () => (this.$el.innerHTML = editor.getContent())),
