@@ -11,7 +11,7 @@ class TinyMce extends Textarea
     public array $plugins = [
         'anchor', 'autolink', 'autoresize', 'charmap', 'codesample', 'code', 'emoticons', 'image', 'link',
         'lists', 'advlist', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount', 'directionality',
-        'fullscreen', 'help', 'nonbreaking', 'pagebreak', 'preview', 'visualblocks', 'visualchars'
+        'fullscreen', 'help', 'nonbreaking', 'pagebreak', 'preview', 'visualblocks', 'visualchars',
     ];
 
     public string $menubar = 'file edit insert view format table tools';
@@ -77,6 +77,7 @@ class TinyMce extends Textarea
     public function getPlugins(): array
     {
         $plugins = $this->plugins;
+
         return collect($plugins)->unique()->toArray();
     }
 
@@ -172,15 +173,15 @@ class TinyMce extends Textarea
         return [
             'config' => [
                 'toolbar_mode' => 'sliding',
-                'language' => !empty($this->locale) ? $this->locale : app()->getLocale(),
+                'language' => ! empty($this->locale) ? $this->locale : app()->getLocale(),
                 'plugins' => implode(' ', $this->getPlugins()),
                 'menubar' => trim($this->menubar),
                 'toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
-                'tinycomments_mode' => !empty($this->commentAuthor) ? 'embedded' : null,
-                'tinycomments_author' => !empty($this->commentAuthor) ? $this->commentAuthor : null,
-                'mergetags_list' => !empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
+                'tinycomments_mode' => ! empty($this->commentAuthor) ? 'embedded' : null,
+                'tinycomments_author' => ! empty($this->commentAuthor) ? $this->commentAuthor : null,
+                'mergetags_list' => ! empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
                 'file_manager' => config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null,
-                ...$this->config
+                ...$this->config,
             ],
         ];
     }
