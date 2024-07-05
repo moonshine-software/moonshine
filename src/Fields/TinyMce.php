@@ -77,6 +77,7 @@ class TinyMce extends Textarea
     public function getPlugins(): array
     {
         $plugins = $this->plugins;
+
         return collect($plugins)->unique()->toArray();
     }
 
@@ -131,6 +132,7 @@ class TinyMce extends Textarea
         if (is_string($plugins)) {
             $plugins = explode(' ', $plugins);
         }
+
         $this->plugins = array_merge($this->plugins, $plugins);
 
         return $this;
@@ -141,6 +143,7 @@ class TinyMce extends Textarea
         if (is_string($plugins)) {
             $plugins = explode(' ', $plugins);
         }
+
         $this->plugins = array_diff($this->plugins, $plugins);
 
         return $this;

@@ -41,13 +41,17 @@ it('tinymce methods', function (): void {
         ->menubar('test')
         ->menubar->toBe('test')
         ->addConfig('test-config', 1)
-        ->getAttribute('data-test-config')->toBe(1)
+        ->config->toContain(1)
         ->addConfig('test-config-string', 'string')
-        ->getAttribute('data-test-config-string')->toBe('string')
+        ->config->toContain('string')
         ->addConfig('test-config-float', 1.2)
-        ->getAttribute('data-test-config-float')->toBe(1.2)
+        ->config->toContain(1.2)
         ->addConfig('test-config-bool', true)
-        ->getAttribute('data-test-config-bool')->toBe(true)
+        ->config->toContain(true)
+        ->addConfig('test-config-array', ['array' => 'array'])
+        ->config->toContain(['array' => 'array'])
+        ->addConfig('test-config-json', json_encode([['json' => 'json']]))
+        ->config->toContain([['json' => 'json']])
     ;
 });
 
