@@ -1,5 +1,5 @@
 @props([
-    'config' => [],
+    'config' => '',
 ])
 <div class="tinymce">
     <x-moonshine::form.textarea
@@ -7,6 +7,6 @@
             'name' => $element->name()
         ])->except('x-bind:id')"
         ::id="$id('tiny-mce')"
-        x-data="tinymce({{ collect($config)->toJson() }})"
+        x-data="tinymce({{ $config }})"
     >{!! $value ?? '' !!}</x-moonshine::form.textarea>
 </div>

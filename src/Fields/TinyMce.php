@@ -77,7 +77,6 @@ class TinyMce extends Textarea
     public function getPlugins(): array
     {
         $plugins = $this->plugins;
-
         return collect($plugins)->unique()->toArray();
     }
 
@@ -116,6 +115,10 @@ class TinyMce extends Textarea
             'mergetags_list',
         ];
 
+        if (is_string($value) && str($value)->isJson()) {
+            $value = json_decode($value, true);
+        }
+
         if (! in_array($name, $reservedNames)) {
             $this->config[$name] = $value;
         }
@@ -150,6 +153,22 @@ class TinyMce extends Textarea
         return $this;
     }
 
+    public function getConfig() : array
+    {
+        return [
+            'toolbar_mode' => 'sliding',
+            'language' => !empty($this->locale) ? $this->locale : app()->getLocale(),
+            'plugins' => implode(' ', $this->getPlugins()),
+            'menubar' => trim($this->menubar),
+            'toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
+            'tinycomments_mode' => !empty($this->commentAuthor) ? 'embedded' : null,
+            'tinycomments_author' => !empty($this->commentAuthor) ? $this->commentAuthor : null,
+            'mergetags_list' => !empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
+            'file_manager' => config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null,
+            ...$this->config
+        ];
+    }
+
     public function locale(string $locale): self
     {
         $this->locale = $locale;
@@ -171,18 +190,7 @@ class TinyMce extends Textarea
     protected function viewData(): array
     {
         return [
-            'config' => [
-                'toolbar_mode' => 'sliding',
-                'language' => ! empty($this->locale) ? $this->locale : app()->getLocale(),
-                'plugins' => implode(' ', $this->getPlugins()),
-                'menubar' => trim($this->menubar),
-                'toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
-                'tinycomments_mode' => ! empty($this->commentAuthor) ? 'embedded' : null,
-                'tinycomments_author' => ! empty($this->commentAuthor) ? $this->commentAuthor : null,
-                'mergetags_list' => ! empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
-                'file_manager' => config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null,
-                ...$this->config,
-            ],
+            'config' => json_encode($this->getConfig()),
         ];
     }
 }
