@@ -420,12 +420,11 @@ class BelongsToMany extends ModelRelationField implements
                 $badgeValue = value($this->inLineBadge, $item, (string) $value, $this);
 
                 if ($badgeValue) {
-                    return $badgeValue instanceof Badge ?
-                        $badgeValue->customAttributes(['class' => 'm-1'])->render() :
-                        (is_bool($badgeValue) ?
-                            Badge::make((string) $value, 'primary')->customAttributes(['class' => 'm-1'])->render() :
-                            $value
-                        );
+                    $badge = $badgeValue instanceof Badge
+                        ? $badgeValue
+                        : Badge::make((string) $value, 'primary');
+
+                    return $badge->customAttributes(['class' => 'm-1'])->render();
                 }
 
                 return $value;
