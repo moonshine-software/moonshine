@@ -37,7 +37,7 @@ final class Favicon extends MoonShineComponent
                 '32' => moonshineAssets()->getAsset('vendor/moonshine/favicon-32x32.png'),
                 '16' => moonshineAssets()->getAsset('vendor/moonshine/favicon-16x16.png'),
                 'safari-pinned-tab' => moonshineAssets()->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
-                'web-manifest' => moonshineAssets()->getAsset('vendor/moonshine/site.webmanifest')
+                'web-manifest' => moonshineAssets()->getAsset('vendor/moonshine/site.webmanifest'),
             ],
             'bodyColor' => moonshineColors()->get('body'),
         ];

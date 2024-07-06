@@ -19,7 +19,7 @@ final class SocialAuth extends MoonShineComponent
     public array $drivers;
 
     protected array $translates = [
-        'linked' => 'moonshine::ui.resource.linked_socialite'
+        'linked' => 'moonshine::ui.resource.linked_socialite',
     ];
 
     public function __construct(
@@ -32,7 +32,7 @@ final class SocialAuth extends MoonShineComponent
                 'name' => $name,
                 'src' => moonshineAssets()->getAsset($src),
                 'route' => moonshineRouter()->to('socialite.redirect', [
-                    'driver' => $name
+                    'driver' => $name,
                 ]),
             ])
             ->toArray();

@@ -52,7 +52,7 @@ final class LoginLayout extends MoonShineLayout
                 ]),
             ])
                 ->customAttributes([
-                    'lang' => str_replace('_', '-', app()->getLocale())
+                    'lang' => str_replace('_', '-', app()->getLocale()),
                 ])
                 ->withAlpineJs()
                 ->withThemes(),
