@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Illuminate\View\ComponentSlot;
+use MoonShine\Support\Enums\Color;
 
-/** @method static static make(string $icon, int $size = 5, string $color = '', ?string $path = null) */
+/** @method static static make(string $icon, int $size = 5, string|Color $color = '', ?string $path = null) */
 final class Icon extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.icon';
@@ -16,10 +17,12 @@ final class Icon extends MoonShineComponent
     public function __construct(
         public string $icon,
         public int $size = 5,
-        public string $color = '',
+        public string|Color $color = '',
         public ?string $path = null,
     ) {
         parent::__construct();
+
+        $this->color = $this->color instanceof Color ? $this->color->value : $this->color;
 
         if($this->path === null || $this->path === '' || $this->path === '0') {
             $this->path = 'moonshine::icons';

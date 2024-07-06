@@ -7,6 +7,9 @@ namespace MoonShine\AssetManager;
 use MoonShine\AssetManager\Contracts\AssetElement;
 use MoonShine\Support\Traits\Makeable;
 
+/**
+ * @method static static make(string $content)
+ */
 final readonly class Raw implements AssetElement
 {
     use Makeable;

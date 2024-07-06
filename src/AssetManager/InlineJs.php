@@ -10,6 +10,9 @@ use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\Support\Traits\WithVersion;
 
+/**
+ * @method static static make(string $content)
+ */
 final class InlineJs implements AssetElement
 {
     use Makeable;

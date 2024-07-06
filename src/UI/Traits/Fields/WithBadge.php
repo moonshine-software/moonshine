@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use MoonShine\Support\Enums\Color;
 
 trait WithBadge
 {
     protected bool $isBadge = false;
 
-    protected string $badgeColor = 'gray';
+    protected string|Color $badgeColor = Color::GRAY;
 
     protected ?Closure $badgeColorCallback = null;
 
-    public function badge(string|Closure|null $color = null): static
+    public function badge(string|Color|Closure|null $color = null): static
     {
         if ($color instanceof Closure) {
             $this->badgeColorCallback = $color;
@@ -34,10 +35,11 @@ trait WithBadge
 
     public function getBadgeColor(mixed $value = null): string
     {
-        if (! is_null($this->badgeColorCallback)) {
-            return value($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
-        }
+        $color = ! is_null($this->badgeColorCallback)
+            ? value($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this)
+            : $this->badgeColor;
 
-        return $this->badgeColor;
+
+        return $color instanceof Color ? $color->value : $color;
     }
 }

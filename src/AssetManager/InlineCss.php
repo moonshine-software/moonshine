@@ -9,6 +9,9 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 
+/**
+ * @method static static make(string $content)
+ */
 final class InlineCss implements AssetElement
 {
     use Makeable;

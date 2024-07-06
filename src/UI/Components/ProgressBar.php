@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-/** @method static static make(float|int $value, string $size = 'sm', string $color = '', bool $radial = false) */
+use MoonShine\Support\Enums\Color;
+
+/** @method static static make(float|int $value, string $size = 'sm', string|Color $color = '', bool $radial = false) */
 final class ProgressBar extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.progress-bar';
@@ -12,9 +14,11 @@ final class ProgressBar extends MoonShineComponent
     public function __construct(
         public float|int $value,
         public string $size = 'sm',
-        public string $color = '',
+        public string|Color $color = '',
         public bool $radial = false,
     ) {
+        $this->color = $this->color instanceof Color ? $this->color->value : $this->color;
+
         parent::__construct();
     }
 

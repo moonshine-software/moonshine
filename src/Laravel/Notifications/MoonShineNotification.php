@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Notifications;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Notification;
 use MoonShine\Laravel\MoonShineAuth;
+use MoonShine\Support\Enums\Color;
 
 final class MoonShineNotification
 {
@@ -18,9 +19,11 @@ final class MoonShineNotification
         string $message,
         array $button = [],
         array $ids = [],
-        ?string $color = null
+        string|Color|null $color = null
     ): void {
         if (moonshineConfig()->isUseNotifications()) {
+            $color = $color instanceof Color ? $color->value : $color;
+
             Notification::sendNow(
                 MoonShineAuth::getModel()?->query()
                     ->when(

@@ -11,6 +11,9 @@ use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\Support\Traits\WithVersion;
 
+/**
+ * @method static static make(string $link)
+ */
 final class Css implements AssetElement, HasVersion
 {
     use Makeable;

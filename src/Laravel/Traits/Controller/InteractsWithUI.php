@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Traits\Controller;
 
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\ToastType;
 
 trait InteractsWithUI
@@ -19,7 +20,7 @@ trait InteractsWithUI
         string $message,
         array $buttons = [],
         array $ids = [],
-        ?string $color = null
+        string|Color|null $color = null
     ): void {
         MoonShineNotification::send(
             $message,
