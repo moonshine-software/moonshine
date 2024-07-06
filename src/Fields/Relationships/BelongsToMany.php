@@ -70,7 +70,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected string $inLineSeparator = '';
 
-    protected Closure|bool|null $badgeCallback = null;
+    protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
 
@@ -100,11 +100,11 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function inLine(string $separator = '', Closure|bool $badge = null, ?Closure $link = null): static
+    public function inLine(string $separator = '', Closure|bool $badge = false, ?Closure $link = null): static
     {
         $this->inLine = true;
         $this->inLineSeparator = $separator;
-        $this->badgeCallback = $badge;
+        $this->inLineBadge = $badge;
         $this->inLineLink = $link;
 
         return $this;
@@ -417,15 +417,14 @@ class BelongsToMany extends ModelRelationField implements
                         );
                 }
 
-                if ($this->badgeCallback) {
-                    if(is_bool($this->badgeCallback)) {
-                        return Badge::make((string) $value, 'primary')
-                            ->customAttributes(['class' => 'm-1'])
-                            ->render();
-                    }
+                if ($this->inLineBadge) {
+                    $badgeValue = value($this->inLineBadge, $item, (string) $value, $this);
 
-                    $badge = value($this->badgeCallback, $item, $value);
-                    return $badge instanceof Badge ? $badge->customAttributes(['class' => 'm-1'])->render() : $value;
+                    $badge = $badgeValue instanceof Badge
+                        ? $badgeValue
+                        : Badge::make((string) $value, 'primary');
+
+                    return $badge->customAttributes(['class' => 'm-1'])->render();
                 }
 
                 return $value;
