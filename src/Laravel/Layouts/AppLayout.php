@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
-use Mockery\Generator\Method;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
@@ -146,7 +145,7 @@ class AppLayout extends MoonShineLayout
                 ]),
             ])
                 ->customAttributes([
-                    'lang' => str_replace('_', '-', app()->getLocale())
+                    'lang' => str_replace('_', '-', app()->getLocale()),
                 ])
                 ->withAlpineJs()
                 ->withThemes(),

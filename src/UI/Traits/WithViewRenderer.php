@@ -34,7 +34,7 @@ trait WithViewRenderer
     public function getTranslates(): array
     {
         return collect($this->translates)
-            ->mapWithKeys(fn(string $key, string $name) => [$name => __($key)])
+            ->mapWithKeys(fn (string $key, string $name) => [$name => __($key)])
             ->toArray();
     }
 
