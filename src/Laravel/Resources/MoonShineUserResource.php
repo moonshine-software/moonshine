@@ -101,7 +101,7 @@ class MoonShineUserResource extends ModelResource
                     ]),
 
                     Tab::make(__('moonshine::ui.resource.password'), [
-                        Heading::make('Change password'),
+                        Heading::make(__('moonshine::ui.resource.change_password')),
 
                         Password::make(__('moonshine::ui.resource.password'), 'password')
                             ->customAttributes(['autocomplete' => 'new-password'])
