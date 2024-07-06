@@ -28,7 +28,7 @@ final class SocialAuth extends MoonShineComponent
         parent::__construct();
 
         $this->drivers = collect(moonshineConfig()->getSocialite())
-            ->map(fn(string $name, string $src) => [
+            ->map(fn(string $name, string $src): array => [
                 'name' => $name,
                 'src' => moonshineAssets()->getAsset($src),
                 'route' => moonshineRouter()->to('socialite.redirect', [
