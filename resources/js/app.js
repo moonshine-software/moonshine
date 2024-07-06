@@ -23,7 +23,6 @@ import popovers from './Components/Popover'
 import pivot from './Components/Pivot'
 import asyncSearch from './Components/AsyncSearch'
 import interactsWithAsync from './Components/InteractsWithAsync'
-import tinymce from './Components/TinyMce'
 import range from './Components/Range'
 import code from './Components/Code'
 import tree from './Components/Tree'
@@ -63,7 +62,6 @@ Alpine.data('popover', popovers)
 Alpine.data('pivot', pivot)
 Alpine.data('asyncSearch', asyncSearch)
 Alpine.data('interactsWithAsync', interactsWithAsync)
-Alpine.data('tinymce', tinymce)
 Alpine.data('range', range)
 Alpine.data('code', code)
 Alpine.data('tree', tree)
