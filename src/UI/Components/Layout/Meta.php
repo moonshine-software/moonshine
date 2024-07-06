@@ -12,6 +12,6 @@ final class Meta extends MoonshineComponent
 {
     protected function resolveRender(): Renderable|Closure|string
     {
-        return static fn(Meta $meta): string => "<meta {$meta->getAttributes()} />";
+        return static fn (Meta $meta): string => "<meta {$meta->getAttributes()} />";
     }
 }
