@@ -30,7 +30,9 @@ final class Paginator implements PaginatorContract
         private readonly ?string $prevPageUrl = null,
         private readonly ?string $lastPageUrl = null,
         private readonly ?string $nextPageUrl = null,
+        array $translates = [],
     ) {
+        $this->translates = $translates;
     }
 
     public function getLinks(): PaginatorLinksContract
@@ -182,6 +184,7 @@ final class Paginator implements PaginatorContract
             'prev_page_url' => $this->getPrevPageUrl(),
             'next_page_url' => $this->getNextPageUrl(),
             'has_pages' => $this->hasPages(),
+            'translates' => $this->getTranslates(),
         ];
     }
 

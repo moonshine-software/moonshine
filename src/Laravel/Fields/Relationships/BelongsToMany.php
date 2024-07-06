@@ -60,6 +60,10 @@ class BelongsToMany extends ModelRelationField implements
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
+    protected array $translates = [
+        'search' => 'moonshine::ui.search',
+    ];
+
     protected bool $isGroup = true;
 
     protected bool $hasOld = false;
@@ -567,9 +571,12 @@ class BelongsToMany extends ModelRelationField implements
             ];
         }
 
+        $component = $this->getComponent();
+
         return [
             ...$viewData,
-            'component' => $this->getComponent(),
+            'component' => $component,
+            'componentName' => $component->getName(),
             'buttons' => $this->getButtons(),
         ];
     }

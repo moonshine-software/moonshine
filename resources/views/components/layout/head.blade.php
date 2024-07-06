@@ -1,5 +1,6 @@
 @props([
     'title' => '',
+    'bodyColor' => '',
     'components' => []
 ])
 <head {{ $attributes }}
@@ -16,13 +17,8 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    @include('moonshine::layouts.shared.favicon')
-    @include('moonshine::layouts.shared.assets')
-
-    <meta name="msapplication-TileColor" content="{{ moonshineColors()->get('body') }}">
-    <meta name="theme-color" content="{{ moonshineColors()->get('body') }}">
+    <meta name="msapplication-TileColor" content="{{ $bodyColor }}">
+    <meta name="theme-color" content="{{ $bodyColor }}">
 
     <x-moonshine::components
         :components="$components"

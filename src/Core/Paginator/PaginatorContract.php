@@ -55,4 +55,6 @@ interface PaginatorContract extends
     public function async(): static;
 
     public function isAsync(): bool;
+
+    public function getTranslates(): array;
 }

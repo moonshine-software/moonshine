@@ -2,16 +2,17 @@
     'drivers' => [],
     'attached',
     'profileMode' => false,
+    'translates' => [],
 ])
 @if($drivers !== [])
     <div class="social">
         <div class="social-divider">{{ $title ?? '' }}</div>
         <div class="social-list">
-            @foreach($drivers as $driver => $src)
-                <a href="{{ route('moonshine.socialite.redirect', $driver) }}" class="social-item">
+            @foreach($drivers as $driver)
+                <a href="{{ $driver['route'] }}" class="social-item">
                     <img class="h-6 w-6"
-                         src="{{ moonshineAssets()->getAsset($src) }}"
-                         alt="{{ $driver }}"
+                         src="{{ $driver['src'] }}"
+                         alt="{{ $driver['name'] }}"
                     >
                 </a>
             @endforeach
@@ -21,7 +22,7 @@
     @if($profileMode)
         @if($attached->isNotEmpty())
             <div class="social">
-                <div class="social-divider">@lang('moonshine::ui.resource.linked_socialite')</div>
+                <div class="social-divider">{{ $trans['linked'] }}</div>
                 <div class="social-list">
                     @foreach($attached as $socials)
                         {{ $socials->driver }} - {{ $socials->identity }}

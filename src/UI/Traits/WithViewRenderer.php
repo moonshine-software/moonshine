@@ -27,7 +27,16 @@ trait WithViewRenderer
 
     protected ?Closure $onBeforeRenderCallback = null;
 
-    private Renderable|string|null $cachedRender = null;
+    private Renderable|Closure|string|null $cachedRender = null;
+
+    protected array $translates = [];
+
+    public function getTranslates(): array
+    {
+        return collect($this->translates)
+            ->mapWithKeys(fn(string $key, string $name) => [$name => __($key)])
+            ->toArray();
+    }
 
     public function getView(): string
     {
@@ -169,6 +178,7 @@ trait WithViewRenderer
             ...$this->viewData(),
             ...$this->getCustomViewData(),
             ...$this->systemViewData(),
+            'translates' => $this->getTranslates(),
         ];
     }
 
@@ -179,7 +189,7 @@ trait WithViewRenderer
 
     public function __toString(): string
     {
-        return (string) $this->render();
+        return (string) value($this->render(), $this);
     }
 
     public function escapeWhenCastingToString($escape = true): static

@@ -35,6 +35,11 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected string $view = 'moonshine::components.table.builder';
 
+    protected array $translates = [
+        'search' => 'moonshine::ui.search',
+        'notfound' => 'moonshine::ui.notfound',
+    ];
+
     protected Closure|TableRows|null $rows = null;
 
     protected Closure|TableRows|null $headRows = null;

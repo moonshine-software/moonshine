@@ -12,7 +12,7 @@
                 <ul class="dropdown-menu">
                     @foreach($actions->inDropdown() as $index => $action)
                         <li class="dropdown-menu-item">
-                            {!! $action->render() !!}
+                            {!! $action !!}
                         </li>
                     @endforeach
                 </ul>
@@ -21,7 +21,7 @@
 
         @if($actions->inLine()->isNotEmpty())
             @foreach($actions->inLine() as $index => $action)
-                {!! $action->render() !!}
+                {!! $action !!}
             @endforeach
         @endif
     </div>

@@ -1,12 +1,14 @@
 @props([
-    'notifications'
+    'notifications',
+    'readAllRoute' => '',
+    'translates' => [],
 ])
 @if($notifications->isNotEmpty())
     <!-- Notifications -->
     <div {{ $attributes->merge(['class' => 'notifications']) }}>
         <x-moonshine::dropdown
             placement="bottom-end"
-            :title="trans('moonshine::ui.notifications.title')"
+            :title="$translates['title']"
             class="w-[264px] xs:w-80"
         >
             <x-slot:toggler class="notifications-icon">
@@ -20,9 +22,9 @@
 
             @foreach($notifications as $notification)
                 <div class="notifications-item">
-                    <a href="{{ route('moonshine.notifications.read', $notification) }}"
+                    <a href="{{ $notification->data['read_route'] }}"
                        class="notifications-remove"
-                       title="@lang('moonshine::ui.notifications.mark_as_read')"
+                       title="{{ $translates['mark_as_read'] }}"
                     >
                         <x-moonshine::icon icon="x-mark" />
                     </a>
@@ -49,8 +51,8 @@
             @endforeach
 
             <x-slot:footer>
-                <a href="{{ route('moonshine.notifications.readAll') }}" class="notifications-read">
-                    @lang('moonshine::ui.notifications.mark_as_read_all')
+                <a href="{{ $readAllRoute }}" class="notifications-read">
+                    {{ $translates['mark_as_read_all'] }}
                 </a>
             </x-slot:footer>
         </x-moonshine::dropdown>

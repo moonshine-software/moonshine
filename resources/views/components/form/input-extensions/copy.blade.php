@@ -1,10 +1,11 @@
 @props([
-    'value'
+    'value',
+    'translates' => [],
 ])
 <button @click.prevent="copy()"
         {{ $attributes->class(['expansion']) }}
         type="button"
-        x-data="tooltip('{{ __('moonshine::ui.copied') }}', {placement: 'top', trigger: 'click', delay: [0, 800]})"
+        x-data="tooltip('{{ $translates['copied'] }}', {placement: 'top', trigger: 'click', delay: [0, 800]})"
 >
     <x-moonshine::icon
         icon="clipboard"

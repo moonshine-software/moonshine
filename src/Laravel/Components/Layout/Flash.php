@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components\Layout;
 
 use MoonShine\UI\Components\MoonShineComponent;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @method static static make(string $key = 'alert', string $type = 'info', bool $withToast = true, bool $removable = true)
@@ -24,11 +26,14 @@ class Flash extends MoonShineComponent
 
     /**
      * @return array<string, mixed>
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function viewData(): array
     {
         return [
-            'key' => $this->key,
+            'alert' => session()->get($this->key),
+            'toast' => $this->withToast ? session()->get('toast') : false,
             'type' => $this->type,
             'withToast' => $this->withToast,
             'removable' => $this->removable,

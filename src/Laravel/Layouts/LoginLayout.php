@@ -8,7 +8,7 @@ use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
-use MoonShine\UI\Components\Layout\{Block, Body, Head, Html, LayoutBuilder, Logo};
+use MoonShine\UI\Components\Layout\{Assets, Block, Body, Favicon, Head, Html, LayoutBuilder, Logo, Meta};
 use MoonShine\UI\MoonShineLayout;
 
 final class LoginLayout extends MoonShineLayout
@@ -22,7 +22,14 @@ final class LoginLayout extends MoonShineLayout
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make(),
+                Head::make([
+                    Meta::make()->customAttributes([
+                        'name' => 'csrf-token',
+                        'content' => csrf_token(),
+                    ]),
+                    Favicon::make(),
+                    Assets::make(),
+                ]),
                 Body::make([
                     Block::make([
                         Block::make([
@@ -43,7 +50,12 @@ final class LoginLayout extends MoonShineLayout
                         SocialAuth::make(),
                     ])->class('authentication'),
                 ]),
-            ])->withAlpineJs()->withThemes(),
+            ])
+                ->customAttributes([
+                    'lang' => str_replace('_', '-', app()->getLocale())
+                ])
+                ->withAlpineJs()
+                ->withThemes(),
         ]);
     }
 }

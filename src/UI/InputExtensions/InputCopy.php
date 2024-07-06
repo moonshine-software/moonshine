@@ -8,6 +8,10 @@ final class InputCopy extends InputExtension
 {
     protected string $view = 'moonshine::form.input-extensions.copy';
 
+    protected array $translates = [
+        'copied' => 'moonshine::ui.copied',
+    ];
+
     protected array $xData = [
         <<<'HTML'
           copy() {

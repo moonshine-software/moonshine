@@ -24,6 +24,7 @@ final class Head extends AbstractWithComponents
         return [
             ...parent::viewData(),
             'title' => $this->title ?? moonshineConfig()->getTitle(),
+            'bodyColor' => moonshineColors()->get('body')
         ];
     }
 }

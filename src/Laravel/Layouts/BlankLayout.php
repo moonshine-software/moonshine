@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\UI\Components\Components;
-use MoonShine\UI\Components\Layout\{Body, Head, Html, LayoutBuilder};
+use MoonShine\UI\Components\Layout\{Assets, Body, Favicon, Head, Html, LayoutBuilder, Meta};
 use MoonShine\UI\MoonShineLayout;
 
 final class BlankLayout extends MoonShineLayout
@@ -14,11 +14,23 @@ final class BlankLayout extends MoonShineLayout
     {
         return LayoutBuilder::make([
             Html::make([
-                Head::make(),
+                Head::make([
+                    Meta::make()->customAttributes([
+                        'name' => 'csrf-token',
+                        'content' => csrf_token(),
+                    ]),
+                    Favicon::make(),
+                    Assets::make(),
+                ]),
                 Body::make([
                     Components::make($this->getPage()->getComponents()),
                 ]),
-            ])->withAlpineJs()->withThemes(),
+            ])
+                ->customAttributes([
+                    'lang' => str_replace('_', '-', app()->getLocale())
+                ])
+                ->withAlpineJs()
+                ->withThemes(),
         ]);
     }
 }

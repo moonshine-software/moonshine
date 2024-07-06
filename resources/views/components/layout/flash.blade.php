@@ -1,15 +1,16 @@
 @props([
-    'key' => 'alert',
+    'alert' => false,
+    'toast' => false,
     'type' => 'info',
     'withToast' => true,
     'removable' => true,
 ])
-@if(session()->has($key))
+@if($alert)
     <x-moonshine::alert :removable="$removable" :type="$type">
-        {{ session()->get($key) }}
+        {{ $alert }}
     </x-moonshine::alert>
 @endif
 
-@if($withToast && $toast = session()->get('toast'))
+@if($withToast && $toast)
     <x-moonshine::toast :type="$toast['type']" :content="$toast['message']" />
 @endif

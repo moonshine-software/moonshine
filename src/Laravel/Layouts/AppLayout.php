@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use Mockery\Generator\Method;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
+    Layout\Assets,
     Layout\Block,
     Layout\Body,
     Layout\Burger,
     Layout\Content,
+    Layout\Favicon,
     Layout\Footer,
     Layout\Head,
     Layout\Header,
@@ -22,6 +25,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\LayoutBuilder,
     Layout\Logo,
     Layout\Menu,
+    Layout\Meta,
     Layout\Sidebar,
     Layout\ThemeSwitcher,
     Layout\Wrapper,
@@ -54,7 +58,14 @@ class AppLayout extends MoonShineLayout
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make()->title($this->getPage()->getTitle()),
+                Head::make([
+                    Meta::make()->customAttributes([
+                        'name' => 'csrf-token',
+                        'content' => csrf_token(),
+                    ]),
+                    Favicon::make(),
+                    Assets::make(),
+                ])->title($this->getPage()->getTitle()),
                 Body::make([
                     Wrapper::make([
                         Sidebar::make([
@@ -134,6 +145,9 @@ class AppLayout extends MoonShineLayout
                     ]),
                 ]),
             ])
+                ->customAttributes([
+                    'lang' => str_replace('_', '-', app()->getLocale())
+                ])
                 ->withAlpineJs()
                 ->withThemes(),
         ]);

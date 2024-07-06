@@ -2,9 +2,7 @@
     'components' => []
 ])
 <!DOCTYPE html>
-<html {{ $attributes }}
-      lang="{{ str_replace('_', '-', app()->getLocale()) }}"
->
+<html {{ $attributes }}>
     <x-moonshine::components
         :components="$components"
     />

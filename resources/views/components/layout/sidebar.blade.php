@@ -2,6 +2,7 @@
     'components' => [],
     'collapse' => false,
     'collapseAttributes',
+    'translates' => [],
 ])
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
        :class="minimizedMenu && '_is-minimized'"
@@ -53,8 +54,8 @@
                         </svg>
 
                         <span class="menu-inner-text" x-show="!minimizedMenu">
-                                @lang('moonshine::ui.collapse_menu')
-                            </span>
+                            {{ $translates['collapse_menu'] ?? '' }}
+                        </span>
                     </button>
                 </li>
             </ul>

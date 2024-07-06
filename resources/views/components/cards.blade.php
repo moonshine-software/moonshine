@@ -23,7 +23,7 @@
             <x-moonshine::layout.grid>
                 @foreach($components as $card)
                     <x-moonshine::layout.column :colSpan="$colSpan" :adaptiveColSpan="$adaptiveColSpan">
-                        {!! $card->render() !!}
+                        {!! $card !!}
                     </x-moonshine::layout.column>
                 @endforeach
             </x-moonshine::layout.grid>

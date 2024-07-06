@@ -11,6 +11,7 @@
     'headAttributes' => '',
     'bodyAttributes' => '',
     'footAttributes' => '',
+    'translates' => [],
 ])
 @if(isset($tbody) || (is_iterable($values) && count($values)))
     <!-- Table -->
@@ -46,6 +47,6 @@
     </div>
 @elseif($notfound)
     <x-moonshine::alert type="default" class="my-4" icon="s.no-symbol">
-        {{ trans('moonshine::ui.notfound') }}
+        {{ $translates['notfound'] }}
     </x-moonshine::alert>
 @endif

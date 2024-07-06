@@ -12,5 +12,5 @@
 
     <x-moonshine::layout.line-break />
 
-    {!! $component->render() !!}
+    {!! $component !!}
 </div>

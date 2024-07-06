@@ -31,6 +31,15 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
             $data['simple'] = true;
         }
 
+        $data['translates'] = [
+            'previous' => 'moonshine::pagination.previous',
+            'next' => 'moonshine::pagination.next',
+            'showing' => 'moonshine::pagination.showing',
+            'to' => 'moonshine::pagination.to',
+            'of' => 'moonshine::pagination.of',
+            'results' => 'moonshine::pagination.results',
+        ];
+
         return new Paginator(...$data);
     }
 }

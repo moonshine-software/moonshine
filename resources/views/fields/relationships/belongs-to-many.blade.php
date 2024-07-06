@@ -1,6 +1,7 @@
 @props([
     'value' => null,
     'component' => null,
+    'componentName' => '',
     'buttons' => [],
     'isNullable' => false,
     'isSearchable' => false,
@@ -13,6 +14,7 @@
     'createButton' => '',
     'fragmentUrl' => '',
     'relationName' => '',
+    'translates' => [],
 ])
 <div x-id="['belongs-to-many']"
      :id="$id('belongs-to-many')"
@@ -50,7 +52,7 @@
                             <x-moonshine::form.input
                                 x-model="query"
                                 @input.debounce="search"
-                                :placeholder="trans('moonshine::ui.search')"
+                                :placeholder="$translates['search']"
                             />
                             <div class="dropdown-body pointer-events-auto visible opacity-100">
                                 <div class="dropdown-content">
@@ -83,14 +85,14 @@
                         <div x-data="pivot"
                              x-init="autoCheck"
                              class="js-pivot-table"
-                             data-table-name="{{ $component->getName() }}"
+                             data-table-name="{{ $componentName }}"
                         >
                             <x-moonshine::action-group
                                 class="mb-4"
                                 :actions="$buttons"
                             />
 
-                            {!! $component->render() !!}
+                            {!! $component !!}
                         </div>
                     </div>
                 @else
@@ -100,7 +102,7 @@
                             :actions="$buttons"
                         />
 
-                        {!! $component->render() !!}
+                        {!! $component !!}
                     </div>
                 @endif
             @endif

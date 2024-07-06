@@ -3,6 +3,6 @@
 ])
 <tr {{ $attributes }}>
     @foreach($cells as $td)
-        {!! $td->render() !!}
+        {!! $td !!}
     @endforeach
 </tr>

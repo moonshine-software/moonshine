@@ -11,7 +11,8 @@
     'to' => 0,
     'from' => 0,
     'total' => 0,
-    'links' => []
+    'links' => [],
+    'translates' => [],
 ])
 @if($simple)
     <ul class="pagination-list simple">
@@ -19,14 +20,14 @@
         <li>
             @if ($current_page <= 1)
                 <span class="pagination-simple disabled">
-                    {!! __('moonshine::pagination.previous') !!}
+                    {!! $translates['previous'] !!}
                 </span>
             @else
                 <a href="{{ $first_page_url }}"
                    @if($async) @click.prevent="asyncRequest" @endif
                    class="pagination-simple"
                 >
-                    {!! __('moonshine::pagination.previous') !!}
+                    {!! $translates['previous'] !!}
                 </a>
             @endif
         </li>
@@ -38,11 +39,11 @@
                    @if($async) @click.prevent="asyncRequest" @endif
                    class="pagination-simple"
                 >
-                    {!! __('moonshine::pagination.next') !!}
+                    {!! $translates['next'] !!}
                 </a>
             @else
                 <span class="pagination-simple disabled">
-                    {!! __('moonshine::pagination.next') !!}
+                    {!! $translates['next'] !!}
                 </span>
             @endif
         </li>
@@ -56,7 +57,7 @@
                     <a href="{{ $prev_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-first"
-                       title="{!! __('moonshine::pagination.previous') !!}"
+                       title="{!! $translates['previous']  !!}"
                     >
                         <x-moonshine::icon
                             icon="chevron-double-left"
@@ -92,7 +93,7 @@
                     <a href="{{ $next_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-last"
-                       title="{!! __('moonshine::pagination.next') !!}"
+                       title="{!! $translates['next']  !!}"
                     >
                         <x-moonshine::icon
                             icon="chevron-double-right"
@@ -103,17 +104,17 @@
             @endif
         </ul>
         <div class="pagination-results">
-            {!! __('moonshine::pagination.showing') !!}
+            {!! $translates['showing']  !!}
             @if ($from)
                 {{ $from }}
-                {!! __('moonshine::pagination.to') !!}
+                {!! $translates['to']  !!}
                 {{ $to }}
             @else
                 {{ $per_page }}
             @endif
-            {!! __('moonshine::pagination.of') !!}
+            {!! $translates['of']  !!}
             {{ $total }}
-            {!! __('moonshine::pagination.results') !!}
+            {!! $translates['results']  !!}
         </div>
     </div>
     <!-- END: Pagination -->

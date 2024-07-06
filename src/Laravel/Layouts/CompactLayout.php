@@ -9,10 +9,12 @@ use MoonShine\ColorManager\ColorManager;
 use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
+    Layout\Assets,
     Layout\Block,
     Layout\Body,
     Layout\Burger,
     Layout\Content,
+    Layout\Favicon,
     Layout\Footer,
     Layout\Head,
     Layout\Header,
@@ -20,6 +22,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\LayoutBuilder,
     Layout\Logo,
     Layout\Menu,
+    Layout\Meta,
     Layout\Sidebar,
     Layout\ThemeSwitcher,
     Layout\TopBar,
@@ -92,7 +95,14 @@ class CompactLayout extends AppLayout
 
         return LayoutBuilder::make([
             Html::make([
-                Head::make(),
+                Head::make([
+                    Meta::make()->customAttributes([
+                        'name' => 'csrf-token',
+                        'content' => csrf_token(),
+                    ]),
+                    Favicon::make(),
+                    Assets::make(),
+                ]),
                 Body::make([
                     Wrapper::make([
                         TopBar::make([
@@ -196,6 +206,9 @@ class CompactLayout extends AppLayout
                     ]),
                 ])->class('theme-minimalistic'),
             ])
+                ->customAttributes([
+                    'lang' => str_replace('_', '-', app()->getLocale())
+                ])
                 ->withAlpineJs()
                 ->withThemes(),
         ]);

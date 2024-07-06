@@ -16,6 +16,7 @@
     'searchable' => false,
     'sticky' => false,
     'searchValue' => '',
+    'translates' => [],
 ])
 <div x-data="tableBuilder(
     {{ (int) $creatable }},
@@ -39,7 +40,7 @@
                     name="search"
                     type="search"
                     value="{{ $searchValue }}"
-                    placeholder="{{ __('moonshine::ui.search') }}"
+                    placeholder="{{ $translates['search'] }}"
                 />
             </form>
         </div>
@@ -56,12 +57,13 @@
             :footAttributes="$footAttributes"
             :creatable="$creatable"
             :sticky="$sticky"
+            :translates="$translates"
             data-name="{{ $name }}"
         >
             @if($headRows->isNotEmpty())
                 <x-slot:thead>
                     @foreach($headRows as $row)
-                        {!! $row->render() !!}
+                        {!! $row !!}
                     @endforeach
                 </x-slot:thead>
             @endif
@@ -69,7 +71,7 @@
             @if($rows->isNotEmpty())
                 <x-slot:tbody>
                     @foreach($rows as $row)
-                        {!! $row->render() !!}
+                        {!! $row !!}
                     @endforeach
                 </x-slot:tbody>
             @endif
@@ -77,7 +79,7 @@
             @if($footRows->isNotEmpty())
                 <x-slot:tfoot>
                     @foreach($footRows as $row)
-                        {!! $row->render() !!}
+                        {!! $row !!}
                     @endforeach
                 </x-slot:tfoot>
             @endif

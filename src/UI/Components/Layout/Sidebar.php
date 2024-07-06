@@ -11,6 +11,10 @@ class Sidebar extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.sidebar';
 
+    protected array $translates = [
+        'collapse_menu' => 'moonshine::ui.collapse_menu',
+    ];
+
     public bool $collapse = false;
 
     public MoonShineComponentAttributeBag $collapseAttributes;
