@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
@@ -17,6 +18,7 @@ use MoonShine\UI\Traits\WithViewRenderer;
 
 abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
 {
+    use Macroable;
     use Makeable;
     use WithComponentAttributes;
     use WithIcon;

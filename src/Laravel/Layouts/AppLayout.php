@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\UI\Components\{Breadcrumbs,
+use MoonShine\UI\Components\{ActionButton,
+    Breadcrumbs,
     Components,
     Layout\Assets,
     Layout\Block,
@@ -30,6 +32,8 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\Wrapper,
     Title,
     When};
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\MoonShineLayout;
 
 class AppLayout extends MoonShineLayout
@@ -41,11 +45,11 @@ class AppLayout extends MoonShineLayout
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.admins_title'),
                     moonshine()->getContainer(MoonShineUserResource::class)
-                ),
+                )->spa(),
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.role_title'),
                     moonshine()->getContainer(MoonShineUserRoleResource::class)
-                ),
+                )->spa(),
             ]),
         ];
     }
@@ -101,28 +105,30 @@ class AppLayout extends MoonShineLayout
                         ])->collapsed(),
 
                         Block::make([
-                            Flash::make(),
-                            Header::make([
-                                Breadcrumbs::make($this->getPage()->getBreadcrumbs())
-                                    ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
+                            Fragment::make([
+                                Flash::make(),
+                                Header::make([
+                                    Breadcrumbs::make($this->getPage()->getBreadcrumbs())
+                                        ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
-                                Search::make(),
+                                    Search::make(),
 
-                                When::make(
-                                    static fn (): bool => moonshineConfig()->isAuthEnabled() && moonshineConfig()->isUseNotifications(),
-                                    static fn (): array => [Notifications::make()]
-                                ),
+                                    When::make(
+                                        static fn (): bool => moonshineConfig()->isAuthEnabled() && moonshineConfig()->isUseNotifications(),
+                                        static fn (): array => [Notifications::make()]
+                                    ),
 
-                                Locales::make(),
-                            ]),
+                                    Locales::make(),
+                                ]),
 
-                            Content::make([
-                                Title::make($this->getPage()->getTitle())->class('mb-6'),
+                                Content::make([
+                                    Title::make($this->getPage()->getTitle())->class('mb-6'),
 
-                                Components::make(
-                                    $this->getPage()->getComponents()
-                                ),
-                            ]),
+                                    Components::make(
+                                        $this->getPage()->getComponents()
+                                    ),
+                                ]),
+                            ])->name('_content')->customAttributes(['id' => 'content']),
 
                             Footer::make()
                                 ->copyright(static fn (): string => sprintf(

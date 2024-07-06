@@ -28,6 +28,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\TopBar,
     Layout\Wrapper,
     When};
+use MoonShine\Laravel\Components\Fragment;
 
 class CompactLayout extends AppLayout
 {
@@ -168,23 +169,25 @@ class CompactLayout extends AppLayout
                             ]),
                         ])->collapsed(),
                         Block::make([
-                            Flash::make(),
-                            Header::make([
-                                Breadcrumbs::make($this->getPage()->getBreadcrumbs())
-                                    ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
+                            Fragment::make([
+                                Flash::make(),
+                                Header::make([
+                                    Breadcrumbs::make($this->getPage()->getBreadcrumbs())
+                                        ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
 
-                                Search::make(),
+                                    Search::make(),
 
-                                Notifications::make(),
+                                    Notifications::make(),
 
-                                Locales::make(),
-                            ]),
+                                    Locales::make(),
+                                ]),
 
-                            Content::make([
-                                Components::make(
-                                    $this->getPage()->getComponents()
-                                ),
-                            ]),
+                                Content::make([
+                                    Components::make(
+                                        $this->getPage()->getComponents()
+                                    ),
+                                ]),
+                            ])->name('_content')->customAttributes(['id' => 'content']),
 
                             Footer::make()
                                 ->copyright(static fn (): string => sprintf(

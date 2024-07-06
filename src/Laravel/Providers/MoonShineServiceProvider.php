@@ -52,11 +52,14 @@ use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
+use MoonShine\MenuManager\MenuItem;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\MoonShine;
 use MoonShine\Support\Enums\Env;
 use MoonShine\UI\Applies\AppliesRegister;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Date;
@@ -180,6 +183,17 @@ class MoonShineServiceProvider extends ServiceProvider
             file: static fn (string $key) => request()->file($key, request()->input($key, false)),
             old: static fn (string $key, mixed $default) => session()->getOldInput($key, $default)
         ));
+
+        MenuItem::macro('spa', function () {
+            /** @var ModelResource $filler */
+            $filler = value($this->getFiller());
+
+            return $this->setUrl(
+                fn() => $filler->getFragmentLoadUrl('_content')
+            )->changeButton(
+                static fn(ActionButton $btn) => $btn->async(selector: '#content')
+            );
+        });
 
         return $this;
     }
