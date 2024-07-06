@@ -16,7 +16,7 @@ use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Text;
-use MoonShine\UI\Fields\TinyMce;
+use MoonShine\UI\Fields\Markdown;
 
 class TestCategoryPageResource extends ModelResource
 {
@@ -70,7 +70,7 @@ class TestCategoryPageResource extends ModelResource
                 Text::make('Name title', 'name')
                     ->sortable(),
 
-                TinyMce::make('Content title', 'content'),
+                Markdown::make('Content title', 'content'),
 
                 HasOne::make('Cover title', 'cover', resource: new TestCoverPageResource())->fields([
                     ID::make(),
