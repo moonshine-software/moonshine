@@ -70,7 +70,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected string $inLineSeparator = '';
 
-    protected bool $inLineBadge = false;
+    protected Closure|bool|null $badgeCallback = null;
 
     protected bool $selectMode = false;
 
@@ -100,13 +100,12 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function inLine(string $separator = '', bool $badge = false, ?Closure $link = null, string $badgeColor = 'primary'): static
+    public function inLine(string $separator = '', Closure|bool $badge = null, ?Closure $link = null): static
     {
         $this->inLine = true;
         $this->inLineSeparator = $separator;
-        $this->inLineBadge = $badge;
+        $this->badgeCallback = $badge;
         $this->inLineLink = $link;
-        $this->badgeColor = $badgeColor;
 
         return $this;
     }
@@ -418,10 +417,15 @@ class BelongsToMany extends ModelRelationField implements
                         );
                 }
 
-                if ($this->inLineBadge) {
-                    return Badge::make((string) $value, $this->badgeColor)
-                        ->customAttributes(['class' => 'm-1'])
-                        ->render();
+                if ($this->badgeCallback) {
+                    if(is_bool($this->badgeCallback)) {
+                        return Badge::make((string) $value, 'primary')
+                            ->customAttributes(['class' => 'm-1'])
+                            ->render();
+                    }
+
+                    $badge = value($this->badgeCallback, $item, $value);
+                    return $badge instanceof Badge ? $badge->customAttributes(['class' => 'm-1'])->render() : $value;
                 }
 
                 return $value;
