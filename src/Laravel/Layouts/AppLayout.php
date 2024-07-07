@@ -9,15 +9,16 @@ use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\UI\Components\{Breadcrumbs,
+use MoonShine\UI\Components\{
+    Breadcrumbs,
     Components,
-    Layout\Flash,
     Layout\Assets,
     Layout\Block,
     Layout\Body,
     Layout\Burger,
     Layout\Content,
     Layout\Favicon,
+    Layout\Flash,
     Layout\Footer,
     Layout\Head,
     Layout\Header,
@@ -30,7 +31,8 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\ThemeSwitcher,
     Layout\Wrapper,
     Title,
-    When};
+    When
+};
 use MoonShine\UI\MoonShineLayout;
 
 class AppLayout extends MoonShineLayout

@@ -7,15 +7,16 @@ namespace MoonShine\Laravel\Layouts;
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
-use MoonShine\UI\Components\{Breadcrumbs,
+use MoonShine\UI\Components\{
+    Breadcrumbs,
     Components,
-    Layout\Flash,
     Layout\Assets,
     Layout\Block,
     Layout\Body,
     Layout\Burger,
     Layout\Content,
     Layout\Favicon,
+    Layout\Flash,
     Layout\Footer,
     Layout\Head,
     Layout\Header,
@@ -28,7 +29,8 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\ThemeSwitcher,
     Layout\TopBar,
     Layout\Wrapper,
-    When};
+    When
+};
 
 class CompactLayout extends AppLayout
 {
