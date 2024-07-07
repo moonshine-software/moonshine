@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Laravel\Components\Layout;
+namespace MoonShine\UI\Components\Layout;
 
 use MoonShine\UI\Components\MoonShineComponent;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,8 +32,8 @@ class Flash extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'alert' => session()->get($this->key),
-            'toast' => $this->withToast ? session()->get('toast') : false,
+            'alert' => moonshine()->getRequest()->getSession($this->key),
+            'toast' => $this->withToast ? moonshine()->getRequest()->getSession('toast') : false,
             'type' => $this->type,
             'withToast' => $this->withToast,
             'removable' => $this->removable,

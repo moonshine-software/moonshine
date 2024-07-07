@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
+    Layout\Flash,
     Layout\Assets,
     Layout\Block,
     Layout\Body,

@@ -6,9 +6,10 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
+    Layout\Flash,
     Layout\Assets,
     Layout\Block,
     Layout\Body,

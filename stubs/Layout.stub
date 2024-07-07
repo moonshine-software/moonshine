@@ -6,9 +6,10 @@ namespace {namespace};
 
 use {extend};
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Laravel\Components\Layout\{Flash, Locales, Notifications, Profile, Search};
+use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
+    Layout\Flash,
     Layout\Block,
     Layout\Body,
     Layout\Burger,
