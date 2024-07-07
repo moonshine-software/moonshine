@@ -45,7 +45,7 @@ export default (config = {}) => ({
       skin: darkMode ? 'oxide-dark' : 'oxide',
       content_css: darkMode ? 'dark' : 'default',
       ...this.config,
-      file_picker_callback: this.$el.dataset.file_manager ? fileManager : null,
+      file_picker_callback: this.config.file_manager ? fileManager : null,
       init_instance_callback: editor =>
         editor.on('blur', () => (this.$el.innerHTML = editor.getContent())),
       setup: editor => {
