@@ -160,13 +160,13 @@ class TinyMce extends Textarea
     {
         return [
             'toolbar_mode' => 'sliding',
-            'language' => ! empty($this->locale) ? $this->locale : app()->getLocale(),
+            'language' => $this->locale === '' || $this->locale === '0' ? app()->getLocale() : $this->locale,
             'plugins' => implode(' ', $this->getPlugins()),
             'menubar' => trim($this->menubar),
             'toolbar' => trim($this->toolbar . ' ' . $this->addedToolbar),
-            'tinycomments_mode' => ! empty($this->commentAuthor) ? 'embedded' : null,
-            'tinycomments_author' => ! empty($this->commentAuthor) ? $this->commentAuthor : null,
-            'mergetags_list' => ! empty($this->mergeTags) ? json_encode($this->mergeTags) : null,
+            'tinycomments_mode' => $this->commentAuthor === '' || $this->commentAuthor === '0' ? null : 'embedded',
+            'tinycomments_author' => $this->commentAuthor === '' || $this->commentAuthor === '0' ? null : $this->commentAuthor,
+            'mergetags_list' => $this->mergeTags === [] ? null : json_encode($this->mergeTags),
             'file_manager' => config('moonshine.tinymce.file_manager', false) ? config('moonshine.tinymce.file_manager', 'laravel-filemanager') : null,
             ...$this->config,
         ];
