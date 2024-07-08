@@ -15,5 +15,9 @@ if (!CSS.supports('selector(:has(*))')) {
     if (wrapperElement && wrapperElement.querySelector(':scope > .layout-menu-horizontal')) {
       wrapperElement.classList.add('layout-wrapper--top-menu')
     }
+
+    if (wrapperElement && wrapperElement.querySelector(':scope > .layout-menu-mobile')) {
+      wrapperElement.classList.add('layout-wrapper--mobilebar')
+    }
   })
 }
