@@ -6,10 +6,11 @@ namespace MoonShine\Laravel\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Traits\Makeable;
 
 /**
- * @method static static make(string $message, array $button = [], string $color = 'green')
+ * @method static static make(string $message, array $button = [], null|Color|string $color = null)
  */
 final class MoonShineDatabaseNotification extends Notification
 {
@@ -19,9 +20,9 @@ final class MoonShineDatabaseNotification extends Notification
     public function __construct(
         protected string $message,
         protected array $button = [],
-        protected ?string $color = null
+        protected null|string|Color $color = null
     ) {
-        //
+        $this->color = $this->color instanceof Color ? $this->color->value : $this->color;
     }
 
     public function via($notifiable): array

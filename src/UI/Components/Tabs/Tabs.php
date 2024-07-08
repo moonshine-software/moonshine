@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
@@ -67,7 +68,7 @@ class Tabs extends AbstractWithComponents
     public function getTabsLabels(): Collection
     {
         return $this->getTabs()->mapWithKeys(static fn (Tab $tab): array => [
-            $tab->getId() => $tab->getIcon(6, 'secondary')
+            $tab->getId() => $tab->getIcon(6, Color::SECONDARY)
                 . PHP_EOL . $tab->getLabel(),
         ]);
     }

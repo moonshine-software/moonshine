@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Traits;
 
+use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Icon;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -33,7 +34,7 @@ trait WithIcon
      */
     public function getIcon(
         int $size = 8,
-        string $color = '',
+        Color|string $color = '',
         array $attributes = []
     ): string {
         if ($this->getIconValue() === '') {

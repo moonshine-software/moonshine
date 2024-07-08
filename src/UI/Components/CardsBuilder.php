@@ -23,6 +23,10 @@ final class CardsBuilder extends IterableComponent
 
     protected string $view = 'moonshine::components.cards';
 
+    protected array $translates = [
+        'notfound' => 'moonshine::ui.notfound',
+    ];
+
     protected array $components = [];
 
     protected Closure|string $title = '';

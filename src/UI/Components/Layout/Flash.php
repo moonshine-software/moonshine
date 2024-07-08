@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Support\Enums\FlashType;
 use MoonShine\UI\Components\MoonShineComponent;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * @method static static make(string $key = 'alert', string $type = 'info', bool $withToast = true, bool $removable = true)
+ * @method static static make(string $key = 'alert', string|FlashType $type = FlashType::INFO, bool $withToast = true, bool $removable = true)
  */
 class Flash extends MoonShineComponent
 {
@@ -17,11 +18,13 @@ class Flash extends MoonShineComponent
 
     public function __construct(
         protected string $key = 'alert',
-        protected string $type = 'info',
+        protected string|FlashType $type = FlashType::INFO,
         protected bool $withToast = true,
         protected bool $removable = true,
     ) {
         parent::__construct();
+
+        $this->type = $this->type instanceof FlashType ? $this->type->value : $this->type;
     }
 
     /**

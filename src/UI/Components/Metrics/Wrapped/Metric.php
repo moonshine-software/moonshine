@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
@@ -44,7 +45,7 @@ abstract class Metric extends MoonShineComponent implements HasAssets
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
-            'icon' => $this->getIcon(6, 'secondary'),
+            'icon' => $this->getIcon(6, Color::SECONDARY),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),
         ];

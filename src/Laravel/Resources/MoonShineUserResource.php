@@ -10,6 +10,7 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
+use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Tabs\Tab;
@@ -48,7 +49,7 @@ class MoonShineUserResource extends ModelResource
                 'moonshineUserRole',
                 formatted: static fn (MoonshineUserRole $model) => $model->name,
                 resource: MoonShineUserRoleResource::class,
-            )->badge('purple'),
+            )->badge(Color::PURPLE),
 
             Text::make(__('moonshine::ui.resource.name'), 'name'),
 

@@ -19,6 +19,7 @@ use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
@@ -80,7 +81,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected string $inLineSeparator = '';
 
-    protected bool $inLineBadge = false;
+    protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
 
@@ -99,7 +100,13 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    public function inLine(string $separator = '', bool $badge = false, ?Closure $link = null): static
+    /**
+     * @param  string  $separator
+     * @param  bool|(Closure(mixed $item, mixed $value, self $ct): Badge|bool)  $badge
+     * @param  null|(Closure(mixed $item, mixed $value, self $ctx): Link) $link
+     * @return $this
+     */
+    public function inLine(string $separator = '', Closure|bool $badge = false, ?Closure $link = null): static
     {
         $this->inLine = true;
         $this->inLineSeparator = $separator;
@@ -398,10 +405,14 @@ class BelongsToMany extends ModelRelationField implements
                         );
                 }
 
-                if ($this->inLineBadge) {
-                    return Badge::make((string) $value, 'primary')
-                        ->class('m-1')
-                        ->render();
+                $badgeValue = value($this->inLineBadge, $item, $value, $this);
+
+                if ($badgeValue !== false) {
+                    $badge = $badgeValue instanceof Badge
+                        ? $badgeValue
+                        : Badge::make((string) $value, Color::PRIMARY);
+
+                    return $badge->customAttributes(['class' => 'm-1'])->render();
                 }
 
                 return $value;

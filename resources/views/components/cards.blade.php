@@ -6,7 +6,8 @@
     'notfound' => false,
     'colSpan' => 12,
     'adaptiveColSpan' => 12,
-    'name' => 'default'
+    'name' => 'default',
+    'translates' => [],
 ])
 
 <div x-data="cardsBuilder(
@@ -33,7 +34,7 @@
             @endif
         @else
             <x-moonshine::alert type="default" class="my-4" icon="s.no-symbol">
-                {{ trans('moonshine::ui.notfound') }}
+                {{ $translates['notfound'] }}
             </x-moonshine::alert>
         @endif
     </div>
