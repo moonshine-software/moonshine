@@ -101,7 +101,6 @@ class BelongsToMany extends ModelRelationField implements
     }
 
     /**
-     * @param  string  $separator
      * @param  bool|(Closure(mixed $item, mixed $value, self $ct): Badge|bool)  $badge
      * @param  null|(Closure(mixed $item, mixed $value, self $ctx): Link) $link
      * @return $this
