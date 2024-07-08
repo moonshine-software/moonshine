@@ -13,6 +13,11 @@
     &--mobilebar {
       @apply gap-0;
       @apply mobile:pt-16 !important;
+
+      .layout-menu,
+      .layout-menu-horizontal {
+        @apply mobile:hidden;
+      }
     }
 
     /* selector :has supported */
