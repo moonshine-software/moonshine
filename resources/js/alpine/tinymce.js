@@ -47,7 +47,7 @@ export default (config = {}) => ({
       ...this.config,
       file_picker_callback: this.config.file_manager ? fileManager : null,
       init_instance_callback: editor =>
-        editor.on('blur', () => (this.$el.innerHTML = editor.getContent())),
+        editor.on('blur', () => tinymce.activeEditor.save()),
       setup: editor => {
         editorInstance = editor
       },
