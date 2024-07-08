@@ -46,8 +46,7 @@ export default (config = {}) => ({
       content_css: darkMode ? 'dark' : 'default',
       ...this.config,
       file_picker_callback: this.config.file_manager ? fileManager : null,
-      init_instance_callback: editor =>
-        editor.on('blur', () => tinymce.activeEditor.save()),
+      init_instance_callback: editor => editor.on('blur', () => tinymce.activeEditor.save()),
       setup: editor => {
         editorInstance = editor
       },
