@@ -205,7 +205,7 @@ class ExportHandler extends Handler
 
         return ActionButton::make(
             $this->getLabel(),
-            trim("$url?ts=".time()."&$query", '&')
+            trim("$url?ts=" . time() . "&$query", '&')
         )
             ->primary()
             ->class('js-change-query')
