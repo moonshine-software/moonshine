@@ -19,7 +19,7 @@ final class ExportButton
 
         return ActionButton::make(
             $export->label(),
-            trim("$url?ts=".time()."&$query", '&')
+            trim("$url?ts=" . time() . "&$query", '&')
         )
             ->primary()
             ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
