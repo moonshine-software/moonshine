@@ -6,9 +6,9 @@ namespace MoonShine\Traits\Fields;
 
 trait NumberTrait
 {
-    public int|float $min = 0;
+    public int|float|null $min = null;
 
-    public int|float $max = 1e10;
+    public int|float|null $max = null;
 
     public int|float $step = 1;
 
