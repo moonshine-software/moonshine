@@ -73,6 +73,7 @@ return [
 
         'export' => [
             'exported' => 'File exported',
+            'confirm_content' => 'Is everything ready for export?',
         ],
 
         'import' => [
