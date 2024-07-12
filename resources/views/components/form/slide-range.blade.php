@@ -1,4 +1,6 @@
 @props([
+    'min' => 0,
+    'max' => 1000000,
     'uniqueId' => 'slider',
     'fromAttributes' => $attributes,
     'toAttributes' => $attributes,
@@ -10,10 +12,10 @@
     'toField' => $toName
 ])
 <div {{ $attributes->class(['form-group-range'])->only('class') }}>
-    <div x-data="range({{ '`'.$fromValue.'`,`'.$toValue.'`' }})"
+    <div x-data="range({{ '`'.($fromValue ?? $min).'`,`'.($toValue ?? $max).'`' }})"
          x-init="mintrigger(); maxtrigger()"
-         data-min="{{ $attributes->get('min', 0) }}"
-         data-max="{{ $attributes->get('max', 1000) }}"
+         data-min="{{ $attributes->get('min', $min) }}"
+         data-max="{{ $attributes->get('max', $max) }}"
          data-step="{{ $attributes->get('step', 1) }}"
          class="form-group-range-wrapper"
     >
