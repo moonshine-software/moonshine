@@ -48,7 +48,7 @@ class ExportHandler extends Handler
         return $this;
     }
 
-    public function getWithConfirm(): bool
+    public function isWithConfirm(): bool
     {
         return $this->withConfirm;
     }

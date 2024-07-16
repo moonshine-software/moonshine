@@ -25,7 +25,7 @@ final class ExportButton
             ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
             ->icon($export->iconValue());
 
-        if ($export->getWithConfirm()) {
+        if ($export->isWithConfirm()) {
             $button->withConfirm(content: trans('moonshine::ui.resource.export.confirm_content'));
         }
 
