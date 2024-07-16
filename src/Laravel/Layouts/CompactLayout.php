@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{
     Breadcrumbs,
@@ -31,7 +32,6 @@ use MoonShine\UI\Components\{
     Layout\Wrapper,
     When
 };
-use MoonShine\Contracts\ColorManager\ColorManagerContract;
 
 class CompactLayout extends AppLayout
 {

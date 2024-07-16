@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Filesystem\Filesystem;
-use MoonShine\Core\Core;
-use Symfony\Component\Console\Attribute\AsCommand;
 
-use function Laravel\Prompts\{confirm, info, multiselect, note};
+use function Laravel\Prompts\{confirm, info, multiselect};
+
+use MoonShine\Core\Core;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:publish')]
 class PublishCommand extends MoonShineCommand

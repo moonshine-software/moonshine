@@ -4,7 +4,6 @@ use MoonShine\Core\Collections\Components;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
-use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;

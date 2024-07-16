@@ -39,10 +39,9 @@ abstract class Core implements CoreContract
         protected RequestContract $request,
         protected ConfiguratorContract $config,
         protected TranslatorContract $translator,
-    )
-    {
+    ) {
         static::setInstance(
-            fn(): mixed => $this->getContainer(CoreContract::class)
+            fn (): mixed => $this->getContainer(CoreContract::class)
         );
     }
 

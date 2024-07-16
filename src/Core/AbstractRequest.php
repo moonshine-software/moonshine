@@ -16,7 +16,8 @@ class AbstractRequest implements RequestContract
 
     public function __construct(
         protected readonly ServerRequestInterface $request,
-    ) {}
+    ) {
+    }
 
     public function getRequest(): ServerRequestInterface
     {

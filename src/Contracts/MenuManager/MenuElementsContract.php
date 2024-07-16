@@ -6,5 +6,4 @@ namespace MoonShine\Contracts\MenuManager;
 
 interface MenuElementsContract
 {
-
 }

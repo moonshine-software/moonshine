@@ -27,7 +27,6 @@ use MoonShine\Tests\Fixtures\Resources\TestFileResourceWithParent;
 use MoonShine\Tests\Fixtures\Resources\TestHasManyCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
-use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCategoryPageResource;
 use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCoverPageResource;
 use MoonShine\Tests\Fixtures\TestServiceProvider;

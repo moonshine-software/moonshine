@@ -25,8 +25,7 @@ final class AppliesRegister implements AppliesRegisterContract
 
     public function __construct(
         private readonly CoreContract $core
-    )
-    {
+    ) {
     }
 
     public function type(string $type): static

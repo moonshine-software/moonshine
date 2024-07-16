@@ -14,6 +14,7 @@ use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Resources\Resource;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
@@ -31,7 +32,6 @@ use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\Laravel\Collections\Fields;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use Throwable;
 

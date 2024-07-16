@@ -130,7 +130,7 @@ final readonly class MoonShineEndpoints implements EndpointsContract
             $targetResource = $resource instanceof ResourceContract
                 ? $resource
                 : moonshine()->getResources()->findByClass($resource);
-            
+
             $targetPage = $targetResource?->getPages()->when(
                 is_null($page),
                 static fn (Pages $pages) => $pages->first(),

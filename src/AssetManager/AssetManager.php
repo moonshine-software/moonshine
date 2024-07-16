@@ -16,8 +16,7 @@ final class AssetManager implements AssetManagerContract
 
     public function __construct(
         private readonly AssetResolverContract $assetResolver
-    )
-    {
+    ) {
     }
 
     /**

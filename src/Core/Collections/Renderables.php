@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Collections;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\HasComponentsContract;
@@ -11,7 +12,6 @@ use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\RenderablesContract;
-use Closure;
 use MoonShine\Contracts\UI\WithoutExtractionContract;
 use Throwable;
 
@@ -51,9 +51,9 @@ abstract class Renderables extends Collection implements RenderablesContract
         foreach ($elements as $element) {
             if ($element instanceof FieldContract) {
                 $data[] = $element;
-            } elseif ($element instanceof HasFieldsContract && !$element instanceof WithoutExtractionContract) {
+            } elseif ($element instanceof HasFieldsContract && ! $element instanceof WithoutExtractionContract) {
                 $this->extractFields($element->getFields(), $data);
-            } elseif ($element instanceof HasComponentsContract && !$element instanceof WithoutExtractionContract) {
+            } elseif ($element instanceof HasComponentsContract && ! $element instanceof WithoutExtractionContract) {
                 $this->extractFields($element->getComponents(), $data);
             }
         }

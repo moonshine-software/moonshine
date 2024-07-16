@@ -6,8 +6,8 @@ namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
 
 /**
  * @template TKey of array-key

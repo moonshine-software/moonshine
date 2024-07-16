@@ -6,5 +6,4 @@ namespace MoonShine\Contracts\Core;
 
 interface ResourcesContract
 {
-
 }

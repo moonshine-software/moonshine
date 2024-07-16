@@ -30,8 +30,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
     public function __construct(
         protected CoreContract $core,
         protected AssetManagerContract $assetManager,
-    )
-    {
+    ) {
         $this->booted();
     }
 
@@ -47,7 +46,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         }
 
         $this->pages = Pages::make($this->pages())
-            ->map(fn(string $page) => $this->core->getContainer()->get($page))
+            ->map(fn (string $page) => $this->core->getContainer()->get($page))
             ->setResource($this);
 
         return $this->pages;

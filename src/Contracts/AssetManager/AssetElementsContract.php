@@ -8,5 +8,4 @@ use Illuminate\Contracts\Support\Htmlable;
 
 interface AssetElementsContract extends Htmlable
 {
-
 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Core\Pages;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Core\PagesContract;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\PagesContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Support\Enums\PageType;
 

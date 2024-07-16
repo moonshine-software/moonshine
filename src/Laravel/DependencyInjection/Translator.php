@@ -19,7 +19,8 @@ final readonly class Translator implements TranslatorContract
         return $this->get('moonshine::ui', locale: $locale);
     }
 
-    public function get(string $key, array $replace = [], ?string $locale = null): mixed{
+    public function get(string $key, array $replace = [], ?string $locale = null): mixed
+    {
         return $this->translator->get($key, $replace, $locale);
     }
 

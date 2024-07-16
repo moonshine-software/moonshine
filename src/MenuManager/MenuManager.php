@@ -8,8 +8,8 @@ use Closure;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
-use MoonShine\Contracts\MenuManager\MenuElementsContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
+use MoonShine\Contracts\MenuManager\MenuElementsContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 
 final class MenuManager implements MenuManagerContract
@@ -31,8 +31,7 @@ final class MenuManager implements MenuManagerContract
     public function __construct(
         private RequestContract $request,
         private RouterContract $router,
-    )
-    {
+    ) {
     }
 
     public function add(array|MenuElementContract $data): static

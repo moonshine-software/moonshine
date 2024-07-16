@@ -10,8 +10,8 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
-use MoonShine\UI\Components\Layout\{LayoutBuilder};
 use MoonShine\Contracts\UI\LayoutContract;
+use MoonShine\UI\Components\Layout\{LayoutBuilder};
 
 abstract class Layout implements LayoutContract
 {
