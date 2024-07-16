@@ -10,6 +10,7 @@ use MoonShine\Buttons\CreateButton;
 use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\EditButton;
+use MoonShine\Buttons\ExportButton;
 use MoonShine\Buttons\MassDeleteButton;
 
 trait ResourceWithButtons
@@ -121,6 +122,18 @@ trait ResourceWithButtons
                 componentName: $componentName,
                 isAsync: $isAsync
             )
+        );
+    }
+
+    protected function modifyExportButton(ActionButton $button): ActionButton
+    {
+        return $button;
+    }
+
+    public function getExportButton(): ActionButton
+    {
+        return $this->modifyEditButton(
+            ExportButton::for($this, export: $this->export())
         );
     }
 

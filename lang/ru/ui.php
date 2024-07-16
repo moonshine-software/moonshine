@@ -73,7 +73,7 @@ return [
 
         'export' => [
             'exported' => 'Экспортирован',
-            'confirm_content' => 'Всё готово для экспорта?',
+            'confirm_content' => 'Подтвердите экспорт данных',
         ],
 
         'import' => [
