@@ -11,6 +11,8 @@ use MoonShine\Buttons\DeleteButton;
 use MoonShine\Buttons\DetailButton;
 use MoonShine\Buttons\EditButton;
 use MoonShine\Buttons\ExportButton;
+use MoonShine\Buttons\FiltersButton;
+use MoonShine\Buttons\ImportButton;
 use MoonShine\Buttons\MassDeleteButton;
 
 trait ResourceWithButtons
@@ -134,6 +136,30 @@ trait ResourceWithButtons
     {
         return $this->modifyEditButton(
             ExportButton::for($this, export: $this->export())
+        );
+    }
+
+    protected function modifyImportButton(ActionButton $button): ActionButton
+    {
+        return $button;
+    }
+
+    public function getImportButton(): ActionButton
+    {
+        return $this->modifyEditButton(
+            ImportButton::for($this, import: $this->import())
+        );
+    }
+
+    protected function modifyFiltersButton(ActionButton $button): ActionButton
+    {
+        return $button;
+    }
+
+    public function getFiltersButton(): ActionButton
+    {
+        return $this->modifyEditButton(
+            FiltersButton::for($this)
         );
     }
 
