@@ -14,7 +14,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionProperty;
-use MoonShine\UI\Fields\Field;
 
 trait WithAsyncSearch
 {

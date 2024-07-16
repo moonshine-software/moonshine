@@ -18,7 +18,6 @@ use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Traits\HasCanSee;
 
 abstract class MoonShineComponent extends Component implements RenderableContract, HasCanSeeContract

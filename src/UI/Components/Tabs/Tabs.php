@@ -7,7 +7,6 @@ namespace MoonShine\UI\Components\Tabs;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\RenderablesContract;
-use MoonShine\Core\Collections\Renderables;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;

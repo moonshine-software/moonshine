@@ -35,7 +35,6 @@ use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;

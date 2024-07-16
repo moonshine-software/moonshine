@@ -9,7 +9,6 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Fields\Field;
 
 /** @mixin FieldContract */
 trait Reactivity

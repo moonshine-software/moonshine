@@ -10,7 +10,6 @@ use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Handlers\Handlers;
 use MoonShine\Laravel\Handlers\ImportHandler;
-use MoonShine\UI\Components\ActionButton;
 
 trait ResourceModelActions
 {

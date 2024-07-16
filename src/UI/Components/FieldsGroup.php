@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 final class FieldsGroup extends AbstractWithComponents

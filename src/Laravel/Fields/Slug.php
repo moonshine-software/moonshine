@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 
 class Slug extends Text

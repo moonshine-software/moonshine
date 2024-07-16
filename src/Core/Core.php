@@ -42,7 +42,7 @@ abstract class Core implements CoreContract
     )
     {
         static::setInstance(
-            fn() => $this->getContainer(CoreContract::class)
+            fn(): mixed => $this->getContainer(CoreContract::class)
         );
     }
 

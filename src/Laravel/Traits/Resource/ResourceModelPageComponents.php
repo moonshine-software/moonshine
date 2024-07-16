@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Fields\Field;
 
 trait ResourceModelPageComponents
 {

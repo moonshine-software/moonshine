@@ -11,7 +11,6 @@ use MoonShine\Laravel\Exceptions\FilterException;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 trait ResourceWithFields

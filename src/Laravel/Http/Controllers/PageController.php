@@ -3,7 +3,6 @@
 namespace MoonShine\Laravel\Http\Controllers;
 
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\MoonShineRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Fields\Field;
 
 /** @mixin FieldContract */
 trait WithQuickFormElementAttributes

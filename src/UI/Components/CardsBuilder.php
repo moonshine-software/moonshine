@@ -8,8 +8,6 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\HasAsync;
 use Throwable;

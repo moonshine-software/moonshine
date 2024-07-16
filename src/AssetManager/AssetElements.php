@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\AssetManager\Contracts\HasLinkContact;
 use MoonShine\AssetManager\Contracts\HasVersionContact;

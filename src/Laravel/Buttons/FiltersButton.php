@@ -9,7 +9,6 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FormBuilder;
 
 final class FiltersButton
 {

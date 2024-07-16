@@ -8,7 +8,6 @@ use Closure;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\OffCanvas;
 
 trait WithOffCanvas

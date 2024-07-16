@@ -14,7 +14,6 @@ use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\HasResourceContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Collections\Components;

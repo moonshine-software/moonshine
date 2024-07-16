@@ -13,7 +13,6 @@ use MoonShine\Laravel\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateColumnFormRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Exceptions\FieldException;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 class UpdateFieldController extends MoonShineController

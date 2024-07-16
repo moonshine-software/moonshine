@@ -33,7 +33,6 @@ use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**

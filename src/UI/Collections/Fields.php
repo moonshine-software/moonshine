@@ -15,7 +15,6 @@ use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Core\Collections\Renderables;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Contracts\FileableContract;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use Throwable;
 
@@ -126,7 +125,7 @@ class Fields extends Renderables implements FieldsContract
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
-        return ($preparedFields ?? $this)->map(static function (RenderableContract $component) use ($raw, $casted, $index) {
+        return ($preparedFields ?? $this)->map(static function (RenderableContract $component) use ($raw, $casted, $index): RenderableContract {
             if ($component instanceof HasFieldsContract) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)

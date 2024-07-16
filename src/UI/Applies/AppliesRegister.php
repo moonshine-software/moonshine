@@ -24,7 +24,7 @@ final class AppliesRegister implements AppliesRegisterContract
     ];
 
     public function __construct(
-        private CoreContract $core
+        private readonly CoreContract $core
     )
     {
     }

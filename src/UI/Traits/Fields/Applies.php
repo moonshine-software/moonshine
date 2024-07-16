@@ -5,7 +5,6 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Fields\Field;
 
 trait Applies
 {

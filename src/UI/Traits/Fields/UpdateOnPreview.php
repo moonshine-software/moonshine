@@ -12,7 +12,6 @@ use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Sets\UpdateOnPreviewPopover;
 

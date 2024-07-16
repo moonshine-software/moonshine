@@ -9,7 +9,6 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 final class UpdateColumnFormRequest extends MoonShineFormRequest

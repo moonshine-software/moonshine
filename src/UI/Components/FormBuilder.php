@@ -16,8 +16,6 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
 use MoonShine\UI\Traits\HasAsync;

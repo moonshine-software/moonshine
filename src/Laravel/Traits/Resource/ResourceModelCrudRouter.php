@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Traits\Resource;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Support\Enums\PageType;
 
 /**

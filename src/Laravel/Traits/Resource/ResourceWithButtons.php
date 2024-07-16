@@ -12,7 +12,6 @@ use MoonShine\Laravel\Buttons\DetailButton;
 use MoonShine\Laravel\Buttons\EditButton;
 use MoonShine\Laravel\Buttons\MassDeleteButton;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Components\ActionButton;
 
 trait ResourceWithButtons
 {

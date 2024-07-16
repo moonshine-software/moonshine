@@ -12,7 +12,6 @@ use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
-use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 use Symfony\Component\HttpFoundation\Response;

@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Components\ActionButton;
 
 /**
  * @template TKey of array-key

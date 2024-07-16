@@ -16,7 +16,6 @@ use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Modal;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use Throwable;
 
