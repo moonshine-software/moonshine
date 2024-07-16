@@ -41,7 +41,7 @@ class MorphTo extends BelongsTo
                     string|array $searchColumn,
                     string $type
                 ): array => [
-                    $type => is_array($searchColumn) ? $searchColumn[0] : $searchColumn
+                    $type => is_array($searchColumn) ? $searchColumn[0] : $searchColumn,
                 ]
             )
             ->toArray();
@@ -52,7 +52,7 @@ class MorphTo extends BelongsTo
                     string|array $searchColumn,
                     string $type
                 ): array => [
-                    $type => is_array($searchColumn) ? $searchColumn[1] : class_basename($type)
+                    $type => is_array($searchColumn) ? $searchColumn[1] : class_basename($type),
                 ]
             )
             ->toArray();
