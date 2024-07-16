@@ -263,6 +263,9 @@ input[type='number'] {
     .choices__list--multiple .choices__item {
       @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
     }
+    &:has(.form-invalid) {
+      @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+    }
   }
 
   &.is-disabled {
@@ -326,6 +329,10 @@ input[type='number'] {
 /* TinyMCE */
 .tinymce {
   @apply relative;
+
+  &:has(.form-invalid) .tox {
+    @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+  }
 }
 .tinymce > textarea {
   @apply absolute !block h-full w-full opacity-0;
