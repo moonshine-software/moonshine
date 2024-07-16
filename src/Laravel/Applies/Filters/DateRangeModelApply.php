@@ -7,13 +7,13 @@ namespace MoonShine\Laravel\Applies\Filters;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use MoonShine\UI\Contracts\ApplyContract;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 
 class DateRangeModelApply implements ApplyContract
 {
     /* @param \MoonShine\UI\Fields\DateRange $field */
-    public function apply(Field $field): Closure
+    public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
             $values = $field->getRequestValue();

@@ -2,22 +2,27 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\MenuManager\MenuElements;
 use MoonShine\MenuManager\MenuItem;
 use Pest\Expectation;
 
 uses()->group('menu-manager');
 
+beforeEach(function () {
+    $this->menuManager = $this->moonshineCore->getContainer(MenuManagerContract::class);
+});
+
 it('empty menu elements', function (): void {
-    expect(moonshineMenu()->all())
+    expect($this->menuManager->all())
         ->toBeInstanceOf(MenuElements::class)
         ->toBeEmpty();
 });
 
 it('add menu elements', function (): void {
-    moonshineMenu()->add(MenuItem::make('Item', '/'));
+    $this->menuManager->add(MenuItem::make('Item', '/'));
 
-    expect(moonshineMenu()->all())
+    expect($this->menuManager->all())
         ->toHaveCount(1)
         ->each(
             static fn (Expectation $item) => $item
@@ -29,7 +34,7 @@ it('add menu elements', function (): void {
 });
 
 it('add before menu elements', function (): void {
-    moonshineMenu()->add([
+    $this->menuManager->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
         MenuItem::make('Item 3', '/item3'),
@@ -37,16 +42,16 @@ it('add before menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addBefore(static fn (MenuItem $el) => $el->getUrl() === '/item2', $item);
+    $this->menuManager->addBefore(static fn (MenuItem $el) => $el->getUrl() === '/item2', $item);
 
-    $items = moonshineMenu()->all();
+    $items = $this->menuManager->all();
 
     expect($items[1])
         ->toBe($item);
 });
 
 it('add after menu elements', function (): void {
-    moonshineMenu()->add([
+    $this->menuManager->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
         MenuItem::make('Item 3', '/item3'),
@@ -54,24 +59,24 @@ it('add after menu elements', function (): void {
 
     $item = MenuItem::make('Item 2_0', '/item2_0');
 
-    moonshineMenu()->addAfter(static fn (MenuItem $el) => $el->getUrl() === '/item2', [$item]);
+    $this->menuManager->addAfter(static fn (MenuItem $el) => $el->getUrl() === '/item2', [$item]);
 
-    $items = moonshineMenu()->all();
+    $items = $this->menuManager->all();
 
     expect($items[2])
         ->toBe($item);
 });
 
 it('remove menu elements', function (): void {
-    moonshineMenu()->add([
+    $this->menuManager->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
         MenuItem::make('Item 3', '/item3'),
     ]);
 
-    moonshineMenu()->remove(static fn (MenuItem $el) => $el->getUrl() === '/item2');
+    $this->menuManager->remove(static fn (MenuItem $el) => $el->getUrl() === '/item2');
 
-    $items = moonshineMenu()->all();
+    $items = $this->menuManager->all();
 
     expect($items)
         ->toHaveCount(2);
@@ -79,26 +84,26 @@ it('remove menu elements', function (): void {
 
 
 it('replace items', function (): void {
-    moonshineMenu()->add([
+    $this->menuManager->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2'),
         MenuItem::make('Item 3', '/item3'),
     ]);
 
-    expect(moonshineMenu()->all())
+    expect($this->menuManager->all())
         ->toHaveCount(3)
-        ->and(moonshineMenu()->all([MenuItem::make('Item 1', '/item1')]))
+        ->and($this->menuManager->all([MenuItem::make('Item 1', '/item1')]))
         ->toHaveCount(1);
 });
 
 it('only visible items', function (): void {
-    moonshineMenu()->add([
+    $this->menuManager->add([
         MenuItem::make('Item 1', '/item1'),
         MenuItem::make('Item 2', '/item2')->canSee(static fn () => false),
         MenuItem::make('Item 3', '/item3'),
     ]);
 
-    expect(moonshineMenu()->all())
+    expect($this->menuManager->all())
         ->toHaveCount(2);
 });
 

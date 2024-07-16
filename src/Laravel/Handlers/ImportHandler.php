@@ -6,19 +6,21 @@ namespace MoonShine\Laravel\Handlers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Handlers\Handler;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Jobs\ImportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Enums\ToastType;
-use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;
+use MoonShine\UI\Traits\WithStorage;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;
@@ -160,14 +162,14 @@ class ImportHandler extends Handler
             $data = collect($line)->mapWithKeys(
                 static function (mixed $value, string $key) use ($resource): array {
                     $field = $resource->getImportFields()->first(
-                        static fn (Field $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
+                        static fn (FieldContract $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
                     );
 
-                    if (! $field instanceof Field) {
+                    if (! $field instanceof FieldContract) {
                         return [];
                     }
 
-                    if (empty($value) && $field instanceof HasDefaultValue) {
+                    if (empty($value) && $field instanceof HasDefaultValueContract) {
                         $value = $field->getDefault();
                     }
 
@@ -211,7 +213,7 @@ class ImportHandler extends Handler
         }
 
         MoonShineNotification::send(
-            trans('moonshine::ui.resource.import.imported')
+            __('moonshine::ui.resource.import.imported')
         );
 
         return $result;
@@ -220,7 +222,7 @@ class ImportHandler extends Handler
     /**
      * @throws ActionButtonException
      */
-    public function getButton(): ActionButton
+    public function getButton(): ActionButtonContract
     {
         if (! $this->hasResource()) {
             throw ActionButtonException::resourceRequired();
@@ -234,7 +236,7 @@ class ImportHandler extends Handler
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
             ->inOffCanvas(
                 fn (): string => $this->getLabel(),
-                fn (): FormBuilder => FormBuilder::make(
+                fn (): FormBuilderContract => FormBuilder::make(
                     $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]) ?? ''
                 )
                     ->fields([

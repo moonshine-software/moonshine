@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\ActionButton;
 
 use Closure;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
@@ -45,7 +46,7 @@ trait WithOffCanvas
             );
 
         return $this->onBeforeRender(
-            static fn (ActionButton $btn): ActionButton => $btn->toggleOffCanvas(
+            static fn (ActionButtonContract $btn): ActionButtonContract => $btn->toggleOffCanvas(
                 value($name, $btn->getData()?->getOriginal(), $btn)
             )
         );

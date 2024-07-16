@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Collections;
 
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\UI\Collections\Fields as ParentFields;
 use MoonShine\UI\Fields\Field;
@@ -17,7 +18,7 @@ final class Fields extends ParentFields
     public function onlyOutside(): self
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
+            static fn (FieldContract $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
         );
     }
 
@@ -37,7 +38,7 @@ final class Fields extends ParentFields
     public function onlyRelationFields(): self
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof ModelRelationField
+            static fn (FieldContract $field): bool => $field instanceof ModelRelationField
         );
     }
 
@@ -79,7 +80,7 @@ final class Fields extends ParentFields
     {
         if ($onlyOutside) {
             return $this->filter(
-                static fn (Field $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
+                static fn (FieldContract $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
             );
         }
 
@@ -88,7 +89,7 @@ final class Fields extends ParentFields
         }
 
         return $this->filter(
-            static fn (Field $field): bool => ! ($field instanceof ModelRelationField && $field->isOutsideComponent())
+            static fn (FieldContract $field): bool => ! ($field instanceof ModelRelationField && $field->isOutsideComponent())
         );
     }
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
@@ -25,8 +27,8 @@ final class BelongsToManyButton
      */
     public static function for(
         BelongsToMany $field,
-        ?ActionButton $button = null
-    ): ActionButton {
+        ?ActionButtonContract $button = null
+    ): ActionButtonContract {
         /** @var ModelResource $resource */
         $resource = $field->getResource();
 
@@ -40,7 +42,7 @@ final class BelongsToManyButton
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()
-                ->each(static fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+                ->each(static fn (FieldContract $nestedFields): FieldContract => $nestedFields->setParent($field));
 
             return $fields
                 ->push(Hidden::make('_async_field')->setValue(true))

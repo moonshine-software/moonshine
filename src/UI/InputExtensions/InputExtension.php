@@ -5,22 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\UI\InputExtensions;
 
 use Illuminate\Support\Collection;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Traits\WithComponentAttributes;
-use MoonShine\UI\Traits\WithViewRenderer;
+use MoonShine\UI\Components\MoonShineComponent;
 
-abstract class InputExtension
+abstract class InputExtension extends MoonShineComponent
 {
-    use WithViewRenderer;
-    use WithComponentAttributes;
-
     protected array $xInit = [];
 
     protected array $xData = [];
 
     public function __construct(protected mixed $value = null)
     {
-        $this->attributes = new MoonShineComponentAttributeBag();
+        parent::__construct();
     }
 
     public function getValue(): mixed
@@ -54,7 +49,7 @@ abstract class InputExtension
     protected function systemViewData(): array
     {
         return [
-            'attributes' => $this->getAttributes(),
+            ...parent::systemViewData(),
             'value' => $this->getValue(),
         ];
     }

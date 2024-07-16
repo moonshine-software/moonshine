@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Core\Resources\Resource;
-use MoonShine\Laravel\Pages\Page;
+use MoonShine\Contracts\Core\PageContract;
 
 class DummyResource extends Resource
 {
     /**
-     * @return list<Page>
+     * @return list<PageContract>
      */
     public function pages(): array
     {

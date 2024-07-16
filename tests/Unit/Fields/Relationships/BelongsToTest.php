@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Tests\Fixtures\Models\Item;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
 
 uses()->group('model-relation-fields');
 uses()->group('belongs-to-field');
@@ -23,7 +23,7 @@ beforeEach(function (): void {
     $this->item = Item::factory()
         ->create();
 
-    $this->field = BelongsTo::make('User', resource: new MoonShineUserResource());
+    $this->field = BelongsTo::make('User', resource: MoonShineUserResource::class);
 });
 
 describe('common field methods', function () {
@@ -39,10 +39,10 @@ describe('common field methods', function () {
 
     it('correct interfaces', function (): void {
         expect($this->field)
-            ->toBeInstanceOf(HasAsyncSearch::class)
-            ->toBeInstanceOf(HasRelatedValues::class)
-            ->toBeInstanceOf(HasDefaultValue::class)
-            ->toBeInstanceOf(DefaultCanBeObject::class);
+            ->toBeInstanceOf(HasAsyncSearchContract::class)
+            ->toBeInstanceOf(HasRelatedValuesContact::class)
+            ->toBeInstanceOf(HasDefaultValueContract::class)
+            ->toBeInstanceOf(CanBeObject::class);
     });
 });
 
@@ -64,7 +64,7 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = BelongsTo::make('User', formatted: static fn () => ['changed'], resource: new MoonShineUserResource())
+        $field = BelongsTo::make('User', formatted: static fn () => ['changed'], resource: MoonShineUserResource::class)
             ->fillData($this->item);
 
         expect($field->toFormattedValue())

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\TypeCasts;
 
-use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 
-final readonly class DefaultCastedData implements CastedData
+final readonly class DefaultCastedData implements CastedDataContract
 {
     public function __construct(private mixed $data)
     {

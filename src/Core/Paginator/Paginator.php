@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Core\Paginator;
 
 use Illuminate\Support\Collection;
-use MoonShine\UI\Traits\WithViewRenderer;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorLinksContract;
+use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithViewRenderer;
 use Traversable;
 
 final class Paginator implements PaginatorContract
@@ -13,6 +17,9 @@ final class Paginator implements PaginatorContract
     use WithViewRenderer;
 
     private bool $async = false;
+
+    // todo DI
+    protected CoreContract $core;
 
     public function __construct(
         private string $path,
@@ -33,6 +40,9 @@ final class Paginator implements PaginatorContract
         array $translates = [],
     ) {
         $this->translates = $translates;
+
+        // todo DI
+        $this->core = Core::getInstance();
     }
 
     public function getLinks(): PaginatorLinksContract

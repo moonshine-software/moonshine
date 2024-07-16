@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Exceptions\ActionException;
+use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\Laravel\MoonShineUI;
+use MoonShine\Laravel\Handlers\Handler;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\UI\Components\ActionButton;
 use Symfony\Component\HttpFoundation\Response;
-use MoonShine\Core\Handlers\Handler;
 
 class DummyHandler extends Handler
 {
@@ -17,7 +19,7 @@ class DummyHandler extends Handler
     public function handle(): Response
     {
         if (! $this->hasResource()) {
-            throw new ActionException('Resource is required for action');
+            throw new ActionButtonException('Resource is required for action');
         }
 
         if ($this->isQueue()) {
@@ -38,5 +40,13 @@ class DummyHandler extends Handler
     public static function process()
     {
         // Logic here
+    }
+
+    /**
+     * @throws ActionButtonException
+     */
+    public function getButton(): ActionButtonContract
+    {
+        return ActionButton::make('Process');
     }
 }

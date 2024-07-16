@@ -3,17 +3,24 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
+use MoonShine\AssetManager\AssetManager;
+use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
+use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
-use MoonShine\UI\Contracts\ApplyContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
 
 uses()->group('core');
 uses()->group('applies');
 
+beforeEach(function () {
+    $this->appliesRegister = $this->moonshineCore->getContainer(AppliesRegisterContract::class);
+});
+
 it('add new field apply', function (): void {
-    appliesRegister()
+    $this->appliesRegister
         ->type('fields')
         ->for(ModelResource::class)
         ->add(Text::class, CustomTextFieldApply::class);
@@ -31,7 +38,7 @@ it('add new field apply', function (): void {
 });
 
 it('add new filter apply', function (): void {
-    appliesRegister()
+    $this->appliesRegister
         ->type('filters')
         ->for(ModelResource::class)
         ->add(Text::class, CustomTextFilterApply::class);
@@ -40,7 +47,7 @@ it('add new filter apply', function (): void {
 
     $this->post('/', ['column' => '!']);
 
-    $filterApply = appliesRegister()->findByField($field, 'filters');
+    $filterApply = $this->appliesRegister->findByField($field, 'filters');
 
     $defaultApply = static fn (Builder $query): Builder => $query->where(
         $field->getColumn(),
@@ -59,7 +66,7 @@ it('add new filter apply', function (): void {
 
 class CustomTextFilterApply implements ApplyContract
 {
-    public function apply(Field $field): Closure
+    public function apply(FieldContract $field): Closure
     {
         return static function (Builder $q, string $value, Field $field) {
             return $q->where('some_column', $value);
@@ -69,7 +76,7 @@ class CustomTextFilterApply implements ApplyContract
 
 class CustomTextFieldApply implements ApplyContract
 {
-    public function apply(Field $field): Closure
+    public function apply(FieldContract $field): Closure
     {
         return static function (array $data, string $value, Field $field) {
             $data[$field->getColumn()] .= ' world' . $value;

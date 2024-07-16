@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Core\Contracts\MenuFiller;
+use MoonShine\Contracts\MenuManager\MenuFillerContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\Attributes;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\UI\Components\ActionButton;
@@ -13,7 +14,7 @@ use MoonShine\UI\Traits\WithBadge;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, Closure|MenuFiller|string $filler, string $icon = null, Closure|bool $blank = false)
+ * @method static static make(Closure|string $label, Closure|MenuFillerContract|string $filler, string $icon = null, Closure|bool $blank = false)
  */
 class MenuItem extends MenuElement
 {
@@ -27,11 +28,11 @@ class MenuItem extends MenuElement
 
     protected ?Closure $whenActive = null;
 
-    protected ActionButton $actionButton;
+    protected ActionButtonContract $actionButton;
 
     final public function __construct(
         Closure|string $label,
-        protected Closure|MenuFiller|string $filler,
+        protected Closure|MenuFillerContract|string $filler,
         string $icon = null,
         Closure|bool $blank = false
     ) {
@@ -43,9 +44,15 @@ class MenuItem extends MenuElement
             $this->icon($icon);
         }
 
-        if ($filler instanceof MenuFiller) {
+        if(is_string($filler) && str_contains($filler, '\\')) {
+            $filler = $this->core->getContainer()->get($filler);
+        }
+
+        if ($filler instanceof MenuFillerContract) {
             $this->resolveFiller($filler);
-        } else {
+        }
+
+        if(is_string($filler)) {
             $this->setUrl($filler);
         }
 
@@ -61,7 +68,7 @@ class MenuItem extends MenuElement
         return $this;
     }
 
-    protected function resolveFiller(MenuFiller $filler): void
+    protected function resolveFiller(MenuFillerContract $filler): void
     {
         $this->setUrl(static fn (): string => $filler->getUrl());
 
@@ -79,7 +86,7 @@ class MenuItem extends MenuElement
         }
     }
 
-    public function getFiller(): MenuFiller|Closure|string
+    public function getFiller(): MenuFillerContract|Closure|string
     {
         return $this->filler;
     }
@@ -127,7 +134,7 @@ class MenuItem extends MenuElement
     {
         $filler = $this->getFiller();
 
-        if ($filler instanceof MenuFiller) {
+        if ($filler instanceof MenuFillerContract) {
             return $filler->isActive();
         }
 
@@ -135,20 +142,20 @@ class MenuItem extends MenuElement
         $host = parse_url($this->getUrl(), PHP_URL_HOST) ?? '';
 
         $isActive = function ($path, $host): bool {
-            if ($path === '/' && moonshine()->getRequest()->getHost() === $host) {
-                return moonshine()->getRequest()->getPath() === $path;
+            if ($path === '/' && $this->core->getRequest()->getHost() === $host) {
+                return $this->core->getRequest()->getPath() === $path;
             }
 
-            if ($this->getUrl() === moonshineRouter()->getEndpoints()->home()) {
-                return moonshine()->getRequest()->urlIs($this->getUrl());
+            if ($this->getUrl() === $this->core->getRouter()->getEndpoints()->home()) {
+                return $this->core->getRequest()->urlIs($this->getUrl());
             }
 
-            return moonshine()->getRequest()->urlIs('*' . $this->getUrl() . '*');
+            return $this->core->getRequest()->urlIs('*' . $this->getUrl() . '*');
         };
 
         return is_null($this->whenActive)
             ? $isActive($path, $host)
-            : value($this->whenActive, $path, $host, $this);
+            : (bool) value($this->whenActive, $path, $host, $this);
     }
 
     protected function prepareBeforeRender(): void

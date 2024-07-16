@@ -5,8 +5,13 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\MenuManager\MenuElementsContract;
+use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
+/**
+ * @method static static make(MenuManagerContract $menuManager)
+ */
 class Menu extends MoonShineComponent
 {
     protected bool $top = false;
@@ -15,11 +20,13 @@ class Menu extends MoonShineComponent
 
     protected string $view = 'moonshine::components.menu.index';
 
-    public function __construct(public ?iterable $items = null)
+    public MenuElementsContract $items;
+
+    public function __construct(private readonly MenuManagerContract $menuManager)
     {
         parent::__construct();
 
-        $this->items = moonshineMenu()->all($this->items);
+        $this->items = $this->menuManager->all();
     }
 
     public function top(): self

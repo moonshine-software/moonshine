@@ -49,7 +49,7 @@ it('apply', function () {
         'name' => 'New name',
     ];
 
-    fakeRequest(parameters: $data);
+    fakeRequest(method: 'post', parameters: $data);
 
     $this->form->apply(
         static fn (MoonshineUser $user) => $user->save(),

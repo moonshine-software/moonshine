@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use Closure;
-use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Contracts\UI\TableRowsContract;
+use MoonShine\Contracts\UI\WithoutExtractionContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Collections\TableRows;
@@ -17,18 +21,17 @@ use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\IterableComponent;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Link;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Table\TableContract;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Td;
+use MoonShine\UI\Traits\HasAsync;
 use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
 
 /**
- * @method static static make(FieldsCollection|array $fields = [], iterable $items = [])
+ * @method static static make(FieldsContract|array $fields = [], iterable $items = [])
  */
-final class TableBuilder extends IterableComponent implements TableContract
+final class TableBuilder extends IterableComponent implements TableBuilderContract, WithoutExtractionContract
 {
     use TableStates;
     use HasAsync;
@@ -40,11 +43,11 @@ final class TableBuilder extends IterableComponent implements TableContract
         'notfound' => 'moonshine::ui.notfound',
     ];
 
-    protected Closure|TableRows|null $rows = null;
+    protected Closure|TableRowsContract|null $rows = null;
 
-    protected Closure|TableRows|null $headRows = null;
+    protected Closure|TableRowsContract|null $headRows = null;
 
-    protected Closure|TableRows|null $footRows = null;
+    protected Closure|TableRowsContract|null $footRows = null;
 
     protected array $trAttributes = [];
 
@@ -57,7 +60,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected MoonShineComponentAttributeBag $footAttributes;
 
     public function __construct(
-        FieldsCollection|array $fields = [],
+        FieldsContract|array $fields = [],
         iterable $items = [],
     ) {
         parent::__construct();
@@ -72,7 +75,7 @@ final class TableBuilder extends IterableComponent implements TableContract
         $this->footAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         return memoize(function () {
             $fields = $this->getFields();
@@ -81,7 +84,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 $fields = $fields
                     ->onlyFields(withWrappers: true)
                     ->map(
-                        static fn (Field $field): Field => $field
+                        static fn (FieldContract $field): FieldContract => $field
                             ->withoutWrapper()
                             ->previewMode()
                     );
@@ -127,12 +130,12 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $url ?? fn (): string => moonshineRouter()->getEndpoints()->asyncComponent(
+        return $url ?? fn (): string => $this->core->getRouter()->getEndpoints()->asyncComponent(
             $this->getName(),
             additionally: [
-                'filters' => moonshine()->getRequest()->get('filters'),
-                'query-tag' => moonshine()->getRequest()->get('query-tag'),
-                'search' => moonshine()->getRequest()->get('search'),
+                'filters' => $this->core->getRequest()->get('filters'),
+                'query-tag' => $this->core->getRequest()->get('query-tag'),
+                'search' => $this->core->getRequest()->get('search'),
             ]
         );
     }
@@ -159,9 +162,9 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
      */
-    public function rows(TableRows|Closure $rows): self
+    public function rows(TableRowsContract|Closure $rows): self
     {
         $this->rows = $rows;
 
@@ -171,9 +174,9 @@ final class TableBuilder extends IterableComponent implements TableContract
     /**
      * @throws Throwable
      */
-    public function getRows(): TableRows
+    public function getRows(): TableRowsContract
     {
-        if ($this->rows instanceof TableRows) {
+        if ($this->rows instanceof TableRowsContract) {
             return $this->rows;
         }
 
@@ -187,7 +190,7 @@ final class TableBuilder extends IterableComponent implements TableContract
     /**
      * @throws Throwable
      */
-    private function resolveRows(): TableRows
+    private function resolveRows(): TableRowsContract
     {
         $tableFields = $this->getPreparedFields();
 
@@ -213,7 +216,7 @@ final class TableBuilder extends IterableComponent implements TableContract
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
-                    static fn (Fields $f): Fields => $f->prepareReindex()
+                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindex()
                 );
 
             $key = $casted->getKey();
@@ -270,7 +273,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         return $rows->when(
             $this->isVertical(),
-            static fn (TableRows $rows) => $rows->flatten()
+            static fn (TableRowsContract $rows) => $rows->flatten()
         );
     }
 
@@ -291,7 +294,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
     public function getRowAsyncAttributes(): Closure
     {
-        return fn (?CastedData $data, int $index): array => is_null($data)
+        return fn (?CastedDataContract $data, int $index): array => is_null($data)
             ? []
             : [
                 AlpineJs::eventBlade(
@@ -309,9 +312,9 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
      */
-    public function headRows(TableRows|Closure $rows): self
+    public function headRows(TableRowsContract|Closure $rows): self
     {
         $this->headRows = $rows;
 
@@ -321,9 +324,9 @@ final class TableBuilder extends IterableComponent implements TableContract
     /**
      * @throws Throwable
      */
-    protected function getHeadRows(): TableRows
+    protected function getHeadRows(): TableRowsContract
     {
-        if ($this->headRows instanceof TableRows) {
+        if ($this->headRows instanceof TableRowsContract) {
             return $this->headRows;
         }
 
@@ -395,18 +398,18 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
-     * @param  TableRows|Closure(TableRow $default): TableRows  $rows
+     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
      */
-    public function footRows(TableRows|Closure $rows): self
+    public function footRows(TableRowsContract|Closure $rows): self
     {
         $this->footRows = $rows;
 
         return $this;
     }
 
-    protected function getFootRows(): TableRows
+    protected function getFootRows(): TableRowsContract
     {
-        if ($this->footRows instanceof TableRows) {
+        if ($this->footRows instanceof TableRowsContract) {
             return $this->footRows;
         }
 

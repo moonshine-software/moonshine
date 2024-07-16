@@ -14,8 +14,8 @@ uses()->group('pages-feature');
 uses()->group('pages-relation-feature');
 
 beforeEach(function (): void {
-    $this->categoryResource = new TestCategoryResource();
-    $this->itemResource = new TestItemResource();
+    $this->categoryResource = app(TestCategoryResource::class);
+    $this->itemResource = app(TestItemResource::class);
 });
 
 it('has one on index', function () {

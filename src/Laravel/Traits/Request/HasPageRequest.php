@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Request;
 
-use MoonShine\Core\Contracts\PageContract;
+use MoonShine\Contracts\Core\PageContract;
 
 trait HasPageRequest
 {

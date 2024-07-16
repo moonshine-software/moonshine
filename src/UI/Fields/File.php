@@ -8,14 +8,14 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Support\DTOs\FileItem;
 use MoonShine\UI\Components\Files;
-use MoonShine\UI\Contracts\Fields\Fileable;
-use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Contracts\FileableContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
 use MoonShine\UI\Traits\Fields\FileDeletable;
 use MoonShine\UI\Traits\Fields\FileTrait;
 use MoonShine\UI\Traits\Removable;
 
-class File extends Field implements Fileable, RemovableContract
+class File extends Field implements FileableContract, RemovableContract
 {
     use CanBeMultiple;
     use FileTrait;
@@ -76,7 +76,7 @@ class File extends Field implements Fileable, RemovableContract
                 $index => new FileItem(
                     fullPath: $path,
                     rawValue: data_get($this->toValue(), $index, $this->toValue()),
-                    name: value($this->resolveNames(), $path, $index, $this),
+                    name: (string) value($this->resolveNames(), $path, $index, $this),
                     attributes: value($this->resolveItemAttributes(), $path, $index, $this),
                 ),
             ]);
@@ -85,7 +85,7 @@ class File extends Field implements Fileable, RemovableContract
     public function getRequestValue(int|string|null $index = null): mixed
     {
         return $this->prepareRequestValue(
-            moonshine()->getRequest()->getFile(
+            $this->core->getRequest()->getFile(
                 $this->getRequestNameDot($index),
             ) ?? false
         );

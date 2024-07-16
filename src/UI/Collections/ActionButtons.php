@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\UI\Contracts\Actions\ActionButtonContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
 
 /**
  * @template TKey of array-key
  *
  * @extends Collection<TKey, ActionButtonContract>
  */
-final class ActionButtons extends Collection
+final class ActionButtons extends Collection implements ActionButtonsContract
 {
-    public function fill(?CastedData $item): self
+    public function fill(?CastedDataContract $item): self
     {
         return $this->map(
             static fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setData($item)

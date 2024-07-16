@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
-use MoonShine\Laravel\Contracts\Fields\HasPivot;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Fields\Text;
 
 uses()->group('model-relation-fields');
@@ -24,7 +24,7 @@ beforeEach(function (): void {
         Text::make('Pivot 2', 'pivot_2'),
     ];
 
-    $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
+    $this->field = BelongsToMany::make('Categories', resource: TestCategoryResource::class)
         ->fields($this->pivotFields)
         ->fillData($this->item);
 });
@@ -37,7 +37,7 @@ describe('basic methods', function () {
     });
 
     it('formatted value', function () {
-        $field = BelongsToMany::make('Categories', formatted: static fn () => 'changed', resource: new TestCategoryResource())
+        $field = BelongsToMany::make('Categories', formatted: static fn () => 'changed', resource: TestCategoryResource::class)
             ->fields($this->pivotFields)
             ->fillData($this->item);
 
@@ -53,7 +53,7 @@ describe('basic methods', function () {
     })->expectException(BadMethodCallException::class);
 
     it('applies', function () {
-        $field = BelongsToMany::make('Categories', resource: new TestCategoryResource());
+        $field = BelongsToMany::make('Categories', resource: TestCategoryResource::class);
 
         expect()
             ->applies($field);
@@ -71,10 +71,10 @@ describe('common field methods', function () {
 
     it('correct interfaces', function (): void {
         expect($this->field)
-            ->toBeInstanceOf(HasPivot::class)
-            ->toBeInstanceOf(HasRelatedValues::class)
-            ->toBeInstanceOf(HasFields::class)
-            ->toBeInstanceOf(HasAsyncSearch::class);
+            ->toBeInstanceOf(HasPivotContract::class)
+            ->toBeInstanceOf(HasRelatedValuesContact::class)
+            ->toBeInstanceOf(HasFieldsContract::class)
+            ->toBeInstanceOf(HasAsyncSearchContract::class);
     });
 
     it('type', function (): void {

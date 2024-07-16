@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Storage;
 
-use MoonShine\Core\Contracts\StorageContract;
+use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use Symfony\Component\Finder\Finder;
 use Throwable;
 

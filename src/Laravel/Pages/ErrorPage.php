@@ -12,13 +12,22 @@ class ErrorPage extends Page
 {
     protected ?string $layout = BlankLayout::class;
 
-    public function __construct(
-        private readonly int $code,
-        private readonly string $message
-    ) {
-        parent::__construct(
-            (string) $this->code
-        );
+    private int $code;
+
+    private string $message;
+
+    public function message(string $message): static
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function code(int $code): static
+    {
+        $this->code = $code;
+
+        return $this;
     }
 
     public function components(): array

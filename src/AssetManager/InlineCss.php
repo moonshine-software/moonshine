@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
@@ -12,7 +12,7 @@ use MoonShine\Support\Traits\WithComponentAttributes;
 /**
  * @method static static make(string $content)
  */
-final class InlineCss implements AssetElement
+final class InlineCss implements AssetElementContract
 {
     use Makeable;
     use WithComponentAttributes;

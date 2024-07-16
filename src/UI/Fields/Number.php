@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\UI\Components\Rating;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\InputExtensions\InputNumberUpDown;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\NumberTrait;
@@ -18,7 +18,7 @@ use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 
-class Number extends Field implements HasDefaultValue, DefaultCanBeNumeric, HasUpdateOnPreview, HasReactivity
+class Number extends Field implements HasDefaultValueContract, CanBeNumeric, HasUpdateOnPreviewContract, HasReactivityContract
 {
     use NumberTrait;
     use WithInputExtensions;

@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use MoonShine\Core\MoonShineRouter;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\Commands\InstallCommand;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
@@ -23,8 +24,10 @@ use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResourceWithParent;
+use MoonShine\Tests\Fixtures\Resources\TestHasManyCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCategoryPageResource;
 use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCoverPageResource;
 use MoonShine\Tests\Fixtures\TestServiceProvider;
@@ -39,22 +42,23 @@ class TestCase extends Orchestra
 
     protected ModelResource $moonShineUserResource;
 
-    protected MoonShineRouter $router;
+    protected CoreContract $moonshineCore;
+
+    protected MoonShineRequest $moonshineRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->moonshineCore = $this->app->make(CoreContract::class);
+        $this->moonshineRequest = $this->moonshineCore->getContainer(MoonShineRequest::class);
+        $this->moonshineCore->flushState();
 
         $this->performApplication()
             ->resolveFactories()
             ->resolveSuperUser()
             ->resolveMoonShineUserResource()
             ->registerTestResource();
-
-        $this->router = moonshineRouter();
-        $this->router->flushState();
-
-        moonshine()->flushState();
     }
 
     protected function defineEnvironment($app): void
@@ -109,7 +113,7 @@ class TestCase extends Orchestra
 
     protected function resolveMoonShineUserResource(): static
     {
-        $this->moonShineUserResource = app(MoonShineUserResource::class);
+        $this->moonShineUserResource = $this->moonshineCore->getContainer(MoonShineUserResource::class);
 
         return $this;
     }
@@ -118,7 +122,7 @@ class TestCase extends Orchestra
     {
         ModelResource::defaultExportToCsv();
 
-        moonshine()->resources([
+        $this->moonshineCore->resources([
             $this->moonShineUserResource(),
             MoonShineUserRoleResource::class,
             TestCategoryResource::class,
@@ -133,9 +137,11 @@ class TestCase extends Orchestra
             TestCoverPageResource::class,
 
             MoonShineUserRoleResource::class,
+
+            TestHasManyCommentResource::class,
         ], newCollection: true)
         ->pages([
-            ...moonshineConfig()->getPages(),
+            ...$this->moonshineCore->getConfig()->getPages(),
         ]);
 
         return $this;

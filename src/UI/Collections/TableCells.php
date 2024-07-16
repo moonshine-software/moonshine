@@ -6,8 +6,8 @@ namespace MoonShine\UI\Collections;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\UI\Components\Table\TableTd;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Fields\Td;
 
 /**
@@ -17,7 +17,7 @@ use MoonShine\UI\Fields\Td;
  */
 final class TableCells extends Collection
 {
-    public function pushFields(FieldsCollection $fields, ?Closure $builder = null): self
+    public function pushFields(FieldsContract $fields, ?Closure $builder = null): self
     {
         $initializedBuilder = $builder;
 

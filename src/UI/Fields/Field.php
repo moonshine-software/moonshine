@@ -8,26 +8,27 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\MoonShineDataCaster;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\TypeCasts\DefaultCastedData;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Url;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\Applies;
 use MoonShine\UI\Traits\Fields\ShowWhen;
 use MoonShine\UI\Traits\Fields\WithBadge;
 use MoonShine\UI\Traits\Fields\WithHint;
 use MoonShine\UI\Traits\Fields\WithLink;
 use MoonShine\UI\Traits\Fields\WithSorts;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
-abstract class Field extends FormElement
+abstract class Field extends FormElement implements FieldContract
 {
     use Macroable;
     use WithLabel;
@@ -134,7 +135,7 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
             return value(
@@ -160,7 +161,7 @@ abstract class Field extends FormElement
         return $data;
     }
 
-    protected function resolveFill(array $raw = [], ?CastedData $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): static
     {
         $this->setData($casted);
         $this->setRowIndex($index);
@@ -186,7 +187,7 @@ abstract class Field extends FormElement
 
     public function fillData(mixed $value, int $index = 0): static
     {
-        $casted = $value instanceof CastedData
+        $casted = $value instanceof CastedDataContract
             ? $value
             : new DefaultCastedData($value);
 
@@ -197,14 +198,14 @@ abstract class Field extends FormElement
         );
     }
 
-    public function fillCast(mixed $value, ?MoonShineDataCaster $cast = null, int $index = 0): static
+    public function fillCast(mixed $value, ?DataCasterContract $cast = null, int $index = 0): static
     {
         $casted = $cast ? $cast->cast($value) : new DefaultCastedData($value);
 
         return $this->fillData($casted, $index);
     }
 
-    public function fill(mixed $value = null, ?CastedData $casted = null, int $index = 0): static
+    public function fill(mixed $value = null, ?CastedDataContract $casted = null, int $index = 0): static
     {
         return $this->resolveFill([
             $this->getColumn() => $value,
@@ -246,14 +247,14 @@ abstract class Field extends FormElement
         return $this;
     }
 
-    protected function setData(?CastedData $data = null): static
+    protected function setData(?CastedDataContract $data = null): static
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function getData(): ?CastedData
+    public function getData(): ?CastedDataContract
     {
         return $this->data;
     }
@@ -272,7 +273,7 @@ abstract class Field extends FormElement
 
     public function toValue(bool $withDefault = true): mixed
     {
-        $default = $withDefault && $this instanceof HasDefaultValue
+        $default = $withDefault && $this instanceof HasDefaultValueContract
             ? $this->getDefault()
             : null;
 
@@ -296,7 +297,7 @@ abstract class Field extends FormElement
 
         $empty = new FieldEmptyValue();
         $old = $withOld
-            ? moonshine()->getRequest()->getOld($this->getNameDot(), $empty)
+            ? $this->core->getRequest()->getOld($this->getNameDot(), $empty)
             : $empty;
 
         if ($withOld && $old !== $empty) {

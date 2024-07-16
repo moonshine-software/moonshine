@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
+use MoonShine\Contracts\Core\HasAssetsContract;
+use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Support\Enums\Color;
-use MoonShine\Support\Traits\WithAssets;
-use MoonShine\Support\Traits\WithIcon;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Contracts\Fields\HasAssets;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
+use MoonShine\UI\Traits\WithIcon;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $label)
  */
-abstract class Metric extends MoonShineComponent implements HasAssets
+abstract class Metric extends MoonShineComponent implements HasAssetsContract
 {
     use WithAssets;
     use WithColumnSpan;

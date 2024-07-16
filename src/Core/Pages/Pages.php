@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Core\Pages;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\PagesContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
@@ -14,7 +15,7 @@ use MoonShine\Support\Enums\PageType;
  *
  * @extends Collection<TKey, PageContract>
  */
-final class Pages extends Collection
+final class Pages extends Collection implements PagesContract
 {
     public function setResource(ResourceContract $resource): Pages
     {

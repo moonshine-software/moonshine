@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Forms;
 
 use Illuminate\Support\Arr;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -12,8 +14,7 @@ use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Contracts\Fields\RangeField;
-use MoonShine\UI\Contracts\Forms\FormContract;
+use MoonShine\UI\Contracts\RangeFieldContract;
 use MoonShine\UI\Fields\Hidden;
 use Stringable;
 use Throwable;
@@ -27,7 +28,7 @@ final readonly class FiltersForm implements FormContract
     /**
      * @throws Throwable
      */
-    public function __invoke(): FormBuilder
+    public function __invoke(): FormBuilderContract
     {
         $resource = $this->resource;
 
@@ -41,7 +42,7 @@ final readonly class FiltersForm implements FormContract
         $action = $resource->isAsync() ? '#' : $this->getFormAction();
 
         foreach ($filters->onlyFields() as $filter) {
-            if($filter instanceof RangeField) {
+            if($filter instanceof RangeFieldContract) {
                 data_forget($values, $filter->getColumn());
             }
         }
@@ -71,7 +72,7 @@ final readonly class FiltersForm implements FormContract
                     )
                     ->toArray()
             )
-            ->when($resource->isAsync(), function (FormBuilder $form) use ($resource): void {
+            ->when($resource->isAsync(), function (FormBuilderContract $form) use ($resource): void {
                 $events = [
                     $resource->getListEventName(),
                     'show-reset:filters',
@@ -103,7 +104,7 @@ final readonly class FiltersForm implements FormContract
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 request()->has('filters'),
-                fn (FormBuilder $form): FormBuilder => $form->buttons([
+                fn (FormBuilderContract $form): FormBuilderContract => $form->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),
                         $this->getFormAction(query: ['reset' => true])

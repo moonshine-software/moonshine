@@ -6,17 +6,17 @@ namespace MoonShine\Laravel\Fields\Relationships;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Core\Exceptions\PageException;
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Core\Traits\HasResource;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
-use MoonShine\Support\Traits\HasResource;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\Searchable;
@@ -28,11 +28,11 @@ use Throwable;
  * @extends HasResource<ModelResource, ModelResource>
  */
 class BelongsTo extends ModelRelationField implements
-    HasAsyncSearch,
-    HasRelatedValues,
-    HasDefaultValue,
-    DefaultCanBeObject,
-    HasReactivity
+    HasAsyncSearchContract,
+    HasRelatedValuesContact,
+    HasDefaultValueContract,
+    CanBeObject,
+    HasReactivityContract
 {
     use WithRelatedValues;
     use WithAsyncSearch;

@@ -8,8 +8,10 @@ use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\PageContract;
+use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Core\Resources\Resource;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
@@ -29,7 +31,7 @@ use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Collections\Fields;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Fields\Field;
 use Throwable;
@@ -37,7 +39,7 @@ use Throwable;
 /**
  * @template-covariant TModel of Model
  */
-abstract class ModelResource extends Resource
+abstract class ModelResource extends Resource implements CrudResourceContract
 {
     use ResourceWithFields;
     use ResourceWithButtons;
@@ -94,13 +96,9 @@ abstract class ModelResource extends Resource
     protected function pages(): array
     {
         return [
-            IndexPage::make($this->getTitle()),
-            FormPage::make(
-                $this->getItemID()
-                    ? __('moonshine::ui.edit')
-                    : __('moonshine::ui.add')
-            ),
-            DetailPage::make(__('moonshine::ui.show')),
+            IndexPage::class,
+            FormPage::class,
+            DetailPage::class,
         ];
     }
 
@@ -132,7 +130,7 @@ abstract class ModelResource extends Resource
         return new ModelCaster($this->model);
     }
 
-    public function getCastedItem(): ?CastedData
+    public function getCastedItem(): ?CastedDataContract
     {
         if(is_null($this->getItem())) {
             return null;
@@ -196,12 +194,12 @@ abstract class ModelResource extends Resource
 
     public function trAttributes(): Closure
     {
-        return static fn (?CastedData $data, int $row): array => [];
+        return static fn (?CastedDataContract $data, int $row): array => [];
     }
 
     public function tdAttributes(): Closure
     {
-        return static fn (?CastedData $data, int $row, int $cell): array => [];
+        return static fn (?CastedDataContract $data, int $row, int $cell): array => [];
     }
 
     /**
@@ -264,7 +262,7 @@ abstract class ModelResource extends Resource
 
         $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
-        $fields->each(static fn (Field $field): mixed => $field->afterDestroy($item));
+        $fields->each(static fn (FieldContract $field): mixed => $field->afterDestroy($item));
 
         if ($this->isDeleteRelationships()) {
             $this->getOutsideFields()->each(static function (ModelRelationField $field) use ($item): void {
@@ -278,10 +276,10 @@ abstract class ModelResource extends Resource
             });
         }
 
-        return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
+        return (bool) tap($item->delete(), fn (): Model => $this->afterDeleted($item));
     }
 
-    public function onSave(Field $field): Closure
+    public function onSave(FieldContract $field): Closure
     {
         /**
          * @param TModel $item
@@ -314,7 +312,7 @@ abstract class ModelResource extends Resource
         $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
 
         try {
-            $fields->each(static fn (Field $field): mixed => $field->beforeApply($item));
+            $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($item));
 
             if (! $item->exists) {
                 $item = $this->beforeCreating($item);
@@ -325,7 +323,7 @@ abstract class ModelResource extends Resource
             }
 
             $fields->withoutOutside()
-                ->each(fn (Field $field): mixed => $field->apply($this->onSave($field), $item));
+                ->each(fn (FieldContract $field): mixed => $field->apply($this->onSave($field), $item));
 
             if ($item->save()) {
                 $item = $this->afterSave($item, $fields);
@@ -347,7 +345,7 @@ abstract class ModelResource extends Resource
     {
         $wasRecentlyCreated = $item->wasRecentlyCreated;
 
-        $fields->each(static fn (Field $field): mixed => $field->afterApply($item));
+        $fields->each(static fn (FieldContract $field): mixed => $field->afterApply($item));
 
         if ($item->isDirty()) {
             $item->save();

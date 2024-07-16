@@ -18,7 +18,7 @@ class TestFileResourceWithParent extends TestFileResource
         return [
             ID::make()->sortable(),
             File::make('File', 'path')->dir('item_files/' . $parentId),
-            BelongsTo::make('Item', resource: new TestItemResource()),
+            BelongsTo::make('Item', resource: TestItemResource::class),
         ];
     }
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\TypeCasts;
 
+use MoonShine\Contracts\Core\Paginator\PaginatorCasterContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Core\Paginator\Paginator;
-use MoonShine\Core\Paginator\PaginatorCasterContract;
-use MoonShine\Core\Paginator\PaginatorContract;
 
 final readonly class PaginatorCaster implements PaginatorCasterContract
 {

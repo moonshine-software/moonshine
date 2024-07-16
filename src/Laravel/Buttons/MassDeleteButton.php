@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -18,7 +20,7 @@ final class MassDeleteButton
         string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-    ): ActionButton {
+    ): ActionButtonContract {
         $action = static fn (): string => $resource->getRoute('crud.massDelete', query: [
             ...$redirectAfterDelete
                 ? ['_redirect' => $redirectAfterDelete]
@@ -32,9 +34,9 @@ final class MassDeleteButton
             ->bulk($componentName ?? $resource->getListComponentName())
             ->withConfirm(
                 method: HttpMethod::DELETE,
-                formBuilder: static fn (FormBuilder $formBuilder) => $formBuilder->when(
+                formBuilder: static fn (FormBuilderContract $formBuilder): FormBuilderContract => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
-                    static fn (FormBuilder $form): FormBuilder => $form->async(
+                    static fn (FormBuilderContract $form): FormBuilderContract => $form->async(
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName()
                         )

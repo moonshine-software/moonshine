@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
@@ -21,8 +22,8 @@ final class HasManyButton
     public static function for(
         HasMany $field,
         bool $update = false,
-        ?ActionButton $button = null,
-    ): ActionButton {
+        ?ActionButtonContract $button = null,
+    ): ActionButtonContract {
         /** @var ModelResource $resource */
         $resource = $field->getResource();
         $parentResource = moonshineRequest()->getResource();

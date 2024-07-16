@@ -5,35 +5,35 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
 /**
- * @template T of FieldsCollection
- * @mixin MoonShineRenderable
+ * @template T of FieldsContract
+ * @mixin RenderableContract
  */
 trait WithFields
 {
     protected array|Closure $fields = [];
 
     /**
-     * @throws Throwable
      * @return Fields<T>
+     *@throws Throwable
      */
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         return $this->getFields();
     }
 
     /**
-     * @throws Throwable
      * @return Fields<T>
+     *@throws Throwable
      */
-    public function getFields(): FieldsCollection
+    public function getFields(): FieldsContract
     {
-        return fieldsCollection(
+        return $this->core->getFieldsCollection(
             $this->getRawFields()
         );
     }
@@ -54,19 +54,19 @@ trait WithFields
     /**
      * @param  Fields<T>|Closure|array  $fields
      */
-    public function fields(FieldsCollection|Closure|array $fields): static
+    public function fields(FieldsContract|Closure|array $fields): static
     {
         if($fields instanceof Closure) {
             $fields = $fields();
         }
 
-        if(moonshine()->runningInConsole()) {
+        if($this->core->runningInConsole()) {
             $fields = collect($fields)
                 ->map(static fn (object $field): object => clone $field)
                 ->toArray();
         }
 
-        $this->fields = $fields instanceof FieldsCollection
+        $this->fields = $fields instanceof FieldsContract
             ? $fields->toArray()
             : $fields;
 
@@ -74,15 +74,15 @@ trait WithFields
     }
 
     /**
-     * @throws Throwable
      * @return Fields<T>
+     *@throws Throwable
      */
     protected function getFilledFields(
         array $raw = [],
         mixed $casted = null,
         int $index = 0,
-        ?FieldsCollection $preparedFields = null
-    ): FieldsCollection {
+        ?FieldsContract $preparedFields = null
+    ): FieldsContract {
         $fields = $preparedFields ?? $this->getFields();
 
         return $fields->fillCloned($raw, $casted, $index, $fields);

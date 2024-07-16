@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Table;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\UI\Components\ActionButton;
 
 trait TableStates
@@ -16,7 +17,7 @@ trait TableStates
 
     protected bool $isCreatable = false;
 
-    protected ?ActionButton $creatableButton = null;
+    protected ?ActionButtonContract $creatableButton = null;
 
     protected bool $isReindex = false;
 
@@ -92,13 +93,13 @@ trait TableStates
         ?string $label = null,
         ?string $icon = null,
         array $attributes = [],
-        ?ActionButton $button = null,
+        ?ActionButtonContract $button = null,
     ): static {
         $this->isCreatable = true;
         $this->isReindex = $reindex;
 
         $this->creatableButton = $button
-            ?: ActionButton::make($label ?? __('moonshine::ui.add'), '#')
+            ?: ActionButton::make($label ?? $this->core->getTranslator()->get('moonshine::ui.add'), '#')
                 ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
                     array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
@@ -221,7 +222,7 @@ trait TableStates
             'simple' => $this->isSimple(),
             'sticky' => $this->isSticky(),
             'searchable' => $this->isSearchable(),
-            'searchValue' => moonshine()->getRequest()->get('search', ''),
+            'searchValue' => $this->core->getRequest()->get('search', ''),
         ];
     }
 }

@@ -7,14 +7,14 @@ namespace MoonShine\Laravel\Handlers;
 use Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Handlers\Handler;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
-use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Exceptions\ActionButtonException;
+use MoonShine\UI\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
@@ -181,10 +181,10 @@ class ExportHandler extends Handler
             ->value();
 
         MoonShineNotification::send(
-            trans('moonshine::ui.resource.export.exported'),
+            __('moonshine::ui.resource.export.exported'),
             [
                 'link' => Storage::disk($disk)->url(trim($dir, '/') . $url),
-                'label' => trans('moonshine::ui.download'),
+                'label' => __('moonshine::ui.download'),
             ]
         );
 
@@ -194,7 +194,7 @@ class ExportHandler extends Handler
     /**
      * @throws ActionButtonException
      */
-    public function getButton(): ActionButton
+    public function getButton(): ActionButtonContract
     {
         if (! $this->hasResource()) {
             throw ActionButtonException::resourceRequired();

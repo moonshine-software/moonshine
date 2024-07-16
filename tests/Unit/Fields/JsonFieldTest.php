@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Text;
 
@@ -103,10 +103,10 @@ describe('common field methods', function () {
 
     it('correct interfaces', function (): void {
         expect($this->field)
-            ->toBeInstanceOf(HasFields::class)
+            ->toBeInstanceOf(HasFieldsContract::class)
             ->toBeInstanceOf(RemovableContract::class)
-            ->toBeInstanceOf(HasDefaultValue::class)
-            ->toBeInstanceOf(DefaultCanBeArray::class);
+            ->toBeInstanceOf(HasDefaultValueContract::class)
+            ->toBeInstanceOf(CanBeArray::class);
     });
 
     it('type', function (): void {

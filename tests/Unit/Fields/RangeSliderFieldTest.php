@@ -54,7 +54,7 @@ it('preview', function (): void {
 });
 
 it('apply', function (): void {
-    fakeRequest(parameters: [
+    fakeRequest(method: 'post', parameters: [
         'slide' => [
             'from' => 100,
             'to' => 200,

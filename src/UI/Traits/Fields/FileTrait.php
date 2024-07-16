@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Traits\WithStorage;
+use MoonShine\UI\Traits\WithStorage;
 
 trait FileTrait
 {
@@ -162,7 +162,7 @@ trait FileTrait
     public function getRemainingValues(): Collection
     {
         return collect(
-            moonshine()->getRequest()->get(
+            $this->core->getRequest()->get(
                 $this->getHiddenRemainingValuesKey()
             )
         );

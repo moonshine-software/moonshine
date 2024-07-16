@@ -6,13 +6,13 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller as BaseController;
-use MoonShine\Core\Contracts\PageContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Pages\ViewPage;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Support\Enums\ToastType;
-use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +39,7 @@ abstract class MoonShineController extends BaseController
 
     protected function view(string $path, array $data = []): PageContract
     {
-        return ViewPage::make()->setContentView($path, $data);
+        return app(ViewPage::class)->setContentView($path, $data);
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class MoonShineController extends BaseController
     /**
      * @throws Throwable
      */
-    protected function responseWithTable(TableBuilder $table): TableBuilder|TableRow|string
+    protected function responseWithTable(TableBuilderContract $table): TableBuilderContract|TableRow|string
     {
         if (! request()->filled('_key')) {
             return $table;

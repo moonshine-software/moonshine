@@ -23,7 +23,7 @@ final class Notifications extends MoonShineComponent
     {
         parent::__construct();
 
-        $this->notifications = auth()->user()?->unreadNotifications;
+        $this->notifications = auth()->user()?->unreadNotifications ?? collect();
     }
 
     protected function prepareBeforeRender(): void

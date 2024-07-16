@@ -6,8 +6,9 @@ namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\RenderablesContract;
+use MoonShine\Core\Collections\Renderables;
 use MoonShine\Support\Enums\Color;
-use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
@@ -86,14 +87,14 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @return MoonShineRenderElements<int, Tab>
+     * @return RenderablesContract<int, Tab>
      * @throws Throwable
      */
-    public function getTabs(): MoonShineRenderElements
+    public function getTabs(): RenderablesContract
     {
         return tap(
             $this->getComponents(),
-            static function (MoonShineRenderElements $tabs): void {
+            static function (RenderablesContract $tabs): void {
                 throw_if(
                     $tabs->every(static fn ($tab): bool => ! $tab instanceof Tab),
                     MoonShineComponentException::onlyTabAllowed()

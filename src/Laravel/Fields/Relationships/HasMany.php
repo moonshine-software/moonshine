@@ -8,17 +8,20 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
-use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
-use MoonShine\UI\Contracts\MoonShineRenderable;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -27,7 +30,7 @@ use Throwable;
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasMany>
  * @extends HasResource<ModelResource, ModelResource>
  */
-class HasMany extends ModelRelationField implements HasFields
+class HasMany extends ModelRelationField implements HasFieldsContract
 {
     /** @use WithFields<Fields> */
     use WithFields;
@@ -51,9 +54,9 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected bool $isAsync = true;
 
-    protected ?ActionButton $createButton = null;
+    protected ?ActionButtonContract $createButton = null;
 
-    protected ?ActionButton $editButton = null;
+    protected ?ActionButtonContract $editButton = null;
 
     protected ?Closure $modifyTable = null;
 
@@ -103,7 +106,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
      */
     public function modifyCreateButton(Closure $callback): self
     {
@@ -113,7 +116,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
      */
     public function modifyEditButton(Closure $callback): self
     {
@@ -123,7 +126,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
-     * @param  Closure(ActionButton $detail, ActionButton $edit, ActionButton $delete, ActionButton $massDelete, self $field): array  $callback
+     * @param  Closure(ActionButtonContract $detail, ActionButtonContract $edit, ActionButtonContract $delete, ActionButtonContract $massDelete, self $field): array  $callback
      */
     public function modifyItemButtons(Closure $callback): self
     {
@@ -133,7 +136,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
-     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     * @param  Closure(TableBuilderContract $table, bool $preview, self $field): TableBuilderContract  $callback
      */
     public function modifyTable(Closure $callback): self
     {
@@ -159,7 +162,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     public function creatable(
         Closure|bool|null $condition = null,
-        ?ActionButton $button = null,
+        ?ActionButtonContract $button = null,
     ): static {
         $this->isCreatable = value($condition, $this) ?? true;
         $this->createButton = $button;
@@ -167,7 +170,7 @@ class HasMany extends ModelRelationField implements HasFields
         return $this;
     }
 
-    public function changeEditButton(?ActionButton $button = null): static
+    public function changeEditButton(?ActionButtonContract $button = null): static
     {
         $this->editButton = $button;
 
@@ -194,7 +197,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function getCreateButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButtonContract
     {
         if (is_null($this->getRelatedModel()?->getKey())) {
             return null;
@@ -249,7 +252,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
@@ -267,12 +270,12 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function preparedClonedFields(): FieldsCollection
+    public function preparedClonedFields(): FieldsContract
     {
         $fields = $this->getPreparedFields();
 
         return $this->hasFields()
-            ? $fields->map(static fn (Field $field): Field => (clone $field))
+            ? $fields->map(static fn (FieldContract $field): FieldContract => (clone $field))
             //If there are no fields, then the resource fields always return new objects
             : $fields;
     }
@@ -280,7 +283,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function getTablePreview(): TableBuilder
+    protected function getTablePreview(): TableBuilderContract
     {
         $items = $this->toValue();
 
@@ -303,7 +306,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->simple()
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
             );
     }
 
@@ -316,8 +319,8 @@ class HasMany extends ModelRelationField implements HasFields
             $fields = $this->preparedClonedFields();
 
             // the onlyFields method is needed to exclude stack fields
-            $fields->onlyFields()->each(function (Field $field): void {
-                if ($field instanceof HasUpdateOnPreview && $field->isUpdateOnPreview()) {
+            $fields->onlyFields()->each(function (FieldContract $field): void {
+                if ($field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview()) {
                     $field->nowOnParams(params: ['relation' => $this->getRelationName()]);
                 }
 
@@ -331,7 +334,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    protected function getTableValue(): MoonShineRenderable
+    protected function getTableValue(): RenderableContract
     {
         $items = $this->getValue();
         $resource = $this->getResource();
@@ -349,7 +352,7 @@ class HasMany extends ModelRelationField implements HasFields
             ->async($asyncUrl)
             ->when(
                 $this->isSearchable() && ! empty($this->getResource()->search()),
-                static fn (TableBuilder $table): TableBuilder => $table->searchable()
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->searchable()
             )
             ->name($this->getRelationName())
             ->fields($this->getFieldsOnPreview())
@@ -357,19 +360,19 @@ class HasMany extends ModelRelationField implements HasFields
             ->withNotFound()
             ->when(
                 ! is_null($resource->trAttributes()),
-                static fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
                     $resource->trAttributes()
                 )
             )
             ->when(
                 ! is_null($resource->tdAttributes()),
-                static fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
                     $resource->tdAttributes()
                 )
             )
             ->buttons($this->getItemButtons())->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
             );
     }
 
@@ -480,7 +483,7 @@ class HasMany extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function getComponent(): MoonShineRenderable
+    public function getComponent(): RenderableContract
     {
         // resolve value before call toValue
         if(is_null($this->toValue())) {

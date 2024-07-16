@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Laravel\Buttons\CreateButton;
 use MoonShine\Laravel\Buttons\DeleteButton;
 use MoonShine\Laravel\Buttons\DetailButton;
@@ -14,24 +16,24 @@ use MoonShine\UI\Components\ActionButton;
 
 trait ResourceWithButtons
 {
-    public function getIndexButtons(): ActionButtons
+    public function getIndexButtons(): ActionButtonsContract
     {
         return ActionButtons::make(
             $this->indexButtons() === [] ? $this->buttons() : $this->indexButtons()
         );
     }
 
-    public function getFormButtons(): ActionButtons
+    public function getFormButtons(): ActionButtonsContract
     {
         return $this->getWithoutBulkButtons($this->formButtons());
     }
 
-    public function getDetailButtons(): ActionButtons
+    public function getDetailButtons(): ActionButtonsContract
     {
         return $this->getWithoutBulkButtons($this->detailButtons());
     }
 
-    protected function getWithoutBulkButtons(array $customButtons = []): ActionButtons
+    protected function getWithoutBulkButtons(array $customButtons = []): ActionButtonsContract
     {
         return ActionButtons::make(
             $customButtons === []
@@ -41,7 +43,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function buttons(): array
     {
@@ -49,7 +51,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function indexButtons(): array
     {
@@ -57,7 +59,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function formButtons(): array
     {
@@ -65,32 +67,32 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function detailButtons(): array
     {
         return [];
     }
 
-    public function getFormBuilderButtons(): ActionButtons
+    public function getFormBuilderButtons(): ActionButtonsContract
     {
         return ActionButtons::make($this->formBuilderButtons());
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function formBuilderButtons(): array
     {
         return [];
     }
 
-    protected function modifyCreateButton(ActionButton $button): ActionButton
+    protected function modifyCreateButton(ActionButtonContract $button): ActionButtonContract
     {
         return $button;
     }
 
-    public function getCreateButton(?string $componentName = null, bool $isAsync = true): ActionButton
+    public function getCreateButton(?string $componentName = null, bool $isAsync = true): ActionButtonContract
     {
         return $this->modifyCreateButton(
             CreateButton::for(
@@ -101,12 +103,12 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyEditButton(ActionButton $button): ActionButton
+    protected function modifyEditButton(ActionButtonContract $button): ActionButtonContract
     {
         return $button;
     }
 
-    public function getEditButton(?string $componentName = null, bool $isAsync = true): ActionButton
+    public function getEditButton(?string $componentName = null, bool $isAsync = true): ActionButtonContract
     {
         return $this->modifyEditButton(
             EditButton::for(
@@ -117,12 +119,12 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyDetailButton(ActionButton $button): ActionButton
+    protected function modifyDetailButton(ActionButtonContract $button): ActionButtonContract
     {
         return $button;
     }
 
-    public function getDetailButton(): ActionButton
+    public function getDetailButton(): ActionButtonContract
     {
         return $this->modifyDetailButton(
             DetailButton::for(
@@ -131,7 +133,7 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyDeleteButton(ActionButton $button): ActionButton
+    protected function modifyDeleteButton(ActionButtonContract $button): ActionButtonContract
     {
         return $button;
     }
@@ -140,7 +142,7 @@ trait ResourceWithButtons
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true
-    ): ActionButton {
+    ): ActionButtonContract {
         return $this->modifyDeleteButton(
             DeleteButton::for(
                 $this,
@@ -151,7 +153,7 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyMassDeleteButton(ActionButton $button): ActionButton
+    protected function modifyMassDeleteButton(ActionButtonContract $button): ActionButtonContract
     {
         return $button;
     }
@@ -160,7 +162,7 @@ trait ResourceWithButtons
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true
-    ): ActionButton {
+    ): ActionButtonContract {
         return $this->modifyMassDeleteButton(
             MassDeleteButton::for(
                 $this,
@@ -172,7 +174,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function getIndexItemButtons(): array
     {
@@ -194,7 +196,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function getFormItemButtons(): array
     {
@@ -209,7 +211,7 @@ trait ResourceWithButtons
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function getDetailItemButtons(): array
     {

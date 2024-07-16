@@ -6,15 +6,17 @@ namespace MoonShine\MenuManager;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
+use MoonShine\Contracts\MenuManager\MenuElementsContract;
 
 /**
- * @extends Collection<int, MenuElement>
+ * @extends Collection<int, MenuElementContract>
  */
-final class MenuElements extends Collection
+final class MenuElements extends Collection implements MenuElementsContract
 {
     public function topMode(?Closure $condition = null): self
     {
-        return $this->transform(static function (MenuElement $item) use ($condition): MenuElement {
+        return $this->transform(static function (MenuElementContract $item) use ($condition): MenuElementContract {
             $item = clone $item;
 
             if ($item instanceof MenuGroup) {
@@ -29,16 +31,14 @@ final class MenuElements extends Collection
 
     public function onlyVisible(): self
     {
-        return $this->filter(static function (MenuElement $item): bool {
+        return $this->filter(static function (MenuElementContract $item): bool {
             if ($item instanceof MenuGroup) {
                 $item->setItems(
                     $item->getItems()->onlyVisible()
                 );
             }
 
-            return $item->isSee(
-                moonshine()->getRequest()
-            );
+            return $item->isSee();
         });
     }
 }

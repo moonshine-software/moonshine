@@ -6,11 +6,11 @@ namespace MoonShine\Laravel\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 use MoonShine\Support\Enums\PageType;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Exceptions\FieldException;
 use Throwable;
 
@@ -33,7 +33,7 @@ class RelationModelFieldRequest extends FormRequest
             $fields = $this->getPage()->getComponents();
 
             if($parentField = request()->input('_parent_field')) {
-                /** @var HasFields $parent */
+                /** @var HasFieldsContract $parent */
                 $parent = $fields
                     ->onlyFields()
                     ->onlyHasFields()

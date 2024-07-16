@@ -9,26 +9,30 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Buttons\BelongsToManyButton;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
-use MoonShine\Laravel\Contracts\Fields\HasPivot;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValues;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
+use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Color;
-use MoonShine\Support\Traits\HasResource;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\FormElement;
@@ -45,10 +49,10 @@ use Throwable;
  * @extends HasResource<ModelResource, ModelResource>
  */
 class BelongsToMany extends ModelRelationField implements
-    HasRelatedValues,
-    HasPivot,
-    HasFields,
-    HasAsyncSearch
+    HasRelatedValuesContact,
+    HasPivotContract,
+    HasFieldsContract,
+    HasAsyncSearchContract
 {
     /** @use WithFields<Fields> */
     use WithFields;
@@ -87,7 +91,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $isCreatable = false;
 
-    protected ?ActionButton $creatableButton = null;
+    protected ?ActionButtonContract $creatableButton = null;
 
     protected array $buttons = [];
 
@@ -129,7 +133,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function creatable(
         Closure|bool|null $condition = null,
-        ?ActionButton $button = null,
+        ?ActionButtonContract $button = null,
     ): static {
         $this->isCreatable = value($condition, $this) ?? true;
         $this->creatableButton = $button;
@@ -145,7 +149,7 @@ class BelongsToMany extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    public function getCreateButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButtonContract
     {
         if (! $this->isCreatable()) {
             return null;
@@ -175,7 +179,7 @@ class BelongsToMany extends ModelRelationField implements
         ]);
     }
 
-    public function getButtons(): ActionButtons
+    public function getButtons(): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons);
     }
@@ -222,11 +226,11 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
-            before: fn (self $parent, Field $field): FormElement => (clone $field)
+            before: fn (self $parent, Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                 ->setNameAttribute($field->getColumn())
                 ->class('js-pivot-field')
@@ -302,7 +306,7 @@ class BelongsToMany extends ModelRelationField implements
         });
     }
 
-    protected function getComponent(): MoonShineRenderable
+    protected function getComponent(): RenderableContract
     {
         $values = $this->getValue();
 
@@ -343,7 +347,7 @@ class BelongsToMany extends ModelRelationField implements
             ->fields($fields)
             ->when(
                 $removeAfterClone,
-                static fn (TableBuilder $table): TableBuilder => $table->customAttributes([
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->customAttributes([
                     'data-remove-after-clone' => 1,
                 ])
             )
@@ -499,7 +503,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $this->getFields()
             ->onlyFields()
-            ->each(function (Field $field, $index) use ($data): void {
+            ->each(function (FieldContract $field, $index) use ($data): void {
                 $field->appendRequestKeyPrefix(
                     "{$this->getRelationName()}.$index",
                     $this->getRequestKeyPrefix()

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Field;
 
 trait ResourceModelPageComponents
 {
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function getIndexPageComponents(): array
     {
@@ -17,7 +18,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function getFormPageComponents(): array
     {
@@ -25,7 +26,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function getDetailPageComponents(): array
     {
@@ -33,7 +34,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function indexPageComponents(): array
     {
@@ -41,7 +42,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function formPageComponents(): array
     {
@@ -49,7 +50,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function detailPageComponents(): array
     {
@@ -57,7 +58,7 @@ trait ResourceModelPageComponents
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function pageComponents(): array
     {

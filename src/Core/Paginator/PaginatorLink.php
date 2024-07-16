@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Paginator;
 
+use MoonShine\Contracts\Core\Paginator\PaginatorLinkContract;
+
 final readonly class PaginatorLink implements PaginatorLinkContract
 {
     public function __construct(

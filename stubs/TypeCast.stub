@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace {namespace};
 
-use MoonShine\Core\Contracts\MoonShineDataCast;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
 /**
  * @template T
  */
-final class DummyCast implements MoonShineDataCast
+final class DummyCast implements DataCasterContract
 {
     /**
-     * @return CastedData<T>
+     * @return CastedDataContract<T>
      */
-    public function cast(mixed $data): CastedData
+    public function cast(mixed $data): CastedDataContract
     {
         //
     }

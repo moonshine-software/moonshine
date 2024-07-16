@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultMustBeNull;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeBool;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
+use MoonShine\UI\Contracts\DefaultValueTypes\MustBeNull;
 use UnitEnum;
 
 trait WithDefaultValue
@@ -25,29 +25,29 @@ trait WithDefaultValue
 
     public function getDefault(): mixed
     {
-        if ($this instanceof DefaultMustBeNull) {
+        if ($this instanceof MustBeNull) {
             return null;
         }
 
-        if (is_array($this->default) && $this instanceof DefaultCanBeArray) {
+        if (is_array($this->default) && $this instanceof CanBeArray) {
             return $this->default;
         }
 
-        if (is_bool($this->default) && $this instanceof DefaultCanBeBool) {
+        if (is_bool($this->default) && $this instanceof CanBeBool) {
             return $this->default;
         }
 
         if (is_numeric(
             $this->default
-        ) && $this instanceof DefaultCanBeNumeric) {
+        ) && $this instanceof CanBeNumeric) {
             return $this->default;
         }
 
-        if (is_string($this->default) && $this instanceof DefaultCanBeString) {
+        if (is_string($this->default) && $this instanceof CanBeString) {
             return $this->default;
         }
 
-        if (is_object($this->default) && $this instanceof DefaultCanBeObject) {
+        if (is_object($this->default) && $this instanceof CanBeObject) {
             return $this->default;
         }
 

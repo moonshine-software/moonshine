@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use BackedEnum;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeEnum;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
 
-class Enum extends Select implements DefaultCanBeEnum
+class Enum extends Select implements CanBeEnum
 {
     /** @var class-string<BackedEnum>|null */
     protected ?string $attached = null;

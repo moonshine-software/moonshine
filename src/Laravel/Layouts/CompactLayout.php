@@ -31,6 +31,7 @@ use MoonShine\UI\Components\{
     Layout\Wrapper,
     When
 };
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
 
 class CompactLayout extends AppLayout
 {
@@ -43,7 +44,10 @@ class CompactLayout extends AppLayout
         ];
     }
 
-    protected function colors(ColorManager $colorManager): void
+    /**
+     * @param ColorManager $colorManager
+     */
+    protected function colors(ColorManagerContract $colorManager): void
     {
         $colorManager
             ->primary('#1E96FC')
@@ -118,7 +122,7 @@ class CompactLayout extends AppLayout
                             ])->class('menu-logo'),
 
                             Block::make([
-                                Menu::make()->top(),
+                                Menu::make($this->menuManager)->top(),
                             ])->class('menu-navigation'),
 
                             Block::make([
@@ -160,7 +164,7 @@ class CompactLayout extends AppLayout
                             ])->class('menu-heading'),
 
                             Block::make([
-                                Menu::make(),
+                                Menu::make($this->menuManager),
                                 When::make(
                                     static fn (): bool => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make(withBorder: true)]

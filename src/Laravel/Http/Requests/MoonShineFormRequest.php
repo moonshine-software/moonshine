@@ -3,8 +3,8 @@
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Resources\ModelResource;
 use Throwable;
@@ -38,7 +38,7 @@ class MoonShineFormRequest extends FormRequest
     {
         if ($this->hasResource()) {
             return array_merge(
-                trans('moonshine::validation'),
+                __('moonshine::validation'),
                 $this->getResource()?->validationMessages() ?? []
             );
         }

@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Applies;
 
-use MoonShine\Core\Resources\Resource;
-use MoonShine\UI\Contracts\ApplyContract;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 
-final class AppliesRegister
+final class AppliesRegister implements AppliesRegisterContract
 {
     private string $type = 'fields';
 
     private ?string $for = null;
 
-    private string $defaultFor = Resource::class;
+    private string $defaultFor = ResourceContract::class;
 
     private array $applies = [
         'filters' => [],
         'fields' => [],
     ];
 
-    public function type(string $type): self
+    public function __construct(
+        private CoreContract $core
+    )
+    {
+    }
+
+    public function type(string $type): static
     {
         $this->type = $type;
 
@@ -31,7 +39,7 @@ final class AppliesRegister
     /**
      * @param  class-string  $for
      */
-    public function for(string $for): self
+    public function for(string $for): static
     {
         $this->for = $for;
 
@@ -49,7 +57,7 @@ final class AppliesRegister
     /**
      * @param  class-string  $for
      */
-    public function defaultFor(string $for): self
+    public function defaultFor(string $for): static
     {
         $this->defaultFor = $for;
 
@@ -64,14 +72,14 @@ final class AppliesRegister
         return $this->defaultFor;
     }
 
-    public function filters(): self
+    public function filters(): static
     {
         $this->type('filters');
 
         return $this;
     }
 
-    public function fields(): self
+    public function fields(): static
     {
         $this->type('fields');
 
@@ -79,7 +87,7 @@ final class AppliesRegister
     }
 
     public function findByField(
-        Field $field,
+        FieldContract $field,
         string $type = 'fields',
         ?string $for = null
     ): ?ApplyContract {
@@ -87,24 +95,24 @@ final class AppliesRegister
             return null;
         }
 
-        return appliesRegister()
+        return $this->core->getContainer(AppliesRegisterContract::class)
             ->type($type)
             ->for($for ?? $this->getDefaultFor())
             ->get($field::class);
     }
 
     /**
-     * @param  class-string<Field>  $fieldClass
+     * @param  class-string<FieldContract>  $fieldClass
      * @param  class-string<ApplyContract>  $applyClass
      */
-    public function add(string $fieldClass, string $applyClass): self
+    public function add(string $fieldClass, string $applyClass): static
     {
         $this->applies[$this->type][$this->getFor()][$fieldClass] = $applyClass;
 
         return $this;
     }
 
-    public function push(array $data): self
+    public function push(array $data): static
     {
         $this->applies[$this->type][$this->getFor()] = array_merge(
             $this->applies[$this->type][$this->getFor()] ?? [],
@@ -115,7 +123,7 @@ final class AppliesRegister
     }
 
     /**
-     * @param  class-string<Field>  $fieldClass
+     * @param  class-string<FieldContract>  $fieldClass
      */
     public function get(string $fieldClass, ?ApplyContract $default = null): ?ApplyContract
     {
@@ -139,6 +147,6 @@ final class AppliesRegister
             return null;
         }
 
-        return moonshine()->getContainer($apply);
+        return $this->core->getContainer($apply);
     }
 }

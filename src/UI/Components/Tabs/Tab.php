@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
-use MoonShine\Support\Traits\WithIcon;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
+use MoonShine\UI\Traits\WithIcon;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])

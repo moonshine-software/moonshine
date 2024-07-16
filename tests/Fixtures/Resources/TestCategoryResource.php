@@ -34,7 +34,7 @@ class TestCategoryResource extends ModelResource
 
             Markdown::make('Content title', 'content'),
 
-            HasOne::make('Cover title', 'cover', resource: new TestCoverResource())->fields([
+            HasOne::make('Cover title', 'cover', resource: TestCoverResource::class)->fields([
                 ID::make(),
                 Image::make('HasOne Image title', 'image'),
             ]),
@@ -56,7 +56,7 @@ class TestCategoryResource extends ModelResource
 
                 Markdown::make('Content title', 'content'),
 
-                HasOne::make('Cover title', 'cover', resource: new TestCoverResource())->fields([
+                HasOne::make('Cover title', 'cover', resource: TestCoverResource::class)->fields([
                     ID::make(),
                     Image::make('HasOne Image title', 'image'),
                 ]),

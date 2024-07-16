@@ -6,25 +6,27 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
+use MoonShine\UI\Traits\HasAsync;
 use Throwable;
 
 /**
- * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, Fields|array $fields = [], mixed $values = [])
+ * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
  */
-final class FormBuilder extends RowComponent
+final class FormBuilder extends RowComponent implements FormBuilderContract
 {
     use HasAsync;
     use WithAdditionalFields;
@@ -54,7 +56,7 @@ final class FormBuilder extends RowComponent
     public function __construct(
         protected string $action = '',
         protected FormMethod $method = FormMethod::POST,
-        Fields|array $fields = [],
+        FieldsContract|array $fields = [],
         mixed $values = []
     ) {
         parent::__construct();
@@ -114,7 +116,7 @@ final class FormBuilder extends RowComponent
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $asyncUrl = moonshineRouter()->getEndpoints()->asyncMethod(
+        $asyncUrl = $this->core->getRouter()->getEndpoints()->asyncMethod(
             $method,
             $message,
             params: ['resourceItem' => $resource?->getItemID()],
@@ -142,7 +144,7 @@ final class FormBuilder extends RowComponent
             return value($this->reactiveUrl, $this);
         }
 
-        return moonshineRouter()->getEndpoints()->reactive();
+        return $this->core->getRouter()->getEndpoints()->reactive();
     }
 
     public function method(FormMethod $method): self
@@ -207,7 +209,7 @@ final class FormBuilder extends RowComponent
 
     public function getSubmitLabel(): string
     {
-        return $this->submitLabel ?? __('moonshine::ui.save');
+        return $this->submitLabel ?? $this->core->getTranslator()->get('moonshine::ui.save');
     }
 
     public function switchFormMode(bool $isAsync, string|array|null $events = ''): self
@@ -249,7 +251,7 @@ final class FormBuilder extends RowComponent
         )->getOriginal();
 
         if (is_null($default)) {
-            $default = static fn (Field $field): Closure => static function (mixed $item) use ($field): mixed {
+            $default = static fn (FieldContract $field): Closure => static function (mixed $item) use ($field): mixed {
                 if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                     return $item;
                 }
@@ -267,20 +269,20 @@ final class FormBuilder extends RowComponent
                 ->getPreparedFields()
                 ->onlyFields()
                 ->exceptElements(
-                    fn (Field $element): bool => in_array($element->getColumn(), $this->getExcludedFields(), true)
+                    fn (FieldContract $element): bool => in_array($element->getColumn(), $this->getExcludedFields(), true)
                 );
 
             $values = is_null($before) ? $values : $before($values);
 
-            $fields->each(static fn (Field $field): mixed => $field->beforeApply($values));
+            $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($values));
 
             $fields
                 ->withoutOutside()
-                ->each(static fn (Field $field): mixed => $field->apply($default($field), $values));
+                ->each(static fn (FieldContract $field): mixed => $field->apply($default($field), $values));
 
             $apply($values, $fields);
 
-            $fields->each(static fn (Field $field): mixed => $field->afterApply($values));
+            $fields->each(static fn (FieldContract $field): mixed => $field->afterApply($values));
 
             value($after, $values);
         } catch (Throwable $e) {
@@ -308,14 +310,14 @@ final class FormBuilder extends RowComponent
 
         $onlyFields = $fields->onlyFields();
         $onlyFields->each(
-            fn (Field $field): Field => $field->formName($this->getName())
+            fn (FieldContract $field): FieldContract => $field->formName($this->getName())
         );
         $fields->prepend(
             Hidden::make('_component_name')->setValue($this->getName())
         );
 
         $reactiveFields = $onlyFields->reactiveFields()
-            ->mapWithKeys(static fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
+            ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
         foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {
@@ -366,7 +368,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->getSubmitLabel(),
             'submitAttributes' => $this->getSubmitAttributes(),
-            'errors' => FormElement::resolveErrors($this->getName(), $this) ?? [],
+            'errors' => $this->core->getRequest()->getFormErrors($this->getName()),
         ];
     }
 }

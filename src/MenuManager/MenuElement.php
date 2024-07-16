@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\HasCanSeeContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
+use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
-use MoonShine\Support\Traits\WithIcon;
-use MoonShine\Support\Traits\WithLabel;
-use MoonShine\UI\Contracts\Components\HasCanSeeContract;
-use MoonShine\UI\Contracts\MoonShineRenderable;
-use MoonShine\UI\Traits\WithViewRenderer;
+use MoonShine\UI\Traits\HasCanSee;
+use MoonShine\UI\Traits\WithIcon;
+use MoonShine\UI\Traits\WithLabel;
 
-abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
+abstract class MenuElement implements MenuElementContract, RenderableContract, HasCanSeeContract
 {
     use Makeable;
     use WithComponentAttributes;
@@ -28,9 +31,16 @@ abstract class MenuElement implements MoonShineRenderable, HasCanSeeContract
 
     abstract public function isActive(): bool;
 
+    // todo DI
+    // todo inject resolver
+    protected CoreContract $core;
+
     public function __construct()
     {
         $this->attributes = new MoonShineComponentAttributeBag();
+
+        // todo DI or inject from MenuManager and remove Core package and ??? move WithViewRenderer to Support
+        $this->core = Core::getInstance();
     }
 
     public function topMode(?Closure $condition = null): static

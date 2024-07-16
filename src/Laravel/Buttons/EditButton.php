@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -16,7 +17,7 @@ final class EditButton
         ModelResource $resource,
         ?string $componentName = null,
         bool $isAsync = true
-    ): ActionButton {
+    ): ActionButtonContract {
         if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
@@ -40,7 +41,7 @@ final class EditButton
         )
             ->when(
                 $resource->isEditInModal(),
-                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     title: static fn (): array|string|null => __('moonshine::ui.edit'),
                     content: static fn (): string => '',
                     name: static fn (Model $data): string => "edit-modal-{$data->getKey()}"

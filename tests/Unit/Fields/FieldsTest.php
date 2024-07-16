@@ -1,8 +1,10 @@
 <?php
 
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
@@ -10,7 +12,6 @@ use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Tabs\Tabs;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Switcher;
@@ -31,7 +32,7 @@ beforeEach(function () {
                             Text::make('Text')->sortable(),
                             Text::make('Email')->showWhen('column', '=', 'value'),
                         ]),
-                        HasOne::make('HasOne', 'hasone', resource: new TestResource()),
+                        HasOne::make('HasOne', 'hasone', resource: TestItemResource::class),
                     ]),
 
                 ]),
@@ -141,14 +142,14 @@ describe('fields', function () {
     it('without has fields', function () {
         expect($this->collection->onlyFields(withWrappers: true)->withoutHasFields())
             ->toHaveCount(1)
-            ->each->not->toBeInstanceOf(HasFields::class)
+            ->each->not->toBeInstanceOf(HasFieldsContract::class)
         ;
     });
 
     it('only has fields', function () {
         expect($this->collection->onlyFields(withWrappers: true)->onlyHasFields())
             ->toHaveCount(2)
-            ->each->toBeInstanceOf(HasFields::class)
+            ->each->toBeInstanceOf(HasFieldsContract::class)
         ;
     });
 

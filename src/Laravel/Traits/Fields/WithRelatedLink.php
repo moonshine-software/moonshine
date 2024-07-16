@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\UI\Components\ActionButton;
 
@@ -50,7 +51,7 @@ trait WithRelatedLink
         return $this->isRelatedLink;
     }
 
-    protected function getRelatedLink(bool $preview = false): ActionButton
+    protected function getRelatedLink(bool $preview = false): ActionButtonContract
     {
         if (is_null($relationName = $this->parentRelationName)) {
             $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
@@ -75,12 +76,12 @@ trait WithRelatedLink
             ->icon('eye')
             ->when(
                 ! is_null($this->modifyRelatedLink),
-                fn (ActionButton $button) => value($this->modifyRelatedLink, $button, preview: $preview)
+                fn (ActionButtonContract $button) => value($this->modifyRelatedLink, $button, preview: $preview)
             );
     }
 
     /**
-     * @param  Closure(ActionButton $button, bool $preview, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, bool $preview, self $field): ActionButtonContract  $callback
      */
     public function modifyRelatedLink(Closure $callback): self
     {

@@ -1,9 +1,10 @@
 <?php
 
+use MoonShine\Core\Collections\Components;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
+use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
-use MoonShine\UI\Collections\ComponentsCollection;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
@@ -30,7 +31,7 @@ beforeEach(function (): void {
                             Text::make('Text'),
                             Text::make('Email'),
                         ]),
-                        HasOne::make('HasOne', resource: new TestResource()),
+                        HasOne::make('HasOne', resource: TestItemResource::class),
                     ]),
 
                 ]),
@@ -49,17 +50,17 @@ beforeEach(function (): void {
 
         Modal::make(
             'Test Modal',
-            components: ComponentsCollection::make([
+            components: Components::make([
                 FormBuilder::make()->fields([
                     Fragment::make([
-                        HasOne::make('HasModal', 'has_modal', resource: new TestResource()),
+                        HasOne::make('HasModal', 'has_modal', resource: TestItemResource::class),
                     ]),
                 ])->name('form-in-modal'),
             ])
         ),
     ])->name('block');
 
-    $this->collection = ComponentsCollection::make([
+    $this->collection = Components::make([
         $this->data,
     ]);
 });

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Http\Response;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateColumnFormRequest;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use Throwable;
@@ -32,7 +33,7 @@ class UpdateFieldController extends MoonShineController
     {
         $relationField = $request->getField();
 
-        if($relationField instanceof HasFields) {
+        if($relationField instanceof HasFieldsContract) {
             $relationField->getPreparedFields();
         }
 
@@ -51,7 +52,7 @@ class UpdateFieldController extends MoonShineController
         return $this->save($resource, $field);
     }
 
-    protected function save(ModelResource $resource, Field $field)
+    protected function save(ModelResource $resource, FieldContract $field)
     {
         try {
             $resource->save(

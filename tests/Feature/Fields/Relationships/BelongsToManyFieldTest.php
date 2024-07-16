@@ -26,7 +26,7 @@ beforeEach(function () {
         Text::make('Pivot 2', 'pivot_2'),
     ];
 
-    $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
+    $this->field = BelongsToMany::make('Categories', resource: TestCategoryResource::class)
         ->fields($this->pivotFields)
         ->fillData($this->item)
     ;

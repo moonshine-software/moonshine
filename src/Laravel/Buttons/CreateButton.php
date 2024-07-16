@@ -2,6 +2,7 @@
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -13,7 +14,7 @@ final class CreateButton
         ModelResource $resource,
         ?string $componentName = null,
         bool $isAsync = true,
-    ): ActionButton {
+    ): ActionButtonContract {
         if(! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
@@ -36,7 +37,7 @@ final class CreateButton
         )
             ->when(
                 $resource->isCreateInModal(),
-                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     static fn (): array|string|null => __('moonshine::ui.create'),
                     static fn (): string => '',
                 )

@@ -6,8 +6,10 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Fields\Field;
@@ -95,11 +97,16 @@ trait UpdateOnPreview
         }
 
         if(! is_null($resource)) {
-            $this->nowOn(page: $resource->getFormPage(), resource: $resource);
+            $this->nowOn(
+                page: $resource instanceof CrudResourceContract ? $resource->getFormPage() : null,
+                resource: $resource
+            );
         }
 
+        $router = $this->core->getRouter();
+
         return $this->setUpdateOnPreviewUrl(
-            $url ?? static fn (?CastedData $data, mixed $value, Field $field): ?string => $data?->getKey() ? moonshineRouter()->getEndpoints()->updateColumn(
+            $url ?? static fn (?CastedDataContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateColumn(
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $data->getKey(),
@@ -145,7 +152,15 @@ trait UpdateOnPreview
 
         if($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
             return (string) call_user_func(
-                new UpdateOnPreviewPopover(field: $this, component: $this->updateOnPreviewParentComponent)
+                new UpdateOnPreviewPopover(
+                    field: $this,
+                    component: $this->updateOnPreviewParentComponent,
+                    route: $this->core->getRouter()->getEndpoints()->updateColumn(
+                        extra: [
+                            'resourceItem' => $this->getData()?->getKey(),
+                        ]
+                    )
+                )
             );
         }
 

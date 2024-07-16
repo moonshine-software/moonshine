@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
@@ -11,7 +13,7 @@ use MoonShine\UI\Components\FormBuilder;
 
 final class FiltersButton
 {
-    public static function for(ModelResource $resource): ActionButton
+    public static function for(ModelResource $resource): ActionButtonContract
     {
         $form = moonshineConfig()->getForm('filters', FiltersForm::class, resource: $resource);
 
@@ -24,7 +26,7 @@ final class FiltersButton
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
                 static fn (): array|string|null => __('moonshine::ui.filters'),
-                static fn (): FormBuilder => $form,
+                static fn (): FormBuilderContract => $form,
                 name: 'filters-off-canvas',
                 components: [$form]
             )
@@ -32,7 +34,7 @@ final class FiltersButton
             ->class('js-filter-button')
             ->when(
                 $resource->isAsync() || $count,
-                fn (ActionButton $action): ActionButton => $action->badge($count)
+                fn (ActionButtonContract $action): ActionButtonContract => $action->badge($count)
             );
     }
 

@@ -12,14 +12,14 @@ final class Assets extends MoonShineComponent
 
     public function getTranslates(): array
     {
-        return __('moonshine::ui');
+        return $this->core->getTranslator()->all();
     }
 
     protected function viewData(): array
     {
         return [
-            'assets' => moonshineAssets()->toHtml(),
-            'colors' => moonshineColors()->toHtml(),
+            'assets' => $this->assetManager->toHtml(),
+            'colors' => $this->colorManager->toHtml(),
         ];
     }
 }

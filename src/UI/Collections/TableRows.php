@@ -6,6 +6,7 @@ namespace MoonShine\UI\Collections;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\TableRowsContract;
 use MoonShine\UI\Components\Table\TableRow;
 
 /**
@@ -13,7 +14,7 @@ use MoonShine\UI\Components\Table\TableRow;
  *
  * @extends Collection<TKey, TableRow>
  */
-final class TableRows extends Collection
+final class TableRows extends Collection implements TableRowsContract
 {
     public function pushRow(TableCells $cells, int|string|null $key, ?Closure $builder = null): self
     {

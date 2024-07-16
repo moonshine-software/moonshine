@@ -31,13 +31,9 @@ class TestCategoryPageResource extends ModelResource
     public function pages(): array
     {
         return [
-            CategoryPageIndex::make($this->getTitle()),
-            CategoryPageForm::make(
-                $this->getItemID()
-                    ? __('moonshine::ui.edit')
-                    : __('moonshine::ui.add')
-            ),
-            CategoryPageDetail::make(__('moonshine::ui.show')),
+            CategoryPageIndex::class,
+            CategoryPageForm::class,
+            CategoryPageDetail::class,
         ];
     }
 
@@ -49,7 +45,7 @@ class TestCategoryPageResource extends ModelResource
             Text::make('Name title', 'name')
                 ->sortable(),
 
-            HasOne::make('Cover title', 'cover', resource: new TestCoverPageResource())->fields([
+            HasOne::make('Cover title', 'cover', resource: TestCoverPageResource::class)->fields([
                 ID::make(),
                 Image::make('HasOne Image title', 'image'),
             ]),
@@ -72,7 +68,7 @@ class TestCategoryPageResource extends ModelResource
 
                 Markdown::make('Content title', 'content'),
 
-                HasOne::make('Cover title', 'cover', resource: new TestCoverPageResource())->fields([
+                HasOne::make('Cover title', 'cover', resource: TestCoverPageResource::class)->fields([
                     ID::make(),
                     Image::make('HasOne Image title', 'image'),
                 ]),

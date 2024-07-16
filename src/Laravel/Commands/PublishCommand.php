@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Filesystem\Filesystem;
+use MoonShine\Core\Core;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\{confirm, info, multiselect, note};
-
-use MoonShine\MoonShine;
-
-use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:publish')]
 class PublishCommand extends MoonShineCommand
@@ -24,7 +22,6 @@ class PublishCommand extends MoonShineCommand
             [
                 'assets' => 'Assets',
                 'assets-template' => 'Assets template',
-                'favicons' => 'Favicons',
                 'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
             ],
             required: true
@@ -74,22 +71,6 @@ class PublishCommand extends MoonShineCommand
             info("Don't forget to add to MoonShineServiceProvider `Vite::asset('resources/css/app.css')`");
         }
 
-        if (in_array('favicons', $types, true)) {
-            $this->makeDir(resource_path('views/vendor/moonshine/layouts/shared'));
-
-            $this->copyStub(
-                'favicon',
-                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php')
-            );
-
-            info('Favicons published');
-
-            note(sprintf(
-                'Creating file [%s]',
-                resource_path('views/vendor/moonshine/layouts/shared/favicon.blade.php'),
-            ));
-        }
-
         if (in_array('resources', $types, true)) {
             $this->publishSystemResource('MoonShineUserResource', 'MoonshineUser');
             $this->publishSystemResource('MoonShineUserRoleResource', 'MoonshineUserRole');
@@ -108,7 +89,7 @@ class PublishCommand extends MoonShineCommand
 
         (new Filesystem())->put(
             $fullClassPath,
-            file_get_contents(MoonShine::path($classPath))
+            file_get_contents(Core::path($classPath))
         );
 
         $this->replaceInFile(

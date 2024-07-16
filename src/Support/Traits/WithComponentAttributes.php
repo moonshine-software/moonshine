@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Traits;
 
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\UI\Fields\Field;
 
 trait WithComponentAttributes
 {
@@ -78,7 +78,7 @@ trait WithComponentAttributes
 
     public function iterableAttributes(int $level = 0): static
     {
-        if (! $this instanceof Field) {
+        if (! $this instanceof FieldContract) {
             return $this;
         }
 

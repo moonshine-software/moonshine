@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use MoonShine\Support\Traits\WithLabel;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $label, iterable $components = [])

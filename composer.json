@@ -21,9 +21,6 @@
     "ext-curl": "*",
     "ext-json": "*",
     "illuminate/support": "^11",
-    "illuminate/collections": "^11",
-    "illuminate/conditionable": "^11",
-    "illuminate/contracts": "^11",
     "illuminate/view": "^11",
     "rap2hpoutre/fast-excel": "^5.4",
     "lee-to/laravel-package-command": "^0.9",
@@ -43,12 +40,7 @@
       "MoonShine\\Database\\Factories\\": "database/factories/"
     },
     "files": [
-      "src/Core/helpers.php",
       "src/Support/helpers.php",
-      "src/MenuManager/helpers.php",
-      "src/AssetManager/helpers.php",
-      "src/ColorManager/helpers.php",
-      "src/UI/helpers.php",
       "src/Laravel/helpers.php"
     ]
   },

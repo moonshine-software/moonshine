@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Storage;
 
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use MoonShine\Core\Contracts\StorageContract;
+use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 
 final readonly class LaravelStorage implements StorageContract
 {

@@ -19,7 +19,7 @@ class TestResourceBuilder
 {
     public static function new(string $model = null): TestResource
     {
-        $resource = new TestResource();
+        $resource = app(TestResource::class);
 
         if ($model) {
             $resource->setTestModel($model);

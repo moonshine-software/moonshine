@@ -3,6 +3,8 @@
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Field;
 
 trait Applies
@@ -60,11 +62,13 @@ trait Applies
         }
 
         if (is_null($this->onApply)) {
-            $classApply = appliesRegister()->findByField($this);
+            $classApply = $this->core
+                ->getContainer(AppliesRegisterContract::class)
+                ->findByField($this);
 
             $this->when(
                 ! is_null($classApply),
-                static fn (Field $field): Field => $field->onApply($classApply->apply($field))
+                static fn (FieldContract $field): FieldContract => $field->onApply($classApply->apply($field))
             );
         }
 
@@ -107,7 +111,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, Field): mixed  $onApply
+     * @param  Closure(mixed, mixed, FieldContract): mixed  $onApply
      */
     public function onApply(Closure $onApply): static
     {
@@ -122,7 +126,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, Field): static  $onBeforeApply
+     * @param  Closure(mixed, mixed, FieldContract): static  $onBeforeApply
      */
     public function onBeforeApply(Closure $onBeforeApply): static
     {
@@ -132,7 +136,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, Field): static  $onAfterApply
+     * @param  Closure(mixed, mixed, FieldContract): static  $onAfterApply
      */
     public function onAfterApply(Closure $onAfterApply): static
     {
@@ -142,7 +146,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, Field): static  $onAfterDestroy
+     * @param  Closure(mixed, mixed, FieldContract): static  $onAfterDestroy
      */
     public function onAfterDestroy(Closure $onAfterDestroy): static
     {

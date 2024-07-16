@@ -6,7 +6,7 @@ namespace {namespace};
 
 use {extend};
 use Closure;
-use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 
 class DummyField extends {extendShort}
 {
