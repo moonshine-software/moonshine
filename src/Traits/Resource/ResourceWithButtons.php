@@ -134,7 +134,7 @@ trait ResourceWithButtons
 
     public function getExportButton(): ActionButton
     {
-        return $this->modifyEditButton(
+        return $this->modifyExportButton(
             ExportButton::for($this, export: $this->export())
         );
     }
