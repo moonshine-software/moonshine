@@ -124,7 +124,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
-        return ($preparedFields ?? $this)->map(static function (MoonShineRenderable $component) use ($raw, $casted, $index) {
+        return ($preparedFields ?? $this)->map(static function (MoonShineRenderable $component) use ($raw, $casted, $index): MoonShineRenderable {
             if ($component instanceof HasFields) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
