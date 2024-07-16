@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Pages\Crud;
 
-use MoonShine\Buttons\ExportButton;
-use MoonShine\Buttons\FiltersButton;
-use MoonShine\Buttons\ImportButton;
 use MoonShine\Buttons\QueryTagButton;
 use MoonShine\Components\ActionGroup;
 use MoonShine\Components\Layout\LayoutBlock;
@@ -124,17 +121,17 @@ class IndexPage extends Page
                     ActionGroup::make()->when(
                         $this->getResource()->filters() !== [],
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            FiltersButton::for($this->getResource())
+                            $this->getResource()->getFiltersButton(),
                         )
                     )->when(
-                        ! is_null($export = $this->getResource()->export()),
+                        ! is_null($this->getResource()->export()),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ExportButton::for($this->getResource(), $export)
+                            $this->getResource()->getExportButton(),
                         ),
                     )->when(
-                        ! is_null($import = $this->getResource()->import()),
+                        ! is_null($this->getResource()->import()),
                         fn (ActionGroup $group): ActionGroup => $group->add(
-                            ImportButton::for($this->getResource(), $import)
+                            $this->getResource()->getImportButton(),
                         ),
                     ),
                 ])->customAttributes([
