@@ -146,7 +146,7 @@ trait ResourceWithButtons
 
     public function getImportButton(): ActionButton
     {
-        return $this->modifyEditButton(
+        return $this->modifyImportButton(
             ImportButton::for($this, import: $this->import())
         );
     }
@@ -158,7 +158,7 @@ trait ResourceWithButtons
 
     public function getFiltersButton(): ActionButton
     {
-        return $this->modifyEditButton(
+        return $this->modifyFiltersButton(
             FiltersButton::for($this)
         );
     }
