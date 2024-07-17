@@ -247,7 +247,7 @@ input[type='number'] {
     }
   }
   &.is-focused {
-    @apply ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+    @apply transition-colors ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
   }
 
   &:has(.form-invalid) {
@@ -348,7 +348,7 @@ input[type='number'] {
   }
 
   &:has(.is-focused) .tox {
-    @apply ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+    @apply transition-colors ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
   }
 }
 .tinymce > textarea {
