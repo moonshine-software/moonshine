@@ -330,8 +330,18 @@ input[type='number'] {
 .tinymce {
   @apply relative;
 
-  &:has(.form-invalid) .tox {
-    @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+  &:has(.form-invalid) {
+    .tox {
+      @apply border-red-600 dark:border-red-700;
+    }
+
+    &:has(.is-focused) .tox {
+      @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-20;
+    }
+  }
+
+  &:has(.is-focused) .tox {
+    @apply ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
   }
 }
 .tinymce > textarea {
