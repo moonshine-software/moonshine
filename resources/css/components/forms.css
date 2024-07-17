@@ -247,7 +247,17 @@ input[type='number'] {
     }
   }
   &.is-focused {
-    @apply border-gray-300 ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+    @apply ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+  }
+
+  &:has(.form-invalid) {
+    &.is-focused {
+      @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-20;
+    }
+
+    .choices__inner {
+      @apply border-red-600 dark:border-red-700;
+    }
   }
 
   .choices__input {
@@ -262,9 +272,6 @@ input[type='number'] {
     }
     .choices__list--multiple .choices__item {
       @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
-    }
-    &:has(.form-invalid) {
-      @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
     }
   }
 
