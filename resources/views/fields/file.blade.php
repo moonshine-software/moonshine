@@ -11,4 +11,5 @@
     :download="$element->canDownload()"
     :names="$element->resolveNames()"
     :itemAttributes="$element->resolveItemAttributes()"
+    :hiddenAttributes="$element->getHiddenAttributes()"
 />

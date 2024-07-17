@@ -7,6 +7,7 @@
     'imageable' => true,
     'names' => null,
     'itemAttributes' => null,
+    'hiddenAttributes' => null,
 ])
 <div class="form-group form-group-dropzone">
     <x-moonshine::form.input
@@ -30,6 +31,7 @@
                         :download="$download"
                         :removable="$removable"
                         :removableAttributes="$removableAttributes"
+                        :hiddenAttributes="$hiddenAttributes"
                         :imageable="$imageable"
                     />
                 @endforeach
