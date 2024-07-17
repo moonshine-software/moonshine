@@ -55,7 +55,7 @@ export default (config = {}) => ({
     tinymce.init(config(Alpine.store('darkMode').on))
 
     editorInstance.on('blur', () => this.$el.classList.remove('is-focused'))
-    editorInstance.on( 'focus', () => this.$el.classList.add('is-focused'))
+    editorInstance.on('focus', () => this.$el.classList.add('is-focused'))
 
     window.addEventListener('darkMode:toggle', () => tinymce.remove(editorInstance))
   },
