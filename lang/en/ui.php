@@ -73,6 +73,7 @@ return [
 
         'export' => [
             'exported' => 'File exported',
+            'confirm_content' => 'Confirm data export',
         ],
 
         'import' => [

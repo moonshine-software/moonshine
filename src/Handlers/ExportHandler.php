@@ -28,6 +28,8 @@ class ExportHandler extends Handler
 
     protected bool $isCsv = false;
 
+    protected bool $withConfirm = false;
+
     protected string $csvDelimiter = ',';
 
     protected ?string $filename = null;
@@ -37,6 +39,18 @@ class ExportHandler extends Handler
         $this->isCsv = true;
 
         return $this;
+    }
+
+    public function withConfirm(): static
+    {
+        $this->withConfirm = true;
+
+        return $this;
+    }
+
+    public function isWithConfirm(): bool
+    {
+        return $this->withConfirm;
     }
 
     public function delimiter(string $value): static

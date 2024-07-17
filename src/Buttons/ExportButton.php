@@ -17,12 +17,18 @@ final class ExportButton
 
         $url = $resource->route('handler', query: ['handlerUri' => $export->uriKey()]);
 
-        return ActionButton::make(
+        $button = ActionButton::make(
             $export->label(),
             trim("$url?ts=" . time() . "&$query", '&')
         )
             ->primary()
             ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
             ->icon($export->iconValue());
+
+        if ($export->isWithConfirm()) {
+            $button->withConfirm(content: trans('moonshine::ui.resource.export.confirm_content'));
+        }
+
+        return $button;
     }
 }
