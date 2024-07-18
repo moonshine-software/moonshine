@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Closure;
 use Generator;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -34,7 +35,7 @@ class ExportHandler extends Handler
 
     protected ?string $filename = null;
 
-    protected array $notifyUsers = [];
+    protected array|Closure $notifyUsers = [];
 
     public function csv(): static
     {
@@ -69,7 +70,10 @@ class ExportHandler extends Handler
         return $this;
     }
 
-    public function notifyUsers(array $ids): static
+    /**
+     * @param array|Closure(static $ctx): array $ids
+     */
+    public function notifyUsers(array|Closure $ids): static
     {
         $this->notifyUsers = $ids;
 
@@ -78,7 +82,7 @@ class ExportHandler extends Handler
 
     public function getNotifyUsers(): array
     {
-        return $this->notifyUsers;
+        return value($this->notifyUsers, $this);
     }
 
     /**

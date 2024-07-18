@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -35,7 +36,7 @@ class ImportHandler extends Handler
 
     protected string $csvDelimiter = ',';
 
-    protected array $notifyUsers = [];
+    protected array|Closure $notifyUsers = [];
 
     public function getInputName(): string
     {
@@ -49,7 +50,10 @@ class ImportHandler extends Handler
         return $this;
     }
 
-    public function notifyUsers(array $ids): static
+    /**
+     * @param array|Closure(static $ctx): array $ids
+     */
+    public function notifyUsers(array|Closure $ids): static
     {
         $this->notifyUsers = $ids;
 
@@ -58,7 +62,7 @@ class ImportHandler extends Handler
 
     public function getNotifyUsers(): array
     {
-        return $this->notifyUsers;
+        return value($this->notifyUsers, $this);
     }
 
     /**
