@@ -26,7 +26,7 @@ class ImportHandlerJob implements ShouldQueue
         protected string $path,
         protected bool $deleteAfter,
         protected string $delimiter = ',',
-        protected array $adminsToNotify = []
+        protected array $notifyUsers = []
     ) {
     }
 
@@ -42,7 +42,7 @@ class ImportHandlerJob implements ShouldQueue
             new $this->resource(),
             $this->deleteAfter,
             $this->delimiter,
-            $this->adminsToNotify
+            $this->notifyUsers
         );
     }
 }

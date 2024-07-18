@@ -30,7 +30,7 @@ class ExportHandlerJob implements ShouldQueue
         protected string $disk,
         protected string $dir,
         protected string $delimiter = ',',
-        protected array $adminsToNotify = []
+        protected array $notifyUsers = []
     ) {
     }
 
@@ -49,7 +49,7 @@ class ExportHandlerJob implements ShouldQueue
             $this->disk,
             $this->dir,
             $this->delimiter,
-            $this->adminsToNotify
+            $this->notifyUsers
         );
     }
 }
