@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
 use MoonShine\Fields\File;
+use MoonShine\Fields\Json;
 
 uses()->group('fields');
 uses()->group('file-field');
@@ -150,3 +151,98 @@ it('names multiple', function (): void {
         ->name('1')
         ->toBe('files[1]');
 });
+
+describe('Hidden input for files', function () {
+    it('hidden single', function (): void {
+        $file = File::make('Thumbnail', 'thumbnail');
+
+        expect($file)
+            ->hiddenOldValuesKey()
+            ->toBe('hidden_thumbnail')
+            ->hiddenOldValuesName()
+            ->toBe('hidden_thumbnail');
+    });
+
+    it('hidden keys multiple', function (): void {
+        $file = File::make('Thumbnail')->multiple();
+
+        expect($file)
+            ->hiddenOldValuesKey()
+            ->toBe('hidden_thumbnail')
+            ->hiddenOldValuesName()
+            ->toBe('hidden_thumbnail[]');
+    });
+
+    it('hidden keys virtual', function (): void {
+        $file = File::make('Thumbnail')->virtualColumn('test');
+
+        expect($file)
+            ->hiddenOldValuesKey()
+            ->toBe('hidden_test')
+            ->hiddenOldValuesName()
+            ->toBe('hidden_test');
+
+        $file = File::make('Thumbnail')->multiple()->virtualColumn('test');
+
+        expect($file)
+            ->hiddenOldValuesKey()
+            ->toBe('hidden_test')
+            ->hiddenOldValuesName()
+            ->toBe('hidden_test[]');
+    });
+
+    it('hidden keys iterable', function (): void {
+        $file = File::make('Thumbnail');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->preparedFields()->first())
+            ->hiddenOldValuesKey()
+            ->toBe('data.${index0}.hidden_thumbnail')
+            ->hiddenOldValuesName()
+            ->toBe('data[${index0}][hidden_thumbnail]');
+    });
+
+    it('hidden keys iterable multiple', function (): void {
+        $file = File::make('Thumbnail')->multiple();
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->preparedFields()->first())
+            ->hiddenOldValuesKey()
+            ->toBe('data.${index0}.hidden_thumbnail')
+            ->hiddenOldValuesName()
+            ->toBe('data[${index0}][hidden_thumbnail][]');
+    });
+
+    it('hidden keys iterable virtual', function (): void {
+        $file = File::make('Thumbnail')->virtualColumn('test');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->preparedFields()->first())
+            ->hiddenOldValuesKey()
+            ->toBe('data.${index0}.hidden_test')
+            ->hiddenOldValuesName()
+            ->toBe('data[${index0}][hidden_test]');
+
+        $file = File::make('Thumbnail')->multiple()->virtualColumn('test');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->preparedFields()->first())
+            ->hiddenOldValuesKey()
+            ->toBe('data.${index0}.hidden_test')
+            ->hiddenOldValuesName()
+            ->toBe('data[${index0}][hidden_test][]');
+    });
+})->group('hidden-file-input');
+

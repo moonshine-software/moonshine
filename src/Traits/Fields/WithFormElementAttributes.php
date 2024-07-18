@@ -136,6 +136,15 @@ trait WithFormElementAttributes
         return $this;
     }
 
+    public function setNameIndex(int|string $key, int $index = 0): static
+    {
+        $this->setName(
+            str_replace("\${index$index}", (string) $key, $this->name())
+        );
+
+        return $this;
+    }
+
     public function setId(string $id): static
     {
         $this->id = str($id)

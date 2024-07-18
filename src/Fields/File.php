@@ -44,10 +44,8 @@ class File extends Field implements Fileable, RemovableContract
     public function getHiddenAttributes(): ComponentAttributeBag
     {
         return $this->attributes()->only(['data-level'])->merge([
-            'name' => $this->hiddenOldValuesKey(),
-            'data-name' => str($this->attributes()->get('data-name'))
-                ->replaceLast($this->attributes()->get('data-column'), 'hidden_' . $this->attributes()->get('data-column'))
-                ->value(),
+            'name' => $this->hiddenOldValuesName(),
+            'data-name' => $this->hiddenOldValuesName(),
         ]);
     }
 

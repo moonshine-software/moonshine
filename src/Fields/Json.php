@@ -473,15 +473,10 @@ class Json extends Field implements
                 $requestValues[$index] = $values;
             }
 
-            foreach ($this->getFields()->onlyFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
-                    $this->requestKeyPrefix()
-                );
+            foreach ($this->preparedFields() as $field) {
+                $field->setNameIndex($index);
 
                 $field->when($fill, fn (Field $f): Field => $f->resolveFill($values->toArray(), $values));
-
-                $field->setParent($this);
 
                 $apply = $callback($field, $values, $data);
 

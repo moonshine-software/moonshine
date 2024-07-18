@@ -139,14 +139,21 @@ trait FileTrait
 
     public function hiddenOldValuesKey(): string
     {
-        return str('')
-            ->when(
-                $this->requestKeyPrefix(),
-                fn (Stringable $str): Stringable => $str->append(
-                    $this->requestKeyPrefix() . "."
-                )
-            )
-            ->append('hidden_' . str($this->nameDot())->replace('.', '_'))
+        $column = str($this->column())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->nameDot())
+            ->replaceLast($column, "hidden_$hiddenColumn")
+            ->value();
+    }
+
+    public function hiddenOldValuesName(): string
+    {
+        $column = str($this->column())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->name())
+            ->replaceLast($column, "hidden_$hiddenColumn")
             ->value();
     }
 
