@@ -72,6 +72,16 @@ trait RangeTrait
         return $this;
     }
 
+    public function getNameDotFrom(): string
+    {
+        return "{$this->nameDot()}.$this->fromField";
+    }
+
+    public function getNameDotTo(): string
+    {
+        return "{$this->nameDot()}.$this->toField";
+    }
+
     protected function reformatFilledValue(mixed $data): mixed
     {
         return $this->extractFromTo($data);
