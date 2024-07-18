@@ -35,6 +35,8 @@ class ImportHandler extends Handler
 
     protected string $csvDelimiter = ',';
 
+    protected array $adminsToNotify = [];
+
     public function getInputName(): string
     {
         return $this->inputName;
@@ -45,6 +47,18 @@ class ImportHandler extends Handler
         $this->csvDelimiter = $value;
 
         return $this;
+    }
+
+    public function adminsToNotify(array $ids): static
+    {
+        $this->adminsToNotify = $ids;
+
+        return $this;
+    }
+
+    public function getAdminsToNotify(): array
+    {
+        return $this->adminsToNotify;
     }
 
     /**
@@ -98,7 +112,8 @@ class ImportHandler extends Handler
                 $this->getResource()::class,
                 $path,
                 $this->deleteAfter,
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getAdminsToNotify()
             );
 
             MoonShineUI::toast(
@@ -112,7 +127,8 @@ class ImportHandler extends Handler
             $path,
             $this->getResource(),
             $this->deleteAfter,
-            $this->getDelimiter()
+            $this->getDelimiter(),
+            $this->getAdminsToNotify()
         );
 
         MoonShineUI::toast(
@@ -138,7 +154,8 @@ class ImportHandler extends Handler
         string $path,
         ResourceContract $resource,
         bool $deleteAfter = false,
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $adminsToNotify = []
     ): Collection {
         $fastExcel = new FastExcel();
 
@@ -205,7 +222,8 @@ class ImportHandler extends Handler
         }
 
         MoonShineNotification::send(
-            trans('moonshine::ui.resource.import.imported')
+            trans('moonshine::ui.resource.import.imported'),
+            ids: $adminsToNotify,
         );
 
         return $result;

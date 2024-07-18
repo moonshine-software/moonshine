@@ -34,6 +34,8 @@ class ExportHandler extends Handler
 
     protected ?string $filename = null;
 
+    protected array $adminsToNotify = [];
+
     public function csv(): static
     {
         $this->isCsv = true;
@@ -67,6 +69,18 @@ class ExportHandler extends Handler
         return $this;
     }
 
+    public function adminsToNotify(array $ids): static
+    {
+        $this->adminsToNotify = $ids;
+
+        return $this;
+    }
+
+    public function getAdminsToNotify(): array
+    {
+        return $this->adminsToNotify;
+    }
+
     /**
      * @throws ActionException
      * @throws IOException
@@ -95,7 +109,8 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getAdminsToNotify()
             );
 
             MoonShineUI::toast(
@@ -112,7 +127,8 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getAdminsToNotify()
             )
         );
     }
@@ -153,7 +169,8 @@ class ExportHandler extends Handler
         array $query,
         string $disk = 'public',
         string $dir = '/',
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $adminsToNotify = []
     ): string {
         // TODO fix it in 3.0
         if(app()->runningInConsole()) {
@@ -195,7 +212,8 @@ class ExportHandler extends Handler
             [
                 'link' => Storage::disk($disk)->url(trim($dir, '/') . $url),
                 'label' => trans('moonshine::ui.download'),
-            ]
+            ],
+            $adminsToNotify,
         );
 
         return $result;
