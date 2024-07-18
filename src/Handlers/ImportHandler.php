@@ -56,7 +56,7 @@ class ImportHandler extends Handler
         return $this;
     }
 
-    public function getAdminsToNotify(): array
+    public function getNotifyUsers(): array
     {
         return $this->notifyUsers;
     }
@@ -113,7 +113,7 @@ class ImportHandler extends Handler
                 $path,
                 $this->deleteAfter,
                 $this->getDelimiter(),
-                $this->getAdminsToNotify()
+                $this->getNotifyUsers()
             );
 
             MoonShineUI::toast(
@@ -128,7 +128,7 @@ class ImportHandler extends Handler
             $this->getResource(),
             $this->deleteAfter,
             $this->getDelimiter(),
-            $this->getAdminsToNotify()
+            $this->getNotifyUsers()
         );
 
         MoonShineUI::toast(
