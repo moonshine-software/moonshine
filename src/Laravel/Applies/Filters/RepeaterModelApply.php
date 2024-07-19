@@ -21,23 +21,24 @@ class RepeaterModelApply implements ApplyContract
             if ($values->isNotEmpty()) {
                 $query->where(static function (Builder $q) use ($values, $field): void {
                     $data = array_filter($values->first());
+                    $column = str_replace('.', '->', $field->getColumn());
 
                     if (filled($data)) {
                         $q
                             ->when(
                                 ! $field->isKeyOrOnlyValue(),
-                                static fn (Builder $qq) => $qq->whereJsonContains($field->getColumn(), $data)
+                                static fn (Builder $qq) => $qq->whereJsonContains($column, $data)
                             )
                             ->when(
                                 $field->isKeyValue(),
                                 static fn (Builder $qq) => $qq->where(
-                                    $field->getColumn() . '->' . ($data['key'] ?? '*'),
+                                    $column . '->' . ($data['key'] ?? '*'),
                                     $data['value'] ?? ''
                                 )
                             )
                             ->when(
                                 $field->isOnlyValue(),
-                                static fn (Builder $qq) => $qq->whereJsonContains($field->getColumn(), $data['value'] ?? '')
+                                static fn (Builder $qq) => $qq->whereJsonContains($column, $data['value'] ?? '')
                             );
                     }
                 });

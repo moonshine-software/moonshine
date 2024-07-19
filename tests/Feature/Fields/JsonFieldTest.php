@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\Applies\Filters\RepeaterModelApply;
 use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
@@ -10,6 +12,7 @@ use MoonShine\Laravel\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Text;
 
@@ -38,6 +41,79 @@ function testJsonValue(TestResource $resource, Item $item, array $data, ?array $
 
     expect($item->data->toArray())->toBe($expectedData ?? $data);
 }
+
+it('apply as base with file', function () {
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $resource = addFieldsToTestResource(
+        Json::make('Data')->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+            File::make('File'),
+        ])
+    );
+
+    $data = [
+        'data' => [
+            ['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file],
+        ],
+    ];
+
+    asAdmin()->put(
+        $resource->getRoute('crud.update', $this->item->getKey()),
+        $data
+    )->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->data->toArray())->toBe(
+        [
+            ['file' => $file->hashName(), 'title' => 'Title 1', 'value' => 'Value 1',],
+            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2',],
+        ]
+    );
+});
+
+it('apply as base with file stay hidden', function () {
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $this->item->data = [
+        ['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file->hashName()],
+        ['title' => 'Title 2', 'value' => 'Value 2'],
+    ];
+
+    $this->item->save();
+
+    $resource = addFieldsToTestResource(
+        Json::make('Data')->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+            File::make('File'),
+        ])
+    );
+
+    $data = [
+        'data' => [
+            ['title' => 'Title 1', 'value' => 'Value 1'],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'hidden_file' => $file->hashName()],
+        ],
+    ];
+
+    asAdmin()->put(
+        $resource->getRoute('crud.update', $this->item->getKey()),
+        $data
+    )->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->data->toArray())->toBe(
+        [
+            ['file' => null, 'title' => 'Title 1', 'value' => 'Value 1'],
+            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2'],
+        ]
+    );
+});
 
 it('apply as base', function () {
     $resource = addFieldsToTestResource(

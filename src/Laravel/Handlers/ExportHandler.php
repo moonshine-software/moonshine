@@ -13,6 +13,7 @@ use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
@@ -34,6 +35,20 @@ class ExportHandler extends Handler
     protected string $csvDelimiter = ',';
 
     protected ?string $filename = null;
+
+    protected bool $withConfirm = false;
+
+    public function withConfirm(): static
+    {
+        $this->withConfirm = true;
+
+        return $this;
+    }
+
+    public function isWithConfirm(): bool
+    {
+        return $this->withConfirm;
+    }
 
     public function csv(): static
     {
@@ -201,9 +216,9 @@ class ExportHandler extends Handler
         }
 
         $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
-        $url = $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]);
+        $url = $this->getUrl();
 
-        return ActionButton::make(
+        $button = ActionButton::make(
             $this->getLabel(),
             trim("$url?ts=" . time() . "&$query", '&')
         )
@@ -211,5 +226,11 @@ class ExportHandler extends Handler
             ->class('js-change-query')
             ->customAttributes(['data-original-url' => $url])
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath());
+
+        if ($this->isWithConfirm()) {
+            $button->withConfirm();
+        }
+
+        return $this->prepareButton($button);
     }
 }

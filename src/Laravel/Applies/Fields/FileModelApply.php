@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Applies\Fields;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -18,7 +17,7 @@ final class FileModelApply implements ApplyContract
     /* @param  File  $field */
     public function apply(FieldContract $field): Closure
     {
-        return function (Model $item) use ($field): Model {
+        return function (mixed $item) use ($field): mixed {
             $requestValue = $field->getRequestValue();
             $remainingValues = $field->getRemainingValues();
 

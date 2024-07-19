@@ -29,7 +29,7 @@ class MorphTo extends BelongsTo
     }
 
     /**
-     * @param  array<class-string<Model>, string>  $types
+     * @param  array<class-string<Model>, string|array>  $types
      * @return $this
      */
     public function types(array $types): static
@@ -39,18 +39,18 @@ class MorphTo extends BelongsTo
         $this->searchColumns = collect($types)
             ->mapWithKeys(
                 static fn (
-                    string $searchColumn,
+                    string|array $searchColumn,
                     string $type
-                ): array => [$type => $searchColumn]
+                ): array => [$type => is_array($searchColumn) ? $searchColumn[0] : $searchColumn]
             )
             ->toArray();
 
         $this->types = collect($types)
             ->mapWithKeys(
                 static fn (
-                    string $searchColumn,
+                    string|array $searchColumn,
                     string $type
-                ): array => [$type => class_basename($type)]
+                ): array => [$type => is_array($searchColumn) ? $searchColumn[1] : class_basename($type)]
             )
             ->toArray();
 

@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Pages\Crud;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
@@ -119,7 +118,7 @@ class IndexPage extends Page
                 ActionGroup::make()->when(
                     $this->getResource()->filters() !== [],
                     fn (ActionGroup $group): ActionGroup => $group->add(
-                        FiltersButton::for($this->getResource())
+                        $this->getResource()->getFiltersButton()
                     )
                 )->when(
                     $this->getResource()->getHandlers()->isNotEmpty(),

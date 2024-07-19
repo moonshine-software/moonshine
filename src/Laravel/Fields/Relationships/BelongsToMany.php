@@ -104,9 +104,8 @@ class BelongsToMany extends ModelRelationField implements
     }
 
     /**
-     * @param  bool|(Closure(mixed $item, mixed $value, self $ct): Badge|bool)  $badge
+     * @param  bool|(Closure(mixed $item, mixed $value, self $ctx): Badge|bool)  $badge
      * @param  null|(Closure(mixed $item, mixed $value, self $ctx): Link) $link
-     * @return $this
      */
     public function inLine(string $separator = '', Closure|bool $badge = false, ?Closure $link = null): static
     {
@@ -231,10 +230,8 @@ class BelongsToMany extends ModelRelationField implements
             parent: $this,
             before: fn (self $parent, Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
-                ->setNameAttribute($field->getColumn())
                 ->class('js-pivot-field')
                 ->withoutWrapper(),
-            performName: fn (string $name): string => str_replace("{$this->getPivotAs()}.", '', $name)
         );
     }
 
@@ -441,7 +438,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return $requestValues
-            ->filter(static fn (array $value) => $value['_checked'])
+            ->filter(fn (array $value) => $value[$this->getCheckboxKey()] ?? false)
             ->keys();
 
     }
@@ -469,22 +466,19 @@ class BelongsToMany extends ModelRelationField implements
         $applyValues = [];
 
         foreach ($checkedKeys as $key) {
-            foreach ($this->getFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getRelationName()}.$key",
-                    $this->getRequestKeyPrefix()
-                );
+            foreach ($this->getPreparedFields() as $field) {
+                $field->setNameIndex($key);
 
-                $values = request()->input($field->getRequestKeyPrefix());
+                $values = $this->getRequestValue($key);
 
                 $apply = $field->apply(
-                    static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? null),
+                    static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn())),
                     $values
                 );
 
                 data_set(
                     $applyValues[$key],
-                    $field->getColumn(),
+                    str_replace($this->getPivotAs() . '.', '', $field->getColumn()),
                     data_get($apply, $field->getColumn())
                 );
             }
@@ -502,14 +496,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $this->getFields()
             ->onlyFields()
-            ->each(function (FieldContract $field, $index) use ($data): void {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getRelationName()}.$index",
-                    $this->getRequestKeyPrefix()
-                );
-
-                $field->beforeApply($data);
-            });
+            ->each(static fn (Field $field): mixed => $field->beforeApply($data));
 
         return $data;
     }

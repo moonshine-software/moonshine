@@ -227,22 +227,20 @@ class ImportHandler extends Handler
             throw ActionButtonException::resourceRequired();
         }
 
-        return ActionButton::make(
-            $this->getLabel(),
-            '#'
-        )
-            ->success()
-            ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
-            ->inOffCanvas(
-                fn (): string => $this->getLabel(),
-                fn (): FormBuilderContract => FormBuilder::make(
-                    $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]) ?? ''
-                )
-                    ->fields([
+        return $this->prepareButton(
+            ActionButton::make(
+                $this->getLabel(),
+                '#'
+            )
+                ->success()
+                ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
+                ->inOffCanvas(
+                    fn (): string => $this->getLabel(),
+                    fn (): FormBuilderContract => FormBuilder::make($this->getUrl())->fields([
                         File::make(column: $this->getInputName())->required(),
-                    ])
-                    ->submit(__('moonshine::ui.confirm')),
-                name: 'import-off-canvas'
-            );
+                    ])->submit(__('moonshine::ui.confirm')),
+                    name: 'import-off-canvas'
+                )
+        );
     }
 }

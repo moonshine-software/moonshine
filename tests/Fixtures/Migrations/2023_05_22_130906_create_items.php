@@ -66,6 +66,7 @@ return new class () extends Migration {
 
             $table->string('pivot_1')->nullable();
             $table->string('pivot_2')->nullable();
+            $table->string('pivot_3')->nullable();
 
             $table->timestamps();
         });

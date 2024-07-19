@@ -242,11 +242,8 @@ class RelationRepeater extends ModelRelationField implements
 
             $requestValues[$index] = $values;
 
-            foreach ($this->getFields()->onlyFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getColumn()}.$index",
-                    $this->getRequestKeyPrefix()
-                );
+            foreach ($this->getPreparedFields() as $field) {
+                $field->setNameIndex($index);
 
                 $field->when($fill, fn (FieldContract $f): FieldContract => $f->fillCast(
                     $values,

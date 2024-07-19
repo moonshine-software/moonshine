@@ -41,6 +41,8 @@ abstract class Field extends FormElement implements FieldContract
 
     protected string $column;
 
+    protected ?string $virtualColumn = null;
+
     protected mixed $value = null;
 
     protected mixed $resolvedValue = null;
@@ -133,6 +135,18 @@ abstract class Field extends FormElement implements FieldContract
         $this->column = $column;
 
         return $this;
+    }
+
+    public function virtualColumn(string $column): static
+    {
+        $this->virtualColumn = $column;
+
+        return $this;
+    }
+
+    public function getVirtualColumn(): string
+    {
+        return $this->virtualColumn ?? $this->getColumn();
     }
 
     protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
