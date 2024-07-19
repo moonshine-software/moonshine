@@ -228,7 +228,11 @@ class BelongsToMany extends ModelRelationField implements
                 ->setAttribute('class', 'pivotField')
                 ->setName(
                     $field->nameFrom(
-                        $this->getWrapName(), $this->getPivotName(), "\${index0}", $this->getPivotAs(), $field->column()
+                        $this->getWrapName(),
+                        $this->getPivotName(),
+                        "\${index0}",
+                        $this->getPivotAs(),
+                        $field->column()
                     )
                 )
                 ->setParent($this)

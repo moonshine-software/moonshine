@@ -3,19 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use MoonShine\Applies\Filters\JsonModelApply;
 use MoonShine\Fields\File;
-use MoonShine\Fields\Json;
 use MoonShine\Fields\Template;
-use MoonShine\Fields\Text;
-use MoonShine\Handlers\ExportHandler;
-use MoonShine\Handlers\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
-use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
-
-use function Pest\Laravel\get;
 
 uses()->group('fields');
 uses()->group('template-field');
@@ -46,16 +37,16 @@ function baseTemplateSaveFile(Item $item, ?UploadedFile $changedFile = null, ?ar
     $resource = addFieldsToTestResource(
         Template::make('Data')
             ->fields([
-                File::make('File')
+                File::make('File'),
             ])
-            ->changeFill(fn(Item $data, Template $field) => data_get($data, $field->column(), []))
+            ->changeFill(fn (Item $data, Template $field) => data_get($data, $field->column(), []))
             ->onApply(onApply: function (Item $item, $value, Template $field) {
                 $column = $field->column();
                 $applyValues = [];
 
                 foreach ($field->preparedFields() as $f) {
                     $apply = $f->apply(
-                        fn($data): mixed => data_set($data, $f->column(), $value[$f->column()] ?? ''),
+                        fn ($data): mixed => data_set($data, $f->column(), $value[$f->column()] ?? ''),
                         $value
                     );
 
@@ -88,7 +79,7 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
             ->fields([
                 File::make('File'),
             ])
-            ->changeFill(fn(Item $data, Template $field) => data_get($data, $field->column(), []))
+            ->changeFill(fn (Item $data, Template $field) => data_get($data, $field->column(), []))
             ->onApply(onApply: function (Item $item, $values, Template $field) {
                 $column = $field->column();
                 $applyValues = [];
@@ -98,7 +89,7 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
                         $f->setNameIndex($index);
 
                         $apply = $f->apply(
-                            fn($data): mixed => data_set($data, $f->column(), $value[$f->column()] ?? ''),
+                            fn ($data): mixed => data_set($data, $f->column(), $value[$f->column()] ?? ''),
                             $value
                         );
 
@@ -121,11 +112,11 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
     $file = $changedFile ?? UploadedFile::fake()->create('test.csv');
 
     $data = $changedData ?? [
-        ['file' => $file]
+        ['file' => $file],
     ];
 
     testTemplateValue($resource, $item, $data, [
-        ['file' => $file->hashName()]
+        ['file' => $file->hashName()],
     ]);
 }
 
@@ -157,7 +148,7 @@ it('apply iterable as base with file stay hidden', function () {
     $file = UploadedFile::fake()->create('test.csv');
 
     $data = [
-        ['hidden_file' => $file->hashName()]
+        ['hidden_file' => $file->hashName()],
     ];
 
     baseTemplateIterableSaveFile($this->item, $file, $data);

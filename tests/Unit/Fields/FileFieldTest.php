@@ -245,4 +245,3 @@ describe('Hidden input for files', function () {
             ->toBe('data[${index0}][hidden_test][]');
     });
 })->group('hidden-file-input');
-

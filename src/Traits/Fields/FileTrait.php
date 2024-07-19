@@ -214,7 +214,7 @@ trait FileTrait
 
     public function getRemainingValues(): Collection
     {
-        if(!is_null($this->remainingValuesResolver)) {
+        if(! is_null($this->remainingValuesResolver)) {
             return value($this->remainingValuesResolver, $this);
         }
 

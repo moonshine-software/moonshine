@@ -106,7 +106,7 @@ trait WithFormElementAttributes
                 ! is_null($wrap),
                 fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
-            ->pipe(fn(Stringable $str): string => $this->nameUnDot($str->value()))
+            ->pipe(fn (Stringable $str): string => $this->nameUnDot($str->value()))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
                 fn (Stringable $str): Stringable => $str->append(
@@ -118,14 +118,14 @@ trait WithFormElementAttributes
     public function nameFrom(?string ...$values): string
     {
         return str('')
-            ->pipe(static function(Stringable $str) use($values) {
+            ->pipe(static function (Stringable $str) use ($values) {
                 foreach (collect($values)->filter() as $value) {
                     $str = $str->append(".$value");
                 }
 
                 return $str->trim('.');
             })
-            ->pipe(fn(Stringable $str) => $this->nameUnDot($str->value()))
+            ->pipe(fn (Stringable $str) => $this->nameUnDot($str->value()))
             ->value();
     }
 
