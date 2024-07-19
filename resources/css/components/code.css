@@ -14,7 +14,7 @@
   }
 
   &.form-invalid.is-focused .codeflask {
-    @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-20;
+    @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-40;
   }
 }
 
