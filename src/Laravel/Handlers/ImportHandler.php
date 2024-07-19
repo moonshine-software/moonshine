@@ -115,7 +115,8 @@ class ImportHandler extends Handler
                 $this->getResource()::class,
                 $path,
                 $this->deleteAfter,
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers(),
             );
 
             MoonShineUI::toast(
@@ -129,7 +130,8 @@ class ImportHandler extends Handler
             $path,
             $this->getResource(),
             $this->deleteAfter,
-            $this->getDelimiter()
+            $this->getDelimiter(),
+            $this->getNotifyUsers(),
         );
 
         MoonShineUI::toast(
@@ -149,7 +151,8 @@ class ImportHandler extends Handler
         string $path,
         ResourceContract $resource,
         bool $deleteAfter = false,
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $notifyUsers = [],
     ): Collection {
         $fastExcel = new FastExcel();
 
@@ -212,7 +215,8 @@ class ImportHandler extends Handler
         }
 
         MoonShineNotification::send(
-            __('moonshine::ui.resource.import.imported')
+            __('moonshine::ui.resource.import.imported'),
+            ids: $notifyUsers
         );
 
         return $result;

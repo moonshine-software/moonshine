@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithUriKey;
+use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
 use MoonShine\UI\Traits\WithIcon;
@@ -30,6 +31,8 @@ abstract class Handler
     use Conditionable;
 
     protected ?Closure $modifyButton = null;
+
+    protected array|Closure $notifyUsers = [];
 
     protected CoreContract $core;
 
@@ -67,5 +70,20 @@ abstract class Handler
         }
 
         return $button;
+    }
+
+    /**
+     * @param array|Closure(static $ctx): array $ids
+     */
+    public function notifyUsers(array|Closure $ids): static
+    {
+        $this->notifyUsers = $ids;
+
+        return $this;
+    }
+
+    public function getNotifyUsers(): array
+    {
+        return value($this->notifyUsers, $this);
     }
 }

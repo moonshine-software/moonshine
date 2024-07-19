@@ -70,6 +70,30 @@ class ExportHandler extends Handler
         return $this;
     }
 
+    public function hasFilename(): bool
+    {
+        return ! is_null($this->filename);
+    }
+
+    public function isCsv(): bool
+    {
+        return $this->isCsv;
+    }
+
+    public function getDelimiter(): string
+    {
+        return $this->csvDelimiter;
+    }
+
+    private function generateFilePath(): string
+    {
+        $dir = $this->getDir();
+        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->getUriKey();
+        $ext = $this->isCsv() ? 'csv' : 'xlsx';
+
+        return sprintf('%s/%s.%s', $dir, $filename, $ext);
+    }
+
     /**
      * @throws ActionButtonException
      * @throws IOException
@@ -98,7 +122,8 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers(),
             );
 
             MoonShineUI::toast(
@@ -115,33 +140,10 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers(),
             )
         );
-    }
-
-    public function hasFilename(): bool
-    {
-        return ! is_null($this->filename);
-    }
-
-    public function isCsv(): bool
-    {
-        return $this->isCsv;
-    }
-
-    public function getDelimiter(): string
-    {
-        return $this->csvDelimiter;
-    }
-
-    private function generateFilePath(): string
-    {
-        $dir = $this->getDir();
-        $filename = $this->hasFilename() ? $this->filename : $this->getResource()->getUriKey();
-        $ext = $this->isCsv() ? 'csv' : 'xlsx';
-
-        return sprintf('%s/%s.%s', $dir, $filename, $ext);
     }
 
     /**
@@ -156,7 +158,8 @@ class ExportHandler extends Handler
         array $query,
         string $disk = 'public',
         string $dir = '/',
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $notifyUsers = [],
     ): string {
         $resource->setQueryParams($query);
 
@@ -199,7 +202,8 @@ class ExportHandler extends Handler
             [
                 'link' => Storage::disk($disk)->url(trim($dir, '/') . $url),
                 'label' => __('moonshine::ui.download'),
-            ]
+            ],
+            ids: $notifyUsers,
         );
 
         return $result;
