@@ -31,7 +31,6 @@ use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Preview;

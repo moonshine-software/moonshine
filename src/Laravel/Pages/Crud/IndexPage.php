@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Pages\Crud;
 
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;

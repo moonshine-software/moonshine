@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\FieldsWrapper;

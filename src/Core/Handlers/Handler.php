@@ -12,7 +12,6 @@ use MoonShine\Support\Traits\WithIcon;
 use MoonShine\Support\Traits\WithLabel;
 use MoonShine\Support\Traits\WithQueue;
 use MoonShine\Support\Traits\WithUriKey;
-use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use Symfony\Component\HttpFoundation\Response;
 
