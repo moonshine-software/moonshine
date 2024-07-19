@@ -49,7 +49,7 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
         ]])->sort()->toArray();
     };
 
-    if(!is_null($pivotData)) {
+    if(! is_null($pivotData)) {
         $data = $mapper($data, $pivotData);
     }
 
@@ -128,7 +128,7 @@ it('apply as base with pivot and file', function () {
 
     testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
 
-    $this->item->categories->each(function ($category) use($file) {
+    $this->item->categories->each(function ($category) use ($file) {
         expect($category->pivot->pivot_1)
             ->toBe('test 1')
             ->and($category->pivot->pivot_2)
@@ -208,7 +208,7 @@ it('apply as base with pivot and file stay by hidden', function () {
 
     testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
 
-    $this->item->categories->each(function ($category) use($file) {
+    $this->item->categories->each(function ($category) use ($file) {
         expect($category->pivot->pivot_1)
             ->toBe('test 1')
             ->and($category->pivot->pivot_2)

@@ -56,7 +56,7 @@ final class Request
 
     public function getAll(): Collection
     {
-        $body  = $this->request->getParsedBody();
+        $body = $this->request->getParsedBody();
         $files = $this->request->getUploadedFiles();
         $query = $this->request->getQueryParams();
 

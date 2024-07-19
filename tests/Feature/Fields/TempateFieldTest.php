@@ -38,16 +38,16 @@ function baseTemplateSaveFile(Item $item, ?UploadedFile $changedFile = null, ?ar
     $resource = addFieldsToTestResource(
         Template::make('Data')
             ->fields([
-                File::make('File')
+                File::make('File'),
             ])
-            ->changeFill(fn(Item $data, Template $field) => data_get($data, $field->getColumn(), []))
+            ->changeFill(fn (Item $data, Template $field) => data_get($data, $field->getColumn(), []))
             ->onApply(onApply: function (Item $item, $value, Template $field) {
                 $column = $field->getColumn();
                 $applyValues = [];
 
                 foreach ($field->getPreparedFields() as $f) {
                     $apply = $f->apply(
-                        fn($data): mixed => data_set($data, $f->getColumn(), $value[$f->getColumn()] ?? ''),
+                        fn ($data): mixed => data_set($data, $f->getColumn(), $value[$f->getColumn()] ?? ''),
                         $value
                     );
 
@@ -80,7 +80,7 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
             ->fields([
                 File::make('File'),
             ])
-            ->changeFill(fn(Item $data, Template $field) => data_get($data, $field->getColumn(), []))
+            ->changeFill(fn (Item $data, Template $field) => data_get($data, $field->getColumn(), []))
             ->onApply(onApply: function (Item $item, $values, Template $field) {
                 $column = $field->getColumn();
                 $applyValues = [];
@@ -90,7 +90,7 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
                         $f->setNameIndex($index);
 
                         $apply = $f->apply(
-                            fn($data): mixed => data_set($data, $f->getColumn(), $value[$f->getColumn()] ?? ''),
+                            fn ($data): mixed => data_set($data, $f->getColumn(), $value[$f->getColumn()] ?? ''),
                             $value
                         );
 
@@ -113,11 +113,11 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
     $file = $changedFile ?? UploadedFile::fake()->create('test.csv');
 
     $data = $changedData ?? [
-        ['file' => $file]
+        ['file' => $file],
     ];
 
     testTemplateValue($resource, $item, $data, [
-        ['file' => $file->hashName()]
+        ['file' => $file->hashName()],
     ]);
 }
 
@@ -149,7 +149,7 @@ it('apply iterable as base with file stay hidden', function () {
     $file = UploadedFile::fake()->create('test.csv');
 
     $data = [
-        ['hidden_file' => $file->hashName()]
+        ['hidden_file' => $file->hashName()],
     ];
 
     baseTemplateIterableSaveFile($this->item, $file, $data);

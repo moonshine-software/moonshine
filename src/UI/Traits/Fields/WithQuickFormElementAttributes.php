@@ -77,7 +77,7 @@ trait WithQuickFormElementAttributes
                 ! is_null($wrap),
                 fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
-            ->pipe(fn(Stringable $str) => $this->getDotNestedToName($str->value()))
+            ->pipe(fn (Stringable $str) => $this->getDotNestedToName($str->value()))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
                 fn (Stringable $str): Stringable => $str->append(
@@ -89,14 +89,14 @@ trait WithQuickFormElementAttributes
     public function generateNameFrom(?string ...$values): string
     {
         return str('')
-            ->pipe(static function(Stringable $str) use($values) {
+            ->pipe(static function (Stringable $str) use ($values) {
                 foreach (collect($values)->filter() as $value) {
                     $str = $str->append(".$value");
                 }
 
                 return $str->trim('.');
             })
-            ->pipe(fn(Stringable $str) => $this->getDotNestedToName($str->value()))
+            ->pipe(fn (Stringable $str) => $this->getDotNestedToName($str->value()))
             ->value();
     }
 

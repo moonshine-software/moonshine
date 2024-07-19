@@ -56,7 +56,7 @@ abstract class Handler
 
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
-        if(!is_null($this->modifyButton)) {
+        if(! is_null($this->modifyButton)) {
             return value($this->modifyButton, $button, $this);
         }
 

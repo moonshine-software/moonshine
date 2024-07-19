@@ -57,7 +57,7 @@ it('apply as base with file', function () {
         'data' => [
             ['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file],
             ['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file],
-        ]
+        ],
     ];
 
     asAdmin()->put(
@@ -97,7 +97,7 @@ it('apply as base with file stay hidden', function () {
         'data' => [
             ['title' => 'Title 1', 'value' => 'Value 1'],
             ['title' => 'Title 2', 'value' => 'Value 2', 'hidden_file' => $file->hashName()],
-        ]
+        ],
     ];
 
     asAdmin()->put(
