@@ -13,7 +13,6 @@ use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
