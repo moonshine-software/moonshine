@@ -27,3 +27,15 @@
         value="{{ $value[$element->toField] ?? '' }}"
     />
 </div>
+
+@error($element->getNameDotFrom(), $element->getFormName())
+<x-moonshine::form.input-error>
+    {{ $message }}
+</x-moonshine::form.input-error>
+@enderror
+
+@error($element->getNameDotTo(), $element->getFormName())
+<x-moonshine::form.input-error>
+    {{ $message }}
+</x-moonshine::form.input-error>
+@enderror

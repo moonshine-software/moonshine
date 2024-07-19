@@ -47,7 +47,11 @@ trait RangeTrait
 
     public function getFromAttributes(): ComponentAttributeBag
     {
-        return $this->reformatAttributes($this->fromAttributes, $this->fromField);
+        return $this->reformatAttributes($this->fromAttributes, $this->fromField)
+            ->class([
+                'form-invalid' => formErrors(session('errors', false), $this->getFormName())
+                    ->has("{$this->nameDot()}.$this->fromField"),
+            ]);
     }
 
     public function toAttributes(array $attributes): static
@@ -61,7 +65,11 @@ trait RangeTrait
 
     public function getToAttributes(): ComponentAttributeBag
     {
-        return $this->reformatAttributes($this->toAttributes, $this->toField);
+        return $this->reformatAttributes($this->toAttributes, $this->toField)
+            ->class([
+                'form-invalid' => formErrors(session('errors', false), $this->getFormName())
+                    ->has($this->getNameDotTo()),
+            ]);
     }
 
     public function fromTo(string $fromField, string $toField): static
@@ -70,6 +78,16 @@ trait RangeTrait
         $this->toField = $toField;
 
         return $this;
+    }
+
+    public function getNameDotFrom(): string
+    {
+        return "{$this->nameDot()}.$this->fromField";
+    }
+
+    public function getNameDotTo(): string
+    {
+        return "{$this->nameDot()}.$this->toField";
     }
 
     protected function reformatFilledValue(mixed $data): mixed

@@ -42,7 +42,7 @@ input[type='number'] {
   }
 
   &-inline {
-    @apply w-auto flex-row items-center justify-items-center;
+    @apply w-auto flex-row flex-wrap items-center justify-items-center;
   }
   &-buttons {
     @apply mt-3 flex-row flex-wrap justify-end;
@@ -108,7 +108,15 @@ input[type='number'] {
 .form-switcher {
   @apply relative flex cursor-pointer items-center;
   &-toggler {
-    @apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-slate-100 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+    @apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:border peer-focus:border-white peer-focus:ring peer-focus:ring-gray-200 peer-focus:ring-opacity-70 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:border-dark-300 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+  }
+}
+.form-switcher.form-invalid {
+  .form-switcher-toggler {
+    @apply border border-red-600 dark:border-red-700;
+  }
+  .peer:focus ~ .form-switcher-toggler {
+    @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-40;
   }
 }
 
@@ -152,7 +160,7 @@ input[type='number'] {
 
   /* Invalid field */
   &.form-invalid {
-    @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+    @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-40;
   }
 }
 
@@ -173,6 +181,11 @@ input[type='number'] {
   ~ span,
   ~ label {
     @apply cursor-pointer text-2xs;
+  }
+
+  /* Invalid field */
+  &.form-invalid {
+    @apply border-red-600 transition-colors focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-40;
   }
 }
 
@@ -247,7 +260,17 @@ input[type='number'] {
     }
   }
   &.is-focused {
-    @apply border-gray-300 ring ring-gray-200 ring-opacity-70 dark:ring-dark-100 dark:ring-opacity-30;
+    @apply ring ring-gray-200 ring-opacity-70 transition-colors dark:ring-dark-100 dark:ring-opacity-30;
+  }
+
+  &:has(.form-invalid) {
+    &.is-focused {
+      @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-40;
+    }
+
+    .choices__inner {
+      @apply border-red-600 dark:border-red-700;
+    }
   }
 
   .choices__input {
@@ -262,9 +285,6 @@ input[type='number'] {
     }
     .choices__list--multiple .choices__item {
       @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
-    }
-    &:has(.form-invalid) {
-      @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
     }
   }
 
@@ -330,8 +350,18 @@ input[type='number'] {
 .tinymce {
   @apply relative;
 
-  &:has(.form-invalid) .tox {
-    @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
+  &:has(.form-invalid) {
+    .tox {
+      @apply border-red-600 dark:border-red-700;
+    }
+
+    &:has(.is-focused) .tox {
+      @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-40;
+    }
+  }
+
+  &:has(.is-focused) .tox {
+    @apply ring ring-gray-200 ring-opacity-70 transition-colors dark:ring-dark-100 dark:ring-opacity-30;
   }
 }
 .tinymce > textarea {

@@ -4,12 +4,22 @@
   > textarea {
     @apply absolute left-0 top-0 !block h-full w-full opacity-0;
   }
+
+  &.form-invalid .codeflask {
+    @apply border-red-600 dark:border-red-700;
+  }
+
+  &.is-focused .codeflask {
+    @apply ring ring-gray-200 ring-opacity-70 transition-colors dark:ring-dark-100 dark:ring-opacity-30;
+  }
+
+  &.form-invalid.is-focused .codeflask {
+    @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-40;
+  }
 }
 
 .codeflask {
-  border-radius: 0.375rem;
-  border-width: 1px;
-  border-color: rgb(209, 213, 219);
+  @apply rounded-md border border-gray-300 dark:border-dark-300 dark:bg-dark-800;
 
   &.codeflask--has-line-numbers:before {
     z-index: 4 !important;
@@ -40,9 +50,6 @@
 
 .dark {
   .codeflask {
-    border-color: rgb(53, 69, 103);
-    background-color: rgb(27, 37, 59);
-
     &.codeflask--has-line-numbers:before {
       background-color: rgb(35, 45, 69);
     }

@@ -1,4 +1,6 @@
-<div class="code-container">
+<div
+    @class(['code-container', 'form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
+>
     <div
         x-data="code({
         lineNumbers: {{ $element->lineNumbers ? 'true' : 'false' }},
@@ -17,7 +19,6 @@
         'name' => $element->name(),
         'class' => 'code-source'
     ])"
-        @class(['form-invalid' => formErrors($errors, $element->getFormName())->has($element->name())])
     >{!! $value ?? '' !!}</x-moonshine::form.textarea>
 </div>
 
