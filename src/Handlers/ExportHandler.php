@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Closure;
 use Generator;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Resources\ResourceContract;
@@ -33,6 +34,8 @@ class ExportHandler extends Handler
     protected string $csvDelimiter = ',';
 
     protected ?string $filename = null;
+
+    protected array|Closure $notifyUsers = [];
 
     public function csv(): static
     {
@@ -68,6 +71,21 @@ class ExportHandler extends Handler
     }
 
     /**
+     * @param array|Closure(static $ctx): array $ids
+     */
+    public function notifyUsers(array|Closure $ids): static
+    {
+        $this->notifyUsers = $ids;
+
+        return $this;
+    }
+
+    public function getNotifyUsers(): array
+    {
+        return value($this->notifyUsers, $this);
+    }
+
+    /**
      * @throws ActionException
      * @throws IOException
      * @throws WriterNotOpenedException
@@ -95,7 +113,8 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers()
             );
 
             MoonShineUI::toast(
@@ -112,7 +131,8 @@ class ExportHandler extends Handler
                 $query,
                 $this->getDisk(),
                 $this->getDir(),
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers()
             )
         );
     }
@@ -153,7 +173,8 @@ class ExportHandler extends Handler
         array $query,
         string $disk = 'public',
         string $dir = '/',
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $notifyUsers = []
     ): string {
         // TODO fix it in 3.0
         if(app()->runningInConsole()) {
@@ -195,7 +216,8 @@ class ExportHandler extends Handler
             [
                 'link' => Storage::disk($disk)->url(trim($dir, '/') . $url),
                 'label' => trans('moonshine::ui.download'),
-            ]
+            ],
+            $notifyUsers,
         );
 
         return $result;

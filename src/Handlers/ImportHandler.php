@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Handlers;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Fields\HasDefaultValue;
@@ -35,6 +36,8 @@ class ImportHandler extends Handler
 
     protected string $csvDelimiter = ',';
 
+    protected array|Closure $notifyUsers = [];
+
     public function getInputName(): string
     {
         return $this->inputName;
@@ -45,6 +48,21 @@ class ImportHandler extends Handler
         $this->csvDelimiter = $value;
 
         return $this;
+    }
+
+    /**
+     * @param array|Closure(static $ctx): array $ids
+     */
+    public function notifyUsers(array|Closure $ids): static
+    {
+        $this->notifyUsers = $ids;
+
+        return $this;
+    }
+
+    public function getNotifyUsers(): array
+    {
+        return value($this->notifyUsers, $this);
     }
 
     /**
@@ -98,7 +116,8 @@ class ImportHandler extends Handler
                 $this->getResource()::class,
                 $path,
                 $this->deleteAfter,
-                $this->getDelimiter()
+                $this->getDelimiter(),
+                $this->getNotifyUsers()
             );
 
             MoonShineUI::toast(
@@ -112,7 +131,8 @@ class ImportHandler extends Handler
             $path,
             $this->getResource(),
             $this->deleteAfter,
-            $this->getDelimiter()
+            $this->getDelimiter(),
+            $this->getNotifyUsers()
         );
 
         MoonShineUI::toast(
@@ -138,7 +158,8 @@ class ImportHandler extends Handler
         string $path,
         ResourceContract $resource,
         bool $deleteAfter = false,
-        string $delimiter = ','
+        string $delimiter = ',',
+        array $notifyUsers = []
     ): Collection {
         $fastExcel = new FastExcel();
 
@@ -205,7 +226,8 @@ class ImportHandler extends Handler
         }
 
         MoonShineNotification::send(
-            trans('moonshine::ui.resource.import.imported')
+            trans('moonshine::ui.resource.import.imported'),
+            ids: $notifyUsers,
         );
 
         return $result;
