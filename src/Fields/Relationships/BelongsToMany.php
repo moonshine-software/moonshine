@@ -23,7 +23,6 @@ use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
-use MoonShine\Fields\File;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
@@ -228,7 +227,9 @@ class BelongsToMany extends ModelRelationField implements
                 ->setColumn("{$this->getPivotAs()}.{$field->column()}")
                 ->setAttribute('class', 'pivotField')
                 ->setName(
-                    "{$this->getPivotName()}[\${index0}][{$this->getPivotAs()}][{$field->column()}]"
+                    $field->nameFrom(
+                        $this->getWrapName(), $this->getPivotName(), "\${index0}", $this->getPivotAs(), $field->column()
+                    )
                 )
                 ->setParent($this)
                 ->formName($this->getFormName())
@@ -282,7 +283,7 @@ class BelongsToMany extends ModelRelationField implements
             $this->memoizeAllValues = $this->memoizeValues;
         }
 
-        if($this->isOnlyLink() && $this->isOnlyLinkOnForm()) {
+        if ($this->isOnlyLink() && $this->isOnlyLinkOnForm()) {
             return $this->getOnlyLinkButton();
         }
 
@@ -395,7 +396,7 @@ class BelongsToMany extends ModelRelationField implements
                 ->toJson();
         }
 
-        if($this->isOnlyLink()) {
+        if ($this->isOnlyLink()) {
             return $this->getOnlyLinkButton(preview: true)->render();
         }
 
