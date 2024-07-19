@@ -15,5 +15,5 @@
         type="checkbox"
     />
 
-    <span class="form-switcher-toggler peer"></span>
+    <span class="form-switcher-toggler"></span>
 </label>

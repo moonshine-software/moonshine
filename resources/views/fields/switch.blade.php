@@ -6,4 +6,5 @@
     :offValue="$element->getOffValue()"
     :value="($element->getOnValue() == $value ? $element->getOnValue() : $element->getOffValue())"
     :checked="$element->isChecked()"
+    @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
 />

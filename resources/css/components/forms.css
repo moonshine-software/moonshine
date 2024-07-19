@@ -108,7 +108,15 @@ input[type='number'] {
 .form-switcher {
   @apply relative flex cursor-pointer items-center;
   &-toggler {
-    @apply h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-slate-100 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+    @apply h-6 w-11 rounded-full bg-gray-200 peer-focus:border peer-focus:border-white dark:peer-focus:border-dark-300 transition-colors after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring peer-focus:ring-gray-200 peer-focus:ring-opacity-70 dark:border-dark-300 dark:bg-dark-800 dark:peer-focus:ring-dark-100 dark:peer-focus:ring-opacity-30;
+  }
+}
+.form-switcher.form-invalid {
+  .form-switcher-toggler {
+    @apply border border-red-600 dark:border-red-700;
+  }
+  .peer:focus~.form-switcher-toggler {
+    @apply ring-red-400 ring-opacity-20 dark:ring-red-600 dark:ring-opacity-20;
   }
 }
 
