@@ -50,7 +50,7 @@ trait RangeTrait
         return $this->reformatAttributes($this->fromAttributes, $this->fromField)
             ->class([
                 'form-invalid' => formErrors(session('errors', false), $this->getFormName())
-                    ->has("{$this->nameDot()}.$this->fromField")
+                    ->has("{$this->nameDot()}.$this->fromField"),
             ]);
     }
 
@@ -68,7 +68,7 @@ trait RangeTrait
         return $this->reformatAttributes($this->toAttributes, $this->toField)
             ->class([
                 'form-invalid' => formErrors(session('errors', false), $this->getFormName())
-                    ->has($this->getNameDotTo())
+                    ->has($this->getNameDotTo()),
             ]);
     }
 
