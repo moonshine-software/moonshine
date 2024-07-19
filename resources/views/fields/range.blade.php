@@ -13,9 +13,6 @@
         :attributes="$element->getFromAttributes()->merge([
             'name' => $element->name($element->fromField),
         ])"
-        @class([
-            'form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->getNameDotFrom())
-        ])
         x-bind:max="range_to_{{ $element->id() }}"
         x-model="range_from_{{ $element->id() }}"
         value="{{ $value[$element->fromField] ?? '' }}"
@@ -25,9 +22,6 @@
         :attributes="$element->getToAttributes()->merge([
             'name' => $element->name($element->toField)
         ])"
-        @class([
-            'form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->getNameDotTo())
-        ])
         x-bind:min="range_from_{{ $element->id() }}"
         x-model="range_to_{{ $element->id() }}"
         value="{{ $value[$element->toField] ?? '' }}"
