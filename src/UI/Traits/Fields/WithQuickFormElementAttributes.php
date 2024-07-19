@@ -72,17 +72,32 @@ trait WithQuickFormElementAttributes
             return $this->nameAttribute;
         }
 
-        return (string) str($this->getNameUnDot($this->getColumn()))
+        return (string) str($this->getColumn())
             ->when(
                 ! is_null($wrap),
-                static fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
+                fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
+            ->pipe(fn(Stringable $str) => $this->getDotNestedToName($str->value()))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
-                static fn (Stringable $str): Stringable => $str->append(
+                fn (Stringable $str): Stringable => $str->append(
                     "[" . ($index ?? '') . "]"
                 )
             );
+    }
+
+    public function generateNameFrom(?string ...$values): string
+    {
+        return str('')
+            ->pipe(static function(Stringable $str) use($values) {
+                foreach (collect($values)->filter() as $value) {
+                    $str = $str->append(".$value");
+                }
+
+                return $str->trim('.');
+            })
+            ->pipe(fn(Stringable $str) => $this->getDotNestedToName($str->value()))
+            ->value();
     }
 
     public function getNameDot(): string
@@ -96,6 +111,15 @@ trait WithQuickFormElementAttributes
         return $result->isEmpty()
             ? $name
             : (string) str($result->keys()->first());
+    }
+
+    public function setNameIndex(int|string $key, int $index = 0): static
+    {
+        $this->setNameAttribute(
+            str_replace("\${index$index}", (string) $key, $this->getNameAttribute())
+        );
+
+        return $this;
     }
 
     public function setId(string $id): static

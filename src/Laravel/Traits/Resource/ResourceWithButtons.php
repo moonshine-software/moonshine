@@ -8,6 +8,7 @@ use MoonShine\Laravel\Buttons\CreateButton;
 use MoonShine\Laravel\Buttons\DeleteButton;
 use MoonShine\Laravel\Buttons\DetailButton;
 use MoonShine\Laravel\Buttons\EditButton;
+use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Buttons\MassDeleteButton;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
@@ -149,6 +150,16 @@ trait ResourceWithButtons
                 isAsync: $isAsync
             )
         );
+    }
+
+    protected function modifyFiltersButton(ActionButton $button): ActionButton
+    {
+        return $button;
+    }
+
+    public function getFiltersButton(): ActionButton
+    {
+        return $this->modifyFiltersButton(FiltersButton::for($this));
     }
 
     protected function modifyMassDeleteButton(ActionButton $button): ActionButton

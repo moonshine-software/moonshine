@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Core\Contracts\CastedData;
 use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\WithFields;
@@ -31,12 +32,12 @@ class Template extends Field implements HasFields
         return '';
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
     {
         if($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
-                $casted ?? $raw,
+                is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
             );
         }

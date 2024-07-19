@@ -19,7 +19,6 @@ final class Request
         protected ?Closure $file = null,
         protected ?Closure $old = null,
     ) {
-
     }
 
     public function get(string $key, mixed $default = null): mixed
@@ -38,7 +37,7 @@ final class Request
 
     public function getFile(string $key): mixed
     {
-        if(is_null($this->file)) {
+        if (is_null($this->file)) {
             return $this->get($key);
         }
 
@@ -57,12 +56,14 @@ final class Request
 
     public function getAll(): Collection
     {
+        $body  = $this->request->getParsedBody();
+        $files = $this->request->getUploadedFiles();
+        $query = $this->request->getQueryParams();
+
+        $merged = $this->merge($body, $files);
+
         return collect(
-            array_merge(
-                $this->request->getQueryParams(),
-                $this->request->getParsedBody(),
-                $this->request->getUploadedFiles(),
-            )
+            $this->merge($merged, $query)
         );
     }
 
@@ -74,5 +75,20 @@ final class Request
     public function getExcept(array|string $keys): array
     {
         return $this->getAll()->except($keys)->toArray();
+    }
+
+    private function merge(array &$first, array &$second): array
+    {
+        $merged = $first;
+
+        foreach ($second as $key => &$value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = $this->merge($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+
+        return $merged;
     }
 }

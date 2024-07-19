@@ -13,6 +13,7 @@ use MoonShine\Support\Traits\WithLabel;
 use MoonShine\Support\Traits\WithQueue;
 use MoonShine\Support\Traits\WithUriKey;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -28,6 +29,8 @@ abstract class Handler
     use WithLabel;
     use Conditionable;
 
+    protected ?Closure $modifyButton = null;
+
     public function __construct(Closure|string $label)
     {
         $this->setLabel($label);
@@ -35,5 +38,29 @@ abstract class Handler
 
     abstract public function handle(): Response;
 
-    abstract public function getButton(): ActionButton;
+    abstract public function getButton(): ActionButtonContract;
+
+    public function getUrl(): string
+    {
+        return $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]) ?? '';
+    }
+
+    /**
+     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $closure
+     */
+    public function modifyButton(Closure $closure): static
+    {
+        $this->modifyButton = $closure;
+
+        return $this;
+    }
+
+    protected function prepareButton(ActionButtonContract $button): ActionButtonContract
+    {
+        if(!is_null($this->modifyButton)) {
+            return value($this->modifyButton, $button, $this);
+        }
+
+        return $button;
+    }
 }

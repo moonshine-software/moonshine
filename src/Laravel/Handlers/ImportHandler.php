@@ -15,6 +15,7 @@ use MoonShine\Support\Enums\ToastType;
 use MoonShine\Support\Traits\WithStorage;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Contracts\Actions\ActionButtonContract;
 use MoonShine\UI\Contracts\Fields\HasDefaultValue;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Fields\Field;
@@ -102,7 +103,7 @@ class ImportHandler extends Handler
 
         $path = request()->file($this->getInputName())?->storeAs(
             $this->getDir(),
-            str_replace('.txt', '.csv', (string) $requestFile->hashName()),
+            str_replace('.txt', '.csv', (string)$requestFile->hashName()),
             $this->getDisk()
         );
 
@@ -220,28 +221,26 @@ class ImportHandler extends Handler
     /**
      * @throws ActionButtonException
      */
-    public function getButton(): ActionButton
+    public function getButton(): ActionButtonContract
     {
         if (! $this->hasResource()) {
             throw ActionButtonException::resourceRequired();
         }
 
-        return ActionButton::make(
-            $this->getLabel(),
-            '#'
-        )
-            ->success()
-            ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
-            ->inOffCanvas(
-                fn (): string => $this->getLabel(),
-                fn (): FormBuilder => FormBuilder::make(
-                    $this->getResource()?->getRoute('handler', query: ['handlerUri' => $this->getUriKey()]) ?? ''
-                )
-                    ->fields([
+        return $this->prepareButton(
+            ActionButton::make(
+                $this->getLabel(),
+                '#'
+            )
+                ->success()
+                ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
+                ->inOffCanvas(
+                    fn (): string => $this->getLabel(),
+                    fn (): FormBuilder => FormBuilder::make($this->getUrl())->fields([
                         File::make(column: $this->getInputName())->required(),
-                    ])
-                    ->submit(__('moonshine::ui.confirm')),
-                name: 'import-off-canvas'
-            );
+                    ])->submit(__('moonshine::ui.confirm')),
+                    name: 'import-off-canvas'
+                )
+        );
     }
 }

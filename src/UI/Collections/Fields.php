@@ -194,21 +194,22 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
                 $field = $modifyField;
             }
 
-            $name = str($parent ? $parent->getNameAttribute() : $field->getNameAttribute());
+            $name = str($parent ? $parent->getNameDot() : $field->getNameDot());
             $level = $name->substrCount('$');
 
             if ($field instanceof ID) {
                 $field->showValue();
             }
 
-            $name = $name
-                ->append('[${index' . $level . '}]')
-                ->append($parent ? "[{$field->getColumn()}]" : '')
-                ->replace('[]', '')
-                ->when(
-                    $field->getAttribute('multiple') || $field->isGroup(),
-                    static fn (Stringable $str): Stringable => $str->append('[]')
-                )->value();
+            $name = $field->generateNameFrom(
+                $name->value(),
+                "\${index$level}",
+                $parent ? $field->getColumn() : null,
+            );
+
+            if($field->getAttribute('multiple') || $field->isGroup()) {
+                $name .= '[]';
+            }
 
             if ($parent) {
                 $field

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
@@ -11,6 +12,7 @@ use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Text;
 
 use function Pest\Laravel\get;
@@ -24,6 +26,7 @@ beforeEach(function () {
     $this->pivotFields = [
         Text::make('Pivot 1', 'pivot_1'),
         Text::make('Pivot 2', 'pivot_2'),
+        File::make('Pivot 3', 'pivot_3'),
     ];
 
     $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
@@ -35,16 +38,18 @@ beforeEach(function () {
         ->toBeEmpty();
 });
 
-function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, ?array $pivotData = null)
+function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $pivotData = null)
 {
+    $keys = $data;
+
     $mapper = static function (array $d, array $p = []) {
         return collect($d)->mapWithKeys(fn ($v, $k) => [$k => [
             '_checked' => 1,
             ...$p[$k] ?? [],
-        ]])->toArray();
+        ]])->sort()->toArray();
     };
 
-    if(! is_null($pivotData)) {
+    if(!is_null($pivotData)) {
         $data = $mapper($data, $pivotData);
     }
 
@@ -57,20 +62,8 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
 
     $item->refresh();
 
-    $real = $item->categories->pluck('id', 'id')->toArray();
-
-    if(! is_null($pivotData)) {
-        $pivot = $item->categories->mapWithKeys(fn ($c) => [
-            $c->id => array_filter([
-                'pivot_1' => $c->pivot->pivot_1,
-                'pivot_2' => $c->pivot->pivot_2,
-            ]),
-        ])->toArray();
-
-        $real = $mapper($real, $pivot);
-    }
-
-    expect($real)->toBe($expectedData ?? $data);
+    expect($item->categories->pluck('id', 'id')->sort()->toArray())
+        ->toBe(collect($keys)->sort()->toArray());
 }
 
 it('apply as base', function () {
@@ -82,7 +75,7 @@ it('apply as base', function () {
 
     $data = $categories->random(3)->pluck('id', 'id')->toArray();
 
-    testBelongsToManyValue($resource, $this->item, $data, pivotData: []);
+    testBelongsToManyValue($resource, $this->item, $data, []);
 });
 
 it('apply as base with pivot', function () {
@@ -97,7 +90,7 @@ it('apply as base with pivot', function () {
     $pivotData = [];
 
     foreach ($data as $id) {
-        $pivotData[$id] = ['pivot_1' => 'test 1', 'pivot_2' => 'test 2'];
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2']];
     }
 
     testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
@@ -107,6 +100,122 @@ it('apply as base with pivot', function () {
             ->toBe('test 1')
             ->and($category->pivot->pivot_2)
             ->toBe('test 2');
+    });
+
+    // unsync
+    $data = $categories->random(1)->pluck('id', 'id')->toArray();
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+});
+
+
+it('apply as base with pivot and file', function () {
+    $resource = addFieldsToTestResource(
+        $this->field
+    );
+
+    $categories = Category::factory(5)->create();
+
+    $data = $categories->random(3)->pluck('id', 'id')->toArray();
+
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $pivotData = [];
+
+    foreach ($data as $id) {
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2', 'pivot_3' => $file]];
+    }
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+
+    $this->item->categories->each(function ($category) use($file) {
+        expect($category->pivot->pivot_1)
+            ->toBe('test 1')
+            ->and($category->pivot->pivot_2)
+            ->toBe('test 2')
+            ->and($category->pivot->pivot_3)
+            ->toBe($file->hashName())
+        ;
+    });
+});
+
+it('apply as base with pivot and file after remove', function () {
+    $resource = addFieldsToTestResource(
+        $this->field
+    );
+
+    $categories = Category::factory(5)->create();
+
+    $data = $categories->random(3)->pluck('id', 'id')->toArray();
+
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $pivotData = [];
+
+    foreach ($data as $id) {
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2', 'pivot_3' => $file]];
+    }
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+
+    $data = $categories->random(3)->pluck('id', 'id')->toArray();
+
+    $pivotData = [];
+
+    foreach ($data as $id) {
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2']];
+    }
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+
+    $this->item->categories->each(function ($category) {
+        expect($category->pivot->pivot_1)
+            ->toBe('test 1')
+            ->and($category->pivot->pivot_2)
+            ->toBe('test 2')
+            ->and($category->pivot->pivot_3)
+            ->toBeNull()
+        ;
+    });
+});
+
+it('apply as base with pivot and file stay by hidden', function () {
+    $resource = addFieldsToTestResource(
+        $this->field
+    );
+
+    $categories = Category::factory(5)->create();
+
+    $data = $categories->random(3)->pluck('id', 'id')->toArray();
+
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $pivotData = [];
+
+    foreach ($data as $id) {
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2', 'pivot_3' => $file]];
+    }
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+
+    $data = $categories->random(3)->pluck('id', 'id')->toArray();
+
+    $pivotData = [];
+
+    foreach ($data as $id) {
+        $pivotData[$id] = ['pivot' => ['pivot_1' => 'test 1', 'pivot_2' => 'test 2', 'hidden_pivot_3' => $file->hashName()]];
+    }
+
+    testBelongsToManyValue($resource, $this->item, $data, pivotData: $pivotData);
+
+    $this->item->categories->each(function ($category) use($file) {
+        expect($category->pivot->pivot_1)
+            ->toBe('test 1')
+            ->and($category->pivot->pivot_2)
+            ->toBe('test 2')
+            ->and($category->pivot->pivot_3)
+            ->toBe($file->hashName())
+        ;
     });
 });
 

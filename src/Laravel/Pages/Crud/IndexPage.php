@@ -113,7 +113,7 @@ class IndexPage extends Page
                 ActionGroup::make()->when(
                     $this->getResource()->filters() !== [],
                     fn (ActionGroup $group): ActionGroup => $group->add(
-                        FiltersButton::for($this->getResource())
+                        $this->getResource()->getFiltersButton()
                     )
                 )->when(
                     $this->getResource()->getHandlers()->isNotEmpty(),

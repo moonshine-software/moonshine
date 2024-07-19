@@ -6,7 +6,6 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\WithStorage;
 
@@ -25,6 +24,8 @@ trait FileTrait
     protected ?Closure $names = null;
 
     protected ?Closure $itemAttributes = null;
+
+    protected ?Closure $remainingValuesResolver = null;
 
     /**
      * @param  Closure(string $filename, int $index): string  $closure
@@ -148,19 +149,40 @@ trait FileTrait
 
     public function getHiddenRemainingValuesKey(): string
     {
-        return str('')
-            ->when(
-                $this->getRequestKeyPrefix(),
-                fn (Stringable $str): Stringable => $str->append(
-                    $this->getRequestKeyPrefix() . "."
-                )
-            )
-            ->append('hidden_' . $this->getColumn())
+        $column = str($this->getColumn())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->getNameDot())
+            ->replaceLast($column, "hidden_$hiddenColumn")
             ->value();
+    }
+
+    public function getHiddenRemainingValuesName(): string
+    {
+        $column = str($this->getColumn())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->getNameAttribute())
+            ->replaceLast($column, "hidden_$hiddenColumn")
+            ->value();
+    }
+
+    /**
+     * @param  Closure(static $ctx): Collection  $closure
+     */
+    public function remainingValuesResolver(Closure $closure): static
+    {
+        $this->remainingValuesResolver = $closure;
+
+        return $this;
     }
 
     public function getRemainingValues(): Collection
     {
+        if(!is_null($this->remainingValuesResolver)) {
+            return value($this->remainingValuesResolver, $this);
+        }
+
         return collect(
             moonshine()->getRequest()->get(
                 $this->getHiddenRemainingValuesKey()

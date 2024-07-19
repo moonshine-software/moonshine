@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use MoonShine\UI\Contracts\Fields\Fileable;
 use MoonShine\UI\Contracts\Fields\RemovableContract;
 use MoonShine\UI\Fields\File;
+use MoonShine\UI\Fields\Json;
 
 uses()->group('fields');
 uses()->group('file-field');
@@ -149,3 +150,97 @@ it('names multiple', function (): void {
         ->getNameAttribute('1')
         ->toBe('files[1]');
 });
+
+describe('Hidden input for files', function () {
+    it('hidden single', function (): void {
+        $file = File::make('Thumbnail', 'thumbnail');
+
+        expect($file)
+            ->getHiddenRemainingValuesKey()
+            ->toBe('hidden_thumbnail')
+            ->getHiddenRemainingValuesName()
+            ->toBe('hidden_thumbnail');
+    });
+
+    it('hidden keys multiple', function (): void {
+        $file = File::make('Thumbnail')->multiple();
+
+        expect($file)
+            ->getHiddenRemainingValuesKey()
+            ->toBe('hidden_thumbnail')
+            ->getHiddenRemainingValuesName()
+            ->toBe('hidden_thumbnail[]');
+    });
+
+    it('hidden keys virtual', function (): void {
+        $file = File::make('Thumbnail')->virtualColumn('test');
+
+        expect($file)
+            ->getHiddenRemainingValuesKey()
+            ->toBe('hidden_test')
+            ->getHiddenRemainingValuesName()
+            ->toBe('hidden_test');
+
+        $file = File::make('Thumbnail')->multiple()->virtualColumn('test');
+
+        expect($file)
+            ->getHiddenRemainingValuesKey()
+            ->toBe('hidden_test')
+            ->getHiddenRemainingValuesName()
+            ->toBe('hidden_test[]');
+    });
+
+    it('hidden keys iterable', function (): void {
+        $file = File::make('Thumbnail');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->getPreparedFields()->first())
+            ->getHiddenRemainingValuesKey()
+            ->toBe('data.${index0}.hidden_thumbnail')
+            ->getHiddenRemainingValuesName()
+            ->toBe('data[${index0}][hidden_thumbnail]');
+    });
+
+    it('hidden keys iterable multiple', function (): void {
+        $file = File::make('Thumbnail')->multiple();
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->getPreparedFields()->first())
+            ->getHiddenRemainingValuesKey()
+            ->toBe('data.${index0}.hidden_thumbnail')
+            ->getHiddenRemainingValuesName()
+            ->toBe('data[${index0}][hidden_thumbnail][]');
+    });
+
+    it('hidden keys iterable virtual', function (): void {
+        $file = File::make('Thumbnail')->virtualColumn('test');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->getPreparedFields()->first())
+            ->getHiddenRemainingValuesKey()
+            ->toBe('data.${index0}.hidden_test')
+            ->getHiddenRemainingValuesName()
+            ->toBe('data[${index0}][hidden_test]');
+
+        $file = File::make('Thumbnail')->multiple()->virtualColumn('test');
+
+        $json = Json::make('Data', 'data')->fields([
+            $file,
+        ]);
+
+        expect($json->getPreparedFields()->first())
+            ->getHiddenRemainingValuesKey()
+            ->toBe('data.${index0}.hidden_test')
+            ->getHiddenRemainingValuesName()
+            ->toBe('data[${index0}][hidden_test][]');
+    });
+})->group('hidden-file-input');

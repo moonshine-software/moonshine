@@ -384,11 +384,8 @@ class Json extends Field implements
         $applyValues = [];
 
         foreach ($requestValues as $index => $values) {
-            foreach ($this->getFields()->onlyFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getColumn()}.$index",
-                    $this->getRequestKeyPrefix()
-                );
+            foreach ($this->getPreparedFields() as $field) {
+                $field->setNameIndex($index);
 
                 $field->when($fill, static fn (Field $f): Field => $f->fillData($values));
 
@@ -417,7 +414,7 @@ class Json extends Field implements
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
             callback: static fn (Field $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
+                static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn(), '')),
                 $values
             ),
         );
