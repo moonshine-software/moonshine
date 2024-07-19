@@ -254,7 +254,7 @@ trait ResourceModelQuery
             return $this->query;
         }
 
-        $this->query = $this->customBuilder ?? $this->getModel()->query();
+        $this->query = $this->customBuilder ?? $this->getModel()->newQuery();
 
         if ($this->hasWith()) {
             $this->query->with($this->getWith());

@@ -90,7 +90,7 @@ class RelationModelFieldRequest extends FormRequest
 
         return $resource
             ->getModel()
-            ->newModelQuery()
+            ->newQuery()
             ->findOrFail(request($resource->getModel()->getKeyName()));
     }
 }

@@ -177,7 +177,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = static fn (mixed $data, ?CastedDataContract $casted): ?string => $this->core->getRouter()->getEndpoints()->asyncMethod(
+        $this->url = fn (mixed $data, ?CastedDataContract $casted): ?string => $this->core->getRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
