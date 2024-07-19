@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
-use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\RenderablesContract;
-use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
-use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
@@ -63,29 +60,6 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @throws Throwable
-     */
-    public function getTabsLabels(): Collection
-    {
-        return $this->getTabs()->mapWithKeys(static fn (Tab $tab): array => [
-            $tab->getId() => $tab->getIcon(6, Color::SECONDARY)
-                . PHP_EOL . $tab->getLabel(),
-        ]);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getContents(): Collection
-    {
-        return $this->getTabs()->mapWithKeys(static fn (Tab $tab): array => [
-            $tab->getId() => Components::make(
-                $tab->getComponents()
-            ),
-        ]);
-    }
-
-    /**
      * @return RenderablesContract<int, Tab>
      * @throws Throwable
      */
@@ -103,14 +77,15 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @throws Throwable
      * @return array<string, mixed>
+     * @throws Throwable
      */
     protected function viewData(): array
     {
         return [
-            'tabs' => $this->getTabsLabels()->toArray(),
-            'contents' => $this->getContents()->toArray(),
+            'tabs' => $this->getTabs()
+                ->mapWithKeys(fn(Tab $tab) => [$tab->getId() => $tab->toArray()])
+                ->toArray(),
             'active' => $this->getActive(),
             'justifyAlign' => $this->getJustifyAlign(),
             'isVertical' => $this->isVertical(),

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -20,6 +23,8 @@ class Tab extends AbstractWithComponents
 
     public bool $active = false;
 
+    private MoonShineComponentAttributeBag $labelAttributes;
+
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
@@ -31,7 +36,28 @@ class Tab extends AbstractWithComponents
             $this->setLabel($labelOrComponents);
         }
 
+        $this->labelAttributes = new MoonShineComponentAttributeBag();
+
         parent::__construct($components);
+
+        $this->labelAttributes([
+            '@click.prevent' => "setActiveTab(`{$this->getId()}`)",
+            ':class' => "{ '_is-active': activeTab === '{$this->getId()}' }",
+            'class' => "tabs-button",
+        ]);
+
+        $this->customAttributes([
+            '@set-active-tab' => "setActiveTab(`{$this->getId()}`)",
+            ':class' => "activeTab === '{$this->getId()}' ? 'block' : 'hidden'",
+            'class' => "tab-panel",
+        ]);
+    }
+
+    public function labelAttributes(array $attributes): self
+    {
+        $this->labelAttributes = $this->labelAttributes->merge($attributes);
+
+        return $this;
     }
 
     /**
@@ -60,7 +86,13 @@ class Tab extends AbstractWithComponents
     protected function viewData(): array
     {
         return [
+            'icon' => $this->getIcon(6, Color::SECONDARY),
             'label' => $this->getLabel(),
+            'labelAttributes' => $this->labelAttributes,
+            'id' => $this->getId(),
+            'content' => Components::make(
+                $this->getComponents()
+            ),
         ];
     }
 }

@@ -15,15 +15,13 @@
     >
         <!-- Tabs Buttons -->
         <ul @class(['tabs-list', 'justify-' . $justifyAlign])>
-            @foreach($tabs as $tabId => $tabContent)
+            @foreach($tabs as $tab)
                 <li class="tabs-item">
-                    <button
-                        @click.prevent="setActiveTab(`{{ $tabId }}`)"
-                        :class="{ '_is-active': activeTab === '{{ $tabId }}' }"
-                        class="tabs-button"
-                        type="button"
+                    <button {!! $tab['labelAttributes'] !!}
+                            type="button"
                     >
-                        {!! $tabContent !!}
+                        {!! $tab['icon'] !!}
+                        {!! $tab['label'] !!}
                     </button>
                 </li>
             @endforeach
@@ -32,14 +30,10 @@
 
         <!-- Tabs content -->
         <div class="tabs-content">
-            @foreach($contents as $tabId => $tabContent)
-                <div
-                    :class="activeTab === '{{ $tabId }}' ? 'block' : 'hidden'"
-                    class="tab-panel"
-                    @set-active-tab="setActiveTab(`{{ $tabId }}`)"
-                >
+            @foreach($tabs as $tab)
+                <div {!! $tab['attributes'] !!}>
                     <div class="tabs-body">
-                        {!! $tabContent !!}
+                        {!! $tab['content'] !!}
                     </div>
                 </div>
             @endforeach

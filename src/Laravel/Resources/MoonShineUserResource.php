@@ -99,7 +99,7 @@ class MoonShineUserResource extends ModelResource
 
                         Email::make(__('moonshine::ui.resource.email'), 'email')
                             ->required(),
-                    ]),
+                    ])->icon('user-circle'),
 
                     Tab::make(__('moonshine::ui.resource.password'), [
                         Heading::make(__('moonshine::ui.resource.change_password')),
@@ -111,7 +111,7 @@ class MoonShineUserResource extends ModelResource
                         PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
                             ->customAttributes(['autocomplete' => 'confirm-password'])
                             ->eye(),
-                    ]),
+                    ])->icon('lock-closed'),
                 ]),
             ]),
         ];
