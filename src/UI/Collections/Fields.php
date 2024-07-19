@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;

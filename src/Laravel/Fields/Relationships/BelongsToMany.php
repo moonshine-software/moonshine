@@ -13,7 +13,6 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Traits\HasResource;
