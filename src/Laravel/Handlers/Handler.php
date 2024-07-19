@@ -10,7 +10,6 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithUriKey;
-use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
 use MoonShine\UI\Traits\WithIcon;
