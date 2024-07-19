@@ -523,7 +523,7 @@ class Json extends Field implements
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
             callback: fn (Field $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                static fn ($data): mixed => data_set($data, $field->column(), data_get($values, $field->column(), '')),
                 $values
             ),
         );
@@ -538,7 +538,7 @@ class Json extends Field implements
             data: $data,
             callback: fn (Field $field, mixed $values): mixed => $this->isAsRelation()
                 ? $field->apply(
-                    static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                    static fn ($data): mixed => data_set($data, $field->column(), data_get($values, $field->column(), '')),
                     $values
                 )
                 : $field->afterApply($values),
