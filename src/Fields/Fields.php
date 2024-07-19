@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Stringable;
 use MoonShine\Collections\MoonShineRenderElements;
 use MoonShine\Contracts\Fields\HasFields;
 use MoonShine\Contracts\HasReactivity;

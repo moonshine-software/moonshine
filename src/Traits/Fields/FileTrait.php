@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Stringable;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Exceptions\FieldException;
 use MoonShine\Support\Condition;

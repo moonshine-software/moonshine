@@ -106,7 +106,7 @@ trait WithFormElementAttributes
                 ! is_null($wrap),
                 fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
-            ->pipe(fn(Stringable $str) => $this->nameUnDot($str->value()))
+            ->pipe(fn(Stringable $str): string => $this->nameUnDot($str->value()))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
                 fn (Stringable $str): Stringable => $str->append(
