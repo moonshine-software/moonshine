@@ -227,7 +227,9 @@ class BelongsToMany extends ModelRelationField implements
                 ->setColumn("{$this->getPivotAs()}.{$field->column()}")
                 ->setAttribute('class', 'pivotField')
                 ->setName(
-                    "{$this->getPivotName()}[\${index0}][{$field->column()}]"
+                    $field->nameFrom(
+                        $this->getWrapName(), $this->getPivotName(), "\${index0}", $this->getPivotAs(), $field->column()
+                    )
                 )
                 ->setParent($this)
                 ->formName($this->getFormName())
@@ -281,7 +283,7 @@ class BelongsToMany extends ModelRelationField implements
             $this->memoizeAllValues = $this->memoizeValues;
         }
 
-        if($this->isOnlyLink() && $this->isOnlyLinkOnForm()) {
+        if ($this->isOnlyLink() && $this->isOnlyLinkOnForm()) {
             return $this->getOnlyLinkButton();
         }
 
@@ -394,7 +396,7 @@ class BelongsToMany extends ModelRelationField implements
                 ->toJson();
         }
 
-        if($this->isOnlyLink()) {
+        if ($this->isOnlyLink()) {
             return $this->getOnlyLinkButton(preview: true)->render();
         }
 
@@ -472,22 +474,19 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         foreach ($requestValues as $key => $checked) {
-            foreach ($this->getFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getPivotName()}.$key",
-                    $this->requestKeyPrefix()
-                );
+            foreach ($this->preparedFields() as $field) {
+                $field->setNameIndex($key);
 
-                $values = request()->input($field->requestKeyPrefix(), []);
+                $values = request()->input("{$this->getPivotName()}.$key", []);
 
                 $apply = $field->apply(
-                    fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? null),
+                    fn ($data): mixed => data_set($data, $field->column(), data_get($values, $field->column())),
                     $values
                 );
 
                 data_set(
                     $applyValues[$key],
-                    $field->column(),
+                    str_replace($this->getPivotAs() . '.', '', $field->column()),
                     data_get($apply, $field->column())
                 );
             }
@@ -505,12 +504,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $this->getFields()
             ->onlyFields()
-            ->each(function (Field $field, $index) use ($data): void {
-                $field->appendRequestKeyPrefix(
-                    "{$this->getPivotName()}.$index",
-                    $this->requestKeyPrefix()
-                );
-
+            ->each(function (Field $field) use ($data): void {
                 $field->beforeApply($data);
             });
 

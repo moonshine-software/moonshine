@@ -31,6 +31,8 @@ trait FileTrait
 
     protected ?Closure $itemAttributes = null;
 
+    protected ?Closure $remainingValuesResolver = null;
+
     public function names(Closure $closure): static
     {
         $this->names = $closure;
@@ -137,14 +139,21 @@ trait FileTrait
 
     public function hiddenOldValuesKey(): string
     {
-        return str('')
-            ->when(
-                $this->requestKeyPrefix(),
-                fn (Stringable $str): Stringable => $str->append(
-                    $this->requestKeyPrefix() . "."
-                )
-            )
-            ->append('hidden_' . $this->column())
+        $column = str($this->column())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->nameDot())
+            ->replaceLast($column, "hidden_$hiddenColumn")
+            ->value();
+    }
+
+    public function hiddenOldValuesName(): string
+    {
+        $column = str($this->column())->explode('.')->last();
+        $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
+
+        return str($this->name())
+            ->replaceLast($column, "hidden_$hiddenColumn")
             ->value();
     }
 
@@ -194,8 +203,22 @@ trait FileTrait
         return $this->allowedExtensions;
     }
 
+    /**
+     * @param  Closure(static $ctx): Collection  $closure
+     */
+    public function remainingValuesResolver(Closure $closure): static
+    {
+        $this->remainingValuesResolver = $closure;
+
+        return $this;
+    }
+
     public function getRemainingValues(): Collection
     {
+        if(!is_null($this->remainingValuesResolver)) {
+            return value($this->remainingValuesResolver, $this);
+        }
+
         return request()->collect(
             $this->hiddenOldValuesKey()
         );

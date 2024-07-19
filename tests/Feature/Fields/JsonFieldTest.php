@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Applies\Filters\JsonModelApply;
+use MoonShine\Fields\File;
 use MoonShine\Fields\Json;
 use MoonShine\Fields\Text;
 use MoonShine\Handlers\ExportHandler;
@@ -74,6 +76,62 @@ it('apply as base with default', function () {
     $this->item->refresh();
 
     expect($this->item->data->toArray())->toBe($data);
+});
+
+it('apply as base with file', function () {
+    $file = UploadedFile::fake()->create('test.csv');
+
+    $data = [
+        'data' => [
+            ['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file],
+        ]
+    ];
+
+    $resource = addFieldsToTestResource(
+        Json::make('Data')->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+            File::make('File'),
+        ])
+    );
+
+    asAdmin()->put(
+        $resource->route('crud.update', $this->item->getKey()),
+        $data
+    )->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->data->toArray())->toBe(
+        [
+            ['file' => $file->hashName(), 'title' => 'Title 1', 'value' => 'Value 1',],
+            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2',],
+        ]
+    );
+
+    // stay by hidden
+
+    $data = [
+        'data' => [
+            ['title' => 'Title 1', 'value' => 'Value 1'],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'hidden_file' => $file->hashName()],
+        ]
+    ];
+
+    asAdmin()->put(
+        $resource->route('crud.update', $this->item->getKey()),
+        $data
+    )->assertRedirect();
+
+    $this->item->refresh();
+
+    expect($this->item->data->toArray())->toBe(
+        [
+            ['file' => null, 'title' => 'Title 1', 'value' => 'Value 1'],
+            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2'],
+        ]
+    );
 });
 
 it('apply as key value', function () {

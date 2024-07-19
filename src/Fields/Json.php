@@ -473,15 +473,10 @@ class Json extends Field implements
                 $requestValues[$index] = $values;
             }
 
-            foreach ($this->getFields()->onlyFields() as $field) {
-                $field->appendRequestKeyPrefix(
-                    "{$this->column()}.$index",
-                    $this->requestKeyPrefix()
-                );
+            foreach ($this->preparedFields() as $field) {
+                $field->setNameIndex($index);
 
                 $field->when($fill, fn (Field $f): Field => $f->resolveFill($values->toArray(), $values));
-
-                $field->setParent($this);
 
                 $apply = $callback($field, $values, $data);
 
@@ -528,7 +523,7 @@ class Json extends Field implements
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
             callback: fn (Field $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                static fn ($data): mixed => data_set($data, $field->column(), data_get($values, $field->column(), '')),
                 $values
             ),
         );
@@ -543,7 +538,7 @@ class Json extends Field implements
             data: $data,
             callback: fn (Field $field, mixed $values): mixed => $this->isAsRelation()
                 ? $field->apply(
-                    static fn ($data): mixed => data_set($data, $field->column(), $values[$field->column()] ?? ''),
+                    static fn ($data): mixed => data_set($data, $field->column(), data_get($values, $field->column(), '')),
                     $values
                 )
                 : $field->afterApply($values),

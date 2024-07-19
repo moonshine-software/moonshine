@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Fields;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\Files;
 use MoonShine\Contracts\Fields\Fileable;
 use MoonShine\Contracts\Fields\RemovableContract;
@@ -38,6 +39,14 @@ class File extends Field implements Fileable, RemovableContract
         $this->accept = $value;
 
         return $this;
+    }
+
+    public function getHiddenAttributes(): ComponentAttributeBag
+    {
+        return $this->attributes()->only(['data-level'])->merge([
+            'name' => $this->hiddenOldValuesName(),
+            'data-name' => $this->hiddenOldValuesName(),
+        ]);
     }
 
     protected function resolvePreview(): View|string

@@ -61,7 +61,7 @@ class Item extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class)
-            ->withPivot(['pivot_1', 'pivot_2']);
+            ->withPivot(['pivot_1', 'pivot_2', 'pivot_3']);
     }
 
     public function comments(): HasMany

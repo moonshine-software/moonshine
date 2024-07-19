@@ -23,21 +23,23 @@ class JsonModelApply implements ApplyContract
                     $data = array_filter($values->first());
 
                     if (filled($data)) {
+                        $column = str_replace('.', '->', $field->column());
+
                         $q
                             ->when(
                                 ! $field->isKeyOrOnlyValue(),
-                                fn (Builder $qq) => $qq->whereJsonContains($field->column(), $data)
+                                fn (Builder $qq) => $qq->whereJsonContains($column, $data)
                             )
                             ->when(
                                 $field->isKeyValue(),
                                 fn (Builder $qq) => $qq->where(
-                                    $field->column() . '->' . ($data['key'] ?? '*'),
+                                    $column . '->' . ($data['key'] ?? '*'),
                                     $data['value'] ?? ''
                                 )
                             )
                             ->when(
                                 $field->isOnlyValue(),
-                                fn (Builder $qq) => $qq->whereJsonContains($field->column(), $data['value'] ?? '')
+                                fn (Builder $qq) => $qq->whereJsonContains($column, $data['value'] ?? '')
                             );
                     }
                 });

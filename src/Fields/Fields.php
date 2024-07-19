@@ -123,7 +123,7 @@ final class Fields extends FormElements
         return $this->map(function (Field $field) use ($parent, $before): Field {
             value($before, $parent, $field);
 
-            $name = str($parent ? $parent->name() : $field->name());
+            $name = str($parent ? $parent->nameDot() : $field->nameDot());
             $level = $name->substrCount('$');
 
             if ($field instanceof Json) {
@@ -134,14 +134,15 @@ final class Fields extends FormElements
                 $field->beforeRender(fn (ID $id): View|string => $id->preview());
             }
 
-            $name = $name
-                ->append('[${index' . $level . '}]')
-                ->append($parent ? "[{$field->column()}]" : '')
-                ->replace('[]', '')
-                ->when(
-                    $field->getAttribute('multiple') || $field->isGroup(),
-                    static fn (Stringable $str): Stringable => $str->append('[]')
-                )->value();
+            $name = $field->nameFrom(
+                $name->value(),
+                "\${index$level}",
+                $parent ? $field->column() : null,
+            );
+
+            if($field->getAttribute('multiple') || $field->isGroup()) {
+                $name .= '[]';
+            }
 
             if($parent) {
                 $field

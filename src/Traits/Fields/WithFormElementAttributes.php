@@ -78,17 +78,15 @@ trait WithFormElementAttributes
         return $this->wrapName;
     }
 
-    protected function nameUnDot(string $name): string
+    public function nameUnDot(string $value): string
     {
-        $parts = explode('.', $name);
-        $count = count($parts);
-        $result = $parts[0];
-
-        for ($i = 1; $i < $count; $i++) {
-            $result .= "[" . $parts[$i] . "]";
+        if (! str_contains($value, '.')) {
+            return $value;
         }
 
-        return $result;
+        return str($value)->explode('.')
+            ->map(static fn ($part, $index): string => $index === 0 ? $part : "[$part]")
+            ->implode('');
     }
 
     protected function prepareName($index = null, $wrap = null): string
@@ -103,11 +101,12 @@ trait WithFormElementAttributes
             return '';
         }
 
-        return (string) str($this->nameUnDot($this->column()))
+        return (string) str($this->column())
             ->when(
                 ! is_null($wrap),
-                fn (Stringable $str): Stringable => $str->wrap("{$wrap}[", "]")
+                fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
+            ->pipe(fn(Stringable $str) => $this->nameUnDot($str->value()))
             ->when(
                 $this->isGroup() || $this->getAttribute('multiple'),
                 fn (Stringable $str): Stringable => $str->append(
@@ -116,7 +115,21 @@ trait WithFormElementAttributes
             );
     }
 
-    protected function nameDot(): string
+    public function nameFrom(?string ...$values): string
+    {
+        return str('')
+            ->pipe(static function(Stringable $str) use($values) {
+                foreach (collect($values)->filter() as $value) {
+                    $str = $str->append(".$value");
+                }
+
+                return $str->trim('.');
+            })
+            ->pipe(fn(Stringable $str) => $this->nameUnDot($str->value()))
+            ->value();
+    }
+
+    public function nameDot(): string
     {
         $name = (string) str($this->name())->replace('[]', '');
 
@@ -132,6 +145,15 @@ trait WithFormElementAttributes
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setNameIndex(int|string $key, int $index = 0): static
+    {
+        $this->setName(
+            str_replace("\${index$index}", (string) $key, $this->name())
+        );
 
         return $this;
     }

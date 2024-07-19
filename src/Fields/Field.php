@@ -40,6 +40,8 @@ abstract class Field extends FormElement
 
     protected string $column;
 
+    protected ?string $virtualColumn = null;
+
     protected mixed $value = null;
 
     protected bool $rawMode = false;
@@ -109,6 +111,18 @@ abstract class Field extends FormElement
         $this->column = $column;
 
         return $this;
+    }
+
+    public function virtualColumn(string $column): static
+    {
+        $this->virtualColumn = $column;
+
+        return $this;
+    }
+
+    public function getVirtualColumn(): string
+    {
+        return $this->virtualColumn ?? $this->column();
     }
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
