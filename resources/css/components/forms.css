@@ -42,7 +42,7 @@ input[type='number'] {
   }
 
   &-inline {
-    @apply w-auto flex-row items-center justify-items-center;
+    @apply w-auto flex-row flex-wrap items-center justify-items-center;
   }
   &-buttons {
     @apply mt-3 flex-row flex-wrap justify-end;
@@ -173,6 +173,11 @@ input[type='number'] {
   ~ span,
   ~ label {
     @apply cursor-pointer text-2xs;
+  }
+
+  /* Invalid field */
+  &.form-invalid {
+    @apply transition-colors border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
   }
 }
 
