@@ -7,9 +7,9 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\UI\FieldContract;
 
-/** @mixin Field */
+/** @mixin FieldContract */
 trait WithQuickFormElementAttributes
 {
     protected ?string $wrapName = null;

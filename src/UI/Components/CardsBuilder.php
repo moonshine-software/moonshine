@@ -6,15 +6,14 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Support\Collection;
-use MoonShine\Support\Traits\HasAsync;
-use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
+use MoonShine\UI\Traits\HasAsync;
 use Throwable;
 
 /**
- * @method static static make(iterable $items = [], Fields|array $fields = [])
+ * @method static static make(iterable $items = [], FieldsContract|array $fields = [])
  */
 final class CardsBuilder extends IterableComponent
 {
@@ -49,7 +48,7 @@ final class CardsBuilder extends IterableComponent
 
     public function __construct(
         iterable $items = [],
-        Fields|array $fields = [],
+        FieldsContract|array $fields = [],
     ) {
         parent::__construct();
 
@@ -111,7 +110,7 @@ final class CardsBuilder extends IterableComponent
 
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $url ?? fn (): string => moonshineRouter()->getEndpoints()->asyncComponent(name: $this->getName());
+        return $url ?? fn (): string => $this->core->getRouter()->getEndpoints()->asyncComponent(name: $this->getName());
     }
 
     public function componentAttributes(array|Closure $attributes): self
@@ -166,10 +165,10 @@ final class CardsBuilder extends IterableComponent
             : value($this->{$column}, $data, $index, $this);
     }
 
-    protected function getMapper(mixed $data, FieldsCollection $fields, int $index): array
+    protected function getMapper(mixed $data, FieldsContract $fields, int $index): array
     {
         $values = $fields->values()
-            ->mapWithKeys(static fn (Field $value): array => [$value->getLabel() => (string) $value->preview()])
+            ->mapWithKeys(static fn (FieldContract $value): array => [$value->getLabel() => (string) $value->preview()])
             ->toArray();
 
         return [

@@ -26,13 +26,9 @@ class TestCoverPageResource extends ModelResource
     public function pages(): array
     {
         return [
-            CoverPageIndex::make($this->getTitle()),
-            CoverPageForm::make(
-                $this->getItemID()
-                    ? __('moonshine::ui.edit')
-                    : __('moonshine::ui.add')
-            ),
-            CoverPageDetail::make(__('moonshine::ui.show')),
+            CoverPageIndex::class,
+            CoverPageForm::class,
+            CoverPageDetail::class,
         ];
     }
 
@@ -41,7 +37,7 @@ class TestCoverPageResource extends ModelResource
         return [
             ID::make('ID'),
             Image::make('Image title', 'image'),
-            BelongsTo::make('Category title', 'category', 'name', new TestCategoryResource()),
+            BelongsTo::make('Category title', 'category', 'name', TestCategoryResource::class),
         ];
     }
 

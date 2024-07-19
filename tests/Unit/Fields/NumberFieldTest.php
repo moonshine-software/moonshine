@@ -71,7 +71,7 @@ it('preview with stars', function (): void {
 it('apply', function (): void {
     $data = ['rating' => 5];
 
-    fakeRequest(parameters: $data);
+    fakeRequest(method: 'post', parameters: $data);
 
     expect(
         $this->field->apply(

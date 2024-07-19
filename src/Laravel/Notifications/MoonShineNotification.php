@@ -34,7 +34,7 @@ final class MoonShineNotification
                         )
                     )
                     ->get(),
-                MoonShineDatabaseNotification::make(
+                DatabaseNotification::make(
                     $message,
                     $button,
                     $color

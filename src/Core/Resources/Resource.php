@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Resources;
 
-use MoonShine\Core\Contracts\MenuFiller;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\Handlers\Handler;
-use MoonShine\Core\Handlers\Handlers;
-use MoonShine\Core\MoonShineRouter;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Core\Pages\Pages;
-use MoonShine\Support\Traits\WithAssets;
-use MoonShine\Support\Traits\WithUriKey;
+use MoonShine\Core\Traits\WithAssets;
+use MoonShine\Core\Traits\WithUriKey;
 
-abstract class Resource implements ResourceContract, MenuFiller
+abstract class Resource implements ResourceContract, MenuFillerContract
 {
     use WithUriKey;
     use WithAssets;
@@ -26,11 +27,16 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     protected bool $loaded = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        protected CoreContract $core,
+        protected AssetManagerContract $assetManager,
+    ) {
         $this->booted();
     }
 
+    /**
+     * @return list<class-string<PageContract>>
+     */
     abstract protected function pages(): array;
 
     public function getPages(): Pages
@@ -40,6 +46,7 @@ abstract class Resource implements ResourceContract, MenuFiller
         }
 
         $this->pages = Pages::make($this->pages())
+            ->map(fn (string $page) => $this->core->getContainer()->get($page))
             ->setResource($this);
 
         return $this->pages;
@@ -104,25 +111,14 @@ abstract class Resource implements ResourceContract, MenuFiller
         }
     }
 
-    protected function handlers(): array
-    {
-        return [];
-    }
-
-    public function getHandlers(): Handlers
-    {
-        return Handlers::make($this->handlers())
-            ->each(fn (Handler $handler): Handler => $handler->setResource($this));
-    }
-
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getRouter(): MoonShineRouter
+    public function getRouter(): RouterContract
     {
-        return moonshineRouter()->withResource($this);
+        return (clone $this->core->getRouter())->withResource($this);
     }
 
     public function getUrl(): string
@@ -135,7 +131,6 @@ abstract class Resource implements ResourceContract, MenuFiller
 
     public function isActive(): bool
     {
-        return moonshineRouter()->extractResourceUri()
-            === $this->getUriKey();
+        return $this->getRouter()->extractResourceUri() === $this->getUriKey();
     }
 }

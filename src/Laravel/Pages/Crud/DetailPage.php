@@ -3,6 +3,7 @@
 namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -18,7 +19,6 @@ use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
@@ -29,6 +29,11 @@ use Throwable;
 class DetailPage extends Page
 {
     protected ?PageType $pageType = PageType::DETAIL;
+
+    public function getTitle(): string
+    {
+        return $this->title ?: __('moonshine::ui.show');
+    }
 
     /**
      * @return array<string, string>
@@ -61,7 +66,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<MoonShineRenderable>
+     * @return list<RenderableContract>
      * @throws Throwable
      */
     public function components(): array
@@ -77,7 +82,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<MoonShineRenderable>
+     * @return list<RenderableContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -95,7 +100,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<MoonShineRenderable>
+     * @return list<RenderableContract>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -144,7 +149,7 @@ class DetailPage extends Page
         return array_merge($components, $this->getResource()->getDetailPageComponents());
     }
 
-    protected function getDetailComponent(?Model $item, Fields $fields): MoonShineRenderable
+    protected function getDetailComponent(?Model $item, Fields $fields): RenderableContract
     {
         return TableBuilder::make($fields)
             ->cast($this->getResource()->getModelCast())
@@ -155,7 +160,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<MoonShineRenderable>
+     * @return list<RenderableContract>
      * @throws MoonShineComponentException
      * @throws PageException
      * @throws Throwable

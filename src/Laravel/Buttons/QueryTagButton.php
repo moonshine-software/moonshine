@@ -2,13 +2,14 @@
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 
 final class QueryTagButton
 {
-    public static function for(ModelResource $resource, QueryTag $tag): ActionButton
+    public static function for(ModelResource $resource, QueryTag $tag): ActionButtonContract
     {
         return ActionButton::make(
             $tag->getLabel(),
@@ -23,7 +24,7 @@ final class QueryTagButton
             ])
             ->when(
                 $tag->isActive(),
-                static fn (ActionButton $btn): ActionButton => $btn
+                static fn (ActionButtonContract $btn): ActionButtonContract => $btn
                     ->primary()
                     ->customAttributes([
                         'href' => $resource->getIndexPageUrl(),
@@ -31,7 +32,7 @@ final class QueryTagButton
             )
             ->when(
                 $resource->isAsync(),
-                static fn (ActionButton $btn): ActionButton => $btn
+                static fn (ActionButtonContract $btn): ActionButtonContract => $btn
                     ->onClick(
                         static fn ($action): string => "queryTagRequest(`{$tag->getUri()}`)",
                         'prevent'
@@ -39,7 +40,7 @@ final class QueryTagButton
             )
             ->when(
                 $tag->isDefault(),
-                static fn (ActionButton $btn): ActionButton => $btn->class('js-query-tag-default')
+                static fn (ActionButtonContract $btn): ActionButtonContract => $btn->class('js-query-tag-default')
             );
     }
 }

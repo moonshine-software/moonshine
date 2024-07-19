@@ -6,24 +6,25 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Traits\WithFields;
 
-class Template extends Field implements HasFields
+class Template extends Field implements HasFieldsContract
 {
     use WithFields;
 
     protected ?Closure $renderCallback = null;
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         return tap(
             $this->getFields()->wrapNames($this->getColumn()),
             fn () => $this->getFields()
                 ->onlyFields()
-                ->map(fn (Field $field): Field => $field->setParent($this)->formName($this->getFormName()))
+                ->map(fn (FieldContract $field): FieldContract => $field->setParent($this)->formName($this->getFormName()))
         );
     }
 
@@ -32,7 +33,7 @@ class Template extends Field implements HasFields
         return '';
     }
 
-    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
     {
         if($this->isFillChanged()) {
             return value(

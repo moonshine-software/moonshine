@@ -10,7 +10,7 @@ use ReflectionException;
 
 /**
  * @template AttributeClass
- * TODO(3.0) change to package fast-attributes
+ * todo move to package
  */
 final class Attributes
 {

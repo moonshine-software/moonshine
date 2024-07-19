@@ -6,16 +6,16 @@ namespace MoonShine\Laravel\Applies\Fields;
 
 use Closure;
 use Illuminate\Http\UploadedFile;
-use MoonShine\UI\Contracts\ApplyContract;
+use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Exceptions\FieldException;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;
 use Throwable;
 
 final class FileModelApply implements ApplyContract
 {
     /* @param  File  $field */
-    public function apply(Field $field): Closure
+    public function apply(FieldContract $field): Closure
     {
         return function (mixed $item) use ($field): mixed {
             $requestValue = $field->getRequestValue();

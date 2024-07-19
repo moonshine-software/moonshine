@@ -6,6 +6,7 @@ namespace {namespace};
 
 use {extend};
 use MoonShine\ColorManager\ColorManager;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
@@ -46,7 +47,10 @@ final class DummyLayout extends {extendShort}
         ];
     }
 
-    protected function colors(ColorManager $colorManager): void
+    /**
+     * @param ColorManager $colorManager
+     */
+    protected function colors(ColorManagerContract $colorManager): void
     {
         parent::colors($colorManager);
 

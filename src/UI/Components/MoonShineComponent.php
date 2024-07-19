@@ -7,16 +7,20 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\HasAssetsContract;
+use MoonShine\Contracts\Core\HasCanSeeContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
-use MoonShine\UI\Contracts\Components\HasCanSeeContract;
-use MoonShine\UI\Contracts\Fields\HasAssets;
-use MoonShine\UI\Contracts\MoonShineRenderable;
-use MoonShine\UI\Traits\WithViewRenderer;
+use MoonShine\UI\Traits\HasCanSee;
 
-abstract class MoonShineComponent extends Component implements MoonShineRenderable, HasCanSeeContract
+abstract class MoonShineComponent extends Component implements RenderableContract, HasCanSeeContract
 {
     use Conditionable;
     use Macroable;
@@ -25,12 +29,22 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use HasCanSee;
     use WithComponentAttributes;
 
+    // todo DI
+    protected CoreContract $core;
+    protected AssetManagerContract $assetManager;
+    protected ColorManagerContract $colorManager;
+
     public function __construct(
-        protected string $name = 'default'
+        protected string $name = 'default',
     ) {
         $this->attributes = new MoonShineComponentAttributeBag();
 
-        if($this instanceof HasAssets) {
+        // todo DI
+        $this->core = Core::getInstance();
+        $this->assetManager = $this->core->getContainer(AssetManagerContract::class);
+        $this->colorManager = $this->core->getContainer(ColorManagerContract::class);
+
+        if($this instanceof HasAssetsContract) {
             $this->resolveAssets();
         }
 

@@ -29,7 +29,7 @@ beforeEach(function () {
         File::make('Pivot 3', 'pivot_3'),
     ];
 
-    $this->field = BelongsToMany::make('Categories', resource: new TestCategoryResource())
+    $this->field = BelongsToMany::make('Categories', resource: TestCategoryResource::class)
         ->fields($this->pivotFields)
         ->fillData($this->item)
     ;

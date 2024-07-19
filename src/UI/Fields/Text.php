@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
@@ -16,7 +16,7 @@ use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 use MoonShine\UI\Traits\Fields\WithMask;
 
-class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpdateOnPreview, HasReactivity
+class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract, HasReactivityContract
 {
     use WithInputExtensions;
     use WithMask;

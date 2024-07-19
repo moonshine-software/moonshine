@@ -9,17 +9,25 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Laravel\Octane\Events\RequestHandled;
 use MoonShine\AssetManager\AssetManager;
 use MoonShine\ColorManager\ColorManager;
-use MoonShine\Core\Contracts\ConfiguratorContract;
-use MoonShine\Core\Contracts\MoonShineEndpoints;
-use MoonShine\Core\Contracts\StorageContract;
-use MoonShine\Core\MoonShineRouter;
-use MoonShine\Core\Request;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\AssetManager\AssetResolverContract;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
+use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
+use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
+use MoonShine\Contracts\Core\DependencyInjection\TranslatorContract;
+use MoonShine\Contracts\Core\DependencyInjection\ViewRendererContract;
+use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Core\Core;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Applies\Filters\CheckboxModelApply;
@@ -44,31 +52,30 @@ use MoonShine\Laravel\Commands\MakeResourceCommand;
 use MoonShine\Laravel\Commands\MakeTypeCastCommand;
 use MoonShine\Laravel\Commands\MakeUserCommand;
 use MoonShine\Laravel\Commands\PublishCommand;
+use MoonShine\Laravel\DependencyInjection\AssetResolver;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
+use MoonShine\Laravel\DependencyInjection\Request;
+use MoonShine\Laravel\DependencyInjection\Translator;
+use MoonShine\Laravel\DependencyInjection\ViewRenderer;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
-use MoonShine\Laravel\LaravelEndpoints;
-use MoonShine\Laravel\LaravelMoonShineRouter;
 use MoonShine\Laravel\Models\MoonshineUser;
-use MoonShine\Laravel\MoonShineConfigurator;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
 use MoonShine\MenuManager\MenuManager;
-use MoonShine\MoonShine;
-use MoonShine\Support\Enums\Env;
 use MoonShine\UI\Applies\AppliesRegister;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\DateRange;
 use MoonShine\UI\Fields\File;
-use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
-use Psr\Http\Message\ServerRequestInterface;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -120,66 +127,32 @@ class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerBindings(): self
     {
-        $this->app->singleton(MoonShine::class);
+        $this->app->singleton(CoreContract::class, MoonShine::class);
+        $this->app->bind(RouterContract::class, MoonShineRouter::class);
 
         $this->app->{app()->runningUnitTests() ? 'bind' : 'singleton'}(
             MoonShineRequest::class,
             static fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
-        $this->app->singleton(MenuManager::class);
-        $this->app->singleton(AssetManager::class);
-        $this->app->singleton(AppliesRegister::class);
+        $this->app->singleton(MenuManagerContract::class, MenuManager::class);
+        $this->app->singleton(AssetManagerContract::class, AssetManager::class);
+        $this->app->singleton(AssetResolverContract::class, AssetResolver::class);
         $this->app->singleton(ConfiguratorContract::class, MoonShineConfigurator::class);
+        $this->app->singleton(AppliesRegisterContract::class, AppliesRegister::class);
 
-        $this->app->bind(MoonShineRouter::class, LaravelMoonShineRouter::class);
-        $this->app->bind(MoonShineEndpoints::class, LaravelEndpoints::class);
+        $this->app->bind(TranslatorContract::class, Translator::class);
+        $this->app->bind(FieldsContract::class, Fields::class);
+        $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
-        $this->app->bind(FieldsCollection::class, Fields::class);
+        $this->app->bind(RequestContract::class, Request::class);
+
         $this->app->bind(StorageContract::class, static fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
             $app->get('filesystem')
         ));
 
-        $this->app->scoped(ColorManager::class);
-
-        MoonShine::flushStates(static function (): void {
-            moonshineCache()->flush();
-        });
-
-        MoonShine::setEnv(
-            Env::fromString(app()->environment())
-        );
-
-        MoonShine::renderUsing(static fn (string $view, array $data) => view($view, $data));
-
-        MoonShine::containerResolver(static function (string $id, mixed $default = null, ...$parameters): mixed {
-            if(! is_null($default) && ! app()->has($id)) {
-                return $default;
-            }
-
-            return app($id, ...$parameters);
-        });
-
-        FormElement::errorsResolver(
-            static fn (?string $bag) => app('session')
-                ->get('errors')
-                ?->{$bag}
-                ?->toArray() ?? []
-        );
-
-        AssetManager::assetUsing(static fn (string $path): string => asset($path));
-        AssetManager::viteDevResolver(static fn (string $path): string => Vite::useBuildDirectory('vendor/moonshine')
-            ->useHotFile($path)
-            ->withEntryPoints(['resources/css/main.css', 'resources/js/app.js'])
-            ->toHtml());
-
-        MoonShine::requestResolver(static fn (): Request => new Request(
-            request: app(ServerRequestInterface::class),
-            session: static fn (string $key, mixed $default) => session($key, $default),
-            file: static fn (string $key) => request()->file($key, request()->input($key, false)),
-            old: static fn (string $key, mixed $default) => session()->getOldInput($key, $default)
-        ));
+        $this->app->scoped(ColorManagerContract::class, ColorManager::class);
 
         return $this;
     }
@@ -252,7 +225,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ->registerRouterMacro();
 
         $this->mergeConfigFrom(
-            MoonShine::path('/config/moonshine.php'),
+            Core::path('/config/moonshine.php'),
             'moonshine'
         );
     }
@@ -260,25 +233,32 @@ class MoonShineServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (moonshineConfig()->isUseMigrations()) {
-            $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+            $this->loadMigrationsFrom(Core::path('/database/migrations'));
+
+            /*
+             * todo
+            $this->publishesMigrations([
+                Core::path('/database/migrations') => database_path('migrations'),
+            ]);
+            */
         }
 
         $this->publishes([
-            MoonShine::path('/config/moonshine.php') => config_path(
+            Core::path('/config/moonshine.php') => config_path(
                 'moonshine.php'
             ),
         ]);
 
-        $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
-        $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
+        $this->loadTranslationsFrom(Core::path('/lang'), 'moonshine');
+        $this->loadRoutesFrom(Core::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../resources/views', 'moonshine');
 
         $this->publishes([
-            MoonShine::path('/public') => public_path('vendor/moonshine'),
+            Core::path('/public') => public_path('vendor/moonshine'),
         ], ['moonshine-assets', 'laravel-assets']);
 
         $this->publishes([
-            MoonShine::path('/lang') => $this->app->langPath(
+            Core::path('/lang') => $this->app->langPath(
                 'vendor/moonshine'
             ),
         ]);

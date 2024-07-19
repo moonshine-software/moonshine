@@ -54,7 +54,7 @@ trait HasTreeMode
 
                 $this->getAttributes()->set('name', $this->getNameAttribute((string) $item->getKey()));
 
-                $element = moonshine()->render(
+                $element = moonshine()->getRenderer()->render(
                     'moonshine::components.form.input-composition',
                     [
                         'attributes' => $this->getAttributes()->merge([

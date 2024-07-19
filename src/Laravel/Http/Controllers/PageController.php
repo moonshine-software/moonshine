@@ -2,14 +2,13 @@
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use MoonShine\Core\Pages\ViewPage;
+use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\Pages\Page;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PageController extends MoonShineController
 {
-    public function __invoke(MoonShineRequest $request): Page|JsonResponse
+    public function __invoke(MoonShineRequest $request): PageContract|JsonResponse
     {
         $page = $request
             ->getPage()
@@ -25,12 +24,11 @@ class PageController extends MoonShineController
         return $page;
     }
 
-    private function structureResponse(Page $page, MoonShineRequest $request): JsonResponse
+    private function structureResponse(PageContract $page, MoonShineRequest $request): JsonResponse
     {
         $withStates = ! $request->hasHeader('X-MS-Without-States');
 
         $layout = $page->getLayout();
-        ViewPage::make();
         $layoutComponents = $layout->build();
 
         if($request->hasHeader('X-MS-Only-Layout')) {

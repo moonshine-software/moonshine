@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\UI\Contracts\Fields\Fileable;
-use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Contracts\FileableContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
 
@@ -82,7 +82,7 @@ it('view', function (): void {
 
 it('correct interfaces', function (): void {
     expect($this->field)
-        ->toBeInstanceOf(Fileable::class)
+        ->toBeInstanceOf(FileableContract::class)
         ->toBeInstanceOf(RemovableContract::class);
 });
 

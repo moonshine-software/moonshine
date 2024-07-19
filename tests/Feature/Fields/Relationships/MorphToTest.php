@@ -17,7 +17,7 @@ use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 uses()->group('model-relation-fields');
 
 beforeEach(function (): void {
-    $this->resource = new TestImageResource();
+    $this->resource = app(TestImageResource::class);
     $this->items = Item::factory(10)->create();
     $this->item = Item::factory()->createOne();
     $this->image = ImageModel::create([
@@ -91,7 +91,7 @@ it('import', function (): void {
 
 function morphToExport(ImageModel $item, int $newId): ?string
 {
-    $resource = new TestImageResource();
+    $resource = app(TestImageResource::class);
     $item->imageable_id = $newId;
     $item->imageable_type = Item::class;
 

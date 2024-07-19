@@ -11,7 +11,7 @@ it('index', function () {
     asAdmin()
         ->get(
             toPage(
-                moonshineConfig()->getPage('profile', ProfilePage::class)
+                $this->moonshineCore->getConfig()->getPage('profile', ProfilePage::class)
             )
         )
         ->assertSee($user->name)
@@ -26,9 +26,9 @@ it('index', function () {
 
 it('store', function () {
     $data = [
-        moonshineConfig()->getUserField('name') => 'Test name',
-        moonshineConfig()->getUserField('username') => 'new@mail.ru',
-        moonshineConfig()->getUserField('password') => '123456',
+        $this->moonshineCore->getConfig()->getUserField('name') => 'Test name',
+        $this->moonshineCore->getConfig()->getUserField('username') => 'new@mail.ru',
+        $this->moonshineCore->getConfig()->getUserField('password') => '123456',
         'password_repeat' => '123456',
     ];
 

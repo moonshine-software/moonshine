@@ -6,9 +6,9 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\Layout\{Assets, Body, Favicon, Head, Html, LayoutBuilder, Meta};
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\UI\Layout;
 
-final class BlankLayout extends MoonShineLayout
+final class BlankLayout extends Layout
 {
     public function build(): LayoutBuilder
     {

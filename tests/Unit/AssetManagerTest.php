@@ -3,39 +3,44 @@
 declare(strict_types=1);
 
 use MoonShine\AssetManager\AssetElements;
+use MoonShine\AssetManager\AssetManager;
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
 
 uses()->group('asset-manager');
 
+beforeEach(function () {
+    $this->assetManager = $this->moonshineCore->getContainer(AssetManager::class);
+});
+
 it('empty asset elements', function (): void {
-    expect(moonshineAssets()->getAssets())
+    expect($this->assetManager->getAssets())
         ->toBeInstanceOf(AssetElements::class)
         ->toBeEmpty();
 });
 
 it('add asset', function (): void {
-    moonshineAssets()->add(
+    $this->assetManager->add(
         Css::make('app.css')
     );
 
-    expect(moonshineAssets()->getAssets())
+    expect($this->assetManager->getAssets())
         ->toHaveCount(1)
         ->each->toBeInstanceOf(Css::class);
 });
 
 it('add unique asset', function (): void {
-    moonshineAssets()->add(
+    $this->assetManager->add(
         Css::make('app.css')
     );
 
-    moonshineAssets()->add([
+    $this->assetManager->add([
         Css::make('app.css'),
         Css::make('app.css'),
         Css::make('app.css'),
     ]);
 
-    expect(moonshineAssets()->getAssets())
+    expect($this->assetManager->getAssets())
         ->toHaveCount(1)
         ->each->toBeInstanceOf(Css::class);
 });
@@ -44,7 +49,7 @@ it('asset link', function (): void {
     $asset = Js::make('app.js');
 
     expect($asset->getLink())
-        ->toBe(moonshineAssets()->getAsset('app.js'))
+        ->toBe('app.js')
     ;
 });
 
@@ -61,5 +66,13 @@ it('add asset with attributes', function (): void {
         ->toBeNull()
         ->and($asset->getAttribute('data-var'))
         ->toBe('foo')
+    ;
+});
+
+it('add asset with version', function (): void {
+    $asset = Css::make('app.css')->version('1.0');
+
+    expect($asset->getLink())
+        ->toContain('?v=1.0')
     ;
 });

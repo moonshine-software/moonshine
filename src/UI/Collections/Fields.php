@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\FieldsWrapper;
-use MoonShine\UI\Contracts\Fields\Fileable;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
-use MoonShine\UI\Contracts\MoonShineRenderable;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\Core\Collections\Renderables;
+use MoonShine\UI\Contracts\FieldsWrapperContract;
+use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Fields\ID;
 use Throwable;
 
 /**
- * @extends MoonShineRenderElements<int, Field>
+ * @extends Renderables<int, FieldContract>
  */
-class Fields extends MoonShineRenderElements implements FieldsCollection
+class Fields extends Renderables implements FieldsContract
 {
     /**
      * @throws Throwable
@@ -43,9 +44,9 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     {
         return $this->onlyFields()
             ->map(
-                static function (Field $formElement): Field {
+                static function (FieldContract $formElement): FieldContract {
                     $formElement->when(
-                        ! $formElement instanceof Fileable,
+                        ! $formElement instanceof FileableContract,
                         static function ($field): void {
                             $field->mergeAttribute('x-on:change', 'onChangeField($event)', ';');
                         }
@@ -77,7 +78,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
 
     public function withoutWrappers(): static
     {
-        return $this->unwrapElements(FieldsWrapper::class);
+        return $this->unwrapElements(FieldsWrapperContract::class);
     }
 
     /**
@@ -86,7 +87,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function whenFields(): static
     {
         return $this->filter(
-            static fn (Field $field): bool => $field->hasShowWhen()
+            static fn (FieldContract $field): bool => $field->hasShowWhen()
         )->values();
     }
 
@@ -97,7 +98,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     {
         return $this->whenFields()->map(
             static fn (
-                Field $field
+                FieldContract $field
             ): array => $field->getShowWhenCondition()
         );
     }
@@ -107,30 +108,30 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      */
     public function fillCloned(
         array $raw = [],
-        ?CastedData $casted = null,
+        ?CastedDataContract $casted = null,
         int $index = 0,
-        ?FieldsCollection $preparedFields = null
+        ?FieldsContract $preparedFields = null
     ): static {
         return ($preparedFields ?? $this->onlyFields())->map(
-            static fn (Field $field): Field => (clone $field)
+            static fn (FieldContract $field): FieldContract => (clone $field)
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
         );
     }
 
     public function fillClonedRecursively(
         array $raw = [],
-        ?CastedData $casted = null,
+        ?CastedDataContract $casted = null,
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
-        return ($preparedFields ?? $this)->map(static function (MoonShineRenderable $component) use ($raw, $casted, $index): MoonShineRenderable {
-            if ($component instanceof HasFields) {
+        return ($preparedFields ?? $this)->map(static function (RenderableContract $component) use ($raw, $casted, $index): RenderableContract {
+            if ($component instanceof HasFieldsContract) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
                 );
             }
 
-            if ($component instanceof Field) {
+            if ($component instanceof FieldContract) {
                 $component->fillData(is_null($casted) ? $raw : $casted, $index);
             }
 
@@ -141,10 +142,10 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     /**
      * @throws Throwable
      */
-    public function fill(array $raw = [], ?CastedData $casted = null, int $index = 0): void
+    public function fill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): void
     {
         $this->onlyFields()->map(
-            static fn (Field $field): Field => $field
+            static fn (FieldContract $field): FieldContract => $field
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
         );
     }
@@ -156,7 +157,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     {
         $this
             ->onlyFields()
-            ->each(static fn (Field $field): Field => $field->wrapName($name));
+            ->each(static fn (FieldContract $field): FieldContract => $field->wrapName($name));
 
         return $this;
     }
@@ -167,29 +168,29 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function reset(): void
     {
         $this->onlyFields()->map(
-            static fn (Field $field): Field => $field->reset()
+            static fn (FieldContract $field): FieldContract => $field->reset()
         );
     }
 
     public function onlyHasFields(): static
     {
-        return $this->filter(static fn (Field $field): bool => $field instanceof HasFields);
+        return $this->filter(static fn (FieldContract $field): bool => $field instanceof HasFieldsContract);
     }
 
     public function withoutHasFields(): static
     {
-        return $this->filter(static fn (Field $field): bool => ! $field instanceof HasFields);
+        return $this->filter(static fn (FieldContract $field): bool => ! $field instanceof HasFieldsContract);
     }
 
     /**
      * @throws Throwable
      */
-    public function prepareReindex(?Field $parent = null, ?callable $before = null, ?callable $performName = null): static
+    public function prepareReindex(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
-        return $this->map(static function (Field $field) use ($parent, $before, $performName): Field {
+        return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
             $modifyField = value($before, $parent, $field);
 
-            if($modifyField instanceof Field) {
+            if($modifyField instanceof FieldContract) {
                 $field = $modifyField;
             }
 
@@ -230,7 +231,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function reactiveFields(): static
     {
         return $this->filter(
-            static fn (Field $field): bool => $field instanceof HasReactivity && $field->isReactive()
+            static fn (FieldContract $field): bool => $field instanceof HasReactivityContract && $field->isReactive()
         );
     }
 
@@ -241,7 +242,7 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
     public function extractLabels(): array
     {
         return $this->flatMap(
-            static fn (Field $field): array => [$field->getColumn() => $field->getLabel()]
+            static fn (FieldContract $field): array => [$field->getColumn() => $field->getLabel()]
         )->toArray();
     }
 
@@ -250,26 +251,26 @@ class Fields extends MoonShineRenderElements implements FieldsCollection
      */
     public function findByColumn(
         string $column,
-        Field $default = null
-    ): ?Field {
+        FieldContract $default = null
+    ): ?FieldContract {
         return $this->first(
-            static fn (Field $field): bool => $field->getColumn() === $column,
+            static fn (FieldContract $field): bool => $field->getColumn() === $column,
             $default
         );
     }
 
     /**
-     * @template-covariant T of Field
+     * @template-covariant T of FieldContract
      * @param  class-string<T>  $class
-     * @param ?Field  $default
+     * @param ?FieldContract  $default
      * @throws Throwable
      */
     public function findByClass(
         string $class,
-        Field $default = null
-    ): ?Field {
+        FieldContract $default = null
+    ): ?FieldContract {
         return $this->first(
-            static fn (Field $field): bool => $field::class === $class,
+            static fn (FieldContract $field): bool => $field::class === $class,
             $default
         );
     }

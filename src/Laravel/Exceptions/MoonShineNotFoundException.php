@@ -21,9 +21,9 @@ class MoonShineNotFoundException extends MoonShineException
         $page = moonshineConfig()->getPage(
             'error',
             ErrorPage::class,
-            code: Response::HTTP_NOT_FOUND,
-            message: trans('moonshine::ui.404'),
-        );
+        )
+            ->code(Response::HTTP_NOT_FOUND)
+            ->message(__('moonshine::ui.404'));
 
         return response($page)->setStatusCode(Response::HTTP_NOT_FOUND);
     }

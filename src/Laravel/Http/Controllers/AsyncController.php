@@ -4,13 +4,13 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Components\FieldsGroup;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Select;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +36,7 @@ class AsyncController extends MoonShineController
             return '';
         }
 
-        if ($component instanceof TableBuilder) {
+        if ($component instanceof TableBuilderContract) {
             return $this->responseWithTable($component);
         }
 
@@ -94,7 +94,7 @@ class AsyncController extends MoonShineController
     {
         $page = $request->getPage();
 
-        /** @var FormBuilder $form */
+        /** @var FormBuilderContract $form */
         $form = $page->getComponents()->findForm(
             $request->getComponentName()
         );
@@ -135,10 +135,10 @@ class AsyncController extends MoonShineController
         }
 
         $values = $fields
-            ->mapWithKeys(static fn (Field $field): array => [$field->getColumn() => $field->getValue()]);
+            ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $fields = $fields->mapWithKeys(
-            static fn (Field $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
+            static fn (FieldContract $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
         );
 
         return $this->json(data: [

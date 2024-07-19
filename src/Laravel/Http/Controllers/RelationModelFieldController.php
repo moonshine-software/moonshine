@@ -7,8 +7,12 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Core\Collections\Renderables;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearch;
+use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
@@ -17,10 +21,7 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -34,7 +35,7 @@ class RelationModelFieldController extends MoonShineController
     {
         $field = $request->getPageField();
 
-        if (! $field instanceof HasAsyncSearch) {
+        if (! $field instanceof HasAsyncSearchContract) {
             return response()->json();
         }
 
@@ -119,7 +120,7 @@ class RelationModelFieldController extends MoonShineController
 
         $value = $field?->getComponent();
 
-        if ($value instanceof TableBuilder && $request->filled('_key')) {
+        if ($value instanceof TableBuilderContract && $request->filled('_key')) {
             return $this->responseWithTable($value);
         }
 
@@ -157,7 +158,7 @@ class RelationModelFieldController extends MoonShineController
         $getFields = static function () use ($resource, $field, $isAsync, $parent, $update) {
             $fields = $resource->getFormFields();
 
-            $fields->onlyFields()->each(static fn (Field $nestedFields): Field => $nestedFields->setParent($field));
+            $fields->onlyFields()->each(static fn (FieldContract $nestedFields): FieldContract => $nestedFields->setParent($field));
 
             return $fields->when(
                 $field->getRelation() instanceof MorphOneOrMany,
@@ -198,11 +199,11 @@ class RelationModelFieldController extends MoonShineController
             )
             ->when(
                 $update,
-                static fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     $item,
                     $resource->getModelCast()
                 ),
-                static fn (FormBuilder $form): FormBuilder => $form->fillCast(
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     array_filter([
                         $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
                         ...$field->getRelation() instanceof MorphOneOrMany
@@ -213,7 +214,7 @@ class RelationModelFieldController extends MoonShineController
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-            ->onBeforeFieldsRender(static fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

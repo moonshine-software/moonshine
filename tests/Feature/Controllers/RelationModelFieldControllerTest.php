@@ -12,7 +12,7 @@ use MoonShine\UI\Fields\StackFields;
 uses()->group('relation-controller');
 
 beforeEach(function (): void {
-    $this->itemResource = new TestItemResource();
+    $this->itemResource = app(TestItemResource::class);
 });
 
 it('search relations with pagination', function () {
@@ -21,7 +21,7 @@ it('search relations with pagination', function () {
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get($this->router->to('relation.search-relations', [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('relation.search-relations', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -40,12 +40,11 @@ it('search relations with pagination', function () {
 });
 
 it('pagination has many with page', function () {
-
     $item = createItem(countComments: 6);
 
     $comment = $item->comments[3];
 
-    asAdmin()->get($this->router->to("relation.search-relations", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search-relations", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -69,7 +68,7 @@ it('pagination has many sort', function () {
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get($this->router->to("relation.search-relations", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search-relations", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -91,7 +90,7 @@ it('search relations empty result', function () {
 
     $item = createItem(countComments: 1);
 
-    asAdmin()->get($this->router->to('relation.search-relations', [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('relation.search-relations', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -111,7 +110,7 @@ it('async search', function () {
     ]);
     $item->categories()->attach($category);
     $item->refresh();
-    $resource = new TestCategoryResource();
+    $resource = app(TestCategoryResource::class);
 
     $field = StackFields::make()->fields([
         BelongsToMany::make('Categories', resource: $resource)
@@ -120,7 +119,7 @@ it('async search', function () {
 
     addFieldsToTestResource($field);
 
-    asAdmin()->get($this->router->to("relation.search", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-resource',
         'resourceItem' => $item->id,

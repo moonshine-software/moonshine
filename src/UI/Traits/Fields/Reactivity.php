@@ -6,10 +6,11 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Support\Stringable;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Collections\Fields;
-use MoonShine\UI\Fields\Field;
 
-/** @mixin Field */
+/** @mixin FieldContract */
 trait Reactivity
 {
     protected ?Closure $reactiveCallback = null;
@@ -21,7 +22,7 @@ trait Reactivity
         return $this->isReactive;
     }
 
-    public function getReactiveCallback(Fields $fields, mixed $value, array $values): Fields
+    public function getReactiveCallback(FieldsContract $fields, mixed $value, array $values): FieldsContract
     {
         if(is_null($this->reactiveCallback) || ! $this->isReactive()) {
             return $fields;

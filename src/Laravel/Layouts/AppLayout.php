@@ -33,9 +33,9 @@ use MoonShine\UI\Components\{
     Title,
     When
 };
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\UI\Layout;
 
-class AppLayout extends MoonShineLayout
+class AppLayout extends Layout
 {
     protected function menu(): array
     {
@@ -43,11 +43,11 @@ class AppLayout extends MoonShineLayout
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.admins_title'),
-                    moonshine()->getContainer(MoonShineUserResource::class)
+                    MoonShineUserResource::class
                 ),
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.role_title'),
-                    moonshine()->getContainer(MoonShineUserRoleResource::class)
+                    MoonShineUserRoleResource::class
                 ),
             ]),
         ];
@@ -92,7 +92,7 @@ class AppLayout extends MoonShineLayout
                             ])->class('menu-heading'),
 
                             Block::make([
-                                Menu::make(),
+                                Menu::make($this->menuManager),
                                 When::make(
                                     static fn (): bool => moonshineConfig()->isAuthEnabled(),
                                     static fn (): array => [Profile::make(withBorder: true)]

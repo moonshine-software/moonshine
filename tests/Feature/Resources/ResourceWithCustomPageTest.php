@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Pages\Crud\DetailPage;
-use MoonShine\Laravel\Pages\Crud\FormPage;
-use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageDetail;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageForm;
@@ -21,9 +18,9 @@ uses()->group('pages-custom');
 beforeEach(function (): void {
     $this->resource = TestResourceBuilder::new(Item::class)
         ->setTestPages([
-            CustomPageIndex::make('CustomPageIndex'),
-            CustomPageForm::make('CustomPageForm'),
-            CustomPageDetail::make('CustomPageDetail'),
+            CustomPageIndex::class,
+            CustomPageForm::class,
+            CustomPageDetail::class,
         ])
         ->setTestExportFields([
             ID::make(),
@@ -40,7 +37,7 @@ beforeEach(function (): void {
 
 it('index page', function () {
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $this->resource)
+        toPage(page: CustomPageIndex::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageIndex')
@@ -51,7 +48,7 @@ it('index page', function () {
 
 it('form page', function () {
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $this->resource)
+        toPage(page: CustomPageForm::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageForm')
@@ -60,7 +57,7 @@ it('form page', function () {
 
 it('detail page', function () {
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $this->resource)
+        toPage(page: CustomPageDetail::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageDetail')
@@ -70,11 +67,11 @@ it('detail page', function () {
 it('no page type resource', function () {
     $resource = TestResourceBuilder::new(Item::class)
         ->setTestPages([
-            CustomNoTypeIndex::make('CustomNoTypeIndex', 'page-1'),
-            CustomNoTypeForm::make('CustomNoTypeForm', 'page-2'),
+            CustomNoTypeIndex::class,
+            CustomNoTypeForm::class,
         ])
     ;
 
-    expect(toPage('page-2', resource: $resource))
-        ->toContain('page-2');
+    expect(toPage('custom-no-type-form', resource: $resource))
+        ->toContain('custom-no-type-form');
 });

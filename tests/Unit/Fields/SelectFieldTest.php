@@ -141,7 +141,7 @@ describe('basic methods', function () {
     it('apply', function (): void {
         $data = ['select' => 1];
 
-        fakeRequest(parameters: $data);
+        fakeRequest(method: 'post', parameters: $data);
 
         expect(
             $this->field->apply(
@@ -162,7 +162,7 @@ describe('basic methods', function () {
     it('apply multiple', function (): void {
         $data = ['select' => [1,2]];
 
-        fakeRequest(parameters: $data);
+        fakeRequest(method: 'post', parameters: $data);
 
         expect(
             $this->field->apply(

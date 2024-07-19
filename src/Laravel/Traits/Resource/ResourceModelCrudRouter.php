@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Laravel\Pages\Page;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
@@ -33,7 +33,7 @@ trait ResourceModelCrudRouter
         );
     }
 
-    public function getPageUrl(Page $page, array $params = [], ?string $fragment = null): string
+    public function getPageUrl(PageContract $page, array $params = [], ?string $fragment = null): string
     {
         return $this->getRouter()->getEndpoints()->toPage($page, params: $params, extra: [
             'fragment' => $fragment,
@@ -89,7 +89,7 @@ trait ResourceModelCrudRouter
      */
     public function getFragmentLoadUrl(
         string $fragment,
-        Page $page,
+        PageContract $page,
         Model|int|string|null $model,
         array $params = []
     ): string {
@@ -107,7 +107,7 @@ trait ResourceModelCrudRouter
         string $method,
         ?string $message = null,
         array $params = [],
-        ?Page $page = null,
+        ?PageContract $page = null,
     ): string {
         return $this->getRouter()->getEndpoints()->asyncMethod(
             $method,

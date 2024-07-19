@@ -21,7 +21,7 @@ it('onlyLink preview', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments', resource: new TestCommentResource())->relatedLink(),
+        HasMany::make('Comments', resource: TestCommentResource::class)->relatedLink(),
     ]);
 
     asAdmin()
@@ -37,7 +37,7 @@ it('onlyLink preview empty', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments', resource: new TestCommentResource())
+        HasMany::make('Comments', resource: TestCommentResource::class)
             ->relatedLink(),
     ]);
 
@@ -53,7 +53,7 @@ it('onlyLink value', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments', resource: new TestCommentResource())
+        HasMany::make('Comments', resource: TestCommentResource::class)
             ->relatedLink(),
     ]);
 
@@ -70,7 +70,7 @@ it('onlyLink value empty', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments', resource: new TestCommentResource())
+        HasMany::make('Comments', resource: TestCommentResource::class)
             ->relatedLink(),
     ]);
 
@@ -86,7 +86,7 @@ it('onlyLink preview condition', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
+        HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)
             ->relatedLink(condition: static function (int $count): bool {
                 return $count > 10;
             })
@@ -108,7 +108,7 @@ it('onlyLink value condition', function () {
     $resource = TestResourceBuilder::new(Item::class)->setTestFields([
         ID::make(),
         Text::make('Name'),
-        HasMany::make('Comments title', 'comments', resource: new TestCommentResource())
+        HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)
             ->relatedLink(condition: static function (int $count, Field $field): bool {
                 return $field->toValue()->total() > 20;
             })

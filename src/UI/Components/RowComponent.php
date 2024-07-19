@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Core\Contracts\MoonShineDataCaster;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;
 use MoonShine\UI\Traits\WithFields;
 
-abstract class RowComponent extends MoonShineComponent implements HasFields
+abstract class RowComponent extends MoonShineComponent implements HasFieldsContract
 {
     use HasDataCast;
     use WithFields;
@@ -27,7 +28,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function fillCast(mixed $values, MoonShineDataCaster $cast): static
+    public function fillCast(mixed $values, DataCasterContract $cast): static
     {
         return $this
             ->cast($cast)
@@ -46,7 +47,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $this;
     }
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         $fields = $this->getFields();
         $casted = $this->castData($this->getValues());
@@ -61,7 +62,7 @@ abstract class RowComponent extends MoonShineComponent implements HasFields
         return $fields;
     }
 
-    public function getButtons(): ActionButtons
+    public function getButtons(): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons)
             ->fill($this->castData($this->getValues()))

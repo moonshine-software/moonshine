@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Support\Traits\Makeable;
 
 /**
  * @method static static make(string $content)
  */
-final readonly class Raw implements AssetElement
+final readonly class Raw implements AssetElementContract
 {
     use Makeable;
 

@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\MoonShineComponent;
 
-final class Meta extends MoonshineComponent
+final class Meta extends MoonShineComponent
 {
     protected function resolveRender(): Renderable|Closure|string
     {

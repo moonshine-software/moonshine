@@ -6,13 +6,13 @@ namespace MoonShine\Laravel\Applies\Filters;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\UI\Contracts\ApplyContract;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 
 class RepeaterModelApply implements ApplyContract
 {
     /* @param  \MoonShine\UI\Fields\Json  $field */
-    public function apply(Field $field): Closure
+    public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
             $values = collect($field->getRequestValue())

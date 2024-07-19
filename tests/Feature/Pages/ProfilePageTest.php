@@ -12,7 +12,7 @@ use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\UI\Fields\Image;
 
 beforeEach(function () {
-    $this->page = new ProfilePage();
+    $this->page = app(ProfilePage::class);
     $this->user = MoonshineUser::query()->find(1);
 });
 
@@ -25,7 +25,7 @@ it('successful response', function () {
 
 it('validation error', function () {
     $data = [
-        moonshineConfig()->getUserField('name') => 'New name',
+        $this->moonshineCore->getConfig()->getUserField('name') => 'New name',
     ];
 
     asAdmin()->post(
@@ -33,16 +33,16 @@ it('validation error', function () {
         $data
     )
         ->assertSessionHasErrors([
-            moonshineConfig()->getUserField('username'),
+            $this->moonshineCore->getConfig()->getUserField('username'),
         ]);
 });
 
 it('successful save', function () {
     $avatar = UploadedFile::fake()->create('avatar.png');
     $data = [
-        moonshineConfig()->getUserField('avatar') => $avatar,
-        moonshineConfig()->getUserField('username') => $this->user->email,
-        moonshineConfig()->getUserField('name') => 'New name',
+        $this->moonshineCore->getConfig()->getUserField('avatar') => $avatar,
+        $this->moonshineCore->getConfig()->getUserField('username') => $this->user->email,
+        $this->moonshineCore->getConfig()->getUserField('name') => 'New name',
     ];
 
     asAdmin()->post(

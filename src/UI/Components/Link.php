@@ -6,9 +6,9 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
-use MoonShine\Support\Traits\WithIcon;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Traits\WithBadge;
+use MoonShine\UI\Traits\WithIcon;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $href, Closure|string $label = '')

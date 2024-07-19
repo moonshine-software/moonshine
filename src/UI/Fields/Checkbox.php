@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\UI\Components\Boolean;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeBool;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeBool;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\BooleanTrait;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 
 class Checkbox extends Field implements
-    HasDefaultValue,
-    DefaultCanBeNumeric,
-    DefaultCanBeString,
-    DefaultCanBeBool,
-    HasUpdateOnPreview,
-    HasReactivity
+    HasDefaultValueContract,
+    CanBeNumeric,
+    CanBeString,
+    CanBeBool,
+    HasUpdateOnPreviewContract,
+    HasReactivityContract
 {
     use BooleanTrait;
     use WithDefaultValue;

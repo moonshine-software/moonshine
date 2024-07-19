@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Applies\FieldsWithoutFilters;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\FilterException;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Support\Enums\PageType;
-use MoonShine\UI\Contracts\Fields\FieldsWrapper;
-use MoonShine\UI\Fields\Field;
+use MoonShine\UI\Contracts\FieldsWrapperContract;
 use Throwable;
 
 trait ResourceWithFields
 {
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function indexFields(): array
     {
@@ -36,11 +36,11 @@ trait ResourceWithFields
             $fields = Fields::make($this->indexFields());
         }
 
-        return $fields->ensure([Field::class, FieldsWrapper::class]);
+        return $fields->ensure([FieldContract::class, FieldsWrapperContract::class]);
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function formFields(): array
     {
@@ -64,7 +64,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function detailFields(): array
     {
@@ -88,7 +88,7 @@ trait ResourceWithFields
         }
 
         return $fields
-            ->ensure([Field::class, ModelRelationField::class, FieldsWrapper::class])
+            ->ensure([FieldContract::class, ModelRelationField::class, FieldsWrapperContract::class])
             ->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
     }
 
@@ -112,7 +112,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function filters(): array
     {
@@ -138,7 +138,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function exportFields(): array
     {
@@ -150,11 +150,11 @@ trait ResourceWithFields
      */
     public function getExportFields(): Fields
     {
-        return Fields::make($this->exportFields())->ensure(Field::class);
+        return Fields::make($this->exportFields())->ensure(FieldContract::class);
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     public function importFields(): array
     {
@@ -166,6 +166,6 @@ trait ResourceWithFields
      */
     public function getImportFields(): Fields
     {
-        return Fields::make($this->importFields())->ensure(Field::class);
+        return Fields::make($this->importFields())->ensure(FieldContract::class);
     }
 }

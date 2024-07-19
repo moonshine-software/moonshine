@@ -7,10 +7,11 @@ namespace MoonShine\UI\Components;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButton|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class Modal extends AbstractWithComponents
 {
@@ -31,7 +32,7 @@ final class Modal extends AbstractWithComponents
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|Renderable|string $content = '',
-        protected Closure|Renderable|ActionButton|string $outer = '',
+        protected Closure|Renderable|ActionButtonContract|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables
@@ -97,7 +98,7 @@ final class Modal extends AbstractWithComponents
 
         $outer = value($this->outer, $this);
 
-        if ($outer instanceof ActionButton) {
+        if ($outer instanceof ActionButtonContract) {
             $outer->openModal();
         }
 

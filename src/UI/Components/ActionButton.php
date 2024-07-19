@@ -5,28 +5,28 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\HasComponentsContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
-use MoonShine\Support\Traits\WithIcon;
-use MoonShine\Support\Traits\WithLabel;
-use MoonShine\UI\Collections\ComponentsCollection;
-use MoonShine\UI\Contracts\Actions\ActionButtonContract;
-use MoonShine\UI\Contracts\Components\HasComponents;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
 use MoonShine\UI\Traits\Components\WithComponents;
 use MoonShine\UI\Traits\WithBadge;
+use MoonShine\UI\Traits\WithIcon;
+use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, Closure|string $url = '', ?CastedData $data = null)
+ * @method static static make(Closure|string $label, Closure|string $url = '', ?CastedDataContract $data = null)
  */
-class ActionButton extends MoonShineComponent implements ActionButtonContract, HasComponents
+class ActionButton extends MoonShineComponent implements ActionButtonContract, HasComponentsContract
 {
     use WithBadge;
     use WithLabel;
@@ -53,7 +53,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     public function __construct(
         Closure|string $label,
         protected Closure|string $url = '#',
-        protected ?CastedData $data = null
+        protected ?CastedDataContract $data = null
     ) {
         parent::__construct();
 
@@ -121,12 +121,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this;
     }
 
-    public function getData(): ?CastedData
+    public function getData(): ?CastedDataContract
     {
         return $this->data;
     }
 
-    public function setData(?CastedData $data = null): self
+    public function setData(?CastedDataContract $data = null): self
     {
         if(! is_null($this->onBeforeSetCallback)) {
             $data = value($this->onBeforeSetCallback, $data, $this);
@@ -177,7 +177,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     ): self {
         $this->asyncMethod = $method;
 
-        $this->url = static fn (mixed $data, ?CastedData $casted): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
+        $this->url = static fn (mixed $data, ?CastedDataContract $casted): ?string => $this->core->getRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
@@ -274,9 +274,9 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->hasComponent();
     }
 
-    public function getPreparedComponents(): ComponentsCollection
+    public function getPreparedComponents(): Components
     {
-        return ComponentsCollection::make($this->hasComponents() ? [$this->getComponent()] : []);
+        return Components::make($this->hasComponents() ? [$this->getComponent()] : []);
     }
 
     public function purgeAsyncTap(): bool

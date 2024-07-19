@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use MoonShine\AssetManager\Contracts\AssetElement;
+use MoonShine\AssetManager\Traits\WithVersion;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
-use MoonShine\Support\Traits\WithVersion;
 
 /**
  * @method static static make(string $content)
  */
-final class InlineJs implements AssetElement
+final class InlineJs implements AssetElementContract
 {
     use Makeable;
     use WithComponentAttributes;

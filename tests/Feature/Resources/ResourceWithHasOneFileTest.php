@@ -24,7 +24,7 @@ beforeEach(function (): void {
         ->setTestFields([
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
-            HasOne::make('Files', 'itemFile', resource: new TestFileResource()),
+            HasOne::make('Files', 'itemFile', resource: app(TestFileResource::class)),
         ])
     ;
 });
@@ -40,7 +40,7 @@ it('resource with has one', function () {
 });
 
 it('delete a has one file after delete item', function () {
-    $file = addHasOneFile(new TestFileResource(), $this->item);
+    $file = addHasOneFile(app(TestFileResource::class), $this->item);
 
     $this->resource->setDeleteRelationships();
 
@@ -51,7 +51,7 @@ it('delete a has one file after delete item', function () {
 });
 
 it('not delete a has many file after delete item', function () {
-    $file = addHasOneFile(new TestFileResource(), $this->item);
+    $file = addHasOneFile(app(TestFileResource::class), $this->item);
 
     deleteItemWithHasOne($this->resource, $this->item->getKey());
 

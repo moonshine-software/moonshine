@@ -8,17 +8,20 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeObject;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\RemovableContract;
-use MoonShine\UI\Contracts\MoonShineRenderable;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
@@ -26,11 +29,11 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 class RelationRepeater extends ModelRelationField implements
-    HasFields,
+    HasFieldsContract,
     RemovableContract,
-    HasDefaultValue,
-    DefaultCanBeArray,
-    DefaultCanBeObject
+    HasDefaultValueContract,
+    CanBeArray,
+    CanBeObject
 {
     /** @use WithFields<Fields> */
     use WithFields;
@@ -51,7 +54,7 @@ class RelationRepeater extends ModelRelationField implements
 
     protected ?int $creatableLimit = null;
 
-    protected ?ActionButton $creatableButton = null;
+    protected ?ActionButtonContract $creatableButton = null;
 
     protected array $buttons = [];
 
@@ -85,7 +88,7 @@ class RelationRepeater extends ModelRelationField implements
     public function creatable(
         Closure|bool|null $condition = null,
         ?int $limit = null,
-        ?ActionButton $button = null
+        ?ActionButtonContract $button = null
     ): static {
         $this->isCreatable = value($condition, $this) ?? true;
 
@@ -99,7 +102,7 @@ class RelationRepeater extends ModelRelationField implements
         return $this;
     }
 
-    public function getCreateButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButtonContract
     {
         return $this->creatableButton;
     }
@@ -140,7 +143,7 @@ class RelationRepeater extends ModelRelationField implements
         return $buttons;
     }
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, Field $field): void {
             $field
@@ -201,7 +204,7 @@ class RelationRepeater extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    protected function getComponent(): MoonShineRenderable
+    protected function getComponent(): RenderableContract
     {
         $fields = $this->getPreparedFields();
 
@@ -215,7 +218,7 @@ class RelationRepeater extends ModelRelationField implements
             ->cast($this->getResource()?->getModelCast())
             ->when(
                 $this->isVertical(),
-                static fn (TableBuilder $table): TableBuilder => $table->vertical()
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->vertical()
             );
     }
 
@@ -242,7 +245,7 @@ class RelationRepeater extends ModelRelationField implements
             foreach ($this->getPreparedFields() as $field) {
                 $field->setNameIndex($index);
 
-                $field->when($fill, fn (Field $f): Field => $f->fillCast(
+                $field->when($fill, fn (FieldContract $f): FieldContract => $f->fillCast(
                     $values,
                     $this->getResource()->getModelCast()
                 ));
@@ -270,7 +273,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
-            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
@@ -285,7 +288,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: static fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->beforeApply($values),
             response:  static fn (array $values, mixed $data): mixed => $data
         );
     }
@@ -297,7 +300,7 @@ class RelationRepeater extends ModelRelationField implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
@@ -381,7 +384,7 @@ class RelationRepeater extends ModelRelationField implements
                 ->reindex(prepared: true)
                 ->when(
                     $this->isCreatable(),
-                    fn (TableBuilder $table): TableBuilder => $table->creatable(
+                    fn (TableBuilderContract $table): TableBuilderContract => $table->creatable(
                         limit: $this->getCreateLimit(),
                         button: $this->getCreateButton()
                     )

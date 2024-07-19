@@ -45,7 +45,7 @@ trait ResourceModelValidation
             moonshineRequest()->all(),
             $this->rules($item),
             array_merge(
-                trans('moonshine::validation'),
+                __('moonshine::validation'),
                 $this->validationMessages()
             ),
             $this->getFormFields()->onlyFields()->extractLabels()

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Carbon;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\RangeField;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RangeFieldContract;
 use MoonShine\UI\Traits\Fields\DateTrait;
 use MoonShine\UI\Traits\Fields\RangeTrait;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 
-class DateRange extends Field implements HasDefaultValue, DefaultCanBeArray, RangeField
+class DateRange extends Field implements HasDefaultValueContract, CanBeArray, RangeFieldContract
 {
     use RangeTrait;
     use DateTrait;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
@@ -19,7 +21,6 @@ use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\MoonShineRenderable;
 use Throwable;
 
 /**
@@ -29,6 +30,11 @@ use Throwable;
 class IndexPage extends Page
 {
     protected ?PageType $pageType = PageType::INDEX;
+
+    public function getTitle(): string
+    {
+        return $this->title ?: $this->getResource()->getTitle();
+    }
 
     /**
      * @throws ResourceException
@@ -159,7 +165,7 @@ class IndexPage extends Page
         return JsEvent::TABLE_UPDATED->value;
     }
 
-    protected function getItemsComponent(iterable $items, Fields $fields): MoonShineRenderable
+    protected function getItemsComponent(iterable $items, Fields $fields): RenderableContract
     {
         return TableBuilder::make(items: $items)
             ->name($this->getListComponentName())
@@ -168,13 +174,13 @@ class IndexPage extends Page
             ->withNotFound()
             ->when(
                 ! is_null($this->getResource()->trAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->trAttributes(
+                fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
                     $this->getResource()->trAttributes()
                 )
             )
             ->when(
                 ! is_null($this->getResource()->tdAttributes()),
-                fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
                     $this->getResource()->tdAttributes()
                 )
             )
@@ -184,18 +190,18 @@ class IndexPage extends Page
             ])
             ->when(
                 ! is_null($this->getResource()->getClickAction()),
-                static fn (TableBuilder $table): TableBuilder => $table->tdAttributes(
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
                     static fn (): array => [
                         '@click.stop' => 'rowClickAction',
                     ]
                 )
             )
-            ->when($this->getResource()->isAsync(), static function (TableBuilder $table): void {
+            ->when($this->getResource()->isAsync(), static function (TableBuilderContract $table): void {
                 $table->async()->customAttributes([
                     'data-pushstate' => 'true',
                 ]);
             })
-            ->when($this->getResource()->isStickyTable(), function (TableBuilder $table): void {
+            ->when($this->getResource()->isStickyTable(), function (TableBuilderContract $table): void {
                 $table->sticky();
             });
     }

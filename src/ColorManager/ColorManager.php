@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\ColorManager;
 
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
 
 /**
  * @method self primary(string $value, ?int $shade = null, bool $dark = false)
@@ -22,7 +22,7 @@ use Illuminate\Support\Traits\Conditionable;
  * @method self infoBg(string $value, ?int $shade = null, bool $dark = false)
  * @method self infoText(string $value, ?int $shade = null, bool $dark = false)
  */
-final class ColorManager implements Htmlable
+final class ColorManager implements ColorManagerContract
 {
     use Conditionable;
 
@@ -74,7 +74,7 @@ final class ColorManager implements Htmlable
 
     private array $darkColors = self::DARK;
 
-    public function background(string $value): self
+    public function background(string $value): static
     {
         return $this
             ->set('body', $value)
@@ -82,25 +82,25 @@ final class ColorManager implements Htmlable
             ->set('body', $value, dark: true);
     }
 
-    public function tableRow(string $value): self
+    public function tableRow(string $value): static
     {
         return $this
             ->set('dark.600', $value);
     }
 
-    public function borders(string $value): self
+    public function borders(string $value): static
     {
         return $this
             ->set('dark.300', $value);
     }
 
-    public function dropdowns(string $value): self
+    public function dropdowns(string $value): static
     {
         return $this
             ->set('dark.400', $value);
     }
 
-    public function buttons(string $value): self
+    public function buttons(string $value): static
     {
         return $this
             ->set('dark.50', $value)
@@ -108,28 +108,28 @@ final class ColorManager implements Htmlable
             ->dropdowns($value);
     }
 
-    public function dividers(string $value): self
+    public function dividers(string $value): static
     {
         return $this
             ->set('dark.100', $value)
             ->set('dark.200', $value);
     }
 
-    public function content(string $value): self
+    public function content(string $value): static
     {
         return $this
             ->set('dark.700', $value)
             ->set('dark.900', $value);
     }
 
-    public function set(string $name, string|array $value, bool $dark = false): self
+    public function set(string $name, string|array $value, bool $dark = false): static
     {
         data_set($this->{$dark ? 'darkColors' : 'colors'}, $name, $value);
 
         return $this;
     }
 
-    public function bulkAssign(array $colors, bool $dark = false): self
+    public function bulkAssign(array $colors, bool $dark = false): static
     {
         foreach ($colors as $name => $color) {
             $this->set($name, $color, $dark);
@@ -171,7 +171,7 @@ final class ColorManager implements Htmlable
         return $colors;
     }
 
-    public function __call(string $name, array $arguments): self
+    public function __call(string $name, array $arguments): static
     {
         $value = $arguments['value'] ?? $arguments[0] ?? '';
         $shade = $arguments['shade'] ?? $arguments[1] ?? false;

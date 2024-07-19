@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
 final class FieldsGroup extends AbstractWithComponents
@@ -18,7 +18,7 @@ final class FieldsGroup extends AbstractWithComponents
     public function previewMode(): self
     {
         return $this->mapFields(
-            static fn (Field $field): Field => $field->previewMode()
+            static fn (FieldContract $field): FieldContract => $field->previewMode()
         );
     }
 
@@ -28,7 +28,7 @@ final class FieldsGroup extends AbstractWithComponents
     public function fill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         return $this->mapFields(
-            static fn (Field $field): Field => $field->fillData(is_null($casted) ? $raw : $casted, $index)
+            static fn (FieldContract $field): FieldContract => $field->fillData(is_null($casted) ? $raw : $casted, $index)
         );
     }
 
@@ -38,19 +38,19 @@ final class FieldsGroup extends AbstractWithComponents
     public function withoutWrappers(): self
     {
         return $this->mapFields(
-            static fn (Field $field): Field => $field->withoutWrapper()
+            static fn (FieldContract $field): FieldContract => $field->withoutWrapper()
         );
     }
 
     /**
-     * @param  Closure(Field $field): Field  $callback
+     * @param  Closure(FieldContract $field): FieldContract  $callback
      * @throws Throwable
      */
     public function mapFields(Closure $callback): self
     {
         $this->getComponents()
             ->onlyFields()
-            ->map(static fn (Field $field): Field => $callback($field));
+            ->map(static fn (FieldContract $field): FieldContract => $callback($field));
 
         return $this;
     }

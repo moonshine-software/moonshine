@@ -8,7 +8,7 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
 
-final class AlpineJs
+final readonly class AlpineJs
 {
     public const EVENT_SEPARATOR = ':';
 

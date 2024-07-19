@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components;
 
 use Illuminate\Http\RedirectResponse;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\Support\Traits\HasAsync;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Traits\HasAsync;
 use Throwable;
 
 /**

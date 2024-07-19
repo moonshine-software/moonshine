@@ -148,7 +148,7 @@ it('resource update column', function () {
     $field = Switcher::make('Active')->default(1)->updateOnPreview(resource: $resource);
 
     $resource->setTestFields([
-        ...(new TestItemResource())->indexFields(),
+        ...app(TestItemResource::class)->indexFields(),
         ...[$field],
     ]);
 
@@ -161,7 +161,7 @@ it('resource update column', function () {
         ->toBe(false);
 
     asAdmin()->put(
-        $this->router->to('column.resource.update-column', [
+        $this->moonshineCore->getRouter()->to('column.resource.update-column', [
             'resourceItem' => $this->item->getKey(),
             'resourceUri' => $resource->getUriKey(),
             'field' => 'active',
@@ -178,13 +178,13 @@ it('resource update column', function () {
 it('relation update column', function () {
     $comment = $this->item->comments->first();
 
-    $resource = new TestItemResource();
+    $resource = app(TestItemResource::class);
 
     expect($comment->active)
         ->toBe(1);
 
     asAdmin()->put(
-        $this->router->to(
+        $this->moonshineCore->getRouter()->to(
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),
@@ -225,11 +225,11 @@ it('relation update column in resource', function () {
 
     $resource->setTestFields([
         ID::make(),
-        HasMany::make('Comments title', 'comments', resource: new TestHasManyCommentResource()),
+        HasMany::make('Comments title', 'comments', resource: TestHasManyCommentResource::class),
     ]);
 
     asAdmin()->put(
-        $this->router->to(
+        $this->moonshineCore->getRouter()->to(
             'column.relation.update-column',
             [
                 'resourceItem' => $comment->getKey(),

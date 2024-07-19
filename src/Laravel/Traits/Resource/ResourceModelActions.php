@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use MoonShine\Core\Handlers\Handler;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Handlers\ExportHandler;
+use MoonShine\Laravel\Handlers\Handler;
+use MoonShine\Laravel\Handlers\Handlers;
 use MoonShine\Laravel\Handlers\ImportHandler;
-use MoonShine\UI\Components\ActionButton;
 
 trait ResourceModelActions
 {
@@ -34,7 +35,7 @@ trait ResourceModelActions
     }
 
     /**
-     * @return list<ActionButton>
+     * @return list<ActionButtonContract>
      */
     public function topButtons(): array
     {
@@ -76,5 +77,11 @@ trait ResourceModelActions
             $this->export(),
             $this->import(),
         ]);
+    }
+
+    public function getHandlers(): Handlers
+    {
+        return Handlers::make($this->handlers())
+            ->each(fn (Handler $handler): Handler => $handler->setResource($this));
     }
 }

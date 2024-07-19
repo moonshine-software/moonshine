@@ -9,27 +9,27 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\HasAssetsContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Core\Traits\NowOn;
+use MoonShine\Core\Traits\WithAssets;
+use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
-use MoonShine\Support\Traits\HasCanSee;
 use MoonShine\Support\Traits\Makeable;
-use MoonShine\Support\Traits\WithAssets;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Contracts\Fields\HasAssets;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\WithQuickFormElementAttributes;
-use MoonShine\UI\Traits\WithViewRenderer;
+use MoonShine\UI\Traits\HasCanSee;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-abstract class FormElement extends MoonShineComponent implements HasAssets
+abstract class FormElement extends MoonShineComponent implements HasAssetsContract
 {
     use Makeable;
     use NowOn;
@@ -58,8 +58,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     protected ?Closure $afterRender = null;
 
-    public static ?Closure $errors = null;
-
     public function __construct()
     {
         parent::__construct();
@@ -67,11 +65,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         $this->resolveAssets();
 
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
-    }
-
-    public static function errorsResolver(Closure $callback): void
-    {
-        self::$errors = $callback;
     }
 
     public function getIdentity(string $index = null): string
@@ -159,7 +152,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     public function hasRequestValue(string|int|null $index = null): bool
     {
-        return moonshine()->getRequest()->has($this->getRequestNameDot($index));
+        return $this->core->getRequest()->has($this->getRequestNameDot($index));
     }
 
     protected function prepareRequestValue(mixed $value): mixed
@@ -170,7 +163,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
     public function getRequestValue(string|int|null $index = null): mixed
     {
         return $this->prepareRequestValue(
-            moonshine()->getRequest()->get(
+            $this->core->getRequest()->get(
                 $this->getRequestNameDot($index),
                 $this->getDefaultIfExists()
             ) ?? false
@@ -205,7 +198,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
 
     public function getDefaultIfExists(): mixed
     {
-        return $this instanceof HasDefaultValue
+        return $this instanceof HasDefaultValueContract
             ? $this->getDefault()
             : false;
     }
@@ -237,7 +230,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (?CastedData $data): ?string => moonshineRouter()->getEndpoints()->asyncMethod(
+        $url = static fn (?CastedDataContract $data): ?string => $this->core->getRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
@@ -369,20 +362,15 @@ abstract class FormElement extends MoonShineComponent implements HasAssets
         ]);
     }
 
-    public static function resolveErrors(?string $formName, object $context): mixed
+    public function getErrors(): array
     {
-        return value(self::$errors, $formName, $context) ?? [];
-    }
-
-    public function getErrors(): mixed
-    {
-        return self::resolveErrors($this->getFormName(), $this) ?? [];
+        return $this->core->getRequest()->getFormErrors($this->getFormName());
     }
 
     protected function resolveAssets(): void
     {
         if (! $this->isPreviewMode()) {
-            moonshineAssets()->add($this->getAssets());
+            $this->assetManager->add($this->getAssets());
         }
     }
 

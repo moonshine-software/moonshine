@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
 use Throwable;
 
@@ -20,19 +22,19 @@ final class ActionGroup extends AbstractWithComponents
         parent::__construct($actions);
     }
 
-    public function fill(?CastedData $data = null): self
+    public function fill(?CastedDataContract $data = null): self
     {
         $this->components = $this->getActions()->fill($data);
 
         return $this;
     }
 
-    public function getActions(): ActionButtons
+    public function getActions(): ActionButtonsContract
     {
-        return ActionButtons::make($this->components)->ensure(ActionButton::class);
+        return ActionButtons::make($this->components)->ensure(ActionButtonContract::class);
     }
 
-    public function add(ActionButton $item): self
+    public function add(ActionButtonContract $item): self
     {
         $this->components = $this->getComponents();
         $this->components->add($item);
@@ -49,7 +51,7 @@ final class ActionGroup extends AbstractWithComponents
         return $this;
     }
 
-    public function prepend(ActionButton $item): self
+    public function prepend(ActionButtonContract $item): self
     {
         $this->components = $this->getComponents();
         $this->components->prepend($item);

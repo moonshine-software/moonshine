@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Traits;
 
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 
 trait NowOn
 {

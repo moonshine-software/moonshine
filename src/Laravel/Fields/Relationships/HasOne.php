@@ -8,16 +8,17 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Core\Collections\Renderables;
+use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Support\Traits\HasResource;
-use MoonShine\UI\Collections\MoonShineRenderElements;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
-use MoonShine\UI\Contracts\MoonShineRenderable;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
@@ -28,7 +29,7 @@ use Throwable;
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
  * @extends HasResource<ModelResource, ModelResource>
  */
-class HasOne extends ModelRelationField implements HasFields
+class HasOne extends ModelRelationField implements HasFieldsContract
 {
     /** @use WithFields<Fields> */
     use WithFields;
@@ -74,7 +75,7 @@ class HasOne extends ModelRelationField implements HasFields
     /**
      * @throws Throwable
      */
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getDetailFields();
@@ -122,8 +123,8 @@ class HasOne extends ModelRelationField implements HasFields
             $fields = $this->getPreparedFields();
 
             // the onlyFields method is needed to exclude stack fields
-            $fields->onlyFields()->each(function (Field $field): void {
-                if ($field instanceof HasUpdateOnPreview && $field->isUpdateOnPreview()) {
+            $fields->onlyFields()->each(function (FieldContract $field): void {
+                if ($field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview()) {
                     $field->nowOnParams(params: ['relation' => $this->getRelationName()]);
                 }
 
@@ -134,7 +135,7 @@ class HasOne extends ModelRelationField implements HasFields
         };
     }
 
-    protected function getComponent(): MoonShineRenderable
+    protected function getComponent(): RenderableContract
     {
         $resource = $this->getResource();
 
@@ -154,7 +155,7 @@ class HasOne extends ModelRelationField implements HasFields
         $relation = $parentItem->{$this->getRelationName()}();
 
         $fields = $resource->getFormFields();
-        $fields->onlyFields()->each(fn (Field $field): Field => $field->setParent($this));
+        $fields->onlyFields()->each(fn (FieldContract $field): FieldContract => $field->setParent($this));
 
         $action = $resource->getRoute(
             is_null($item) ? 'crud.store' : 'crud.update',
@@ -215,7 +216,7 @@ class HasOne extends ModelRelationField implements HasFields
                     )->class('btn-lg'),
                 ]
             )
-            ->onBeforeFieldsRender(static fn (Fields $fields): MoonShineRenderElements => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

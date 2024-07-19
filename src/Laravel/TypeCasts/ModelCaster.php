@@ -6,15 +6,15 @@ namespace MoonShine\Laravel\TypeCasts;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Contracts\MoonShineDataCaster;
+use MoonShine\Contracts\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Core\Exceptions\MoonShineException;
-use MoonShine\Core\Paginator\PaginatorContract;
 
 /**
  * @template-covariant T of Model
  */
-final readonly class ModelCaster implements MoonShineDataCaster
+final readonly class ModelCaster implements DataCasterContract
 {
     public function __construct(
         /** @var class-string<T> $class */
@@ -29,9 +29,9 @@ final readonly class ModelCaster implements MoonShineDataCaster
     }
 
     /**
-     * @return CastedData<T>
+     * @return CastedDataContract<T>
      */
-    public function cast(mixed $data): CastedData
+    public function cast(mixed $data): CastedDataContract
     {
         if(is_array($data)) {
             /** @var T $model */

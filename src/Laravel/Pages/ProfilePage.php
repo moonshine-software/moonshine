@@ -2,6 +2,7 @@
 
 namespace MoonShine\Laravel\Pages;
 
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\SocialAuth;
@@ -47,13 +48,13 @@ class ProfilePage extends Page
                     Tab::make(__('moonshine::ui.resource.main_information'), [
                         ID::make()->sortable(),
 
-                        Text::make(trans('moonshine::ui.resource.name'), moonshineConfig()->getUserField('name'))
+                        Text::make(__('moonshine::ui.resource.name'), moonshineConfig()->getUserField('name'))
                             ->required(),
 
-                        Text::make(trans('moonshine::ui.login.username'), moonshineConfig()->getUserField('username'))
+                        Text::make(__('moonshine::ui.login.username'), moonshineConfig()->getUserField('username'))
                             ->required(),
 
-                        Image::make(trans('moonshine::ui.resource.avatar'), moonshineConfig()->getUserField('avatar'))
+                        Image::make(__('moonshine::ui.resource.avatar'), moonshineConfig()->getUserField('avatar'))
                             ->disk(moonshineConfig()->getDisk())
                             ->options(moonshineConfig()->getDiskOptions())
                             ->dir('moonshine_users')
@@ -61,14 +62,14 @@ class ProfilePage extends Page
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
                     ]),
 
-                    Tab::make(trans('moonshine::ui.resource.password'), [
+                    Tab::make(__('moonshine::ui.resource.password'), [
                         Heading::make(__('moonshine::ui.resource.change_password')),
 
-                        Password::make(trans('moonshine::ui.resource.password'), moonshineConfig()->getUserField('password'))
+                        Password::make(__('moonshine::ui.resource.password'), moonshineConfig()->getUserField('password'))
                             ->customAttributes(['autocomplete' => 'new-password'])
                             ->eye(),
 
-                        PasswordRepeat::make(trans('moonshine::ui.resource.repeat_password'), 'password_repeat')
+                        PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
                             ->customAttributes(['autocomplete' => 'confirm-password'])
                             ->eye(),
                     ]),
@@ -91,7 +92,7 @@ class ProfilePage extends Page
     /**
      * @throws MoonShineException
      */
-    public function getForm(): FormBuilder
+    public function getForm(): FormBuilderContract
     {
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 

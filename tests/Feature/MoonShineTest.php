@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\PageType;
 
 uses()->group('core');
@@ -15,7 +14,7 @@ it('recognizes internal request as MoonShine request', function (): void {
         ->get($resource->getRoute('resource.page', query: ['pageUri' => PageType::INDEX->value]))
         ->assertOk();
 
-    expect(app(MoonShineRequest::class)->isMoonShineRequest())
+    expect(moonshineRequest()->isMoonShineRequest())
         ->toBeTrue();
 
 });
@@ -23,6 +22,6 @@ it('recognizes internal request as MoonShine request', function (): void {
 it('recognizes external request as non MoonShine request', function (): void {
     $this->get('/')->assertValid();
 
-    expect(app(MoonShineRequest::class)->isMoonShineRequest())
+    expect(moonshineRequest()->isMoonShineRequest())
         ->toBeFalse();
 });

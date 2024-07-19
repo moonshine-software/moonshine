@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Components;
 
-use MoonShine\UI\Collections\ComponentsCollection;
-use MoonShine\UI\Contracts\MoonShineRenderable;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Core\Collections\Components;
 use Throwable;
 
 /**
- * @mixin MoonShineRenderable
+ * @mixin RenderableContract
  */
 trait WithComponents
 {
     protected iterable $components = [];
 
-    public function getPreparedComponents(): ComponentsCollection
+    public function getPreparedComponents(): Components
     {
-        if(! $this->components instanceof ComponentsCollection) {
-            return ComponentsCollection::make($this->components);
+        if(! $this->components instanceof Components) {
+            return Components::make($this->components);
         }
 
         return $this->components;
@@ -27,7 +27,7 @@ trait WithComponents
     /**
      * @throws Throwable
      */
-    public function getComponents(): ComponentsCollection
+    public function getComponents(): Components
     {
         return $this->getPreparedComponents();
     }
@@ -42,7 +42,7 @@ trait WithComponents
 
     public function setComponents(iterable $components): static
     {
-        if(moonshine()->runningInConsole()) {
+        if($this->core->runningInConsole()) {
             $components = collect($components)
                 ->map(static fn (object $component): object => clone $component)
                 ->toArray();

@@ -126,7 +126,7 @@ class LoginFormRequest extends MoonShineFormRequest
         $seconds = RateLimiter::availableIn($this->getThrottleKey());
 
         throw ValidationException::withMessages([
-            'username' => trans('moonshine::auth.throttle', [
+            'username' => __('moonshine::auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),

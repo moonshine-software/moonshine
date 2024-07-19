@@ -25,7 +25,7 @@ beforeEach(function (): void {
         ->setTestFields([
             ID::make()->sortable(),
             Text::make('Name', 'name')->sortable(),
-            HasMany::make('Files', 'itemFiles', resource: new TestFileResource()),
+            HasMany::make('Files', 'itemFiles', resource: TestFileResource::class),
         ])
     ;
 });
@@ -41,7 +41,7 @@ it('resource with has many', function () {
 });
 
 it('delete a has many file after delete item', function () {
-    $file = addHasManyFile(new TestFileResource(), $this->item);
+    $file = addHasManyFile(app(TestFileResource::class), $this->item);
 
     $this->resource->setDeleteRelationships();
 
@@ -52,7 +52,7 @@ it('delete a has many file after delete item', function () {
 });
 
 it('not delete a has many file after delete item', function () {
-    $file = addHasManyFile(new TestFileResource(), $this->item);
+    $file = addHasManyFile(app(TestFileResource::class), $this->item);
 
     deleteItemWithHasMany($this->resource, $this->item->getKey());
 
@@ -61,7 +61,7 @@ it('not delete a has many file after delete item', function () {
 
 it('delete a has many file after delete item with parent', function () {
 
-    $fileResource = new TestFileResourceWithParent();
+    $fileResource = app(TestFileResourceWithParent::class);
 
     $resource = TestResourceBuilder::new(Item::class)
         ->setTestFields([

@@ -33,13 +33,13 @@ final class Favicon extends MoonShineComponent
     {
         return [
             'assets' => $this->customAssets ?: [
-                'apple-touch' => moonshineAssets()->getAsset('vendor/moonshine/apple-touch-icon.png'),
-                '32' => moonshineAssets()->getAsset('vendor/moonshine/favicon-32x32.png'),
-                '16' => moonshineAssets()->getAsset('vendor/moonshine/favicon-16x16.png'),
-                'safari-pinned-tab' => moonshineAssets()->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
-                'web-manifest' => moonshineAssets()->getAsset('vendor/moonshine/site.webmanifest'),
+                'apple-touch' => $this->assetManager->getAsset('vendor/moonshine/apple-touch-icon.png'),
+                '32' => $this->assetManager->getAsset('vendor/moonshine/favicon-32x32.png'),
+                '16' => $this->assetManager->getAsset('vendor/moonshine/favicon-16x16.png'),
+                'safari-pinned-tab' => $this->assetManager->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
+                'web-manifest' => $this->assetManager->getAsset('vendor/moonshine/site.webmanifest'),
             ],
-            'bodyColor' => moonshineColors()->get('body'),
+            'bodyColor' => $this->colorManager->get('body'),
         ];
     }
 }

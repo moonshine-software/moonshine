@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 it('empty value save', function () {
-    $resource = new TestItemResource();
+    $resource = app(TestItemResource::class);
 
     $data = [
         'content' => '',

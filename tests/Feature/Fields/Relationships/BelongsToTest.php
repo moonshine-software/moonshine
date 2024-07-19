@@ -30,7 +30,7 @@ beforeEach(function (): void {
 
 it('show field on pages', function () {
     $resource = belongsToResource()->setTestFields([
-        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        BelongsTo::make('User', resource: MoonShineUserResource::class),
     ]);
 
     asAdmin()->get(
@@ -65,7 +65,7 @@ it('show field on pages', function () {
 
 it('belongs to searchable', function () {
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
             ->searchable()
     );
 
@@ -86,7 +86,7 @@ it('belongs to searchable', function () {
 
 it('belongs to asyncsearch', function () {
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
             ->asyncSearch()
     );
 
@@ -113,7 +113,7 @@ it('belongs to valuesQuery', function () {
     $id = randomUserId();
 
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
             ->valuesQuery(static fn (Builder $query) => $query->where('id', $id))
     );
 
@@ -132,7 +132,7 @@ it('belongs to valuesQuery', function () {
 
 it('apply as base', function () {
     $resource = belongsToResource()->setTestFields([
-        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        BelongsTo::make('User', resource: MoonShineUserResource::class),
     ]);
 
     saveMoonShineUser($resource, $this->item);
@@ -148,7 +148,7 @@ it('apply as base', function () {
 
 it('before apply', function () {
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
             ->onBeforeApply(static function ($item, $data) {
                 $item->name = $item->name . '_' . $data;
 
@@ -175,7 +175,7 @@ it('before apply', function () {
 
 it('after apply', function () {
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
             ->onAfterApply(static function ($item) {
                 $item->name = $item->name . '_' . $item->user->id;
 
@@ -211,7 +211,7 @@ it('import', function (): void {
     $file = belongsToExport($this->item, $id);
 
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        BelongsTo::make('User', resource: MoonShineUserResource::class),
         'importFields'
     );
 
@@ -238,7 +238,7 @@ function belongsToExport(Item $item, int $newId): ?string
     $item->save();
 
     $resource = addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource()),
+        BelongsTo::make('User', resource: MoonShineUserResource::class),
         'exportFields'
     );
 
@@ -261,7 +261,7 @@ function belongsToExport(Item $item, int $newId): ?string
 function belongsToResource(): TestResource
 {
     return addFieldsToTestResource(
-        BelongsTo::make('User', resource: new MoonShineUserResource())
+        BelongsTo::make('User', resource: MoonShineUserResource::class)
     );
 }
 

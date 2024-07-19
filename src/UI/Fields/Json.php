@@ -7,25 +7,28 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasFields;
-use MoonShine\UI\Contracts\Fields\RemovableContract;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 class Json extends Field implements
-    HasFields,
+    HasFieldsContract,
     RemovableContract,
-    HasDefaultValue,
-    DefaultCanBeArray
+    HasDefaultValueContract,
+    CanBeArray
 {
     use WithFields;
     use Removable;
@@ -47,7 +50,7 @@ class Json extends Field implements
 
     protected ?int $creatableLimit = null;
 
-    protected ?ActionButton $creatableButton = null;
+    protected ?ActionButtonContract $creatableButton = null;
 
     protected array $buttons = [];
 
@@ -61,8 +64,8 @@ class Json extends Field implements
     public function keyValue(
         string $key = 'Key',
         string $value = 'Value',
-        ?Field $keyField = null,
-        ?Field $valueField = null,
+        ?FieldContract $keyField = null,
+        ?FieldContract $valueField = null,
     ): static {
         $this->keyValue = true;
         $this->onlyValue = false;
@@ -90,7 +93,7 @@ class Json extends Field implements
      */
     public function onlyValue(
         string $value = 'Value',
-        ?Field $valueField = null,
+        ?FieldContract $valueField = null,
     ): static {
         $this->keyValue = false;
         $this->onlyValue = true;
@@ -129,7 +132,7 @@ class Json extends Field implements
     public function creatable(
         Closure|bool|null $condition = null,
         ?int $limit = null,
-        ?ActionButton $button = null
+        ?ActionButtonContract $button = null
     ): self {
         $this->isCreatable = value($condition, $this) ?? true;
 
@@ -143,7 +146,7 @@ class Json extends Field implements
         return $this;
     }
 
-    public function getCreateButton(): ?ActionButton
+    public function getCreateButton(): ?ActionButtonContract
     {
         return $this->creatableButton;
     }
@@ -209,9 +212,9 @@ class Json extends Field implements
         return $buttons;
     }
 
-    public function getPreparedFields(): FieldsCollection
+    public function getPreparedFields(): FieldsContract
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, Field $field): void {
+        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
             $field->withoutWrapper();
         });
     }
@@ -313,11 +316,11 @@ class Json extends Field implements
             )
             ->when(
                 $reorderable,
-                static fn (TableBuilder $table): TableBuilder => $table->reorderable()
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->reorderable()
             )
             ->when(
                 $this->isVertical(),
-                static fn (TableBuilder $table): TableBuilder => $table->vertical()
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->vertical()
             );
     }
 
@@ -333,7 +336,7 @@ class Json extends Field implements
                 ->reindex(prepared: true)
                 ->when(
                     $this->isCreatable(),
-                    fn (TableBuilder $table): TableBuilder => $table->creatable(
+                    fn (TableBuilderContract $table): TableBuilderContract => $table->creatable(
                         limit: $this->getCreateLimit(),
                         button: $this->getCreateButton()
                     )
@@ -387,7 +390,7 @@ class Json extends Field implements
             foreach ($this->getPreparedFields() as $field) {
                 $field->setNameIndex($index);
 
-                $field->when($fill, static fn (Field $f): Field => $f->fillData($values));
+                $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));
 
                 $apply = $callback($field, $values, $data);
 
@@ -413,7 +416,7 @@ class Json extends Field implements
     {
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
-            callback: static fn (Field $field, mixed $values): mixed => $field->apply(
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
                 static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn(), '')),
                 $values
             ),
@@ -427,7 +430,7 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: static fn (Field $field, mixed $values): mixed => $field->beforeApply($values),
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->beforeApply($values),
         );
     }
 
@@ -438,7 +441,7 @@ class Json extends Field implements
     {
         return $this->resolveAppliesCallback(
             data: $data,
-            callback: static fn (Field $field, mixed $values): mixed => $field->afterApply($values),
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->afterApply($values),
             response: static fn (array $values, mixed $data): mixed => $data,
         );
     }
@@ -455,7 +458,7 @@ class Json extends Field implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        static fn (Field $field): mixed => $field
+                        static fn (FieldContract $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value)
                     );

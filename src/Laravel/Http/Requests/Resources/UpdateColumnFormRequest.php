@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Requests\Resources;
 
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 final class UpdateColumnFormRequest extends MoonShineFormRequest
@@ -37,7 +37,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
     /**
      * @throws Throwable
      */
-    public function getField(): ?Field
+    public function getField(): ?FieldContract
     {
         return $this->getResource()
             ?->getIndexFields()

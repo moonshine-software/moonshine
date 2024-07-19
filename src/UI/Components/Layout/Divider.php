@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Layout;
 
 use Closure;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $label = '', bool $centered = false)

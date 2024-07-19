@@ -4,22 +4,86 @@ declare(strict_types=1);
 
 use Illuminate\Cache\Repository;
 use Illuminate\Http\RedirectResponse;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
+use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
+use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Core\Storage\FileStorage;
 use MoonShine\Laravel\MoonShineRequest;
 
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {
-        return moonshine()->getContainer(MoonShineRequest::class);
+        return app(MoonShineRequest::class);
+    }
+}
+
+if (! function_exists('moonshine')) {
+    function moonshine(): CoreContract
+    {
+        return app(CoreContract::class);
     }
 }
 
 if (! function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
-        return moonshine()->getContainer('cache')
-            ->store(moonshineConfig()->getCacheDriver());
+        return app('cache')->store(moonshineConfig()->getCacheDriver());
+    }
+}
+
+if (! function_exists('moonshineAssets')) {
+    function moonshineAssets(): AssetManagerContract
+    {
+        return app(AssetManagerContract::class);
+    }
+}
+
+if (! function_exists('moonshineColors')) {
+    function moonshineColors(): ColorManagerContract
+    {
+        return app(ColorManagerContract::class);
+    }
+}
+
+if (! function_exists('moonshineMenu')) {
+    function moonshineMenu(): MenuManagerContract
+    {
+        return app(MenuManagerContract::class);
+    }
+}
+
+if (! function_exists('moonshineRouter')) {
+    function moonshineRouter(): RouterContract
+    {
+        return app(RouterContract::class);
+    }
+}
+
+if (! function_exists('moonshineConfig')) {
+    function moonshineConfig(): ConfiguratorContract
+    {
+        return app(ConfiguratorContract::class);
+    }
+}
+
+if (! function_exists('moonshineStorage')) {
+    function moonshineStorage(...$parameters): StorageContract
+    {
+        return app(StorageContract::class, $parameters) ?? new FileStorage();
+    }
+}
+
+if (! function_exists('appliesRegister')) {
+    function appliesRegister(): AppliesRegisterContract
+    {
+        return app(AppliesRegisterContract::class);
     }
 }
 

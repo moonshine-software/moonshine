@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
@@ -25,14 +24,13 @@ uses(TestCase::class)
 
 function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = [], bool $dispatchRoute = false): void
 {
-    app()->instance(
-        'request',
-        request()->create($url, $method, $parameters)
-    );
-
-    if($dispatchRoute) {
-        Route::dispatchToRoute(app('request'));
+    if(strtolower($method) === 'get') {
+        $separator = str_contains($url, '?') ? '&' : '?';
+        $url .= $separator . http_build_query($parameters);
     }
+
+    asAdmin()->{strtolower($method)}($url, $parameters);
+
 }
 
 function asAdmin(): TestCase
@@ -69,7 +67,7 @@ function addFieldsToTestResource(array|Field $fields, ?string $setType = null, ?
 
     return TestResourceBuilder::new(Item::class)
         ->{$setter}([
-            ...(new TestItemResource())->{$getter}(),
+            ...app(TestItemResource::class)->{$getter}(),
             ...$fields,
         ]);
 }

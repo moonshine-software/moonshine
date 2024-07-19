@@ -4,65 +4,40 @@ declare(strict_types=1);
 
 namespace MoonShine\AssetManager;
 
-use Closure;
-use Composer\InstalledVersions;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\AssetManager\Contracts\AssetElement;
-use MoonShine\MoonShine;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
+use MoonShine\Contracts\AssetManager\AssetElementsContract;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\AssetManager\AssetResolverContract;
 
-final class AssetManager implements Htmlable
+final class AssetManager implements AssetManagerContract
 {
     use Conditionable;
 
+    public function __construct(
+        private readonly AssetResolverContract $assetResolver
+    ) {
+    }
+
     /**
-     * @var list<AssetElement>
+     * @var list<AssetElementContract>
      */
     private array $assets = [];
 
-    private static ?Closure $assetUsing = null;
-
-    private static ?Closure $viteDevUsing = null;
-
-    /**
-     * @param  Closure(string $path): void  $callback
-     */
-    public static function assetUsing(Closure $callback): void
-    {
-        self::$assetUsing = $callback;
-    }
-
     public function getAsset(string $path): string
     {
-        if(is_null(self::$assetUsing)) {
-            return $path;
-        }
-
-        return value(self::$assetUsing, $path);
-    }
-
-    /**
-     * @param  Closure(string $path): void  $callback
-     */
-    public static function viteDevResolver(Closure $callback): void
-    {
-        self::$viteDevUsing = $callback;
-    }
-
-    public function hasViteDevMode(): bool
-    {
-        return ! is_null(self::$viteDevUsing);
+        return $this->assetResolver->get($path);
     }
 
     public function getViteDev(string $path): string
     {
-        return value(self::$viteDevUsing, $path);
+        return $this->assetResolver->getDev($path);
     }
 
     /**
-     * @parent list<AssetElement> $assets
+     * @param  list<AssetElementContract> $assets
      */
-    public function add(AssetElement|array $assets): self
+    public function add(AssetElementContract|array $assets): static
     {
         $this->assets = array_unique(
             array_merge(
@@ -74,7 +49,7 @@ final class AssetManager implements Htmlable
         return $this;
     }
 
-    public function getAssets(): AssetElements
+    public function getAssets(): AssetElementsContract
     {
         return AssetElements::make($this->assets);
     }
@@ -82,30 +57,31 @@ final class AssetManager implements Htmlable
     public function toHtml(): string
     {
         return $this->getAssets()
-            ->ensure(AssetElement::class)
+            ->ensure(AssetElementContract::class)
             ->when(
-                $this->isRunningHot() && $this->hasViteDevMode(),
-                fn (AssetElements $assets) => $assets
+                $this->isRunningHot(),
+                fn (AssetElementsContract $assets) => $assets
                     ->push(
                         Raw::make($this->getViteDev($this->getHotFile()))
                     ),
             )
+            ->resolveLinks($this->assetResolver)
             ->withVersion($this->getVersion())
             ->toHtml();
     }
 
     private function isRunningHot(): bool
     {
-        return moonshine()->isLocal() && is_file($this->getHotFile());
+        return $this->assetResolver->isDev() && is_file($this->getHotFile());
     }
 
     private function getHotFile(): string
     {
-        return MoonShine::path('/public') . '/hot';
+        return $this->assetResolver->getHotFile();
     }
 
     private function getVersion(): string
     {
-        return InstalledVersions::getVersion('moonshine/moonshine');
+        return $this->assetResolver->getVersion();
     }
 }

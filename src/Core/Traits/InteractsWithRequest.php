@@ -6,27 +6,31 @@ namespace MoonShine\Core\Traits;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 
+/**
+ * @mixin RequestContract
+ */
 trait InteractsWithRequest
 {
     public function getHost(): string
     {
-        return $this->request->getUri()->getHost();
+        return $this->getRequest()->getUri()->getHost();
     }
 
     public function getPath(): string
     {
-        $pattern = trim($this->request->getUri()->getPath(), '/');
+        $pattern = trim($this->getRequest()->getUri()->getPath(), '/');
 
         return $pattern === '' ? '/' : $pattern;
     }
 
     public function getUrl(): string
     {
-        $url = $this->request->getUri()->getScheme() . '://' . $this->getHost();
+        $url = $this->getRequest()->getUri()->getScheme() . '://' . $this->getHost();
 
-        if($this->request->getUri()->getPort()) {
-            $url .= ':' . $this->request->getUri()->getPort();
+        if($this->getRequest()->getUri()->getPort()) {
+            $url .= ':' . $this->getRequest()->getUri()->getPort();
         }
 
         $url .= '/' . $this->getPath();
@@ -45,8 +49,8 @@ trait InteractsWithRequest
     {
         $question = $this->getPath() === '/' ? '/?' : '?';
 
-        return count($this->request->getQueryParams()) > 0
-            ? $this->getUrl() . $question . Arr::query(array_merge($this->request->getQueryParams(), $query))
+        return count($this->getRequest()->getQueryParams()) > 0
+            ? $this->getUrl() . $question . Arr::query(array_merge($this->getRequest()->getQueryParams(), $query))
             : $this->getUrl() . $question . Arr::query($query);
     }
 }

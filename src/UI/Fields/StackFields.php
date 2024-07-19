@@ -6,14 +6,15 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Contracts\Fields\FieldsWrapper;
-use MoonShine\UI\Contracts\Fields\HasFields;
+use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
-class StackFields extends Field implements HasFields, FieldsWrapper
+class StackFields extends Field implements HasFieldsContract, FieldsWrapperContract
 {
     use WithFields;
 
@@ -45,7 +46,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     ): static {
         $this->getFields()
             ->onlyFields()
-            ->each(static fn (Field $field): Field => $field->fillData(is_null($casted) ? $raw : $casted, $index));
+            ->each(static fn (FieldContract $field): FieldContract => $field->fillData(is_null($casted) ? $raw : $casted, $index));
 
         return $this;
     }
@@ -58,7 +59,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return FieldsGroup::make(
             $this->getFields()->indexFields()
         )
-            ->mapFields(fn (Field $field): Field => $field
+            ->mapFields(fn (FieldContract $field): FieldContract => $field
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->previewMode())
@@ -69,7 +70,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     {
         return function ($item) {
             $this->getFields()->onlyFields()->each(
-                static function (Field $field) use ($item): void {
+                static function (FieldContract $field) use ($item): void {
                     $field->apply(
                         static function (mixed $item) use ($field): mixed {
                             if ($field->getRequestValue() !== false) {
@@ -94,7 +95,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     {
         $this->getFields()
             ->onlyFields()
-            ->each(static fn (Field $field): mixed => $field->beforeApply($data));
+            ->each(static fn (FieldContract $field): mixed => $field->beforeApply($data));
 
         return $data;
     }
@@ -106,7 +107,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
     {
         $this->getFields()
             ->onlyFields()
-            ->each(static fn (Field $field): mixed => $field->afterApply($data));
+            ->each(static fn (FieldContract $field): mixed => $field->afterApply($data));
 
         return $data;
     }
@@ -119,7 +120,7 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         $this->getFields()
             ->onlyFields()
             ->each(
-                static fn (Field $field): mixed => $field
+                static fn (FieldContract $field): mixed => $field
                 ->fillData($data)
                 ->afterDestroy($data)
             );

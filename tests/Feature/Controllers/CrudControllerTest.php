@@ -108,7 +108,7 @@ describe('without special fields', function () {
 
         $item = storeResource($this->itemResource, $this->storeData);
 
-        $resource = new TestResource();
+        $resource = app(TestResource::class);
 
         fakeRequest($resource->getRoute('crud.destroy', $item->getKey()), 'DELETE', dispatchRoute: true);
 

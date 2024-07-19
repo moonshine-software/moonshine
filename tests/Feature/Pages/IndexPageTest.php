@@ -12,7 +12,7 @@ use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 beforeEach(function () {
     CategoryFactory::new()->count(3)->create();
 
-    $this->resource = new TestItemResource();
+    $this->resource = app(TestItemResource::class);
 });
 
 it('filters', function () {

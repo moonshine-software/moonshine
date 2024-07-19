@@ -33,14 +33,14 @@ beforeEach(function (): void {
             ID::make(),
             Text::make('Name title', 'name'),
             Text::make('Detail field'),
-            HasOne::make('Outside', 'outside', resource: new TestResource()),
+            HasOne::make('Outside', 'outside', resource: TestResource::class),
         ])
         ->setTestFormFields([
             Box::make([
                 ID::make(),
                 Text::make('Name title', 'name'),
                 Text::make('Form field'),
-                HasOne::make('Outside', 'outside', resource: new TestResource()),
+                HasOne::make('Outside', 'outside', resource:TestResource::class),
             ]),
 
         ])

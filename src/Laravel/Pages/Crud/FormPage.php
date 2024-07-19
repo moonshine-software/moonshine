@@ -3,6 +3,8 @@
 namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
@@ -20,7 +22,6 @@ use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Contracts\MoonShineRenderable;
 use MoonShine\UI\Fields\Hidden;
 use Throwable;
 
@@ -31,6 +32,17 @@ use Throwable;
 class FormPage extends Page
 {
     protected ?PageType $pageType = PageType::FORM;
+
+    public function getTitle(): string
+    {
+        if($this->title) {
+            return $this->title;
+        }
+
+        return $this->getResource()->getItemID()
+            ? __('moonshine::ui.edit')
+            : __('moonshine::ui.add');
+    }
 
     /**
      * @return array<string, string>
@@ -176,8 +188,8 @@ class FormPage extends Page
     }
 
     /**
-     * @throws Throwable
      * @return list<MoonShineComponent>
+     *@throws Throwable
      */
     protected function getFormComponents(
         string $action,
@@ -208,7 +220,7 @@ class FormPage extends Page
         ?Model $item,
         Fields $fields,
         bool $isAsync = true,
-    ): MoonShineRenderable {
+    ): RenderableContract {
         $resource = $this->getResource();
 
         return FormBuilder::make($action)
@@ -234,7 +246,7 @@ class FormPage extends Page
             )
             ->when(
                 $isAsync,
-                static fn (FormBuilder $formBuilder): FormBuilder => $formBuilder
+                static fn (FormBuilderContract $formBuilder): FormBuilderContract => $formBuilder
                     ->async(events: array_filter([
                         $resource->getListEventName(
                             request()->input('_component_name', 'default')
@@ -246,7 +258,7 @@ class FormPage extends Page
             )
             ->when(
                 $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
-                static fn (FormBuilder $form): FormBuilder => $form->precognitive()
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive()
             )
             ->name($resource->getUriKey())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])

@@ -6,13 +6,12 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Collection;
 use JsonException;
-use MoonShine\Support\Traits\HasAsync;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeArray;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeNumeric;
-use MoonShine\UI\Contracts\Fields\DefaultValueTypes\DefaultCanBeString;
-use MoonShine\UI\Contracts\Fields\HasDefaultValue;
-use MoonShine\UI\Contracts\Fields\HasReactivity;
-use MoonShine\UI\Contracts\Fields\HasUpdateOnPreview;
+use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
+use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
+use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
@@ -20,14 +19,15 @@ use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\SelectTrait;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
+use MoonShine\UI\Traits\HasAsync;
 
 class Select extends Field implements
-    HasDefaultValue,
-    DefaultCanBeArray,
-    DefaultCanBeString,
-    DefaultCanBeNumeric,
-    HasUpdateOnPreview,
-    HasReactivity
+    HasDefaultValueContract,
+    CanBeArray,
+    CanBeString,
+    CanBeNumeric,
+    HasUpdateOnPreviewContract,
+    HasReactivityContract
 {
     use CanBeMultiple;
     use Searchable;

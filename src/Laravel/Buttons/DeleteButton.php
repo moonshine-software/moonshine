@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FormBuilder;
 
 final class DeleteButton
 {
@@ -19,7 +20,7 @@ final class DeleteButton
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-    ): ActionButton {
+    ): ActionButtonContract {
         $action = static fn (Model $data): string => $resource->getRoute(
             'crud.destroy',
             $data->getKey(),
@@ -36,9 +37,9 @@ final class DeleteButton
         )
             ->withConfirm(
                 method: HttpMethod::DELETE,
-                formBuilder: static fn (FormBuilder $formBuilder, Model $item) => $formBuilder->when(
+                formBuilder: static fn (FormBuilderContract $formBuilder, Model $item): FormBuilderContract => $formBuilder->when(
                     $isAsync || $resource->isAsync(),
-                    static fn (FormBuilder $form): FormBuilder => $form->async(
+                    static fn (FormBuilderContract $form): FormBuilderContract => $form->async(
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName()
                         )

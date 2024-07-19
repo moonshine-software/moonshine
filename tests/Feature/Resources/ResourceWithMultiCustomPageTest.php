@@ -18,7 +18,7 @@ beforeEach(function (): void {
         ->create()
         ->first();
 
-    $this->resource = new TestCategoryPageResource();
+    $this->resource = app(TestCategoryPageResource::class);
 });
 
 it('index page', function () {

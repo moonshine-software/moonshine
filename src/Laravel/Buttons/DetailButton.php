@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Buttons;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -15,7 +16,7 @@ final class DetailButton
 {
     public static function for(
         ModelResource $resource
-    ): ActionButton {
+    ): ActionButtonContract {
         if(! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
         }
@@ -35,7 +36,7 @@ final class DetailButton
         )
             ->when(
                 $resource->isDetailInModal(),
-                static fn (ActionButton $button): ActionButton => $button->async()->inModal(
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     title: static fn (): array|string|null => __('moonshine::ui.show'),
                     content: static fn (): string => '',
                     name: static fn (Model $data): string => "detail-modal-{$data->getKey()}",

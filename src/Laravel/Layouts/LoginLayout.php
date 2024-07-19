@@ -9,9 +9,9 @@ use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\{Assets, Block, Body, Favicon, Head, Html, LayoutBuilder, Logo, Meta};
-use MoonShine\UI\MoonShineLayout;
+use MoonShine\UI\Layout;
 
-final class LoginLayout extends MoonShineLayout
+final class LoginLayout extends Layout
 {
     public function build(): LayoutBuilder
     {

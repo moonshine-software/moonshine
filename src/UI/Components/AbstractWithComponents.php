@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\UI\Contracts\Components\HasComponents;
+use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\UI\Traits\Components\WithComponents;
 use Throwable;
 
 /**
  * @method static static make(iterable $components = [])
  */
-abstract class AbstractWithComponents extends MoonShineComponent implements HasComponents
+abstract class AbstractWithComponents extends MoonShineComponent implements HasComponentsContract
 {
     use WithComponents;
 

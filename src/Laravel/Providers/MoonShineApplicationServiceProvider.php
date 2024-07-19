@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Laravel\MoonShineConfigurator;
-use MoonShine\Laravel\Pages\Page;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\UI\Applies\AppliesRegister;
 use Throwable;
 
@@ -34,8 +34,11 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
             ->resources($this->resources())
             ->pages($this->pages());
 
+        /** @var AppliesRegister $applyRegister */
+        $applyRegister = appliesRegister();
+
         $this->appliesRegister(
-            appliesRegister()
+            $applyRegister
         );
     }
 
@@ -48,7 +51,7 @@ class MoonShineApplicationServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return array<class-string<Page>>
+     * @return array<class-string<PageContract>>
      */
     protected function pages(): array
     {

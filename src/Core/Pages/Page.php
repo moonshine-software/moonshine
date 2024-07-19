@@ -5,42 +5,38 @@ declare(strict_types=1);
 namespace MoonShine\Core\Pages;
 
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Core\Contracts\HasResourceContract;
-use MoonShine\Core\Contracts\MenuFiller;
-use MoonShine\Core\Contracts\PageContract;
-use MoonShine\Core\Contracts\PageView;
-use MoonShine\Core\Contracts\ResourceContract;
-use MoonShine\Core\MoonShineRouter;
+use MoonShine\Contracts\AssetManager\AssetManagerContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\Core\HasAssetsContract;
+use MoonShine\Contracts\Core\HasComponentsContract;
+use MoonShine\Contracts\Core\HasResourceContract;
+use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\MenuManager\MenuFillerContract;
+use MoonShine\Contracts\UI\LayoutContract;
+use MoonShine\Core\Collections\Components;
+use MoonShine\Core\Traits\HasResource;
+use MoonShine\Core\Traits\WithAssets;
+use MoonShine\Core\Traits\WithUriKey;
+use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Enums\Layer;
 use MoonShine\Support\Enums\PageType;
-use MoonShine\Support\Traits\HasResource;
-use MoonShine\Support\Traits\Makeable;
-use MoonShine\Support\Traits\WithAssets;
-use MoonShine\Support\Traits\WithUriKey;
-use MoonShine\UI\Collections\ComponentsCollection;
-use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Contracts\Collections\FieldsCollection;
-use MoonShine\UI\Contracts\Components\HasComponents;
-use MoonShine\UI\Contracts\Fields\HasAssets;
-use MoonShine\UI\Contracts\MoonShineRenderable;
-use MoonShine\UI\MoonShineLayout;
-use MoonShine\UI\Traits\WithViewRenderer;
 use Stringable;
 
 /**
- * @method static static make(?string $title = null, ?string $alias = null, ?ResourceContract $resource = null)
- * @template-covariant F of FieldsCollection
+ * @template-covariant F of FieldsContract
  */
 abstract class Page implements
     PageContract,
     Renderable,
-    HasComponents,
+    HasComponentsContract,
     HasResourceContract,
-    MenuFiller,
-    HasAssets,
+    MenuFillerContract,
+    HasAssetsContract,
     Stringable
 {
-    use Makeable;
     use HasResource;
     use WithUriKey;
     use WithAssets;
@@ -50,12 +46,10 @@ abstract class Page implements
 
     protected string $subtitle = '';
 
-    /** @var ?class-string<MoonShineLayout> */
+    /** @var ?class-string<LayoutContract> */
     protected ?string $layout = null;
 
-    protected ?string $pageView = null;
-
-    protected ?ComponentsCollection $components = null;
+    protected ?iterable $components = null;
 
     protected array $layersComponents = [];
 
@@ -68,22 +62,9 @@ abstract class Page implements
     protected bool $loaded = false;
 
     public function __construct(
-        ?string $title = null,
-        ?string $alias = null,
-        ?ResourceContract $resource = null,
+        protected CoreContract $core,
+        protected AssetManagerContract $assetManager,
     ) {
-        if (! is_null($title)) {
-            $this->title($title);
-        }
-
-        if (! is_null($alias)) {
-            $this->alias($alias);
-        }
-
-        if (! is_null($resource)) {
-            $this->setResource($resource);
-        }
-
         $this->booted();
     }
 
@@ -111,7 +92,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     abstract public function components(): array;
 
@@ -137,7 +118,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     public function fields(): array
     {
@@ -147,13 +128,13 @@ abstract class Page implements
     /**
      * @return F
      */
-    public function getFields(): FieldsCollection
+    public function getFields(): FieldsContract
     {
-        return fieldsCollection($this->fields());
+        return $this->core->getFieldsCollection($this->fields());
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     protected function topLayer(): array
     {
@@ -161,7 +142,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     protected function mainLayer(): array
     {
@@ -169,7 +150,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     protected function bottomLayer(): array
     {
@@ -213,8 +194,8 @@ abstract class Page implements
 
     public function setComponents(iterable $components): static
     {
-        if (! $components instanceof ComponentsCollection) {
-            $components = ComponentsCollection::make($components);
+        if (! $components instanceof Components) {
+            $components = Components::make($components);
         }
 
         $this->components = $components;
@@ -222,26 +203,19 @@ abstract class Page implements
         return $this;
     }
 
-    public function getComponents(): ComponentsCollection
+    public function getComponents(): Components
     {
-        if (! is_null($this->pageView)) {
-            /** @var PageView $pageView */
-            $pageView = moonshine()->getContainer($this->pageView);
-
-            return $pageView->components($this);
-        }
-
         if (! is_null($this->components)) {
             return $this->components;
         }
 
-        $this->components = ComponentsCollection::make($this->components());
+        $this->components = Components::make($this->components());
 
         return $this->components;
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     public function getLayers(): array
     {
@@ -253,7 +227,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<RenderableContract>
      */
     public function getLayerComponents(Layer $layer): array
     {
@@ -263,7 +237,7 @@ abstract class Page implements
         );
     }
 
-    public function pushToLayer(Layer $layer, MoonShineRenderable $component): static
+    public function pushToLayer(Layer $layer, RenderableContract $component): static
     {
         $this->layersComponents[$layer->value][] = $component;
 
@@ -295,7 +269,7 @@ abstract class Page implements
     }
 
     /**
-     * @param  class-string<MoonShineLayout>  $layout
+     * @param  class-string<LayoutContract>  $layout
      * @return $this
      */
     public function setLayout(string $layout): static
@@ -305,15 +279,15 @@ abstract class Page implements
         return $this;
     }
 
-    public function getLayout(): MoonShineLayout
+    public function getLayout(): LayoutContract
     {
         if (is_null($this->layout)) {
             $this->setLayout(
-                moonshineConfig()->getLayout()
+                $this->core->getConfig()->getLayout()
             );
         }
 
-        return moonshine()->getContainer($this->layout, null, page: $this);
+        return $this->core->getContainer($this->layout, null, page: $this);
     }
 
     public function getRoute(array $params = []): string
@@ -329,9 +303,9 @@ abstract class Page implements
         return $this->getRoute();
     }
 
-    public function getRouter(): MoonShineRouter
+    public function getRouter(): RouterContract
     {
-        $router = moonshineRouter();
+        $router = clone $this->core->getRouter();
 
         if ($this->hasResource()) {
             $router = $this->getResource()?->getRouter();
@@ -340,9 +314,25 @@ abstract class Page implements
         return $router->withPage($this);
     }
 
+    protected function resolveAssets(): void
+    {
+        $assets = $this->getAssets() ?? [];
+
+        if ($this->hasResource()) {
+            $assets = [
+                ...$assets,
+                ...$this->getResource()?->getAssets() ?? [],
+            ];
+        }
+
+        if ($assets !== []) {
+            $this->assetManager->add($assets);
+        }
+    }
+
     public function isActive(): bool
     {
-        return moonshineRouter()->extractPageUri() === $this->getUriKey();
+        return $this->getRouter()->extractPageUri() === $this->getUriKey();
     }
 
     /**
@@ -358,21 +348,5 @@ abstract class Page implements
     public function getView(): string
     {
         return 'moonshine::layouts.app';
-    }
-
-    protected function resolveAssets(): void
-    {
-        $assets = $this->getAssets() ?? [];
-
-        if ($this->hasResource()) {
-            $assets = [
-                ...$assets,
-                ...$this->getResource()?->getAssets() ?? [],
-            ];
-        }
-
-        if ($assets !== []) {
-            moonshineAssets()->add($assets);
-        }
     }
 }

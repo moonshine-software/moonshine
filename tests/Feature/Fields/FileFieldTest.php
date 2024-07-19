@@ -143,7 +143,7 @@ it('after destroy', function () {
 it('after destroy disableDeleteFiles', function () {
     $resource = TestResourceBuilder::new(Item::class)
         ->setTestFields([
-            ...(new TestItemResource())->formFields(),
+            ...app(TestItemResource::class)->formFields(),
             File::make('File')
                 ->disableDeleteFiles()
                 ->dir('items'),

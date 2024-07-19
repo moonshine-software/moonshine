@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\Core\Resources;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\ResourceContract;
+use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\ResourcesContract;
 
 /**
  * @template TKey of array-key
  *
  * @extends Collection<TKey, ResourceContract>
  */
-final class Resources extends Collection
+final class Resources extends Collection implements ResourcesContract
 {
     public function findByUri(
         string $uri,

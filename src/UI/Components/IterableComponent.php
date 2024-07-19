@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Illuminate\Support\Collection;
-use MoonShine\Core\Contracts\CastedData;
-use MoonShine\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\ActionButtons;
-use MoonShine\UI\Contracts\Fields\HasFields;
 use MoonShine\UI\Traits\HasDataCast;
 use MoonShine\UI\Traits\WithFields;
 
-abstract class IterableComponent extends MoonShineComponent implements HasFields
+abstract class IterableComponent extends MoonShineComponent implements HasFieldsContract
 {
     use HasDataCast;
     use WithFields;
@@ -85,7 +86,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
         return $this->buttons !== [];
     }
 
-    public function getButtons(CastedData $data): ActionButtons
+    public function getButtons(CastedDataContract $data): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons)
             ->fill($data)
@@ -93,7 +94,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
             ->withoutBulk();
     }
 
-    public function getBulkButtons(): ActionButtons
+    public function getBulkButtons(): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons)
             ->bulk($this->getName())

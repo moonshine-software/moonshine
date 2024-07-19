@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use MoonShine\Support\Traits\WithLabel;
 use MoonShine\UI\Traits\Components\HasDifferentHtmlTag;
 use MoonShine\UI\Traits\Components\WithHeadingGradation;
+use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $label)

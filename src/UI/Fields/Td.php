@@ -6,7 +6,8 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Core\Contracts\CastedData;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use Psr\Container\ContainerExceptionInterface;
@@ -68,7 +69,7 @@ class Td extends Template
 
     protected function resolveFill(
         array $raw = [],
-        ?CastedData $casted = null,
+        ?CastedDataContract $casted = null,
         int $index = 0
     ): static {
         return $this
@@ -114,8 +115,8 @@ class Td extends Template
             ? $this->getConditionalFields()
             : $this->getFields();
 
-        return FieldsGroup::make(fieldsCollection($fields))
-            ->mapFields(fn (Field $field): Field => $field
+        return FieldsGroup::make($this->core->getFieldsCollection($fields))
+            ->mapFields(fn (FieldContract $field): FieldContract => $field
                 ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())

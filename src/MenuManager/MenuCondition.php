@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 
 final readonly class MenuCondition
 {
     public function __construct(
-        private iterable|MenuElement|Closure $data,
+        private iterable|MenuElementContract|Closure $data,
         private ?Closure $before = null,
         private ?Closure $after = null,
     ) {
@@ -27,9 +28,9 @@ final readonly class MenuCondition
         return ! is_null($this->before);
     }
 
-    public function isBefore(MenuElement $element): bool
+    public function isBefore(MenuElementContract $element): bool
     {
-        return value($this->before, $element);
+        return (bool) value($this->before, $element);
     }
 
     public function hasAfter(): bool
@@ -37,8 +38,8 @@ final readonly class MenuCondition
         return ! is_null($this->after);
     }
 
-    public function isAfter(MenuElement $element): bool
+    public function isAfter(MenuElementContract $element): bool
     {
-        return value($this->after, $element);
+        return (bool) value($this->after, $element);
     }
 }
