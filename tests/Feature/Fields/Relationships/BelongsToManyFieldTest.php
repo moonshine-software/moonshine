@@ -37,7 +37,7 @@ beforeEach(function () {
         ->toBeEmpty();
 });
 
-function testBelongsToManyValue(TestResource $resource, Item $item, array $data, ?array $expectedData = null, array $pivotData = [])
+function testBelongsToManyValue(TestResource $resource, Item $item, array $data, array $pivotData = [])
 {
     asAdmin()->put(
         $resource->route('crud.update', $item->getKey()),
@@ -50,7 +50,7 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
     $item->refresh();
 
     expect($item->categories->pluck('id', 'id')->sort()->toArray())
-        ->toBe(collect($expectedData ?? $data)->sort()->toArray());
+        ->toBe(collect($data)->sort()->toArray());
 }
 
 it('apply as base', function () {
