@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\Laravel\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Laravel\MoonShineConfigurator;
 use Closure;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
