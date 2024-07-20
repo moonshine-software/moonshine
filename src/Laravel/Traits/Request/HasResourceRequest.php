@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Laravel\Traits\Request;
 
 use MoonShine\Contracts\Core\ResourceContract;

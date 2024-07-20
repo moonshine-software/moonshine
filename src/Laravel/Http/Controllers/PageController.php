@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Laravel\Http\Controllers;
 
 use MoonShine\Contracts\Core\PageContract;

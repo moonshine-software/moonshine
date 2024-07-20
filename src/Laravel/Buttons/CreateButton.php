@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Laravel\Buttons;
 
 use MoonShine\Contracts\UI\ActionButtonContract;

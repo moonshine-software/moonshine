@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Contracts\UI\FormBuilderContract;
