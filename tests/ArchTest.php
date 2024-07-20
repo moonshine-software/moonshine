@@ -22,4 +22,3 @@ arch('laravel')
     ->ignoring('MoonShine\Database')
     ->ignoring('App')
 ;
-
