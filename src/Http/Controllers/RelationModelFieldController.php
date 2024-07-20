@@ -57,7 +57,7 @@ class RelationModelFieldController extends MoonShineController
             $searchColumn = $field->getSearchColumn($morphClass);
         }
 
-        $query = $model->newModelQuery();
+        $query = $model->newQuery();
         $term = $request->input('query');
 
         if (is_closure($field->asyncSearchQuery())) {

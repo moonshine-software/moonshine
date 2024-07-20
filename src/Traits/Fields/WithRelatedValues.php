@@ -58,7 +58,7 @@ trait WithRelatedValues
         );
 
         $related = $relation->getRelated();
-        $query = $related->newModelQuery();
+        $query = $related->newQuery();
 
         if (is_closure($this->valuesQuery)) {
             $query = value($this->valuesQuery, $query, $this);
