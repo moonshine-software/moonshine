@@ -99,8 +99,7 @@ trait ResourceModelQuery
 
     protected function resolveItemQuery(): Builder
     {
-        return $this->getModel()
-            ->newQuery();
+        return $this->getModel()->newQuery();
     }
 
     /**
