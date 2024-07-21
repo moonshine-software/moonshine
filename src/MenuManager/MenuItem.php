@@ -44,16 +44,16 @@ class MenuItem extends MenuElement
             $this->icon($icon);
         }
 
-        if(is_string($filler) && str_contains($filler, '\\')) {
-            $filler = $this->core->getContainer()->get($filler);
+        if(is_string($this->filler) && str_contains($this->filler, '\\')) {
+            $this->filler = $this->core->getContainer()->get($this->filler);
         }
 
-        if ($filler instanceof MenuFillerContract) {
-            $this->resolveFiller($filler);
+        if ($this->filler instanceof MenuFillerContract) {
+            $this->resolveFiller($this->filler);
         }
 
-        if(is_string($filler)) {
-            $this->setUrl($filler);
+        if(is_string($this->filler)) {
+            $this->setUrl($this->filler);
         }
 
         $this->blank($blank);

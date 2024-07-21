@@ -116,6 +116,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         return $this->title;
     }
 
+    //TODO Rename or refactor
     public function getRouter(): RouterContract
     {
         return (clone $this->core->getRouter())->withResource($this);
@@ -131,6 +132,6 @@ abstract class Resource implements ResourceContract, MenuFillerContract
 
     public function isActive(): bool
     {
-        return $this->getRouter()->extractResourceUri() === $this->getUriKey();
+        return $this->core->getRouter()->extractResourceUri() === $this->getUriKey();
     }
 }

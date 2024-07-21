@@ -332,7 +332,7 @@ abstract class Page implements
 
     public function isActive(): bool
     {
-        return $this->getRouter()->extractPageUri() === $this->getUriKey();
+        return $this->core->getRouter()->extractPageUri() === $this->getUriKey();
     }
 
     /**
