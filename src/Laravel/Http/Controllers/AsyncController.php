@@ -39,7 +39,7 @@ class AsyncController extends MoonShineController
         }
 
         if ($component instanceof TableBuilderContract) {
-            return $this->responseWithTable($component);
+            $component = $this->responseWithTable($component);
         }
 
         return $component->render();
