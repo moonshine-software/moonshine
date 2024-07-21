@@ -24,6 +24,7 @@ trait WithUriKey
 
     public function getUriKey(): string
     {
+        //TODO Refactor AbstractRouter::uriKey
         return $this->getAlias() ?? AbstractRouter::uriKey(static::class);
     }
 }
