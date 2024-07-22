@@ -9,6 +9,8 @@ use JsonException;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Support\AlpineJs;
@@ -16,20 +18,29 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
 use MoonShine\UI\Traits\HasAsync;
+use MoonShine\UI\Traits\HasDataCast;
+use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
  */
-final class FormBuilder extends RowComponent implements FormBuilderContract
+final class FormBuilder extends MoonShineComponent implements FormBuilderContract
 {
     use HasAsync;
     use WithAdditionalFields;
+    use HasDataCast;
+    use WithFields;
 
     protected string $view = 'moonshine::components.form.builder';
+
+    protected mixed $values = [];
+
+    protected iterable $buttons = [];
 
     protected array $excludeFields = [
         '_force_redirect',
@@ -71,6 +82,55 @@ final class FormBuilder extends RowComponent implements FormBuilderContract
             'method' => $this->getMethod()->toString(),
             'enctype' => 'multipart/form-data',
         ]));
+    }
+
+    public function fill(mixed $values = []): static
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    public function fillCast(mixed $values, DataCasterContract $cast): static
+    {
+        return $this
+            ->cast($cast)
+            ->fill($values);
+    }
+
+    public function getValues(): mixed
+    {
+        return $this->values ?? [];
+    }
+
+    public function buttons(iterable $buttons = []): static
+    {
+        $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    public function getPreparedFields(): FieldsContract
+    {
+        $fields = $this->getFields();
+        $casted = $this->castData($this->getValues());
+
+        $fields->fill(
+            $casted->toArray(),
+            $casted
+        );
+
+        $fields->prepareAttributes();
+
+        return $fields;
+    }
+
+    public function getButtons(): ActionButtonsContract
+    {
+        return ActionButtons::make($this->buttons)
+            ->fill($this->castData($this->getValues()))
+            ->onlyVisible()
+            ->withoutBulk();
     }
 
     public function action(string $action): self

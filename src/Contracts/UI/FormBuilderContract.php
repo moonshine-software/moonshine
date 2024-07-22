@@ -6,7 +6,7 @@ namespace MoonShine\Contracts\UI;
 
 use Closure;
 
-interface FormBuilderContract
+interface FormBuilderContract extends HasFieldsContract
 {
     public function action(string $action): self;
 
