@@ -60,30 +60,13 @@ class AbstractRequest implements RequestContract
 
     public function getAll(): Collection
     {
-        $body = $this->request->getParsedBody();
-        $files = $this->request->getUploadedFiles();
-        $query = $this->request->getQueryParams();
-
-        $merged = $this->mergeRecursive($body, $files);
-
         return collect(
-            $this->mergeRecursive($merged, $query)
+            array_replace_recursive(
+                $this->request->getParsedBody(),
+                $this->request->getUploadedFiles(),
+                $this->request->getQueryParams()
+            )
         );
-    }
-
-    private function mergeRecursive(array &$first, array &$second): array
-    {
-        $merged = $first;
-
-        foreach ($second as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = $this->mergeRecursive($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-
-        return $merged;
     }
 
     public function getOnly(array|string $keys): array
