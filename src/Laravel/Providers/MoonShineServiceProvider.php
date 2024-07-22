@@ -129,7 +129,7 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(CoreContract::class, MoonShine::class);
 
-        Core::setInstance(static fn() => app(CoreContract::class));
+        Core::setInstance(static fn () => app(CoreContract::class));
 
         $this->app->bind(RouterContract::class, MoonShineRouter::class);
 
