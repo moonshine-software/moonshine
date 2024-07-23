@@ -71,7 +71,7 @@ class LoginFormRequest extends MoonShineFormRequest
             $this->validationException();
         }
 
-        $token = (new JWT())->create((string) $user->getKey());
+        $token = (new JWT(config('moonshine.auth.jwt_secret')))->create((string) $user->getKey());
 
         RateLimiter::clear($this->getThrottleKey());
 

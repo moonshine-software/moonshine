@@ -19,7 +19,7 @@ class AuthenticateApi extends Middleware
 
         $guard = MoonShineAuth::getGuard();
 
-        $identity = (new JWT())->parse($request->bearerToken() ?? '');
+        $identity = (new JWT(config('moonshine.auth.jwt_secret')))->parse($request->bearerToken() ?? '');
 
         if ($identity === false) {
             $this->unauthenticated($request, [$guard, ...$guards]);
