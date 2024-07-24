@@ -11,12 +11,12 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
+use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
-use MoonShine\Support\Attributes;
 use MoonShine\Support\Attributes\SearchUsingFullText;
 use MoonShine\UI\Fields\Field;
 use Throwable;
@@ -356,8 +356,7 @@ trait ResourceModelQuery
             $fullTextColumns = Attributes::for($this)
                 ->attribute(SearchUsingFullText::class)
                 ->method('search')
-                ->attributeProperty('columns')
-                ->get();
+                ->first('columns');
 
             $terms = str($this->getQueryParams()->get($queryKey))
                 ->squish()

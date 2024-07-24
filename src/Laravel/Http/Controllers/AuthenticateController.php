@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Laravel\Http\Requests\LoginFormRequest;
+use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Laravel\Pages\LoginPage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -33,22 +34,16 @@ class AuthenticateController extends MoonShineController
      */
     public function authenticate(LoginFormRequest $request): RedirectResponse|JsonResponse
     {
-        if ($request->wantsJson()) {
-            $token = $request->getAuthToken();
-
-            return $this->json(
-                data: [
-                    'token' => $token,
-                ]
-            );
-        }
-
         if (filled(moonshineConfig()->getAuthPipelines())) {
             $request = Pipeline::send($request)->through(
                 array_filter(
                     moonshineConfig()->getAuthPipelines()
                 )
             )->thenReturn();
+        }
+
+        if ($request instanceof MoonShineJsonResponse) {
+            return $request;
         }
 
         if ($request instanceof RedirectResponse) {

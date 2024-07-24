@@ -23,20 +23,9 @@ final class Search extends MoonShineComponent
         if($this->placeholder === '') {
             $this->placeholder = __('moonshine::ui.search') . ' (Ctrl+K)';
         }
-
-        if($this->action === '') {
-            $this->action = moonshineRouter()->to('global-search');
-        }
     }
 
-    protected function isGlobalSearchEnabled(): bool
-    {
-        return filled(
-            moonshineConfig()->getGlobalSearch()
-        );
-    }
-
-    protected function resourceSearchEnabled(): bool
+    protected function isSearchEnabled(): bool
     {
         $resource = moonshineRequest()->getResource();
 
@@ -45,7 +34,7 @@ final class Search extends MoonShineComponent
 
     protected function prepareBeforeRender(): void
     {
-        if (! $this->isGlobalSearchEnabled() && $this->resourceSearchEnabled()) {
+        if ($this->isSearchEnabled()) {
             $this->action = moonshineRequest()->getResource()?->getUrl();
         }
     }
@@ -59,8 +48,7 @@ final class Search extends MoonShineComponent
             'action' => $this->action,
             'value' => moonshine()->getRequest()->get($this->key, ''),
             'placeholder' => $this->placeholder,
-            'isEnabled' => $this->isGlobalSearchEnabled() || $this->resourceSearchEnabled(),
-            'isGlobal' => $this->isGlobalSearchEnabled(),
+            'isEnabled' => $this->isSearchEnabled(),
         ];
     }
 }

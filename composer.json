@@ -24,9 +24,9 @@
     "illuminate/view": "^11",
     "rap2hpoutre/fast-excel": "^5.4",
     "lee-to/laravel-package-command": "^0.9",
-    "lcobucci/jwt": "^5.3",
     "symfony/psr-http-message-bridge": "^7",
-    "nyholm/psr7": "^1"
+    "nyholm/psr7": "^1",
+    "lee-to/fast-attributes": "^0.1.0"
   },
   "require-dev": {
     "pestphp/pest": "^2.34",
@@ -50,10 +50,6 @@
       "MoonShine\\Database\\Factories\\": "database/factories/",
       "App\\": "app/"
     }
-  },
-  "suggest": {
-    "laravel/socialite": "Required to use the Socialite",
-    "unisharp/laravel-filemanager": "Required if you want tinymce file manager"
   },
   "conflict": {
     "laravel/framework": "<10.48.0"

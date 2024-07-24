@@ -117,7 +117,6 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         return $this->title;
     }
 
-    // todo(hot)-3 ??? Rename or refactor
     public function getRouter(): RouterContract
     {
         return (clone $this->getCore()->getRouter())->withResource($this);

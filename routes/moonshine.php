@@ -5,14 +5,12 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Laravel\Http\Controllers\AsyncController;
 use MoonShine\Laravel\Http\Controllers\AuthenticateController;
 use MoonShine\Laravel\Http\Controllers\CrudController;
-use MoonShine\Laravel\Http\Controllers\GlobalSearchController;
 use MoonShine\Laravel\Http\Controllers\HandlerController;
 use MoonShine\Laravel\Http\Controllers\HomeController;
 use MoonShine\Laravel\Http\Controllers\NotificationController;
 use MoonShine\Laravel\Http\Controllers\PageController;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\Http\Controllers\RelationModelFieldController;
-use MoonShine\Laravel\Http\Controllers\SocialiteController;
 use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
 
 $authMiddleware = moonshineConfig()->getAuthMiddleware();
@@ -42,11 +40,6 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
             moonshineConfig()->getPagePrefix() . "/{pageUri}",
             PageController::class
         )->name('page');
-
-        Route::get(
-            'search',
-            GlobalSearchController::class
-        )->name('global-search');
 
         Route::prefix('relation/{pageUri}/{resourceUri?}/{resourceItem?}')->controller(RelationModelFieldController::class)->group(
             function (): void {
@@ -92,14 +85,6 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
             Route::post('/authenticate', 'authenticate')->name('authenticate');
             Route::get('/logout', 'logout')->name('logout');
         });
-
-        Route::controller(SocialiteController::class)
-            ->prefix('socialite')
-            ->as('socialite.')
-            ->group(static function (): void {
-                Route::get('/{driver}/redirect', 'redirect')->name('redirect');
-                Route::get('/{driver}/callback', 'callback')->name('callback');
-            });
 
         Route::post('/profile', [ProfileController::class, 'store'])
             ->middleware(

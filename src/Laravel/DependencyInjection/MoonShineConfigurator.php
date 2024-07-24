@@ -139,22 +139,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->get('locale', 'en');
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function getSocialite(): array
-    {
-        return $this->get('socialite', []);
-    }
-
-    /**
-     * @param  array<string, string>|Closure  $socialite
-     */
-    public function socialite(array|Closure $socialite): self
-    {
-        return $this->set('socialite', $socialite);
-    }
-
     public function getCacheDriver(): string
     {
         return $this->get('cache', 'file');
@@ -186,22 +170,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
     public function getDiskOptions(): array
     {
         return $this->get('disk_options', []);
-    }
-
-    /**
-     * @return list<class-string>
-     */
-    public function getGlobalSearch(): array
-    {
-        return $this->get('global_search', []);
-    }
-
-    /**
-     * @param  list<class-string>|Closure  $models
-     */
-    public function globalSearch(array|Closure $models = []): self
-    {
-        return $this->set('global_search', $models);
     }
 
     public function isUseMigrations(): bool

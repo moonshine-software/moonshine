@@ -48,7 +48,6 @@ return [
         'username' => 'Username',
         'email' => 'E-mail',
         'password' => 'Password',
-        'or_socials' => 'or',
     ],
     'resource' => [
         'system' => 'System',
@@ -65,9 +64,6 @@ return [
 
         'main_information' => 'Main information',
         'change_password' => 'Change password',
-
-        'link_socialite' => 'Link account',
-        'linked_socialite' => 'Account linked',
 
         'queued' => 'Queued',
 

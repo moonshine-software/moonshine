@@ -81,16 +81,8 @@ return [
     'default_with_import' => true,
     'default_with_export' => true,
 
-    'global_search' => [
-        // User::class
-    ],
-
     'locale' => 'en',
     'locales' => [
         // en
-    ],
-
-    'socialite' => [
-        // 'driver' => 'path_to_image_for_button'
     ],
 ];

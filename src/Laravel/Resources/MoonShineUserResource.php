@@ -13,6 +13,7 @@ use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Tabs\Tabs;
 use MoonShine\UI\Fields\Date;

@@ -30,7 +30,6 @@ import charts from './Components/Charts'
 import sortable from './Components/Sortable'
 import asyncLink from './Components/AsyncLink'
 import fragment from './Components/Fragment'
-import globalSearch from './Components/GlobalSearch'
 import tabs from './Components/Tabs.js'
 import collapse from './Components/Collapse.js'
 import easyMde from './Components/EasyMde'
@@ -67,7 +66,6 @@ Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
 Alpine.data('fragment', fragment)
-Alpine.data('globalSearch', globalSearch)
 Alpine.data('tabs', tabs)
 Alpine.data('easyMde', easyMde)
 Alpine.data('collapse', collapse)

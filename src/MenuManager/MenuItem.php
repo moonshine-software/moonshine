@@ -7,7 +7,7 @@ namespace MoonShine\MenuManager;
 use Closure;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Support\Attributes;
+use Leeto\FastAttributes\Attributes;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Traits\WithBadge;
@@ -72,10 +72,7 @@ class MenuItem extends MenuElement
     {
         $this->setUrl(static fn (): string => $filler->getUrl());
 
-        $icon = Attributes::for($filler)
-            ->attribute(Icon::class)
-            ->attributeProperty('icon')
-            ->get();
+        $icon = Attributes::for($filler, Icon::class)->class()->first('icon');
 
         if (method_exists($filler, 'getBadge')) {
             $this->badge(static fn () => $filler->getBadge());

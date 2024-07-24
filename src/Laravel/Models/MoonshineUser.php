@@ -10,11 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use MoonShine\Database\Factories\MoonshineUserFactory;
-use MoonShine\Laravel\Traits\Models\HasMoonShineSocialite;
 
 class MoonshineUser extends Authenticatable
 {
-    use HasMoonShineSocialite;
     use HasFactory;
     use Notifiable;
 

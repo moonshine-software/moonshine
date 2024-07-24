@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Laravel\MoonShineAuth;
-use MoonShine\Laravel\Support\JWT;
-use Random\RandomException;
 
 class LoginFormRequest extends MoonShineFormRequest
 {
@@ -45,37 +42,6 @@ class LoginFormRequest extends MoonShineFormRequest
             ),
             moonshineConfig()->getUserField('password') => request()->input('password'),
         ];
-    }
-
-    /**
-     * @throws RandomException
-     */
-    public function getAuthToken(): string
-    {
-        $this->ensureIsNotRateLimited();
-
-        $user = MoonShineAuth::getModel()
-            ?->newQuery()
-            ->where(
-                moonshineConfig()->getUserField('username', 'email'),
-                request()->input('username')
-            )
-            ->first();
-
-        if (is_null($user) || ! Hash::check(
-            request()->input('password'),
-            $user->{moonshineConfig()->getUserField('password')}
-        )) {
-            RateLimiter::hit($this->getThrottleKey());
-
-            $this->validationException();
-        }
-
-        $token = (new JWT(config('moonshine.auth.jwt_secret')))->create((string) $user->getKey());
-
-        RateLimiter::clear($this->getThrottleKey());
-
-        return $token;
     }
 
     private function validationException(): void

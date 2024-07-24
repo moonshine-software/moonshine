@@ -7,9 +7,9 @@ namespace MoonShine\Laravel\Pages;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\MoonShineAuth;
+use MoonShine\Laravel\Traits\WithComponentsPusher;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
@@ -27,6 +27,8 @@ use MoonShine\UI\Fields\Text;
  */
 class ProfilePage extends Page
 {
+    use WithComponentsPusher;
+
     /**
      * @return array<string, string>
      */
@@ -87,7 +89,7 @@ class ProfilePage extends Page
     {
         return [
             $this->getForm(),
-            SocialAuth::make(profileMode: true),
+            ...$this->getPushedComponents(),
         ];
     }
 
