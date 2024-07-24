@@ -47,7 +47,7 @@ final readonly class JWT
                 )
             );
 
-            if(!$configuration->validator()->validate($parsedToken, ...$configuration->validationConstraints())) {
+            if(! $configuration->validator()->validate($parsedToken, ...$configuration->validationConstraints())) {
                 // todo(jwt) exception
                 return false;
             }
