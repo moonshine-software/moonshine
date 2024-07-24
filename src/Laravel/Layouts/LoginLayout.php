@@ -8,39 +8,31 @@ use MoonShine\Laravel\Components\SocialAuth;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
-use MoonShine\UI\Components\Layout\{Assets, Block, Body, Favicon, Head, Html, LayoutBuilder, Logo, Meta};
-use MoonShine\UI\Layout;
+use MoonShine\UI\Components\Layout\{Block, Body, Html, LayoutBuilder};
 
-final class LoginLayout extends Layout
+final class LoginLayout extends BaseLayout
 {
     public function build(): LayoutBuilder
     {
-        $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
-
-        $title = __('moonshine::ui.login.title', ['moonshine_title' => moonshineConfig()->getTitle()]);
-        $description = __('moonshine::ui.login.description');
-
         return LayoutBuilder::make([
             Html::make([
-                Head::make([
-                    Meta::make()->customAttributes([
-                        'name' => 'csrf-token',
-                        'content' => csrf_token(),
-                    ]),
-                    Favicon::make(),
-                    Assets::make(),
-                ]),
+                $this->getHeadComponent(),
                 Body::make([
                     Block::make([
                         Block::make([
-                            Logo::make(href: moonshineRouter()->getEndpoints()->home(), logo: $logo),
+                            $this->getLogoComponent(),
                         ])->class('authentication-logo'),
 
                         Block::make([
                             Block::make([
-                                Heading::make($title),
+                                Heading::make(
+                                    __('moonshine::ui.login.title',
+                                        ['moonshine_title' => moonshineConfig()->getTitle()])
+                                ),
                                 Block::make([
-                                    FlexibleRender::make($description),
+                                    FlexibleRender::make(
+                                        __('moonshine::ui.login.description')
+                                    ),
                                 ])->class('description'),
                             ])->class('authentication-header'),
 
@@ -52,7 +44,7 @@ final class LoginLayout extends Layout
                 ]),
             ])
                 ->customAttributes([
-                    'lang' => str_replace('_', '-', app()->getLocale()),
+                    'lang' => $this->getHeadLang(),
                 ])
                 ->withAlpineJs()
                 ->withThemes(),

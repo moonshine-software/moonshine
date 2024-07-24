@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use DI\Container;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
@@ -14,6 +15,7 @@ use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
@@ -25,29 +27,36 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
     use Conditionable;
     use Macroable;
     use Makeable;
+    use WithCore;
     use WithViewRenderer;
     use HasCanSee;
     use WithComponentAttributes;
 
-    // todo DI
-    protected CoreContract $core;
-    protected AssetManagerContract $assetManager;
-    protected ColorManagerContract $colorManager;
+    protected static bool $consoleMode = false;
 
     public function __construct(
         protected string $name = 'default',
     ) {
         $this->attributes = new MoonShineComponentAttributeBag();
 
-        // todo DI
-        $this->core = Core::getInstance();
-        $this->assetManager = $this->core->getContainer(AssetManagerContract::class);
-        $this->colorManager = $this->core->getContainer(ColorManagerContract::class);
-
-        if($this instanceof HasAssetsContract) {
+        if($this instanceof HasAssetsContract && !$this->isConsoleMode()) {
             $this->resolveAssets();
         }
+    }
 
+    public static function consoleMode(bool $enable = true): void
+    {
+        static::$consoleMode = $enable;
+    }
+
+    public function isConsoleMode(): bool
+    {
+        return static::$consoleMode;
+    }
+
+    public function getAssetManager(): AssetManagerContract
+    {
+        return $this->getCore()->getContainer(AssetManagerContract::class);
     }
 
     public function name(string $name): static

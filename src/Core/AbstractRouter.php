@@ -121,17 +121,6 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return null;
     }
 
-    /**
-     * @param  class-string  $class
-     */
-    public static function uriKey(string $class): string
-    {
-        return str($class)
-            ->classBasename()
-            ->kebab()
-            ->value();
-    }
-
     public function __toString(): string
     {
         return $this->to();

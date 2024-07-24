@@ -56,14 +56,21 @@ trait Applies
         return $data;
     }
 
+    /**
+     * @template D
+     * @param  Closure(D $data, mixed $value, static $ctx): D  $default
+     * @param  D  $data
+     *
+     * @return D
+     */
     public function apply(Closure $default, mixed $data): mixed
     {
         if (! $this->isCanApply()) {
             return $data;
         }
 
-        if (is_null($this->onApply)) {
-            $classApply = $this->core
+        if (is_null($this->onApply) && !$this->isConsoleMode()) {
+            $classApply = $this->getCore()
                 ->getContainer(AppliesRegisterContract::class)
                 ->findByField($this);
 

@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
+use MoonShine\Support\UriKey;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
 
@@ -137,7 +138,7 @@ final readonly class MoonShineEndpoints implements EndpointsContract
                 static fn (Pages $pages): ?PageContract => $pages->findByUri(
                     $page instanceof PageContract
                         ? $page->getUriKey()
-                        : MoonShineRouter::uriKey($page)
+                        : (new UriKey($page))->generate()
                 ),
             );
         }

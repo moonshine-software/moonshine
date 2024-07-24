@@ -27,7 +27,7 @@ it('show field on pages', function () {
     $view = Boolean::make($this->item->active)->render();
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Active')
@@ -35,7 +35,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Active')
@@ -48,7 +48,7 @@ it('show field on pages', function () {
     );
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('active')

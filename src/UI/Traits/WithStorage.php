@@ -21,8 +21,8 @@ trait WithStorage
 
     protected function resolveStorage(): void
     {
-        if (! $this->core->getStorage(disk: $this->getDisk())->exists($this->getDir())) {
-            $this->core->getStorage(disk: $this->getDisk())->makeDirectory($this->getDir());
+        if (! $this->getCore()->getStorage(disk: $this->getDisk())->exists($this->getDir())) {
+            $this->getCore()->getStorage(disk: $this->getDisk())->makeDirectory($this->getDir());
         }
     }
 
@@ -35,7 +35,7 @@ trait WithStorage
 
     public function getDisk(): string
     {
-        return $this->disk ?? $this->core->getConfig()->getDisk();
+        return $this->disk ?? $this->getCore()->getConfig()->getDisk();
     }
 
     public function options(array $options): static
@@ -48,7 +48,7 @@ trait WithStorage
     public function getOptions(): array
     {
         return [
-            ...$this->options ?? $this->core->getConfig()->getDiskOptions(),
+            ...$this->options ?? $this->getCore()->getConfig()->getDiskOptions(),
             'disk' => $this->getDisk(),
         ];
     }
@@ -62,26 +62,26 @@ trait WithStorage
 
     public function getStorageUrl(string $value): string
     {
-        return $this->core->getStorage(disk: $this->getDisk())->getUrl($value);
+        return $this->getCore()->getStorage(disk: $this->getDisk())->getUrl($value);
     }
 
     public function deleteStorageFile(string|array $path): bool
     {
-        return $this->core->getStorage(disk: $this->getDisk())->delete($path);
+        return $this->getCore()->getStorage(disk: $this->getDisk())->delete($path);
     }
 
     public function deleteStorageDirectory(string $dir): bool
     {
-        return $this->core->getStorage(disk: $this->getDisk())->deleteDirectory($dir);
+        return $this->getCore()->getStorage(disk: $this->getDisk())->deleteDirectory($dir);
     }
 
     public function getStorageDirectories(string $dir): array
     {
-        return $this->core->getStorage(disk: $this->getDisk())->getDirectories($dir);
+        return $this->getCore()->getStorage(disk: $this->getDisk())->getDirectories($dir);
     }
 
     public function getStorageFiles(string $dir): array
     {
-        return $this->core->getStorage(disk: $this->getDisk())->getFiles($dir);
+        return $this->getCore()->getStorage(disk: $this->getDisk())->getFiles($dir);
     }
 }

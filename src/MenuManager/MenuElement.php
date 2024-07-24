@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
@@ -18,9 +19,11 @@ use MoonShine\UI\Traits\HasCanSee;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
+// todo(hot)-2 ??? inject CoreContract
 abstract class MenuElement implements MenuElementContract, RenderableContract, HasCanSeeContract
 {
     use Makeable;
+    use WithCore;
     use WithComponentAttributes;
     use WithIcon;
     use HasCanSee;
@@ -31,16 +34,9 @@ abstract class MenuElement implements MenuElementContract, RenderableContract, H
 
     abstract public function isActive(): bool;
 
-    // todo DI
-    // todo inject resolver
-    protected CoreContract $core;
-
     public function __construct()
     {
         $this->attributes = new MoonShineComponentAttributeBag();
-
-        // todo DI or inject from MenuManager and remove Core package and ??? move WithViewRenderer to Support
-        $this->core = Core::getInstance();
     }
 
     public function topMode(?Closure $condition = null): static

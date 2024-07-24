@@ -28,7 +28,7 @@ beforeEach(function (): void {
 
 it('show field on pages', function () {
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('Imageable')
@@ -36,7 +36,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
     )
         ->assertOk()
         ->assertSee('Imageable')
@@ -45,7 +45,7 @@ it('show field on pages', function () {
 
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->image->getKey()])
     )
         ->assertOk()
         ->assertSee('Imageable')
@@ -57,7 +57,7 @@ it('apply as base', function () {
     saveImageable($this->resource, $this->image);
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('Imageable')

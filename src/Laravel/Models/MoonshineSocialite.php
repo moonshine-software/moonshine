@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\MoonShineAuth;
 
-// todo move to package
+// todo(packages)-socialite move to package
 class MoonshineSocialite extends Model
 {
     protected $fillable = [

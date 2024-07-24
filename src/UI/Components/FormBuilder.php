@@ -174,7 +174,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $asyncUrl = $this->core->getRouter()->getEndpoints()->asyncMethod(
+        $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->asyncMethod(
             $method,
             $message,
             params: ['resourceItem' => $resource?->getItemID()],
@@ -202,7 +202,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             return value($this->reactiveUrl, $this);
         }
 
-        return $this->core->getRouter()->getEndpoints()->reactive();
+        return $this->getCore()->getRouter()->getEndpoints()->reactive();
     }
 
     public function method(FormMethod $method): self
@@ -267,7 +267,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     public function getSubmitLabel(): string
     {
-        return $this->submitLabel ?? $this->core->getTranslator()->get('moonshine::ui.save');
+        return $this->submitLabel ?? $this->getCore()->getTranslator()->get('moonshine::ui.save');
     }
 
     public function switchFormMode(bool $isAsync, string|array|null $events = ''): self
@@ -426,7 +426,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->getSubmitLabel(),
             'submitAttributes' => $this->getSubmitAttributes(),
-            'errors' => $this->core->getRequest()->getFormErrors($this->getName()),
+            'errors' => $this->getCore()->getRequest()->getFormErrors($this->getName()),
         ];
     }
 }

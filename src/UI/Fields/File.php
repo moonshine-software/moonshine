@@ -85,7 +85,7 @@ class File extends Field implements FileableContract, RemovableContract
     public function getRequestValue(int|string|null $index = null): mixed
     {
         return $this->prepareRequestValue(
-            $this->core->getRequest()->getFile(
+            $this->getCore()->getRequest()->getFile(
                 $this->getRequestNameDot($index),
             ) ?? false
         );

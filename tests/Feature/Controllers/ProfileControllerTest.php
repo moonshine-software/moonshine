@@ -10,7 +10,7 @@ it('index', function () {
 
     asAdmin()
         ->get(
-            toPage(
+            $this->moonshineCore->getRouter()->getEndpoints()->toPage(
                 $this->moonshineCore->getConfig()->getPage('profile', ProfilePage::class)
             )
         )

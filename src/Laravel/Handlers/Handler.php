@@ -9,6 +9,7 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Traits\HasResource;
+use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
@@ -27,20 +28,16 @@ abstract class Handler
     use WithIcon;
     use WithUriKey;
     use WithLabel;
+    use WithCore;
     use Conditionable;
 
     protected ?Closure $modifyButton = null;
 
     protected array|Closure $notifyUsers = [];
 
-    protected CoreContract $core;
-
     public function __construct(Closure|string $label)
     {
         $this->setLabel($label);
-
-        // todo DI
-        $this->core = app(CoreContract::class);
     }
 
     abstract public function handle(): Response;

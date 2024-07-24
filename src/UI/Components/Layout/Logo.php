@@ -26,7 +26,7 @@ final class Logo extends MoonShineComponent
     ) {
         parent::__construct();
 
-        $this->title ??= $this->core->getConfig()->getTitle();
+        $this->title ??= $this->getCore()->getConfig()->getTitle();
         $this->logoAttributes = new MoonShineComponentAttributeBag();
         $this->logoSmallAttributes = new MoonShineComponentAttributeBag();
     }

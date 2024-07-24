@@ -160,7 +160,7 @@ it('home', function (): void {
 });
 
 it('uri key', function (): void {
-    expect(AbstractRouter::uriKey($this->page::class))
+    expect($this->page->getUriKey())
         ->toBe("category-page-index")
     ;
 });

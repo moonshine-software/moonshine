@@ -54,7 +54,7 @@ final class FieldContainer extends MoonShineComponent
 
         if ($hint = $this->field->getHint()) {
             $this->afterInner = new ComponentSlot(
-                $this->core->getRenderer()->render('moonshine::components.form.hint', [
+                $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
                     'slot' => $hint,
                 ], $this)

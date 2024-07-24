@@ -7,31 +7,14 @@ namespace MoonShine\Laravel\Layouts;
 use MoonShine\AssetManager\Css;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
-use MoonShine\UI\Components\{
-    Breadcrumbs,
-    Components,
-    Layout\Assets,
+use MoonShine\UI\Components\{Components,
     Layout\Block,
     Layout\Body,
-    Layout\Burger,
     Layout\Content,
-    Layout\Favicon,
     Layout\Flash,
-    Layout\Footer,
-    Layout\Head,
-    Layout\Header,
     Layout\Html,
     Layout\LayoutBuilder,
-    Layout\Logo,
-    Layout\Menu,
-    Layout\Meta,
-    Layout\Sidebar,
-    Layout\ThemeSwitcher,
-    Layout\TopBar,
-    Layout\Wrapper,
-    When
-};
+    Layout\Wrapper};
 
 class CompactLayout extends AppLayout
 {
@@ -45,7 +28,7 @@ class CompactLayout extends AppLayout
     }
 
     /**
-     * @param ColorManager $colorManager
+     * @param  ColorManager  $colorManager
      */
     protected function colors(ColorManagerContract $colorManager): void
     {
@@ -97,95 +80,16 @@ class CompactLayout extends AppLayout
 
     public function build(): LayoutBuilder
     {
-        $logo = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
-        $logoSmall = moonshineAssets()->getAsset('vendor/moonshine/logo.svg');
-
         return LayoutBuilder::make([
             Html::make([
-                Head::make([
-                    Meta::make()->customAttributes([
-                        'name' => 'csrf-token',
-                        'content' => csrf_token(),
-                    ]),
-                    Favicon::make(),
-                    Assets::make(),
-                ]),
+                $this->getHeadComponent(),
                 Body::make([
                     Wrapper::make([
-                        TopBar::make([
-                            Block::make([
-                                Logo::make(
-                                    moonshineRouter()->getEndpoints()->home(),
-                                    $logo,
-                                    $logoSmall
-                                )->minimized(),
-                            ])->class('menu-logo'),
-
-                            Block::make([
-                                Menu::make($this->menuManager)->top(),
-                            ])->class('menu-navigation'),
-
-                            Block::make([
-                                When::make(
-                                    static fn (): bool => moonshineConfig()->isAuthEnabled(),
-                                    static fn (): array => [Profile::make()]
-                                ),
-
-                                Block::make()->class('menu-inner-divider'),
-                                Block::make([
-                                    ThemeSwitcher::make()->top(),
-                                ])->class('menu-mode'),
-
-                                Block::make([
-                                    Burger::make(),
-                                ])->class('menu-burger'),
-                            ])->class('menu-actions'),
-                        ]),
-
-                        Sidebar::make([
-                            Block::make([
-                                Block::make([
-                                    Logo::make(
-                                        moonshineRouter()->getEndpoints()->home(),
-                                        $logo,
-                                        $logoSmall
-                                    )->minimized(),
-                                ])->class('menu-heading-logo'),
-
-                                Block::make([
-                                    Block::make([
-                                        ThemeSwitcher::make(),
-                                    ])->class('menu-heading-mode'),
-
-                                    Block::make([
-                                        Burger::make(),
-                                    ])->class('menu-heading-burger'),
-                                ])->class('menu-heading-actions'),
-                            ])->class('menu-heading'),
-
-                            Block::make([
-                                Menu::make($this->menuManager),
-                                When::make(
-                                    static fn (): bool => moonshineConfig()->isAuthEnabled(),
-                                    static fn (): array => [Profile::make(withBorder: true)]
-                                ),
-                            ])->customAttributes([
-                                'class' => 'menu',
-                                ':class' => "asideMenuOpen && '_is-opened'",
-                            ]),
-                        ])->collapsed(),
+                        // $this->getTopBarComponent(),
+                        $this->getSidebarComponent(),
                         Block::make([
                             Flash::make(),
-                            Header::make([
-                                Breadcrumbs::make($this->getPage()->getBreadcrumbs())
-                                    ->prepend(moonshineRouter()->getEndpoints()->home(), icon: 'home'),
-
-                                Search::make(),
-
-                                Notifications::make(),
-
-                                Locales::make(),
-                            ]),
+                            $this->getHeaderComponent(),
 
                             Content::make([
                                 Components::make(
@@ -193,28 +97,13 @@ class CompactLayout extends AppLayout
                                 ),
                             ]),
 
-                            Footer::make()
-                                ->copyright(static fn (): string => sprintf(
-                                    <<<'HTML'
-                                        &copy; 2021-%d Made with ❤️ by
-                                        <a href="https://cutcode.dev"
-                                            class="font-semibold text-primary hover:text-secondary"
-                                            target="_blank"
-                                        >
-                                            CutCode
-                                        </a>
-                                    HTML,
-                                    now()->year
-                                ))
-                                ->menu([
-                                    'https://moonshine-laravel.com/docs' => 'Documentation',
-                                ]),
+                            $this->getFooterComponent(),
                         ])->class('layout-page'),
                     ]),
                 ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([
-                    'lang' => str_replace('_', '-', app()->getLocale()),
+                    'lang' => $this->getHeadLang(),
                 ])
                 ->withAlpineJs()
                 ->withThemes(),

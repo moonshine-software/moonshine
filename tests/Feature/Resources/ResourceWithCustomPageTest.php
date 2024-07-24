@@ -37,7 +37,7 @@ beforeEach(function (): void {
 
 it('index page', function () {
     asAdmin()->get(
-        toPage(page: CustomPageIndex::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: CustomPageIndex::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageIndex')
@@ -48,7 +48,7 @@ it('index page', function () {
 
 it('form page', function () {
     asAdmin()->get(
-        toPage(page: CustomPageForm::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: CustomPageForm::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageForm')
@@ -57,7 +57,7 @@ it('form page', function () {
 
 it('detail page', function () {
     asAdmin()->get(
-        toPage(page: CustomPageDetail::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: CustomPageDetail::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('CustomPageDetail')
@@ -72,6 +72,6 @@ it('no page type resource', function () {
         ])
     ;
 
-    expect(toPage('custom-no-type-form', resource: $resource))
+    expect($this->moonshineCore->getRouter()->getEndpoints()->toPage('custom-no-type-form', resource: $resource))
         ->toContain('custom-no-type-form');
 });

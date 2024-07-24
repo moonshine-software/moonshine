@@ -12,10 +12,12 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Traits\WithAssets;
+use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 
 abstract class Resource implements ResourceContract, MenuFillerContract
 {
+    use WithCore;
     use WithUriKey;
     use WithAssets;
 
@@ -28,9 +30,9 @@ abstract class Resource implements ResourceContract, MenuFillerContract
     protected bool $loaded = false;
 
     public function __construct(
-        protected CoreContract $core,
-        protected AssetManagerContract $assetManager,
+        CoreContract $core,
     ) {
+        $this->setCore($core);
         $this->booted();
     }
 
@@ -46,7 +48,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         }
 
         $this->pages = Pages::make($this->pages())
-            ->map(fn (string $page) => $this->core->getContainer()->get($page))
+            ->map(fn (string $page) => $this->getCore()->getContainer()->get($page))
             ->setResource($this);
 
         return $this->pages;
@@ -116,10 +118,10 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         return $this->title;
     }
 
-    //TODO Rename or refactor
+    // todo(hot)-3 ??? Rename or refactor
     public function getRouter(): RouterContract
     {
-        return (clone $this->core->getRouter())->withResource($this);
+        return (clone $this->getCore()->getRouter())->withResource($this);
     }
 
     public function getUrl(): string
@@ -132,6 +134,6 @@ abstract class Resource implements ResourceContract, MenuFillerContract
 
     public function isActive(): bool
     {
-        return $this->core->getRouter()->extractResourceUri() === $this->getUriKey();
+        return $this->getCore()->getRouter()->extractResourceUri() === $this->getUriKey();
     }
 }

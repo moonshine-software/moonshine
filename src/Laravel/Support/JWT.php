@@ -16,7 +16,7 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Random\RandomException;
 use Throwable;
 
-// todo move to package
+// todo(packages)-jwt move to package
 final readonly class JWT
 {
     public function __construct(

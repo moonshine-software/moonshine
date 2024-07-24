@@ -184,7 +184,7 @@ trait FileTrait
         }
 
         return collect(
-            $this->core->getRequest()->get(
+            $this->getCore()->getRequest()->get(
                 $this->getHiddenRemainingValuesKey()
             )
         );

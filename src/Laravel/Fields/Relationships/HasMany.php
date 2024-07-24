@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -427,7 +428,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         ];
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
     {
         return null;
     }

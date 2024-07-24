@@ -8,26 +8,19 @@ use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\Layout\{Assets, Body, Favicon, Head, Html, LayoutBuilder, Meta};
 use MoonShine\UI\Layout;
 
-final class BlankLayout extends Layout
+final class BlankLayout extends BaseLayout
 {
     public function build(): LayoutBuilder
     {
         return LayoutBuilder::make([
             Html::make([
-                Head::make([
-                    Meta::make()->customAttributes([
-                        'name' => 'csrf-token',
-                        'content' => csrf_token(),
-                    ]),
-                    Favicon::make(),
-                    Assets::make(),
-                ]),
+                $this->getHeadComponent(),
                 Body::make([
                     Components::make($this->getPage()->getComponents()),
                 ]),
             ])
                 ->customAttributes([
-                    'lang' => str_replace('_', '-', app()->getLocale()),
+                    'lang' => $this->getHeadLang(),
                 ])
                 ->withAlpineJs()
                 ->withThemes(),

@@ -25,7 +25,7 @@ it('onlyLink preview', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: IndexPage::class, resource: $resource))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('<span class="badge">6</span>', false)
     ;
@@ -42,7 +42,7 @@ it('onlyLink preview empty', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: IndexPage::class, resource: $resource))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
     ;
 });
@@ -58,7 +58,7 @@ it('onlyLink value', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertSee('<span class="badge">16</span>', false)
         ->assertOk()
     ;
@@ -75,7 +75,7 @@ it('onlyLink value empty', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
     ;
 });
@@ -94,7 +94,7 @@ it('onlyLink preview condition', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: IndexPage::class, resource: $resource))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments->first()->content)
@@ -116,7 +116,7 @@ it('onlyLink value condition', function () {
     ]);
 
     asAdmin()
-        ->get(toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
         ->assertOk()
         ->assertSee('Comments title')
         ->assertSee($item->comments[15]->content)

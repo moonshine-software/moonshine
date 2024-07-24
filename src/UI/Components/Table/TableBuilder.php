@@ -128,12 +128,12 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
-        return $url ?? fn (): string => $this->core->getRouter()->getEndpoints()->asyncComponent(
+        return $url ?? fn (): string => $this->getCore()->getRouter()->getEndpoints()->asyncComponent(
             $this->getName(),
             additionally: [
-                'filters' => $this->core->getRequest()->get('filters'),
-                'query-tag' => $this->core->getRequest()->get('query-tag'),
-                'search' => $this->core->getRequest()->get('search'),
+                'filters' => $this->getCore()->getRequest()->get('filters'),
+                'query-tag' => $this->getCore()->getRequest()->get('query-tag'),
+                'search' => $this->getCore()->getRequest()->get('search'),
             ]
         );
     }

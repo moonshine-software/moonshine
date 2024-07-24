@@ -35,8 +35,8 @@ class Flash extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'alert' => $this->core->getRequest()->getSession($this->key),
-            'toast' => $this->withToast ? $this->core->getRequest()->getSession('toast') : false,
+            'alert' => $this->getCore()->getRequest()->getSession($this->key),
+            'toast' => $this->withToast ? $this->getCore()->getRequest()->getSession('toast') : false,
             'type' => $this->type,
             'withToast' => $this->withToast,
             'removable' => $this->removable,

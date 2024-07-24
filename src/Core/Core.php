@@ -86,7 +86,6 @@ abstract class Core implements CoreContract
 
     public function getRequest(): RequestContract
     {
-        // todo cuz Core is singleton
         return $this->getContainer(RequestContract::class);
     }
 

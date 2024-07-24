@@ -30,7 +30,7 @@ beforeEach(function (): void {
 
 it('fields on index', function () {
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('table')
@@ -53,7 +53,7 @@ it('simple pagination on index', function () {
     $this->resource->setSimplePaginate();
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $this->resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $this->resource)
     )
         ->assertOk()
         ->assertSee('table')
@@ -64,7 +64,7 @@ it('simple pagination on index', function () {
 
 it('fields on form', function () {
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')
@@ -78,7 +78,7 @@ it('fields on form', function () {
 
 it('fields on show', function () {
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => $this->userID])
     )
         ->assertOk()
         ->assertSee('Name')

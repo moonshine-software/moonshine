@@ -99,7 +99,7 @@ trait TableStates
         $this->isReindex = $reindex;
 
         $this->creatableButton = $button
-            ?: ActionButton::make($label ?? $this->core->getTranslator()->get('moonshine::ui.add'), '#')
+            ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->get('moonshine::ui.add'), '#')
                 ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
                     array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
@@ -222,7 +222,7 @@ trait TableStates
             'simple' => $this->isSimple(),
             'sticky' => $this->isSticky(),
             'searchable' => $this->isSearchable(),
-            'searchValue' => $this->core->getRequest()->get('search', ''),
+            'searchValue' => $this->getCore()->getRequest()->get('search', ''),
         ];
     }
 }

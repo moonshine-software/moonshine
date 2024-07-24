@@ -102,7 +102,7 @@ trait UpdateOnPreview
             );
         }
 
-        $router = $this->core->getRouter();
+        $router = $this->getCore()->getRouter();
 
         return $this->setUpdateOnPreviewUrl(
             $url ?? static fn (?CastedDataContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateColumn(
@@ -154,7 +154,7 @@ trait UpdateOnPreview
                 new UpdateOnPreviewPopover(
                     field: $this,
                     component: $this->updateOnPreviewParentComponent,
-                    route: $this->core->getRouter()->getEndpoints()->updateColumn(
+                    route: $this->getCore()->getRouter()->getEndpoints()->updateColumn(
                         extra: [
                             'resourceItem' => $this->getData()?->getKey(),
                         ]

@@ -14,7 +14,6 @@ use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
-use MoonShine\Core\Storage\FileStorage;
 use MoonShine\Laravel\MoonShineRequest;
 
 if (! function_exists('moonshineRequest')) {
@@ -76,7 +75,7 @@ if (! function_exists('moonshineConfig')) {
 if (! function_exists('moonshineStorage')) {
     function moonshineStorage(...$parameters): StorageContract
     {
-        return app(StorageContract::class, $parameters) ?? new FileStorage();
+        return moonshine()->getStorage(...$parameters);
     }
 }
 

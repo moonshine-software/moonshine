@@ -29,7 +29,7 @@ it('show field on pages', function () {
 
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Active')
@@ -37,7 +37,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Active')
@@ -45,7 +45,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Active')
@@ -215,7 +215,7 @@ it('relation update column in resource', function () {
 
     $resource = TestResourceBuilder::new(Item::class);
 
-    fakeRequest(toPage(
+    fakeRequest($this->moonshineCore->getRouter()->getEndpoints()->toPage(
         $resource->getFormPage()->getUriKey(),
         $resource,
         [

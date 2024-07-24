@@ -58,6 +58,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected ?Closure $afterRender = null;
 
+    protected static ?Closure $requestValueResolver = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -152,7 +154,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     public function hasRequestValue(string|int|null $index = null): bool
     {
-        return $this->core->getRequest()->has($this->getRequestNameDot($index));
+        return $this->getCore()->getRequest()->has($this->getRequestNameDot($index));
     }
 
     protected function prepareRequestValue(mixed $value): mixed
@@ -160,10 +162,22 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $value;
     }
 
+    /**
+     * @param  Closure(string|int|null $index, mixed $default, static $ctx): mixed  $resolver
+     */
+    public static function requestValueResolver(Closure $resolver): void
+    {
+        static::$requestValueResolver = $resolver;
+    }
+
     public function getRequestValue(string|int|null $index = null): mixed
     {
+        if(!is_null(static::$requestValueResolver)) {
+            return value(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
+        }
+
         return $this->prepareRequestValue(
-            $this->core->getRequest()->get(
+            $this->getCore()->getRequest()->get(
                 $this->getRequestNameDot($index),
                 $this->getDefaultIfExists()
             ) ?? false
@@ -230,7 +244,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (?CastedDataContract $data): ?string => $this->core->getRouter()->getEndpoints()->asyncMethod(
+        $url = static fn (?CastedDataContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->asyncMethod(
             method: $method,
             message: $message,
             params: array_filter([
@@ -364,13 +378,13 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     public function getErrors(): array
     {
-        return $this->core->getRequest()->getFormErrors($this->getFormName());
+        return $this->getCore()->getRequest()->getFormErrors($this->getFormName());
     }
 
     protected function resolveAssets(): void
     {
-        if (! $this->isPreviewMode()) {
-            $this->assetManager->add($this->getAssets());
+        if (!$this->isConsoleMode() && ! $this->isPreviewMode()) {
+            $this->getAssetManager()->add($this->getAssets());
         }
     }
 

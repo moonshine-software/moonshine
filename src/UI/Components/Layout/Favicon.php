@@ -12,6 +12,8 @@ final class Favicon extends MoonShineComponent
 
     private array $customAssets = [];
 
+    private ?string $bodyColor = null;
+
     /**
      * @param  array{
      *     apple-touch: string,
@@ -29,17 +31,24 @@ final class Favicon extends MoonShineComponent
         return $this;
     }
 
+    public function bodyColor(string $color): self
+    {
+        $this->bodyColor = $color;
+
+        return $this;
+    }
+
     protected function viewData(): array
     {
         return [
             'assets' => $this->customAssets ?: [
-                'apple-touch' => $this->assetManager->getAsset('vendor/moonshine/apple-touch-icon.png'),
-                '32' => $this->assetManager->getAsset('vendor/moonshine/favicon-32x32.png'),
-                '16' => $this->assetManager->getAsset('vendor/moonshine/favicon-16x16.png'),
-                'safari-pinned-tab' => $this->assetManager->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
-                'web-manifest' => $this->assetManager->getAsset('vendor/moonshine/site.webmanifest'),
+                'apple-touch' => $this->getAssetManager()->getAsset('vendor/moonshine/apple-touch-icon.png'),
+                '32' => $this->getAssetManager()->getAsset('vendor/moonshine/favicon-32x32.png'),
+                '16' => $this->getAssetManager()->getAsset('vendor/moonshine/favicon-16x16.png'),
+                'safari-pinned-tab' => $this->getAssetManager()->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
+                'web-manifest' => $this->getAssetManager()->getAsset('vendor/moonshine/site.webmanifest'),
             ],
-            'bodyColor' => $this->colorManager->get('body'),
+            'bodyColor' => $this->bodyColor,
         ];
     }
 }

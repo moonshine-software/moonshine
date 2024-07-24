@@ -9,9 +9,12 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Core\Traits\WithCore;
 
 final class AppliesRegister implements AppliesRegisterContract
 {
+    use WithCore;
+
     private string $type = 'fields';
 
     private ?string $for = null;
@@ -24,8 +27,9 @@ final class AppliesRegister implements AppliesRegisterContract
     ];
 
     public function __construct(
-        private readonly CoreContract $core
+        CoreContract $core
     ) {
+        $this->setCore($core);
     }
 
     public function type(string $type): static
@@ -94,7 +98,7 @@ final class AppliesRegister implements AppliesRegisterContract
             return null;
         }
 
-        return $this->core->getContainer(AppliesRegisterContract::class)
+        return $this->getCore()->getContainer(AppliesRegisterContract::class)
             ->type($type)
             ->for($for ?? $this->getDefaultFor())
             ->get($field::class);
@@ -146,6 +150,6 @@ final class AppliesRegister implements AppliesRegisterContract
             return null;
         }
 
-        return $this->core->getContainer($apply);
+        return $this->getCore()->getContainer($apply);
     }
 }

@@ -25,7 +25,7 @@ it('show field on pages', function () {
         ->setTestFields([Range::make('Range')->fromTo('start_point', 'end_point')]);
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('Range')
@@ -33,7 +33,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('Range')
@@ -41,7 +41,7 @@ it('show field on pages', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('range')

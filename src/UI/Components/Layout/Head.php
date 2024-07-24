@@ -12,9 +12,18 @@ final class Head extends AbstractWithComponents
 
     private ?string $title = null;
 
+    private ?string $bodyColor = null;
+
     public function title(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function bodyColor(string $color): self
+    {
+        $this->bodyColor = $color;
 
         return $this;
     }
@@ -23,8 +32,8 @@ final class Head extends AbstractWithComponents
     {
         return [
             ...parent::viewData(),
-            'title' => $this->title ?? $this->core->getConfig()->getTitle(),
-            'bodyColor' => $this->colorManager->get('body'),
+            'title' => $this->title,
+            'bodyColor' => $this->bodyColor,
         ];
     }
 }

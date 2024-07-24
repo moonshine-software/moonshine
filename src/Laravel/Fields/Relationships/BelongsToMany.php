@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -249,7 +250,7 @@ class BelongsToMany extends ModelRelationField implements
         return '_checked';
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
     {
         $values = parent::prepareFill($raw, $casted);
 

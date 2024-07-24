@@ -115,7 +115,7 @@ class Td extends Template
             ? $this->getConditionalFields()
             : $this->getFields();
 
-        return FieldsGroup::make($this->core->getFieldsCollection($fields))
+        return FieldsGroup::make($this->getCore()->getFieldsCollection($fields))
             ->mapFields(fn (FieldContract $field): FieldContract => $field
                 ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())

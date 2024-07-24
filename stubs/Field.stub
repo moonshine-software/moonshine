@@ -17,9 +17,9 @@ class DummyField extends {extendShort}
         return parent::reformatFilledValue($data);
     }
 
-    protected function prepareFill(array $raw = [], ?CastedData $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): mixed
     {
-        return parent::prepareFill($raw, $casted);
+        return parent::prepareFill($raw, $casted, $index);
     }
 
     protected function resolveValue(): mixed
@@ -34,8 +34,8 @@ class DummyField extends {extendShort}
 
     protected function resolveOnApply(): ?Closure
     {
-        return function ($item) {
-            return $item;
+        return function (mixed $item): mixed {
+            return data_set($item, $this->getColumn(), $this->getRequestValue());
         };
     }
 }

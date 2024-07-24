@@ -31,7 +31,7 @@ it('to page index', function () {
             ->getRoutes()
             ->match(
                 app('request')->create(
-                    toPage(page: IndexPage::class, resource: $this->resource)
+                    $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $this->resource)
                 )
             )
     )
@@ -50,7 +50,7 @@ it('to page index', function () {
 
 it('to page form', function () {
 
-    $url = toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
+    $url = $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
 
     expect(
         app('router')
@@ -77,7 +77,7 @@ it('to page form', function () {
 
 it('to page show', function () {
 
-    $url = toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
+    $url = $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $this->resource, params: ['resourceItem' => 1]);
 
     expect(
         app('router')

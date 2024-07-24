@@ -44,7 +44,6 @@ final class AssetElements extends Collection implements AssetElementsContract
         );
     }
 
-    // todo inject AssetResolverContract
     public function resolveLinks(AssetResolverContract $resolver): self
     {
         return $this->map(

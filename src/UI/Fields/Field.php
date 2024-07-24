@@ -311,7 +311,7 @@ abstract class Field extends FormElement implements FieldContract
 
         $empty = new FieldEmptyValue();
         $old = $withOld
-            ? $this->core->getRequest()->getOld($this->getNameDot(), $empty)
+            ? $this->getCore()->getRequest()->getOld($this->getNameDot(), $empty)
             : $empty;
 
         if ($withOld && $old !== $empty) {

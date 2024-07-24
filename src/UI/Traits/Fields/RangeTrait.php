@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\VO\FieldEmptyValue;
@@ -77,7 +78,7 @@ trait RangeTrait
         return $this->extractFromTo($data);
     }
 
-    protected function prepareFill(array $raw = [], mixed $casted = null, int $index = 0): mixed
+    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): mixed
     {
         $values = parent::prepareFill($raw, $casted);
 

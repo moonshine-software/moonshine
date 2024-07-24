@@ -76,7 +76,7 @@ trait WithModal
         }
 
         return $this->inModal(
-            fn (mixed $data) => value($title, $data, $this) ?? $this->core->getTranslator()->get('moonshine::ui.confirm'),
+            fn (mixed $data) => value($title, $data, $this) ?? $this->getCore()->getTranslator()->get('moonshine::ui.confirm'),
             fn (mixed $data): string => (string) FormBuilder::make(
                 $this->getUrl($data),
                 $isDefaultMethods ? FormMethod::from($method->value) : FormMethod::POST
@@ -94,7 +94,7 @@ trait WithModal
 
                     Heading::make(
                         is_null($content)
-                            ? $this->core->getTranslator()->get('moonshine::ui.confirm_message')
+                            ? $this->getCore()->getTranslator()->get('moonshine::ui.confirm_message')
                             : value($content, $data)
                     ),
                 ])
@@ -106,7 +106,7 @@ trait WithModal
                 fn (FormBuilderContract $form): FormBuilderContract => $form->asyncMethod($this->getAsyncMethod())
             )->submit(
                 is_null($button)
-                    ? $this->core->getTranslator()->get('moonshine::ui.confirm')
+                    ? $this->getCore()->getTranslator()->get('moonshine::ui.confirm')
                     : value($button, $data),
                 ['class' => 'btn-secondary']
             )->when(

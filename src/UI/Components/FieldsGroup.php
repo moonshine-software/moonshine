@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
@@ -25,7 +26,7 @@ final class FieldsGroup extends AbstractWithComponents
     /**
      * @throws Throwable
      */
-    public function fill(array $raw = [], mixed $casted = null, int $index = 0): self
+    public function fill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): self
     {
         return $this->mapFields(
             static fn (FieldContract $field): FieldContract => $field->fillData(is_null($casted) ? $raw : $casted, $index)

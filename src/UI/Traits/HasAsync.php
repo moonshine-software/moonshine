@@ -41,7 +41,7 @@ trait HasAsync
 
         $asyncUri = array_filter(
             $asyncUri,
-            fn ($value, $key): bool => ! $this->core->getRequest()->has($key),
+            fn ($value, $key): bool => ! $this->getCore()->getRequest()->has($key),
             ARRAY_FILTER_USE_BOTH
         );
 

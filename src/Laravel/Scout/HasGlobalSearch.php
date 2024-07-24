@@ -10,7 +10,7 @@ use Laravel\Scout\Searchable;
 /**
  * @mixin Searchable
  */
-// todo move to package
+// todo(packages)-scout move to package
 interface HasGlobalSearch
 {
     public function searchableQuery(Builder $builder): Builder;

@@ -34,7 +34,7 @@ trait WithViewRenderer
     public function getTranslates(): array
     {
         return collect($this->translates)
-            ->mapWithKeys(fn (string $key, string $name) => [$name => $this->core->getTranslator()->get($key)])
+            ->mapWithKeys(fn (string $key, string $name) => [$name => $this->getCore()->getTranslator()->get($key)])
             ->toArray();
     }
 
@@ -82,7 +82,7 @@ trait WithViewRenderer
 
     protected function resolveAssets(): void
     {
-        $this->assetManager->add($this->getAssets());
+        $this->getAssetManager()->add($this->getAssets());
     }
 
     public function shouldRender(): bool
@@ -137,7 +137,7 @@ trait WithViewRenderer
 
     protected function renderView(): Renderable|Closure|string
     {
-        return $this->core->getRenderer()->render(
+        return $this->getCore()->getRenderer()->render(
             $this->getView(),
             $this->toArray(),
         );

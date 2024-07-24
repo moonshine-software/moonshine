@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Core\Traits;
 
 use MoonShine\Core\AbstractRouter;
+use MoonShine\Support\UriKey;
 
 trait WithUriKey
 {
@@ -24,7 +25,6 @@ trait WithUriKey
 
     public function getUriKey(): string
     {
-        //TODO Refactor AbstractRouter::uriKey
-        return $this->getAlias() ?? AbstractRouter::uriKey(static::class);
+        return $this->getAlias() ?? (new UriKey(static::class))->generate();
     }
 }

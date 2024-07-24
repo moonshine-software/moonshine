@@ -27,7 +27,7 @@ class Password extends Text
                 data_set(
                     $item,
                     $this->getColumn(),
-                    $this->core->getContainer('hash')->make(
+                    $this->getCore()->getContainer('hash')->make(
                         $this->getRequestValue()
                     )
                 );

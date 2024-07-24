@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Scout;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-// todo move to package
+// todo(packages)-scout move to package
 final readonly class SearchableResponse implements Arrayable
 {
     public function __construct(

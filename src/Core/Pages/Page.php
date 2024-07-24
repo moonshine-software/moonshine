@@ -19,6 +19,7 @@ use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithAssets;
+use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Enums\Layer;
@@ -37,6 +38,7 @@ abstract class Page implements
     HasAssetsContract,
     Stringable
 {
+    use WithCore;
     use HasResource;
     use WithUriKey;
     use WithAssets;
@@ -62,9 +64,10 @@ abstract class Page implements
     protected bool $loaded = false;
 
     public function __construct(
-        protected CoreContract $core,
+        CoreContract $core,
         protected AssetManagerContract $assetManager,
     ) {
+        $this->setCore($core);
         $this->booted();
     }
 
@@ -130,7 +133,7 @@ abstract class Page implements
      */
     public function getFields(): FieldsContract
     {
-        return $this->core->getFieldsCollection($this->fields());
+        return $this->getCore()->getFieldsCollection($this->fields());
     }
 
     /**
@@ -283,11 +286,11 @@ abstract class Page implements
     {
         if (is_null($this->layout)) {
             $this->setLayout(
-                $this->core->getConfig()->getLayout()
+                $this->getCore()->getConfig()->getLayout()
             );
         }
 
-        return $this->core->getContainer($this->layout, null, page: $this);
+        return $this->getCore()->getContainer($this->layout, null, page: $this);
     }
 
     public function getRoute(array $params = []): string
@@ -305,7 +308,7 @@ abstract class Page implements
 
     public function getRouter(): RouterContract
     {
-        $router = clone $this->core->getRouter();
+        $router = clone $this->getCore()->getRouter();
 
         if ($this->hasResource()) {
             $router = $this->getResource()?->getRouter();
@@ -326,13 +329,13 @@ abstract class Page implements
         }
 
         if ($assets !== []) {
-            $this->assetManager->add($assets);
+            $this->getCore()->getContainer(AssetManagerContract::class)->add($assets);
         }
     }
 
     public function isActive(): bool
     {
-        return $this->core->getRouter()->extractPageUri() === $this->getUriKey();
+        return $this->getCore()->getRouter()->extractPageUri() === $this->getUriKey();
     }
 
     /**

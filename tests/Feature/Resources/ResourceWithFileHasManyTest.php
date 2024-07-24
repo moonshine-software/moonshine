@@ -32,7 +32,7 @@ beforeEach(function (): void {
 
 it('resource with has many', function () {
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->item->id])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $this->resource, params: ['resourceItem' => $this->item->id])
     )
         ->assertOk()
         ->assertSee('Name')

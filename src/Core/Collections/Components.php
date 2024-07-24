@@ -9,6 +9,7 @@ use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Core;
+use MoonShine\Core\Traits\WithCore;
 use Throwable;
 
 /**
@@ -17,6 +18,8 @@ use Throwable;
  */
 final class Components extends Renderables
 {
+    use WithCore;
+
     /**
      * @throws Throwable
      */
@@ -58,10 +61,9 @@ final class Components extends Renderables
      */
     public function onlyFields(bool $withWrappers = false): FieldsContract
     {
-        // todo DI need FieldsCollection
-        $core = Core::getInstance();
-
-        return $core->getFieldsCollection($this->toArray())->onlyFields($withWrappers);
+        return $this->getCore()
+            ->getFieldsCollection($this->toArray())
+            ->onlyFields($withWrappers);
     }
 
     /**

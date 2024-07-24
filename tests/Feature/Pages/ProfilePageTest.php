@@ -17,7 +17,7 @@ beforeEach(function () {
 });
 
 it('successful response', function () {
-    asAdmin()->get(toPage($this->page))
+    asAdmin()->get($this->moonshineCore->getRouter()->getEndpoints()->toPage($this->page))
         ->assertOk()
         ->assertSee($this->user->name)
         ->assertSee($this->user->email);

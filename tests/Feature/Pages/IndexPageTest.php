@@ -19,7 +19,7 @@ it('filters', function () {
     $item = createItem(5, 2);
 
     asAdmin()->get(
-        toPage(
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(
             page: IndexPage::class,
             resource: $this->resource,
             params: [
@@ -43,7 +43,7 @@ it('query tags', function () {
     $item->save();
 
     asAdmin()->get(
-        toPage(
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(
             page: IndexPage::class,
             resource: $this->resource,
             params: [

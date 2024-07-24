@@ -19,7 +19,7 @@ trait WithLabel
         $this->label = value($this->label, $this);
 
         if ($this->translatable) {
-            return $this->core->getTranslator()->get(
+            return $this->getCore()->getTranslator()->get(
                 str($this->label)->when(
                     $this->translatableKey,
                     fn ($str) => $str->prepend($this->translatableKey . '.')

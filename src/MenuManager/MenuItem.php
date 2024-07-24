@@ -45,7 +45,7 @@ class MenuItem extends MenuElement
         }
 
         if(is_string($this->filler) && str_contains($this->filler, '\\')) {
-            $this->filler = $this->core->getContainer()->get($this->filler);
+            $this->filler = $this->getCore()->getContainer()->get($this->filler);
         }
 
         if ($this->filler instanceof MenuFillerContract) {
@@ -144,15 +144,15 @@ class MenuItem extends MenuElement
         $isActive = function ($path, $host): bool {
             $url = strtok($this->getUrl(), '?');
 
-            if ($path === '/' && $this->core->getRequest()->getHost() === $host) {
-                return $this->core->getRequest()->getPath() === $path;
+            if ($path === '/' && $this->getCore()->getRequest()->getHost() === $host) {
+                return $this->getCore()->getRequest()->getPath() === $path;
             }
 
-            if ($url === $this->core->getRouter()->getEndpoints()->home()) {
-                return $this->core->getRequest()->urlIs($this->getUrl());
+            if ($url === $this->getCore()->getRouter()->getEndpoints()->home()) {
+                return $this->getCore()->getRequest()->urlIs($this->getUrl());
             }
 
-            return $this->core->getRequest()->urlIs($host ? "$url*" : "*$url*");
+            return $this->getCore()->getRequest()->urlIs($host ? "$url*" : "*$url*");
         };
 
         return is_null($this->whenActive)

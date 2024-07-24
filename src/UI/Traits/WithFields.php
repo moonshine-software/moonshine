@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits;
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\UI\Collections\Fields;
 use Throwable;
 
@@ -33,7 +34,7 @@ trait WithFields
      */
     public function getFields(): FieldsContract
     {
-        return $this->core->getFieldsCollection(
+        return $this->getCore()->getFieldsCollection(
             $this->getRawFields()
         );
     }
@@ -60,7 +61,7 @@ trait WithFields
             $fields = $fields();
         }
 
-        if($this->core->runningInConsole()) {
+        if($this->getCore()->runningInConsole()) {
             $fields = collect($fields)
                 ->map(static fn (object $field): object => clone $field)
                 ->toArray();
@@ -79,7 +80,7 @@ trait WithFields
      */
     protected function getFilledFields(
         array $raw = [],
-        mixed $casted = null,
+        ?CastedDataContract $casted = null,
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): FieldsContract {

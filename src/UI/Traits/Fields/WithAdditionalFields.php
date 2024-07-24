@@ -16,7 +16,7 @@ trait WithAdditionalFields
      */
     public function getAdditionalFields(): Fields
     {
-        return $this->core->getFieldsCollection($this->additionalFields);
+        return $this->getCore()->getFieldsCollection($this->additionalFields);
     }
 
     /**

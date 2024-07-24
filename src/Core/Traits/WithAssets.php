@@ -18,7 +18,7 @@ trait WithAssets
 
     public function addAssets(array $assets): static
     {
-        $this->assetManager->add($assets);
+        $this->getAssetManager()->add($assets);
 
         return $this;
     }

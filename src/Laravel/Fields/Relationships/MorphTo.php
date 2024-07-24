@@ -138,7 +138,7 @@ class MorphTo extends BelongsTo
             return '';
         }
 
-        return str($item->{$this->getMorphType()})
+        return str($this->types[$item->{$this->getMorphType()}] ?? $item->{$this->getMorphType()})
             ->append('(')
             ->append(
                 $item

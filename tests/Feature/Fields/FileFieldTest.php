@@ -29,21 +29,21 @@ it('show field on pages', function () {
     ]);
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('File')
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('File')
     ;
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('File')
@@ -59,7 +59,7 @@ it('apply as base', function () {
     $file = saveFile($resource, $this->item);
 
     asAdmin()->get(
-        toPage(page: IndexPage::class, resource: $resource)
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
     )
         ->assertOk()
         ->assertSee('File')
@@ -67,14 +67,14 @@ it('apply as base', function () {
     ;
 
     asAdmin()->get(
-        toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: DetailPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $file->hashName())
     ;
 
     asAdmin()->get(
-        toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $this->item->getKey()])
     )
         ->assertOk()
         ->assertSee('items/' . $file->hashName())
