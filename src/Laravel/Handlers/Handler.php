@@ -6,7 +6,6 @@ namespace MoonShine\Laravel\Handlers;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithCore;

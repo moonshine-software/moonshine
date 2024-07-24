@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Core\Paginator;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorLinksContract;
-use MoonShine\Core\Core;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use Traversable;

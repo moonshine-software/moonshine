@@ -8,7 +8,6 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Core;
 use MoonShine\Core\Traits\WithCore;
 use Throwable;
 

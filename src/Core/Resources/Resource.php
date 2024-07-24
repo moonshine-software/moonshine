@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Resources;
 
-use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;

@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
-use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
-use MoonShine\Core\Core;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;

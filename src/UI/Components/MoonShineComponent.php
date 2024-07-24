@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use DI\Container;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
-use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Core\Core;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;

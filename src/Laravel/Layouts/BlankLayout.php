@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\UI\Components\Components;
-use MoonShine\UI\Components\Layout\{Assets, Body, Favicon, Head, Html, LayoutBuilder, Meta};
-use MoonShine\UI\Layout;
+use MoonShine\UI\Components\Layout\{Assets, Body, Favicon, Head, Html, LayoutBuilder, Meta}
 
 final class BlankLayout extends BaseLayout
 {

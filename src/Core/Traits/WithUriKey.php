@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Traits;
 
-use MoonShine\Core\AbstractRouter;
 use MoonShine\Support\UriKey;
 
 trait WithUriKey
