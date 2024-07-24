@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Core\AbstractRouter;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageIndex;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;

@@ -16,8 +16,7 @@ final class Assets extends MoonShineComponent
     public function __construct(
         public string $assets,
         public string $colors,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

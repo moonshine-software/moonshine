@@ -35,7 +35,7 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
     ) {
         $this->attributes = new MoonShineComponentAttributeBag();
 
-        if($this instanceof HasAssetsContract && !$this->isConsoleMode()) {
+        if($this instanceof HasAssetsContract && ! $this->isConsoleMode()) {
             $this->resolveAssets();
         }
     }

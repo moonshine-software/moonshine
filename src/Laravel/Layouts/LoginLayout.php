@@ -26,8 +26,10 @@ final class LoginLayout extends BaseLayout
                         Block::make([
                             Block::make([
                                 Heading::make(
-                                    __('moonshine::ui.login.title',
-                                        ['moonshine_title' => moonshineConfig()->getTitle()])
+                                    __(
+                                        'moonshine::ui.login.title',
+                                        ['moonshine_title' => moonshineConfig()->getTitle()]
+                                    )
                                 ),
                                 Block::make([
                                     FlexibleRender::make(

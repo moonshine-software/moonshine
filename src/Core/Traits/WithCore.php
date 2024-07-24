@@ -27,11 +27,11 @@ trait WithCore
 
     public function getCore(): CoreContract
     {
-        if(!is_null($this->core)) {
+        if(! is_null($this->core)) {
             return $this->core;
         }
 
-        if(!is_null(static::$coreInstance)) {
+        if(! is_null(static::$coreInstance)) {
             return static::$coreInstance;
         }
 

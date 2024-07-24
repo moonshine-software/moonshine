@@ -69,7 +69,7 @@ trait Applies
             return $data;
         }
 
-        if (is_null($this->onApply) && !$this->isConsoleMode()) {
+        if (is_null($this->onApply) && ! $this->isConsoleMode()) {
             $classApply = $this->getCore()
                 ->getContainer(AppliesRegisterContract::class)
                 ->findByField($this);
