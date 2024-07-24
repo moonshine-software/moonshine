@@ -14,7 +14,6 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Core\Traits\NowOn;
-use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;

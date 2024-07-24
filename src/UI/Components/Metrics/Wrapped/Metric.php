@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
 use MoonShine\Contracts\Core\HasAssetsContract;
-use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
