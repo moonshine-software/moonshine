@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use Leeto\FastAttributes\Attributes;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Traits\WithBadge;
