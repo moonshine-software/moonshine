@@ -35,10 +35,7 @@ abstract class BaseLayout extends Layout
                 'content' => csrf_token(),
             ]),
             Favicon::make()->bodyColor($this->getColorManager()->get('body')),
-            Assets::make(
-                $this->getAssetManager()->toHtml(),
-                $this->getColorManager()->toHtml(),
-            ),
+            Assets::make(),
         ])
             ->bodyColor($this->getColorManager()->get('body'))
             ->title($this->getPage()->getTitle());

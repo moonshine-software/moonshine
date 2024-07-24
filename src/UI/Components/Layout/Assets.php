@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(string $assets, string $colors)
+ * @method static static make()
  */
 final class Assets extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.assets';
-
-    public function __construct(
-        public string $assets,
-        public string $colors,
-    ) {
-        parent::__construct();
-    }
 
     public function getTranslates(): array
     {
@@ -28,8 +22,8 @@ final class Assets extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'assets' => $this->assets,
-            'colors' => $this->colors,
+            'assets' => $this->getAssetManager()->toHtml(),
+            'colors' => $this->getCore()->getContainer(ColorManagerContract::class)->toHtml(),
         ];
     }
 }

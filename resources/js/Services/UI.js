@@ -11,6 +11,6 @@ export class UI {
   }
 
   toggleModal(name) {
-    dispatchEvent(new CustomEvent(`modal-toggled-${name}`))
+    dispatchEvent(new CustomEvent(`modal_toggled-${name}`))
   }
 }

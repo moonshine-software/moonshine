@@ -18,7 +18,6 @@ use MoonShine\UI\Traits\WithLabel;
  */
 abstract class Metric extends MoonShineComponent implements HasAssetsContract
 {
-    use WithAssets;
     use WithColumnSpan;
     use WithLabel;
     use WithIcon;

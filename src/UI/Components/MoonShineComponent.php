@@ -11,6 +11,7 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -27,6 +28,7 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
     use WithViewRenderer;
     use HasCanSee;
     use WithComponentAttributes;
+    use WithAssets;
 
     protected static bool $consoleMode = false;
 

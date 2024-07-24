@@ -36,7 +36,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     use WithQuickFormElementAttributes;
     use WithComponentAttributes;
     use WithViewRenderer;
-    use WithAssets;
     use HasCanSee;
     use Conditionable;
 
@@ -63,8 +62,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     public function __construct()
     {
         parent::__construct();
-
-        $this->resolveAssets();
 
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
     }
