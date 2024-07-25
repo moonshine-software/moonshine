@@ -179,7 +179,9 @@ class DetailPage extends Page
     protected function getPageButtons(): array
     {
         return [
-            ActionGroup::make($this->getResource()->getDetailItemButtons())
+            ActionGroup::make(
+                $this->getResource()->getDetailButtons()
+            )
                 ->fill($this->getResource()->getCastedItem())
                 ->class('justify-end'),
         ];

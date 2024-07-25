@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\MenuManager;
 
-interface MenuElementsContract
+use Traversable;
+
+interface MenuElementsContract extends Traversable
 {
 }

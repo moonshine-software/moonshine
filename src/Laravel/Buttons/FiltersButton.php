@@ -21,6 +21,7 @@ final class FiltersButton
             ->count();
 
         return ActionButton::make(__('moonshine::ui.filters'), '#')
+            ->name('filters-button')
             ->secondary()
             ->icon('adjustments-horizontal')
             ->inOffCanvas(

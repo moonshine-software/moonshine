@@ -6,7 +6,9 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\ListOf;
 
 class TestResource extends ModelResource
 {
@@ -248,9 +250,9 @@ class TestResource extends ModelResource
         return $this->testQueryTags;
     }
 
-    public function buttons(): array
+    public function buttons(): ListOf
     {
-        return $this->testButtons;
+        return new ListOf(ActionButtonContract::class, $this->testButtons);
     }
 
     public function search(): array

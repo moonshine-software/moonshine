@@ -72,6 +72,6 @@ final class HasManyButton
             );
         }
 
-        return $actionButton;
+        return $actionButton->name("has-many-{$field->getRelationName()}-button");
     }
 }

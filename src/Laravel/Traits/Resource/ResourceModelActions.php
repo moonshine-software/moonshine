@@ -10,41 +10,42 @@ use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Handlers\Handlers;
 use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\Support\ListOf;
 
 trait ResourceModelActions
 {
     protected static bool $defaultExportToCsv = false;
 
-    /**
-     * @return list<Action>
-     */
-    public function getActiveActions(): array
+    public static function defaultExportToCsv(): void
     {
-        return [
+        self::$defaultExportToCsv = true;
+    }
+
+    /**
+     * @return ListOf<Action>
+     */
+    public function activeActions(): ListOf
+    {
+        return new ListOf(Action::class, [
             Action::CREATE,
             Action::VIEW,
             Action::UPDATE,
             Action::DELETE,
             Action::MASS_DELETE,
-        ];
+        ]);
+    }
+
+    /**
+     * @return list<Action>
+     */
+    protected function getActiveActions(): array
+    {
+        return $this->activeActions()->toArray();
     }
 
     public function hasAction(Action ...$actions): bool
     {
         return collect($actions)->every(fn (Action $action): bool => in_array($action, $this->getActiveActions()));
-    }
-
-    /**
-     * @return list<ActionButtonContract>
-     */
-    public function topButtons(): array
-    {
-        return [];
-    }
-
-    public static function defaultExportToCsv(): void
-    {
-        self::$defaultExportToCsv = true;
     }
 
     public function export(): ?Handler
@@ -69,19 +70,19 @@ trait ResourceModelActions
     }
 
     /**
-     * @return list<Handler>
+     * @return ListOf<Handler>
      */
-    protected function handlers(): array
+    protected function handlers(): ListOf
     {
-        return array_filter([
+        return new ListOf(Handler::class, array_filter([
             $this->export(),
             $this->import(),
-        ]);
+        ]));
     }
 
     public function getHandlers(): Handlers
     {
-        return Handlers::make($this->handlers())
+        return Handlers::make($this->handlers()->toArray())
             ->each(fn (Handler $handler): Handler => $handler->setResource($this));
     }
 }

@@ -37,6 +37,7 @@ final class CreateButton
             __('moonshine::ui.create'),
             $action
         )
+            ->name('create-button')
             ->when(
                 $resource->isCreateInModal(),
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(

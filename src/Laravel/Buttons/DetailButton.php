@@ -34,6 +34,7 @@ final class DetailButton
             '',
             $action
         )
+            ->name('detail-button')
             ->when(
                 $resource->isDetailInModal(),
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
