@@ -111,7 +111,7 @@ trait ResourceWithButtons
     {
         return ActionButtons::make([
             ...$this->buttons()->toArray(),
-            ...$this->indexButtons()->toArray()
+            ...$this->indexButtons()->toArray(),
         ]);
     }
 
@@ -119,7 +119,7 @@ trait ResourceWithButtons
     {
         return ActionButtons::make([
             ...$this->buttons()->toArray(),
-            ...$this->formButtons()->toArray()
+            ...$this->formButtons()->toArray(),
         ])->withoutBulk();
     }
 
@@ -127,7 +127,7 @@ trait ResourceWithButtons
     {
         return ActionButtons::make([
             ...$this->buttons()->toArray(),
-            ...$this->detailButtons()->toArray()
+            ...$this->detailButtons()->toArray(),
         ])->withoutBulk();
     }
 

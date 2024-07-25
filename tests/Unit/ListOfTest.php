@@ -6,11 +6,21 @@ use MoonShine\Support\ListOf;
 
 uses()->group('support');
 
-class SomeType {}
-class SomeTypeSub1 extends SomeType {}
-class SomeTypeSub2 extends SomeType {}
-class SomeTypeSub3 extends SomeType {}
-class SomeTypeSub4 extends SomeType {}
+class SomeType
+{
+}
+class SomeTypeSub1 extends SomeType
+{
+}
+class SomeTypeSub2 extends SomeType
+{
+}
+class SomeTypeSub3 extends SomeType
+{
+}
+class SomeTypeSub4 extends SomeType
+{
+}
 
 enum SomeEnum: int
 {
@@ -57,14 +67,14 @@ it('except type', function () {
 });
 
 it('except closure', function () {
-    expect($this->listOfObjects->except(fn($item) => get_class($item) === SomeTypeSub2::class)->toArray())
+    expect($this->listOfObjects->except(fn ($item) => get_class($item) === SomeTypeSub2::class)->toArray())
         ->toHaveCount(2)
         ->not->toContain(new SomeTypeSub2());
 });
 
 
 it('except mixed', function () {
-    expect($this->listOfObjects->except(fn($item) => get_class($item) === SomeTypeSub2::class, SomeTypeSub3::class)->toArray())
+    expect($this->listOfObjects->except(fn ($item) => get_class($item) === SomeTypeSub2::class, SomeTypeSub3::class)->toArray())
         ->toHaveCount(1)
         ->not->toContain(new SomeTypeSub2(), new SomeTypeSub3());
 });

@@ -38,10 +38,10 @@ final class ListOf
      */
     public function except(object|string ...$data): self
     {
-        $condition = static fn(object $item): bool => collect($data)->every(
-            fn(object|string $i): bool => match(true) {
+        $condition = static fn (object $item): bool => collect($data)->every(
+            fn (object|string $i): bool => match(true) {
                 is_string($i) => $item::class !== $i,
-                is_callable($i) => !$i($item),
+                is_callable($i) => ! $i($item),
                 default => $i !== $item,
             }
         );

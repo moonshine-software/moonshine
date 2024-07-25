@@ -34,7 +34,7 @@ class MoonShineUserRoleResource extends ModelResource
 
     public function indexButtons(): ListOf
     {
-        return parent::indexButtons()->except(fn(ActionButton $btn): bool => $btn->getName() === 'detail-button');
+        return parent::indexButtons()->except(fn (ActionButton $btn): bool => $btn->getName() === 'detail-button');
     }
 
     public function indexFields(): array
