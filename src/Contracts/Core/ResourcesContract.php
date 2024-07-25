@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
-interface ResourcesContract
+use Traversable;
+
+interface ResourcesContract extends Traversable
 {
 }

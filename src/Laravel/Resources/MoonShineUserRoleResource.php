@@ -6,6 +6,8 @@ namespace MoonShine\Laravel\Resources;
 
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
+use MoonShine\Support\ListOf;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
@@ -28,6 +30,11 @@ class MoonShineUserRoleResource extends ModelResource
     public function getTitle(): string
     {
         return __('moonshine::ui.resource.role');
+    }
+
+    public function indexButtons(): ListOf
+    {
+        return parent::indexButtons()->except(fn(ActionButton $btn) => $btn->getName() === 'detail-button');
     }
 
     public function indexFields(): array

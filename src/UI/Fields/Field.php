@@ -241,7 +241,7 @@ abstract class Field extends FormElement implements FieldContract
     public function toRawValue(): mixed
     {
         if($this->isRawValueModified()) {
-            return value($this->rawValueCallback, $this->rawValue, $this);
+            return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
         return $this->rawValue;
@@ -445,7 +445,7 @@ abstract class Field extends FormElement implements FieldContract
             return $raw;
         }
 
-        return value($this->fromRaw, $raw, $this);
+        return value($this->fromRaw, $raw, $this->getData()?->getOriginal(), $this);
     }
 
     public function preview(): Renderable|string

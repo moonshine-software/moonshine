@@ -108,12 +108,9 @@ class IndexPage extends Page
     {
         return [
             Flex::make([
-                ActionGroup::make([
-                    $this->getResource()->getCreateButton(
-                        isAsync: $this->getResource()->isAsync()
-                    ),
-                    ...$this->getResource()->topButtons(),
-                ]),
+                ActionGroup::make(
+                    $this->getResource()->getTopButtons(),
+                ),
 
                 ActionGroup::make()->when(
                     $this->getResource()->filters() !== [],
@@ -184,7 +181,7 @@ class IndexPage extends Page
                     $this->getResource()->tdAttributes()
                 )
             )
-            ->buttons($this->getResource()->getIndexItemButtons())
+            ->buttons($this->getResource()->getIndexButtons())
             ->customAttributes([
                 'data-click-action' => $this->getResource()->getClickAction(),
             ])

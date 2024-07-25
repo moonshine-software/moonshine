@@ -35,6 +35,7 @@ final class DeleteButton
             '',
             url: $action
         )
+            ->name('delete-button')
             ->withConfirm(
                 method: HttpMethod::DELETE,
                 formBuilder: static fn (FormBuilderContract $formBuilder, Model $item): FormBuilderContract => $formBuilder->when(

@@ -22,7 +22,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
 
     protected ?PaginatorContract $paginator = null;
 
-    protected array $buttons = [];
+    protected iterable $buttons = [];
 
     public function items(iterable $items = []): static
     {
@@ -74,7 +74,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
         return $this->getPaginator()?->isSimple() ?? false;
     }
 
-    public function buttons(array $buttons = []): static
+    public function buttons(iterable $buttons = []): static
     {
         $this->buttons = $buttons;
 

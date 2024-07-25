@@ -17,6 +17,7 @@ final class QueryTagButton
             $tag->getLabel(),
             $resource->getIndexPageUrl(['query-tag' => $tag->getUri()])
         )
+            ->name("query-tag-{$tag->getUri()}-button")
             ->showInLine()
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
             ->canSee(static fn (mixed $data): bool => $tag->isSee($data))

@@ -30,6 +30,7 @@ final class MassDeleteButton
             '',
             url: $action
         )
+            ->name('mass-delete-button')
             ->bulk($componentName ?? $resource->getListComponentName())
             ->withConfirm(
                 method: HttpMethod::DELETE,

@@ -6,11 +6,13 @@ namespace MoonShine\Laravel\Resources;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
+use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Tabs\Tab;
@@ -37,6 +39,11 @@ class MoonShineUserResource extends ModelResource
     public function getTitle(): string
     {
         return __('moonshine::ui.resource.admins_title');
+    }
+
+    public function activeActions(): ListOf
+    {
+        return parent::activeActions()->except(Action::VIEW);
     }
 
     public function indexFields(): array
