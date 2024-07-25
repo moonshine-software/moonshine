@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\Handler;

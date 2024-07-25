@@ -38,15 +38,13 @@ final class ListOf
      */
     public function except(object|string ...$data): self
     {
-        $condition = static function(object $item) use($data): bool {
-            return collect($data)->every(
-                fn(object|string $i) => match(true) {
-                    is_string($i) => get_class($item) !== $i,
-                    is_callable($i) => !$i($item),
-                    default => $i !== $item,
-                }
-            );
-        };
+        $condition = static fn(object $item): bool => collect($data)->every(
+            fn(object|string $i): bool => match(true) {
+                is_string($i) => $item::class !== $i,
+                is_callable($i) => !$i($item),
+                default => $i !== $item,
+            }
+        );
 
         $this->items = collect($this->items)
             ->filter($condition)
@@ -57,8 +55,6 @@ final class ListOf
     }
 
     /**
-     * @param  object ...$data
-     *
      * @return ListOf<T>
      */
     public function add(object ...$data): self
@@ -72,8 +68,6 @@ final class ListOf
     }
 
     /**
-     * @param  object ...$data
-     *
      * @return ListOf<T>
      */
     public function prepend(object ...$data): self
