@@ -5,6 +5,7 @@ declare(strict_types=1);
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\MenuManager\MenuElements;
 use MoonShine\MenuManager\MenuItem;
+use MoonShine\MenuManager\MenuManager;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use Pest\Expectation;
@@ -113,48 +114,54 @@ it('only visible items', function (): void {
 it('check active element', function (): void {
     fakeRequest('/item2');
 
-    $item1 = MenuItem::make('Item 1', '/item1');
-    $item2 = MenuItem::make('Item 2', '/item2');
-    $item3 = MenuItem::make('Item 2', '/item2?query=1');
+    $menuElements = app(MenuManager::class)->add([
+        MenuItem::make('Item 1', '/item1'),
+        MenuItem::make('Item 2', '/item2'),
+        MenuItem::make('Item 2', '/item2?query=1'),
+    ])->all();
 
-    expect($item1->isActive())
+    expect($menuElements[0]->isActive())
         ->toBeFalse()
-        ->and($item2->isActive())
+        ->and($menuElements[1]->isActive())
         ->toBeTrue()
-        ->and($item3->isActive())
+        ->and($menuElements[2]->isActive())
         ->toBeTrue();
 
-    $item1 = MenuItem::make('Item 1', 'http://localhost/item1');
-    $item2 = MenuItem::make('Item 2', 'http://localhost/item2');
-    $item3 = MenuItem::make('Item 3', 'http://localhost/item2?query=1');
+    $menuElements = app(MenuManager::class)->add([
+        MenuItem::make('Item 1', 'http://localhost/item1'),
+        MenuItem::make('Item 2', 'http://localhost/item2'),
+        MenuItem::make('Item 2', 'http://localhost/item2?query=1'),
+    ])->all();
 
-    expect($item1->isActive())
+    expect($menuElements[0]->isActive())
         ->toBeFalse()
-        ->and($item2->isActive())
+        ->and($menuElements[1]->isActive())
         ->toBeTrue()
-        ->and($item3->isActive())
+        ->and($menuElements[2]->isActive())
         ->toBeTrue();
 
+    $menuElements = app(MenuManager::class)->add([
+        MenuItem::make('Item 1', 'http://localhost/item1')->whenActive(static fn () => true),
+        MenuItem::make('Item 2', 'http://localhost/item2'),
+        MenuItem::make('Item 3', 'http://localhost/item2?query=1'),
+    ])->all();
 
-    $item1 = MenuItem::make('Item 1', 'http://localhost/item1')->whenActive(static fn () => true);
-    $item2 = MenuItem::make('Item 2', 'http://localhost/item2');
-    $item3 = MenuItem::make('Item 3', 'http://localhost/item2?query=1');
-
-
-    expect($item1->isActive())
+    expect($menuElements[0]->isActive())
         ->toBeTrue()
-        ->and($item2->isActive())
+        ->and($menuElements[1]->isActive())
         ->toBeTrue()
-        ->and($item3->isActive())
+        ->and($menuElements[2]->isActive())
         ->toBeTrue();
 
     fakeRequest('/admin/resource/test-image-resource/index-page?resourceItem=1');
 
-    $item1 = MenuItem::make('Item 1', TestCommentResource::class);
-    $item2 = MenuItem::make('Item 2', TestImageResource::class);
+    $menuElements = app(MenuManager::class)->add([
+        MenuItem::make('Item 1', TestCommentResource::class),
+        MenuItem::make('Item 2', TestImageResource::class),
+    ])->all();
 
-    expect($item1->isActive())
+    expect($menuElements[0]->isActive())
         ->toBeFalse()
-        ->and($item2->isActive())
+        ->and($menuElements[1]->isActive())
         ->toBeTrue();
 });
