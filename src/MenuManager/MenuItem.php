@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -44,9 +45,20 @@ class MenuItem extends MenuElement
             $this->icon($icon);
         }
 
-        if(is_string($this->filler) && str_contains($this->filler, '\\')) {
-            $this->filler = $this->getCore()->getContainer()->get($this->filler);
+        if(is_string($filler)) {
+            $this->setUrl($this->filler);
         }
+
+        $this->blank($blank);
+
+        $this->actionButton = ActionButton::make($label);
+    }
+
+    public function onFiller(Closure $onFiller): static
+    {
+        parent::onFiller($onFiller);
+
+        $this->filler = value($this->onFiller, $this->filler);
 
         if ($this->filler instanceof MenuFillerContract) {
             $this->resolveFiller($this->filler);
@@ -56,9 +68,7 @@ class MenuItem extends MenuElement
             $this->setUrl($this->filler);
         }
 
-        $this->blank($blank);
-
-        $this->actionButton = ActionButton::make($label);
+        return $this;
     }
 
     public function changeButton(Closure $callback): self
@@ -137,23 +147,10 @@ class MenuItem extends MenuElement
 
         $path = parse_url($this->getUrl(), PHP_URL_PATH) ?? '/';
         $host = parse_url($this->getUrl(), PHP_URL_HOST) ?? '';
-
-        $isActive = function ($path, $host): bool {
-            $url = strtok($this->getUrl(), '?');
-
-            if ($path === '/' && $this->getCore()->getRequest()->getHost() === $host) {
-                return $this->getCore()->getRequest()->getPath() === $path;
-            }
-
-            if ($url === $this->getCore()->getRouter()->getEndpoints()->home()) {
-                return $this->getCore()->getRequest()->urlIs($this->getUrl());
-            }
-
-            return $this->getCore()->getRequest()->urlIs($host ? "$url*" : "*$url*");
-        };
+        $url = strtok($this->getUrl(), '?');
 
         return is_null($this->whenActive)
-            ? $isActive($path, $host)
+            ? (bool) value($this->onIsActive, $path, $host, $url)
             : (bool) value($this->whenActive, $path, $host, $this);
     }
 

@@ -6,8 +6,7 @@ namespace MoonShine\MenuManager;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
-use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
@@ -29,8 +28,7 @@ final class MenuManager implements MenuManagerContract
     private bool $topMode = false;
 
     public function __construct(
-        private RequestContract $request,
-        private RouterContract $router,
+        private CoreContract $core,
     ) {
     }
 
@@ -74,10 +72,59 @@ final class MenuManager implements MenuManagerContract
         return $this;
     }
 
+    private function resolveIsActive(): Closure
+    {
+        $router = $this->core->getRouter();
+        $request = $this->core->getRequest();
+
+        return static function($path, $host, $url) use ($router, $request) {
+            if ($path === '/' && $request->getHost() === $host) {
+                return $request->getPath() === $path;
+            }
+
+            if ($url === $router->getEndpoints()->home()) {
+                return $request->urlIs($url);
+            }
+
+            return $request->urlIs($host ? "$url*" : "*$url*");
+        };
+    }
+
+    private function resolveFiller(): Closure
+    {
+        $container = $this->core->getContainer();
+
+        return static function($filler) use ($container) {
+            if(is_string($filler) && str_contains($filler, '\\')) {
+                return $container->get($filler);
+            }
+
+            return $filler;
+        };
+    }
+
+    private function resolveRender(): Closure
+    {
+        $render = $this->core->getRenderer();
+
+        return static function($view, $data) use ($render) {
+            return (string) $render->render($view, $data);
+        };
+    }
+
     public function all(?iterable $items = null): MenuElementsContract
     {
+        $onFiller = $this->resolveFiller();
+        $onRender = $this->resolveRender();
+        $onIsActive = $this->resolveIsActive();
+
         return MenuElements::make($items ?: $this->items)
             ->onlyVisible()
+            ->each(static fn (MenuElementContract $elements) => $elements
+                ->onRender($onRender)
+                ->onFiller($onFiller)
+                ->onIsActive($onIsActive)
+            )
             ->when(
                 $this->conditionItems !== [],
                 function (MenuElementsContract $elements): MenuElementsContract {

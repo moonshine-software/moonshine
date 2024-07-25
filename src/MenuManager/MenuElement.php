@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
-use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
@@ -17,11 +17,9 @@ use MoonShine\UI\Traits\HasCanSee;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
-// todo(hot)-2 ??? inject CoreContract
 abstract class MenuElement implements MenuElementContract, RenderableContract, HasCanSeeContract
 {
     use Makeable;
-    use WithCore;
     use WithComponentAttributes;
     use WithIcon;
     use HasCanSee;
@@ -29,6 +27,12 @@ abstract class MenuElement implements MenuElementContract, RenderableContract, H
     use WithViewRenderer;
 
     private bool $topMode = false;
+
+    protected ?Closure $onIsActive = null;
+
+    protected ?Closure $onFiller = null;
+
+    protected ?Closure $onRender = null;
 
     abstract public function isActive(): bool;
 
@@ -44,9 +48,35 @@ abstract class MenuElement implements MenuElementContract, RenderableContract, H
         return $this;
     }
 
+    public function onIsActive(Closure $onIsActive): static
+    {
+        $this->onIsActive = $onIsActive;
+
+        return $this;
+    }
+
+    public function onFiller(Closure $onFiller): static
+    {
+        $this->onFiller = $onFiller;
+
+        return $this;
+    }
+
+    public function onRender(Closure $onRender): static
+    {
+        $this->onRender = $onRender;
+
+        return $this;
+    }
+
     public function isTopMode(): bool
     {
         return $this->topMode;
+    }
+
+    protected function renderView(): Renderable|Closure|string
+    {
+        return value($this->onRender, $this->getView(), $this->toArray());
     }
 
     protected function systemViewData(): array

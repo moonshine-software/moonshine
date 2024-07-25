@@ -28,6 +28,39 @@ class MenuGroup extends MenuElement
         }
     }
 
+    public function onFiller(Closure $onFiller): static
+    {
+        parent::onFiller($onFiller);
+
+        foreach ($this->getItems() as $item) {
+            $item->onFiller($onFiller);
+        }
+
+        return $this;
+    }
+
+    public function onRender(Closure $onRender): static
+    {
+        parent::onRender($onRender);
+
+        foreach ($this->getItems() as $item) {
+            $item->onRender($onRender);
+        }
+
+        return $this;
+    }
+
+    public function onIsActive(Closure $onIsActive): static
+    {
+        parent::onIsActive($onIsActive);
+
+        foreach ($this->getItems() as $item) {
+            $item->onIsActive($onIsActive);
+        }
+
+        return $this;
+    }
+
     public function setItems(iterable $items): static
     {
         $this->items = $items;
