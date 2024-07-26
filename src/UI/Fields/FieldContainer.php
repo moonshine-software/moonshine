@@ -57,7 +57,7 @@ final class FieldContainer extends MoonShineComponent
                 $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
                     'slot' => $hint,
-                ], $this)
+                ])
             );
         }
     }

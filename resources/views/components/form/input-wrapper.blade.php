@@ -8,8 +8,7 @@
     'afterSlot',
     'formName' => '',
 ])
-<div {{ $attributes->merge(['class' => 'form-group moonshine-field'])
-    ->only(['class', 'x-show', 'style']) }}
+<div {{ $attributes->merge(['class' => 'form-group moonshine-field'])->except('required') }}
      x-id="['input-wrapper', 'field']" :id="$id('input-wrapper')"
 >
     {{ $beforeLabel && !$inLabel ? $slot : '' }}
