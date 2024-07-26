@@ -8,8 +8,8 @@ use MoonShine\Core\Exceptions\MoonShineException;
 
 class ActionButtonException extends MoonShineException
 {
-    public static function resourceRequired(): self
+    public static function resourceRequired(): static
     {
-        return new self('Resource is required for action');
+        return new static('Resource is required for action');
     }
 }

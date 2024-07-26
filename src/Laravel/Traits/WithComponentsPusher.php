@@ -16,12 +16,12 @@ trait WithComponentsPusher
 
     public static function pushComponent(Closure|RenderableContract $component): void
     {
-        self::$pushedComponents[] = $component;
+        static::$pushedComponents[] = $component;
     }
 
     private function getPushedComponents(): array
     {
-        return collect(self::$pushedComponents)
+        return collect(static::$pushedComponents)
             ->map(fn (Closure|RenderableContract $component) => value($component, $this))
             ->toArray();
     }

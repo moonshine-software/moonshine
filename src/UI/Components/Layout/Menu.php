@@ -29,7 +29,7 @@ class Menu extends MoonShineComponent
         $this->items = $this->menuManager->all();
     }
 
-    public function top(): self
+    public function top(): static
     {
         $this->top = true;
 
@@ -41,14 +41,14 @@ class Menu extends MoonShineComponent
         return $this->top;
     }
 
-    public function withoutScrollTo(): self
+    public function withoutScrollTo(): static
     {
         $this->scrollTo = false;
 
         return $this;
     }
 
-    public function scrollTo(): self
+    public function scrollTo(): static
     {
         $this->scrollTo = true;
 

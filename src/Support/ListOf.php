@@ -50,7 +50,6 @@ final class ListOf
 
         $this->items = collect($this->items)
             ->filter($condition)
-            ->ensure($this->getType())
             ->toArray();
 
         return $this;
@@ -65,7 +64,6 @@ final class ListOf
     {
         $this->items = collect($this->items)
             ->push(...$data)
-            ->ensure($this->getType())
             ->toArray();
 
         return $this;
@@ -81,7 +79,6 @@ final class ListOf
         foreach ($data as $item) {
             $this->items = collect($this->items)
                 ->prepend($item)
-                ->ensure($this->getType())
                 ->toArray();
         }
 

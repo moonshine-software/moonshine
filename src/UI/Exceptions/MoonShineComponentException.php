@@ -10,13 +10,13 @@ use MoonShine\UI\Components\Tabs\Tabs;
 
 class MoonShineComponentException extends MoonShineException
 {
-    public static function tabsAreNotRendering(): self
+    public static function tabsAreNotRendering(): static
     {
-        return new self('Can`t render. You need to use ' . Tabs::class . ' class');
+        return new static('Can`t render. You need to use ' . Tabs::class . ' class');
     }
 
-    public static function onlyTabAllowed(): self
+    public static function onlyTabAllowed(): static
     {
-        return new self('Tab must be a class of ' . Tab::class);
+        return new static('Tab must be a class of ' . Tab::class);
     }
 }

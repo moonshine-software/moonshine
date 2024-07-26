@@ -16,7 +16,7 @@ class ThemeSwitcher extends MoonShineComponent
         parent::__construct();
     }
 
-    public function top(): self
+    public function top(): static
     {
         $this->top = true;
 

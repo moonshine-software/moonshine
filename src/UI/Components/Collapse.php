@@ -29,7 +29,7 @@ class Collapse extends AbstractWithComponents
         parent::__construct($components);
     }
 
-    public function open(Closure|bool|null $condition = null): self
+    public function open(Closure|bool|null $condition = null): static
     {
         $this->open = value($condition, $this) ?? true;
 
@@ -41,7 +41,7 @@ class Collapse extends AbstractWithComponents
         return $this->open;
     }
 
-    public function persist(Closure|bool|null $condition = null): self
+    public function persist(Closure|bool|null $condition = null): static
     {
         $this->persist = value($condition, $this) ?? true;
 

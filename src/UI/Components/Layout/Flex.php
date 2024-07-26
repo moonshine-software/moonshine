@@ -36,7 +36,7 @@ class Flex extends AbstractWithComponents
         parent::__construct($components);
     }
 
-    public function withoutSpace(): self
+    public function withoutSpace(): static
     {
         $this->withoutSpace = true;
 
@@ -48,14 +48,14 @@ class Flex extends AbstractWithComponents
         return $this->withoutSpace;
     }
 
-    public function itemsAlign(string $itemsAlign): self
+    public function itemsAlign(string $itemsAlign): static
     {
         $this->itemsAlign = $itemsAlign;
 
         return $this;
     }
 
-    public function justifyAlign(string $justifyAlign): self
+    public function justifyAlign(string $justifyAlign): static
     {
         $this->justifyAlign = $justifyAlign;
 

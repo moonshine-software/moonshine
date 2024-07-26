@@ -160,9 +160,8 @@ trait WithAsyncSearch
 
     /**
      * @param  string|null  $column
-     * @param  ?Closure(Builder $query, MoonShineRequest $request, FieldContract $field): self  $searchQuery
-     * @param  ?Closure(mixed $data, FieldContract $field): self  $formatted
-     * @return $this
+     * @param  ?Closure(Builder $query, MoonShineRequest $request, FieldContract $field): static  $searchQuery
+     * @param  ?Closure(mixed $data, FieldContract $field): static  $formatted
      */
     public function asyncSearch(
         string $column = null,
@@ -199,7 +198,7 @@ trait WithAsyncSearch
     }
 
     /**
-     * @param  ?Closure(Builder $query, MoonShineRequest $request, FieldContract $field): self  $searchQuery
+     * @param  ?Closure(Builder $query, MoonShineRequest $request, FieldContract $field): static  $searchQuery
      * @return $this
      */
     public function associatedWith(string $column, ?Closure $searchQuery = null): static

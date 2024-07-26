@@ -72,7 +72,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     protected bool $withoutModals = false;
 
-    public function withoutModals(): self
+    public function withoutModals(): static
     {
         $this->withoutModals = true;
 
@@ -85,9 +85,9 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(int $parentId, self $field): string  $callback
+     * @param  Closure(int $parentId, static $field): string  $callback
      */
-    public function redirectAfter(Closure $callback): self
+    public function redirectAfter(Closure $callback): static
     {
         $this->redirectAfter = $callback;
 
@@ -106,9 +106,9 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
+     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $callback
      */
-    public function modifyCreateButton(Closure $callback): self
+    public function modifyCreateButton(Closure $callback): static
     {
         $this->modifyCreateButton = $callback;
 
@@ -116,9 +116,9 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
+     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $callback
      */
-    public function modifyEditButton(Closure $callback): self
+    public function modifyEditButton(Closure $callback): static
     {
         $this->modifyEditButton = $callback;
 
@@ -126,9 +126,9 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(ActionButtonContract $detail, ActionButtonContract $edit, ActionButtonContract $delete, ActionButtonContract $massDelete, self $field): array  $callback
+     * @param  Closure(ActionButtonContract $detail, ActionButtonContract $edit, ActionButtonContract $delete, ActionButtonContract $massDelete, static $ctx): array  $callback
      */
-    public function modifyItemButtons(Closure $callback): self
+    public function modifyItemButtons(Closure $callback): static
     {
         $this->modifyItemButtons = $callback;
 
@@ -136,9 +136,9 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(TableBuilderContract $table, bool $preview, self $field): TableBuilderContract  $callback
+     * @param  Closure(TableBuilderContract $table, bool $preview, static $ctx): TableBuilderContract  $callback
      */
-    public function modifyTable(Closure $callback): self
+    public function modifyTable(Closure $callback): static
     {
         $this->modifyTable = $callback;
 

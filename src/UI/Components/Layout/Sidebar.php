@@ -26,14 +26,14 @@ class Sidebar extends AbstractWithComponents
         $this->collapseAttributes = new MoonShineComponentAttributeBag();
     }
 
-    public function collapsed(): self
+    public function collapsed(): static
     {
         $this->collapse = true;
 
         return $this;
     }
 
-    public function collapseAttributes(array $attributes): self
+    public function collapseAttributes(array $attributes): static
     {
         $this->collapseAttributes = $this->collapseAttributes->merge($attributes);
 

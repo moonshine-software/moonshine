@@ -20,14 +20,14 @@ class Tabs extends AbstractWithComponents
 
     protected bool $vertical = false;
 
-    public function active(string|int $active): self
+    public function active(string|int $active): static
     {
         $this->active = $active;
 
         return $this;
     }
 
-    public function vertical(Closure|bool|null $condition = null): self
+    public function vertical(Closure|bool|null $condition = null): static
     {
         $this->vertical = value($condition, $this) ?? true;
 
@@ -39,7 +39,7 @@ class Tabs extends AbstractWithComponents
         return $this->vertical;
     }
 
-    public function justifyAlign(string $justifyAlign): self
+    public function justifyAlign(string $justifyAlign): static
     {
         $this->justifyAlign = $justifyAlign;
 

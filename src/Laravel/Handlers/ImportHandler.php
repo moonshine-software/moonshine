@@ -57,7 +57,7 @@ class ImportHandler extends Handler
         return $this->csvDelimiter;
     }
 
-    public function deleteAfter(): self
+    public function deleteAfter(): static
     {
         $this->deleteAfter = true;
 

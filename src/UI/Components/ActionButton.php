@@ -60,20 +60,20 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         $this->setLabel($label);
     }
 
-    public function setUrl(Closure|string $url): self
+    public function setUrl(Closure|string $url): static
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public static function emptyHidden(): self
+    public static function emptyHidden(): static
     {
         return self::make('')
             ->customAttributes(['style' => 'display:none']);
     }
 
-    public function blank(): self
+    public function blank(): static
     {
         $this->customAttributes([
             'target' => '_blank',
@@ -82,7 +82,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this;
     }
 
-    public function bulk(?string $forComponent = null): self
+    public function bulk(?string $forComponent = null): static
     {
         $this->isBulk = true;
         $this->bulkForComponent = $forComponent;
@@ -107,14 +107,14 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->bulkForComponent;
     }
 
-    public function onBeforeSet(Closure $onBeforeSet): self
+    public function onBeforeSet(Closure $onBeforeSet): static
     {
         $this->onBeforeSetCallback = $onBeforeSet;
 
         return $this;
     }
 
-    public function onAfterSet(Closure $onAfterSet): self
+    public function onAfterSet(Closure $onAfterSet): static
     {
         $this->onAfterSetCallback = $onAfterSet;
 
@@ -126,7 +126,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->data;
     }
 
-    public function setData(?CastedDataContract $data = null): self
+    public function setData(?CastedDataContract $data = null): static
     {
         if(! is_null($this->onBeforeSetCallback)) {
             $data = value($this->onBeforeSetCallback, $data, $this);
@@ -139,7 +139,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this;
     }
 
-    public function onClick(Closure $onClick, ?string $modifier = null): self
+    public function onClick(Closure $onClick, ?string $modifier = null): static
     {
         $event = 'x-on:click';
 
@@ -154,7 +154,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this;
     }
 
-    public function dispatchEvent(array|string $events): self
+    public function dispatchEvent(array|string $events): static
     {
         return $this->onClick(
             static fn (): string => AlpineJs::dispatchEvents($events),
@@ -174,7 +174,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         ?AsyncCallback $callback = null,
         ?PageContract $page = null,
         ?ResourceContract $resource = null
-    ): self {
+    ): static {
         $this->asyncMethod = $method;
 
         $this->url = fn (mixed $data, ?CastedDataContract $casted): ?string => $this->getCore()->getRouter()->getEndpoints()->asyncMethod(
@@ -222,7 +222,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         ?string $selector = null,
         array $events = [],
         ?AsyncCallback $callback = null
-    ): self {
+    ): static {
         $this->isAsync = true;
 
         return $this->customAttributes([
@@ -239,7 +239,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     /**
      * @param  array<string, string> $selectors
      */
-    public function withSelectorsParams(array $selectors): self
+    public function withSelectorsParams(array $selectors): static
     {
         return $this->customAttributes(
             AlpineJs::asyncSelectorsParamsAttributes($selectors)
@@ -314,7 +314,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return value($this->url, $data ?? $this->getData()?->getOriginal(), $this->getData());
     }
 
-    public function primary(Closure|bool|null $condition = null): self
+    public function primary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;
@@ -323,7 +323,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->class('btn-primary');
     }
 
-    public function secondary(Closure|bool|null $condition = null): self
+    public function secondary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;
@@ -332,7 +332,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->class('btn-secondary');
     }
 
-    public function success(Closure|bool|null $condition = null): self
+    public function success(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;
@@ -341,7 +341,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->class('btn-success');
     }
 
-    public function warning(Closure|bool|null $condition = null): self
+    public function warning(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;
@@ -350,7 +350,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->class('btn-warning');
     }
 
-    public function info(Closure|bool|null $condition = null): self
+    public function info(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;
@@ -359,7 +359,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->class('btn-info');
     }
 
-    public function error(Closure|bool|null $condition = null): self
+    public function error(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
             return $this;

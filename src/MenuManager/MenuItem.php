@@ -61,7 +61,7 @@ class MenuItem extends MenuElement
         $this->actionButton = ActionButton::make($label);
     }
 
-    public function changeButton(Closure $callback): self
+    public function changeButton(Closure $callback): static
     {
         $this->actionButton = $callback($this->actionButton);
 

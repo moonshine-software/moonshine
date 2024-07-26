@@ -53,7 +53,7 @@ class Tab extends AbstractWithComponents
         ]);
     }
 
-    public function labelAttributes(array $attributes): self
+    public function labelAttributes(array $attributes): static
     {
         $this->labelAttributes = $this->labelAttributes->merge($attributes);
 
@@ -68,7 +68,7 @@ class Tab extends AbstractWithComponents
         throw MoonShineComponentException::tabsAreNotRendering();
     }
 
-    public function active(Closure|bool|null $condition = null): self
+    public function active(Closure|bool|null $condition = null): static
     {
         $this->active = is_null($condition) || (value($condition, $this) ?? false);
 

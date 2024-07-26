@@ -59,7 +59,7 @@ class Fragment extends AbstractWithComponents
     /**
      * @param  array<string, string> $selectors
      */
-    public function withSelectorsParams(array $selectors): self
+    public function withSelectorsParams(array $selectors): static
     {
         return $this->customAttributes(
             AlpineJs::asyncSelectorsParamsAttributes($selectors)

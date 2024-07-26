@@ -32,7 +32,7 @@ class Box extends AbstractWithComponents
         parent::__construct($components);
     }
 
-    public function dark(): self
+    public function dark(): static
     {
         $this->dark = true;
 

@@ -12,7 +12,7 @@ class LayoutBuilder extends AbstractWithComponents
 
     protected string $bodyClass = '';
 
-    public function bodyClass(string $value): self
+    public function bodyClass(string $value): static
     {
         $this->bodyClass = $value;
 
