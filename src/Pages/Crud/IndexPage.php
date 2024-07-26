@@ -81,6 +81,10 @@ class IndexPage extends Page
 
     protected function metrics(): ?MoonShineComponent
     {
+        if($this->getResource()->isListComponentRequest()) {
+            return null;
+        }
+
         $metrics = $this->getResource()->metrics();
 
         return $metrics

@@ -212,6 +212,11 @@ abstract class ModelResource extends Resource
         );
     }
 
+    public function isListComponentRequest(): bool
+    {
+        return request()->ajax() && request()->input('_component_name') === $this->listComponentName();
+    }
+
     public function listEventName(?string $name = null): string
     {
         $name ??= $this->listComponentName();
