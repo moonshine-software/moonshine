@@ -117,7 +117,7 @@ class Json extends Field implements
         return $this->keyValue || $this->onlyValue;
     }
 
-    public function vertical(Closure|bool|null $condition = null): self
+    public function vertical(Closure|bool|null $condition = null): static
     {
         $this->isVertical = value($condition, $this) ?? true;
 
@@ -133,7 +133,7 @@ class Json extends Field implements
         Closure|bool|null $condition = null,
         ?int $limit = null,
         ?ActionButtonContract $button = null
-    ): self {
+    ): static {
         $this->isCreatable = value($condition, $this) ?? true;
 
         if ($this->isCreatable()) {
@@ -161,7 +161,7 @@ class Json extends Field implements
         return $this->creatableLimit;
     }
 
-    public function filterMode(): self
+    public function filterMode(): static
     {
         $this->isFilterMode = true;
         $this->creatable(false);
@@ -174,7 +174,7 @@ class Json extends Field implements
         return $this->isFilterMode;
     }
 
-    public function reorderable(Closure|bool|null $condition = null): self
+    public function reorderable(Closure|bool|null $condition = null): static
     {
         $this->isReorderable = value($condition, $this) ?? true;
 
@@ -186,7 +186,7 @@ class Json extends Field implements
         return $this->isReorderable;
     }
 
-    public function buttons(array $buttons): self
+    public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
 

@@ -25,7 +25,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     abstract public function getEndpoints(): EndpointsContract;
 
-    public function withName(string $name): self
+    public function withName(string $name): static
     {
         $this->name = $name;
 
@@ -50,7 +50,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
             ->value();
     }
 
-    public function withParams(array $params): self
+    public function withParams(array $params): static
     {
         $this->params = array_merge(
             $params,
@@ -60,7 +60,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return $this;
     }
 
-    public function withPage(?PageContract $page = null): self
+    public function withPage(?PageContract $page = null): static
     {
         if (! is_null($pageUri = $this->extractPageUri($page))) {
             return $this->withParams([
@@ -71,7 +71,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return $this;
     }
 
-    public function withResource(?ResourceContract $resource = null): self
+    public function withResource(?ResourceContract $resource = null): static
     {
         if (! is_null($resourceUri = $this->extractResourceUri($resource))) {
             return $this->withParams([
@@ -98,7 +98,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return data_get($this->getParams(), $key, $default);
     }
 
-    public function forgetParam(string $key): self
+    public function forgetParam(string $key): static
     {
         data_forget($this->params, $key);
 

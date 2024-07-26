@@ -11,7 +11,7 @@ trait WithSlotContent
 {
     protected Closure|string $content = '';
 
-    public function content(Closure|string $content): self
+    public function content(Closure|string $content): static
     {
         $this->content = $content;
 

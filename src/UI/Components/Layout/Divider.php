@@ -26,7 +26,7 @@ class Divider extends MoonShineComponent
         $this->setLabel($label);
     }
 
-    public function centered(): self
+    public function centered(): static
     {
         $this->isCentered = true;
 

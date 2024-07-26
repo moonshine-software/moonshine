@@ -21,7 +21,7 @@ class Footer extends AbstractWithComponents
         parent::__construct($components);
     }
 
-    public function copyright(string|Closure $text): self
+    public function copyright(string|Closure $text): static
     {
         $this->copyright = $text;
 
@@ -37,7 +37,7 @@ class Footer extends AbstractWithComponents
      * @param  array{string, string}  $data
      * @return $this
      */
-    public function menu(array $data): self
+    public function menu(array $data): static
     {
         $this->menu = $data;
 

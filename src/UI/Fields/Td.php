@@ -48,9 +48,9 @@ class Td extends Template
     }
 
     /**
-     * @param  ?Closure(mixed $data, self $td): self $fields
+     * @param  ?Closure(mixed $data, static $ctx): static $fields
      */
-    public function conditionalFields(?Closure $fields = null): self
+    public function conditionalFields(?Closure $fields = null): static
     {
         $this->conditionalFields = $fields;
 
@@ -79,9 +79,9 @@ class Td extends Template
     }
 
     /**
-     * @param  Closure(mixed $data, self $td): array  $attributes
+     * @param  Closure(mixed $data, static $ctx): array  $attributes
      */
-    public function tdAttributes(Closure $attributes): self
+    public function tdAttributes(Closure $attributes): static
     {
         $this->tdAttributes = $attributes;
 

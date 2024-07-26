@@ -56,6 +56,7 @@ final class Components extends Renderables
     }
 
     /**
+     * @return F
      * @throws Throwable
      */
     public function onlyFields(bool $withWrappers = false): FieldsContract

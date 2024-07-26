@@ -7,7 +7,7 @@ namespace MoonShine\Support\Memoize;
 use Countable;
 use WeakMap;
 
-class MemoizeRepository implements Countable
+final class MemoizeRepository implements Countable
 {
     protected static self $cache;
 

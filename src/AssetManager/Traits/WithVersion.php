@@ -8,7 +8,7 @@ trait WithVersion
 {
     private string|int|null $version = null;
 
-    public function version(string|int|null $version): self
+    public function version(string|int|null $version): static
     {
         $this->version = $version;
 

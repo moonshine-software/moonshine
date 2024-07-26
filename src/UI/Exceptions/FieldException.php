@@ -8,16 +8,16 @@ use MoonShine\Core\Exceptions\MoonShineException;
 
 class FieldException extends MoonShineException
 {
-    public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): self
+    public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): static
     {
-        return new self(
+        return new static(
             "Resource is required for $fieldClass"
             . ($fieldIdentification ? " ($fieldIdentification)" : "")
         );
     }
 
-    public static function notFound(): self
+    public static function notFound(): static
     {
-        return new self('Field not found');
+        return new static('Field not found');
     }
 }

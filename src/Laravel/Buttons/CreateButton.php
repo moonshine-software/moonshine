@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Buttons;
 
+use MoonShine\AssetManager\Js;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;

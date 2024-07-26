@@ -14,5 +14,5 @@ interface ActionButtonContract
 
     public function getData(): ?CastedDataContract;
 
-    public function setData(?CastedDataContract $data = null): self;
+    public function setData(?CastedDataContract $data = null): static;
 }

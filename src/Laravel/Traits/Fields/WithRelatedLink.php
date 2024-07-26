@@ -81,9 +81,9 @@ trait WithRelatedLink
     }
 
     /**
-     * @param  Closure(ActionButtonContract $button, bool $preview, self $field): ActionButtonContract  $callback
+     * @param  Closure(ActionButtonContract $button, bool $preview, static $ctx): ActionButtonContract  $callback
      */
-    public function modifyRelatedLink(Closure $callback): self
+    public function modifyRelatedLink(Closure $callback): static
     {
         $this->modifyRelatedLink = $callback;
 

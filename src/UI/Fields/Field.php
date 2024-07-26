@@ -371,7 +371,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(self $field): self  $closure
+     * @param  Closure(static $ctx): static  $closure
      */
     public function afterFill(Closure $closure): static
     {

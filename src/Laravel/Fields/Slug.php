@@ -80,7 +80,7 @@ class Slug extends Text
         );
     }
 
-    public function locale(string $local): self
+    public function locale(string $local): static
     {
         $this->locale = $local;
 

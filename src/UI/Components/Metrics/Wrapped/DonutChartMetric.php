@@ -30,7 +30,7 @@ class DonutChartMetric extends Metric
         return $this->decimals;
     }
 
-    public function decimals(int $decimals): self
+    public function decimals(int $decimals): static
     {
         if (in_array($decimals, range(0, 100), true)) {
             $this->decimals = $decimals;
@@ -42,7 +42,7 @@ class DonutChartMetric extends Metric
     /**
      * @param array<string, int|float>|Closure $values
      */
-    public function values(array|Closure $values): self
+    public function values(array|Closure $values): static
     {
         $this->values = $values instanceof Closure
             ? $values()
@@ -75,7 +75,7 @@ class DonutChartMetric extends Metric
     /**
      * @param string[]|Closure $colors
      */
-    public function colors(array|Closure $colors): self
+    public function colors(array|Closure $colors): static
     {
         $this->colors = $colors instanceof Closure
             ? $colors()
