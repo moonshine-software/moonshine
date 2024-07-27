@@ -74,7 +74,7 @@ export default () => ({
             offset: [-offset, 6],
           },
         },
-      ]
+      ],
     })
 
     this.popperInstance.update()
