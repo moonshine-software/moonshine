@@ -35,7 +35,7 @@ class CompactLayout extends AppLayout
         $colorManager
             ->primary('#1E96FC')
             ->secondary('#1D8A99')
-            ->body('255, 255, 255')
+            ->body('249, 250, 251')
             ->dark('30, 31, 67', 'DEFAULT')
             ->dark('249, 250, 251', 50)
             ->dark('243, 244, 246', 100)
