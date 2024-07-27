@@ -36,7 +36,6 @@ abstract class Core implements CoreContract
         protected ContainerInterface $container,
         protected ViewRendererContract $viewRenderer,
         protected RouterContract $router,
-        protected RequestContract $request,
         protected ConfiguratorContract $config,
         protected TranslatorContract $translator,
     ) {
