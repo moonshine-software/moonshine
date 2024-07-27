@@ -16,7 +16,7 @@
 >
     <button
         @if($top)
-            @click="toggleDropdown"
+            @click="toggleTopDropdown"
             class="menu-inner-button dropdown-btn"
             :class="open && '_is-active'"
         @else

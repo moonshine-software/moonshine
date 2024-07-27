@@ -23,6 +23,7 @@ export default () => ({
 
     this.popperInstance = createPopper(this.dropdownBtn, this.dropdownBody, {
       placement: dropdownPlacement ? dropdownPlacement : 'auto',
+      strategy: 'fixed',
       modifiers: [
         {
           name: 'offset',
@@ -56,6 +57,26 @@ export default () => ({
   toggleDropdown() {
     this.open = !this.open
     this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
+    this.popperInstance.update()
+  },
+
+  toggleTopDropdown() {
+    this.open = !this.open
+    this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
+
+    const offset = document.querySelector('.layout-menu').offsetWidth ?? 0
+
+    this.popperInstance.setOptions({
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [-offset, 6],
+          },
+        },
+      ]
+    })
+
     this.popperInstance.update()
   },
 
