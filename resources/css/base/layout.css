@@ -73,7 +73,7 @@
   }
 
   &-menu {
-    @apply fixed inset-y-0 left-0 pl-5 z-3 box-content flex shrink-0 flex-col justify-between lg:z-0 lg:pt-6;
+    @apply fixed inset-y-0 left-0 z-3 box-content flex shrink-0 flex-col justify-between pl-5 lg:z-0 lg:pt-6;
     height: calc(100vh - 4rem);
   }
 
