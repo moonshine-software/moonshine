@@ -64,7 +64,7 @@ export default () => ({
     this.open = !this.open
     this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
 
-    const offset = document.querySelector('.layout-menu').offsetWidth ?? 0
+    const offset = document.querySelector('.layout-menu')?.offsetWidth ?? 0
 
     this.popperInstance.setOptions({
       modifiers: [
