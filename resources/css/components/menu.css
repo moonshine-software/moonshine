@@ -246,7 +246,7 @@
 
 /* Aside horizontal navigation */
 .layout-menu-horizontal {
-  @apply sticky inset-x-0 top-0 z-[100] flex h-[4.5rem] items-center gap-x-5 bg-body/80 px-6 backdrop-blur-sm transition-colors md:px-10 lg:h-24;
+  @apply sticky inset-x-0 top-0 z-[100] flex h-[4.5rem] items-center gap-x-5 bg-body/80 px-6 transition-colors md:px-10 lg:h-24;
 
   .menu-inner-item-char {
     @apply hidden;
@@ -269,11 +269,11 @@
 
     /* Main navigation */
     &-navigation {
-      @apply block lg:grow;
+      @apply block lg:grow lg:overflow-x-auto lg:overflow-y-hidden;
     }
 
     &-inner {
-      @apply flex gap-x-0.5 lg:gap-x-1.5;
+      @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
 
       &:last-of-type {
         @apply grow;
