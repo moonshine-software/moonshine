@@ -11,6 +11,8 @@ class MenuManager
 {
     protected Closure|Collection|array|null $menu = null;
 
+    protected ?Collection $preparedMenu = null;
+
     public function register(Closure|array|Collection|null $data): void
     {
         $this->menu = $data;
@@ -18,7 +20,13 @@ class MenuManager
 
     public function all(): Collection
     {
-        return $this->prepareMenu(value($this->menu, moonshineRequest()));
+        if(!is_null($this->preparedMenu)) {
+            return $this->preparedMenu;
+        }
+
+        return $this->preparedMenu = $this->prepareMenu(
+            value($this->menu, moonshineRequest())
+        );
     }
 
     public function hasForceActive(): bool
