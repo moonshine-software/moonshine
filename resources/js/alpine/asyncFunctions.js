@@ -255,7 +255,25 @@ export function listComponentRequest(component, pushState = false) {
       }
 
       document.querySelectorAll('._change-query').forEach(function (element) {
-        element.setAttribute('href', element.dataset.originalUrl + (query ? '?' + query : ''))
+        let value = element.dataset.originalUrl + (query ? '?' + query : '')
+
+        if (element.dataset.originalQuery) {
+          value =
+            value +
+            (query ? '&' + element.dataset.originalQuery : '?' + element.dataset.originalQuery)
+        }
+
+        let attr = 'href'
+
+        if (element.tagName.toLowerCase() === 'form') {
+          attr = 'action'
+        }
+
+        if (element.tagName.toLowerCase() === 'input') {
+          attr = 'value'
+        }
+
+        element.setAttribute(attr, value)
       })
 
       if (component.$root.dataset.events) {

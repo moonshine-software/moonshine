@@ -4,6 +4,7 @@ namespace MoonShine\Buttons;
 
 use Illuminate\Support\Arr;
 use MoonShine\ActionButtons\ActionButton;
+use MoonShine\Components\FormBuilder;
 use MoonShine\Handlers\ExportHandler;
 use MoonShine\Resources\ModelResource;
 
@@ -16,17 +17,27 @@ final class ExportButton
         );
 
         $url = $resource->route('handler', query: ['handlerUri' => $export->uriKey()]);
+        $ts = "ts=" . time();
+
+        $attributes = [
+            'class' => '_change-query',
+            'data-original-url' => $url,
+            'data-original-query' => $ts,
+        ];
 
         $button = ActionButton::make(
             $export->label(),
-            trim("$url?ts=" . time() . "&$query", '&')
+            trim("$url?$ts&$query", '&')
         )
             ->primary()
-            ->customAttributes(['class' => '_change-query', 'data-original-url' => $url])
+            ->customAttributes($attributes)
             ->icon($export->iconValue());
 
         if ($export->isWithConfirm()) {
-            $button->withConfirm(content: trans('moonshine::ui.resource.export.confirm_content'));
+            $button->withConfirm(
+                content: trans('moonshine::ui.resource.export.confirm_content'),
+                formBuilder: static fn(FormBuilder $form): FormBuilder => $form->customAttributes($attributes)
+            );
         }
 
         return $button;
