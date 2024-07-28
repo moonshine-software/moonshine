@@ -19,6 +19,16 @@ export function listComponentRequest(component, pushState = false) {
     url = urlWithQuery(url, component.$event.detail.queryTag)
   }
 
+  if (component.$event.detail && component.$event.detail.page) {
+    url = prepareListComponentRequestUrl(url)
+    url = urlWithQuery(url, `page=${component.$event.detail.page}`)
+  }
+
+  if (component.$event.detail && component.$event.detail.sort) {
+    url = prepareListComponentRequestUrl(url)
+    url = urlWithQuery(url, `sort=${component.$event.detail.sort}`)
+  }
+
   let stopLoading = function (data, t) {
     t.loading = false
   }

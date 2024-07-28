@@ -8,4 +8,5 @@ use Traversable;
 
 interface MenuElementsContract extends Traversable
 {
+    public function onlyVisible(): self;
 }

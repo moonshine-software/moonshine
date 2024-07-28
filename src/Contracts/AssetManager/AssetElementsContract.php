@@ -9,4 +9,5 @@ use Traversable;
 
 interface AssetElementsContract extends Htmlable, Traversable
 {
+    public function resolveLinks(AssetResolverContract $resolver): self;
 }

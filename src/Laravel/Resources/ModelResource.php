@@ -223,13 +223,13 @@ abstract class ModelResource extends Resource implements CrudResourceContract
         return request()->ajax() && request()->input('_component_name') === $this->getListComponentName();
     }
 
-    public function getListEventName(?string $name = null): string
+    public function getListEventName(?string $name = null, array $params = []): string
     {
         $name ??= $this->getListComponentName();
 
         return rescue(
-            fn (): string => AlpineJs::event($this->getIndexPage()?->getListEventName() ?? '', $name),
-            AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
+            fn (): string => AlpineJs::event($this->getIndexPage()?->getListEventName() ?? '', $name, $params),
+            AlpineJs::event(JsEvent::TABLE_UPDATED, $name, $params),
             false
         );
     }

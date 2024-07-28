@@ -8,4 +8,13 @@ use Traversable;
 
 interface ResourcesContract extends Traversable
 {
+    public function findByUri(
+        string $uri,
+        ResourceContract $default = null
+    ): ?ResourceContract;
+
+    public function findByClass(
+        string $class,
+        ResourceContract $default = null
+    ): ?ResourceContract;
 }

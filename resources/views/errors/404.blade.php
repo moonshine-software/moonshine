@@ -22,7 +22,7 @@
             <a href="{{ $backUrl }}"
                class="btn btn-primary"
                rel="home">
-                Back to Home
+                {{ $backTitle }}
             </a>
         </div>
     </div>

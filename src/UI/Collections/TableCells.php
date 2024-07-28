@@ -7,6 +7,7 @@ namespace MoonShine\UI\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
 use MoonShine\UI\Fields\Td;
 
@@ -15,7 +16,7 @@ use MoonShine\UI\Fields\Td;
  *
  * @extends Collection<TKey, TableTd>
  */
-final class TableCells extends Collection
+final class TableCells extends Collection implements TableCellsContract
 {
     public function pushFields(FieldsContract $fields, ?Closure $builder = null): self
     {

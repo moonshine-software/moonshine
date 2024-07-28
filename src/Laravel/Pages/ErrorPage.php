@@ -36,14 +36,22 @@ class ErrorPage extends Page
     {
         $logo = moonshineAssets()->getAsset('vendor/moonshine/logo-small.svg');
 
+        $backUrl = moonshineRouter()->getEndpoints()->home();
+
+        if($resourceUri = moonshineRouter()->extractResourceUri()) {
+            $backUrl = moonshine()->getResources()->findByUri($resourceUri)?->getUrl() ?? $backUrl;
+        }
+
         $code = $this->code;
         $message = $this->message;
-        $backUrl = moonshineRouter()->getEndpoints()->home();
+        $backTitle = $this->getCore()
+            ->getTranslator()
+            ->get('moonshine::ui.back');
 
         return [
             FlexibleRender::make(
                 static fn () => view('moonshine::errors.404'),
-                ['code' => $code, 'message' => $message, 'logo' => $logo, 'backUrl' => $backUrl]
+                ['code' => $code, 'message' => $message, 'logo' => $logo, 'backUrl' => $backUrl, 'backTitle' => $backTitle]
             ),
         ];
     }
