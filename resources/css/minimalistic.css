@@ -646,10 +646,6 @@ body.theme-minimalistic {
     }
     &-item-file {
       @apply gap-x-1.5 rounded-[0.25rem] px-1.5 py-1;
-
-      .dropzone-remove {
-        @apply h-4 w-4;
-      }
     }
   }
 
