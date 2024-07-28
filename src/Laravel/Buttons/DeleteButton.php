@@ -43,9 +43,9 @@ final class DeleteButton
                     static fn (FormBuilderContract $form): FormBuilderContract => $form->async(
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName(),
-                                $isAsync ? array_filter([
+                            $isAsync ? array_filter([
                                     'page' => request()->input('page'),
-                                    'sort' => request()->input('sort')
+                                    'sort' => request()->input('sort'),
                                 ]) : []
                         )
                     )
