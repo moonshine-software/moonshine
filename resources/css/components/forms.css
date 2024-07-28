@@ -229,7 +229,7 @@ input[type='number'] {
   }
 
   &-remove {
-    @apply absolute right-1 top-1 z-5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-600 bg-red-600 leading-none text-white will-change-transform hover:bg-white hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-700 dark:hover:text-white;
+    @apply absolute right-1 top-1 z-5 flex shrink-0 items-center justify-center rounded-full border border-red-600 bg-red-600 leading-none text-white will-change-transform hover:bg-white hover:text-red-600 dark:hover:border-red-700 dark:hover:bg-red-700 dark:hover:text-white;
     > svg {
       @apply h-3 w-3;
     }
