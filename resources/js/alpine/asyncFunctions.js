@@ -247,17 +247,19 @@ export function listComponentRequest(component, pushState = false) {
       document.querySelectorAll('._change-query').forEach(function (element) {
         let value = element.dataset.originalUrl + (query ? '?' + query : '')
 
-        if(element.dataset.originalQuery) {
-          value = value + (query ? '&' + element.dataset.originalQuery : '?' + element.dataset.originalQuery)
+        if (element.dataset.originalQuery) {
+          value =
+            value +
+            (query ? '&' + element.dataset.originalQuery : '?' + element.dataset.originalQuery)
         }
 
         let attr = 'href'
 
-        if(element.tagName.toLowerCase() === 'form') {
+        if (element.tagName.toLowerCase() === 'form') {
           attr = 'action'
         }
 
-        if(element.tagName.toLowerCase() === 'input') {
+        if (element.tagName.toLowerCase() === 'input') {
           attr = 'value'
         }
 
