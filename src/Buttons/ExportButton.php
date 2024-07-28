@@ -36,7 +36,7 @@ final class ExportButton
         if ($export->isWithConfirm()) {
             $button->withConfirm(
                 content: trans('moonshine::ui.resource.export.confirm_content'),
-                formBuilder: static fn(FormBuilder $form) => $form->customAttributes($attributes)
+                formBuilder: static fn(FormBuilder $form): FormBuilder => $form->customAttributes($attributes)
             );
         }
 
