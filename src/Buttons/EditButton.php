@@ -24,10 +24,12 @@ final class EditButton
         if ($resource->isEditInModal()) {
             $action = static fn ($data): string => $resource->formPageUrl(
                 $data,
-                params: [
+                params: array_filter([
                     '_component_name' => $componentName ?? $resource->listComponentName(),
                     '_async_form' => $isAsync,
-                ],
+                    'page' => $isAsync ? request()->input('page') : null,
+                    'sort' => $isAsync ? request()->input('sort') : null,
+                ]),
                 fragment: 'crud-form'
             );
         }

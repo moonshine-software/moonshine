@@ -37,7 +37,11 @@ final class DeleteButton
                     $isAsync || $resource->isAsync(),
                     fn (FormBuilder $form): FormBuilder => $form->async(
                         asyncEvents: $resource->listEventName(
-                            $componentName ?? $resource->listComponentName()
+                            $componentName ?? $resource->listComponentName(),
+                            $isAsync ? array_filter([
+                                'page' => request()->input('page'),
+                                'sort' => request()->input('sort')
+                            ]) : []
                         )
                     )
                 )

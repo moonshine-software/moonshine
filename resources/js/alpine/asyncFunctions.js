@@ -235,6 +235,16 @@ export function listComponentRequest(component, pushState = false) {
     url = appendQueryToUrl(url, component.$event.detail.queryTag)
   }
 
+  if (component.$event.detail && component.$event.detail.page) {
+    url = prepareListComponentRequestUrl(url)
+    url = appendQueryToUrl(url, `page=${component.$event.detail.page}`)
+  }
+
+  if (component.$event.detail && component.$event.detail.sort) {
+    url = prepareListComponentRequestUrl(url)
+    url = appendQueryToUrl(url, `sort=${component.$event.detail.sort}`)
+  }
+
   axios
     .get(url)
     .then(response => {

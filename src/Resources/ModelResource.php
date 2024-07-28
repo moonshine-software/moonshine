@@ -217,13 +217,13 @@ abstract class ModelResource extends Resource
         return request()->ajax() && request()->input('_component_name') === $this->listComponentName();
     }
 
-    public function listEventName(?string $name = null): string
+    public function listEventName(?string $name = null, array $params = []): string
     {
         $name ??= $this->listComponentName();
 
         return rescue(
-            fn (): string => AlpineJs::event($this->indexPage()?->listEventName() ?? '', $name),
-            AlpineJs::event(JsEvent::TABLE_UPDATED, $name),
+            fn (): string => AlpineJs::event($this->indexPage()?->listEventName() ?? '', $name, $params),
+            AlpineJs::event(JsEvent::TABLE_UPDATED, $name, $params),
             false
         );
     }
