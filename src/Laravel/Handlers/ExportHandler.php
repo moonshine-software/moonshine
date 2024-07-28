@@ -239,7 +239,7 @@ class ExportHandler extends Handler
 
         if ($this->isWithConfirm()) {
             $button->withConfirm(
-                formBuilder: static fn(FormBuilder $form) => $form->customAttributes($attributes)
+                formBuilder: static fn(FormBuilder $form): FormBuilder => $form->customAttributes($attributes)
             );
         }
 
