@@ -139,7 +139,7 @@ class FormPage extends Page
                     ->async(asyncEvents: [
                         $resource->listEventName(
                             request()->input('_component_name', 'default'),
-                            $isAsync ? array_filter([
+                            $isAsync && $item?->exists ? array_filter([
                                 'page' => request()->input('page'),
                                 'sort' => request()->input('sort')
                             ]) : []
