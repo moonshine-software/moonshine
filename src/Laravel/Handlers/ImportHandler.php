@@ -164,7 +164,8 @@ class ImportHandler extends Handler
             $data = collect($line)->mapWithKeys(
                 static function (mixed $value, string $key) use ($resource): array {
                     $field = $resource->getImportFields()->first(
-                        static fn (FieldContract $field): bool => $field->getColumn() === $key || $field->getLabel() === $key
+                        static fn (FieldContract $field
+                        ): bool => $field->getColumn() === $key || $field->getLabel() === $key
                     );
 
                     if (! $field instanceof FieldContract) {
@@ -242,7 +243,12 @@ class ImportHandler extends Handler
                     fn (): string => $this->getLabel(),
                     fn (): FormBuilderContract => FormBuilder::make($this->getUrl())->fields([
                         File::make(column: $this->getInputName())->required(),
-                    ])->submit(__('moonshine::ui.confirm')),
+                    ])
+                        ->class('js-change-query')
+                        ->customAttributes([
+                            'data-original-url' => $this->getUrl(),
+                        ])
+                        ->submit(__('moonshine::ui.confirm')),
                     name: 'import-off-canvas'
                 )
         );

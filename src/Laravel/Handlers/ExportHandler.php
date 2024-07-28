@@ -13,6 +13,7 @@ use MoonShine\Laravel\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Traits\WithStorage;
 use OpenSpout\Common\Exception\InvalidArgumentException;
@@ -220,18 +221,26 @@ class ExportHandler extends Handler
 
         $query = Arr::query(request(['filters', 'sort', 'query-tag'], []));
         $url = $this->getUrl();
+        $ts = "ts=" . time();
+
+        $attributes = [
+            'class' => 'js-change-query',
+            'data-original-url' => $url,
+            'data-original-query' => $ts,
+        ];
 
         $button = ActionButton::make(
             $this->getLabel(),
-            trim("$url?ts=" . time() . "&$query", '&')
+            trim("$url?$ts&$query", '&')
         )
             ->primary()
-            ->class('js-change-query')
-            ->customAttributes(['data-original-url' => $url])
+            ->customAttributes($attributes)
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath());
 
         if ($this->isWithConfirm()) {
-            $button->withConfirm();
+            $button->withConfirm(
+                formBuilder: static fn(FormBuilder $form) => $form->customAttributes($attributes)
+            );
         }
 
         return $this->prepareButton($button);
