@@ -1,8 +1,10 @@
 /* EasyMDE */
 
 export default () => ({
+  easyMDEInstance: null,
+
   init() {
-    new EasyMDE({
+    this.easyMDEInstance = new EasyMDE({
       element: this.$el,
       previewClass: ['prose', 'dark:prose-invert'],
       forceSync: true,
@@ -42,6 +44,10 @@ export default () => ({
         '|',
         'guide',
       ],
+    })
+
+    this.$el.addEventListener('reset', () => {
+      this.easyMDEInstance.value(this.$el.value)
     })
   },
 })
