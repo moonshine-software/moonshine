@@ -61,6 +61,10 @@
     &--top-menu {
       @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
       @apply lg:pt-0 !important;
+
+      .layout-menu {
+        @apply invisible lg:visible;
+      }
     }
 
     /* selector :has supported */
@@ -68,6 +72,10 @@
       &:has(> .layout-menu-horizontal) {
         @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
         @apply lg:pt-0 !important;
+
+        .layout-menu {
+          @apply invisible lg:visible;
+        }
       }
     }
   }
