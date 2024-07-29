@@ -4,15 +4,22 @@ declare(strict_types=1);
 
 namespace MoonShine\Components\Layout;
 
+use MoonShine\Collections\MoonShineRenderElements;
+
 class TopBar extends WithComponents
 {
     protected string $view = 'moonshine::components.layout.top-bar';
 
     protected array $actions = [];
 
-    protected bool $hideLogo = false;
-
-    protected bool $hideSwitcher = false;
+    public function __construct(
+        array|MoonShineRenderElements $components = [],
+        public bool $hideLogo = false,
+        public bool $hideSwitcher = false
+    )
+    {
+        parent::__construct($components);
+    }
 
     public function hideLogo(): self
     {
