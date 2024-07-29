@@ -30,7 +30,7 @@ export default (options = {}) => ({
           },
         },
       },
-      this.options
+      this.options,
     )
-  }
+  },
 })
