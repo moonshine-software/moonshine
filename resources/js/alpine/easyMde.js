@@ -1,53 +1,36 @@
 /* EasyMDE */
 
-export default () => ({
+export default (options = {}) => ({
   easyMDEInstance: null,
+  options: options,
 
   init() {
-    this.easyMDEInstance = new EasyMDE({
-      element: this.$el,
-      previewClass: ['prose', 'dark:prose-invert'],
-      forceSync: true,
-      spellChecker: false,
-      status: false,
-      renderingConfig: {
-        sanitizerFunction: renderedHTML => {
-          return DOMPurify.sanitize(renderedHTML, {
-            USE_PROFILES: {
-              html: true,
-            },
-          })
-        },
-      },
-      toolbar: [
-        'bold',
-        'italic',
-        'strikethrough',
-        'code',
-        'quote',
-        'horizontal-rule',
-        '|',
-        'heading-1',
-        'heading-2',
-        'heading-3',
-        '|',
-        'table',
-        'unordered-list',
-        'ordered-list',
-        '|',
-        'link',
-        'image',
-        '|',
-        'preview',
-        'side-by-side',
-        'fullscreen',
-        '|',
-        'guide',
-      ],
-    })
+    this.easyMDEInstance = new EasyMDE(this.config())
 
     this.$el.addEventListener('reset', () => {
       this.easyMDEInstance.value(this.$el.value)
     })
   },
+
+  config() {
+    for (const key in this.callbacks) {
+      this.callbacks[key] = new Function('return ' + this.callbacks[key])()
+    }
+
+    return Object.assign(
+      {
+        element: this.$el,
+        renderingConfig: {
+          sanitizerFunction: renderedHTML => {
+            return DOMPurify.sanitize(renderedHTML, {
+              USE_PROFILES: {
+                html: true,
+              },
+            })
+          },
+        },
+      },
+      this.options
+    )
+  }
 })
