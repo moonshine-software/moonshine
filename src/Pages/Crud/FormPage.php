@@ -141,7 +141,7 @@ class FormPage extends Page
                             request()->input('_component_name', 'default'),
                             $isAsync && $item?->exists ? array_filter([
                                 'page' => request()->input('page'),
-                                'sort' => request()->input('sort')
+                                'sort' => request()->input('sort'),
                             ]) : []
                         ),
                         ! $item?->exists && $resource->isCreateInModal()

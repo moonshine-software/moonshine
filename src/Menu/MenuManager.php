@@ -20,7 +20,7 @@ class MenuManager
 
     public function all(): Collection
     {
-        if(!is_null($this->preparedMenu)) {
+        if(! is_null($this->preparedMenu)) {
             return $this->preparedMenu;
         }
 

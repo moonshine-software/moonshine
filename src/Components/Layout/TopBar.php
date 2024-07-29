@@ -16,8 +16,7 @@ class TopBar extends WithComponents
         array|MoonShineRenderElements $components = [],
         public bool $hideLogo = false,
         public bool $hideSwitcher = false
-    )
-    {
+    ) {
         parent::__construct($components);
     }
 

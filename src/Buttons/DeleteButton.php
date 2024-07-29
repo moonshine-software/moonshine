@@ -40,7 +40,7 @@ final class DeleteButton
                             $componentName ?? $resource->listComponentName(),
                             $isAsync ? array_filter([
                                 'page' => request()->input('page'),
-                                'sort' => request()->input('sort')
+                                'sort' => request()->input('sort'),
                             ]) : []
                         )
                     )
