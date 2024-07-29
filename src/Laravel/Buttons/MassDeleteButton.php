@@ -38,7 +38,11 @@ final class MassDeleteButton
                     $isAsync || $resource->isAsync(),
                     static fn (FormBuilderContract $form): FormBuilderContract => $form->async(
                         events: $resource->getListEventName(
-                            $componentName ?? $resource->getListComponentName()
+                            $componentName ?? $resource->getListComponentName(),
+                                $isAsync ? array_filter([
+                                    'page' => request()->input('page'),
+                                    'sort' => request()->input('sort'),
+                                ]) : []
                         )
                     )
                 ),
