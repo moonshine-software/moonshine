@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Menu;
 
 use Closure;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Menu\MenuFiller;
 use MoonShine\Support\Condition;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithComponentAttributes;
 use MoonShine\Traits\WithIcon;
 use MoonShine\Traits\WithLabel;
 use Throwable;
@@ -19,12 +21,15 @@ abstract class MenuElement
     use WithIcon;
     use HasCanSee;
     use WithLabel;
+    use WithComponentAttributes;
 
     protected Closure|string|null $url = null;
 
     protected Closure|bool $blank = false;
 
     protected Closure|bool|null $forceActive = null;
+
+    protected array $customLinkAttributes = [];
 
     public function forceActive(Closure|bool $forceActive): static
     {
@@ -124,5 +129,31 @@ abstract class MenuElement
     public function isBlank(): bool
     {
         return $this->blank;
+    }
+
+    public function customLinkAttributes(array $attributes): static
+    {
+        if (isset($attributes['class'])) {
+            $this->customLinkAttributes['class'] = $this->uniqueAttribute(
+                old: $this->customLinkAttributes['class'] ?? '',
+                new: $attributes['class']
+            );
+
+            unset($attributes['class']);
+        }
+
+        $this->customLinkAttributes = array_merge(
+            $this->customLinkAttributes,
+            $attributes
+        );
+
+        return $this;
+    }
+
+    public function linkAttributes(): ComponentAttributeBag
+    {
+        return new ComponentAttributeBag(
+            $this->customLinkAttributes
+        );
     }
 }

@@ -3,27 +3,25 @@
     'top' => false,
 ])
 <li
+    {{ $item->attributes()->class(['menu-inner-item', 'dropdown' => $top]) }}
     @if($top)
-        class="menu-inner-item dropdown"
         x-data="dropdown"
         x-ref="dropdownEl"
         @click.outside="closeDropdown"
         data-dropdown-placement="bottom-start"
     @else
-        class="menu-inner-item"
         x-data="{ dropdown: {{ $item->isActive() ? 'true' : 'false' }} }"
     @endif
 >
     <button
+        {{ $item->linkAttributes()->merge(['class' => 'menu-inner-button', 'dropdown-btn' => $top]) }}
         @if($top)
             @click="toggleDropdown"
-            class="menu-inner-button dropdown-btn"
             :class="open && '_is-active'"
         @else
-        x-data="navTooltip"
+            x-data="navTooltip"
             @mouseenter="toggleTooltip()"
             @click.prevent="dropdown = ! dropdown"
-            class="menu-inner-button"
             :class="dropdown && '_is-active'"
         @endif
         type="button"
