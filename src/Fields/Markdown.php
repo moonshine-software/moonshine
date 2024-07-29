@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
-use Closure;
-
 class Markdown extends Textarea
 {
     protected string $view = 'moonshine::fields.markdown';
