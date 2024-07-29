@@ -195,10 +195,19 @@ class Fields extends Renderables implements FieldsContract
             }
 
             $name = str($parent ? $parent->getNameDot() : $field->getNameDot());
+
             $level = $name->substrCount('$');
 
             if ($field instanceof ID) {
                 $field->showValue();
+            }
+
+            if(! empty($field->getShowWhenCondition())) {
+                $levelShowWhen = $level - 1;
+
+                $field->customAttributes([
+                    'data-show-field' => $name->replace("\${index$levelShowWhen}.", '') . '.' . $field->getColumn()
+                ]);
             }
 
             $name = $field->generateNameFrom(

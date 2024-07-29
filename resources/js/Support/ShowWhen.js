@@ -10,14 +10,21 @@ export function getInputs(formId) {
     inputs[fieldName].type = element.getAttribute('type')
   })
 
-  document.querySelectorAll('#' + formId + ' [data-field-block]').forEach(element => {
-    const value = element.getAttribute('data-field-block')
+  document.querySelectorAll('#' + formId + ' [data-show-field]').forEach(element => {
+    const value = element.getAttribute('data-show-field')
     const fieldName = inputFieldName(value)
 
     inputs[fieldName] = {}
 
     inputs[fieldName].value = value
     inputs[fieldName].type = 'text'
+  })
+
+  document.querySelectorAll('#' + formId + ' [data-show-column]').forEach(element => {
+    const fieldName = element.getAttribute('data-show-column')
+    inputs[fieldName] = {}
+    inputs[fieldName].value = inputGeValue(element)
+    inputs[fieldName].type = element.getAttribute('type')
   })
 
   return inputs
@@ -54,11 +61,28 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-field-block="' + fieldName + '"]')
+    inputElement = document.querySelector('#' + formId + ' [data-show-field="' + fieldName + '"]')
+  }
+
+  if (inputElement === null) {
+    inputElement = document.querySelector('#' + formId + ' [data-show-column="' + fieldName + '"]')
   }
 
   if (inputElement === null) {
     return
+  }
+
+  let countTrueConditions = 0;
+  showWhenConditions.forEach(field => {
+    if (this.isValidateShow(fieldName, inputs, field)) {
+      countTrueConditions++
+    }
+  })
+
+  let table = inputElement.closest('table')
+  if(table) {
+    showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName)
+    return;
   }
 
   // TODO in resources/views/components/fields-group.blade.php put a field in a container
@@ -70,18 +94,48 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     fieldContainer = inputElement
   }
 
-  let countTrueConditions = 0
+  if (showWhenConditions.length === countTrueConditions) {
+    fieldContainer.style.removeProperty('display')
+    const nameAttr = inputElement.getAttribute('data-show-column')
+    if(nameAttr) {
+      inputElement.setAttribute('name', nameAttr)
+    }
+  } else {
+    fieldContainer.style.display = 'none'
+    inputElement.setAttribute('data-show-column', inputElement.getAttribute('name'));
+    inputElement.removeAttribute('name')
+  }
+}
 
-  showWhenConditions.forEach(field => {
-    if (this.isValidateShow(fieldName, inputs, field)) {
-      countTrueConditions++
+function showHideTableInputs(isShow, table, fieldName) {
+
+  let cellIndexTd = null;
+
+  table.querySelectorAll('[data-show-field="' + fieldName + '"]').forEach(element => {
+    if(isShow) {
+      element.closest('td').style.removeProperty('display')
+      const nameAttr = element.getAttribute('data-show-column')
+      if(nameAttr) {
+        element.setAttribute('name', nameAttr)
+      }
+    } else {
+      element.closest('td').style.display = 'none'
+      element.setAttribute('data-show-column', element.getAttribute('name'));
+      element.removeAttribute('name')
+    }
+
+    if(cellIndexTd === null) {
+      cellIndexTd = element.closest('td').cellIndex
     }
   })
 
-  if (countTrueConditions === showWhenConditions.length) {
-    fieldContainer.style.removeProperty('display')
-  } else {
-    fieldContainer.style.display = 'none'
+  if(cellIndexTd !== null) {
+    table.querySelectorAll('th').forEach((element) => {
+      if(element.cellIndex !== cellIndexTd) {
+        return
+      }
+      element.style.display = isShow ? 'block' : 'none'
+    })
   }
 }
 

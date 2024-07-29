@@ -13,6 +13,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -20,6 +21,7 @@ use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Fields\Hidden;
+use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
 use MoonShine\UI\Traits\HasAsync;
 use MoonShine\UI\Traits\HasDataCast;
@@ -353,6 +355,29 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return true;
     }
 
+    protected function extractWhenFieldsConditions($elements, array &$data, string $column = null): void
+    {
+        $parentColumn = $column ?? '';
+
+        foreach ($elements->whenFieldsConditions() as $whenConditions) {
+            foreach ($whenConditions as $value) {
+                $value['showField'] = $parentColumn ? $parentColumn . '.' . $value['showField'] : $value['showField'];
+                $data[] = $value;
+            }
+        }
+
+        foreach ($elements as $element) {
+            if($element instanceof HasFieldsContract) {
+                $parentColumnSeparator = $parentColumn ? '.' : '';
+                $this->extractWhenFieldsConditions(
+                    $element->getFields()->onlyFields(),
+                    $data,
+                    $parentColumn.$parentColumnSeparator.$element->getColumn()
+                );
+            }
+        }
+    }
+
     /**
      * @throws Throwable
      * @return array<string, mixed>
@@ -378,11 +403,8 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
-        foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {
-            foreach ($whenConditions as $value) {
-                $whenFields[] = $value;
-            }
-        }
+
+        $this->extractWhenFieldsConditions($onlyFields, $whenFields);
 
         $xData = json_encode([
             'whenFields' => $whenFields,

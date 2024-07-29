@@ -65,7 +65,11 @@ export default (
       return
     }
 
-    this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
+    const tbody = this.table?.querySelector('tbody')
+
+    const lastRaw = tbody?.lastElementChild?.cloneNode(true)
+
+    this.table.querySelector('tbody').appendChild(lastRaw.cloneNode(true))
 
     if (!force && this.reindex) {
       this.resolveReindex()
