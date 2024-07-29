@@ -5,21 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\Laravel\Handlers\ExportHandler;
 use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Handlers\Handlers;
-use MoonShine\Laravel\Handlers\ImportHandler;
 use MoonShine\Support\ListOf;
 
 trait ResourceModelActions
 {
-    protected static bool $defaultExportToCsv = false;
-
-    public static function defaultExportToCsv(): void
-    {
-        self::$defaultExportToCsv = true;
-    }
-
     /**
      * @return ListOf<Action>
      */
@@ -47,36 +38,12 @@ trait ResourceModelActions
         return collect($actions)->every(fn (Action $action): bool => in_array($action, $this->getActiveActions()));
     }
 
-    public function export(): ?Handler
-    {
-        if (! moonshineConfig()->isDefaultWithExport()) {
-            return null;
-        }
-
-        return ExportHandler::make(__('moonshine::ui.export'))->when(
-            self::$defaultExportToCsv,
-            static fn (ExportHandler $handler): ExportHandler => $handler->csv()
-        );
-    }
-
-    public function import(): ?Handler
-    {
-        if (! moonshineConfig()->isDefaultWithImport()) {
-            return null;
-        }
-
-        return ImportHandler::make(__('moonshine::ui.import'));
-    }
-
     /**
      * @return ListOf<Handler>
      */
     protected function handlers(): ListOf
     {
-        return new ListOf(Handler::class, array_filter([
-            $this->export(),
-            $this->import(),
-        ]));
+        return new ListOf(Handler::class, []);
     }
 
     public function getHandlers(): Handlers

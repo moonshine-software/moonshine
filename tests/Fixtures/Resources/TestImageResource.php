@@ -13,7 +13,7 @@ use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 
-class TestImageResource extends ModelResource
+class TestImageResource extends AbstractTestingResource
 {
     protected string $model = ImageModel::class;
 

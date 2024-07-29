@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Laravel\Handlers;
+namespace MoonShine\Laravel\ImportExport;
 
+use _PHPStan_c4c026984\Nette\Utils\RegexpException;
 use Generator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Laravel\Jobs\ExportHandlerJob;
+use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Handlers\Handler;
+use MoonShine\Laravel\ImportExport\Contracts\HasImportExportContract;
+use MoonShine\Laravel\ImportExport\Jobs\ExportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\UI\Components\ActionButton;
@@ -151,7 +155,8 @@ class ExportHandler extends Handler
      * @throws WriterNotOpenedException
      * @throws IOException
      * @throws UnsupportedTypeException
-     * @throws InvalidArgumentException|Throwable
+     * @throws InvalidArgumentException
+     * @throws ResourceException
      */
     public static function process(
         string $path,
@@ -162,6 +167,10 @@ class ExportHandler extends Handler
         string $delimiter = ',',
         array $notifyUsers = [],
     ): string {
+        if(!$resource instanceof HasImportExportContract) {
+            throw new ResourceException('The resource must implement the HasImportExportContract interface.');
+        }
+
         $resource->setQueryParams($query);
 
         $items = static function (ResourceContract $resource): Generator {

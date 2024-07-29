@@ -11,11 +11,12 @@ use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageForm;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageIndex;
+use MoonShine\Tests\Fixtures\Resources\AbstractTestingResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 
-class TestCoverPageResource extends ModelResource
+class TestCoverPageResource extends AbstractTestingResource
 {
     public string $model = Cover::class;
 

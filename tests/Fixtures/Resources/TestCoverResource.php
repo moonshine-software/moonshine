@@ -11,7 +11,7 @@ use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 
-class TestCoverResource extends ModelResource
+class TestCoverResource extends AbstractTestingResource
 {
     public string $model = Cover::class;
 

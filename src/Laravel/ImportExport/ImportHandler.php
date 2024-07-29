@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Laravel\Handlers;
+namespace MoonShine\Laravel\ImportExport;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +10,10 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Laravel\Jobs\ImportHandlerJob;
+use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Handlers\Handler;
+use MoonShine\Laravel\ImportExport\Contracts\HasImportExportContract;
+use MoonShine\Laravel\ImportExport\Jobs\ImportHandlerJob;
 use MoonShine\Laravel\MoonShineUI;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Support\Enums\ToastType;
@@ -146,6 +149,7 @@ class ImportHandler extends Handler
      * @throws IOException
      * @throws UnsupportedTypeException
      * @throws ReaderNotOpenedException
+     * @throws ResourceException
      */
     public static function process(
         string $path,
@@ -154,6 +158,10 @@ class ImportHandler extends Handler
         string $delimiter = ',',
         array $notifyUsers = [],
     ): Collection {
+        if(!$resource instanceof HasImportExportContract) {
+            throw new ResourceException('The resource must implement the HasImportExportContract interface.');
+        }
+
         $fastExcel = new FastExcel();
 
         if (str($path)->contains('.csv')) {

@@ -11,6 +11,7 @@ use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageForm;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageIndex;
+use MoonShine\Tests\Fixtures\Resources\AbstractTestingResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\ID;
@@ -18,7 +19,7 @@ use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Markdown;
 use MoonShine\UI\Fields\Text;
 
-class TestCategoryPageResource extends ModelResource
+class TestCategoryPageResource extends AbstractTestingResource
 {
     public string $model = Category::class;
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
+use MoonShine\Laravel\ImportExport\Contracts\HasImportExportContract;
+use MoonShine\Laravel\ImportExport\Traits\ImportExportConcern;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\ListOf;
@@ -13,8 +15,10 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 
 #[Icon('bookmark')]
-class MoonShineUserRoleResource extends ModelResource
+class MoonShineUserRoleResource extends ModelResource implements HasImportExportContract
 {
+    use ImportExportConcern;
+
     public string $model = MoonshineUserRole::class;
 
     public string $column = 'name';
