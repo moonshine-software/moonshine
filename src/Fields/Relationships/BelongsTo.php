@@ -13,6 +13,7 @@ use MoonShine\Contracts\Fields\Relationships\HasRelatedValues;
 use MoonShine\Contracts\HasReactivity;
 use MoonShine\Exceptions\PageException;
 use MoonShine\Resources\ModelResource;
+use MoonShine\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\Searchable;
@@ -39,6 +40,7 @@ class BelongsTo extends ModelRelationField implements
     use WithDefaultValue;
     use HasPlaceholder;
     use Reactivity;
+    use BelongsToOrManyCreatable;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 

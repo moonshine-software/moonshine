@@ -10,18 +10,19 @@ use MoonShine\Components\FormBuilder;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
-final class BelongsToManyButton
+final class BelongsToOrManyButton
 {
     /**
      * @throws Throwable
      */
     public static function for(
-        BelongsToMany $field,
+        BelongsToMany|BelongsTo $field,
         ?ActionButton $button = null
     ): ActionButton {
         /** @var ModelResource $resource */
