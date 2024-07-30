@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use JsonException;
+
 class Markdown extends Textarea
 {
     protected string $view = 'moonshine::fields.markdown';
@@ -26,19 +28,6 @@ class Markdown extends Textarea
         'renderingConfig',
     ];
 
-    public static function setDefaultOption(string $name, string|int|float|bool|array $value): void
-    {
-        if (in_array($name, static::$reservedOptions)) {
-            return;
-        }
-
-        if (is_string($value) && str($value)->isJson()) {
-            $value = json_decode($value, true);
-        }
-
-        static::$defaultOptions[$name] = $value;
-    }
-
     public function getAssets(): array
     {
         return [
@@ -46,6 +35,22 @@ class Markdown extends Textarea
             'vendor/moonshine/libs/easymde/easymde.min.js',
             'vendor/moonshine/libs/easymde/purify.min.js',
         ];
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public static function setDefaultOption(string $name, string|int|float|bool|array $value): void
+    {
+        if (in_array($name, static::$reservedOptions, true)) {
+            return;
+        }
+
+        if (is_string($value) && str($value)->isJson()) {
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        static::$defaultOptions[$name] = $value;
     }
 
     public function addOption(string $name, string|int|float|bool|array $value): self
@@ -66,6 +71,13 @@ class Markdown extends Textarea
     public function getOptions(): array
     {
         return array_merge(static::$defaultOptions, $this->options);
+    }
+
+    public function toolbar(string|bool|array $value): self
+    {
+        $this->addOption('toolbar', $value);
+
+        return $this;
     }
 
     /**

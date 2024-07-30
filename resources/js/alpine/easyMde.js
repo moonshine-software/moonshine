@@ -1,14 +1,14 @@
 /* EasyMDE */
 
 export default (options = {}) => ({
-  easyMDEInstance: null,
+  instance: null,
   options: options,
 
   init() {
-    this.easyMDEInstance = new EasyMDE(this.config())
+    this.instance = new EasyMDE(this.config())
 
     this.$el.addEventListener('reset', () => {
-      this.easyMDEInstance.value(this.$el.value)
+      this.instance.value(this.$el.value)
     })
   },
 

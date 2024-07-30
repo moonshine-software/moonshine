@@ -51,6 +51,21 @@ it('add option method', function (): void {
     ;
 });
 
+it('global config method', function (): void {
+    Markdown::setDefaultOption('test-config', 'global-config-value');
+
+    $field = Markdown::make('Markdown');
+
+    expect($field)
+        ->getOptions()->toContain('global-config-value');
+});
+
+it('toolbar method', function (): void {
+    expect($this->field)
+        ->toolbar(['toolbar 1', 'toolbar 2'])
+        ->getOptions()->toContain(['toolbar 1', 'toolbar 2']);
+});
+
 it('apply', function (): void {
     $data = ['markdown' => 'test'];
 
