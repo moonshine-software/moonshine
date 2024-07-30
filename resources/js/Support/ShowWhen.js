@@ -1,30 +1,35 @@
 export function getInputs(formId) {
   const inputs = {}
-  document.querySelectorAll('#' + formId + ' [name]').forEach(element => {
+
+  const form = document.getElementById(formId);
+
+  form.querySelectorAll('[name]').forEach(element => {
     const value = element.getAttribute('name')
     const fieldName = inputFieldName(value)
 
-    inputs[fieldName] = {}
-
-    inputs[fieldName].value = inputGeValue(element)
-    inputs[fieldName].type = element.getAttribute('type')
+    inputs[fieldName] = {
+      value: inputGetValue(element),
+      type: element.getAttribute('type')
+    }
   })
 
-  document.querySelectorAll('#' + formId + ' [data-show-field]').forEach(element => {
+  form.querySelectorAll('[data-show-field]').forEach(element => {
     const value = element.getAttribute('data-show-field')
     const fieldName = inputFieldName(value)
 
-    inputs[fieldName] = {}
-
-    inputs[fieldName].value = value
-    inputs[fieldName].type = 'text'
+    inputs[fieldName] = {
+      value,
+      type: 'text'
+    }
   })
 
-  document.querySelectorAll('#' + formId + ' [data-show-column]').forEach(element => {
+  form.querySelectorAll('[data-show-column]').forEach(element => {
     const fieldName = element.getAttribute('data-show-column')
-    inputs[fieldName] = {}
-    inputs[fieldName].value = inputGeValue(element)
-    inputs[fieldName].type = element.getAttribute('type')
+
+    inputs[fieldName] = {
+      value: inputGetValue(element),
+      type: element.getAttribute('type')
+    }
   })
 
   return inputs
@@ -242,7 +247,7 @@ export function inputFieldName(inputName) {
   return inputName
 }
 
-export function inputGeValue(element) {
+export function inputGetValue(element) {
   let value
 
   const type = element.getAttribute('type')
