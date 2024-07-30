@@ -1,4 +1,4 @@
-import {inputFieldName, inputGeValue} from './ShowWhen.js'
+import {inputFieldName, inputGetValue} from './ShowWhen.js'
 
 export function filterAttributeStartsWith(data, startsWith) {
   const filtered = {}
@@ -97,7 +97,7 @@ export function crudFormQuery(formElements = null) {
       !name.startsWith('_') &&
       !name.startsWith('hidden_')
     ) {
-      values[inputFieldName(name)] = inputGeValue(element)
+      values[inputFieldName(name)] = inputGetValue(element)
     }
   })
 
