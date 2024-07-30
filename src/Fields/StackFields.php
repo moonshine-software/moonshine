@@ -51,13 +51,16 @@ class StackFields extends Field implements HasFields, FieldsWrapper
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): View|string
     {
         return FieldsGroup::make(
             $this->getFields()->indexFields()
         )
-            ->mapFields(fn (Field $field): Field => $field
-                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+            ->mapFields(fn (Field $field, int $index): Field => $field
+                ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
             ->render();
