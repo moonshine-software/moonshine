@@ -33,6 +33,8 @@ export function getInputs(formId) {
 export function showWhenChange(fieldName, formId) {
   fieldName = inputFieldName(fieldName)
 
+  const showWhenConditions = []
+
   this.whenFields.forEach(field => {
     if (fieldName !== field.changeField) {
       return
@@ -40,17 +42,16 @@ export function showWhenChange(fieldName, formId) {
 
     let showField = field.showField
 
-    let showWhenConditions = []
+    if(! showWhenConditions[showField]) {
+      showWhenConditions[showField] = []
+    }
 
-    this.whenFields.forEach(item => {
-      if (showField !== item.showField) {
-        return
-      }
-      showWhenConditions.push(item)
-    })
-
-    this.showWhenVisibilityChange(showWhenConditions, showField, this.getInputs(formId), formId)
+    showWhenConditions[showField].push(field)
   })
+
+  for (let showField in showWhenConditions) {
+    this.showWhenVisibilityChange(showWhenConditions[showField], showField, this.getInputs(formId), formId)
+  }
 }
 
 export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, formId) {
@@ -110,14 +111,19 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
 
   if (showWhenConditions.length === countTrueConditions) {
     fieldContainer.style.removeProperty('display')
+
     const nameAttr = inputElement.getAttribute('data-show-column')
     if(nameAttr) {
       inputElement.setAttribute('name', nameAttr)
     }
   } else {
     fieldContainer.style.display = 'none'
-    inputElement.setAttribute('data-show-column', inputElement.getAttribute('name'));
-    inputElement.removeAttribute('name')
+
+    const nameAttr = inputElement.getAttribute('name');
+    if(nameAttr) {
+      inputElement.setAttribute('data-show-column', nameAttr);
+      inputElement.removeAttribute('name')
+    }
   }
 }
 
