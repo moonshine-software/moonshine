@@ -79,9 +79,23 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     }
   })
 
-  let table = inputElement.closest('table')
-  if(table) {
-    showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName)
+  if(inputElement.closest('table')) {
+    // If input is in a table, then find all tables with this input
+    const tablesWithInput = []
+
+    // Only data-show-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
+    document.querySelectorAll('[data-show-field="' + fieldName + '"]').forEach(function (element) {
+      let inputTable = element.closest('table')
+        if(tablesWithInput.indexOf(inputTable) === -1) {
+          tablesWithInput.push(inputTable)
+        }
+    })
+
+    // Tables hide the entire column
+    tablesWithInput.forEach(table => {
+      showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName)
+    })
+
     return;
   }
 
