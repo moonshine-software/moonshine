@@ -38,6 +38,8 @@ trait TableStates
 
     protected bool $searchable = false;
 
+    protected bool $columnSelection = false;
+
     public function hasNotFound(): bool
     {
         return $this->withNotFound;
@@ -197,6 +199,18 @@ trait TableStates
         return $this->searchable;
     }
 
+    public function columnSelection(): static
+    {
+        $this->columnSelection = true;
+
+        return $this;
+    }
+
+    public function isColumnSelection(): bool
+    {
+        return !$this->isVertical() && $this->columnSelection;
+    }
+
     /**
      * @return array{
      *     vertical: bool,
@@ -210,6 +224,7 @@ trait TableStates
      *     sticky: bool,
      *     searchable: bool,
      *     searchValue: string,
+     *     columnSelection: string,
      * }
      */
     public function statesToArray(): array
@@ -224,6 +239,7 @@ trait TableStates
             'sortable' => $this->isSortable(),
             'simple' => $this->isSimple(),
             'sticky' => $this->isSticky(),
+            'columnSelection' => $this->isColumnSelection(),
             'searchable' => $this->isSearchable(),
             'searchValue' => request()->input('search', ''),
         ];

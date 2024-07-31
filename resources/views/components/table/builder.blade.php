@@ -13,6 +13,7 @@
     'creatable' => false,
     'reindex' => false,
     'sortable' => false,
+    'columnSelection' => false,
     'searchable' => false,
     'searchValue' => '',
     'name' => 'default',
@@ -44,6 +45,33 @@
                     placeholder="{{ __('moonshine::ui.search') }}"
                 />
             </form>
+        </div>
+    @endif
+
+    @if($columnSelection)
+        <div class="flex justify-end">
+            <x-moonshine::dropdown>
+                <div class="p-2">
+                    @foreach($fields as $field)
+                        <div class="form-group form-group-inline">
+                            <x-moonshine::form.switcher
+                                :id="'column_selection' . $field->id()"
+                                class="js-column-selection-checker"
+                                data-column="{{ $field->id() }}"
+                                @change="columnSelection()"
+                            />
+
+                            <x-moonshine::form.label :for="'column_selection' . $field->id()">
+                                {{ $field->label() }}
+                            </x-moonshine::form.label>
+                        </div>
+                    @endforeach
+                </div>
+
+                <x-slot:toggler>
+                    <x-moonshine::icon icon="heroicons.outline.table-cells" />
+                </x-slot:toggler>
+            </x-moonshine::dropdown>
         </div>
     @endif
 

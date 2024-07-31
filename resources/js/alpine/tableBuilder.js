@@ -51,6 +51,8 @@ export default (
         }
       })
     }
+
+    this.initColumnSelection()
   },
   add(force = false) {
     if (!this.creatable && !force) {
@@ -75,6 +77,27 @@ export default (
     if (this.reindex) {
       this.resolveReindex()
     }
+  },
+  initColumnSelection()
+  {
+    this.$root.querySelectorAll('input.js-column-selection-checker').forEach((el) => {
+      const column = el.dataset.column
+      let stored = localStorage.getItem(`${this.table.dataset.name}-column-selection:${column}`)
+
+      el.checked = stored === null || stored === 'true'
+
+      this.columnSelection(el)
+    })
+  },
+  columnSelection(element = null) {
+    const el = element ?? this.$el;
+    const column = el.dataset.column
+
+    localStorage.setItem(`${this.table.dataset.name}-column-selection:${column}`, el.checked)
+
+    this.table.querySelectorAll(`.js-column-selection-${column}`).forEach((e) => {
+      e.hidden = !el.checked
+    })
   },
   resolveReindex() {
     if (!this.table) {
