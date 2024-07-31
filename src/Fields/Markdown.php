@@ -53,14 +53,17 @@ class Markdown extends Textarea
         static::$defaultOptions[$name] = $value;
     }
 
+    /**
+     * @throws JsonException
+     */
     public function addOption(string $name, string|int|float|bool|array $value): self
     {
-        if (in_array($name, static::$reservedOptions)) {
+        if (in_array(needle: $name, haystack: self::$reservedOptions, strict: true)) {
             return $this;
         }
 
         if (is_string($value) && str($value)->isJson()) {
-            $value = json_decode($value, true);
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
 
         $this->options[$name] = $value;
@@ -73,6 +76,9 @@ class Markdown extends Textarea
         return array_merge(static::$defaultOptions, $this->options);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function toolbar(string|bool|array $value): self
     {
         $this->addOption('toolbar', $value);
@@ -82,11 +88,12 @@ class Markdown extends Textarea
 
     /**
      * @return array<string, mixed>
+     * @throws JsonException
      */
     protected function viewData(): array
     {
         return [
-            'options' => json_encode($this->getOptions()),
+            'options' => json_encode($this->getOptions(), JSON_THROW_ON_ERROR),
         ];
     }
 }
