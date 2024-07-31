@@ -13,6 +13,7 @@ use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\Reactivity;
 use MoonShine\Traits\Fields\UpdateOnPreview;
 use MoonShine\Traits\Fields\WithDefaultValue;
+use MoonShine\Traits\Fields\WithEscapedValue;
 use MoonShine\Traits\Fields\WithInputExtensions;
 use MoonShine\Traits\Fields\WithMask;
 
@@ -24,12 +25,11 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
     use HasPlaceholder;
     use UpdateOnPreview;
     use Reactivity;
+    use WithEscapedValue;
 
     protected string $view = 'moonshine::fields.input';
 
     protected string $type = 'text';
-
-    protected bool $unescape = false;
 
     public function tags(?int $limit = null): static
     {
@@ -38,18 +38,6 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
             'data-max-item-count' => $limit,
             'data-remove-item-button' => true,
         ]);
-    }
-
-    public function unescape(): static
-    {
-        $this->unescape = true;
-
-        return $this;
-    }
-
-    public function isUnescape(): bool
-    {
-        return $this->unescape;
     }
 
     protected function prepareRequestValue(mixed $value): mixed

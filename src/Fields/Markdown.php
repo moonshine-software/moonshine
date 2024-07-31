@@ -86,6 +86,13 @@ class Markdown extends Textarea
         return $this;
     }
 
+    protected function resolvePreview(): string
+    {
+        return (string) str()->markdown(
+            $this->toFormattedValue() ?? ''
+        );
+    }
+
     /**
      * @return array<string, mixed>
      * @throws JsonException
