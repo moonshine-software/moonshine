@@ -53,18 +53,20 @@
             <x-moonshine::dropdown>
                 <div class="p-2">
                     @foreach($fields as $field)
-                        <div class="form-group form-group-inline">
-                            <x-moonshine::form.switcher
-                                :id="'column_selection' . $field->id()"
-                                class="js-column-selection-checker"
-                                data-column="{{ $field->id() }}"
-                                @change="columnSelection()"
-                            />
+                        @if($field->isColumnSelection())
+                            <div class="form-group form-group-inline">
+                                <x-moonshine::form.switcher
+                                    :id="'column_selection' . $field->id()"
+                                    class="js-column-selection-checker"
+                                    data-column="{{ $field->id() }}"
+                                    @change="columnSelection()"
+                                />
 
-                            <x-moonshine::form.label :for="'column_selection' . $field->id()">
-                                {{ $field->label() }}
-                            </x-moonshine::form.label>
-                        </div>
+                                <x-moonshine::form.label :for="'column_selection' . $field->id()">
+                                    {{ $field->label() }}
+                                </x-moonshine::form.label>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
 
