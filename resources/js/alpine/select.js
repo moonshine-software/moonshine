@@ -302,14 +302,16 @@ export default (asyncUrl = '') => ({
 
     if (query !== null && query.length) {
       url.searchParams.append('query', query)
+
+      const form = this.$el.form
+      const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+      const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
+
+      this.choicesInstance.setChoices(options, 'value', 'label', true)
+    } else {
+      this.choicesInstance.setChoices([], 'value', 'label', true)
     }
-
-    const form = this.$el.form
-    const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
-
-    const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
-
-    this.choicesInstance.setChoices(options, 'value', 'label', true)
 
     if (!onInit) {
       this.$el.dispatchEvent(new Event('change'))
