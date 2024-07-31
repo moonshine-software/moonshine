@@ -58,7 +58,7 @@ class Markdown extends Textarea
      */
     public function addOption(string $name, string|int|float|bool|array $value): self
     {
-        if (in_array(needle: $name, haystack: self::$reservedOptions, strict: true)) {
+        if (in_array($name, self::$reservedOptions, true)) {
             return $this;
         }
 
