@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
-use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
+use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
