@@ -361,7 +361,11 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         foreach ($elements->whenFieldsConditions() as $whenConditions) {
             foreach ($whenConditions as $value) {
-                $value['showField'] = $parentColumn ? $parentColumn . '.' . $value['showField'] : $value['showField'];
+                $value['showField'] =
+                    $parentColumn
+                        ? $parentColumn . '.' . $value['showField']
+                        : $value['showField'];
+
                 $data[] = $value;
             }
         }

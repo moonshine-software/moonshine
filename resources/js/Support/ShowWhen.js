@@ -13,8 +13,8 @@ export function getInputs(formId) {
     }
   })
 
-  form.querySelectorAll('[data-show-field]').forEach(element => {
-    const value = element.getAttribute('data-show-field')
+  form.querySelectorAll('[data-show-when-field]').forEach(element => {
+    const value = element.getAttribute('data-show-when-field')
     const fieldName = inputFieldName(value)
 
     inputs[fieldName] = {
@@ -23,8 +23,8 @@ export function getInputs(formId) {
     }
   })
 
-  form.querySelectorAll('[data-show-column]').forEach(element => {
-    const fieldName = element.getAttribute('data-show-column')
+  form.querySelectorAll('[data-show-when-column]').forEach(element => {
+    const fieldName = element.getAttribute('data-show-when-column')
 
     inputs[fieldName] = {
       value: inputGetValue(element),
@@ -67,11 +67,11 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-show-field="' + fieldName + '"]')
+    inputElement = document.querySelector('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
   }
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-show-column="' + fieldName + '"]')
+    inputElement = document.querySelector('#' + formId + ' [data-show-when-column="' + fieldName + '"]')
   }
 
   if (inputElement === null) {
@@ -85,13 +85,13 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     }
   })
 
-  if(inputElement.closest('table')) {
+  if(inputElement.closest('.json-table')) {
     // If input is in a table, then find all tables with this input
     const tablesWithInput = []
 
-    // Only data-show-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
-    document.querySelectorAll('[data-show-field="' + fieldName + '"]').forEach(function (element) {
-      let inputTable = element.closest('table')
+    // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
+    document.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(function (element) {
+      let inputTable = element.closest('.json-table') // Get parent table for data-show-field
         if(tablesWithInput.indexOf(inputTable) === -1) {
           tablesWithInput.push(inputTable)
         }
@@ -105,7 +105,6 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     return;
   }
 
-  // TODO in resources/views/components/fields-group.blade.php put a field in a container
   let fieldContainer = inputElement.closest('.moonshine-field')
   if (fieldContainer === null) {
     fieldContainer = inputElement.closest('.form-group')
@@ -117,16 +116,17 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   if (showWhenConditions.length === countTrueConditions) {
     fieldContainer.style.removeProperty('display')
 
-    const nameAttr = inputElement.getAttribute('data-show-column')
+    const nameAttr = inputElement.getAttribute('data-show-when-column')
     if(nameAttr) {
       inputElement.setAttribute('name', nameAttr)
     }
   } else {
     fieldContainer.style.display = 'none'
 
+    // todo ShowWhen remove from payload
     const nameAttr = inputElement.getAttribute('name');
     if(nameAttr) {
-      inputElement.setAttribute('data-show-column', nameAttr);
+      inputElement.setAttribute('data-show-when-column', nameAttr);
       inputElement.removeAttribute('name')
     }
   }
@@ -136,17 +136,22 @@ function showHideTableInputs(isShow, table, fieldName) {
 
   let cellIndexTd = null;
 
-  table.querySelectorAll('[data-show-field="' + fieldName + '"]').forEach(element => {
+  table.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(element => {
     if(isShow) {
       element.closest('td').style.removeProperty('display')
-      const nameAttr = element.getAttribute('data-show-column')
+
+      const nameAttr = element.getAttribute('data-show-when-column')
       if(nameAttr) {
         element.setAttribute('name', nameAttr)
       }
     } else {
       element.closest('td').style.display = 'none'
-      element.setAttribute('data-show-column', element.getAttribute('name'));
-      element.removeAttribute('name')
+
+      const nameAttr = element.getAttribute('name');
+      if(nameAttr) {
+        element.setAttribute('data-show-when-column', nameAttr);
+        element.removeAttribute('name')
+      }
     }
 
     if(cellIndexTd === null) {

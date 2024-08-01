@@ -304,7 +304,7 @@ class Json extends Field implements
         return TableBuilder::make($fields, $values)
             ->name('repeater_' . $this->getColumn())
             ->customAttributes(
-                $this->getAttributes()
+                array_merge($this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $reorderable,
@@ -312,7 +312,7 @@ class Json extends Field implements
                             'data-handle' => '.handle',
                         ])
                     )
-                    ->jsonSerialize()
+                    ->jsonSerialize(), ['class' => 'json-table'])
             )
             ->when(
                 $reorderable,

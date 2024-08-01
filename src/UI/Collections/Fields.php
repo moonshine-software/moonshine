@@ -182,6 +182,7 @@ class Fields extends Renderables implements FieldsContract
         return $this->filter(static fn (FieldContract $field): bool => ! $field instanceof HasFieldsContract);
     }
 
+    // todo ShowWhen - prepareReindex?
     /**
      * @throws Throwable
      */
@@ -205,8 +206,9 @@ class Fields extends Renderables implements FieldsContract
             if(! empty($field->getShowWhenCondition())) {
                 $levelShowWhen = $level - 1;
 
+                //setNameIndex
                 $field->customAttributes([
-                    'data-show-field' => $name->replace("\${index$levelShowWhen}.", '') . '.' . $field->getColumn()
+                    'data-show-when-field' => $name->replace("\${index$levelShowWhen}.", '') . '.' . $field->getColumn()
                 ]);
             }
 

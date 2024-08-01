@@ -16,7 +16,7 @@
         ->only('class')
         ->merge(['class' => 'form-group form-group-inline']) }}
 
-    data-show-field="{{ $attributes->get('name') }}"
+    data-show-when-field="{{ $attributes->get('name') }}"
 >
     <x-moonshine::form.input
         :attributes="$fromAttributes"
