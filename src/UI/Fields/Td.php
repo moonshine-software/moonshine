@@ -118,7 +118,7 @@ class Td extends Template
         return FieldsGroup::make($this->getCore()->getFieldsCollection($fields))
             ->mapFields(fn (FieldContract $field, int $index): FieldContract => $field
                 ->fillData($this->getData())
-                ->beforeRender(fn (): string => $this->hasLabels()|| $index === 0 ? '' : (string) LineBreak::make())
+                ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->previewMode())
             ->render();
