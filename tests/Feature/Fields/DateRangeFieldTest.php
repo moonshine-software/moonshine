@@ -189,6 +189,28 @@ it('apply as filter', function (): void {
         ->toContain('range', '2020-01-01', '2020-01-02');
 });
 
+it('apply as filter with time', function (): void {
+    $field = $this->field
+        ->withTime()
+        ->wrapName('filters');
+
+    $query = Item::query();
+
+    get('/?filters[range][from]=2020-01-01T00:00&filters[range][to]=2020-01-02T23:59');
+
+    $field
+        ->onApply((new DateRangeModelApply())->apply($field))
+        ->apply(
+            static fn (Builder $query) => $query,
+            $query
+        )
+    ;
+
+    expect($query->toRawSql())
+        ->toContain('range', '2020-01-01 00:00:00', '2020-01-02 23:59:00')
+    ;
+});
+
 function dateRangeExport(Item $item): ?string
 {
     $data = ['start_date' => '2020-01-01', 'end_date' => '2020-01-02'];
