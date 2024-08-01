@@ -51,7 +51,7 @@
                     <td {{ $vertical
                             ? $row->tdAttributes($index, 1)
                             : $row->tdAttributes($loop->parent->index, $index + $hasActions)
-                                ->merge(["data-column-selection" => $field->id()]) }}
+                                ->merge(['data-column-selection' => $field->column()]) }}
                         @if(!$vertical && $hasClickAction)
                             :class="'cursor-pointer'"
                             @click.stop="rowClickAction"
