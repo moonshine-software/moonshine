@@ -8,8 +8,6 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\ImportExport\Contracts\HasImportExportContract;
-use MoonShine\Laravel\ImportExport\Traits\ImportExportConcern;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
@@ -28,10 +26,8 @@ use MoonShine\UI\Fields\PasswordRepeat;
 use MoonShine\UI\Fields\Text;
 
 #[Icon('users')]
-class MoonShineUserResource extends ModelResource implements HasImportExportContract
+class MoonShineUserResource extends ModelResource
 {
-    use ImportExportConcern;
-
     public string $model = MoonshineUser::class;
 
     public string $column = 'name';
