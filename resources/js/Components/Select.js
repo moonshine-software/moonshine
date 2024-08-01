@@ -302,9 +302,7 @@ export default (asyncUrl = '') => ({
       const form = this.$el.form
       const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
 
-      options = await this.fromUrl(
-        url.toString() + (formQuery.length ? '&' + formQuery : ''),
-      )
+      options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
     }
 
     await this.choicesInstance.setChoices(options, 'value', 'label', true)
