@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\ImportExport\Contracts;
 
-use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Handlers\Handler;
