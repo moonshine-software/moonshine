@@ -92,6 +92,7 @@ class MoonShineUserResource extends ModelResource
                             formatted: static fn (MoonshineUserRole $model) => $model->name,
                             resource: MoonShineUserRoleResource::class,
                         )
+                            ->creatable()
                             ->valuesQuery(static fn (Builder $q) => $q->select(['id', 'name'])),
 
                         Text::make(__('moonshine::ui.resource.name'), 'name')

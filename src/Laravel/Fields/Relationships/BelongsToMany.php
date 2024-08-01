@@ -17,12 +17,13 @@ use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Traits\HasResource;
-use MoonShine\Laravel\Buttons\BelongsToManyButton;
+use MoonShine\Laravel\Buttons\BelongsToOrManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
@@ -61,6 +62,7 @@ class BelongsToMany extends ModelRelationField implements
     use HasTreeMode;
     use HasPlaceholder;
     use WithRelatedLink;
+    use BelongsToOrManyCreatable;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -87,10 +89,6 @@ class BelongsToMany extends ModelRelationField implements
     protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
-
-    protected bool $isCreatable = false;
-
-    protected ?ActionButtonContract $creatableButton = null;
 
     protected array $buttons = [];
 
@@ -127,37 +125,6 @@ class BelongsToMany extends ModelRelationField implements
     public function isSelectMode(): bool
     {
         return $this->selectMode;
-    }
-
-    public function creatable(
-        Closure|bool|null $condition = null,
-        ?ActionButtonContract $button = null,
-    ): static {
-        $this->isCreatable = value($condition, $this) ?? true;
-        $this->creatableButton = $button;
-
-        return $this;
-    }
-
-    public function isCreatable(): bool
-    {
-        return $this->isCreatable;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getCreateButton(): ?ActionButtonContract
-    {
-        if (! $this->isCreatable()) {
-            return null;
-        }
-
-        $button = BelongsToManyButton::for($this, button: $this->creatableButton);
-
-        return $button->isSee($this->getRelatedModel())
-            ? $button
-            : null;
     }
 
     public function buttons(array $buttons): static
@@ -232,16 +199,6 @@ class BelongsToMany extends ModelRelationField implements
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
                 ->class('js-pivot-field')
                 ->withoutWrapper(),
-        );
-    }
-
-    public function getFragmentUrl(): string
-    {
-        return toPage(
-            page: moonshineRequest()->getPage(),
-            resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => moonshineRequest()->getItemID()],
-            fragment: $this->getRelationName()
         );
     }
 
