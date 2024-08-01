@@ -9,7 +9,7 @@ use MoonShine\Tests\Fixtures\Models\FileModel;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\ID;
 
-class TestFileResource extends ModelResource
+class TestFileResource extends AbstractTestingResource
 {
     protected string $model = FileModel::class;
 

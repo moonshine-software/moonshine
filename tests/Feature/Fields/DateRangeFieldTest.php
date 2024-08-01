@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Applies\Filters\DateRangeModelApply;
-use MoonShine\Laravel\Handlers\ExportHandler;
-use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\Laravel\ImportExport\ExportHandler;
+use MoonShine\Laravel\ImportExport\ImportHandler;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;

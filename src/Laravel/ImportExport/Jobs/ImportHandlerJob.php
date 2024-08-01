@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Laravel\Jobs;
+namespace MoonShine\Laravel\ImportExport\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use MoonShine\Laravel\Handlers\ExportHandler;
-use OpenSpout\Common\Exception\InvalidArgumentException;
+use MoonShine\Laravel\ImportExport\ImportHandler;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
-use OpenSpout\Writer\Exception\WriterNotOpenedException;
-use Throwable;
+use OpenSpout\Reader\Exception\ReaderNotOpenedException;
 
-class ExportHandlerJob implements ShouldQueue
+class ImportHandlerJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -26,28 +24,23 @@ class ExportHandlerJob implements ShouldQueue
     public function __construct(
         protected string $resource,
         protected string $path,
-        protected array $query,
-        protected string $disk,
-        protected string $dir,
+        protected bool $deleteAfter,
         protected string $delimiter = ',',
-        protected array $notifyUsers = [],
+        protected array $notifyUsers = []
     ) {
     }
 
     /**
      * @throws IOException
-     * @throws WriterNotOpenedException
      * @throws UnsupportedTypeException
-     * @throws InvalidArgumentException|Throwable
+     * @throws ReaderNotOpenedException
      */
     public function handle(): void
     {
-        ExportHandler::process(
+        ImportHandler::process(
             $this->path,
             new $this->resource(),
-            $this->query,
-            $this->disk,
-            $this->dir,
+            $this->deleteAfter,
             $this->delimiter,
             $this->notifyUsers,
         );

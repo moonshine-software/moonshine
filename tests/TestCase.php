@@ -119,8 +119,6 @@ class TestCase extends Orchestra
 
     protected function registerTestResource(): static
     {
-        ModelResource::defaultExportToCsv();
-
         $this->moonshineCore->resources([
             $this->moonShineUserResource(),
             MoonShineUserRoleResource::class,

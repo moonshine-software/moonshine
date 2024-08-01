@@ -7,10 +7,9 @@ namespace MoonShine\Tests\Fixtures\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\ListOf;
 
-class TestResource extends ModelResource
+class TestResource extends AbstractTestingResource
 {
     private array $testRules = [];
 
@@ -48,7 +47,7 @@ class TestResource extends ModelResource
 
     public function pages(): array
     {
-        if(! empty($this->testPages)) {
+        if (! empty($this->testPages)) {
             return $this->testPages;
         }
 

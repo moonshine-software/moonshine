@@ -11,7 +11,7 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
 
-class TestCommentResource extends ModelResource
+class TestCommentResource extends AbstractTestingResource
 {
     protected string $model = Comment::class;
 

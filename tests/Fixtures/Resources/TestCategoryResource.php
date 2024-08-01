@@ -15,7 +15,7 @@ use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Markdown;
 use MoonShine\UI\Fields\Text;
 
-class TestCategoryResource extends ModelResource
+class TestCategoryResource extends AbstractTestingResource
 {
     public string $model = Category::class;
 

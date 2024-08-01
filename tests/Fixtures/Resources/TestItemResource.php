@@ -9,7 +9,6 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\MorphMany;
 use MoonShine\Laravel\QueryTags\QueryTag;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Components\Layout\Box;
@@ -20,7 +19,7 @@ use MoonShine\UI\Fields\Markdown;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Fields\Text;
 
-class TestItemResource extends ModelResource
+class TestItemResource extends AbstractTestingResource
 {
     protected string $model = Item::class;
 

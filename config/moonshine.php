@@ -78,9 +78,6 @@ return [
         'error' => ErrorPage::class,
     ],
 
-    'default_with_import' => true,
-    'default_with_export' => true,
-
     'locale' => 'en',
     'locales' => [
         // en
