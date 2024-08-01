@@ -57,7 +57,7 @@ export default (
   getName() {
     let name = this.table.dataset?.name ?? ''
 
-    if(this.table.dataset?.uniqueId) {
+    if (this.table.dataset?.uniqueId) {
       name = `${name}-${this.table.dataset?.uniqueId}`
     }
 
@@ -87,9 +87,8 @@ export default (
       this.resolveReindex()
     }
   },
-  initColumnSelection()
-  {
-    this.$root.querySelectorAll('[data-column-selection-checker]').forEach((el) => {
+  initColumnSelection() {
+    this.$root.querySelectorAll('[data-column-selection-checker]').forEach(el => {
       let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
       el.checked = stored === null || stored === 'true'
@@ -98,17 +97,17 @@ export default (
     })
   },
   getColumnSelectionStoreKey(el) {
-    return `${this.getName()}-column-selection:${el.dataset.column}`;
+    return `${this.getName()}-column-selection:${el.dataset.column}`
   },
   columnSelection(element = null) {
-    const el = element ?? this.$el;
+    const el = element ?? this.$el
     localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
 
-    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach((e) => {
+    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach(e => {
       e.hidden = !el.checked
     })
   },
-  resolveReindex(){
+  resolveReindex() {
     if (!this.table) {
       return
     }
