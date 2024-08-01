@@ -57,7 +57,9 @@
             @endif
         >
             @foreach($item->items() as $child)
-                @if($child->isGroup())
+                @if($child->hasCustomView())
+                    @include($child->getCustomView(), ['item' => $child, 'top' => $top])
+                @elseif($child->isGroup())
                     <x-moonshine::menu.group :item="$child"/>
                 @else
                     <x-moonshine::menu.item :item="$child"/>
