@@ -173,6 +173,6 @@ abstract class MenuElement
 
     public function hasCustomView(): bool
     {
-        return !is_null($this->customView);
+        return ! is_null($this->customView);
     }
 }
