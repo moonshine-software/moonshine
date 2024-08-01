@@ -6,7 +6,6 @@ namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageForm;

@@ -6,7 +6,6 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;

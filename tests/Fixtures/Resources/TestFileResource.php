@@ -4,7 +4,6 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\FileModel;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\ID;

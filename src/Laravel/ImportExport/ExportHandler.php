@@ -166,7 +166,7 @@ class ExportHandler extends Handler
         string $delimiter = ',',
         array $notifyUsers = [],
     ): string {
-        if(!$resource instanceof HasImportExportContract) {
+        if(! $resource instanceof HasImportExportContract) {
             throw new ResourceException('The resource must implement the HasImportExportContract interface.');
         }
 

@@ -6,7 +6,6 @@ namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageForm;
