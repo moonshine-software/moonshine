@@ -22,22 +22,18 @@ class DateRangeModelApply implements ApplyContract
 
             $query->when(
                 $values['from'] ?? null,
-                function ($query, $from) use ($field, $condition): void {
-                    $query->$condition(
-                        $field->column(),
-                        '>=',
-                        Carbon::parse($from)
-                    );
-                }
+                fn ($query, $from) => $query->$condition(
+                    $field->column(),
+                    '>=',
+                    Carbon::parse($from)
+                )
             )->when(
                 $values['to'] ?? null,
-                function ($query, $to) use ($field, $condition): void {
-                    $query->$condition(
-                        $field->column(),
-                        '<=',
-                        Carbon::parse($to)
-                    );
-                }
+                fn ($query, $to) => $query->$condition(
+                    $field->column(),
+                    '<=',
+                    Carbon::parse($to)
+                )
             );
         };
     }
