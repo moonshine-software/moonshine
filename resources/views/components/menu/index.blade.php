@@ -10,7 +10,9 @@
         @endif
     >
         @foreach($data as $item)
-            @if($item->isGroup())
+            @if($item->hasCustomView())
+                @include($item->getCustomView(), ['item' => $item, 'top' => $top])
+            @elseif($item->isGroup())
                 <x-moonshine::menu.group
                     :item="$item"
                     :top="$top"
@@ -21,8 +23,6 @@
                     :top="$top"
                 />
             @endif
-
-
         @endforeach
     </ul>
 @endif

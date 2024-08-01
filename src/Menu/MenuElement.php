@@ -31,6 +31,8 @@ abstract class MenuElement
 
     protected array $customLinkAttributes = [];
 
+    protected ?string $customView = null;
+
     public function forceActive(Closure|bool $forceActive): static
     {
         $this->forceActive = $forceActive;
@@ -155,5 +157,22 @@ abstract class MenuElement
         return new ComponentAttributeBag(
             $this->customLinkAttributes
         );
+    }
+
+    public function customView(string $path): static
+    {
+        $this->customView = $path;
+
+        return $this;
+    }
+
+    public function getCustomView(): ?string
+    {
+        return $this->customView;
+    }
+
+    public function hasCustomView(): bool
+    {
+        return !is_null($this->customView);
     }
 }
