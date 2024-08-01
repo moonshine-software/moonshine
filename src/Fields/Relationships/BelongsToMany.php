@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\ActionButtons\ActionButtons;
-use MoonShine\Buttons\BelongsToManyButton;
 use MoonShine\Components\Badge;
 use MoonShine\Components\Link;
 use MoonShine\Components\TableBuilder;
@@ -27,7 +26,7 @@ use MoonShine\Fields\ID;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
-use MoonShine\Support\Condition;
+use MoonShine\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Traits\Fields\HasPlaceholder;
 use MoonShine\Traits\Fields\HasTreeMode;
 use MoonShine\Traits\Fields\OnlyLink;
@@ -55,6 +54,7 @@ class BelongsToMany extends ModelRelationField implements
     use HasTreeMode;
     use HasPlaceholder;
     use OnlyLink;
+    use BelongsToOrManyCreatable;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -73,10 +73,6 @@ class BelongsToMany extends ModelRelationField implements
     protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
-
-    protected bool $isCreatable = false;
-
-    protected ?ActionButton $creatableButton = null;
 
     protected array $buttons = [];
 
@@ -115,37 +111,6 @@ class BelongsToMany extends ModelRelationField implements
         $this->selectMode = true;
 
         return $this;
-    }
-
-    public function creatable(
-        Closure|bool|null $condition = null,
-        ?ActionButton $button = null,
-    ): static {
-        $this->isCreatable = Condition::boolean($condition, true);
-        $this->creatableButton = $button;
-
-        return $this;
-    }
-
-    public function isCreatable(): bool
-    {
-        return $this->isCreatable;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function createButton(): ?ActionButton
-    {
-        if (! $this->isCreatable()) {
-            return null;
-        }
-
-        $button = BelongsToManyButton::for($this, button: $this->creatableButton);
-
-        return $button->isSee($this->getRelatedModel())
-            ? $button
-            : null;
     }
 
     public function buttons(array $buttons): self
@@ -238,16 +203,6 @@ class BelongsToMany extends ModelRelationField implements
                 ->setParent($this)
                 ->formName($this->getFormName())
                 ->iterableAttributes()
-        );
-    }
-
-    public function fragmentUrl(): string
-    {
-        return to_page(
-            page: moonshineRequest()->getPage(),
-            resource: moonshineRequest()->getResource(),
-            params: ['resourceItem' => moonshineRequest()->getItemID()],
-            fragment: $this->getRelationName()
         );
     }
 
