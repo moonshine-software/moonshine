@@ -39,6 +39,8 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
     protected bool $isGroup = false;
 
+    protected bool $isHorizontal = false;
+
     protected bool $withWrapper = true;
 
     protected ?string $requestKeyPrefix = null;
@@ -91,6 +93,18 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
     public function isGroup(): bool
     {
         return $this->isGroup;
+    }
+
+    public function isHorizontal(): bool
+    {
+        return $this->isHorizontal;
+    }
+
+    public function horizontal(mixed $condition = null): static
+    {
+        $this->isHorizontal = Condition::boolean($condition, true);
+
+        return $this;
     }
 
     public function withoutWrapper(mixed $condition = null): static
@@ -361,6 +375,12 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
         if ($this->getView() === '') {
             return $this->toValue();
+        }
+
+        if ($this->isHorizontal()) {
+            $this->customWrapperAttributes([
+                'class' => 'form-group-inline'
+            ]);
         }
 
         return $this->cachedRender = view(
