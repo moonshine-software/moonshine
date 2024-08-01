@@ -36,7 +36,7 @@ final class QuickPage extends Page
         $this->setComponents([
             FlexibleRender::make(
                 $this->getCore()->getRenderer()->render($path, $data)
-            )
+            ),
         ]);
 
         return $this;
