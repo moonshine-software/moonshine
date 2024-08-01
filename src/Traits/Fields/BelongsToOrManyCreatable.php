@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Fields;
 
+use Closure;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Buttons\BelongsToOrManyButton;
 use MoonShine\Support\Condition;
-use Closure;
 use Throwable;
 
 trait BelongsToOrManyCreatable
