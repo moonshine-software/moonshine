@@ -288,30 +288,31 @@ export default (asyncUrl = '') => ({
       }
     })
   },
-
   async asyncSearch(onInit = false) {
-    const url = asyncUrl.startsWith('/')
-      ? new URL(asyncUrl, window.location.origin)
-      : new URL(asyncUrl)
-
     const query = this.searchTerms.value ?? null
+    let options = []
 
     if (query !== null && query.length) {
+      const url = asyncUrl.startsWith('/')
+        ? new URL(asyncUrl, window.location.origin)
+        : new URL(asyncUrl)
+
       url.searchParams.append('query', query)
+
+      const form = this.$el.form
+      const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+
+      options = await this.fromUrl(
+        url.toString() + (formQuery.length ? '&' + formQuery : ''),
+      )
     }
 
-    const form = this.$el.form
-    const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
-
-    const options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
-
-    this.choicesInstance.setChoices(options, 'value', 'label', true)
+    await this.choicesInstance.setChoices(options, 'value', 'label', true)
 
     if (!onInit) {
       this.$el.dispatchEvent(new Event('change'))
     }
   },
-
   fromUrl(url) {
     return fetch(url)
       .then(response => {
