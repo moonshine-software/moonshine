@@ -80,6 +80,8 @@ abstract class ModelResource extends Resource
 
     protected bool $stickyTable = false;
 
+    protected bool $columnSelection = false;
+
     public function flushState(): void
     {
         $this->item = null;
@@ -175,6 +177,11 @@ abstract class ModelResource extends Resource
     public function isStickyTable(): bool
     {
         return $this->stickyTable;
+    }
+
+    public function isColumnSelection(): bool
+    {
+        return $this->columnSelection;
     }
 
     /**

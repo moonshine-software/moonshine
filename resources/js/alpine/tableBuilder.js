@@ -51,6 +51,17 @@ export default (
         }
       })
     }
+
+    this.initColumnSelection()
+  },
+  getName() {
+    let name = this.table.dataset?.name ?? ''
+
+    if(this.table.dataset?.uniqueId) {
+      name = `${name}-${this.table.dataset?.uniqueId}`
+    }
+
+    return name
   },
   add(force = false) {
     if (!this.creatable && !force) {
@@ -76,7 +87,28 @@ export default (
       this.resolveReindex()
     }
   },
-  resolveReindex() {
+  initColumnSelection()
+  {
+    this.$root.querySelectorAll('[data-column-selection-checker]').forEach((el) => {
+      let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
+
+      el.checked = stored === null || stored === 'true'
+
+      this.columnSelection(el)
+    })
+  },
+  getColumnSelectionStoreKey(el) {
+    return `${this.getName()}-column-selection:${el.dataset.column}`;
+  },
+  columnSelection(element = null) {
+    const el = element ?? this.$el;
+    localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
+
+    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach((e) => {
+      e.hidden = !el.checked
+    })
+  },
+  resolveReindex(){
     if (!this.table) {
       return
     }

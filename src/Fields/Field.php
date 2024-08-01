@@ -80,6 +80,8 @@ abstract class Field extends FormElement
 
     protected bool $hasOld = true;
 
+    protected bool $columnSelection = true;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
@@ -111,6 +113,18 @@ abstract class Field extends FormElement
         $this->column = $column;
 
         return $this;
+    }
+
+    public function columnSelection(bool $active = true): static
+    {
+        $this->columnSelection = $active;
+
+        return $this;
+    }
+
+    public function isColumnSelection(): bool
+    {
+        return $this->columnSelection;
     }
 
     public function virtualColumn(string $column): static
