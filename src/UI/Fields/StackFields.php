@@ -58,10 +58,10 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
     protected function resolvePreview(): Renderable|string
     {
         return FieldsGroup::make(
-            $this->getFields()->indexFields()
+            $this->getFields()->onlyFields()
         )
-            ->mapFields(fn (FieldContract $field): FieldContract => $field
-                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+            ->mapFields(fn (FieldContract $field, int $index): FieldContract => $field
+                ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->previewMode())
             ->render();
