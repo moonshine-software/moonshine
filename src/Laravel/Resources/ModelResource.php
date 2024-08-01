@@ -81,6 +81,8 @@ abstract class ModelResource extends Resource implements CrudResourceContract
 
     protected bool $stickyTable = false;
 
+    protected bool $columnSelection = false;
+
     public function flushState(): void
     {
         $this->item = null;
@@ -183,6 +185,11 @@ abstract class ModelResource extends Resource implements CrudResourceContract
         return $this->stickyTable;
     }
 
+    public function isColumnSelection(): bool
+    {
+        return $this->columnSelection;
+    }
+
     /**
      * @return list<Metric>
      */
@@ -213,7 +220,7 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     {
         return rescue(
             fn (): string => $this->getIndexPage()?->getListComponentName(),
-            'index-table',
+            "index-table-{$this->getUriKey()}",
             false
         );
     }

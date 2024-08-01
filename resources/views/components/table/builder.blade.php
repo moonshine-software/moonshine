@@ -3,6 +3,7 @@
     'rows' => [],
     'headRows' => [],
     'footRows' => [],
+    'columns' => [],
     'headAttributes',
     'bodyAttributes',
     'footAttributes',
@@ -15,6 +16,7 @@
     'reorderable' => false,
     'searchable' => false,
     'sticky' => false,
+    'columnSelection' => false,
     'searchValue' => '',
     'translates' => [],
 ])
@@ -44,6 +46,33 @@
                 />
             </form>
         </div>
+    @endif
+
+    @if($columnSelection)
+    <x-moonshine::layout.flex justify-align="end">
+        <x-moonshine::dropdown>
+            <div class="p-2">
+                @foreach($columns as $column => $label)
+                    <div class="form-group form-group-inline">
+                        <x-moonshine::form.switcher
+                            :id="'column_selection_' . $column"
+                            data-column-selection-checker="true"
+                            data-column="{{ $column }}"
+                            @change="columnSelection()"
+                        />
+
+                        <x-moonshine::form.label :for="'column_selection_' . $column">
+                            {{ $label }}
+                        </x-moonshine::form.label>
+                    </div>
+                @endforeach
+            </div>
+
+            <x-slot:toggler>
+                <x-moonshine::icon icon="table-cells" />
+            </x-slot:toggler>
+        </x-moonshine::dropdown>
+    </x-moonshine::layout.flex>
     @endif
 
     <x-moonshine::loader x-show="loading" />

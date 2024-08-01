@@ -158,7 +158,7 @@ class IndexPage extends Page
 
     public function getListComponentName(): string
     {
-        return 'index-table';
+        return "index-table-{$this->getResource()->getUriKey()}";
     }
 
     public function getListEventName(): string
@@ -204,6 +204,9 @@ class IndexPage extends Page
             })
             ->when($this->getResource()->isStickyTable(), function (TableBuilderContract $table): void {
                 $table->sticky();
+            })
+            ->when($this->getResource()->isColumnSelection(), function (TableBuilderContract $table): void {
+                $table->columnSelection();
             });
     }
 

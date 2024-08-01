@@ -32,7 +32,8 @@ final class TableCells extends Collection implements TableCellsContract
             $this->pushCell(
                 (string) $field,
                 $index,
-                $builder ?? $initializedBuilder
+                $builder ?? $initializedBuilder,
+                ['data-column-selection' => $field->getColumn()]
             );
 
             $builder = null;
@@ -41,13 +42,13 @@ final class TableCells extends Collection implements TableCellsContract
         return $this;
     }
 
-    public function pushCell(Closure|string $content, ?int $index = null, ?Closure $builder = null): self
+    public function pushCell(Closure|string $content, ?int $index = null, ?Closure $builder = null, array $attributes = []): self
     {
         return $this->push(
             TableTd::make($content, $index)->when(
                 ! is_null($builder),
                 static fn (TableTd $td) => $builder($td)
-            )
+            )->customAttributes($attributes)
         );
     }
 
