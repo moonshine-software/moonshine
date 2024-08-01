@@ -379,7 +379,7 @@ abstract class FormElement implements MoonShineRenderable, HasAssets, CanBeEscap
 
         if ($this->isHorizontal()) {
             $this->customWrapperAttributes([
-                'class' => 'form-group-inline'
+                'class' => 'form-group-inline',
             ]);
         }
 
