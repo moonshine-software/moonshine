@@ -54,6 +54,15 @@ export default (
 
     this.initColumnSelection()
   },
+  getName() {
+    let name = this.table.dataset?.name ?? ''
+
+    if(this.table.dataset?.uniqueId) {
+      name = `${name}-${this.table.dataset?.uniqueId}`
+    }
+
+    return name
+  },
   add(force = false) {
     if (!this.creatable && !force) {
       return
@@ -80,26 +89,26 @@ export default (
   },
   initColumnSelection()
   {
-    this.$root.querySelectorAll('input.js-column-selection-checker').forEach((el) => {
-      const column = el.dataset.column
-      let stored = localStorage.getItem(`${this.table.dataset.name}-column-selection:${column}`)
+    this.$root.querySelectorAll('[data-column-selection-checker]').forEach((el) => {
+      let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
       el.checked = stored === null || stored === 'true'
 
       this.columnSelection(el)
     })
   },
+  getColumnSelectionStoreKey(el) {
+    return `${this.getName()}-column-selection:${el.dataset.column}`;
+  },
   columnSelection(element = null) {
     const el = element ?? this.$el;
-    const column = el.dataset.column
+    localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
 
-    localStorage.setItem(`${this.table.dataset.name}-column-selection:${column}`, el.checked)
-
-    this.table.querySelectorAll(`.js-column-selection-${column}`).forEach((e) => {
+    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach((e) => {
       e.hidden = !el.checked
     })
   },
-  resolveReindex() {
+  resolveReindex(){
     if (!this.table) {
       return
     }

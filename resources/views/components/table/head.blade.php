@@ -19,7 +19,7 @@
 @endif
 
 @foreach($fields as $field)
-    <th class="js-column-selection-{{ $field->id() }}">
+    <th data-column-selection="{{ $field->id() }}">
         @if(!$preview && $field->isSortable())
             <a href="{{ $field->sortQuery($asyncUrl) }}" @if(!is_null($asyncUrl))@click.prevent="asyncRequest" @endif class="flex items-baseline gap-x-1">
                 {{ $field->label() }}

@@ -57,7 +57,7 @@
                             <div class="form-group form-group-inline">
                                 <x-moonshine::form.switcher
                                     :id="'column_selection' . $field->id()"
-                                    class="js-column-selection-checker"
+                                    data-column-selection-checker="true"
                                     data-column="{{ $field->id() }}"
                                     @change="columnSelection()"
                                 />

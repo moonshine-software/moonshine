@@ -210,7 +210,7 @@ class IndexPage extends Page
                 $table->sticky();
             })
             ->when($this->getResource()->isColumnSelection(), function (TableBuilder $table): void {
-                $table->columnSelection();
+                $table->columnSelection($this->getResource()->uriKey());
             });
     }
 

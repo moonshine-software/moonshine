@@ -199,9 +199,15 @@ trait TableStates
         return $this->searchable;
     }
 
-    public function columnSelection(): static
+    public function columnSelection(string $uniqueId = ''): static
     {
         $this->columnSelection = true;
+
+        if($uniqueId !== '') {
+            $this->customAttributes([
+                'data-unique-id' => $uniqueId,
+            ]);
+        }
 
         return $this;
     }

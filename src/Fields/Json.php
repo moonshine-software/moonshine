@@ -375,7 +375,7 @@ class Json extends Field implements
         }
 
         return TableBuilder::make($fields, $values)
-            ->name('json_' . $this->column())
+            ->name("json_{$this->id()}")
             ->customAttributes(
                 $this->attributes()
                     ->except(['class', 'data-name', 'data-column'])
