@@ -214,7 +214,7 @@ trait TableStates
 
     public function isColumnSelection(): bool
     {
-        return !$this->isVertical() && $this->columnSelection;
+        return ! $this->isVertical() && $this->columnSelection;
     }
 
     /**
