@@ -90,9 +90,8 @@ export default (
       MoonShine.iterable.reindex(table, 'tr')
     })
   },
-  initColumnSelection()
-  {
-    this.$root.querySelectorAll('[data-column-selection-checker]').forEach((el) => {
+  initColumnSelection() {
+    this.$root.querySelectorAll('[data-column-selection-checker]').forEach(el => {
       let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
       el.checked = stored === null || stored === 'true'
@@ -100,13 +99,13 @@ export default (
     })
   },
   getColumnSelectionStoreKey(el) {
-    return `${this.table.dataset.name}-column-selection:${el.dataset.column}`;
+    return `${this.table.dataset.name}-column-selection:${el.dataset.column}`
   },
   columnSelection(element = null) {
-    const el = element ?? this.$el;
+    const el = element ?? this.$el
     localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
 
-    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach((e) => {
+    this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach(e => {
       e.hidden = !el.checked
     })
   },
