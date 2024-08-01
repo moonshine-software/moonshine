@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Components\FieldsGroup;
 use MoonShine\Decorations\LineBreak;
+use Throwable;
 
 /**
  * @method static static make(Closure|string $label, ?Closure $fields = null)
@@ -95,6 +96,9 @@ class Td extends Template
             : $attributes;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function resolvePreview(): string|View
     {
         if($this->isRawMode()) {
@@ -108,9 +112,9 @@ class Td extends Template
         return FieldsGroup::make(
             Fields::make($fields)
         )
-            ->mapFields(fn (Field $field): Field => $field
+            ->mapFields(fn (Field $field, int $index): Field => $field
                 ->resolveFill($this->toRawValue(withoutModify: true), $this->getData())
-                ->beforeRender(fn (): string => $this->hasLabels() ? '' : (string) LineBreak::make())
+                ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->forcePreview())
             ->render();

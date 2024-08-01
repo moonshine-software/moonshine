@@ -24,6 +24,9 @@ final class FieldsGroup extends WithComponents
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function fill(array $raw = [], mixed $casted = null, int $index = 0): self
     {
         return $this->mapFields(
@@ -31,6 +34,9 @@ final class FieldsGroup extends WithComponents
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function withoutWrappers(): self
     {
         return $this->mapFields(
@@ -50,7 +56,7 @@ final class FieldsGroup extends WithComponents
 
         $this->components
             ->onlyFields()
-            ->map(fn (Field $field): Field => $callback($field));
+            ->map(fn (Field $field, int $index): Field => $callback($field, $index));
 
         return $this;
     }
