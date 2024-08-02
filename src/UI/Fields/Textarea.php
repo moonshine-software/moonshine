@@ -19,10 +19,6 @@ class Textarea extends Field implements HasDefaultValueContract, CanBeString
 
     protected function resolvePreview(): Renderable|string
     {
-        if ($this->isRawMode()) {
-            return $this->toRawValue();
-        }
-
         return $this->isUnescape()
             ? parent::resolvePreview()
             : $this->escapeValue((string) parent::resolvePreview());

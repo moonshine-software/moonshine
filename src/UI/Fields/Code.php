@@ -30,10 +30,6 @@ class Code extends Textarea
 
     protected function resolvePreview(): string
     {
-        if ($this->isRawMode()) {
-            return $this->toRawValue();
-        }
-
         return (string) str(parent::resolvePreview())
             ->before('<pre>')
             ->after('</pre>')

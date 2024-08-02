@@ -155,10 +155,6 @@ class RelationRepeater extends ModelRelationField implements
 
     protected function resolvePreview(): string|Renderable
     {
-        if ($this->isRawMode()) {
-            return (string) parent::resolvePreview();
-        }
-
         return $this
             ->getComponent()
             ->simple()

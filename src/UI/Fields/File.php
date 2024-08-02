@@ -41,14 +41,15 @@ class File extends Field implements FileableContract, RemovableContract
         return $this;
     }
 
-    protected function resolvePreview(): Renderable|string
+    protected function resolveRawValue(): mixed
     {
         $values = $this->getFullPathValues();
 
-        if ($this->isRawMode()) {
-            return implode(';', array_filter($values));
-        }
+        return implode(';', array_filter($values));
+    }
 
+    protected function resolvePreview(): Renderable|string
+    {
         return Files::make(
             $this->getFiles()->toArray(),
             download: $this->canDownload(),

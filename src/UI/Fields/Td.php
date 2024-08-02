@@ -100,6 +100,11 @@ class Td extends Template
             : [];
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return '';
+    }
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -107,10 +112,6 @@ class Td extends Template
      */
     protected function resolvePreview(): string|Renderable
     {
-        if($this->isRawMode()) {
-            return '';
-        }
-
         $fields = $this->hasConditionalFields()
             ? $this->getConditionalFields()
             : $this->getFields();

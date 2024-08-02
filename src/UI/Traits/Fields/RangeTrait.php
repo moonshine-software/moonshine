@@ -118,6 +118,11 @@ trait RangeTrait
         return true;
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return $this->resolvePreview();
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();

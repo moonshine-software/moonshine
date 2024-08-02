@@ -107,7 +107,7 @@ function morphToExport(ImageModel $item, int $newId): ?string
 
     expect($file)
         ->toContain('Imageable')
-        ->toContain($item->imageable->name)
+        ->toContain($item->imageable->id)
     ;
 
     return $file;

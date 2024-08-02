@@ -258,6 +258,11 @@ abstract class Field extends FormElement implements FieldContract
             return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
+        return $this->resolveRawValue();
+    }
+
+    protected function resolveRawValue(): mixed
+    {
         return $this->rawValue;
     }
 
@@ -272,7 +277,7 @@ abstract class Field extends FormElement implements FieldContract
     {
         $this->value = $value;
 
-        return $this;
+        return $this->setRawValue($value);
     }
 
     protected function setData(?CastedDataContract $data = null): static
@@ -464,8 +469,8 @@ abstract class Field extends FormElement implements FieldContract
 
     public function preview(): Renderable|string
     {
-        if($this->isRawMode() && $this->isRawValueModified()) {
-            return $this->toRawValue();
+        if($this->isRawMode()) {
+            return (string) ($this->toRawValue() ?? '');
         }
 
         if ($this->isPreviewChanged()) {
@@ -477,10 +482,6 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         $preview = $this->resolvePreview();
-
-        if ($this->isRawMode()) {
-            return $preview;
-        }
 
         return $this->previewDecoration($preview);
     }

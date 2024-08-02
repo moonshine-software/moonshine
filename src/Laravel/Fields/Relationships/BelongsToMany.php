@@ -322,6 +322,13 @@ class BelongsToMany extends ModelRelationField implements
         return $default;
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return collect($this->toValue())
+            ->map(static fn (Model $item) => $item->getKey())
+            ->toJson();
+    }
+
     /**
      * @throws Throwable
      */
@@ -329,12 +336,6 @@ class BelongsToMany extends ModelRelationField implements
     {
         $values = $this->toValue() ?? collect();
         $column = $this->getResourceColumn();
-
-        if ($this->isRawMode()) {
-            return $values
-                ->map(static fn (Model $item) => $item->getKey())
-                ->toJson();
-        }
 
         if ($this->isRelatedLink()) {
             return (string) $this->getRelatedLink(preview: true);

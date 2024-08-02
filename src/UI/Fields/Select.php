@@ -40,6 +40,11 @@ class Select extends Field implements
 
     protected string $view = 'moonshine::fields.select';
 
+    protected function resolveRawValue(): mixed
+    {
+        return $this->resolvePreview();
+    }
+
     /**
      * @throws JsonException
      */

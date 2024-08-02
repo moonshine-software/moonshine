@@ -37,10 +37,6 @@ class Url extends Text
             ? $value
             : $this->escapeValue($value);
 
-        if ($this->isRawMode()) {
-            return $value;
-        }
-
         if ($value === '0' || $value === '') {
             return '';
         }
