@@ -35,8 +35,8 @@ class Code extends Textarea
             ->before('<pre>')
             ->after('</pre>')
             ->when(
-                !$this->isUnescape(),
-                fn(Stringable $str) => $str->stripTags()
+                ! $this->isUnescape(),
+                fn (Stringable $str) => $str->stripTags()
             );
     }
 }
