@@ -35,7 +35,7 @@ class Url extends Text
         $value = $this->toFormattedValue() ?? '';
         $title = $this->isUnescape()
             ? $value
-            : e($value);
+            : $this->escapeValue($value);
 
         if ($this->isRawMode()) {
             return $value;

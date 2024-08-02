@@ -13,6 +13,7 @@ use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
+use MoonShine\UI\Traits\Fields\WithEscapedValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 use MoonShine\UI\Traits\Fields\WithMask;
 
@@ -24,12 +25,11 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
     use HasPlaceholder;
     use UpdateOnPreview;
     use Reactivity;
+    use WithEscapedValue;
 
     protected string $view = 'moonshine::fields.input';
 
     protected string $type = 'text';
-
-    protected bool $unescape = false;
 
     public function tags(?int $limit = null): static
     {
@@ -40,22 +40,10 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
         ]);
     }
 
-    public function unescape(): static
-    {
-        $this->unescape = true;
-
-        return $this;
-    }
-
-    public function isUnescape(): bool
-    {
-        return $this->unescape;
-    }
-
     protected function prepareRequestValue(mixed $value): mixed
     {
         if(is_string($value)) {
-            return $this->isUnescape() ? $value : e($value);
+            return $this->isUnescape() ? $value : $this->escapeValue($value);
         }
 
         return $value;
@@ -65,7 +53,7 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
     {
         return $this->isUnescape()
             ? parent::resolvePreview()
-            : e((string) parent::resolvePreview());
+            : $this->escapeValue((string) parent::resolvePreview());
     }
 
     protected function viewData(): array
