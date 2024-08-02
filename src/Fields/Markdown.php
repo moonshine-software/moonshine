@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Fields;
 
+use Illuminate\View\View;
 use JsonException;
 
 class Markdown extends Textarea
@@ -86,8 +87,12 @@ class Markdown extends Textarea
         return $this;
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): View|string
     {
+        if($this->isUnescape()) {
+            return parent::resolvePreview();
+        }
+
         return (string) str()->markdown(
             $this->toFormattedValue() ?? ''
         );

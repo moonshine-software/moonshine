@@ -28,8 +28,6 @@ class TinyMce extends Textarea
 
     public array $config = [];
 
-    protected bool $unescape = true;
-
     public function getAssets(): array
     {
         $assets = ["vendor/moonshine/libs/tinymce/tinymce.min.js"];
