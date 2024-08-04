@@ -20,19 +20,24 @@ final class Notifications extends MoonShineComponent
 
     public Collection $notifications;
 
+    private MoonShineNotificationContract $notificationService;
+
     public function __construct()
     {
         parent::__construct();
 
-        $this->notifications = $this->getCore()
-            ->getContainer(MoonShineNotificationContract::class)
+
+        $this->notificationService = $this->getCore()
+            ->getContainer(MoonShineNotificationContract::class);
+
+        $this->notifications = $this->notificationService
             ->getAll();
     }
 
     protected function viewData(): array
     {
         return [
-            'readAllRoute' => $this->notifications->getReadAllRoute(),
+            'readAllRoute' => $this->notificationService->getReadAllRoute(),
         ];
     }
 }
