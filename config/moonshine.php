@@ -43,6 +43,7 @@ return [
 
     'use_migrations' => true,
     'use_notifications' => true,
+    'use_database_notifications' => true,
 
     'disk' => 'public',
     'disk_options' => [],

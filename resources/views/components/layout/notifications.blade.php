@@ -22,30 +22,30 @@
 
             @foreach($notifications as $notification)
                 <div class="notifications-item">
-                    <a href="{{ $notification->data['read_route'] }}"
+                    <a href="{{ $notification->getReadRoute() }}"
                        class="notifications-remove"
                        title="{{ $translates['mark_as_read'] }}"
                     >
                         <x-moonshine::icon icon="x-mark" />
                     </a>
 
-                    <div class="notifications-category badge-{{ $notification->data['color'] ?? 'green' }}">
-                        <x-moonshine::icon icon="information-circle" />
+                    <div class="notifications-category badge-{{ $notification->getColor() }}">
+                        <x-moonshine::icon :icon="$notification->getIcon()" />
                     </div>
 
                     <div class="notifications-content">
                         <h5 class="notifications-title"></h5>
-                        <p class="notifications-text">{{ $notification->data['message'] }}</p>
+                        <p class="notifications-text">{{ $notification->getMessage() }}</p>
 
-                        @if(isset($notification->data['button']['link']))
+                        @if($notification->getButton() !== [])
                             <div class="notifications-more">
-                                <a href="{{ $notification->data['button']['link'] }}">
-                                    {{ $notification->data['button']['label'] }}
+                                <a href="{{ $notification->getButtonLink() }}">
+                                    {{ $notification->getButtonLabel() }}
                                 </a>
                             </div>
                         @endif
 
-                        <span class="notifications-time">{{ $notification->created_at->format('d.m.Y H:i') }}</span>
+                        <span class="notifications-time">{{ $notification->getDate()->format('d.m.Y H:i') }}</span>
                     </div>
                 </div>
             @endforeach

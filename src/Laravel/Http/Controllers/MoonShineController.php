@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Pages\QuickPage;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
+use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Support\Enums\ToastType;
@@ -22,6 +23,12 @@ abstract class MoonShineController extends BaseController
 {
     use InteractsWithUI;
     use InteractsWithAuth;
+
+    public function __construct(
+        protected MoonShineNotificationContract $notification,
+    )
+    {
+    }
 
     protected function json(
         string $message = '',

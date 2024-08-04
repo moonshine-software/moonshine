@@ -63,6 +63,8 @@ use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Laravel\Notifications\MoonShineNotification;
+use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
 use MoonShine\MenuManager\MenuManager;
@@ -149,6 +151,7 @@ class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
         $this->app->bind(RequestContract::class, Request::class);
+        $this->app->bind(MoonShineNotificationContract::class, MoonShineNotification::class);
 
         $this->app->bind(StorageContract::class, static fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
