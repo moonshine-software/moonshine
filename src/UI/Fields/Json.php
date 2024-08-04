@@ -312,7 +312,7 @@ class Json extends Field implements
                             'data-handle' => '.handle',
                         ])
                     )
-                    ->jsonSerialize(), ['class' => 'json-table'])
+                    ->jsonSerialize(), ['data-table-type' => 'json'])
             )
             ->when(
                 $reorderable,

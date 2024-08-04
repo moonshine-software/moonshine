@@ -355,7 +355,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return true;
     }
 
-    protected function extractWhenFieldsConditions($elements, array &$data, string $column = null): void
+    protected function showWhenConditions($elements, array &$data, string $column = null): void
     {
         $parentColumn = $column ?? '';
 
@@ -372,11 +372,10 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         foreach ($elements as $element) {
             if($element instanceof HasFieldsContract) {
-                $parentColumnSeparator = $parentColumn ? '.' : '';
-                $this->extractWhenFieldsConditions(
+                $this->showWhenConditions(
                     $element->getFields()->onlyFields(),
                     $data,
-                    $parentColumn.$parentColumnSeparator.$element->getColumn()
+                    $parentColumn . $parentColumn ? '.' : '' . $element->getColumn()
                 );
             }
         }
@@ -407,8 +406,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
-
-        $this->extractWhenFieldsConditions($onlyFields, $whenFields);
+        $this->showWhenConditions($onlyFields, $whenFields);
 
         $xData = json_encode([
             'whenFields' => $whenFields,

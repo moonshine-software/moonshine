@@ -85,13 +85,13 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     }
   })
 
-  if(inputElement.closest('.json-table')) {
+  if(inputElement.closest('[data-table-type=json]')) {
     // If input is in a table, then find all tables with this input
     const tablesWithInput = []
 
     // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
     document.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(function (element) {
-      let inputTable = element.closest('.json-table') // Get parent table for data-show-field
+      let inputTable = element.closest('[data-table-type=json]') // Get parent table for data-show-field
         if(tablesWithInput.indexOf(inputTable) === -1) {
           tablesWithInput.push(inputTable)
         }
