@@ -14,7 +14,7 @@
     @endif
 >
     <button
-        {{ $item->linkAttributes()->merge(['class' => 'menu-inner-button', 'dropdown-btn' => $top]) }}
+        {{ $item->linkAttributes()->class(['menu-inner-button', 'dropdown-btn' => $top]) }}
         @if($top)
             @click="toggleDropdown"
             :class="open && '_is-active'"
