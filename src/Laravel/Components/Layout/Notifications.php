@@ -20,7 +20,7 @@ final class Notifications extends MoonShineComponent
 
     public Collection $notifications;
 
-    private MoonShineNotificationContract $notificationService;
+    private readonly MoonShineNotificationContract $notificationService;
 
     public function __construct()
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends MoonShineController
 {
