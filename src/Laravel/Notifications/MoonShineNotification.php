@@ -39,7 +39,7 @@ final class MoonShineNotification implements MoonShineNotificationContract
         array $ids = [],
         string|Color|null $color = null
     ): void {
-        if (!moonshineConfig()->isUseNotifications()) {
+        if (! moonshineConfig()->isUseNotifications()) {
             return;
         }
 

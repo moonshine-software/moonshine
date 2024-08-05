@@ -26,8 +26,7 @@ abstract class MoonShineController extends BaseController
 
     public function __construct(
         protected MoonShineNotificationContract $notification,
-    )
-    {
+    ) {
     }
 
     protected function json(
