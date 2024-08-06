@@ -26,6 +26,12 @@ input[type='number'] {
   }
 }
 
+.sm\:flex {
+  .form-group + .form-group {
+    @apply mb-0 mt-0;
+  }
+}
+
 .form-group {
   @apply flex w-full flex-col gap-2;
 
