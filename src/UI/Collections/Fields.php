@@ -182,7 +182,6 @@ class Fields extends Renderables implements FieldsContract
         return $this->filter(static fn (FieldContract $field): bool => ! $field instanceof HasFieldsContract);
     }
 
-    // todo ShowWhen - prepareReindex?
     /**
      * @throws Throwable
      */
@@ -201,15 +200,6 @@ class Fields extends Renderables implements FieldsContract
 
             if ($field instanceof ID) {
                 $field->showValue();
-            }
-
-            if(! empty($field->getShowWhenCondition())) {
-                $levelShowWhen = $level - 1;
-
-                //setNameIndex
-                $field->customAttributes([
-                    'data-show-when-field' => $name->replace("\${index$levelShowWhen}.", '') . '.' . $field->getColumn()
-                ]);
             }
 
             $name = $field->generateNameFrom(
@@ -233,6 +223,24 @@ class Fields extends Renderables implements FieldsContract
                     is_null($performName) ? $name : value($performName, $name, $parent, $field)
                 )
                 ->iterableAttributes($level);
+        });
+    }
+
+    public function prepareShowWhenValues(): static
+    {
+        return $this->map(static function (FieldContract $field): FieldContract {
+            if(! $field->hasShowWhen()) {
+                return $field;
+            }
+
+            $showWhenName = str($field->getNameDot())
+                ->replaceMatches('/\.\${index\d+}/', '')
+                ->toString();
+
+            return $field->changeShowFieldName($showWhenName)
+                ->customAttributes([
+                    'data-show-when-field' => $showWhenName
+                ]);
         });
     }
 

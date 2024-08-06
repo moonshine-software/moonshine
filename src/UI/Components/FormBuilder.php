@@ -21,7 +21,6 @@ use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Fields\Hidden;
-use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
 use MoonShine\UI\Traits\HasAsync;
 use MoonShine\UI\Traits\HasDataCast;
@@ -355,28 +354,21 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return true;
     }
 
-    protected function showWhenConditions($elements, array &$data, string $column = null): void
+    /**
+     * @throws Throwable
+     */
+    protected function showWhenConditions(FieldsContract $fields, array &$data): void
     {
-        $parentColumn = $column ?? '';
-
-        foreach ($elements->whenFieldsConditions() as $whenConditions) {
+        foreach ($fields->whenFieldsConditions() as $whenConditions) {
             foreach ($whenConditions as $value) {
-                $value['showField'] =
-                    $parentColumn
-                        ? $parentColumn . '.' . $value['showField']
-                        : $value['showField'];
-
                 $data[] = $value;
             }
         }
 
-        foreach ($elements as $element) {
-            if($element instanceof HasFieldsContract) {
-                $this->showWhenConditions(
-                    $element->getFields()->onlyFields(),
-                    $data,
-                    $parentColumn . $parentColumn ? '.' : '' . $element->getColumn()
-                );
+        foreach ($fields as $field) {
+            if($field instanceof HasFieldsContract) {
+                // todo getPreparedFields memoization
+                $this->showWhenConditions($field->getPreparedFields()->onlyFields(), $data);
             }
         }
     }

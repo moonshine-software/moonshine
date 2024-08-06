@@ -214,9 +214,12 @@ class Json extends Field implements
 
     public function getPreparedFields(): FieldsContract
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
-            $field->withoutWrapper();
-        });
+        return $this->getFields()
+            ->prepareAttributes()
+            ->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
+                $field->withoutWrapper();
+            })
+            ->prepareShowWhenValues();
     }
 
     protected function resolvePreview(): Renderable|string
