@@ -26,6 +26,12 @@ input[type='number'] {
   }
 }
 
+.sm\:flex {
+  .form-group + .form-group {
+    @apply mb-0 mt-0;
+  }
+}
+
 .form-group {
   @apply flex w-full flex-col gap-2;
 
@@ -42,13 +48,13 @@ input[type='number'] {
   }
 
   &-inline {
-    @apply w-auto flex-row flex-wrap items-center justify-items-center;
+    @apply flex-row flex-wrap items-center justify-items-center;
 
     & > label + div {
       @apply w-full lg:w-0 lg:grow;
     }
 
-    & > label {
+    & > label:first-child:not(.form-switcher) {
       @apply lg:w-1/5;
     }
   }
