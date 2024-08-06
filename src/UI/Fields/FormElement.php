@@ -105,6 +105,15 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this->isGroup;
     }
 
+    public function horizontal(): static
+    {
+        $this->customWrapperAttributes([
+            'class' => 'form-group-inline',
+        ]);
+
+        return $this;
+    }
+
     public function withoutWrapper(mixed $condition = null): static
     {
         $this->withWrapper = value($condition, $this) ?? false;
