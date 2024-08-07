@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components\Layout;
 
 use Illuminate\Support\Collection;
+use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
 final class Notifications extends MoonShineComponent
@@ -19,33 +20,24 @@ final class Notifications extends MoonShineComponent
 
     public Collection $notifications;
 
+    private readonly MoonShineNotificationContract $notificationService;
+
     public function __construct()
     {
         parent::__construct();
 
-        $this->notifications = auth()->user()?->unreadNotifications ?? collect();
-    }
 
-    protected function prepareBeforeRender(): void
-    {
-        if($this->notifications->isNotEmpty()) {
-            $this->notifications = $this->notifications->map(function (mixed $notification) {
-                $data = [
-                    ...$notification->data,
-                    'read_route' => route('moonshine.notifications.read', $notification),
-                ];
+        $this->notificationService = $this->getCore()
+            ->getContainer(MoonShineNotificationContract::class);
 
-                $notification->data = $data;
-
-                return $notification;
-            });
-        }
+        $this->notifications = $this->notificationService
+            ->getAll();
     }
 
     protected function viewData(): array
     {
         return [
-            'readAllRoute' => route('moonshine.notifications.readAll'),
+            'readAllRoute' => $this->notificationService->getReadAllRoute(),
         ];
     }
 }

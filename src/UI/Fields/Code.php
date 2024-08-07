@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Stringable;
+
 class Code extends Textarea
 {
     protected string $view = 'moonshine::fields.code';
@@ -28,14 +30,13 @@ class Code extends Textarea
 
     protected function resolvePreview(): string
     {
-        if($this->isRawMode()) {
-            return $this->toRawValue();
-        }
-
         return (string) str(parent::resolvePreview())
             ->before('<pre>')
             ->after('</pre>')
-            ->stripTags();
+            ->when(
+                ! $this->isUnescape(),
+                fn (Stringable $str) => $str->stripTags()
+            );
     }
 
     protected function viewData(): array

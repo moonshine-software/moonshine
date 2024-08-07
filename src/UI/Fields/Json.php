@@ -222,12 +222,13 @@ class Json extends Field implements
             ->prepareShowWhenValues();
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return (string) $this->rawValue;
+    }
+
     protected function resolvePreview(): Renderable|string
     {
-        if ($this->isRawMode()) {
-            return (string) parent::resolvePreview();
-        }
-
         return $this->resolveValue()
             ->simple()
             ->preview()

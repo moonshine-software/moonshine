@@ -291,12 +291,6 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             $items = $items->take($this->getLimit());
         }
 
-        if ($this->isRawMode()) {
-            return $items
-                ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
-                ->implode(';');
-        }
-
         $resource = $this->getResource();
 
         return TableBuilder::make(items: $items)
@@ -433,15 +427,18 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         return null;
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return collect($this->toValue())
+            ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
+            ->implode(';');
+    }
+
     /**
      * @throws Throwable
      */
     protected function resolvePreview(): Renderable|string
     {
-        if($this->isRawMode()) {
-            return '';
-        }
-
         // resolve value before call toValue
         if(is_null($this->toValue())) {
             $casted = $this->getRelatedModel();

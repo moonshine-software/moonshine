@@ -85,18 +85,23 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
         return $this->extractDates($this->toValue(), $this->getInputFormat());
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        if ($this->isNullRange(formatted: true)) {
+            return '';
+        }
+
+        $value = $this->toValue(withDefault: false);
+
+        return "{$value[$this->fromField]} - {$value[$this->toField]}";
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
 
         if ($this->isNullRange(formatted: true)) {
             return '';
-        }
-
-        if ($this->isRawMode()) {
-            $value = $this->toValue(withDefault: false);
-
-            return "{$value[$this->fromField]} - {$value[$this->toField]}";
         }
 
         $dates = $this->extractDates($value, $this->getFormat());

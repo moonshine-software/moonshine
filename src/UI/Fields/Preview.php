@@ -46,10 +46,6 @@ class Preview extends Field
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isRawMode()) {
-            return $value;
-        }
-
         if ($this->isBoolean) {
             $value = (bool) $value;
 

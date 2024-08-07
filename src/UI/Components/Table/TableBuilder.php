@@ -368,8 +368,8 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                                 ->customAttributes([
                                     '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
                                 ])
-                        )
-                        : TableTh::make($field->getLabel())
+                        )->customAttributes(['data-column-selection' => $field->getColumn()])
+                        : TableTh::make($field->getLabel())->customAttributes(['data-column-selection' => $field->getColumn()])
                 );
             }
 
@@ -487,9 +487,16 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
      */
     protected function viewData(): array
     {
+        $columns = $this->getFields()->flatMap(
+            static fn (FieldContract $field): ?array => $field->isColumnSelection()
+                ? [$field->getIdentity() => $field->getLabel()]
+                : null
+        )->filter()->toArray();
+
         return [
             'rows' => $this->getRows(),
             'headRows' => $this->getHeadRows(),
+            'columns' => $columns,
             'footRows' => $this->getFootRows(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),

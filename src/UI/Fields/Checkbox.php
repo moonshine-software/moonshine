@@ -78,14 +78,15 @@ class Checkbox extends Field implements
         $this->mergeAttribute('x-on:change', $this->getOnChangeEvent(), ';');
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return (string) ($this->toValue(false)
+            ? $this->onValue
+            : $this->offValue);
+    }
+
     protected function resolvePreview(): Renderable|string
     {
-        if ($this->isRawMode()) {
-            return (string) ($this->toValue(false)
-                ? $this->onValue
-                : $this->offValue);
-        }
-
         return Boolean::make(
             (bool) parent::resolvePreview()
         )->render();

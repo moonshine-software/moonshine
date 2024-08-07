@@ -6,16 +6,16 @@ namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageDetail;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageForm;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageIndex;
+use MoonShine\Tests\Fixtures\Resources\AbstractTestingResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 
-class TestCoverPageResource extends ModelResource
+class TestCoverPageResource extends AbstractTestingResource
 {
     public string $model = Cover::class;
 

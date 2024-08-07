@@ -275,26 +275,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set('auth.middleware', $middleware);
     }
 
-    public function isDefaultWithExport(): bool
-    {
-        return $this->get('default_with_export', true);
-    }
-
-    public function isDefaultWithImport(): bool
-    {
-        return $this->get('default_with_import', true);
-    }
-
-    public function defaultWithoutExport(): self
-    {
-        return $this->set('default_with_export', false);
-    }
-
-    public function defaultWithoutImport(): self
-    {
-        return $this->set('default_with_import', false);
-    }
-
     public function getPagePrefix(): string
     {
         return $this->get('page_prefix', 'page');

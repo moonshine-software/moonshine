@@ -13,6 +13,7 @@ use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
@@ -40,6 +41,7 @@ class BelongsTo extends ModelRelationField implements
     use WithDefaultValue;
     use HasPlaceholder;
     use Reactivity;
+    use BelongsToOrManyCreatable;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 
@@ -50,10 +52,6 @@ class BelongsTo extends ModelRelationField implements
      */
     protected function resolvePreview(): string
     {
-        if($this->isRawMode()) {
-            return (string) ($this->toValue()?->getKey() ?? $this->toFormattedValue() ?? '');
-        }
-
         if (! $this->getResource()->hasAction(Action::VIEW, Action::UPDATE)) {
             return parent::resolvePreview();
         }
@@ -119,6 +117,10 @@ class BelongsTo extends ModelRelationField implements
             'isNullable' => $this->isNullable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->getAsyncSearchUrl(),
+            'isCreatable' => $this->isCreatable(),
+            'createButton' => $this->getCreateButton(),
+            'fragmentUrl' => $this->getFragmentUrl(),
+            'relationName' => $this->getRelationName(),
         ];
     }
 }

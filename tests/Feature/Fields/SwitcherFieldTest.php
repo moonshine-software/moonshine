@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use MoonShine\ImportExport\ExportHandler;
+use MoonShine\ImportExport\ImportHandler;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
-use MoonShine\Laravel\Handlers\ExportHandler;
-use MoonShine\Laravel\Handlers\ImportHandler;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;

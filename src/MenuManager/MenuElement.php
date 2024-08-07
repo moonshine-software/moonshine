@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
@@ -17,10 +18,10 @@ use MoonShine\UI\Traits\HasCanSee;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
-// todo(hot)-2 ??? inject CoreContract
 abstract class MenuElement implements MenuElementContract, RenderableContract, HasCanSeeContract
 {
     use Makeable;
+    use Macroable;
     use WithCore;
     use WithComponentAttributes;
     use WithIcon;

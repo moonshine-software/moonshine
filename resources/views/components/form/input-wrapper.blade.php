@@ -24,11 +24,13 @@
         </x-moonshine::form.label>
     @endif
 
-    {{ $beforeSlot ?? '' }}
+    <div>
+        {{ $beforeSlot ?? '' }}
 
-    {{ !$beforeLabel && !$inLabel ? $slot : '' }}
+        {{ !$beforeLabel && !$inLabel ? $slot : '' }}
 
-    {{ $afterSlot ?? '' }}
+        {{ $afterSlot ?? '' }}
+    </div>
 
     @if(isset($errors[0]))
         <x-moonshine::form.input-error>

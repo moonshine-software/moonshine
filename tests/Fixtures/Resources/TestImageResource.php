@@ -6,14 +6,13 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\ImageModel;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 
-class TestImageResource extends ModelResource
+class TestImageResource extends AbstractTestingResource
 {
     protected string $model = ImageModel::class;
 

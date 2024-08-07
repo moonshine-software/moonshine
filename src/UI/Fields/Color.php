@@ -20,10 +20,6 @@ class Color extends Field implements HasDefaultValueContract, CanBeString
 
     protected function resolvePreview(): Renderable|string
     {
-        if($this->isRawMode()) {
-            return $this->toValue();
-        }
-
         return ColorComponent::make($this->getValue())
             ->render();
     }

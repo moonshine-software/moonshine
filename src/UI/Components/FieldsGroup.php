@@ -51,7 +51,7 @@ final class FieldsGroup extends AbstractWithComponents
     {
         $this->getComponents()
             ->onlyFields()
-            ->map(static fn (FieldContract $field): FieldContract => $callback($field));
+            ->map(static fn (FieldContract $field, int $index): FieldContract => $callback($field, $index));
 
         return $this;
     }

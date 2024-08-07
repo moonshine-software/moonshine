@@ -18,24 +18,22 @@ class DateRangeModelApply implements ApplyContract
         return static function (Builder $query) use ($field): void {
             $values = $field->getRequestValue();
 
+            $condition = $field->getAttribute('type') === 'datetime-local' ? 'where' : 'whereDate';
+
             $query->when(
                 $values['from'] ?? null,
-                static function ($query, $from) use ($field): void {
-                    $query->whereDate(
-                        $field->getColumn(),
-                        '>=',
-                        Carbon::parse($from)
-                    );
-                }
+                static fn ($query, $from) => $query->{$condition}(
+                    $field->getColumn(),
+                    '>=',
+                    Carbon::parse($from)
+                )
             )->when(
                 $values['to'] ?? null,
-                static function ($query, $to) use ($field): void {
-                    $query->whereDate(
-                        $field->getColumn(),
-                        '<=',
-                        Carbon::parse($to)
-                    );
-                }
+                static fn ($query, $to) => $query->$condition(
+                    $field->getColumn(),
+                    '<=',
+                    Carbon::parse($to)
+                )
             );
         };
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use MoonShine\Laravel\Handlers\ExportHandler;
-use MoonShine\Laravel\Handlers\ImportHandler;
+use MoonShine\ImportExport\ExportHandler;
+use MoonShine\ImportExport\ImportHandler;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
@@ -107,7 +107,7 @@ function morphToExport(ImageModel $item, int $newId): ?string
 
     expect($file)
         ->toContain('Imageable')
-        ->toContain($item->imageable->name)
+        ->toContain($item->imageable->id)
     ;
 
     return $file;

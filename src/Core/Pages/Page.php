@@ -65,7 +65,6 @@ abstract class Page implements
 
     public function __construct(
         CoreContract $core,
-        protected AssetManagerContract $assetManager,
     ) {
         $this->setCore($core);
         $this->booted();

@@ -43,6 +43,7 @@ return [
 
     'use_migrations' => true,
     'use_notifications' => true,
+    'use_database_notifications' => true,
 
     'disk' => 'public',
     'disk_options' => [],
@@ -77,9 +78,6 @@ return [
         'login' => LoginPage::class,
         'error' => ErrorPage::class,
     ],
-
-    'default_with_import' => true,
-    'default_with_export' => true,
 
     'locale' => 'en',
     'locales' => [

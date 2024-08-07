@@ -90,18 +90,21 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             ->detailFields(withOutside: false);
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        $items = [$this->toValue()];
+
+        return collect($items)
+            ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
+            ->implode(';');
+    }
+
     /**
      * @throws Throwable
      */
     protected function resolvePreview(): Renderable|string
     {
         $items = [$this->toValue()];
-
-        if ($this->isRawMode()) {
-            return collect($items)
-                ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
-                ->implode(';');
-        }
 
         $resource = $this->getResource();
 

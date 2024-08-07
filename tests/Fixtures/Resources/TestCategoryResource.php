@@ -6,7 +6,6 @@ namespace MoonShine\Tests\Fixtures\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
@@ -15,7 +14,7 @@ use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Markdown;
 use MoonShine\UI\Fields\Text;
 
-class TestCategoryResource extends ModelResource
+class TestCategoryResource extends AbstractTestingResource
 {
     public string $model = Category::class;
 

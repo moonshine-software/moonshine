@@ -19,6 +19,8 @@ class Hidden extends Field implements HasDefaultValueContract, CanBeString
 
     protected bool $showValue = false;
 
+    protected bool $columnSelection = false;
+
     public function __construct(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
     {
         parent::__construct($label, $column ?? $label, $formatted);

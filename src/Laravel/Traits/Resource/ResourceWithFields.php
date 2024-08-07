@@ -136,36 +136,4 @@ trait ResourceWithFields
 
         return $filters;
     }
-
-    /**
-     * @return list<FieldContract>
-     */
-    public function exportFields(): array
-    {
-        return [];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getExportFields(): Fields
-    {
-        return Fields::make($this->exportFields())->ensure(FieldContract::class);
-    }
-
-    /**
-     * @return list<FieldContract>
-     */
-    public function importFields(): array
-    {
-        return [];
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function getImportFields(): Fields
-    {
-        return Fields::make($this->importFields())->ensure(FieldContract::class);
-    }
 }

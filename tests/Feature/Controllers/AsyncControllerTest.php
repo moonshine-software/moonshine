@@ -8,7 +8,7 @@ it('table', function () {
     $item = createItem(3, 2);
 
     asAdmin()->get($this->moonshineCore->getRouter()->to('async.component', [
-        '_component_name' => 'index-table',
+        '_component_name' => 'index-table-test-item-resource',
         'resourceUri' => 'test-item-resource',
         'pageUri' => 'index-page',
     ]))
