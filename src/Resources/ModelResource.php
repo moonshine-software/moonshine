@@ -82,6 +82,8 @@ abstract class ModelResource extends Resource
 
     protected bool $columnSelection = false;
 
+    protected bool $isHideErrorsAtFormTop = false;
+
     public function flushState(): void
     {
         $this->item = null;
@@ -183,6 +185,12 @@ abstract class ModelResource extends Resource
     {
         return $this->columnSelection;
     }
+
+    public function isHideErrorsAtFormTop(): bool
+    {
+        return $this->isHideErrorsAtFormTop;
+    }
+
 
     /**
      * @return list<Metric>
@@ -346,7 +354,7 @@ abstract class ModelResource extends Resource
 
         $fields->each(fn (Field $field): mixed => $field->afterApply($item));
 
-        if($item->isDirty()) {
+        if ($item->isDirty()) {
             $item->save();
         }
 
