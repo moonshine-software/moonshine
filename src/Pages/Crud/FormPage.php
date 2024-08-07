@@ -154,7 +154,7 @@ class FormPage extends Page
                 fn (FormBuilder $form): FormBuilder => $form->precognitive()
             )
             ->when(
-                $resource->isHideErrorsAtFormTop(),
+                $resource->hideErrorsAtFormTop(),
                 fn (FormBuilder $form): FormBuilder => $form->hideErrorsAtFormTop()
             )
             ->name($resource->uriKey())

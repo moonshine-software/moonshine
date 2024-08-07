@@ -4,7 +4,7 @@
     'errors' => false,
     'precognitive' => false,
     'raw' => false,
-    'isShowErrorsAtFormTop' => true,
+    'showErrorsAtFormTop' => true,
 ])
 
 @if($isShowErrorsAtFormTop && formErrors($errors, $name)->isNotEmpty())

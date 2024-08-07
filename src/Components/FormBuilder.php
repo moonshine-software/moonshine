@@ -50,7 +50,7 @@ final class FormBuilder extends RowComponent
 
     protected Closure|string|null $reactiveUrl = null;
 
-    protected bool $isShowErrorsAtFormTop = true;
+    protected bool $showErrorsAtFormTop = true;
 
     public function __construct(
         protected string $action = '',
@@ -104,9 +104,9 @@ final class FormBuilder extends RowComponent
         return $this;
     }
 
-    public function isShowErrorsAtFormTop(): bool
+    public function showErrorsAtFormTop(): bool
     {
-        return $this->isShowErrorsAtFormTop;
+        return $this->showErrorsAtFormTop;
     }
 
 
