@@ -16,12 +16,16 @@ trait BelongsToOrManyCreatable
 
     protected ?ActionButton $creatableButton = null;
 
+    protected ?string $creatableFragmentUrl = null;
+
     public function creatable(
         Closure|bool|null $condition = null,
         ?ActionButton $button = null,
+        ?string $fragmentUrl = null,
     ): static {
         $this->isCreatable = Condition::boolean($condition, true);
         $this->creatableButton = $button;
+        $this->creatableFragmentUrl = $fragmentUrl;
 
         return $this;
     }
@@ -49,7 +53,7 @@ trait BelongsToOrManyCreatable
 
     public function fragmentUrl(): string
     {
-        return to_page(
+        return $this->creatableFragmentUrl ?? to_page(
             page: moonshineRequest()->getPage(),
             resource: moonshineRequest()->getResource(),
             params: ['resourceItem' => moonshineRequest()->getItemID()],
