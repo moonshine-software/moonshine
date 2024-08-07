@@ -85,37 +85,44 @@ export default (name = '', initData = {}, reactive = {}) => ({
       }
     })
 
-    if (t.whenFields !== undefined) {
-      this.$nextTick(async function () {
-        let formId = t.$id('form')
-        if (formId === undefined) {
-          formId = t.$el.getAttribute('id')
-        }
+    this.whenFieldsInit()
+  },
+  whenFieldsInit(){
+    const t = this
 
-        await t.$nextTick()
+    if (t.whenFields === undefined) {
+      return
+    }
 
-        const inputs = t.getInputs(formId)
+    this.$nextTick(async function () {
+      let formId = t.$id('form')
+      if (formId === undefined) {
+        formId = t.$el.getAttribute('id')
+      }
 
-        const showWhenConditions = {}
+      await t.$nextTick()
 
-        t.whenFields.forEach(field => {
-          if (
+      const inputs = t.getInputs(formId)
+
+      const showWhenConditions = {}
+
+      t.whenFields.forEach(field => {
+        if (
             inputs[field.changeField] === undefined ||
             inputs[field.changeField].value === undefined
-          ) {
-            return
-          }
-          if (showWhenConditions[field.showField] === undefined) {
-            showWhenConditions[field.showField] = []
-          }
-          showWhenConditions[field.showField].push(field)
-        })
-
-        for (let key in showWhenConditions) {
-          t.showWhenVisibilityChange(showWhenConditions[key], key, inputs, formId)
+        ) {
+          return
         }
+        if (showWhenConditions[field.showField] === undefined) {
+          showWhenConditions[field.showField] = []
+        }
+        showWhenConditions[field.showField].push(field)
       })
-    }
+
+      for (let key in showWhenConditions) {
+        t.showWhenVisibilityChange(showWhenConditions[key], key, inputs, formId)
+      }
+    })
   },
   precognition() {
     const form = this.$el

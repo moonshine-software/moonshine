@@ -27,4 +27,6 @@ enum JsEvent: string
     case POPOVER_TOGGLED = 'popover_toggled';
 
     case TOAST = 'toast';
+
+    case SHOW_WHEN_REFRESH = 'show_when_refresh';
 }

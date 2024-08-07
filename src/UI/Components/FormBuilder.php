@@ -409,6 +409,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         $this->customAttributes([
             'x-data' => "formBuilder(`{$this->getName()}`, $xData, {$reactiveFields->toJson()})",
+            'data-form-component' => $this->getName()
         ]);
 
         if ($this->isPrecognitive()) {
@@ -420,6 +421,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         $this->customAttributes([
             AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
             AlpineJs::eventBlade(JsEvent::FORM_SUBMIT, $this->getName()) => 'submit',
+            AlpineJs::eventBlade(JsEvent::SHOW_WHEN_REFRESH, $this->getName()) => 'whenFieldsInit',
         ]);
 
         if ($this->isAsync()) {
