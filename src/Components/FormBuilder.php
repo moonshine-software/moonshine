@@ -99,7 +99,7 @@ final class FormBuilder extends RowComponent
 
     public function hideErrorsAtFormTop(): self
     {
-        $this->isShowErrorsAtFormTop = false;
+        $this->showErrorsAtFormTop = false;
 
         return $this;
     }
@@ -382,7 +382,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
-            'isShowErrorsAtFormTop' => $this->isShowErrorsAtFormTop(),
+            'showErrorsAtFormTop' => $this->showErrorsAtFormTop(),
         ];
     }
 }
