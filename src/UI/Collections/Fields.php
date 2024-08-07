@@ -185,6 +185,7 @@ class Fields extends Renderables implements FieldsContract
     /**
      * @throws Throwable
      */
+    // todo rename to prepareReindexNames
     public function prepareReindex(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
@@ -223,21 +224,22 @@ class Fields extends Renderables implements FieldsContract
                     is_null($performName) ? $name : value($performName, $name, $parent, $field)
                 )
                 ->iterableAttributes($level);
-        });
+        })
+            ->prepareShowWhenNames();
     }
 
-    public function prepareShowWhenValues(): static
+    public function prepareShowWhenNames(): static
     {
         return $this->map(static function (FieldContract $field): FieldContract {
             if(! $field->hasShowWhen()) {
                 return $field;
             }
 
-            $showWhenName = str($field->getNameDot())
-                ->replaceMatches('/\.\${index\d+}/', '')
+            $showWhenName = str($field->getIdentity())
+                ->replace('_', '.')
                 ->toString();
 
-            return $field->changeShowFieldName($showWhenName)
+            return $field->modifyShowFieldName($showWhenName)
                 ->customAttributes([
                     'data-show-when-field' => $showWhenName
                 ]);

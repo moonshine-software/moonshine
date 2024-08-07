@@ -218,8 +218,7 @@ class Json extends Field implements
             ->prepareAttributes()
             ->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
                 $field->withoutWrapper();
-            })
-            ->prepareShowWhenValues();
+            });
     }
 
     protected function resolveRawValue(): mixed
