@@ -274,7 +274,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this->hasComponent();
     }
 
-    public function getPreparedComponents(): Components
+    protected function prepareComponents(): Components
     {
         return Components::make($this->hasComponents() ? [$this->getComponent()] : []);
     }

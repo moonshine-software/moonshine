@@ -75,7 +75,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
     /**
      * @throws Throwable
      */
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getDetailFields();

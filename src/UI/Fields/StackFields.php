@@ -45,11 +45,10 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
         ?CastedDataContract $casted = null,
         int $index = 0
     ): static {
-        $this->getFields()
-            ->onlyFields()
-            ->each(static fn (FieldContract $field): FieldContract => $field->fillData(is_null($casted) ? $raw : $casted, $index));
-
-        return $this;
+        return $this
+            ->setRawValue($raw)
+            ->setData($casted)
+            ->setRowIndex($index);
     }
 
     /**
@@ -61,6 +60,7 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
             $this->getFields()->onlyFields()
         )
             ->mapFields(fn (FieldContract $field, int $index): FieldContract => $field
+                ->fillData($this->getData())
                 ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
                 ->withoutWrapper($this->hasLabels())
                 ->previewMode())
@@ -127,20 +127,6 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
             );
 
         return $data;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function __clone()
-    {
-        $fields = [];
-
-        foreach ($this->getRawFields() as $index => $field) {
-            $fields[$index] = clone $field;
-        }
-
-        $this->fields($fields);
     }
 
     /**

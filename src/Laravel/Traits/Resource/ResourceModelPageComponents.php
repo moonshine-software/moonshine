@@ -27,6 +27,14 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
+    public function getInsideFormPageComponents(): array
+    {
+        return $this->insideFormPageComponents();
+    }
+
+    /**
+     * @return list<FieldContract>
+     */
     public function getDetailPageComponents(): array
     {
         return empty($this->detailPageComponents()) ? $this->pageComponents() : $this->detailPageComponents();
@@ -35,7 +43,7 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
-    public function indexPageComponents(): array
+    protected function indexPageComponents(): array
     {
         return [];
     }
@@ -43,7 +51,7 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
-    public function formPageComponents(): array
+    protected function formPageComponents(): array
     {
         return [];
     }
@@ -51,7 +59,7 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
-    public function detailPageComponents(): array
+    protected function insideFormPageComponents(): array
     {
         return [];
     }
@@ -59,7 +67,15 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
-    public function pageComponents(): array
+    protected function detailPageComponents(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return list<FieldContract>
+     */
+    protected function pageComponents(): array
     {
         return [];
     }

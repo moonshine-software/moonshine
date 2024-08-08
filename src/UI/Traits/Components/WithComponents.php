@@ -15,13 +15,27 @@ trait WithComponents
 {
     protected iterable $components = [];
 
+    protected ?Components $preparedComponents = null;
+
+    public function resetPreparedComponents(): static
+    {
+        $this->preparedComponents = null;
+
+        return $this;
+    }
+
     public function getPreparedComponents(): Components
     {
-        if(! $this->components instanceof Components) {
-            return Components::make($this->components);
+        if(!is_null($this->preparedComponents)) {
+            return $this->preparedComponents;
         }
 
-        return $this->components;
+        return $this->preparedComponents = $this->prepareComponents();
+    }
+
+    protected function prepareComponents(): Components
+    {
+        return $this->getComponents();
     }
 
     /**
@@ -29,7 +43,11 @@ trait WithComponents
      */
     public function getComponents(): Components
     {
-        return $this->getPreparedComponents();
+        if(! $this->components instanceof Components) {
+            return Components::make($this->components);
+        }
+
+        return $this->components;
     }
 
     /**

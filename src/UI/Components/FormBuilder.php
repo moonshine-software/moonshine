@@ -110,7 +110,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return $this;
     }
 
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         $fields = $this->getFields();
         $casted = $this->castData($this->getValues());
