@@ -85,6 +85,8 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     }
   })
 
+  const showWhenSubmit = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
+
   if(inputElement.closest('[data-table-type=json]')) {
     // If input is in a table, then find all tables with this input
     const tablesWithInput = []
@@ -99,7 +101,7 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
 
     // Tables hide the entire column
     tablesWithInput.forEach(table => {
-      showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName)
+      showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName, showWhenSubmit)
     })
 
     return;
@@ -123,16 +125,17 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   } else {
     fieldContainer.style.display = 'none'
 
-    // todo ShowWhen remove from payload
-    const nameAttr = inputElement.getAttribute('name');
-    if(nameAttr) {
-      inputElement.setAttribute('data-show-when-column', nameAttr);
-      inputElement.removeAttribute('name')
+    if(! showWhenSubmit) {
+      const nameAttr = inputElement.getAttribute('name');
+      if(nameAttr) {
+        inputElement.setAttribute('data-show-when-column', nameAttr);
+        inputElement.removeAttribute('name')
+      }
     }
   }
 }
 
-function showHideTableInputs(isShow, table, fieldName) {
+function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
 
   let cellIndexTd = null;
 
@@ -147,10 +150,12 @@ function showHideTableInputs(isShow, table, fieldName) {
     } else {
       element.closest('td').style.display = 'none'
 
-      const nameAttr = element.getAttribute('name');
-      if(nameAttr) {
-        element.setAttribute('data-show-when-column', nameAttr);
-        element.removeAttribute('name')
+      if(! showWhenSubmit) {
+        const nameAttr = element.getAttribute('name');
+        if(nameAttr) {
+          element.setAttribute('data-show-when-column', nameAttr);
+          element.removeAttribute('name')
+        }
       }
     }
 
