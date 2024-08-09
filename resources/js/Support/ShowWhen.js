@@ -78,10 +78,10 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
     return
   }
 
-  let countTrueConditions = 0;
+  let visibleFieldsCount = 0;
   showWhenFields.forEach(field => {
     if (isShowField(fieldName, inputs, field)) {
-      countTrueConditions++
+      visibleFieldsCount++
     }
   })
 
@@ -101,7 +101,7 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
 
     // Tables hide the entire column
     tablesWithInput.forEach(table => {
-      showHideTableInputs(showWhenFields.length === countTrueConditions, table, fieldName, showWhenSubmit)
+      showHideTableInputs(showWhenFields.length === visibleFieldsCount, table, fieldName, showWhenSubmit)
     })
 
     return;
@@ -115,7 +115,7 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
     fieldContainer = inputElement
   }
 
-  if (showWhenFields.length === countTrueConditions) {
+  if (showWhenFields.length === visibleFieldsCount) {
     fieldContainer.style.removeProperty('display')
 
     const nameAttr = inputElement.getAttribute('data-show-when-column')

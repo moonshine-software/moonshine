@@ -89,7 +89,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
   whenFieldsInit(){
     const t = this
 
-    if (t.whenFields === undefined) {
+    if (! t.whenFields.length) {
       return
     }
 
@@ -103,7 +103,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       const inputs = t.getInputs(formId)
 
-      const showWhenConditions = {}
+      const showWhenFields = {}
 
       t.whenFields.forEach(field => {
         if (
@@ -112,14 +112,14 @@ export default (name = '', initData = {}, reactive = {}) => ({
         ) {
           return
         }
-        if (showWhenConditions[field.showField] === undefined) {
-          showWhenConditions[field.showField] = []
+        if (showWhenFields[field.showField] === undefined) {
+          showWhenFields[field.showField] = []
         }
-        showWhenConditions[field.showField].push(field)
+        showWhenFields[field.showField].push(field)
       })
 
-      for (let key in showWhenConditions) {
-        t.showWhenVisibilityChange(showWhenConditions[key], key, inputs, formId)
+      for (let key in showWhenFields) {
+        t.showWhenVisibilityChange(showWhenFields[key], key, inputs, formId)
       }
     })
   },
