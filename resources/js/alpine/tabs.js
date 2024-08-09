@@ -10,6 +10,8 @@ export default (activeTab = '', isVertical = false) => ({
       this.activationVerticalWidth = this.$el.dataset.tabsVerticalMinWidth ?? 480
       this.toggleVerticalClass(true)
       this.checkWidthElement()
+
+      window.addEventListener('active-tab', () => this.checkWidthElement())
       window.addEventListener('resize', () => this.checkWidthElement())
     }
   },
@@ -25,5 +27,9 @@ export default (activeTab = '', isVertical = false) => ({
 
   setActiveTab(tabId) {
     this.activeTab = tabId ?? this.activeTab
+
+    setTimeout(function() {
+      window.dispatchEvent(new Event('active-tab'))
+    });
   },
 })
