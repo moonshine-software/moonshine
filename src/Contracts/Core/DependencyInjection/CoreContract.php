@@ -11,11 +11,18 @@ use Psr\Container\ContainerInterface;
 interface CoreContract
 {
     /**
-     * @template T
+     * @template-covariant T
      * @param class-string<T>|null $id
      * @return T|ContainerInterface
      */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
+
+    /**
+     * @template-covariant I
+     * @param class-string<I> $class
+     * @return ?I
+     */
+    public function getInstances(string $class): mixed;
 
     public function getRenderer(): ViewRendererContract;
 

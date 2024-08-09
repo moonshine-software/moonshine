@@ -45,7 +45,7 @@ class MenuItem extends MenuElement
         }
 
         if(is_string($this->filler) && str_contains($this->filler, '\\')) {
-            $this->filler = $this->getCore()->getContainer()->get($this->filler);
+            $this->filler = $this->getCore()->getInstances($this->filler);
         }
 
         if ($this->filler instanceof MenuFillerContract) {

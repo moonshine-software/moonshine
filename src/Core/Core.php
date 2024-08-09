@@ -21,6 +21,7 @@ use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Memoize\MemoizeRepository;
 use Psr\Container\ContainerInterface;
+use WeakMap;
 
 abstract class Core implements CoreContract
 {
@@ -29,6 +30,8 @@ abstract class Core implements CoreContract
     protected array $resources = [];
 
     protected array $pages = [];
+
+    protected array $instances = [];
 
     protected static Closure|CoreContract $instance;
 
@@ -117,6 +120,8 @@ abstract class Core implements CoreContract
 
     public function flushState(): void
     {
+        $this->instances = [];
+
         $this->getResources()->transform(static function (ResourceContract $resource): ResourceContract {
             $resource->flushState();
 
@@ -160,8 +165,40 @@ abstract class Core implements CoreContract
      */
     public function getResources(): ResourcesContract
     {
-        return Resources::make($this->resources)
-            ->map(fn (string|ResourceContract $class): mixed => is_string($class) ? $this->getContainer()->get($class) : $class);
+        return Resources::make(
+            $this->resolveInstances(
+                $this->resources
+            )
+        );
+    }
+
+    private function resolveInstances(iterable $items): array
+    {
+        $targets = [];
+
+        foreach ($items as $item) {
+            if(is_string($item) && isset($this->instances[$item])) {
+                $targets[] = $this->instances[$item];
+
+                continue;
+            }
+
+            $instance = is_string($item) ? $this->getContainer()->get($item) : $item;
+            $this->instances[$instance::class] = $instance;
+            $targets[] = $instance;
+        }
+
+        return $targets;
+    }
+
+    /**
+     * @template-covariant I
+     * @param class-string<I> $class
+     * @return ?I
+     */
+    public function getInstances(string $class): mixed
+    {
+        return $this->instances[$class] ?? $this->getContainer($class);
     }
 
     /**
@@ -188,8 +225,10 @@ abstract class Core implements CoreContract
      */
     public function getPages(): Pages
     {
-        return Pages::make($this->pages)
-            ->except('error')
-            ->map(fn (string|PageContract $class): mixed => is_string($class) ? $this->getContainer()->get($class) : $class);
+        return Pages::make(
+            $this->resolveInstances(
+                collect($this->pages)->except('error')
+            )
+        );
     }
 }
