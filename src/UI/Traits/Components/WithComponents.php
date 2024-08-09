@@ -26,7 +26,7 @@ trait WithComponents
 
     public function getPreparedComponents(): Components
     {
-        if(!is_null($this->preparedComponents)) {
+        if(! is_null($this->preparedComponents)) {
             return $this->preparedComponents;
         }
 

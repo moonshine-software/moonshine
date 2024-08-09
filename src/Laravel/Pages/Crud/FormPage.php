@@ -245,7 +245,7 @@ class FormPage extends Page
                         )
                     )
                     ->toArray(),
-                ...$this->getResource()->getInsideFormPageComponents()
+                ...$this->getResource()->getInsideFormPageComponents(),
             ])
             ->when(
                 $isAsync,
