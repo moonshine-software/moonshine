@@ -38,7 +38,7 @@ export function getInputs(formId) {
 export function showWhenChange(fieldName, formId) {
   fieldName = inputFieldName(fieldName)
 
-  const showWhenConditions = []
+  const showWhenFields = []
 
   this.whenFields.forEach(field => {
     if (fieldName !== field.changeField) {
@@ -47,20 +47,20 @@ export function showWhenChange(fieldName, formId) {
 
     let showField = field.showField
 
-    if(! showWhenConditions[showField]) {
-      showWhenConditions[showField] = []
+    if(! showWhenFields[showField]) {
+      showWhenFields[showField] = []
     }
 
-    showWhenConditions[showField].push(field)
+    showWhenFields[showField].push(field)
   })
 
-  for (let showField in showWhenConditions) {
-    this.showWhenVisibilityChange(showWhenConditions[showField], showField, this.getInputs(formId), formId)
+  for (let showField in showWhenFields) {
+    this.showWhenVisibilityChange(showWhenFields[showField], showField, this.getInputs(formId), formId)
   }
 }
 
-export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, formId) {
-  if (showWhenConditions.length === 0) {
+export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, formId) {
+  if (showWhenFields.length === 0) {
     return
   }
 
@@ -79,8 +79,8 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
   }
 
   let countTrueConditions = 0;
-  showWhenConditions.forEach(field => {
-    if (this.isValidateShow(fieldName, inputs, field)) {
+  showWhenFields.forEach(field => {
+    if (isShowField(fieldName, inputs, field)) {
       countTrueConditions++
     }
   })
@@ -101,7 +101,7 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
 
     // Tables hide the entire column
     tablesWithInput.forEach(table => {
-      showHideTableInputs(showWhenConditions.length === countTrueConditions, table, fieldName, showWhenSubmit)
+      showHideTableInputs(showWhenFields.length === countTrueConditions, table, fieldName, showWhenSubmit)
     })
 
     return;
@@ -115,7 +115,7 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     fieldContainer = inputElement
   }
 
-  if (showWhenConditions.length === countTrueConditions) {
+  if (showWhenFields.length === countTrueConditions) {
     fieldContainer.style.removeProperty('display')
 
     const nameAttr = inputElement.getAttribute('data-show-when-column')
@@ -174,78 +174,6 @@ function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
   }
 }
 
-export function isValidateShow(fieldName, inputs, field) {
-  let validateShow = false
-
-  let valueInput = inputs[field.changeField].value
-  let valueField = field.value
-
-  const inputType = inputs[field.changeField].type
-
-  if (inputType === 'number') {
-    valueInput = parseFloat(valueInput)
-    valueField = parseFloat(valueField)
-  } else if (inputType === 'date' || inputType === 'datetime-local') {
-    if (inputType === 'date') {
-      valueInput = valueInput + ' 00:00:00'
-    }
-    valueInput = new Date(valueInput).getTime()
-
-    if (!Array.isArray(valueField)) {
-      valueField = new Date(valueField).getTime()
-    }
-  }
-
-  switch (field.operator) {
-    case '=':
-      validateShow = valueInput == valueField
-      break
-    case '!=':
-      validateShow = valueInput != valueField
-      break
-    case '>':
-      validateShow = valueInput > valueField
-      break
-    case '<':
-      validateShow = valueInput < valueField
-      break
-    case '>=':
-      validateShow = valueInput >= valueField
-      break
-    case '<=':
-      validateShow = valueInput <= valueField
-      break
-    case 'in':
-      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
-        for (let i = 0; i < valueField.length; i++) {
-          if (valueInput.includes(valueField[i])) {
-            validateShow = true
-            break
-          }
-        }
-      } else {
-        validateShow = valueField.includes(valueInput)
-      }
-      break
-    case 'not in':
-      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
-        let includes = false
-        for (let i = 0; i < valueField.length; i++) {
-          if (valueInput.includes(valueField[i])) {
-            includes = true
-            break
-          }
-        }
-        validateShow = !includes
-      } else {
-        validateShow = !valueField.includes(valueInput)
-      }
-      break
-  }
-
-  return validateShow
-}
-
 export function inputFieldName(inputName) {
   if (inputName === null) {
     return ''
@@ -276,4 +204,76 @@ export function inputGetValue(element) {
   }
 
   return value
+}
+
+function isShowField(fieldName, inputs, field) {
+  let isShowField = false
+
+  let valueInput = inputs[field.changeField].value
+  let valueField = field.value
+
+  const inputType = inputs[field.changeField].type
+
+  if (inputType === 'number') {
+    valueInput = parseFloat(valueInput)
+    valueField = parseFloat(valueField)
+  } else if (inputType === 'date' || inputType === 'datetime-local') {
+    if (inputType === 'date') {
+      valueInput = valueInput + ' 00:00:00'
+    }
+    valueInput = new Date(valueInput).getTime()
+
+    if (!Array.isArray(valueField)) {
+      valueField = new Date(valueField).getTime()
+    }
+  }
+
+  switch (field.operator) {
+    case '=':
+      isShowField = valueInput == valueField
+      break
+    case '!=':
+      isShowField = valueInput != valueField
+      break
+    case '>':
+      isShowField = valueInput > valueField
+      break
+    case '<':
+      isShowField = valueInput < valueField
+      break
+    case '>=':
+      isShowField = valueInput >= valueField
+      break
+    case '<=':
+      isShowField = valueInput <= valueField
+      break
+    case 'in':
+      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
+        for (let i = 0; i < valueField.length; i++) {
+          if (valueInput.includes(valueField[i])) {
+            isShowField = true
+            break
+          }
+        }
+      } else {
+        isShowField = valueField.includes(valueInput)
+      }
+      break
+    case 'not in':
+      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
+        let includes = false
+        for (let i = 0; i < valueField.length; i++) {
+          if (valueInput.includes(valueField[i])) {
+            includes = true
+            break
+          }
+        }
+        isShowField = !includes
+      } else {
+        isShowField = !valueField.includes(valueInput)
+      }
+      break
+  }
+
+  return isShowField
 }

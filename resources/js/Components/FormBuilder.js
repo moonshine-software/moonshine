@@ -4,7 +4,6 @@ import request from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {
   getInputs,
-  isValidateShow,
   showWhenChange,
   showWhenVisibilityChange,
 } from '../Support/ShowWhen.js'
@@ -282,8 +281,6 @@ export default (name = '', initData = {}, reactive = {}) => ({
   showWhenChange,
 
   showWhenVisibilityChange,
-
-  isValidateShow,
 
   getInputs,
 })
