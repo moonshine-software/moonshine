@@ -86,7 +86,7 @@ function baseTemplateIterableSaveFile(Item $item, ?UploadedFile $changedFile = n
                 $applyValues = [];
 
                 foreach ($values as $index => $value) {
-                    foreach ($field->getFields()->prepareReindex($field) as $f) {
+                    foreach ($field->getFields()->prepareReindexNames($field) as $f) {
                         $f->setNameIndex($index);
 
                         $apply = $f->apply(

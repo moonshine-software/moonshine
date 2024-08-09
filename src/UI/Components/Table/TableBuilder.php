@@ -211,7 +211,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
-                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindex()
+                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames()
                 );
 
             $key = $casted->getKey();

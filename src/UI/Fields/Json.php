@@ -216,7 +216,7 @@ class Json extends Field implements
     {
         return $this->getFields()
             ->prepareAttributes()
-            ->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
+            ->prepareReindexNames(parent: $this, before: static function (self $parent, FieldContract $field): void {
                 $field->withoutWrapper();
             });
     }

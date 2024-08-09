@@ -191,7 +191,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function prepareFields(): FieldsContract
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(
+        return $this->getFields()->prepareAttributes()->prepareReindexNames(
             parent: $this,
             before: fn (self $parent, Field $field): Field => (clone $field)
                 ->setColumn("{$this->getPivotAs()}.{$field->getColumn()}")
