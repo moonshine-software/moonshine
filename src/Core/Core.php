@@ -21,7 +21,6 @@ use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Memoize\MemoizeRepository;
 use Psr\Container\ContainerInterface;
-use WeakMap;
 
 abstract class Core implements CoreContract
 {
