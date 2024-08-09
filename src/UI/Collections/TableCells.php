@@ -7,7 +7,6 @@ namespace MoonShine\UI\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
 
@@ -22,10 +21,6 @@ final class TableCells extends Collection implements TableCellsContract
     {
         $initialBuilder = $builder;
 
-        /**
-         * @var int $index
-         * @var FieldContract $field
-         */
         foreach ($fields as $field) {
             $attributes = $field->getWrapperAttributes()->jsonSerialize();
 

@@ -7,7 +7,6 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
-use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\RenderableContract;

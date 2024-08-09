@@ -356,7 +356,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         if (! $this->isVertical()) {
             $hasBulk = ! $this->isPreview() && $this->getBulkButtons()->isNotEmpty();
             $index = $hasBulk ? 1 : 0;
-            $tdAttributes = fn($i) => $this->getTdAttributes(null, 0, $i);
+            $tdAttributes = fn($i): array => $this->getTdAttributes(null, 0, $i);
 
             $cells->pushWhen(
                 $hasBulk,
