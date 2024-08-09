@@ -230,8 +230,8 @@ class FormPage extends Page
                 $item,
                 $resource->getModelCast()
             )
-            ->fields(
-                $fields
+            ->fields([
+                ...$fields
                     ->when(
                         ! is_null($item),
                         static fn (Fields $fields): Fields => $fields->push(
@@ -244,8 +244,9 @@ class FormPage extends Page
                             Hidden::make('_force_redirect')->setValue(true)
                         )
                     )
-                    ->toArray()
-            )
+                    ->toArray(),
+                ...$this->getResource()->getInsideFormPageComponents()
+            ])
             ->when(
                 $isAsync,
                 static fn (FormBuilderContract $formBuilder): FormBuilderContract => $formBuilder

@@ -19,18 +19,40 @@ trait WithFields
 {
     protected array|Closure $fields = [];
 
+    protected ?FieldsContract $preparedFields = null;
+
+    public function resetPreparedFields(): static
+    {
+        $this->preparedFields = null;
+
+        return $this;
+    }
+
     /**
      * @return Fields<T>
-     *@throws Throwable
+     * @throws Throwable
      */
     public function getPreparedFields(): FieldsContract
+    {
+        if (! is_null($this->preparedFields)) {
+            return $this->preparedFields;
+        }
+
+        return $this->preparedFields = $this->prepareFields();
+    }
+
+    /**
+     * @return Fields<T>
+     * @throws Throwable
+     */
+    protected function prepareFields(): FieldsContract
     {
         return $this->getFields();
     }
 
     /**
      * @return Fields<T>
-     *@throws Throwable
+     * @throws Throwable
      */
     public function getFields(): FieldsContract
     {
@@ -41,7 +63,7 @@ trait WithFields
 
     public function getRawFields(): array
     {
-        return value($this->fields, $this);
+        return value($this->fields, $this) ?? [];
     }
 
     /**
@@ -53,16 +75,14 @@ trait WithFields
     }
 
     /**
-     * @param  Fields<T>|Closure|array  $fields
+     * @param  Fields<T>|Closure(FieldsContract $ctx): list<T>|array  $fields
      */
     public function fields(FieldsContract|Closure|array $fields): static
     {
-        if($fields instanceof Closure) {
-            $fields = $fields();
-        }
-
-        if($this->getCore()->runningInConsole()) {
-            $fields = collect($fields)
+        if ($this->getCore()->runningInConsole()) {
+            $fields = collect(
+                value($fields, $this)
+            )
                 ->map(static fn (object $field): object => clone $field)
                 ->toArray();
         }
@@ -76,7 +96,7 @@ trait WithFields
 
     /**
      * @return Fields<T>
-     *@throws Throwable
+     * @throws Throwable
      */
     protected function getFilledFields(
         array $raw = [],

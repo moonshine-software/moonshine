@@ -69,7 +69,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
             return $this;
         }
 
-        $this->bootTraits();
+        $this->setupTraits('boot');
         $this->onBoot();
 
         $this->booted = true;
@@ -88,6 +88,7 @@ abstract class Resource implements ResourceContract, MenuFillerContract
             return $this;
         }
 
+        $this->setupTraits('load');
         $this->onLoad();
 
         $this->loaded = true;
@@ -95,14 +96,14 @@ abstract class Resource implements ResourceContract, MenuFillerContract
         return $this;
     }
 
-    protected function bootTraits(): void
+    protected function setupTraits(string $prefix): void
     {
         $class = static::class;
 
         $booted = [];
 
         foreach (class_uses_recursive($class) as $trait) {
-            $method = 'boot' . class_basename($trait);
+            $method = $prefix . class_basename($trait);
 
             if (method_exists($class, $method) && ! in_array($method, $booted, true)) {
                 $this->{$method}();

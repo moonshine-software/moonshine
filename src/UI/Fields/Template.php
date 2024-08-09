@@ -18,7 +18,7 @@ class Template extends Field implements HasFieldsContract
 
     protected ?Closure $renderCallback = null;
 
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         return tap(
             $this->getFields()->wrapNames($this->getColumn()),

@@ -189,7 +189,7 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(
             parent: $this,
@@ -422,7 +422,7 @@ class BelongsToMany extends ModelRelationField implements
         $applyValues = [];
 
         foreach ($checkedKeys as $key) {
-            foreach ($this->getPreparedFields() as $field) {
+            foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
                 $field->setNameIndex($key);
 
                 $values = $this->getRequestValue($key);

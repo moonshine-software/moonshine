@@ -7,9 +7,9 @@ namespace MoonShine\UI\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
-use MoonShine\UI\Fields\Td;
 
 /**
  * @template TKey of array-key
@@ -18,25 +18,30 @@ use MoonShine\UI\Fields\Td;
  */
 final class TableCells extends Collection implements TableCellsContract
 {
-    public function pushFields(FieldsContract $fields, ?Closure $builder = null): self
+    public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self
     {
-        $initializedBuilder = $builder;
+        $initialBuilder = $builder;
 
-        foreach ($fields as $index => $field) {
-            if($field instanceof Td && $field->hasTdAttributes()) {
-                $builder = static fn (TableTd $td): TableTd => $td->customAttributes(
-                    $field->resolveTdAttributes($field->getData())
-                );
-            }
+        /**
+         * @var int $index
+         * @var FieldContract $field
+         */
+        foreach ($fields as $field) {
+            $attributes = $field->getWrapperAttributes()->jsonSerialize();
+
+            $builder = $attributes !== [] ? static fn (TableTd $td): TableTd => $td->customAttributes(
+                $field->getWrapperAttributes()->jsonSerialize()
+            ) : $initialBuilder;
 
             $this->pushCell(
                 (string) $field,
-                $index,
-                $builder ?? $initializedBuilder,
+                $startIndex,
+                $builder,
                 ['data-column-selection' => $field->getColumn()]
             );
 
             $builder = null;
+            $startIndex++;
         }
 
         return $this;

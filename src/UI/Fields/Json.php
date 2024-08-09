@@ -212,7 +212,7 @@ class Json extends Field implements
         return $buttons;
     }
 
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
             $field->withoutWrapper();
@@ -388,7 +388,7 @@ class Json extends Field implements
         $applyValues = [];
 
         foreach ($requestValues as $index => $values) {
-            foreach ($this->getPreparedFields() as $field) {
+            foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
                 $field->setNameIndex($index);
 
                 $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));

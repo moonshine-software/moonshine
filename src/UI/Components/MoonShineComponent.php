@@ -52,11 +52,6 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
         return static::$consoleMode;
     }
 
-    public function getAssetManager(): AssetManagerContract
-    {
-        return $this->getCore()->getContainer(AssetManagerContract::class);
-    }
-
     public function name(string $name): static
     {
         $this->name = $name;

@@ -143,7 +143,7 @@ class RelationRepeater extends ModelRelationField implements
         return $buttons;
     }
 
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, Field $field): void {
             $field
@@ -238,7 +238,7 @@ class RelationRepeater extends ModelRelationField implements
 
             $requestValues[$index] = $values;
 
-            foreach ($this->getPreparedFields() as $field) {
+            foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
                 $field->setNameIndex($index);
 
                 $field->when($fill, fn (FieldContract $f): FieldContract => $f->fillCast(

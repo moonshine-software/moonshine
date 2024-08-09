@@ -10,7 +10,7 @@ use Traversable;
 
 interface TableCellsContract extends Traversable
 {
-    public function pushFields(FieldsContract $fields, ?Closure $builder = null): self;
+    public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self;
 
     public function pushCell(Closure|string $content, ?int $index = null, ?Closure $builder = null, array $attributes = []): self;
 

@@ -252,7 +252,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     /**
      * @throws Throwable
      */
-    public function getPreparedFields(): FieldsContract
+    protected function prepareFields(): FieldsContract
     {
         if (! $this->hasFields()) {
             $fields = $this->getResource()->getIndexFields();
@@ -270,7 +270,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     /**
      * @throws Throwable
      */
-    public function preparedClonedFields(): FieldsContract
+    public function prepareClonedFields(): FieldsContract
     {
         $fields = $this->getPreparedFields();
 
@@ -310,7 +310,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     private function getFieldsOnPreview(): Closure
     {
         return function () {
-            $fields = $this->preparedClonedFields();
+            $fields = $this->prepareClonedFields();
 
             // the onlyFields method is needed to exclude stack fields
             $fields->onlyFields()->each(function (FieldContract $field): void {
