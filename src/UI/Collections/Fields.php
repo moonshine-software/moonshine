@@ -185,7 +185,6 @@ class Fields extends Renderables implements FieldsContract
     /**
      * @throws Throwable
      */
-    // todo rename to prepareReindexNames
     public function prepareReindex(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {

@@ -6,8 +6,6 @@ namespace MoonShine\UI\Traits\Fields;
 
 use InvalidArgumentException;
 
-// todo ShowWhen - isPayload
-
 trait ShowWhen
 {
     public array $operators = [

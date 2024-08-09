@@ -367,7 +367,6 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         foreach ($fields as $field) {
             if($field instanceof HasFieldsContract) {
-                // todo getPreparedFields memoization
                 $this->showWhenConditions($field->getPreparedFields()->onlyFields(), $data);
             }
         }
