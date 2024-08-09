@@ -195,6 +195,7 @@ class Fields extends Renderables implements FieldsContract
             }
 
             $name = str($parent ? $parent->getNameDot() : $field->getNameDot());
+
             $level = $name->substrCount('$');
 
             if ($field instanceof ID) {
@@ -222,6 +223,25 @@ class Fields extends Renderables implements FieldsContract
                     is_null($performName) ? $name : value($performName, $name, $parent, $field)
                 )
                 ->iterableAttributes($level);
+        })
+            ->prepareShowWhenNames();
+    }
+
+    public function prepareShowWhenNames(): static
+    {
+        return $this->map(static function (FieldContract $field): FieldContract {
+            if(! $field->hasShowWhen()) {
+                return $field;
+            }
+
+            $showWhenName = str($field->getIdentity())
+                ->replace('_', '.')
+                ->toString();
+
+            return $field->modifyShowFieldName($showWhenName)
+                ->customAttributes([
+                    'data-show-when-field' => $showWhenName
+                ]);
         });
     }
 

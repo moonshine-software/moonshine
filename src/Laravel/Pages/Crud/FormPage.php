@@ -267,6 +267,9 @@ class FormPage extends Page
                 $resource->isPrecognitive() || (moonshineRequest()->isFragmentLoad('crud-form') && ! $isAsync),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive()
             )
+            ->when($resource->isSubmitShowWhen(),
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->submitShowWhenAttribute()
+            )
             ->name($resource->getUriKey())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
             ->buttons($resource->getFormBuilderButtons());

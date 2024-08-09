@@ -74,6 +74,8 @@ abstract class ModelResource extends Resource implements CrudResourceContract
 
     protected bool $deleteRelationships = false;
 
+    protected bool $submitShowWhen = false;
+
     /**
      * The click action to use when clicking on the resource in the table.
      */
@@ -188,6 +190,11 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     public function isColumnSelection(): bool
     {
         return $this->columnSelection;
+    }
+
+    public function isSubmitShowWhen(): bool
+    {
+        return $this->submitShowWhen;
     }
 
     /**

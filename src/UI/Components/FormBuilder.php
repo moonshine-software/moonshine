@@ -13,6 +13,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -355,6 +356,31 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     /**
      * @throws Throwable
+     */
+    protected function showWhenFields(FieldsContract $fields, array &$data): void
+    {
+        foreach ($fields->whenFieldsConditions() as $whenConditions) {
+            foreach ($whenConditions as $value) {
+                $data[] = $value;
+            }
+        }
+
+        foreach ($fields as $field) {
+            if($field instanceof HasFieldsContract) {
+                $this->showWhenFields($field->getPreparedFields()->onlyFields(), $data);
+            }
+        }
+    }
+
+    public function submitShowWhenAttribute(): self
+    {
+        return $this->customAttributes([
+            'data-submit-show-when' => 1
+        ]);
+    }
+
+    /**
+     * @throws Throwable
      * @return array<string, mixed>
      * @throws JsonException
      */
@@ -378,11 +404,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
-        foreach ($onlyFields->whenFieldsConditions() as $whenConditions) {
-            foreach ($whenConditions as $value) {
-                $whenFields[] = $value;
-            }
-        }
+        $this->showWhenFields($onlyFields, $whenFields);
 
         $xData = json_encode([
             'whenFields' => $whenFields,
@@ -393,6 +415,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         $this->customAttributes([
             'x-data' => "formBuilder(`{$this->getName()}`, $xData, {$reactiveFields->toJson()})",
+            'data-component' => $this->getName()
         ]);
 
         if ($this->isPrecognitive()) {
@@ -404,6 +427,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         $this->customAttributes([
             AlpineJs::eventBlade(JsEvent::FORM_RESET, $this->getName()) => 'formReset',
             AlpineJs::eventBlade(JsEvent::FORM_SUBMIT, $this->getName()) => 'submit',
+            AlpineJs::eventBlade(JsEvent::SHOW_WHEN_REFRESH, $this->getName()) => 'whenFieldsInit',
         ]);
 
         if ($this->isAsync()) {

@@ -214,9 +214,11 @@ class Json extends Field implements
 
     protected function prepareFields(): FieldsContract
     {
-        return $this->getFields()->prepareAttributes()->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
-            $field->withoutWrapper();
-        });
+        return $this->getFields()
+            ->prepareAttributes()
+            ->prepareReindex(parent: $this, before: static function (self $parent, FieldContract $field): void {
+                $field->withoutWrapper();
+            });
     }
 
     protected function resolveRawValue(): mixed
@@ -304,6 +306,7 @@ class Json extends Field implements
 
         return TableBuilder::make($fields, $values)
             ->name('repeater_' . $this->getColumn())
+            ->inside('field')
             ->customAttributes(
                 $this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])

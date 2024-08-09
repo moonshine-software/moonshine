@@ -501,6 +501,13 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         return $this;
     }
 
+    public function inside(string $entity): self
+    {
+        return $this->customAttributes([
+            'data-inside' => $entity
+        ]);
+    }
+
     /**
      * @return array<string, mixed>
      * @throws Throwable

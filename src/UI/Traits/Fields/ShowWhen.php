@@ -40,6 +40,20 @@ trait ShowWhen
         return $this->showWhenCondition;
     }
 
+    /*
+     * The "name" attribute in some fields may be changed after "showWhenCondition" is initialized,
+     * then we have to change showField value
+     */
+    public function modifyShowFieldName(string $name): static
+    {
+        $this->showWhenCondition = array_map(function ($item) use ($name) {
+            $item['showField'] = $name;
+            return $item;
+        }, $this->showWhenCondition);
+
+        return $this;
+    }
+
     public function showWhen(
         string $column,
         mixed $operator = null,

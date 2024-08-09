@@ -69,6 +69,12 @@ export default (
 
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
 
+    const form = this.table.closest('from[data-component]')
+    if(form) {
+      const formName = form.getAttribute('data-component')
+      this.$dispatch('show_when_refresh:' + formName)
+    }
+
     if (!force && this.reindex) {
       this.resolveReindex()
     }

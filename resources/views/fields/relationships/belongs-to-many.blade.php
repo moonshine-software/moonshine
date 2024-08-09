@@ -18,7 +18,7 @@
 ])
 <div x-id="['belongs-to-many']"
      :id="$id('belongs-to-many')"
-     data-field-block="{{ $attributes->get('name') }}"
+     data-show-when-field="{{ $attributes->get('name') }}"
 >
     @if($isCreatable)
         {!! $createButton !!}

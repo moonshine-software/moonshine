@@ -1,23 +1,35 @@
 export function getInputs(formId) {
   const inputs = {}
-  document.querySelectorAll('#' + formId + ' [name]').forEach(element => {
+
+  const form = document.getElementById(formId);
+
+  form.querySelectorAll('[name]').forEach(element => {
     const value = element.getAttribute('name')
     const fieldName = inputFieldName(value)
 
-    inputs[fieldName] = {}
-
-    inputs[fieldName].value = inputGeValue(element)
-    inputs[fieldName].type = element.getAttribute('type')
+    inputs[fieldName] = {
+      value: inputGetValue(element),
+      type: element.getAttribute('type')
+    }
   })
 
-  document.querySelectorAll('#' + formId + ' [data-field-block]').forEach(element => {
-    const value = element.getAttribute('data-field-block')
+  form.querySelectorAll('[data-show-when-field]').forEach(element => {
+    const value = element.getAttribute('data-show-when-field')
     const fieldName = inputFieldName(value)
 
-    inputs[fieldName] = {}
+    inputs[fieldName] = {
+      value,
+      type: 'text'
+    }
+  })
 
-    inputs[fieldName].value = value
-    inputs[fieldName].type = 'text'
+  form.querySelectorAll('[data-show-when-column]').forEach(element => {
+    const fieldName = element.getAttribute('data-show-when-column')
+
+    inputs[fieldName] = {
+      value: inputGetValue(element),
+      type: element.getAttribute('type')
+    }
   })
 
   return inputs
@@ -26,6 +38,8 @@ export function getInputs(formId) {
 export function showWhenChange(fieldName, formId) {
   fieldName = inputFieldName(fieldName)
 
+  const showWhenFields = []
+
   this.whenFields.forEach(field => {
     if (fieldName !== field.changeField) {
       return
@@ -33,35 +47,66 @@ export function showWhenChange(fieldName, formId) {
 
     let showField = field.showField
 
-    let showWhenConditions = []
+    if(! showWhenFields[showField]) {
+      showWhenFields[showField] = []
+    }
 
-    this.whenFields.forEach(item => {
-      if (showField !== item.showField) {
-        return
-      }
-      showWhenConditions.push(item)
-    })
-
-    this.showWhenVisibilityChange(showWhenConditions, showField, this.getInputs(formId), formId)
+    showWhenFields[showField].push(field)
   })
+
+  for (let showField in showWhenFields) {
+    this.showWhenVisibilityChange(showWhenFields[showField], showField, this.getInputs(formId), formId)
+  }
 }
 
-export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, formId) {
-  if (showWhenConditions.length === 0) {
+export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, formId) {
+  if (showWhenFields.length === 0) {
     return
   }
 
   let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-field-block="' + fieldName + '"]')
+    inputElement = document.querySelector('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
+  }
+
+  if (inputElement === null) {
+    inputElement = document.querySelector('#' + formId + ' [data-show-when-column="' + fieldName + '"]')
   }
 
   if (inputElement === null) {
     return
   }
 
-  // TODO in resources/views/components/fields-group.blade.php put a field in a container
+  let visibleFieldsCount = 0;
+  showWhenFields.forEach(field => {
+    if (isShowField(fieldName, inputs, field)) {
+      visibleFieldsCount++
+    }
+  })
+
+  const showWhenSubmit = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
+
+  if(inputElement.closest('table[data-inside=field]')) {
+    // If input is in a table, then find all tables with this input
+    const tablesWithInput = []
+
+    // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
+    document.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(function (element) {
+      let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
+        if(tablesWithInput.indexOf(inputTable) === -1) {
+          tablesWithInput.push(inputTable)
+        }
+    })
+
+    // Tables hide the entire column
+    tablesWithInput.forEach(table => {
+      showHideTableInputs(showWhenFields.length === visibleFieldsCount, table, fieldName, showWhenSubmit)
+    })
+
+    return;
+  }
+
   let fieldContainer = inputElement.closest('.moonshine-field')
   if (fieldContainer === null) {
     fieldContainer = inputElement.closest('.form-group')
@@ -70,23 +115,99 @@ export function showWhenVisibilityChange(showWhenConditions, fieldName, inputs, 
     fieldContainer = inputElement
   }
 
-  let countTrueConditions = 0
-
-  showWhenConditions.forEach(field => {
-    if (this.isValidateShow(fieldName, inputs, field)) {
-      countTrueConditions++
-    }
-  })
-
-  if (countTrueConditions === showWhenConditions.length) {
+  if (showWhenFields.length === visibleFieldsCount) {
     fieldContainer.style.removeProperty('display')
+
+    const nameAttr = inputElement.getAttribute('data-show-when-column')
+    if(nameAttr) {
+      inputElement.setAttribute('name', nameAttr)
+    }
   } else {
     fieldContainer.style.display = 'none'
+
+    if(! showWhenSubmit) {
+      const nameAttr = inputElement.getAttribute('name');
+      if(nameAttr) {
+        inputElement.setAttribute('data-show-when-column', nameAttr);
+        inputElement.removeAttribute('name')
+      }
+    }
   }
 }
 
-export function isValidateShow(fieldName, inputs, field) {
-  let validateShow = false
+function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
+
+  let cellIndexTd = null;
+
+  table.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(element => {
+    if(isShow) {
+      element.closest('td').style.removeProperty('display')
+
+      const nameAttr = element.getAttribute('data-show-when-column')
+      if(nameAttr) {
+        element.setAttribute('name', nameAttr)
+      }
+    } else {
+      element.closest('td').style.display = 'none'
+
+      if(! showWhenSubmit) {
+        const nameAttr = element.getAttribute('name');
+        if(nameAttr) {
+          element.setAttribute('data-show-when-column', nameAttr);
+          element.removeAttribute('name')
+        }
+      }
+    }
+
+    if(cellIndexTd === null) {
+      cellIndexTd = element.closest('td').cellIndex
+    }
+  })
+
+  if(cellIndexTd !== null) {
+    table.querySelectorAll('th').forEach((element) => {
+      if(element.cellIndex !== cellIndexTd) {
+        return
+      }
+      element.style.display = isShow ? 'block' : 'none'
+    })
+  }
+}
+
+export function inputFieldName(inputName) {
+  if (inputName === null) {
+    return ''
+  }
+  inputName = inputName.replace('[]', '')
+  if (inputName.indexOf('slide[') !== -1) {
+    inputName = inputName.replace('slide[', '').replace(']', '')
+  }
+  return inputName
+}
+
+export function inputGetValue(element) {
+  let value
+
+  const type = element.getAttribute('type')
+
+  if (element.hasAttribute('multiple') && element.options !== undefined) {
+    value = []
+    for (let option of element.options) {
+      if (option.selected) {
+        value.push(option.value)
+      }
+    }
+  } else if (type === 'checkbox' || type === 'radio') {
+    value = element.checked
+  } else {
+    value = element.value
+  }
+
+  return value
+}
+
+function isShowField(fieldName, inputs, field) {
+  let isShowField = false
 
   let valueInput = inputs[field.changeField].value
   let valueField = field.value
@@ -109,33 +230,33 @@ export function isValidateShow(fieldName, inputs, field) {
 
   switch (field.operator) {
     case '=':
-      validateShow = valueInput == valueField
+      isShowField = valueInput == valueField
       break
     case '!=':
-      validateShow = valueInput != valueField
+      isShowField = valueInput != valueField
       break
     case '>':
-      validateShow = valueInput > valueField
+      isShowField = valueInput > valueField
       break
     case '<':
-      validateShow = valueInput < valueField
+      isShowField = valueInput < valueField
       break
     case '>=':
-      validateShow = valueInput >= valueField
+      isShowField = valueInput >= valueField
       break
     case '<=':
-      validateShow = valueInput <= valueField
+      isShowField = valueInput <= valueField
       break
     case 'in':
       if (Array.isArray(valueInput) && Array.isArray(valueField)) {
         for (let i = 0; i < valueField.length; i++) {
           if (valueInput.includes(valueField[i])) {
-            validateShow = true
+            isShowField = true
             break
           }
         }
       } else {
-        validateShow = valueField.includes(valueInput)
+        isShowField = valueField.includes(valueInput)
       }
       break
     case 'not in':
@@ -147,44 +268,12 @@ export function isValidateShow(fieldName, inputs, field) {
             break
           }
         }
-        validateShow = !includes
+        isShowField = !includes
       } else {
-        validateShow = !valueField.includes(valueInput)
+        isShowField = !valueField.includes(valueInput)
       }
       break
   }
 
-  return validateShow
-}
-
-export function inputFieldName(inputName) {
-  if (inputName === null) {
-    return ''
-  }
-  inputName = inputName.replace('[]', '')
-  if (inputName.indexOf('slide[') !== -1) {
-    inputName = inputName.replace('slide[', '').replace(']', '')
-  }
-  return inputName
-}
-
-export function inputGeValue(element) {
-  let value
-
-  const type = element.getAttribute('type')
-
-  if (element.hasAttribute('multiple') && element.options !== undefined) {
-    value = []
-    for (let option of element.options) {
-      if (option.selected) {
-        value.push(option.value)
-      }
-    }
-  } else if (type === 'checkbox' || type === 'radio') {
-    value = element.checked
-  } else {
-    value = element.value
-  }
-
-  return value
+  return isShowField
 }
