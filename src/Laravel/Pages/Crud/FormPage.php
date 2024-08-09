@@ -267,9 +267,7 @@ class FormPage extends Page
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive()
             )
             ->when($resource->isSubmitShowWhen(),
-                static fn (FormBuilderContract $form): FormBuilderContract => $form->customAttributes([
-                    'data-submit-show-when' => 1
-                ])
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->submitShowWhenAttribute()
             )
             ->name($resource->getUriKey())
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])

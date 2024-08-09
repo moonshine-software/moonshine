@@ -357,7 +357,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     /**
      * @throws Throwable
      */
-    protected function showWhenConditions(FieldsContract $fields, array &$data): void
+    protected function showWhenFields(FieldsContract $fields, array &$data): void
     {
         foreach ($fields->whenFieldsConditions() as $whenConditions) {
             foreach ($whenConditions as $value) {
@@ -367,9 +367,16 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         foreach ($fields as $field) {
             if($field instanceof HasFieldsContract) {
-                $this->showWhenConditions($field->getPreparedFields()->onlyFields(), $data);
+                $this->showWhenFields($field->getPreparedFields()->onlyFields(), $data);
             }
         }
+    }
+
+    public function submitShowWhenAttribute(): self
+    {
+        return $this->customAttributes([
+            'data-submit-show-when' => 1
+        ]);
     }
 
     /**
@@ -397,7 +404,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getValue()]);
 
         $whenFields = [];
-        $this->showWhenConditions($onlyFields, $whenFields);
+        $this->showWhenFields($onlyFields, $whenFields);
 
         $xData = json_encode([
             'whenFields' => $whenFields,
@@ -408,7 +415,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         $this->customAttributes([
             'x-data' => "formBuilder(`{$this->getName()}`, $xData, {$reactiveFields->toJson()})",
-            'data-form-component' => $this->getName()
+            'data-component' => $this->getName()
         ]);
 
         if ($this->isPrecognitive()) {

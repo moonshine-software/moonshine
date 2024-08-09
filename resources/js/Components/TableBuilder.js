@@ -69,9 +69,9 @@ export default (
 
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
 
-    const form = this.table.closest('[data-form-component]')
+    const form = this.table.closest('from[data-component]')
     if(form) {
-      const formName = form.getAttribute('data-form-component')
+      const formName = form.getAttribute('data-component')
       this.$dispatch('show_when_refresh:' + formName)
     }
 
