@@ -87,13 +87,13 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
 
   const showWhenSubmit = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
 
-  if(inputElement.closest('[data-table-type=json]')) {
+  if(inputElement.closest('table[data-inside=field]')) {
     // If input is in a table, then find all tables with this input
     const tablesWithInput = []
 
     // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
     document.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(function (element) {
-      let inputTable = element.closest('[data-table-type=json]') // Get parent table for data-show-field
+      let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
         if(tablesWithInput.indexOf(inputTable) === -1) {
           tablesWithInput.push(inputTable)
         }
