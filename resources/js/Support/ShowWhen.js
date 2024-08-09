@@ -1,7 +1,7 @@
 export function getInputs(formId) {
   const inputs = {}
 
-  const form = document.getElementById(formId);
+  const form = document.getElementById(formId)
 
   form.querySelectorAll('[name]').forEach(element => {
     const value = element.getAttribute('name')
@@ -9,7 +9,7 @@ export function getInputs(formId) {
 
     inputs[fieldName] = {
       value: inputGetValue(element),
-      type: element.getAttribute('type')
+      type: element.getAttribute('type'),
     }
   })
 
@@ -19,7 +19,7 @@ export function getInputs(formId) {
 
     inputs[fieldName] = {
       value,
-      type: 'text'
+      type: 'text',
     }
   })
 
@@ -28,7 +28,7 @@ export function getInputs(formId) {
 
     inputs[fieldName] = {
       value: inputGetValue(element),
-      type: element.getAttribute('type')
+      type: element.getAttribute('type'),
     }
   })
 
@@ -47,7 +47,7 @@ export function showWhenChange(fieldName, formId) {
 
     let showField = field.showField
 
-    if(! showWhenFields[showField]) {
+    if (!showWhenFields[showField]) {
       showWhenFields[showField] = []
     }
 
@@ -55,7 +55,12 @@ export function showWhenChange(fieldName, formId) {
   })
 
   for (let showField in showWhenFields) {
-    this.showWhenVisibilityChange(showWhenFields[showField], showField, this.getInputs(formId), formId)
+    this.showWhenVisibilityChange(
+      showWhenFields[showField],
+      showField,
+      this.getInputs(formId),
+      formId,
+    )
   }
 }
 
@@ -67,18 +72,22 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
   let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
+    inputElement = document.querySelector(
+      '#' + formId + ' [data-show-when-field="' + fieldName + '"]',
+    )
   }
 
   if (inputElement === null) {
-    inputElement = document.querySelector('#' + formId + ' [data-show-when-column="' + fieldName + '"]')
+    inputElement = document.querySelector(
+      '#' + formId + ' [data-show-when-column="' + fieldName + '"]',
+    )
   }
 
   if (inputElement === null) {
     return
   }
 
-  let visibleFieldsCount = 0;
+  let visibleFieldsCount = 0
   showWhenFields.forEach(field => {
     if (isShowField(fieldName, inputs, field)) {
       visibleFieldsCount++
@@ -87,24 +96,31 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
 
   const showWhenSubmit = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
 
-  if(inputElement.closest('table[data-inside=field]')) {
+  if (inputElement.closest('table[data-inside=field]')) {
     // If input is in a table, then find all tables with this input
     const tablesWithInput = []
 
     // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
-    document.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(function (element) {
-      let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
-        if(tablesWithInput.indexOf(inputTable) === -1) {
+    document
+      .querySelectorAll('[data-show-when-field="' + fieldName + '"]')
+      .forEach(function (element) {
+        let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
+        if (tablesWithInput.indexOf(inputTable) === -1) {
           tablesWithInput.push(inputTable)
         }
-    })
+      })
 
     // Tables hide the entire column
     tablesWithInput.forEach(table => {
-      showHideTableInputs(showWhenFields.length === visibleFieldsCount, table, fieldName, showWhenSubmit)
+      showHideTableInputs(
+        showWhenFields.length === visibleFieldsCount,
+        table,
+        fieldName,
+        showWhenSubmit,
+      )
     })
 
-    return;
+    return
   }
 
   let fieldContainer = inputElement.closest('.moonshine-field')
@@ -119,16 +135,16 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
     fieldContainer.style.removeProperty('display')
 
     const nameAttr = inputElement.getAttribute('data-show-when-column')
-    if(nameAttr) {
+    if (nameAttr) {
       inputElement.setAttribute('name', nameAttr)
     }
   } else {
     fieldContainer.style.display = 'none'
 
-    if(! showWhenSubmit) {
-      const nameAttr = inputElement.getAttribute('name');
-      if(nameAttr) {
-        inputElement.setAttribute('data-show-when-column', nameAttr);
+    if (!showWhenSubmit) {
+      const nameAttr = inputElement.getAttribute('name')
+      if (nameAttr) {
+        inputElement.setAttribute('data-show-when-column', nameAttr)
         inputElement.removeAttribute('name')
       }
     }
@@ -136,37 +152,36 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
 }
 
 function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
-
-  let cellIndexTd = null;
+  let cellIndexTd = null
 
   table.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(element => {
-    if(isShow) {
+    if (isShow) {
       element.closest('td').style.removeProperty('display')
 
       const nameAttr = element.getAttribute('data-show-when-column')
-      if(nameAttr) {
+      if (nameAttr) {
         element.setAttribute('name', nameAttr)
       }
     } else {
       element.closest('td').style.display = 'none'
 
-      if(! showWhenSubmit) {
-        const nameAttr = element.getAttribute('name');
-        if(nameAttr) {
-          element.setAttribute('data-show-when-column', nameAttr);
+      if (!showWhenSubmit) {
+        const nameAttr = element.getAttribute('name')
+        if (nameAttr) {
+          element.setAttribute('data-show-when-column', nameAttr)
           element.removeAttribute('name')
         }
       }
     }
 
-    if(cellIndexTd === null) {
+    if (cellIndexTd === null) {
       cellIndexTd = element.closest('td').cellIndex
     }
   })
 
-  if(cellIndexTd !== null) {
-    table.querySelectorAll('th').forEach((element) => {
-      if(element.cellIndex !== cellIndexTd) {
+  if (cellIndexTd !== null) {
+    table.querySelectorAll('th').forEach(element => {
+      if (element.cellIndex !== cellIndexTd) {
         return
       }
       element.style.display = isShow ? 'block' : 'none'

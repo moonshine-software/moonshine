@@ -2,11 +2,7 @@ import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import {addInvalidListener, containsAttribute, isTextInput} from '../Support/Forms.js'
 import request from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
-import {
-  getInputs,
-  showWhenChange,
-  showWhenVisibilityChange,
-} from '../Support/ShowWhen.js'
+import {getInputs, showWhenChange, showWhenVisibilityChange} from '../Support/ShowWhen.js'
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -86,10 +82,10 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     this.whenFieldsInit()
   },
-  whenFieldsInit(){
+  whenFieldsInit() {
     const t = this
 
-    if (! t.whenFields.length) {
+    if (!t.whenFields.length) {
       return
     }
 
@@ -107,8 +103,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       t.whenFields.forEach(field => {
         if (
-            inputs[field.changeField] === undefined ||
-            inputs[field.changeField].value === undefined
+          inputs[field.changeField] === undefined ||
+          inputs[field.changeField].value === undefined
         ) {
           return
         }
