@@ -48,6 +48,7 @@ trait ShowWhen
     {
         $this->showWhenCondition = array_map(function (array $item) use ($name) {
             $item['showField'] = $name;
+
             return $item;
         }, $this->showWhenCondition);
 

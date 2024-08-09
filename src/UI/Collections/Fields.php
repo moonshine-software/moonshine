@@ -240,7 +240,7 @@ class Fields extends Renderables implements FieldsContract
 
             return $field->modifyShowFieldName($showWhenName)
                 ->customAttributes([
-                    'data-show-when-field' => $showWhenName
+                    'data-show-when-field' => $showWhenName,
                 ]);
         });
     }

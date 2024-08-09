@@ -375,7 +375,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     public function submitShowWhenAttribute(): self
     {
         return $this->customAttributes([
-            'data-submit-show-when' => 1
+            'data-submit-show-when' => 1,
         ]);
     }
 
@@ -415,7 +415,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
         $this->customAttributes([
             'x-data' => "formBuilder(`{$this->getName()}`, $xData, {$reactiveFields->toJson()})",
-            'data-component' => $this->getName()
+            'data-component' => $this->getName(),
         ]);
 
         if ($this->isPrecognitive()) {
