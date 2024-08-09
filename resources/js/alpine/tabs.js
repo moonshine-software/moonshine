@@ -28,8 +28,8 @@ export default (activeTab = '', isVertical = false) => ({
   setActiveTab(tabId) {
     this.activeTab = tabId ?? this.activeTab
 
-    setTimeout(function() {
+    setTimeout(function () {
       window.dispatchEvent(new Event('active-tab'))
-    });
+    })
   },
 })
