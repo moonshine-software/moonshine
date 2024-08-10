@@ -15,7 +15,7 @@ abstract class Page extends CorePage
         $withoutQuery = trim(parse_url($this->getUrl(), PHP_URL_PATH), '/');
         $currentPath = trim(moonshine()->getRequest()->getPath(), '/');
 
-        if ($this->isCheckUrl() && !str_contains($currentPath, $withoutQuery)) {
+        if ($this->isCheckUrl() && ! str_contains($currentPath, $withoutQuery)) {
             oops404();
         }
     }
