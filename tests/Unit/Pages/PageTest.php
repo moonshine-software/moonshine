@@ -69,9 +69,8 @@ it('to page form', function () {
         ->toBe('test-resource')
         ->parameter('pageUri')
         ->toBe(PageType::FORM->value)
-        ->and(parse_url($url))
-        ->query
-        ->toBe('resourceItem=1')
+        ->parameter('resourceItem')
+        ->toBe('1')
     ;
 });
 
@@ -96,8 +95,7 @@ it('to page show', function () {
         ->toBe('test-resource')
         ->parameter('pageUri')
         ->toBe(PageType::DETAIL->value)
-        ->and(parse_url($url))
-        ->query
-        ->toBe('resourceItem=1')
+        ->parameter('resourceItem')
+        ->toBe('1')
     ;
 });

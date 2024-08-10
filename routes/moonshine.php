@@ -19,15 +19,7 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
     $router->middleware(
         $authMiddleware
     )->group(function (): void {
-        Route::prefix('resource/{resourceUri}')->group(function (): void {
-            Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
-            Route::resource('crud', CrudController::class)
-                ->parameter('crud', 'resourceItem');
-
-            Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
-            Route::get('{pageUri}', PageController::class)->name('resource.page');
-        });
 
         Route::prefix('column')->controller(UpdateFieldController::class)->group(function (): void {
             Route::put('resource/{resourceUri}/{resourceItem}', 'column')
@@ -77,6 +69,16 @@ Route::moonshine(static function (Router $router) use($authMiddleware): void {
                 Route::post('reactive/{pageUri}/{resourceUri?}/{resourceItem?}', 'reactive')
                     ->name('reactive');
             });
+
+        Route::prefix('{resourceUri}')->group(function (): void {
+            Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
+
+            Route::resource('crud', CrudController::class)
+                ->parameter('crud', 'resourceItem');
+
+            Route::any('handler/{handlerUri}', HandlerController::class)->name('handler');
+            Route::get('{pageUri}/{resourceItem?}', PageController::class)->name('resource.page');
+        });
     });
 
     if (moonshineConfig()->isAuthEnabled()) {
