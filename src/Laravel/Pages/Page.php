@@ -12,9 +12,10 @@ abstract class Page extends CorePage
 {
     protected function prepareBeforeRender(): void
     {
-        $withoutQuery = parse_url($this->getUrl(), PHP_URL_PATH);
+        $withoutQuery = trim(parse_url($this->getUrl(), PHP_URL_PATH), '/');
+        $currentPath = trim(moonshine()->getRequest()->getPath(), '/');
 
-        if ($this->isCheckUrl() && trim($withoutQuery, '/') !== trim(moonshine()->getRequest()->getPath(), '/')) {
+        if ($this->isCheckUrl() && !str_contains($currentPath, $withoutQuery)) {
             oops404();
         }
     }

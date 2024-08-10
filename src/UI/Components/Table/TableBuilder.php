@@ -385,7 +385,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
                 $cells->push(
                     TableTh::make($thContent)
-                        ->customAttributes(['data-column-selection' => $field->getColumn()])
+                        ->customAttributes(['data-column-selection' => $field->getIdentity()])
                         ->customAttributes($tdAttributes($index))
                 );
 

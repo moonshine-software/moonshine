@@ -16,7 +16,8 @@ final class EditButton
     public static function for(
         ModelResource $resource,
         ?string $componentName = null,
-        bool $isAsync = true
+        bool $isAsync = true,
+        string $modalName = 'delete-modal',
     ): ActionButtonContract {
         if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
@@ -47,13 +48,14 @@ final class EditButton
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     title: static fn (): array|string|null => __('moonshine::ui.edit'),
                     content: static fn (): string => '',
-                    name: static fn (Model $data): string => "edit-modal-{$data->getKey()}"
+                    name: static fn (Model $data): string => "$modalName-{$data->getKey()}"
                 )
             )
             ->primary()
             ->icon('pencil')
             ->canSee(
-                static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::UPDATE)
+                static fn (?Model $item): bool => ! is_null($item) && $item->exists
+                    && $resource->hasAction(Action::UPDATE)
                     && $resource->setItem($item)->can(Ability::UPDATE)
             )
             ->class('js-edit-button')

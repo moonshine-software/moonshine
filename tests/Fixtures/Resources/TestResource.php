@@ -249,7 +249,7 @@ class TestResource extends AbstractTestingResource
         return $this->testQueryTags;
     }
 
-    public function buttons(): ListOf
+    public function customIndexButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, $this->testButtons);
     }

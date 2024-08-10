@@ -20,6 +20,7 @@ final class DeleteButton
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
+        string $modalName = 'delete-modal',
     ): ActionButtonContract {
         $action = static fn (Model $data): string => $resource->getRoute(
             'crud.destroy',
@@ -50,10 +51,11 @@ final class DeleteButton
                         )
                     )
                 ),
-                name: static fn (Model $data): string => "delete-modal-{$data->getKey()}"
+                name: static fn (Model $data): string => "$modalName-{$data->getKey()}"
             )
             ->canSee(
-                static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::DELETE)
+                static fn (?Model $item): bool => ! is_null($item) && $item->exists
+                    && $resource->hasAction(Action::DELETE)
                     && $resource->setItem($item)->can(Ability::DELETE)
             )
             ->error()

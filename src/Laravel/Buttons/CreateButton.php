@@ -16,6 +16,7 @@ final class CreateButton
         ModelResource $resource,
         ?string $componentName = null,
         bool $isAsync = true,
+        string $modalName = 'create-modal',
     ): ActionButtonContract {
         if(! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
@@ -43,6 +44,7 @@ final class CreateButton
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     static fn (): array|string|null => __('moonshine::ui.create'),
                     static fn (): string => '',
+                    name: $modalName
                 )
             )
             ->canSee(

@@ -19,6 +19,7 @@ final class MassDeleteButton
         string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
+        string $modalName = 'mass-delete-modal',
     ): ActionButtonContract {
         $action = static fn (): string => $resource->getRoute('crud.massDelete', query: [
             ...$redirectAfterDelete
@@ -40,17 +41,17 @@ final class MassDeleteButton
                         events: $resource->getListEventName(
                             $componentName ?? $resource->getListComponentName(),
                             $isAsync ? array_filter([
-                                    'page' => request()->input('page'),
-                                    'sort' => request()->input('sort'),
-                                ]) : []
+                                'page' => request()->input('page'),
+                                'sort' => request()->input('sort'),
+                            ]) : []
                         )
                     )
                 ),
-                name: "mass-delete-modal-" . ($componentName ?? $resource->getListComponentName())
+                name: $modalName
             )
             ->canSee(
                 static fn (): bool => $resource->hasAction(Action::MASS_DELETE)
-                    && $resource->can(Ability::MASS_DELETE)
+                                      && $resource->can(Ability::MASS_DELETE)
             )
             ->error()
             ->icon('trash')

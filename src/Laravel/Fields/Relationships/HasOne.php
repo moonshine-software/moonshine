@@ -215,7 +215,8 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                     : [
                     $resource->getDeleteButton(
                         redirectAfterDelete: $redirectAfter,
-                        isAsync: false
+                        isAsync: false,
+                        modalName: "has-one-{$this->getRelationName()}",
                     )->class('btn-lg'),
                 ]
             )

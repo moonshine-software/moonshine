@@ -97,7 +97,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     public function getRedirectAfter(Model|int|null|string $parentId): string
     {
         if(! is_null($this->redirectAfter)) {
-            return value($this->redirectAfter, $parentId, $this);
+            return (string) value($this->redirectAfter, $parentId, $this);
         }
 
         return moonshineRequest()
@@ -364,7 +364,8 @@ class HasMany extends ModelRelationField implements HasFieldsContract
                     $resource->tdAttributes()
                 )
             )
-            ->buttons($this->getItemButtons())->when(
+            ->buttons($this->getItemButtons())
+            ->when(
                 ! is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
             );
@@ -388,18 +389,22 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             $editButton = value($this->modifyEditButton, $editButton, $this);
         }
 
-        $detailButton = $resource->getDetailButton();
+        $detailButton = $resource->getDetailButton(
+            modalName:  "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail"
+        );
 
         $deleteButton = $resource->getDeleteButton(
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
-            isAsync: $this->isAsync()
+            isAsync: $this->isAsync(),
+            modalName: "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-delete"
         );
 
         $massDeleteButton = $resource->getMassDeleteButton(
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
-            isAsync: $this->isAsync()
+            isAsync: $this->isAsync(),
+            modalName: "has-many-modal-mass-delete"
         );
 
         if(! is_null($this->modifyItemButtons)) {
@@ -414,7 +419,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         }
 
         return [
-            ...$resource->getIndexButtons(),
+            ...$resource->getCustomIndexButtons(),
             $detailButton,
             $editButton,
             $deleteButton,

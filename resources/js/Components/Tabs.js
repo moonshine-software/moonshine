@@ -25,5 +25,7 @@ export default (activeTab = '', isVertical = false) => ({
 
   setActiveTab(tabId) {
     this.activeTab = tabId ?? this.activeTab
+
+    this.$nextTick(() => window.dispatchEvent(new Event('resize')))
   },
 })

@@ -32,7 +32,7 @@ final class TableCells extends Collection implements TableCellsContract
                 (string) $field,
                 $startIndex,
                 $builder,
-                ['data-column-selection' => $field->getColumn()]
+                ['data-column-selection' => $field->getIdentity()]
             );
 
             $builder = null;

@@ -18,19 +18,9 @@ use MoonShine\UI\Collections\ActionButtons;
 trait ResourceWithButtons
 {
     /**
-     * If the index, detail and form buttons are empty, then take these or merge these
-     *
      * @return ListOf<ActionButtonContract>
      */
-    public function buttons(): ListOf
-    {
-        return new ListOf(ActionButtonContract::class, []);
-    }
-
-    /**
-     * @return ListOf<ActionButtonContract>
-     */
-    public function topButtons(): ListOf
+    protected function topButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
             $this->getCreateButton(isAsync: $this->isAsync()),
@@ -42,7 +32,7 @@ trait ResourceWithButtons
      *
      * @return ListOf<ActionButtonContract>
      */
-    public function indexButtons(): ListOf
+    protected function indexButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
             $this->getDetailButton(),
@@ -65,7 +55,7 @@ trait ResourceWithButtons
      *
      * @return ListOf<ActionButtonContract>
      */
-    public function formButtons(): ListOf
+    protected function formButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
             $this->getDetailButton(),
@@ -79,7 +69,7 @@ trait ResourceWithButtons
     /**
      * @return ListOf<ActionButtonContract>
      */
-    public function detailButtons(): ListOf
+    protected function detailButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
             $this->getEditButton(
@@ -97,7 +87,7 @@ trait ResourceWithButtons
      *
      * @return ListOf<ActionButtonContract>
      */
-    public function formBuilderButtons(): ListOf
+    protected function formBuilderButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, []);
     }
@@ -107,26 +97,65 @@ trait ResourceWithButtons
         return ActionButtons::make($this->topButtons()->toArray());
     }
 
+    protected function customIndexButtons(): ListOf
+    {
+        return new ListOf(ActionButtonContract::class, []);
+    }
+
+    /**
+     * @return list<ActionButtonContract>
+     */
+    public function getCustomIndexButtons(): array
+    {
+        return $this->customIndexButtons()->toArray();
+    }
+
     public function getIndexButtons(): ActionButtonsContract
     {
         return ActionButtons::make([
-            ...$this->buttons()->toArray(),
+            ...$this->getCustomIndexButtons(),
             ...$this->indexButtons()->toArray(),
         ]);
+    }
+
+    protected function customFormButtons(): ListOf
+    {
+        return new ListOf(ActionButtonContract::class, []);
+    }
+
+    /**
+     * @return list<ActionButtonContract>
+     */
+    public function getCustomFormButtons(): array
+    {
+        return $this->customFormButtons()->toArray();
     }
 
     public function getFormButtons(): ActionButtonsContract
     {
         return ActionButtons::make([
-            ...$this->buttons()->toArray(),
+            ...$this->getCustomFormButtons(),
             ...$this->formButtons()->toArray(),
         ])->withoutBulk();
+    }
+
+    protected function customDetailButtons(): ListOf
+    {
+        return new ListOf(ActionButtonContract::class, []);
+    }
+
+    /**
+     * @return list<ActionButtonContract>
+     */
+    public function getCustomDetailButtons(): array
+    {
+        return $this->customIndexButtons()->toArray();
     }
 
     public function getDetailButtons(): ActionButtonsContract
     {
         return ActionButtons::make([
-            ...$this->buttons()->toArray(),
+            ...$this->getCustomDetailButtons(),
             ...$this->detailButtons()->toArray(),
         ])->withoutBulk();
     }
@@ -143,13 +172,17 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getCreateButton(?string $componentName = null, bool $isAsync = true): ActionButtonContract
-    {
+    public function getCreateButton(
+        ?string $componentName = null,
+        bool $isAsync = true,
+        string $modalName = 'create-modal'
+    ): ActionButtonContract {
         return $this->modifyCreateButton(
             CreateButton::for(
                 $this,
                 componentName: $componentName,
-                isAsync: $isAsync
+                isAsync: $isAsync,
+                modalName: $modalName
             )
         );
     }
@@ -159,13 +192,17 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getEditButton(?string $componentName = null, bool $isAsync = true): ActionButtonContract
-    {
+    public function getEditButton(
+        ?string $componentName = null,
+        bool $isAsync = true,
+        string $modalName = 'edit-modal'
+    ): ActionButtonContract {
         return $this->modifyEditButton(
             EditButton::for(
                 $this,
                 componentName: $componentName,
-                isAsync: $isAsync
+                isAsync: $isAsync,
+                modalName: $modalName,
             )
         );
     }
@@ -175,11 +212,12 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getDetailButton(): ActionButtonContract
+    public function getDetailButton(string $modalName = 'detail-modal'): ActionButtonContract
     {
         return $this->modifyDetailButton(
             DetailButton::for(
-                $this
+                $this,
+                $modalName,
             )
         );
     }
@@ -192,14 +230,16 @@ trait ResourceWithButtons
     public function getDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
-        bool $isAsync = true
+        bool $isAsync = true,
+        string $modalName = 'delete-modal',
     ): ActionButtonContract {
         return $this->modifyDeleteButton(
             DeleteButton::for(
                 $this,
                 componentName: $componentName,
                 redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
-                isAsync: $isAsync
+                isAsync: $isAsync,
+                modalName: $modalName
             )
         );
     }
@@ -222,14 +262,16 @@ trait ResourceWithButtons
     public function getMassDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
-        bool $isAsync = true
+        bool $isAsync = true,
+        string $modalName = 'mass-delete-modal',
     ): ActionButtonContract {
         return $this->modifyMassDeleteButton(
             MassDeleteButton::for(
                 $this,
                 componentName: $componentName,
                 redirectAfterDelete: $isAsync ? '' : $redirectAfterDelete,
-                isAsync: $isAsync
+                isAsync: $isAsync,
+                modalName: $modalName
             )
         );
     }

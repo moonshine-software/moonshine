@@ -48,7 +48,8 @@ final class HasManyButton
         }
 
         $authorize = $update
-            ? static fn (?Model $item): bool => ! is_null($item) && $resource->hasAction(Action::UPDATE)
+            ? static fn (?Model $item): bool => ! is_null($item) && $item->exists
+                && $resource->hasAction(Action::UPDATE)
                 && $resource->setItem($item)->can(Ability::UPDATE)
             : static fn (?Model $item): bool => $resource->hasAction(Action::CREATE)
                 && $resource->can(Ability::CREATE);
@@ -67,7 +68,7 @@ final class HasManyButton
             $actionButton = $actionButton->inModal(
                 title: static fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',
-                name: static fn (?Model $data): string => "modal-has-many-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
                 builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             );
         }
