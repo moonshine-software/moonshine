@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Support\DBOperators;
-use Throwable;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Throwable;
 
 final class AsyncSearchController extends MoonShineController
 {

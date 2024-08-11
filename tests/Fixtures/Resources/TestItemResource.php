@@ -130,7 +130,7 @@ class TestItemResource extends AbstractTestingResource
     public function testAsyncMethod(MoonShineRequest $request): MoonShineJsonResponse
     {
         return MoonShineJsonResponse::make([
-            'var' => $request->input('var')
+            'var' => $request->input('var'),
         ]);
     }
 }

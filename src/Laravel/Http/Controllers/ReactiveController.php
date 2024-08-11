@@ -49,7 +49,7 @@ final class ReactiveController extends MoonShineController
                 $related = $field->getRelation()?->getRelated();
 
                 $target = $related?->forceFill([
-                    $related->getKeyName() => $value
+                    $related->getKeyName() => $value,
                 ]);
 
                 $casted?->setRelation($field->getRelationName(), $target);

@@ -10,11 +10,11 @@ it('get response', function () {
         'resourceUri' => 'test-item-resource',
         'pageUri' => 'form-page',
         'values' => [
-            'name' => 'new name'
-        ]
+            'name' => 'new name',
+        ],
     ]))
         ->assertJson(['values' => [
-            'name' => 'new name'
+            'name' => 'new name',
         ]])
         ->assertOk()
     ;

@@ -9,7 +9,7 @@ it('get response', function () {
         'method' => 'testAsyncMethod',
         'resourceUri' => 'test-item-resource',
         'pageUri' => 'index-page',
-        'var' => 'foo'
+        'var' => 'foo',
     ]))
         ->assertJson(['var' => 'foo'])
         ->assertOk()

@@ -22,8 +22,7 @@ final class CrudController extends MoonShineController
 {
     public function __construct(
         protected MoonShineNotificationContract $notification,
-    )
-    {
+    ) {
         parent::__construct($notification);
 
         $this->middleware(HandlePrecognitiveRequests::class)

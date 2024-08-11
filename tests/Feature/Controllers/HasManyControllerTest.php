@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Support\Enums\PageType;
-use MoonShine\Tests\Fixtures\Models\Category;
-use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
-use MoonShine\UI\Fields\StackFields;
 
 uses()->group('has-many-controller');
 
