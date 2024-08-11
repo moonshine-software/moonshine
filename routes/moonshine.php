@@ -2,7 +2,6 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Http\Controllers\AsyncSearchController;
 use MoonShine\Laravel\Http\Controllers\AuthenticateController;
