@@ -12,7 +12,7 @@ class DummyResource extends Resource
     /**
      * @return list<PageContract>
      */
-    public function pages(): array
+    protected function pages(): array
     {
         return [
             //

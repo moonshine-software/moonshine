@@ -32,12 +32,12 @@ class MoonShineUserRoleResource extends ModelResource
         return __('moonshine::ui.resource.role');
     }
 
-    public function indexButtons(): ListOf
+    protected function indexButtons(): ListOf
     {
         return parent::indexButtons()->except(fn (ActionButton $btn): bool => $btn->getName() === 'detail-button');
     }
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -45,12 +45,12 @@ class MoonShineUserRoleResource extends ModelResource
         ];
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return [
             Box::make([
@@ -61,27 +61,17 @@ class MoonShineUserRoleResource extends ModelResource
         ];
     }
 
-    public function exportFields(): array
-    {
-        return $this->indexFields();
-    }
-
-    public function importFields(): array
-    {
-        return $this->indexFields();
-    }
-
     /**
      * @return array{name: string}
      */
-    public function rules($item): array
+    protected function rules($item): array
     {
         return [
             'name' => ['required', 'min:5'],
         ];
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return [
             'id',

@@ -27,7 +27,7 @@ class DummyPage extends Page
     /**
      * @return list<MoonShineComponent>
      */
-    public function components(): array
+    protected function components(): array
 	{
 		return [];
 	}

@@ -18,7 +18,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [];
     }
@@ -42,7 +42,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    public function formFields(): array
+    protected function formFields(): array
     {
         return [];
     }
@@ -66,7 +66,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return [];
     }
@@ -114,9 +114,14 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    public function filters(): array
+    protected function filters(): array
     {
         return [];
+    }
+
+    public function hasFilters(): bool
+    {
+        return $this->filters() !== [];
     }
 
     /**

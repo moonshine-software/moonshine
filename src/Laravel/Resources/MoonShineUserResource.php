@@ -43,12 +43,12 @@ class MoonShineUserResource extends ModelResource
         return __('moonshine::ui.resource.admins_title');
     }
 
-    public function activeActions(): ListOf
+    protected function activeActions(): ListOf
     {
         return parent::activeActions()->except(Action::VIEW);
     }
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -75,12 +75,12 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return [
             Box::make([
@@ -130,20 +130,10 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    public function exportFields(): array
-    {
-        return $this->indexFields();
-    }
-
-    public function importFields(): array
-    {
-        return $this->exportFields();
-    }
-
     /**
      * @return array{name: string, moonshine_user_role_id: string, email: array, password: string}
      */
-    public function rules($item): array
+    protected function rules($item): array
     {
         return [
             'name' => 'required',
@@ -161,7 +151,7 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return [
             'id',
@@ -169,7 +159,7 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         return [
             BelongsTo::make(

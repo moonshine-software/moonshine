@@ -8,7 +8,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 
 class CoverPageForm extends FormPage
 {
-    public function fields(): array
+    protected function fields(): array
     {
         return [];
     }

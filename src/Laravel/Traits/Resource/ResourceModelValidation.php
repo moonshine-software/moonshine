@@ -22,7 +22,14 @@ trait ResourceModelValidation
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    abstract public function rules(Model $item): array;
+    abstract protected function rules(Model $item): array;
+
+    public function getRules(): array
+    {
+        return $this->rules(
+            $this->getItemOrInstance()
+        );
+    }
 
     /**
      * Get custom messages for validator errors
@@ -32,24 +39,6 @@ trait ResourceModelValidation
     public function validationMessages(): array
     {
         return [];
-    }
-
-    /**
-     * @param TModel $item
-     *
-     * @throws Throwable
-     */
-    public function validate(Model $item): ValidatorContract
-    {
-        return Validator::make(
-            moonshineRequest()->all(),
-            $this->rules($item),
-            array_merge(
-                __('moonshine::validation'),
-                $this->validationMessages()
-            ),
-            $this->getFormFields()->onlyFields()->extractLabels()
-        );
     }
 
     public function prepareForValidation(): void

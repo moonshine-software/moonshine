@@ -19,11 +19,10 @@ use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 
-$authMiddleware = moonshineConfig()->getAuthMiddleware();
-
-Route::moonshine(static function (Router $router) use($authMiddleware): void {
+Route::moonshine(static function (Router $router): void {
     $pagePrefix = moonshineConfig()->getPagePrefix();
     $authEnabled = moonshineConfig()->isAuthEnabled();
+    $authMiddleware = moonshineConfig()->getAuthMiddleware();
 
     if ($authEnabled) {
         Route::controller(AuthenticateController::class)->group(static function (): void {

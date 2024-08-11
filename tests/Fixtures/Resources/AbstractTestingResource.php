@@ -12,7 +12,7 @@ abstract class AbstractTestingResource extends ModelResource implements HasImpor
 {
     use ImportExportConcern;
 
-    public function isExportToCsv(): bool
+    protected function isExportToCsv(): bool
     {
         return true;
     }

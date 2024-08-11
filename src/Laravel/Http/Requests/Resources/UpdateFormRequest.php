@@ -29,8 +29,6 @@ final class UpdateFormRequest extends MoonShineFormRequest
 
     public function rules(): array
     {
-        return $this->getResource()?->rules(
-            $this->getResource()?->getItemOrFail()
-        ) ?? [];
+        return $this->getResource()?->getRules() ?? [];
     }
 }

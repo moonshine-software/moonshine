@@ -11,7 +11,7 @@ class TestFileResourceWithParent extends TestFileResource
 {
     use ResourceWithParent;
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         $parentId = $this->getParentId();
 
@@ -22,12 +22,12 @@ class TestFileResourceWithParent extends TestFileResource
         ];
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return $this->indexFields();
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }

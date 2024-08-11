@@ -13,7 +13,7 @@ class CustomPageDetail extends Page
 {
     protected ?PageType $pageType = PageType::DETAIL;
 
-    public function components(): array
+    protected function components(): array
     {
         return [
             Box::make([

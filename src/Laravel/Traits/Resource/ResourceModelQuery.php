@@ -173,9 +173,22 @@ trait ResourceModelQuery
      *
      * @return list<QueryTag>
      */
-    public function queryTags(): array
+    protected function queryTags(): array
     {
         return [];
+    }
+
+    public function hasQueryTags(): bool
+    {
+        return $this->queryTags() !== [];
+    }
+
+    /**
+     * @return list<QueryTag>
+     */
+    public function getQueryTags(): array
+    {
+        return $this->queryTags();
     }
 
     protected function getItemsPerPage(): int
@@ -247,7 +260,7 @@ trait ResourceModelQuery
         return $this->getQuery();
     }
 
-    public function query(): Builder
+    protected function query(): Builder
     {
         if (! is_null($this->query)) {
             return $this->query;
@@ -267,7 +280,7 @@ trait ResourceModelQuery
         return $this->query ?: $this->query();
     }
 
-    public function isSaveQueryState(): bool
+    protected function isSaveQueryState(): bool
     {
         return $this->saveQueryState;
     }
@@ -334,7 +347,7 @@ trait ResourceModelQuery
     protected function resolveTags(): static
     {
         /** @var QueryTag $tag */
-        $tag = collect($this->queryTags())
+        $tag = collect($this->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive()
             );
@@ -352,7 +365,7 @@ trait ResourceModelQuery
 
     protected function resolveSearch($queryKey = 'search'): static
     {
-        if (! empty($this->search()) && filled($this->getQueryParams()->get($queryKey))) {
+        if ($this->hasSearch() && filled($this->getQueryParams()->get($queryKey))) {
             $fullTextColumns = Attributes::for($this)
                 ->attribute(SearchUsingFullText::class)
                 ->method('search')
@@ -375,7 +388,7 @@ trait ResourceModelQuery
     protected function searchQuery(string $terms): void
     {
         $this->getQuery()->where(function (Builder $builder) use ($terms): void {
-            foreach ($this->search() as $key => $column) {
+            foreach ($this->getSearchColumns() as $key => $column) {
                 if (is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
                         ->explode('.')

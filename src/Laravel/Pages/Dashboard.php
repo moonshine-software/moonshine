@@ -18,7 +18,7 @@ class Dashboard extends Page
         return $this->title ?: 'Dashboard';
     }
 
-    public function components(): array
+    protected function components(): array
     {
         return [];
     }

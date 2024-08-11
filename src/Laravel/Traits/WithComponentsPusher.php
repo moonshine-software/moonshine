@@ -19,7 +19,7 @@ trait WithComponentsPusher
         static::$pushedComponents[] = $component;
     }
 
-    private function getPushedComponents(): array
+    protected function getPushedComponents(): array
     {
         return collect(static::$pushedComponents)
             ->map(fn (Closure|RenderableContract $component) => value($component, $this))

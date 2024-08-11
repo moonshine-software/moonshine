@@ -345,7 +345,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         return TableBuilder::make(items: $items)
             ->async($asyncUrl)
             ->when(
-                $this->isSearchable() && ! empty($this->getResource()->search()),
+                $this->isSearchable() && $this->getResource()->hasSearch(),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->searchable()
             )
             ->name($this->getRelationName())
@@ -353,15 +353,15 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             ->cast($resource->getModelCast())
             ->withNotFound()
             ->when(
-                ! is_null($resource->trAttributes()),
+                ! is_null($resource->getTrAttributes()),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
-                    $resource->trAttributes()
+                    $resource->getTrAttributes()
                 )
             )
             ->when(
-                ! is_null($resource->tdAttributes()),
+                ! is_null($resource->getTdAttributes()),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
-                    $resource->tdAttributes()
+                    $resource->getTdAttributes()
                 )
             )
             ->buttons($this->getItemButtons())

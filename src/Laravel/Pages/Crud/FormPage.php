@@ -91,7 +91,7 @@ class FormPage extends Page
      * @return list<MoonShineComponent>
      * @throws Throwable
      */
-    public function components(): array
+    protected function components(): array
     {
         $this->validateResource();
         $item = $this->getResource()->getItem();

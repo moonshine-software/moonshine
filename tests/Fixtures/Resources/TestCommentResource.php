@@ -16,7 +16,7 @@ class TestCommentResource extends AbstractTestingResource
 
     protected int $itemsPerPage = 2;
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -25,17 +25,17 @@ class TestCommentResource extends AbstractTestingResource
         ];
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return $this->indexFields();
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }
 
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return  [
             'content' => 'required',

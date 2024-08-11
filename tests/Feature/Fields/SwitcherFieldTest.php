@@ -148,7 +148,7 @@ it('resource update column', function () {
     $field = Switcher::make('Active')->default(1)->updateOnPreview(resource: $resource);
 
     $resource->setTestFields([
-        ...app(TestItemResource::class)->indexFields(),
+        ...app(TestItemResource::class)->getIndexFields()->toArray(),
         ...[$field],
     ]);
 

@@ -25,7 +25,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<Page>
      */
-    public function pages(): array
+    protected function pages(): array
     {
         return [
             {indexPage}::class,
@@ -40,7 +40,7 @@ class DummyResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return [];
     }

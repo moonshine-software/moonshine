@@ -200,27 +200,58 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     /**
      * @return list<Metric>
      */
-    public function metrics(): array
+    protected function metrics(): array
     {
         return [];
     }
 
-    public function trAttributes(): Closure
+    /**
+     * @return list<Metric>
+     */
+    public function getMetrics(): array
+    {
+        return $this->metrics();
+    }
+
+    protected function trAttributes(): Closure
     {
         return static fn (?CastedDataContract $data, int $row): array => [];
     }
 
-    public function tdAttributes(): Closure
+    public function getTrAttributes(): Closure
+    {
+        return $this->trAttributes();
+    }
+
+    protected function tdAttributes(): Closure
     {
         return static fn (?CastedDataContract $data, int $row, int $cell): array => [];
+    }
+
+    public function getTdAttributes(): Closure
+    {
+        return $this->tdAttributes();
     }
 
     /**
      * @return string[]
      */
-    public function search(): array
+    protected function search(): array
     {
         return ['id'];
+    }
+
+    public function hasSearch(): bool
+    {
+        return $this->search() !== [];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSearchColumns(): array
+    {
+        return $this->search();
     }
 
     public function getListComponentName(): string

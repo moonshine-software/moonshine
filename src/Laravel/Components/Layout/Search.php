@@ -29,7 +29,7 @@ final class Search extends MoonShineComponent
     {
         $resource = moonshineRequest()->getResource();
 
-        return ! is_null($resource) && method_exists($resource, 'search') && $resource->search();
+        return ! is_null($resource) && $resource->hasSearch();
     }
 
     protected function prepareBeforeRender(): void

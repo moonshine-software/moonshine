@@ -32,7 +32,7 @@ class ErrorPage extends Page
         return $this;
     }
 
-    public function components(): array
+    protected function components(): array
     {
         $logo = moonshineAssets()->getAsset('vendor/moonshine/logo-small.svg');
 

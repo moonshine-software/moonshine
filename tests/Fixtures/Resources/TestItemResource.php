@@ -31,7 +31,7 @@ class TestItemResource extends AbstractTestingResource
 
     public string $column = 'name';
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -54,12 +54,12 @@ class TestItemResource extends AbstractTestingResource
         ];
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return [
             Box::make([
@@ -90,19 +90,19 @@ class TestItemResource extends AbstractTestingResource
         ];
     }
 
-    public function exportFields(): array
+    protected function exportFields(): array
     {
         return [
             ID::make(),
         ];
     }
 
-    public function importFields(): array
+    protected function importFields(): array
     {
         return $this->exportFields();
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         return [
             Text::make('Name'),
@@ -110,7 +110,7 @@ class TestItemResource extends AbstractTestingResource
         ];
     }
 
-    public function queryTags(): array
+    protected function queryTags(): array
     {
         $maxId = Category::query()->max('id');
 
@@ -122,7 +122,7 @@ class TestItemResource extends AbstractTestingResource
         ];
     }
 
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return [];
     }

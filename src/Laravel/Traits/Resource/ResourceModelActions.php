@@ -14,7 +14,7 @@ trait ResourceModelActions
     /**
      * @return ListOf<Action>
      */
-    public function activeActions(): ListOf
+    protected function activeActions(): ListOf
     {
         return new ListOf(Action::class, [
             Action::CREATE,

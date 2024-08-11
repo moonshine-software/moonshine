@@ -45,7 +45,6 @@ trait ResourceModelCrudRouter
         return $this->getPageUrl($this->getIndexPage(), params: $params, fragment: $fragment);
     }
 
-
     /**
      * @param TModel|int|string|null $model
      */
@@ -64,7 +63,6 @@ trait ResourceModelCrudRouter
         );
     }
 
-
     /**
      * @param TModel|int|string $model
      */
@@ -82,7 +80,6 @@ trait ResourceModelCrudRouter
             fragment: $fragment
         );
     }
-
 
     /**
      * @param TModel|int|string|null $model

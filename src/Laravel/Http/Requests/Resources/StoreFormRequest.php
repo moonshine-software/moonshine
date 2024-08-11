@@ -29,7 +29,6 @@ final class StoreFormRequest extends MoonShineFormRequest
 
     public function rules(): array
     {
-        return $this->getResource()
-            ?->rules($this->getResource()?->getModel()) ?? [];
+        return $this->getResource()?->getRules() ?? [];
     }
 }

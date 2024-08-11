@@ -25,7 +25,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<Field>
      */
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make()->sortable(),
@@ -35,7 +35,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<MoonShineComponent|Field>
      */
-    public function formFields(): array
+    protected function formFields(): array
     {
         return [
             Box::make([
@@ -47,7 +47,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<Field>
      */
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return [
             ID::make(),
@@ -60,7 +60,7 @@ class DummyResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return [];
     }

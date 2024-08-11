@@ -50,7 +50,7 @@ class IndexPage extends Page
      * @return list<MoonShineComponent>
      * @throws Throwable
      */
-    public function components(): array
+    protected function components(): array
     {
         $this->validateResource();
 
@@ -97,7 +97,7 @@ class IndexPage extends Page
             return null;
         }
 
-        $metrics = $this->getResource()->metrics();
+        $metrics = $this->getResource()->getMetrics();
 
         return $metrics
             ? Block::make($metrics)
@@ -117,7 +117,7 @@ class IndexPage extends Page
                 ),
 
                 ActionGroup::make()->when(
-                    $this->getResource()->filters() !== [],
+                    $this->getResource()->hasFilters(),
                     fn (ActionGroup $group): ActionGroup => $group->add(
                         $this->getResource()->getFiltersButton()
                     )
@@ -141,9 +141,9 @@ class IndexPage extends Page
     {
         return [
             ActionGroup::make()->when(
-                $this->getResource()->queryTags() !== [],
+                $this->getResource()->hasQueryTags(),
                 function (ActionGroup $group): ActionGroup {
-                    foreach ($this->getResource()->queryTags() as $tag) {
+                    foreach ($this->getResource()->getQueryTags() as $tag) {
                         $group->add(
                             QueryTagButton::for($this->getResource(), $tag)
                         );
@@ -174,15 +174,15 @@ class IndexPage extends Page
             ->cast($this->getResource()->getModelCast())
             ->withNotFound()
             ->when(
-                ! is_null($this->getResource()->trAttributes()),
+                ! is_null($this->getResource()->getTrAttributes()),
                 fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
-                    $this->getResource()->trAttributes()
+                    $this->getResource()->getTrAttributes()
                 )
             )
             ->when(
-                ! is_null($this->getResource()->tdAttributes()),
+                ! is_null($this->getResource()->getTdAttributes()),
                 fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
-                    $this->getResource()->tdAttributes()
+                    $this->getResource()->getTdAttributes()
                 )
             )
             ->buttons($this->getResource()->getIndexButtons())

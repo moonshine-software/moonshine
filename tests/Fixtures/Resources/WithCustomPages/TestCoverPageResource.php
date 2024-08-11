@@ -23,7 +23,7 @@ class TestCoverPageResource extends AbstractTestingResource
 
     public array $with = ['category'];
 
-    public function pages(): array
+    protected function pages(): array
     {
         return [
             CoverPageIndex::class,
@@ -32,7 +32,7 @@ class TestCoverPageResource extends AbstractTestingResource
         ];
     }
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return [
             ID::make('ID'),
@@ -41,17 +41,17 @@ class TestCoverPageResource extends AbstractTestingResource
         ];
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->indexFields();
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return $this->indexFields();
     }
 
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return [];
     }

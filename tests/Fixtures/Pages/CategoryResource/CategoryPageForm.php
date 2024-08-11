@@ -8,7 +8,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 
 class CategoryPageForm extends FormPage
 {
-    public function fields(): array
+    protected function fields(): array
     {
         return [];
     }

@@ -44,7 +44,7 @@ class ProfilePage extends Page
         return __('moonshine::ui.profile');
     }
 
-    public function fields(): array
+    protected function fields(): array
     {
         return [
             Box::make([
@@ -85,7 +85,7 @@ class ProfilePage extends Page
     /**
      * @throws MoonShineException
      */
-    public function components(): array
+    protected function components(): array
     {
         return [
             $this->getForm(),

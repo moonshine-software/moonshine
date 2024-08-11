@@ -10,7 +10,7 @@ use MoonShine\Support\Enums\ToastType;
 
 trait InteractsWithUI
 {
-    public function toast(string $message, ToastType $type = ToastType::INFO): void
+    protected function toast(string $message, ToastType $type = ToastType::INFO): void
     {
         MoonShineUI::toast($message, $type);
     }
@@ -19,7 +19,7 @@ trait InteractsWithUI
      * @param  array{}|array{'link': string, 'label': string}  $buttons
      * @param  array<int|string>  $ids
      */
-    public function notification(
+    protected function notification(
         string $message,
         array $buttons = [],
         array $ids = [],

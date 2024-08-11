@@ -45,7 +45,7 @@ class TestResource extends AbstractTestingResource
 
     private ?string $testUriKey = null;
 
-    public function pages(): array
+    protected function pages(): array
     {
         if (! empty($this->testPages)) {
             return $this->testPages;
@@ -194,38 +194,38 @@ class TestResource extends AbstractTestingResource
         return $this;
     }
 
-    public function rules(Model $item): array
+    protected function rules(Model $item): array
     {
         return $this->testRules;
     }
 
-    public function formFields(): array
+    protected function formFields(): array
     {
         return $this->testFormFields !== []
             ? $this->testFormFields
             : $this->testFields;
     }
 
-    public function indexFields(): array
+    protected function indexFields(): array
     {
         return $this->testIndexFields !== []
             ? $this->testIndexFields
             : $this->testFields;
     }
 
-    public function detailFields(): array
+    protected function detailFields(): array
     {
         return $this->testDetailFields !== []
             ? $this->testDetailFields
             : $this->testFields;
     }
 
-    public function importFields(): array
+    protected function importFields(): array
     {
         return $this->testImportFields;
     }
 
-    public function exportFields(): array
+    protected function exportFields(): array
     {
         return $this->testExportFields;
     }
@@ -235,7 +235,7 @@ class TestResource extends AbstractTestingResource
         return $this->testValidationMessages;
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         if ($this->testFilters === []) {
             return [];
@@ -244,17 +244,17 @@ class TestResource extends AbstractTestingResource
         return $this->testFilters;
     }
 
-    public function queryTags(): array
+    protected function queryTags(): array
     {
         return $this->testQueryTags;
     }
 
-    public function customIndexButtons(): ListOf
+    protected function customIndexButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, $this->testButtons);
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return $this->testSearch;
     }
@@ -268,17 +268,17 @@ class TestResource extends AbstractTestingResource
         return parent::getUriKey();
     }
 
-    public function metrics(): array
+    protected function metrics(): array
     {
         return $this->testMetrics;
     }
 
-    public function trAttributes(): Closure
+    protected function trAttributes(): Closure
     {
         return $this->testTrAttributes ?? parent::trAttributes();
     }
 
-    public function tdAttributes(): Closure
+    protected function tdAttributes(): Closure
     {
         return $this->testTdAttributes ?? parent::tdAttributes();
     }

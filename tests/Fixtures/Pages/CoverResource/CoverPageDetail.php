@@ -8,7 +8,7 @@ use MoonShine\Laravel\Pages\Crud\DetailPage;
 
 class CoverPageDetail extends DetailPage
 {
-    public function fields(): array
+    protected function fields(): array
     {
         return [];
     }

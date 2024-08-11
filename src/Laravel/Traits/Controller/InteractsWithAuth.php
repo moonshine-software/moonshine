@@ -10,7 +10,7 @@ use MoonShine\Laravel\MoonShineAuth;
 
 trait InteractsWithAuth
 {
-    public function auth(): Guard|StatefulGuard
+    protected function auth(): Guard|StatefulGuard
     {
         return MoonShineAuth::getGuard();
     }

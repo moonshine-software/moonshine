@@ -10,7 +10,7 @@ use MoonShine\UI\Fields\Preview;
 
 class CustomNoTypeIndex extends Page
 {
-    public function components(): array
+    protected function components(): array
     {
         return [
             Box::make([

@@ -8,7 +8,7 @@ use MoonShine\Laravel\Pages\Crud\IndexPage;
 
 class CoverPageIndex extends IndexPage
 {
-    public function fields(): array
+    protected function fields(): array
     {
         return [];
     }
