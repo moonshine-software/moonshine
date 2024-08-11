@@ -161,7 +161,7 @@ it('resource update column', function () {
         ->toBe(false);
 
     asAdmin()->put(
-        $this->moonshineCore->getRouter()->to('column.resource.update-column', [
+        $this->moonshineCore->getRouter()->to('update-field.through-column', [
             'resourceItem' => $this->item->getKey(),
             'resourceUri' => $resource->getUriKey(),
             'field' => 'active',
@@ -185,7 +185,7 @@ it('relation update column', function () {
 
     asAdmin()->put(
         $this->moonshineCore->getRouter()->to(
-            'column.relation.update-column',
+            'update-field.through-relation',
             [
                 'resourceItem' => $comment->getKey(),
                 'resourceUri' => $resource->getUriKey(),
@@ -230,7 +230,7 @@ it('relation update column in resource', function () {
 
     asAdmin()->put(
         $this->moonshineCore->getRouter()->to(
-            'column.relation.update-column',
+            'update-field.through-relation',
             [
                 'resourceItem' => $comment->getKey(),
                 'resourceUri' => $resource->getUriKey(),

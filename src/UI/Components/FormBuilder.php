@@ -175,7 +175,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): self {
-        $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->asyncMethod(
+        $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->method(
             $method,
             $message,
             params: ['resourceItem' => $resource?->getItemID()],

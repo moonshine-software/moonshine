@@ -148,7 +148,7 @@ it('check active element', function (): void {
         ->and($item3->isActive())
         ->toBeTrue();
 
-    fakeRequest('/admin/resource/test-image-resource/index-page?resourceItem=1');
+    fakeRequest('/admin/test-image-resource/index-page?query=1');
 
     $item1 = MenuItem::make('Item 1', TestCommentResource::class);
     $item2 = MenuItem::make('Item 2', TestImageResource::class);

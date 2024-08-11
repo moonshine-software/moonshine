@@ -109,7 +109,7 @@ trait ResourceModelCrudRouter
         array $params = [],
         ?PageContract $page = null,
     ): string {
-        return $this->getRouter()->getEndpoints()->asyncMethod(
+        return $this->getRouter()->getEndpoints()->method(
             $method,
             $message,
             $params,

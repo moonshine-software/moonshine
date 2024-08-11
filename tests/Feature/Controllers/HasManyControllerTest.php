@@ -9,19 +9,19 @@ use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\UI\Fields\StackFields;
 
-uses()->group('relation-controller');
+uses()->group('has-many-controller');
 
 beforeEach(function (): void {
     $this->itemResource = app(TestItemResource::class);
 });
 
-it('search relations with pagination', function () {
+it('search with pagination', function () {
     $item = createItem();
 
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get($this->moonshineCore->getRouter()->to('relation.search-relations', [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.list', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -39,12 +39,12 @@ it('search relations with pagination', function () {
     ;
 });
 
-it('pagination has many with page', function () {
+it('pagination with page', function () {
     $item = createItem(countComments: 6);
 
     $comment = $item->comments[3];
 
-    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search-relations", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to("has-many.list", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -62,13 +62,13 @@ it('pagination has many with page', function () {
     ;
 });
 
-it('pagination has many sort', function () {
+it('pagination sort', function () {
     $item = createItem();
 
     $lastComment = $item->comments[count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
-    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search-relations", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to("has-many.list", [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -86,11 +86,11 @@ it('pagination has many sort', function () {
     ;
 });
 
-it('search relations empty result', function () {
+it('search empty result', function () {
 
     $item = createItem(countComments: 1);
 
-    asAdmin()->get($this->moonshineCore->getRouter()->to('relation.search-relations', [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.list', [
         'pageUri' => PageType::FORM->value,
         'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
@@ -103,39 +103,17 @@ it('search relations empty result', function () {
     ;
 });
 
-it('async search', function () {
-    $item = createItem();
-    $category = Category::factory()->create([
-        'name' => 'test',
-    ]);
-    $item->categories()->attach($category);
-    $item->refresh();
-    $resource = app(TestCategoryResource::class);
+it('get form component', function () {
 
-    $field = StackFields::make()->fields([
-        BelongsToMany::make('Categories', resource: $resource)
-            ->fillData($item),
-    ]);
+    $item = createItem(countComments: 1);
 
-    addFieldsToTestResource($field);
-
-    asAdmin()->get($this->moonshineCore->getRouter()->to("relation.search", [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.form', [
         'pageUri' => PageType::FORM->value,
-        'resourceUri' => 'test-resource',
+        'resourceUri' => 'test-item-resource',
         'resourceItem' => $item->id,
-        '_component_name' => 'test-resource',
-        '_relation' => 'categories',
-        'query' => 'test',
+        '_relation' => 'comments',
     ]))
         ->assertOk()
-        ->assertJson([
-            [
-                'value' => $category->getKey(),
-                'label' => $category->name,
-                'properties' => [
-                    'image' => null,
-                ],
-            ],
-        ])
+        ->assertSee('form')
     ;
 });

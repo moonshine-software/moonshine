@@ -249,7 +249,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (?CastedDataContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->asyncMethod(
+        $url = static fn (?CastedDataContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([

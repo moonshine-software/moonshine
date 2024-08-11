@@ -13,14 +13,19 @@ use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\Support\Enums\ToastType;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 final class CrudController extends MoonShineController
 {
-    public function __construct()
+    public function __construct(
+        protected MoonShineNotificationContract $notification,
+    )
     {
+        parent::__construct($notification);
+
         $this->middleware(HandlePrecognitiveRequests::class)
             ->only(['store', 'update']);
     }

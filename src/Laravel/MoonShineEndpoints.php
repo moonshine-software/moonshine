@@ -21,14 +21,14 @@ final readonly class MoonShineEndpoints implements EndpointsContract
     ) {
     }
 
-    public function asyncMethod(
+    public function method(
         string $method,
         ?string $message = null,
         array $params = [],
         ?PageContract $page = null,
         ?ResourceContract $resource = null
     ): string {
-        return $this->router->to('async.method', [
+        return $this->router->to('method', [
             'method' => $method,
             'message' => $message,
             ...$params,
@@ -46,62 +46,44 @@ final readonly class MoonShineEndpoints implements EndpointsContract
     ): string {
         $key = $extra['key'] ?? $resource?->getItem()?->getKey();
 
-        return $this->router->to('async.reactive', [
+        return $this->router->to('reactive', [
             'resourceItem' => $key,
             'pageUri' => $this->router->getParam('pageUri', $this->router->extractPageUri($page)),
             'resourceUri' => $this->router->getParam('resourceUri', $this->router->extractResourceUri($resource)),
         ]);
     }
 
-    public function asyncComponent(
+    public function component(
         string $name,
         array $additionally = []
     ): string {
-        return $this->router->to('async.component', [
-                '_component_name' => $name,
-                '_parentId' => moonshineRequest()->getParentResourceId(),
-                ...$additionally,
-                ...[
-                    'pageUri' => $this->router->extractPageUri(),
-                    'resourceUri' => $this->router->extractResourceUri(),
-                ],
-            ]);
+        return $this->router->to('component', [
+            '_component_name' => $name,
+            '_parentId' => moonshineRequest()->getParentResourceId(),
+            ...$additionally,
+            ...[
+                'pageUri' => $this->router->extractPageUri(),
+                'resourceUri' => $this->router->extractResourceUri(),
+            ],
+        ]);
     }
 
-    public function updateColumn(
+    public function updateField(
         ?ResourceContract $resource = null,
         ?PageContract $page = null,
         array $extra = [],
     ): string {
         $relation = $extra['relation'] ?? null;
         $resourceItem = $extra['resourceItem'] ?? null;
+        $through = $relation ? 'relation' : 'column';
 
-        return $this->router->to(
-            'column.' . ($relation ? 'relation' : 'resource') . '.update-column',
-            [
-                'resourceUri' => $resource ? $resource->getUriKey() : $this->router->extractResourceUri(),
-                'pageUri' => $page ? $page->getUriKey() : $this->router->extractPageUri(),
-                'resourceItem' => $this->router->extractResourceItem($resourceItem),
-                '_relation' => $relation,
-            ]
+        return $this->withRelation(
+            "update-field.through-$through",
+            resourceItem: $this->router->extractResourceItem($resourceItem),
+            relation: $relation,
+            resourceUri: $resource ? $resource->getUriKey() : $this->router->extractResourceUri(),
+            pageUri: $page ? $page->getUriKey() : $this->router->extractPageUri()
         );
-    }
-
-    public function toRelation(
-        string $action,
-        int|string|null $resourceItem = null,
-        ?string $relation = null,
-        ?string $resourceUri = null,
-        ?string $pageUri = null,
-        ?string $parentField = null,
-    ): string {
-        return $this->router->to("relation.$action", [
-            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
-            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
-            'resourceItem' => $resourceItem,
-            '_parent_field' => $parentField,
-            '_relation' => $relation,
-        ]);
     }
 
     /**
@@ -164,5 +146,22 @@ final readonly class MoonShineEndpoints implements EndpointsContract
         return route(
             moonshineConfig()->getHomeRoute()
         );
+    }
+
+    public function withRelation(
+        string $action,
+        int|string|null $resourceItem = null,
+        ?string $relation = null,
+        ?string $resourceUri = null,
+        ?string $pageUri = null,
+        ?string $parentField = null,
+    ): string {
+        return $this->router->to($action, [
+            'pageUri' => $pageUri ?? moonshineRequest()->getPageUri(),
+            'resourceUri' => $resourceUri ?? moonshineRequest()->getResourceUri(),
+            'resourceItem' => $resourceItem,
+            '_parent_field' => $parentField,
+            '_relation' => $relation,
+        ]);
     }
 }
