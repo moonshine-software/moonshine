@@ -34,7 +34,7 @@ final class HasManyButton
         }
 
         $action = static fn (?Model $data) => $parentResource->getRoute(
-            'relation.has-many-form',
+            'has-many.form',
             moonshineRequest()->getItemID(),
             [
                 'pageUri' => $parentPage?->getUriKey(),

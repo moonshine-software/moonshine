@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 uses()->group('crud-controller');
 
-it('table', function () {
+it('get component', function () {
     $item = createItem(3, 2);
 
-    asAdmin()->get($this->moonshineCore->getRouter()->to('async.component', [
+    asAdmin()->get($this->moonshineCore->getRouter()->to('component', [
         '_component_name' => 'index-table-test-item-resource',
         'resourceUri' => 'test-item-resource',
         'pageUri' => 'index-page',

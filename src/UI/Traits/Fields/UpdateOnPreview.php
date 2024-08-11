@@ -11,6 +11,7 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Sets\UpdateOnPreviewPopover;
@@ -105,7 +106,7 @@ trait UpdateOnPreview
         $router = $this->getCore()->getRouter();
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? static fn (?CastedDataContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateColumn(
+            $url ?? static fn (?CastedDataContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateField(
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $data->getKey(),
@@ -125,6 +126,7 @@ trait UpdateOnPreview
 
         return $this->onChangeUrl(
             $this->updateOnPreviewUrl,
+            method: HttpMethod::PUT,
             events: $events
         );
     }
@@ -154,7 +156,7 @@ trait UpdateOnPreview
                 new UpdateOnPreviewPopover(
                     field: $this,
                     component: $this->updateOnPreviewParentComponent,
-                    route: $this->getCore()->getRouter()->getEndpoints()->updateColumn(
+                    route: $this->getCore()->getRouter()->getEndpoints()->updateField(
                         extra: [
                             'resourceItem' => $this->getData()?->getKey(),
                         ]

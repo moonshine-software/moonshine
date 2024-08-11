@@ -16,13 +16,13 @@ interface EndpointsContract
         array $extra = [],
     ): mixed;
 
-    public function updateColumn(
+    public function updateField(
         ?ResourceContract $resource = null,
         ?PageContract $page = null,
         array $extra = []
     ): string;
 
-    public function asyncMethod(
+    public function method(
         string $method,
         ?string $message = null,
         array $params = [],
@@ -30,7 +30,7 @@ interface EndpointsContract
         ?ResourceContract $resource = null
     ): string;
 
-    public function asyncComponent(
+    public function component(
         string $name,
         array $additionally = []
     ): string;

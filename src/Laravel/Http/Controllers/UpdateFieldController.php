@@ -20,7 +20,7 @@ class UpdateFieldController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function column(UpdateColumnFormRequest $request): Response
+    public function throughColumn(UpdateColumnFormRequest $request): Response
     {
         return $this->save($request->getResource(), $request->getField());
     }
@@ -28,7 +28,7 @@ class UpdateFieldController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function relation(RelationModelColumnUpdateRequest $request): Response
+    public function throughRelation(RelationModelColumnUpdateRequest $request): Response
     {
         $relationField = $request->getField();
 
@@ -51,7 +51,7 @@ class UpdateFieldController extends MoonShineController
         return $this->save($resource, $field);
     }
 
-    protected function save(ModelResource $resource, FieldContract $field)
+    private function save(ModelResource $resource, FieldContract $field)
     {
         try {
             $resource->save(

@@ -15,16 +15,10 @@ beforeEach(function () {
 });
 
 it('default name', function (): void {
-    $this->moonshineCore->getRouter()->withName('async.component');
+    $this->moonshineCore->getRouter()->withName('component');
 
     expect($this->moonshineCore->getRouter()->getName())
-        ->toBe('moonshine.async.component')
-    ;
-
-    $this->moonshineCore->getRouter()->withName('async');
-
-    expect($this->moonshineCore->getRouter()->getName('component'))
-        ->toBe('moonshine.async.component')
+        ->toBe('moonshine.component')
     ;
 });
 
@@ -94,51 +88,51 @@ it('default to', function (): void {
     ;
 });
 
-it('default async method', function (): void {
-    expect($this->moonshineCore->getRouter()->getEndpoints()->asyncMethod('someMethod', page: $this->page))
-        ->toContain("/admin/async/method/{$this->page->getUriKey()}?method=someMethod")
+it('default method', function (): void {
+    expect($this->moonshineCore->getRouter()->getEndpoints()->method('someMethod', page: $this->page))
+        ->toContain("/admin/method/{$this->page->getUriKey()}?method=someMethod")
     ;
 
     $this->get($this->page->getUrl());
 
-    expect($this->moonshineCore->getRouter()->getEndpoints()->asyncMethod('someMethod'))
-        ->toContain("/admin/async/method/{$this->page->getUriKey()}?method=someMethod")
+    expect($this->moonshineCore->getRouter()->getEndpoints()->method('someMethod'))
+        ->toContain("/admin/method/{$this->page->getUriKey()}?method=someMethod")
     ;
 });
 
 it('default reactive', function (): void {
     expect($this->moonshineCore->getRouter()->getEndpoints()->reactive(page: $this->page, resource: $this->resource, extra: ['key' => 3]))
-        ->toContain("/admin/async/reactive/{$this->page->getUriKey()}/{$this->resource->getUriKey()}/3")
+        ->toContain("/admin/reactive/{$this->page->getUriKey()}/{$this->resource->getUriKey()}/3")
     ;
 });
 
-it('default async component', function (): void {
+it('default component', function (): void {
     $this->get($this->page->getUrl());
 
-    expect($this->moonshineCore->getRouter()->getEndpoints()->asyncComponent('index-table'))
-        ->toContain("/admin/async/component/{$this->page->getUriKey()}?_component_name=index-table")
+    expect($this->moonshineCore->getRouter()->getEndpoints()->component('index-table'))
+        ->toContain("/admin/component/{$this->page->getUriKey()}?_component_name=index-table")
     ;
 });
 
 it('default update column', function (): void {
-    expect($this->moonshineCore->getRouter()->getEndpoints()->updateColumn($this->resource, $this->page, extra: [
+    expect($this->moonshineCore->getRouter()->getEndpoints()->updateField($this->resource, $this->page, extra: [
         'resourceItem' => 3,
     ]))
-        ->toContain("/admin/column/resource/{$this->resource->getUriKey()}/3?pageUri={$this->page->getUriKey()}")
-        ->and($this->moonshineCore->getRouter()->getEndpoints()->updateColumn($this->resource, $this->page, extra: [
+        ->toContain("/admin/update-field/column/{$this->resource->getUriKey()}/3?pageUri={$this->page->getUriKey()}")
+        ->and($this->moonshineCore->getRouter()->getEndpoints()->updateField($this->resource, $this->page, extra: [
             'resourceItem' => 3,
             'relation' => 'relation-name',
         ]))
-        ->toContain("/admin/column/relation/{$this->resource->getUriKey()}/{$this->page->getUriKey()}/3")
+        ->toContain("/admin/update-field/relation/{$this->resource->getUriKey()}/{$this->page->getUriKey()}/3")
     ;
 });
 
 
-it('default to relation', function (): void {
-    expect($this->moonshineCore->getRouter()->getEndpoints()->toRelation('search', pageUri: $this->page->getUriKey()))
-        ->toContain("/admin/relation/{$this->page->getUriKey()}")
-        ->and($this->moonshineCore->getRouter()->getEndpoints()->toRelation('search-relations', pageUri: $this->page->getUriKey()))
-        ->toContain("/admin/relations/{$this->page->getUriKey()}")
+it('default with relation', function (): void {
+    expect($this->moonshineCore->getRouter()->getEndpoints()->withRelation('async-search', pageUri: $this->page->getUriKey()))
+        ->toContain("/admin/async-search/{$this->page->getUriKey()}")
+        ->and($this->moonshineCore->getRouter()->getEndpoints()->withRelation('has-many.list', pageUri: $this->page->getUriKey()))
+        ->toContain("/admin/has-many/list/{$this->page->getUriKey()}")
     ;
 });
 

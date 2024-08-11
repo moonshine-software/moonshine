@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\MorphMany;
+use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
+use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -63,7 +65,9 @@ class TestItemResource extends AbstractTestingResource
             Box::make([
                 ID::make(),
 
-                Text::make('Name title', 'name')->sortable(),
+                Text::make('Name title', 'name')
+                    ->reactive()
+                    ->sortable(),
 
                 BelongsTo::make('Category title', 'category', 'name', TestCategoryResource::class),
 
@@ -121,5 +125,12 @@ class TestItemResource extends AbstractTestingResource
     public function rules(Model $item): array
     {
         return [];
+    }
+
+    public function testAsyncMethod(MoonShineRequest $request): MoonShineJsonResponse
+    {
+        return MoonShineJsonResponse::make([
+            'var' => $request->input('var')
+        ]);
     }
 }
