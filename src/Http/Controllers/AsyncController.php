@@ -142,23 +142,33 @@ class AsyncController extends MoonShineController
             ->onlyFields()
             ->reactiveFields();
 
-        $values = $request->collect('values')->map(function ($value, $column) use ($fields) {
+        $casted = null;
+
+        $values = $request->collect('values')->map(function ($value, $column) use ($fields, &$casted) {
             $field = $fields->findByColumn($column);
 
             if ($field instanceof Select) {
-                return data_get($value, 'value', $value);
+                $value = data_get($value, 'value', $value);
             }
 
             if ($field instanceof BelongsTo) {
-                return [
-                    $field->getRelatedModel()?->getKeyName() ?? 'id' => data_get($value, 'value', $value),
-                ];
+                $value = data_get($value, 'value', $value);
+
+                $casted = $field->getRelatedModel();
+                $related = $field->getRelation()?->getRelated();
+
+                $target = $related?->forceFill([
+                    $related->getKeyName() => $value
+                ]);
+
+                $casted?->setRelation($field->getRelationName(), $target);
             }
 
             return $value;
         });
 
-        $fields->fill($values->toArray());
+
+        $fields->fill($values->toArray(), $casted);
 
         foreach ($fields as $field) {
             $fields = $field->reactiveCallback(
