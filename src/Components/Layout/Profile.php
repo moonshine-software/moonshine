@@ -21,7 +21,7 @@ final class Profile extends MoonShineComponent
     public function __construct(
         protected ?string $route = null,
         protected ?string $logOutRoute = null,
-        protected Closure|string|null $avatar = null,
+        protected Closure|string|null|false $avatar = null,
         protected Closure|string|null $nameOfUser = null,
         protected Closure|string|null $username = null,
         protected bool $withBorder = false,
@@ -46,24 +46,33 @@ final class Profile extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $user = auth()->user();
-
-        $avatar = $user?->{config('moonshine.auth.fields.avatar', 'avatar')};
-        $nameOfUser = $user?->{config('moonshine.auth.fields.name', 'name')};
-        $username = $user?->{config('moonshine.auth.fields.username', 'email')};
-
-        $avatar = $avatar
-            ? Storage::disk(config('moonshine.disk', 'public'))
-                ->url($avatar)
-            : $this->defaultAvatar;
-
         return [
             'route' => $this->route ?? to_page(config('moonshine.pages.profile', ProfilePage::class)),
             'logOutRoute' => $this->logOutRoute ?? moonshineRouter()->to('logout'),
-            'avatar' => value($this->avatar, $this) ?? $avatar,
-            'nameOfUser' => value($this->nameOfUser, $this) ?? $nameOfUser,
-            'username' => value($this->username, $this) ?? $username,
+            'avatar' => value($this->avatar, $this) ?? $this->getDefaultAvatar(),
+            'nameOfUser' => value($this->nameOfUser, $this) ?? $this->getDefaultName(),
+            'username' => value($this->username, $this) ?? $this->getDefaultUsername(),
             'withBorder' => $this->isWithBorder(),
         ];
+    }
+
+    private function getDefaultName(): string
+    {
+        return auth()->user()?->{config('moonshine.auth.fields.name', 'name')};
+    }
+
+    private function getDefaultUsername(): string
+    {
+        return auth()->user()?->{config('moonshine.auth.fields.username', 'email')};
+    }
+
+    private function getDefaultAvatar(): false|string
+    {
+        $avatar = auth()->user()?->{config('moonshine.auth.fields.avatar', 'avatar')};
+
+        return $avatar
+            ? Storage::disk(config('moonshine.disk', 'public'))
+                ->url($avatar)
+            : $this->defaultAvatar;
     }
 }
