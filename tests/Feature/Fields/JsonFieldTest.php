@@ -69,8 +69,8 @@ it('apply as base with file', function () {
 
     expect($this->item->data->toArray())->toBe(
         [
-            ['file' => $file->hashName(), 'title' => 'Title 1', 'value' => 'Value 1',],
-            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2',],
+            ['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file->hashName()],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file->hashName()],
         ]
     );
 });
@@ -109,8 +109,8 @@ it('apply as base with file stay hidden', function () {
 
     expect($this->item->data->toArray())->toBe(
         [
-            ['file' => null, 'title' => 'Title 1', 'value' => 'Value 1'],
-            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2'],
+            ['title' => 'Title 1', 'value' => 'Value 1', 'file' => null],
+            ['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file->hashName()],
         ]
     );
 });
