@@ -6,13 +6,19 @@
     'fields' => [],
     'buttons' => [],
     'errors' => [],
+    'errorsAbove' => true,
     'submitAttributes' => null,
 ])
+@if($errorsAbove)
+    <x-moonshine::form.all-errors :errors="$errors" />
+@endif
+
 <x-moonshine::form
     :attributes="$attributes"
     :name="$name"
     :precognitive="$precognitive"
     :errors="$errors"
+    :errorsAbove="$errorsAbove"
 >
     <x-moonshine::fields-group
         :components="$fields"

@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait ResourceModelValidation
 {
+    protected bool $errorsAbove = true;
+
     /**
      * Get an array of validation rules for resource related model
      *
@@ -41,5 +43,10 @@ trait ResourceModelValidation
     public function prepareForValidation(): void
     {
         // Logic
+    }
+
+    public function hasErrorsAbove(): bool
+    {
+        return $this->errorsAbove;
     }
 }

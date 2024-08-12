@@ -18,12 +18,15 @@
             <a href="{{ $route }}"
                class="menu-profile-main"
             >
-                <div class="menu-profile-photo">
-                    <img class="h-full w-full object-cover"
-                         src="{{ $avatar }}"
-                         alt="{{ $nameOfUser }}"
-                    />
-                </div>
+                @if($avatar)
+                    <div class="menu-profile-photo">
+                        <img class="h-full w-full object-cover"
+                             src="{{ $avatar }}"
+                             alt="{{ $nameOfUser }}"
+                        />
+                    </div>
+                @endif
+
                 <div class="menu-profile-info">
                     <h5 class="name">{{ $nameOfUser }}</h5>
                     <div class="email">{{ $username }}</div>

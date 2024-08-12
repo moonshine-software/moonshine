@@ -57,6 +57,8 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     protected bool $hideSubmit = false;
 
+    protected bool $errorsAbove = true;
+
     protected MoonShineComponentAttributeBag $submitAttributes;
 
     protected ?Closure $onBeforeFieldsRender = null;
@@ -271,6 +273,18 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return $this->submitLabel ?? $this->getCore()->getTranslator()->get('moonshine::ui.save');
     }
 
+    public function errorsAbove(bool $enable = true): self
+    {
+        $this->errorsAbove = $enable;
+
+        return $this;
+    }
+
+    protected function hasErrorsAbove(): bool
+    {
+        return $this->errorsAbove;
+    }
+
     public function switchFormMode(bool $isAsync, string|array|null $events = ''): self
     {
         return $isAsync ? $this->async(events: $events) : $this->precognitive();
@@ -451,6 +465,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
             'submitLabel' => $this->getSubmitLabel(),
             'submitAttributes' => $this->getSubmitAttributes(),
             'errors' => $this->getCore()->getRequest()->getFormErrors($this->getName()),
+            'errorsAbove' => $this->hasErrorsAbove(),
         ];
     }
 }

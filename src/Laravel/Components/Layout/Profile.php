@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Components\Layout;
 
+use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\UI\Components\MoonShineComponent;
 use Throwable;
 
 /**
- * @method static static make(?string $route = null, ?string $logOutRoute = null, ?string $avatar = null, ?string $nameOfUser = null, ?string $username = null, bool $withBorder = false)
+ * @method static static make(?string $route = null, ?string $logOutRoute = null, ?Closure $avatar = null, ?Closure $nameOfUser = null, ?Closure $username = null, bool $withBorder = false)
  */
 final class Profile extends MoonShineComponent
 {
@@ -18,15 +21,19 @@ final class Profile extends MoonShineComponent
 
     protected ?string $defaultAvatar = null;
 
+    private ?Authenticatable $user;
+
     public function __construct(
         protected ?string $route = null,
         protected ?string $logOutRoute = null,
-        protected ?string $avatar = null,
-        protected ?string $nameOfUser = null,
-        protected ?string $username = null,
+        protected ?Closure $avatar = null,
+        protected ?Closure $nameOfUser = null,
+        protected ?Closure $username = null,
         protected bool $withBorder = false,
     ) {
         parent::__construct();
+
+        $this->user = MoonShineAuth::getGuard()->user();
     }
 
     public function isWithBorder(): bool
@@ -34,14 +41,14 @@ final class Profile extends MoonShineComponent
         return $this->withBorder;
     }
 
-    public function defaultAvatar(string $url): self
+    public function avatarPlaceholder(string $url): self
     {
         $this->defaultAvatar = $url;
 
         return $this;
     }
 
-    public function getDefaultAvatar(): string
+    public function getAvatarPlaceholder(): string
     {
         return $this->defaultAvatar ?? moonshineAssets()->getAsset('vendor/moonshine/avatar.jpg');
     }
@@ -52,15 +59,16 @@ final class Profile extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $user = auth()->user();
+        $nameOfUser = !is_null($this->nameOfUser)
+            ? value($this->nameOfUser, $this)
+            : $this->getDefaultName();
 
-        $avatar = $user?->{moonshineConfig()->getUserField('avatar')};
-        $nameOfUser = $user?->{moonshineConfig()->getUserField('name')};
-        $username = $user?->{moonshineConfig()->getUserField('username', 'email')};
+        $username = !is_null($this->username)
+            ? value($this->username, $this)
+            : $this->getDefaultUsername();
 
-        $avatar = $avatar
-            ? Storage::disk(moonshineConfig()->getDisk())
-                ->url($avatar)
+        $avatar = !is_null($this->avatar)
+            ? value($this->avatar, $this)
             : $this->getDefaultAvatar();
 
         return [
@@ -68,10 +76,29 @@ final class Profile extends MoonShineComponent
                 moonshineConfig()->getPage('profile', ProfilePage::class)
             ),
             'logOutRoute' => $this->logOutRoute ?? moonshineRouter()->to('logout'),
-            'avatar' => $this->avatar ?? $avatar,
-            'nameOfUser' => $this->nameOfUser ?? $nameOfUser,
-            'username' => $this->username ?? $username,
+            'avatar' => $avatar,
+            'nameOfUser' => $nameOfUser,
+            'username' => $username,
             'withBorder' => $this->isWithBorder(),
         ];
+    }
+
+    private function getDefaultName(): string
+    {
+        return $this->user?->{moonshineConfig()->getUserField('name')};
+    }
+
+    private function getDefaultUsername(): string
+    {
+        return $this->user?->{moonshineConfig()->getUserField('username', 'email')};
+    }
+
+    private function getDefaultAvatar(): false|string
+    {
+        $avatar = $this->user?->{moonshineConfig()->getUserField('avatar')};
+
+        return $avatar
+            ? Storage::disk(moonshineConfig()->getDisk())->url($avatar)
+            : $this->getAvatarPlaceholder();
     }
 }

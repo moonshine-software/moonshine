@@ -248,6 +248,10 @@ class FormPage extends Page
                 ...$this->getResource()->getInsideFormPageComponents(),
             ])
             ->when(
+                !$resource->hasErrorsAbove(),
+                fn (FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($resource->hasErrorsAbove())
+            )
+            ->when(
                 $isAsync,
                 static fn (FormBuilderContract $formBuilder): FormBuilderContract => $formBuilder
                     ->async(events: array_filter([

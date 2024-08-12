@@ -5,8 +5,6 @@
     'precognitive' => false,
     'raw' => false
 ])
-<x-moonshine::form.all-errors :errors="$errors" />
-
 <form
     {{ $attributes->merge(['class' => 'form', 'method' => 'POST']) }}
     @if(empty($attributes->get('id')))
