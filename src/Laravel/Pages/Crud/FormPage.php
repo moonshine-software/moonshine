@@ -248,7 +248,7 @@ class FormPage extends Page
                 ...$this->getResource()->getInsideFormPageComponents(),
             ])
             ->when(
-                !$resource->hasErrorsAbove(),
+                ! $resource->hasErrorsAbove(),
                 fn (FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($resource->hasErrorsAbove())
             )
             ->when(
