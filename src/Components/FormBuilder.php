@@ -50,6 +50,8 @@ final class FormBuilder extends RowComponent
 
     protected Closure|string|null $reactiveUrl = null;
 
+    protected bool $errorsAbove = true;
+
     public function __construct(
         protected string $action = '',
         protected string $method = 'POST',
@@ -95,6 +97,19 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
+    public function errorsAbove(bool $enable = true): self
+    {
+        $this->errorsAbove = $enable;
+
+        return $this;
+    }
+
+    public function hasErrorsAbove(): bool
+    {
+        return $this->errorsAbove;
+    }
+
+
     protected function prepareAsyncUrl(Closure|string|null $asyncUrl = null): Closure|string|null
     {
         return $asyncUrl ?? $this->getAction();
@@ -135,7 +150,7 @@ final class FormBuilder extends RowComponent
 
     private function getReactiveUrl(): string
     {
-        if(! is_null($this->reactiveUrl)) {
+        if (! is_null($this->reactiveUrl)) {
             return value($this->reactiveUrl, $this);
         }
 
@@ -367,6 +382,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
+            'errorsAbove' => $this->hasErrorsAbove(),
         ];
     }
 }
