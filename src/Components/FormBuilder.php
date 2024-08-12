@@ -50,7 +50,7 @@ final class FormBuilder extends RowComponent
 
     protected Closure|string|null $reactiveUrl = null;
 
-    protected bool $showErrorsAtFormTop = true;
+    protected bool $errorsAbove = true;
 
     public function __construct(
         protected string $action = '',
@@ -97,16 +97,16 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    public function hideErrorsAtFormTop(): self
+    public function errorsAbove(?bool $enable = true): self
     {
-        $this->showErrorsAtFormTop = false;
+        $this->errorsAbove = $enable;
 
         return $this;
     }
 
-    public function showErrorsAtFormTop(): bool
+    public function hasErrorsAbove(): bool
     {
-        return $this->showErrorsAtFormTop;
+        return $this->errorsAbove;
     }
 
 
@@ -382,7 +382,7 @@ final class FormBuilder extends RowComponent
             'hideSubmit' => $this->isHideSubmit(),
             'submitLabel' => $this->submitLabel(),
             'submitAttributes' => $this->submitAttributes(),
-            'showErrorsAtFormTop' => $this->showErrorsAtFormTop(),
+            'errorsAbove' => $this->hasErrorsAbove(),
         ];
     }
 }

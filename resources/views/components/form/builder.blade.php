@@ -2,7 +2,7 @@
     :attributes="$attributes"
     :name="$name"
     :precognitive="$precognitive"
-    :showErrorsAtFormTop="$showErrorsAtFormTop"
+    :errorsAbove="$errorsAbove"
 >
     <x-moonshine::fields-group
         :components="$fields"

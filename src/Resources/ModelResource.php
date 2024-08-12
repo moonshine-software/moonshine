@@ -82,7 +82,7 @@ abstract class ModelResource extends Resource
 
     protected bool $columnSelection = false;
 
-    protected bool $hideErrorsAtFormTop = false;
+    protected bool $errorsAbove = true;
 
     public function flushState(): void
     {
@@ -186,9 +186,9 @@ abstract class ModelResource extends Resource
         return $this->columnSelection;
     }
 
-    public function hideErrorsAtFormTop(): bool
+    public function hasErrorsAbove(): bool
     {
-        return $this->hideErrorsAtFormTop;
+        return $this->errorsAbove;
     }
 
 
