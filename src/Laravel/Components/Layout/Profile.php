@@ -21,7 +21,7 @@ final class Profile extends MoonShineComponent
 
     protected ?string $defaultAvatar = null;
 
-    private ?Authenticatable $user;
+    private readonly ?Authenticatable $user;
 
     public function __construct(
         protected ?string $route = null,
@@ -59,17 +59,17 @@ final class Profile extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $nameOfUser = !is_null($this->nameOfUser)
-            ? value($this->nameOfUser, $this)
-            : $this->getDefaultName();
+        $nameOfUser = is_null($this->nameOfUser)
+            ? $this->getDefaultName()
+            : value($this->nameOfUser, $this);
 
-        $username = !is_null($this->username)
-            ? value($this->username, $this)
-            : $this->getDefaultUsername();
+        $username = is_null($this->username)
+            ? $this->getDefaultUsername()
+            : value($this->username, $this);
 
-        $avatar = !is_null($this->avatar)
-            ? value($this->avatar, $this)
-            : $this->getDefaultAvatar();
+        $avatar = is_null($this->avatar)
+            ? $this->getDefaultAvatar()
+            : value($this->avatar, $this);
 
         return [
             'route' => $this->route ?? toPage(
