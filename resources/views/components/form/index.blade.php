@@ -3,10 +3,11 @@
     'name' => null,
     'errors' => false,
     'precognitive' => false,
-    'raw' => false
+    'raw' => false,
+    'errorsAbove' => true,
 ])
 
-@if(formErrors($errors, $name)->isNotEmpty())
+@if($errorsAbove && formErrors($errors, $name)->isNotEmpty())
     <x-moonshine::form.all-errors :errors="formErrors($errors, $name)" />
 @endif
 
