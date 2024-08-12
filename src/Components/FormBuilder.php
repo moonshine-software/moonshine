@@ -97,7 +97,7 @@ final class FormBuilder extends RowComponent
         return $this->isPrecognitive;
     }
 
-    public function errorsAbove(?bool $enable = true): self
+    public function errorsAbove(bool $enable = true): self
     {
         $this->errorsAbove = $enable;
 
