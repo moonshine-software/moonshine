@@ -11,6 +11,9 @@ trait WithCore
 {
     private ?CoreContract $core = null;
 
+    /**
+     * We don't keep the Core by default, but there is such an option
+     */
     public function setCore(CoreContract $core): void
     {
         $this->core = $core;
@@ -22,6 +25,6 @@ trait WithCore
             return $this->core;
         }
 
-        return $this->core = Core::getInstance();
+        return Core::getInstance();
     }
 }

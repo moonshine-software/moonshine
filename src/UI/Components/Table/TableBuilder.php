@@ -262,8 +262,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                     builder: $tdAttributes,
                     startIndex: $hasBulk ? 1 : 0
                 )
-                ->pushCellWhen(
-                    $buttons->isNotEmpty(),
+                ->pushCell(
                     static fn (): string => (string) Flex::make([
                         ActionGroup::make($buttons->toArray()),
                     ])->justifyAlign('end'),

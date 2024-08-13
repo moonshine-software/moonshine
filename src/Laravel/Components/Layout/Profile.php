@@ -85,12 +85,12 @@ final class Profile extends MoonShineComponent
 
     private function getDefaultName(): string
     {
-        return $this->user?->{moonshineConfig()->getUserField('name')};
+        return $this->user?->{moonshineConfig()->getUserField('name')} ?? '';
     }
 
     private function getDefaultUsername(): string
     {
-        return $this->user?->{moonshineConfig()->getUserField('username', 'email')};
+        return $this->user?->{moonshineConfig()->getUserField('username', 'email')} ?? '';
     }
 
     private function getDefaultAvatar(): false|string
