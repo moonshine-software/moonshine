@@ -70,14 +70,16 @@
             @endforeach
         @endif
 
-        @if(!$preview && $row->getActions()->isNotEmpty())
+        @if(!$preview)
             <td {{ $row->tdAttributes($loop->index, $row->getFields()->count() + $hasActions) }}
                 @if($vertical) width="5%" @endif
             >
-                <x-moonshine::table.actions
-                    :simple="$simple"
-                    :actions="$row->getActions()"
-                />
+                @if($row->getActions()->isNotEmpty())
+                    <x-moonshine::table.actions
+                        :simple="$simple"
+                        :actions="$row->getActions()"
+                    />
+                @endif
             </td>
         @endif
     </tr>
