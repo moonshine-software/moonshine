@@ -432,7 +432,7 @@ class BelongsToMany extends ModelRelationField implements
             return $data;
         }
 
-        foreach ($requestValues as $key => $checked) {
+        foreach (array_keys($requestValues) as $key) {
             foreach ($this->preparedFields() as $field) {
                 $field->setNameIndex($key);
 
