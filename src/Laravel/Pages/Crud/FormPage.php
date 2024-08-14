@@ -209,7 +209,7 @@ class FormPage extends Page
                         $this->getResource()->getFormFields(),
                         $isAsync
                     ),
-                )
+                ),
             ])
                 ->name('crud-form')
                 ->updateWith(['resourceItem' => $resource->getItemID()]),
