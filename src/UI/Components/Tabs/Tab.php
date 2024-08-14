@@ -23,6 +23,8 @@ class Tab extends AbstractWithComponents
 
     public bool $active = false;
 
+    public ?string $id = null;
+
     private MoonShineComponentAttributeBag $labelAttributes;
 
     public function __construct(
@@ -39,18 +41,6 @@ class Tab extends AbstractWithComponents
         $this->labelAttributes = new MoonShineComponentAttributeBag();
 
         parent::__construct($components);
-
-        $this->labelAttributes([
-            '@click.prevent' => "setActiveTab(`{$this->getId()}`)",
-            ':class' => "{ '_is-active': activeTab === '{$this->getId()}' }",
-            'class' => "tabs-button",
-        ]);
-
-        $this->customAttributes([
-            '@set-active-tab' => "setActiveTab(`{$this->getId()}`)",
-            ':class' => "activeTab === '{$this->getId()}' ? 'block' : 'hidden'",
-            'class' => "tab-panel",
-        ]);
     }
 
     public function labelAttributes(array $attributes): static
@@ -75,9 +65,36 @@ class Tab extends AbstractWithComponents
         return $this;
     }
 
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): string
     {
-        return (string) spl_object_id($this);
+        return $this->id ?? (string) spl_object_id($this);
+    }
+
+    protected function prepareBeforeRender(): void
+    {
+        $this->labelAttributes([
+            '@click.prevent' => "setActiveTab(`{$this->getId()}`)",
+            ':class' => "{ '_is-active': activeTab === '{$this->getId()}' }",
+            'class' => "tabs-button",
+        ]);
+
+        $this->customAttributes([
+            '@set-active-tab' => "setActiveTab(`{$this->getId()}`)",
+            ':class' => "activeTab === '{$this->getId()}' ? 'block' : 'hidden'",
+            'class' => "tab-panel",
+        ]);
+    }
+
+    protected function prepareBeforeSerialize(): void
+    {
+        $this->prepareBeforeRender();
     }
 
     /**

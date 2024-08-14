@@ -39,6 +39,7 @@ final class FileModelApply implements ApplyContract
                         ->toArray();
                 } else {
                     $newValue = $this->store($field, $requestValue);
+                    $field->setRemainingValues([]);
                 }
             }
 

@@ -80,6 +80,11 @@ trait WithViewRenderer
         //
     }
 
+    protected function prepareBeforeSerialize(): void
+    {
+        //
+    }
+
     protected function resolveAssets(): void
     {
         $this->getAssetManager()->add($this->getAssets());
@@ -173,6 +178,8 @@ trait WithViewRenderer
 
     public function toArray(): array
     {
+        $this->prepareBeforeSerialize();
+
         return [
             ...$this->viewData(),
             ...$this->getCustomViewData(),

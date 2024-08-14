@@ -27,6 +27,8 @@ trait FileTrait
 
     protected ?Closure $remainingValuesResolver = null;
 
+    protected ?Collection $remainingValues = null;
+
     /**
      * @param  Closure(string $filename, int $index): string  $closure
      */
@@ -177,8 +179,22 @@ trait FileTrait
         return $this;
     }
 
+    public function setRemainingValues(iterable $values): void
+    {
+        $this->remainingValues = collect($values);
+    }
+
     public function getRemainingValues(): Collection
     {
+        if(! is_null($this->remainingValues)) {
+            $values = $this->remainingValues;
+
+            $this->remainingValues = null;
+
+            return $values;
+        }
+
+
         if(! is_null($this->remainingValuesResolver)) {
             return value($this->remainingValuesResolver, $this);
         }
