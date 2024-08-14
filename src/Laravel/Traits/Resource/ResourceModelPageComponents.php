@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FieldContract;
 
 trait ResourceModelPageComponents
@@ -22,14 +23,6 @@ trait ResourceModelPageComponents
     public function getFormPageComponents(): array
     {
         return empty($this->formPageComponents()) ? $this->pageComponents() : $this->formPageComponents();
-    }
-
-    /**
-     * @return list<FieldContract>
-     */
-    public function getInsideFormPageComponents(): array
-    {
-        return $this->insideFormPageComponents();
     }
 
     /**
@@ -59,14 +52,6 @@ trait ResourceModelPageComponents
     /**
      * @return list<FieldContract>
      */
-    protected function insideFormPageComponents(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return list<FieldContract>
-     */
     protected function detailPageComponents(): array
     {
         return [];
@@ -78,5 +63,20 @@ trait ResourceModelPageComponents
     protected function pageComponents(): array
     {
         return [];
+    }
+
+    public function modifyFormComponent(RenderableContract $component): RenderableContract
+    {
+        return $component;
+    }
+
+    public function modifyListComponent(RenderableContract $component): RenderableContract
+    {
+        return $component;
+    }
+
+    public function modifyDetailComponent(RenderableContract $component): RenderableContract
+    {
+        return $component;
     }
 }

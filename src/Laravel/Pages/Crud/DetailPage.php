@@ -171,7 +171,9 @@ class DetailPage extends Page
     {
         return [
             Fragment::make([
-                $this->getDetailComponent($item, $this->getResource()->getDetailFields()),
+                $this->getResource()->modifyDetailComponent(
+                    $this->getDetailComponent($item, $this->getResource()->getDetailFields())
+                ),
             ])->name('crud-detail'),
         ];
     }
