@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Components\Layout;
 
 use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\MoonShineAuth;
 use MoonShine\Pages\ProfilePage;
 
 /**
@@ -18,6 +20,8 @@ final class Profile extends MoonShineComponent
 
     protected string $defaultAvatar = '';
 
+    protected Authenticatable $user;
+
     public function __construct(
         protected ?string $route = null,
         protected ?string $logOutRoute = null,
@@ -26,6 +30,7 @@ final class Profile extends MoonShineComponent
         protected Closure|string|null $username = null,
         protected bool $withBorder = false,
     ) {
+        $this->user = MoonShineAuth::guard()->user();
         $this->defaultAvatar = asset('vendor/moonshine/avatar.jpg');
     }
 
@@ -58,21 +63,20 @@ final class Profile extends MoonShineComponent
 
     private function getDefaultName(): string
     {
-        return auth()->user()?->{config('moonshine.auth.fields.name', 'name')};
+        return $this->user?->{config('moonshine.auth.fields.name', 'name')} ?? '';
     }
 
     private function getDefaultUsername(): string
     {
-        return auth()->user()?->{config('moonshine.auth.fields.username', 'email')};
+        return $this->user?->{config('moonshine.auth.fields.username', 'email')} ?? '';
     }
 
     private function getDefaultAvatar(): false|string
     {
-        $avatar = auth()->user()?->{config('moonshine.auth.fields.avatar', 'avatar')};
+        $avatar = $this->user?->{config('moonshine.auth.fields.avatar', 'avatar')};
 
         return $avatar
-            ? Storage::disk(config('moonshine.disk', 'public'))
-                ->url($avatar)
+            ? Storage::disk(config('moonshine.disk', 'public'))->url($avatar)
             : $this->defaultAvatar;
     }
 }

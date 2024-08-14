@@ -105,7 +105,9 @@ class DetailPage extends Page
         return [
             Block::make([
                 Fragment::make([
-                    $this->detailComponent($item, $resource->getDetailFields()),
+                    $this->getResource()->modifyDetailComponent(
+                        $this->detailComponent($item, $resource->getDetailFields())
+                    ),
                 ])->name('crud-detail'),
 
                 LineBreak::make(),

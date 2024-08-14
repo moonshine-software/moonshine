@@ -228,7 +228,9 @@ class IndexPage extends Page
 
         return [
             Fragment::make([
-                $this->itemsComponent($items, $fields),
+                $this->getResource()->modifyListComponent(
+                    $this->itemsComponent($items, $fields)
+                ),
             ])->name('crud-list'),
         ];
     }

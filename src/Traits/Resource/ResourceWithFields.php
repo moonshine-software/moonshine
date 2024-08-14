@@ -150,8 +150,7 @@ trait ResourceWithFields
                 ->ensure(Field::class);
         }
 
-        $fields = $this->fields()
-            ?: $this->indexFields();
+        $fields = $this->getIndexFields();
 
         return Fields::make($fields)
             ->onlyFields()
@@ -176,8 +175,7 @@ trait ResourceWithFields
                 ->ensure(Field::class);
         }
 
-        $fields = $this->fields()
-            ?: $this->indexFields();
+        $fields = $this->getIndexFields();
 
         return Fields::make($fields)
             ->onlyFields()
