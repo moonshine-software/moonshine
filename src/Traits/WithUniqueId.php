@@ -10,6 +10,13 @@ trait WithUniqueId
 {
     protected ?string $uniqueId = null;
 
+    public function uniqueId(string $id): static
+    {
+        $this->uniqueId = $id;
+
+        return $this;
+    }
+
     public function id(string $index = null): string
     {
         if (is_null($this->uniqueId)) {

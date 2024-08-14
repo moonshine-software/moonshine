@@ -34,6 +34,6 @@
     </th>
 @endforeach
 
-@if(!$preview && $rows?->first()?->getActions()?->isNotEmpty())
+@if(!$preview)
     <th></th>
 @endif

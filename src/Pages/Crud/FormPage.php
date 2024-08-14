@@ -185,12 +185,14 @@ class FormPage extends Page
 
         return [
             Fragment::make([
-                $this->formComponent(
-                    $action,
-                    $item,
-                    $this->getResource()->getFormFields(),
-                    $isAsync
-                ),
+                $this->getResource()->modifyFormComponent(
+                    $this->formComponent(
+                        $action,
+                        $item,
+                        $this->getResource()->getFormFields(),
+                        $isAsync
+                    ),
+                )
             ])
                 ->name('crud-form')
                 ->updateAsync(['resourceItem' => $resource->getItemID()]),

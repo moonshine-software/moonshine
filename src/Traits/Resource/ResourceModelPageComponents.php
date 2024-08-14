@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Traits\Resource;
 
+use MoonShine\Components\FormBuilder;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Components\TableBuilder;
+use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Fields\Field;
 
 trait ResourceModelPageComponents
@@ -63,5 +66,35 @@ trait ResourceModelPageComponents
     public function pageComponents(): array
     {
         return [];
+    }
+
+    /**
+     * @param FormBuilder $component
+     *
+     * @return FormBuilder
+     */
+    public function modifyFormComponent(MoonShineRenderable $component): MoonShineRenderable
+    {
+        return $component;
+    }
+
+    /**
+     * @param TableBuilder $component
+     *
+     * @return TableBuilder
+     */
+    public function modifyListComponent(MoonShineRenderable $component): MoonShineRenderable
+    {
+        return $component;
+    }
+
+    /**
+     * @param TableBuilder $component
+     *
+     * @return TableBuilder
+     */
+    public function modifyDetailComponent(MoonShineRenderable $component): MoonShineRenderable
+    {
+        return $component;
     }
 }
