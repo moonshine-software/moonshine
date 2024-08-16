@@ -143,7 +143,7 @@ trait FileTrait
         $column = str($this->column())->explode('.')->last();
         $hiddenColumn = str($this->getVirtualColumn())->explode('.')->last();
 
-        return str($this->nameDot())
+        return str($this->requestNameDot())
             ->replaceLast($column, "hidden_$hiddenColumn")
             ->value();
     }
