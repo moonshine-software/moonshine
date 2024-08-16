@@ -12,6 +12,7 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Contracts\RangeFieldContract;
@@ -19,8 +20,13 @@ use MoonShine\UI\Fields\Hidden;
 use Stringable;
 use Throwable;
 
+/**
+ * @method static static make(ModelResource $resource)
+ */
 final readonly class FiltersForm implements FormContract
 {
+    use Makeable;
+
     public function __construct(private ModelResource $resource)
     {
     }
@@ -103,7 +109,7 @@ final readonly class FiltersForm implements FormContract
             })
             ->submit(__('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
-                request()->has('filters'),
+                request()->has('filter'),
                 fn (FormBuilderContract $form): FormBuilderContract => $form->buttons([
                     ActionButton::make(
                         __('moonshine::ui.reset'),

@@ -172,11 +172,11 @@ it('apply as base with null', function () {
 
 it('apply as filter', function (): void {
     $field = $this->field
-        ->wrapName('filters');
+        ->wrapName('filter');
 
     $query = Item::query();
 
-    get('/?filters[range][from]=2020-01-01&filters[range][to]=2020-01-02');
+    get('/?filter[range][from]=2020-01-01&filter[range][to]=2020-01-02');
 
     $field
         ->onApply((new DateRangeModelApply())->apply($field))
@@ -192,11 +192,11 @@ it('apply as filter', function (): void {
 it('apply as filter with time', function (): void {
     $field = $this->field
         ->withTime()
-        ->wrapName('filters');
+        ->wrapName('filter');
 
     $query = Item::query();
 
-    get('/?filters[range][from]=2020-01-01T00:00&filters[range][to]=2020-01-02T23:59');
+    get('/?filter[range][from]=2020-01-01T00:00&filter[range][to]=2020-01-02T23:59');
 
     $field
         ->onApply((new DateRangeModelApply())->apply($field))

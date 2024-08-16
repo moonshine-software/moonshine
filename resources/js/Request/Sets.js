@@ -84,7 +84,7 @@ export function listComponentRequest(component, pushState = false) {
 
     Array.from(resultUrl.searchParams).map(function (values) {
       let [index] = values
-      if (index.indexOf('filters[') === 0) {
+      if (index.indexOf('filter[') === 0) {
         resultUrl.searchParams.delete(index)
       }
     })

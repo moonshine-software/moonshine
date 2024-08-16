@@ -290,7 +290,7 @@ trait ResourceModelQuery
      */
     public function getQueryParamsKeys(): array
     {
-        return ['sort', 'filters', 'page', 'query-tag', 'search'];
+        return ['sort', 'filter', 'page', 'query-tag', 'search'];
     }
 
     /**
@@ -460,12 +460,12 @@ trait ResourceModelQuery
      */
     public function getFilterParams(): array
     {
-        $default = $this->getQueryParams()->get('filters', []);
+        $default = $this->getQueryParams()->get('filter', []);
 
         if ($this->isSaveQueryState()) {
             return data_get(
                 moonshineCache()->get($this->getQueryCacheKey(), []),
-                'filters',
+                'filter',
                 $default
             );
         }

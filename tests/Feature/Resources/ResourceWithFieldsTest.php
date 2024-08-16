@@ -99,5 +99,5 @@ it('filters fields', function () {
         ->toBeInstanceOf(Box::class)
         ->onlyFields()
         ->toHaveCount(1)
-        ->each(static fn ($expect) => $expect->getNameAttribute()->toContain('filters'));
+        ->each(static fn ($expect) => $expect->getNameAttribute()->toContain('filter'));
 });

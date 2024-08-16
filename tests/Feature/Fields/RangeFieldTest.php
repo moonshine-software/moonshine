@@ -147,11 +147,11 @@ it('apply as base with default', function () {
 
 it('apply as filter', function (): void {
     $field = Range::make('Range', 'start_point')
-        ->wrapName('filters');
+        ->wrapName('filter');
 
     $query = Item::query();
 
-    get('/?filters[start_point][from]=10&filters[start_point][to]=20');
+    get('/?filter[start_point][from]=10&filter[start_point][to]=20');
 
     $field
         ->onApply((new RangeModelApply())->apply($field))

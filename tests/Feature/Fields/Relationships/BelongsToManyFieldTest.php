@@ -245,11 +245,11 @@ it('apply as select', function () {
 
 it('apply as filter', function (): void {
     $field = $this->field
-        ->wrapName('filters');
+        ->wrapName('filter');
 
     $query = Item::query();
 
-    get('/?filters[categories][3][_checked]=1');
+    get('/?filter[categories][3][_checked]=1');
 
     $field
         ->onApply((new BelongsToManyModelApply())->apply($field))

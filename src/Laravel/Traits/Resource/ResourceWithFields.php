@@ -131,7 +131,7 @@ trait ResourceWithFields
     {
         $filters = Fields::make($this->filters())
             ->withoutOutside()
-            ->wrapNames('filters');
+            ->wrapNames('filter');
 
         $filters->each(static function ($filter): void {
             if (in_array($filter::class, FieldsWithoutFilters::LIST)) {

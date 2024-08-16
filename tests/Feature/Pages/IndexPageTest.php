@@ -23,7 +23,7 @@ it('filters', function () {
             page: IndexPage::class,
             resource: $this->resource,
             params: [
-                'filters' => [
+                'filter' => [
                     'name' => $item->name,
                     'category_id' => $item->category_id,
                 ],

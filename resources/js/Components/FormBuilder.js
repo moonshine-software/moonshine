@@ -249,7 +249,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
     const filledFields = new Set()
 
     for (const [name, value] of formData.entries()) {
-      if (name.startsWith('filters') && value && value !== '0') {
+      if (name.startsWith('filter') && value && value !== '0') {
         const match = name.match(/\[(.*?)]/)
         filledFields.add(match ? match[1] : null)
       }

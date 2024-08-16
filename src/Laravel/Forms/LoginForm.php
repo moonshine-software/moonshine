@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Forms;
 
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
+use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\Switcher;
@@ -13,6 +14,8 @@ use MoonShine\UI\Fields\Text;
 
 final class LoginForm implements FormContract
 {
+    use Makeable;
+
     public function __invoke(): FormBuilderContract
     {
         return FormBuilder::make()

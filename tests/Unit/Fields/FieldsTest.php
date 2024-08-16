@@ -116,10 +116,10 @@ describe('fields', function () {
     });
 
     it('wrap names', function () {
-        $this->collection->wrapNames('filters');
+        $this->collection->wrapNames('filter');
 
         expect($this->collection->onlyFields())
-            ->each(static fn ($expect) => $expect->getNameAttribute()->toContain('filters'))
+            ->each(static fn ($expect) => $expect->getNameAttribute()->toContain('filter'))
         ;
     });
 

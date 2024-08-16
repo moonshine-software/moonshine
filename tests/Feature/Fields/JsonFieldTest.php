@@ -222,11 +222,11 @@ it('apply as relation', function () {
 it('apply as filter', function (): void {
     $field = Json::make('Json')
         ->fields(exampleFields()->toArray())
-        ->wrapName('filters');
+        ->wrapName('filter');
 
     $query = Item::query();
 
-    get('/?filters[json][0][title]=test');
+    get('/?filter[json][0][title]=test');
 
     $field
         ->onApply((new RepeaterModelApply())->apply($field))

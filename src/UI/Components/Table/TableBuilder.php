@@ -128,7 +128,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         return $url ?? fn (): string => $this->getCore()->getRouter()->getEndpoints()->component(
             $this->getName(),
             additionally: [
-                'filters' => $this->getCore()->getRequest()->get('filters'),
+                'filter' => $this->getCore()->getRequest()->get('filter'),
                 'query-tag' => $this->getCore()->getRequest()->get('query-tag'),
                 'search' => $this->getCore()->getRequest()->get('search'),
             ]
