@@ -174,6 +174,18 @@ class IndexPage extends Page
             ->cast($this->getResource()->getModelCast())
             ->withNotFound()
             ->when(
+                ! is_null($head = $this->getResource()->getHeadRows()),
+                fn (TableBuilderContract $table): TableBuilderContract => $table->headRows($head)
+            )
+            ->when(
+                ! is_null($body = $this->getResource()->getRows()),
+                fn (TableBuilderContract $table): TableBuilderContract => $table->rows($body)
+            )
+            ->when(
+                ! is_null($foot = $this->getResource()->getFootRows()),
+                fn (TableBuilderContract $table): TableBuilderContract => $table->footRows($foot)
+            )
+            ->when(
                 ! is_null($this->getResource()->getTrAttributes()),
                 fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
                     $this->getResource()->getTrAttributes()
