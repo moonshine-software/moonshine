@@ -28,7 +28,6 @@ use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\Traits\Resource\ResourceModelValidation;
 use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
 use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
-use MoonShine\Laravel\Traits\Resource\ResourceWithParent;
 use MoonShine\Laravel\Traits\Resource\ResourceWithTableModifiers;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
