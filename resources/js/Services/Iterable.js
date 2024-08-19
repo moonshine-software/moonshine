@@ -10,7 +10,7 @@ export class Iterable {
       ? block
       : block.closest(`[data-top-level]`)
 
-    if(topLevelBlock === null) {
+    if (topLevelBlock === null) {
       return
     }
 
@@ -20,12 +20,12 @@ export class Iterable {
         let name = field.dataset.name
         let _key = parent.dataset.key ?? parent.rowIndex ?? index
 
-        let currentPrev = { ...prev }
+        let currentPrev = {...prev}
         currentPrev['${index' + level + '}'] = _key
 
         Object.entries(currentPrev).forEach(function ([key, value]) {
           name = name.replace(key, value)
-        });
+        })
 
         field.setAttribute('name', name)
         field.setAttribute('data-r-index', _key)
@@ -35,7 +35,7 @@ export class Iterable {
         }
 
         _reindex(parent, level + 1, currentPrev, _key)
-      });
+      })
     }
 
     _reindex(topLevelBlock, 0, {}, 1)
