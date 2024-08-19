@@ -28,6 +28,8 @@ use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\Traits\Resource\ResourceModelValidation;
 use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
 use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
+use MoonShine\Laravel\Traits\Resource\ResourceWithParent;
+use MoonShine\Laravel\Traits\Resource\ResourceWithTableModifiers;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
@@ -42,6 +44,7 @@ abstract class ModelResource extends Resource implements CrudResourceContract
 {
     use ResourceWithFields;
     use ResourceWithButtons;
+    use ResourceWithTableModifiers;
 
     /** @use ResourceModelValidation<TModel> */
     use ResourceModelValidation;
@@ -211,26 +214,6 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     public function getMetrics(): array
     {
         return $this->metrics();
-    }
-
-    protected function trAttributes(): Closure
-    {
-        return static fn (?CastedDataContract $data, int $row): array => [];
-    }
-
-    public function getTrAttributes(): Closure
-    {
-        return $this->trAttributes();
-    }
-
-    protected function tdAttributes(): Closure
-    {
-        return static fn (?CastedDataContract $data, int $row, int $cell): array => [];
-    }
-
-    public function getTdAttributes(): Closure
-    {
-        return $this->tdAttributes();
     }
 
     /**
