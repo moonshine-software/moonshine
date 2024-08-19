@@ -18,7 +18,7 @@ class Dashboard extends Page
         return $this->title ?: 'Dashboard';
     }
 
-    protected function components(): array
+    protected function components(): iterable
     {
         return [];
     }

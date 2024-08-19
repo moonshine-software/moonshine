@@ -32,7 +32,7 @@ class TestCoverPageResource extends AbstractTestingResource
         ];
     }
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make('ID'),
@@ -41,12 +41,12 @@ class TestCoverPageResource extends AbstractTestingResource
         ];
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return $this->indexFields();
     }

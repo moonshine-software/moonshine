@@ -27,7 +27,7 @@ class DummyPage extends Page
     /**
      * @return list<MoonShineComponent>
      */
-    protected function components(): array
+    protected function components(): iterable
 	{
 		return [];
 	}

@@ -20,7 +20,7 @@ class TestHasManyCommentResource extends AbstractTestingResource
 
     protected int $itemsPerPage = 2;
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -31,12 +31,12 @@ class TestHasManyCommentResource extends AbstractTestingResource
         ];
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }

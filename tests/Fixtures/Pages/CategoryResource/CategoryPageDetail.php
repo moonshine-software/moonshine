@@ -8,7 +8,7 @@ use MoonShine\Laravel\Pages\Crud\DetailPage;
 
 class CategoryPageDetail extends DetailPage
 {
-    protected function fields(): array
+    protected function fields(): iterable
     {
         return [];
     }

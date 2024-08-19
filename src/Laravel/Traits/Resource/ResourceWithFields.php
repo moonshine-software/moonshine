@@ -18,7 +18,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [];
     }
@@ -42,7 +42,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return [];
     }
@@ -66,7 +66,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return [];
     }
@@ -114,7 +114,7 @@ trait ResourceWithFields
     /**
      * @return list<FieldContract>
      */
-    protected function filters(): array
+    protected function filters(): iterable
     {
         return [];
     }

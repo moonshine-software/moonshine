@@ -16,7 +16,7 @@ class TestImageResource extends AbstractTestingResource
 {
     protected string $model = ImageModel::class;
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -28,17 +28,17 @@ class TestImageResource extends AbstractTestingResource
         ];
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function exportFields(): array
+    protected function exportFields(): iterable
     {
         return [
             ID::make(),
@@ -49,7 +49,7 @@ class TestImageResource extends AbstractTestingResource
         ];
     }
 
-    protected function importFields(): array
+    protected function importFields(): iterable
     {
         return $this->exportFields();
     }

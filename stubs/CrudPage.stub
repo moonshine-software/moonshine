@@ -14,7 +14,7 @@ class DummyPage extends {extendShort}
     /**
      * @return list<MoonShineComponent|Field>
      */
-    protected function fields(): array
+    protected function fields(): iterable
     {
         return [];
     }

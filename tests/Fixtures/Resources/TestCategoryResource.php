@@ -24,7 +24,7 @@ class TestCategoryResource extends AbstractTestingResource
 
     public string $column = 'name';
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -40,12 +40,12 @@ class TestCategoryResource extends AbstractTestingResource
         ];
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return [
             Box::make([

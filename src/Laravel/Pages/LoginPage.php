@@ -11,7 +11,7 @@ class LoginPage extends Page
 {
     protected ?string $layout = LoginLayout::class;
 
-    protected function components(): array
+    protected function components(): iterable
     {
         return [
             moonshineConfig()->getForm('login', LoginForm::class),

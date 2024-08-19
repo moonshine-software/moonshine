@@ -48,7 +48,7 @@ class MoonShineUserResource extends ModelResource
         return parent::activeActions()->except(Action::VIEW);
     }
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -75,12 +75,12 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return [
             Box::make([
@@ -159,7 +159,7 @@ class MoonShineUserResource extends ModelResource
         ];
     }
 
-    protected function filters(): array
+    protected function filters(): iterable
     {
         return [
             BelongsTo::make(

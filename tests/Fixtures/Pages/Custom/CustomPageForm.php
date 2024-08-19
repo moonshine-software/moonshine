@@ -13,7 +13,7 @@ class CustomPageForm extends Page
 {
     protected ?PageType $pageType = PageType::FORM;
 
-    protected function components(): array
+    protected function components(): iterable
     {
         return [
             Box::make([

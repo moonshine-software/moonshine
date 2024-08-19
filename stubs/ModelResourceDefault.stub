@@ -25,7 +25,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<Field>
      */
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -35,7 +35,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<MoonShineComponent|Field>
      */
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return [
             Box::make([
@@ -47,7 +47,7 @@ class DummyResource extends ModelResource
     /**
      * @return list<Field>
      */
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return [
             ID::make(),

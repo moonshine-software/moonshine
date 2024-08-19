@@ -26,7 +26,7 @@ final class QuickPage extends Page
         );
     }
 
-    public function components(): array
+    public function components(): iterable
     {
         return [];
     }

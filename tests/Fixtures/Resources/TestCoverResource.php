@@ -18,7 +18,7 @@ class TestCoverResource extends AbstractTestingResource
 
     public array $with = ['category'];
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make('ID'),
@@ -27,12 +27,12 @@ class TestCoverResource extends AbstractTestingResource
         ];
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }

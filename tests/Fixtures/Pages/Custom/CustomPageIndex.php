@@ -16,7 +16,7 @@ class CustomPageIndex extends Page
 {
     protected ?PageType $pageType = PageType::INDEX;
 
-    protected function components(): array
+    protected function components(): iterable
     {
         return [
             Box::make([

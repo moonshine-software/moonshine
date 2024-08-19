@@ -199,33 +199,33 @@ class TestResource extends AbstractTestingResource
         return $this->testRules;
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return $this->testFormFields !== []
             ? $this->testFormFields
             : $this->testFields;
     }
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return $this->testIndexFields !== []
             ? $this->testIndexFields
             : $this->testFields;
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->testDetailFields !== []
             ? $this->testDetailFields
             : $this->testFields;
     }
 
-    protected function importFields(): array
+    protected function importFields(): iterable
     {
         return $this->testImportFields;
     }
 
-    protected function exportFields(): array
+    protected function exportFields(): iterable
     {
         return $this->testExportFields;
     }
@@ -235,7 +235,7 @@ class TestResource extends AbstractTestingResource
         return $this->testValidationMessages;
     }
 
-    protected function filters(): array
+    protected function filters(): iterable
     {
         if ($this->testFilters === []) {
             return [];

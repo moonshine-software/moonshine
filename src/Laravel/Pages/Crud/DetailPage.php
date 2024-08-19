@@ -71,7 +71,7 @@ class DetailPage extends Page
      * @return list<RenderableContract>
      * @throws Throwable
      */
-    protected function components(): array
+    protected function components(): iterable
     {
         $this->validateResource();
         $item = $this->getResource()->getItem();

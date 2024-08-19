@@ -37,7 +37,7 @@ class MoonShineUserRoleResource extends ModelResource
         return parent::indexButtons()->except(fn (ActionButton $btn): bool => $btn->getName() === 'detail-button');
     }
 
-    protected function indexFields(): array
+    protected function indexFields(): iterable
     {
         return [
             ID::make()->sortable(),
@@ -45,12 +45,12 @@ class MoonShineUserRoleResource extends ModelResource
         ];
     }
 
-    protected function detailFields(): array
+    protected function detailFields(): iterable
     {
         return $this->indexFields();
     }
 
-    protected function formFields(): array
+    protected function formFields(): iterable
     {
         return [
             Box::make([

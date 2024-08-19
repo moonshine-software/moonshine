@@ -50,7 +50,7 @@ class IndexPage extends Page
      * @return list<MoonShineComponent>
      * @throws Throwable
      */
-    protected function components(): array
+    protected function components(): iterable
     {
         $this->validateResource();
 

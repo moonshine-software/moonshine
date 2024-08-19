@@ -96,7 +96,7 @@ abstract class Page implements
     /**
      * @return list<RenderableContract>
      */
-    abstract protected function components(): array;
+    abstract protected function components(): iterable;
 
     public function flushState(): void
     {
@@ -122,7 +122,7 @@ abstract class Page implements
     /**
      * @return list<RenderableContract>
      */
-    protected function fields(): array
+    protected function fields(): iterable
     {
         return [];
     }

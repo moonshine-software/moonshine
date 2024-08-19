@@ -17,7 +17,7 @@ use Throwable;
  */
 trait WithFields
 {
-    protected array|Closure $fields = [];
+    protected iterable|Closure $fields = [];
 
     protected ?FieldsContract $preparedFields = null;
 
@@ -61,7 +61,7 @@ trait WithFields
         );
     }
 
-    public function getRawFields(): array
+    public function getRawFields(): iterable
     {
         return value($this->fields, $this) ?? [];
     }
@@ -77,7 +77,7 @@ trait WithFields
     /**
      * @param  Fields<T>|Closure(FieldsContract $ctx): list<T>|array  $fields
      */
-    public function fields(FieldsContract|Closure|array $fields): static
+    public function fields(FieldsContract|Closure|iterable $fields): static
     {
         if ($this->getCore()->runningInConsole()) {
             $fields = collect(
