@@ -149,6 +149,7 @@ class RelationRepeater extends ModelRelationField implements
             $field
                 ->disableSortable()
                 ->withoutWrapper()
+                ->setRequestKeyPrefix($parent->getRequestKeyPrefix())
             ;
         });
     }
