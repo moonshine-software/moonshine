@@ -92,6 +92,12 @@ trait WithComponentAttributes
             return $this;
         }
 
+        if ($level === 0 && $this->hasParent()) {
+            $this->parent()?->customAttributes([
+                'data-top-level' => true,
+            ]);
+        }
+
         return $this->customAttributes([
             'data-name' => $this->name(),
             'data-column' => str($this->column())->explode('.')->last(),
