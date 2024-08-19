@@ -92,8 +92,8 @@ trait WithComponentAttributes
             return $this;
         }
 
-        if ($level === 0 && ! is_null($this->parent())) {
-            $this->parent()->customAttributes([
+        if ($level === 0 && $this->hasParent()) {
+            $this->parent()?->customAttributes([
                 'data-top-level' => true,
             ]);
         }

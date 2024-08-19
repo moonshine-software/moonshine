@@ -6,11 +6,11 @@ export class Iterable {
   }
 
   reindex(block, itemSelector, closestSelector = null) {
-    let topLevelElement = block.hasAttribute('data-top-level')
+    let topLevelBlock = block.hasAttribute('data-top-level')
       ? block
       : block.closest(`[data-top-level]`)
 
-    if(topLevelElement === null) {
+    if(topLevelBlock === null) {
       return
     }
 
@@ -38,6 +38,6 @@ export class Iterable {
       });
     }
 
-    _reindex(topLevelElement, 0, {}, 1)
+    _reindex(topLevelBlock, 0, {}, 1)
   }
 }
