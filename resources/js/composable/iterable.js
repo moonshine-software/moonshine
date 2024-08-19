@@ -6,17 +6,26 @@ export class Iterable {
   }
 
   reindex(block, itemSelector, closestSelector = null) {
+    let topLevelElement = block.hasAttribute('data-top-level')
+      ? block
+      : block.closest(`[data-top-level]`)
+
+    if(topLevelElement === null) {
+      return
+    }
+
     function _reindex(element, level, prev, index = null) {
       element.querySelectorAll(`[data-level="${level}"]`).forEach(function (field) {
-        let parent = field.closest('[data-re-index-item-selector]')
+        let parent = field.closest(closestSelector ?? itemSelector)
         let name = field.dataset.name
         let _key = parent.dataset.key ?? parent.rowIndex ?? index
 
-        prev['${index' + level + '}'] = _key
+        let currentPrev = { ...prev }
+        currentPrev['${index' + level + '}'] = _key
 
-        Object.entries(prev).forEach(function ([key, value]) {
+        Object.entries(currentPrev).forEach(function ([key, value]) {
           name = name.replace(key, value)
-        })
+        });
 
         field.setAttribute('name', name)
         field.setAttribute('data-r-index', _key)
@@ -25,22 +34,10 @@ export class Iterable {
           field.innerHTML = _key
         }
 
-        _reindex(parent, level + 1, prev, _key)
-      })
+        _reindex(parent, level + 1, currentPrev, _key)
+      });
     }
 
-    block.querySelectorAll(itemSelector).forEach(function (element, index) {
-      element.setAttribute('data-re-index-item-selector', closestSelector ?? itemSelector)
-
-      let level = 0
-      let prev = {}
-
-      if (block.dataset.level) {
-        prev['${index' + level + '}'] = block.dataset.rIndex ?? 1
-        level = parseInt(block.dataset.level) + 1
-      }
-
-      _reindex(element, level, prev, index + 1)
-    })
+    _reindex(topLevelElement, 0, {}, 1)
   }
 }
