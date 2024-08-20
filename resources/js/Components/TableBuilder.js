@@ -124,7 +124,7 @@ export default (
     this.asyncRequest()
   },
   asyncRequest() {
-    listComponentRequest(this, this.$root?.dataset?.pushstate)
+    listComponentRequest(this, this.$root?.dataset?.pushState)
   },
   asyncRowRequest(key, index) {
     const t = this
@@ -221,13 +221,13 @@ export default (
 
     switch (this.table.dataset.clickAction) {
       case 'detail':
-        rowElement.querySelector('.js-detail-button')?.click()
+        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-detail-button')?.click()
         break
       case 'edit':
-        rowElement.querySelector('.js-edit-button')?.click()
+        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-edit-button')?.click()
         break
       case 'select':
-        rowElement.querySelector('.js-table-action-row[type="checkbox"]')?.click()
+        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-table-action-row[type="checkbox"]')?.click()
         break
     }
   },

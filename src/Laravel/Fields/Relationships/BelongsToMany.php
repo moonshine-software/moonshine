@@ -298,9 +298,7 @@ class BelongsToMany extends ModelRelationField implements
             ->fields($fields)
             ->when(
                 $removeAfterClone,
-                static fn (TableBuilderContract $table): TableBuilderContract => $table->customAttributes([
-                    'data-remove-after-clone' => 1,
-                ])
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->removeAfterClone()
             )
             ->cast($this->getResource()->getModelCast())
             ->simple()

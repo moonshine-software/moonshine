@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Table;
 
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Support\Enums\ClickAction;
 use MoonShine\UI\Components\ActionButton;
 
 trait TableStates
@@ -210,6 +211,36 @@ trait TableStates
     public function isColumnSelection(): bool
     {
         return ! $this->isVertical() && $this->isColumnSelection;
+    }
+
+    public function clickAction(?ClickAction $action = null, ?string $selector = null): static
+    {
+        if(is_null($action)) {
+            return $this;
+        }
+
+        return $this->customAttributes(array_filter([
+            'data-click-action' => $action->value,
+            'data-click-action-selector' => $selector,
+        ]))->tdAttributes(
+            static fn (): array => [
+                '@click.stop' => 'rowClickAction',
+            ]
+        );
+    }
+
+    public function pushState(): static
+    {
+        return $this->customAttributes([
+            'data-push-state' => 'true',
+        ]);
+    }
+
+    public function removeAfterClone(): static
+    {
+        return $this->customAttributes([
+            'data-remove-after-clone' => 1,
+        ]);
     }
 
     /**

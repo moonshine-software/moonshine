@@ -186,21 +186,9 @@ class IndexPage extends Page
                 )
             )
             ->buttons($this->getResource()->getIndexButtons())
-            ->customAttributes([
-                'data-click-action' => $this->getResource()->getClickAction(),
-            ])
-            ->when(
-                ! is_null($this->getResource()->getClickAction()),
-                static fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
-                    static fn (): array => [
-                        '@click.stop' => 'rowClickAction',
-                    ]
-                )
-            )
+            ->clickAction($this->getResource()->getClickAction())
             ->when($this->getResource()->isAsync(), static function (TableBuilderContract $table): void {
-                $table->async()->customAttributes([
-                    'data-pushstate' => 'true',
-                ]);
+                $table->async()->pushState();
             })
             ->when($this->getResource()->isStickyTable(), function (TableBuilderContract $table): void {
                 $table->sticky();
