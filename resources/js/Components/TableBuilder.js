@@ -221,13 +221,21 @@ export default (
 
     switch (this.table.dataset.clickAction) {
       case 'detail':
-        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-detail-button')?.click()
+        rowElement
+          .querySelector(this.table.dataset.clickActionSelector ?? '.js-detail-button')
+          ?.click()
         break
       case 'edit':
-        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-edit-button')?.click()
+        rowElement
+          .querySelector(this.table.dataset.clickActionSelector ?? '.js-edit-button')
+          ?.click()
         break
       case 'select':
-        rowElement.querySelector(this.table.dataset.clickActionSelector ?? '.js-table-action-row[type="checkbox"]')?.click()
+        rowElement
+          .querySelector(
+            this.table.dataset.clickActionSelector ?? '.js-table-action-row[type="checkbox"]',
+          )
+          ?.click()
         break
     }
   },
