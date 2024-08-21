@@ -186,8 +186,8 @@ trait WithComponentAttributes
 
         if($if) {
             return $this
-                ->beforeRender(fn() => '<template x-if="'.$variable($this).'">')
-                ->afterRender(fn() => '</template>');
+                ->beforeRender(fn(): string => '<template x-if="'.$variable($this).'">')
+                ->afterRender(fn(): string => '</template>');
         }
 
         if ($this instanceof FieldContract && $wrapper) {
