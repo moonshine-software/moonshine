@@ -31,7 +31,7 @@ trait Removable
     public function getHiddenAttributes(): MoonShineComponentAttributeBag
     {
         return $this->getAttributes()->only(['data-level'])->merge([
-            'name' => $this->getHiddenRemainingValuesKey(),
+            'name' => $this->getHiddenRemainingValuesName(),
             'data-name' => $this->getHiddenRemainingValuesName(),
         ]);
     }
