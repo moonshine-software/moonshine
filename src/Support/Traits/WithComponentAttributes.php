@@ -103,7 +103,7 @@ trait WithComponentAttributes
     {
         if (is_array($value)) {
             try {
-                $value = json_encode($value, JSON_THROW_ON_ERROR);
+                $value = str_replace('"', "'", json_encode($value, JSON_THROW_ON_ERROR));
             } catch (Throwable) {
                 $value = null;
             }
