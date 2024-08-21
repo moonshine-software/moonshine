@@ -81,6 +81,7 @@ class Select extends Field implements
             'asyncUrl' => $this->getAsyncUrl(),
             'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
+            'isNative' => $this->isNative(),
         ];
     }
 }

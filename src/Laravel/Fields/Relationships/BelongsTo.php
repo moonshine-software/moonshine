@@ -47,6 +47,8 @@ class BelongsTo extends ModelRelationField implements
 
     protected bool $toOne = true;
 
+    protected bool $native = false;
+
     /**
      * @throws Throwable
      */
@@ -86,6 +88,18 @@ class BelongsTo extends ModelRelationField implements
         return (string) $this->toValue()->getKey() === $value;
     }
 
+    public function native(): static
+    {
+        $this->native = true;
+
+        return $this;
+    }
+
+    protected function isNative(): bool
+    {
+        return $this->native;
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function (Model $item) {
@@ -121,6 +135,7 @@ class BelongsTo extends ModelRelationField implements
             'createButton' => $this->getCreateButton(),
             'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
+            'isNative' => $this->isNative(),
         ];
     }
 }

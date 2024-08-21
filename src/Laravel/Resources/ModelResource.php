@@ -396,7 +396,7 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     /**
      * @param  TModel  $item
      */
-    public function prepareJsonResponse(Model $item): mixed
+    public function itemResponse(Model $item): mixed
     {
         return $item;
     }
@@ -404,7 +404,7 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     /**
      * @param  iterable<TModel>  $items
      */
-    public function prepareCollectionJsonResponse(Paginator $items): mixed
+    public function collectionResponse(Paginator $items): mixed
     {
         return $items;
     }

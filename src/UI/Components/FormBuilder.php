@@ -427,8 +427,9 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
                 : '',
         ], JSON_THROW_ON_ERROR);
 
+        $this->xDataMethod('formBuilder', $this->getName(), $xData, $reactiveFields->toJson());
+
         $this->customAttributes([
-            'x-data' => "formBuilder(`{$this->getName()}`, $xData, {$reactiveFields->toJson()})",
             'data-component' => $this->getName(),
         ]);
 

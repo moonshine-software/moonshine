@@ -43,7 +43,7 @@ final class CrudController extends MoonShineController
             request()->only($resource->getQueryParamsKeys())
         );
 
-        return $resource->prepareCollectionJsonResponse(
+        return $resource->collectionResponse(
             $resource->paginate()
         );
     }
@@ -58,7 +58,7 @@ final class CrudController extends MoonShineController
             abort(404, 'Resource not found');
         }
 
-        return $resource->prepareJsonResponse(
+        return $resource->itemResponse(
             $resource->getItem()
         );
     }
@@ -167,7 +167,8 @@ final class CrudController extends MoonShineController
 
             return $this->json(
                 message: __('moonshine::ui.saved'),
-                redirect: $request->input('_redirect', $forceRedirect)
+                redirect: $request->input('_redirect', $forceRedirect),
+                status: $item->wasRecentlyCreated ? Response::HTTP_CREATED : Response::HTTP_OK
             );
         }
 

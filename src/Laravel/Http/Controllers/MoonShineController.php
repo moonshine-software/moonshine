@@ -33,9 +33,11 @@ abstract class MoonShineController extends BaseController
         string $message = '',
         array $data = [],
         string $redirect = null,
-        ToastType $messageType = ToastType::SUCCESS
+        ToastType $messageType = ToastType::SUCCESS,
+        int $status = Response::HTTP_OK
     ): JsonResponse {
         return MoonShineJsonResponse::make(data: $data)
+            ->setStatusCode($status)
             ->toast($message, $messageType)
             ->when(
                 $redirect,

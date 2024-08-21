@@ -103,6 +103,10 @@ class MakeResourceCommand extends MoonShineCommand
             )
         );
 
+        $this->addResourceOrPageToProviderFile(
+            moonshineConfig()->getNamespace("\Resources\\{$name}Resource")
+        );
+
         outro('Now register resource in menu');
 
         return self::SUCCESS;

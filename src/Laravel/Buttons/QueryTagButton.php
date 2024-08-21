@@ -22,9 +22,7 @@ final class QueryTagButton
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
             ->canSee(static fn (mixed $data): bool => $tag->isSee($data))
             ->class('js-query-tag-button')
-            ->customAttributes([
-                'x-data' => 'asyncLink(`btn-primary`, `' . $resource->getListEventName() . '`)',
-            ])
+            ->xDataMethod('asyncLink', 'btn-primary', $resource->getListEventName())
             ->when(
                 $tag->isActive(),
                 static fn (ActionButtonContract $btn): ActionButtonContract => $btn

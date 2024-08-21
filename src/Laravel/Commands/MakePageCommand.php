@@ -106,5 +106,10 @@ class MakePageCommand extends MoonShineCommand
                 $page
             )
         );
+
+        $this->addResourceOrPageToProviderFile(
+            moonshineConfig()->getNamespace("\\$dir\\$className"),
+            page: true
+        );
     }
 }

@@ -70,8 +70,8 @@ class Fragment extends AbstractWithComponents
     {
         parent::prepareBeforeRender();
 
+        $this->xDataMethod('fragment', $this->getAsyncUrl());
         $this->customAttributes([
-            'x-data' => 'fragment(`' . $this->getAsyncUrl() . '`)',
             AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',
         ]);
     }
