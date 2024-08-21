@@ -18,7 +18,6 @@
     :name="$name"
     :precognitive="$precognitive"
     :errors="$errors"
-    :errorsAbove="$errorsAbove"
 >
     <x-moonshine::fields-group
         :components="$fields"
