@@ -29,7 +29,7 @@ abstract class MoonShineCommand extends Command
         $block = str($content)
             ->betweenFirst("protected function $method(): array", '}');
 
-        $tab = static fn(int $times = 1): string => str_repeat(' ', 4 * $times);
+        $tab = static fn (int $times = 1): string => str_repeat(' ', 4 * $times);
 
         $content = str_replace(
             $block->value(),
