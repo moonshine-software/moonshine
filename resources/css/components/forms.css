@@ -298,7 +298,7 @@ input[type='number'] {
       @apply py-0;
     }
     .choices__list--multiple .choices__item {
-      @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
+      @apply border-0 py-0 text-3xs;
     }
   }
 
