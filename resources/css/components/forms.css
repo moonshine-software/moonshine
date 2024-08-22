@@ -275,7 +275,7 @@ input[type='number'] {
       @apply py-0;
     }
     .choices__list--multiple .choices__item {
-      @apply -mb-1 -mt-2 border-0 py-0 text-3xs;
+      @apply border-0 py-0 text-3xs;
     }
     &:has(.form-invalid) {
       @apply border-red-600 focus:ring-red-400 focus:ring-opacity-20 dark:border-red-700 dark:focus:border-red-700 dark:focus:ring-red-600 dark:focus:ring-opacity-20;
