@@ -20,8 +20,8 @@ class ChangeLocale
         );
 
         if ($local) {
+            app()->setLocale($local);
             moonshineConfig()->locale($local);
-
             session()->put(self::KEY, $local);
         }
 
