@@ -10,6 +10,8 @@ use MoonShine\Fields\Field;
 // TODO array attributes to ?ComponentAttributeBag
 trait WithComponentAttributes
 {
+    use WithAlpineJsAttributes;
+
     protected array $attributes = [];
 
     protected array $customAttributes = [];
