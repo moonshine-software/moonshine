@@ -27,7 +27,39 @@ export default (name = '', initData = {}, reactive = {}) => ({
       if (!t.blockWatch) {
         let focused = document.activeElement
 
+        // choices hack
+        let choices = false
+        if(focused.getAttribute('class').includes('choices')) {
+          choices = true
+
+          focused = focused.tagName.toLowerCase()  === 'input'
+            ? focused.parentElement.querySelector('select')
+            : focused.querySelector('select')
+        }
+
+        let payload = JSON.parse(
+          JSON.stringify(value)
+        )
+
+        // todo When deleting, focus on the body and not on the select area
+
+        if(choices && focused.multiple) {
+          let values = [];
+
+          for (let i = 0; i < focused.options.length; i++) {
+            values.push(focused.options[i].value)
+          }
+
+          let c = focused.getAttribute('data-reactive-column')
+          payload[c] = values
+        }
+        // / end of choices hack
+
         componentRequestData.withAfterCallback(function (data) {
+          if(data.fields === undefined) {
+            return
+          }
+
           for (let [column, html] of Object.entries(data.fields)) {
             if (typeof html === 'string') {
               const wrapper = t.$root.querySelector('.field-' + column + '-wrapper')
@@ -43,7 +75,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
                 focused !== document.body &&
                 isTextInput(focused) &&
                 !containsAttribute(focused, 'x-model.lazy')
-                  ? t.$root.querySelector('#' + focused.id)
+                  ? t.$root.querySelector(
+                    `[data-reactive-column='${focused.getAttribute('data-reactive-column')}']`,
+                  )
                   : null
 
               if (input) {
@@ -72,7 +106,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
           'post',
           {
             _component_name: t.name,
-            values: value,
+            values: payload,
           },
           {},
           componentRequestData,
