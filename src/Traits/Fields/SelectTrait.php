@@ -10,6 +10,8 @@ use MoonShine\Support\SelectOptions;
 
 trait SelectTrait
 {
+    protected bool $native = false;
+
     protected array|Closure $options = [];
 
     protected array|Closure $optionProperties = [];
@@ -49,5 +51,17 @@ trait SelectTrait
     public function flattenValues(): array
     {
         return SelectOptions::flatten($this->values());
+    }
+
+    public function native(): static
+    {
+        $this->native = true;
+
+        return $this;
+    }
+
+    public function isNative(): bool
+    {
+        return $this->native;
     }
 }
