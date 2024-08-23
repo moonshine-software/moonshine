@@ -32,7 +32,7 @@ trait Reactivity
     }
 
     /**
-     * @param  ?Closure(Fields, mixed, array): Fields  $callback
+     * @param  ?Closure(Fields $fields, mixed $value, static $ctx, array $values): Fields  $callback
      * @return $this
      */
     public function reactive(

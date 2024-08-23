@@ -18,6 +18,10 @@ abstract class Page extends CorePage
         if ($this->isCheckUrl() && ! str_contains($currentPath, $withoutQuery)) {
             oops404();
         }
+
+        request()
+            ?->route()
+            ?->setParameter('pageUri', $this->getUriKey());
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
