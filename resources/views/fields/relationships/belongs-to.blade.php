@@ -21,6 +21,7 @@
     :values="$element->values()"
     :customProperties="$element->valuesWithProperties(onlyCustom: true)"
     :asyncRoute="$element->isAsyncSearch() ? $element->asyncSearchUrl() : null"
+    :native="$element->isNative()"
 >
 </x-moonshine::form.select>
 

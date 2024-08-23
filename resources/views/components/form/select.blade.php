@@ -4,15 +4,17 @@
     'values' => [],
     'customProperties' => [],
     'options' => false,
-    'asyncRoute' => null
+    'asyncRoute' => null,
+    'native' => false,
 ])
 <select
         {{ $attributes->merge([
             'class' => 'form-select',
-            'x-data' => 'select(\''. $asyncRoute .'\')',
             'data-search-enabled' => $searchable,
             'data-remove-item-button' => $attributes->get('multiple', false) || $nullable
-        ]) }}
+        ])->when(!$native, fn($a) => $a->merge([
+            'x-data' => 'select(\''. $asyncRoute .'\')',
+        ])) }}
 >
     @if($options ?? false)
         {{ $options }}

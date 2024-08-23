@@ -6,6 +6,7 @@
         :nullable="$element->isNullable()"
         :searchable="$element->isSearchable()"
         :asyncRoute="$element->asyncUrl()"
+        :native="$element->isNative()"
         @class(['form-invalid' => formErrors($errors ?? false, $element->getFormName())->has($element->name())])
 >
     <x-slot:options>
