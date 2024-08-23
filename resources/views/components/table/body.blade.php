@@ -32,11 +32,11 @@
             >
                 @foreach($row->getFields() as $index => $field)
                     @if($field->isSee($field->toValue()))
+                        {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
                         <x-moonshine::field-container :field="$field">
-                            {!! !$field->isForcePreview() && $editable ? $field->getBeforeRender() : '' !!}
                             {!! $field->{!$field->isForcePreview() && $editable ? 'render' : 'preview'}() !!}
-                            {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
                         </x-moonshine::field-container>
+                        {!! !$field->isForcePreview() && $editable ? $field->getAfterRender() : '' !!}
                     @endif
                 @endforeach
             </td>

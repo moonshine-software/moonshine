@@ -14,6 +14,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\MoonShineRenderable;
 use MoonShine\Traits\HasCanSee;
 use MoonShine\Traits\Makeable;
+use MoonShine\Traits\WithAlpineJsAttributes;
 use MoonShine\Traits\WithView;
 use Throwable;
 
@@ -24,6 +25,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     use Makeable;
     use WithView;
     use HasCanSee;
+    use WithAlpineJsAttributes;
 
     protected ?Closure $onBeforeRenderCallback = null;
 
