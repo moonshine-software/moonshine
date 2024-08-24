@@ -8,6 +8,8 @@ use DateTimeInterface;
 
 interface NotificationItemContract
 {
+    public function getId(): string|int|null;
+
     public function getReadRoute(): string;
 
     public function getColor(): string;

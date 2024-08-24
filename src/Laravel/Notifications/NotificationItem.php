@@ -15,6 +15,11 @@ final readonly class NotificationItem implements NotificationItemContract
     ) {
     }
 
+    public function getId(): int|string|null
+    {
+        return $this->notification->id;
+    }
+
     public function getReadRoute(): string
     {
         return route('moonshine.notifications.read', $this->notification);
