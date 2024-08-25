@@ -39,7 +39,7 @@ final class Files extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'files' => $this->files
+            'files' => $this->files,
         ];
     }
 }

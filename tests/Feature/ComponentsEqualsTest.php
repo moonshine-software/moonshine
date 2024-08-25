@@ -434,7 +434,7 @@ describe('Basic', function () {
                 'toggler' => 'Open',
                 'footer' => 'Footer',
                 'searchPlaceholder' => 'Placeholder',
-                'placement' => 'bottom-start'
+                'placement' => 'bottom-start',
             ],
             slot: 'Slot',
         );
@@ -523,8 +523,8 @@ describe('Basic', function () {
         compare(
             Tabs::make([
                 Tab::make('Tab 1', [
-                    FlexibleRender::make('Content 1')
-                ])
+                    FlexibleRender::make('Content 1'),
+                ]),
             ]),
             ['items' => ['Tab 1' => 'Content 1']],
         );
@@ -558,7 +558,7 @@ describe('Basic', function () {
 
     it('when', function () {
         compare(
-            When::make(fn() => false, fn() => $this->components),
+            When::make(fn () => false, fn () => $this->components),
         );
     });
 });

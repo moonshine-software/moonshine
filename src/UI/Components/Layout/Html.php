@@ -14,8 +14,7 @@ final class Html extends AbstractWithComponents
         iterable $components = [],
         protected bool $withAlpineJs = false,
         protected bool $withThemes = false
-    )
-    {
+    ) {
         parent::__construct($components);
     }
 

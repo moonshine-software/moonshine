@@ -20,8 +20,7 @@ class Sidebar extends AbstractWithComponents
     public function __construct(
         iterable $components = [],
         public bool $collapsed = false
-    )
-    {
+    ) {
         parent::__construct($components);
 
         $this->collapseAttributes = new MoonShineComponentAttributeBag();

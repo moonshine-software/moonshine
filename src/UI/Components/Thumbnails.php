@@ -27,7 +27,7 @@ final class Thumbnails extends MoonShineComponent
                                 $value['full_path'] ?? $value,
                                 $value['raw_value'] ?? $value,
                                 $value['name'] ?? $value,
-                                    $value['attributes'] ?? new MoonShineComponentAttributeBag(),
+                                $value['attributes'] ?? new MoonShineComponentAttributeBag(),
                             ))->toArray(),
                     ]
                 )->toArray();

@@ -14,8 +14,7 @@ final class Head extends AbstractWithComponents
         iterable $components = [],
         private ?string $title = null,
         private ?string $bodyColor = null,
-    )
-    {
+    ) {
         parent::__construct($components);
     }
 

@@ -22,8 +22,7 @@ class Menu extends MoonShineComponent
         private readonly MenuManagerContract $menuManager,
         protected bool $top = false,
         protected bool $scrollTo = true,
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->items = $this->menuManager->all();

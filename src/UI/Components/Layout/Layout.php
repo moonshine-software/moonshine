@@ -13,8 +13,7 @@ class Layout extends AbstractWithComponents
     public function __construct(
         iterable $components = [],
         protected string $bodyClass = '',
-    )
-    {
+    ) {
         parent::__construct($components);
     }
 

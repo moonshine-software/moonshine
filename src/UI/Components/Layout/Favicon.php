@@ -13,8 +13,7 @@ final class Favicon extends MoonShineComponent
     public function __construct(
         private array $customAssets = [],
         private ?string $bodyColor = null
-    )
-    {
+    ) {
         parent::__construct();
     }
 
