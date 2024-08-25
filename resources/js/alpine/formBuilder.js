@@ -27,8 +27,29 @@ export default (name = '', initData = {}, reactive = {}) => ({
       if (!t.blockWatch) {
         let focused = document.activeElement
 
+        let payload = JSON.parse(
+          JSON.stringify(value)
+        )
+
         // choices hack
         let choices = false
+
+        if(focused.tagName.toLowerCase() === 'body') {
+          await t.$nextTick
+
+          for (const [key, value] of Object.entries(payload)) {
+            let el = t.$root.querySelector(
+              `[data-reactive-column='${key}']`,
+            )
+
+            if(el.getAttribute('class').includes('choices')) {
+              if(el.options.length === 0) {
+                payload[key] = []
+              }
+            }
+          }
+        }
+
         if(focused.getAttribute('class').includes('choices')) {
           choices = true
 
@@ -36,12 +57,6 @@ export default (name = '', initData = {}, reactive = {}) => ({
             ? focused.parentElement.querySelector('select')
             : focused.querySelector('select')
         }
-
-        let payload = JSON.parse(
-          JSON.stringify(value)
-        )
-
-        // todo When deleting, focus on the body and not on the select area
 
         if(choices && focused.multiple) {
           let values = [];
