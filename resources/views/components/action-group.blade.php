@@ -24,5 +24,7 @@
                 {!! $action !!}
             @endforeach
         @endif
+
+        {{ $slot ?? '' }}
     </div>
 @endif

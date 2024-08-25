@@ -15,11 +15,12 @@ class Sidebar extends AbstractWithComponents
         'collapse_menu' => 'moonshine::ui.collapse_menu',
     ];
 
-    public bool $collapse = false;
-
     public MoonShineComponentAttributeBag $collapseAttributes;
 
-    public function __construct(iterable $components = [])
+    public function __construct(
+        iterable $components = [],
+        public bool $collapsed = false
+    )
     {
         parent::__construct($components);
 
@@ -28,7 +29,7 @@ class Sidebar extends AbstractWithComponents
 
     public function collapsed(): static
     {
-        $this->collapse = true;
+        $this->collapsed = true;
 
         return $this;
     }

@@ -63,6 +63,20 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
         return $this->name;
     }
 
+    /**
+     * @internal
+     * Method is called after rendering
+     */
+    public function withAttributes(array $attributes): static
+    {
+        $this->attributes = $this->attributes ?: $this->newAttributeBag();
+        $this->attributes->setAttributes(
+            array_merge($this->attributes->jsonSerialize(), $attributes)
+        );
+
+        return $this;
+    }
+
     /** @internal  */
     public function data(): array
     {

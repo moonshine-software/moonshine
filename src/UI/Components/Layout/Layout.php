@@ -6,11 +6,17 @@ namespace MoonShine\UI\Components\Layout;
 
 use MoonShine\UI\Components\AbstractWithComponents;
 
-class LayoutBuilder extends AbstractWithComponents
+class Layout extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.index';
 
-    protected string $bodyClass = '';
+    public function __construct(
+        iterable $components = [],
+        protected string $bodyClass = '',
+    )
+    {
+        parent::__construct($components);
+    }
 
     public function bodyClass(string $value): static
     {

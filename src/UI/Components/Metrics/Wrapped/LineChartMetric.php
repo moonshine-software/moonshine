@@ -26,6 +26,12 @@ class LineChartMetric extends Metric
         ];
     }
 
+    /**
+     * @param  array<string, array<numeric>>|Closure  $line
+     * @param  string|string[]|Closure  $color
+     *
+     * @return $this
+     */
     public function line(
         array|Closure $line,
         string|array|Closure $color = '#7843E9'

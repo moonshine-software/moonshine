@@ -4,8 +4,8 @@
     'columnSpanValue' => 12,
     'adaptiveColumnSpanValue' => 12,
     'isProgress' => false,
-    'valueResult' => '',
-    'simpleValue' => '',
+    'valueResult' => 0,
+    'simpleValue' => 0,
 ])
 <x-moonshine::layout.column
     :colSpan="$columnSpanValue"

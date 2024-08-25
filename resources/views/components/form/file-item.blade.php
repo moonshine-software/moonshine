@@ -7,7 +7,7 @@
     'removableAttributes' => null,
     'hiddenAttributes' => null,
     'imageable' => true,
-    'itemAttributes',
+    'itemAttributes' => null,
 ])
 <div
     {{ $itemAttributes?->class(['x-removeable dropzone-item zoom-in', 'dropzone-item-file' => !$imageable]) }}

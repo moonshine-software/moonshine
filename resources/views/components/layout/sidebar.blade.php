@@ -1,6 +1,6 @@
 @props([
     'components' => [],
-    'collapse' => false,
+    'collapsed' => false,
     'collapseAttributes',
     'translates' => [],
 ])
@@ -13,7 +13,7 @@
 
     {{ $slot ?? '' }}
 
-    @if($collapse)
+    @if($collapsed)
         <div {{ $collapseAttributes->merge(['class' => 'border-t border-dark-200']) }}>
             <ul class="menu-inner mt-2">
                 <li class="menu-inner-item hidden xl:block">

@@ -22,7 +22,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\Meta,
     Layout\Header,
     Layout\Html,
-    Layout\LayoutBuilder,
+    Layout\Layout,
     Layout\Logo,
     Layout\Menu,
     Layout\Sidebar,
@@ -57,7 +57,7 @@ final class DummyLayout extends {extendShort}
         // $colorManager->primary('#00000');
     }
 
-    public function build(): LayoutBuilder
+    public function build(): Layout
     {
         return parent::build();
     }

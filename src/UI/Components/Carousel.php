@@ -21,6 +21,11 @@ final class Carousel extends MoonShineComponent
         parent::__construct();
     }
 
+    /**
+     * @param  Closure|string[]  $value
+     *
+     * @return $this
+     */
     public function items(Closure|array $value): self
     {
         $this->items = $value;

@@ -9,7 +9,7 @@ use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [], bool $dark = false)
+ * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
  */
 class Box extends AbstractWithComponents
 {
@@ -20,13 +20,18 @@ class Box extends AbstractWithComponents
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
-        private bool $dark = false,
+        protected string $title = '',
+        protected bool $dark = false,
     ) {
         if(is_iterable($labelOrComponents)) {
             /** @var iterable $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);
+        }
+
+        if($this->title) {
+            $this->setLabel($this->title);
         }
 
         parent::__construct($components);
@@ -51,7 +56,7 @@ class Box extends AbstractWithComponents
     {
         return [
             ...parent::viewData(),
-            'title' => $this->getLabel(),
+            'label' => $this->getLabel(),
             'dark' => $this->isDark(),
         ];
     }

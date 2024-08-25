@@ -1,5 +1,5 @@
 @props([
-    'components' => []
+    'components' => [],
 ])
 <!DOCTYPE html>
 <html {{ $attributes }}>

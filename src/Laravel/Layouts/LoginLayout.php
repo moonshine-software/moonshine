@@ -8,15 +8,15 @@ use MoonShine\Laravel\Traits\WithComponentsPusher;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
-use MoonShine\UI\Components\Layout\{Block, Body, Html, LayoutBuilder};
+use MoonShine\UI\Components\Layout\{Block, Body, Html, Layout};
 
 final class LoginLayout extends BaseLayout
 {
     use WithComponentsPusher;
 
-    public function build(): LayoutBuilder
+    public function build(): Layout
     {
-        return LayoutBuilder::make([
+        return Layout::make([
             Html::make([
                 $this->getHeadComponent(),
                 Body::make([

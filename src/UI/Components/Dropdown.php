@@ -17,8 +17,6 @@ final class Dropdown extends MoonShineComponent
 
     protected array $togglerAttributes = [];
 
-    protected Closure|string $footer = '';
-
     public function __construct(
         public ?string $title = null,
         protected Closure|string $toggler = '',
@@ -27,6 +25,7 @@ final class Dropdown extends MoonShineComponent
         protected bool $searchable = false,
         protected Closure|string $searchPlaceholder = '',
         public string $placement = 'bottom-start',
+        public Closure|string $footer = '',
     ) {
         parent::__construct();
     }
@@ -38,6 +37,11 @@ final class Dropdown extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param  Closure|string[]  $items
+     *
+     * @return $this
+     */
     public function items(Closure|array $items): self
     {
         $this->items = $items;

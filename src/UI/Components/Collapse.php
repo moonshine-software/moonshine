@@ -16,13 +16,11 @@ class Collapse extends AbstractWithComponents
 
     protected string $view = 'moonshine::components.collapse';
 
-    protected bool $open = false;
-
-    protected bool $persist = true;
-
     public function __construct(
         Closure|string $label,
-        iterable $components = []
+        iterable $components = [],
+        public bool $open = false,
+        public bool $persist = true,
     ) {
         $this->setLabel($label);
 

@@ -13,7 +13,8 @@ export class Iterable {
       : block.closest(`[data-top-level]`)
 
     if (topLevelBlock === null) {
-      return
+      topLevelBlock = block
+      block.setAttribute('data-top-level', true)
     }
 
     block.setAttribute('data-r-block', true)

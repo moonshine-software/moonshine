@@ -14,7 +14,7 @@ use MoonShine\UI\Components\{Components,
     Layout\Content,
     Layout\Flash,
     Layout\Html,
-    Layout\LayoutBuilder,
+    Layout\Layout,
     Layout\Wrapper,
     Title};
 
@@ -36,9 +36,9 @@ class AppLayout extends BaseLayout
         ];
     }
 
-    public function build(): LayoutBuilder
+    public function build(): Layout
     {
-        return LayoutBuilder::make([
+        return Layout::make([
             Html::make([
                 $this->getHeadComponent(),
                 Body::make([

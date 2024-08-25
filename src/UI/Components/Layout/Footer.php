@@ -15,7 +15,7 @@ class Footer extends AbstractWithComponents
     public function __construct(
         iterable $components = [],
         // anonymous component variables
-        public array $menu = [],
+        protected array $menu = [],
         protected string|Closure $copyright = ''
     ) {
         parent::__construct($components);
@@ -34,7 +34,7 @@ class Footer extends AbstractWithComponents
     }
 
     /**
-     * @param  array{string, string}  $data
+     * @param  array<string, string>  $data
      * @return $this
      */
     public function menu(array $data): static

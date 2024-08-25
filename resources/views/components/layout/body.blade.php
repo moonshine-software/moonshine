@@ -5,14 +5,14 @@
     x-cloak
     x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }"
 >
-<x-moonshine::components
-    :components="$components"
-/>
+    <x-moonshine::components
+        :components="$components"
+    />
 
-{{ $slot ?? '' }}
+    {{ $slot ?? '' }}
 
-@include('moonshine::layouts.shared.img-popup')
-@include('moonshine::layouts.shared.toasts')
+    @include('moonshine::layouts.shared.img-popup')
+    @include('moonshine::layouts.shared.toasts')
 
-@stack('scripts')
+    @stack('scripts')
 </body>

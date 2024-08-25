@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\UI\Components\Components;
-use MoonShine\UI\Components\Layout\{Body, Html, LayoutBuilder};
+use MoonShine\UI\Components\Layout\{Body, Html, Layout};
 
 final class BlankLayout extends BaseLayout
 {
-    public function build(): LayoutBuilder
+    public function build(): Layout
     {
-        return LayoutBuilder::make([
+        return Layout::make([
             Html::make([
                 $this->getHeadComponent(),
                 Body::make([

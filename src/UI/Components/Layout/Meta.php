@@ -12,6 +12,12 @@ final class Meta extends MoonShineComponent
 {
     protected function resolveRender(): Renderable|Closure|string
     {
-        return static fn (Meta $meta): string => "<meta {$meta->getAttributes()} />";
+        return function() {
+            if($this->getAttributes()->has('name')) {
+                return "<meta {$this->getAttributes()} />";
+            }
+
+            return "<meta name=\"{$this->getName()}\" {$this->getAttributes()} />";
+        };
     }
 }

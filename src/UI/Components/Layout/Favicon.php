@@ -10,9 +10,13 @@ final class Favicon extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.favicon';
 
-    private array $customAssets = [];
-
-    private ?string $bodyColor = null;
+    public function __construct(
+        private array $customAssets = [],
+        private ?string $bodyColor = null
+    )
+    {
+        parent::__construct();
+    }
 
     /**
      * @param  array{

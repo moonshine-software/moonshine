@@ -10,9 +10,14 @@ final class Head extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.head';
 
-    private ?string $title = null;
-
-    private ?string $bodyColor = null;
+    public function __construct(
+        iterable $components = [],
+        private ?string $title = null,
+        private ?string $bodyColor = null,
+    )
+    {
+        parent::__construct($components);
+    }
 
     public function title(string $title): self
     {

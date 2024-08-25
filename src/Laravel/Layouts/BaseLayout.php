@@ -8,6 +8,7 @@ use MoonShine\Laravel\Components\Layout\Locales;
 use MoonShine\Laravel\Components\Layout\Notifications;
 use MoonShine\Laravel\Components\Layout\Profile;
 use MoonShine\Laravel\Components\Layout\Search;
+use MoonShine\UI\AbstractLayout;
 use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Layout\Assets;
 use MoonShine\UI\Components\Layout\Block;
@@ -25,7 +26,7 @@ use MoonShine\UI\Components\Layout\TopBar;
 use MoonShine\UI\Components\When;
 use MoonShine\UI\Layout;
 
-abstract class BaseLayout extends Layout
+abstract class BaseLayout extends AbstractLayout
 {
     protected function getHeadComponent(): Head
     {

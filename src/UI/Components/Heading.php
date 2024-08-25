@@ -10,7 +10,7 @@ use MoonShine\UI\Traits\Components\WithHeadingGradation;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label)
+ * @method static static make(Closure|string $label, ?int $h = null, bool $asClass = true)
  */
 class Heading extends MoonShineComponent
 {
@@ -20,11 +20,15 @@ class Heading extends MoonShineComponent
 
     protected string $view = 'moonshine::components.heading';
 
-    public function __construct(Closure|string $label)
+    public function __construct(Closure|string $label, ?int $h = null, bool $asClass = true)
     {
         parent::__construct();
 
         $this->setLabel($label);
+
+        if(!is_null($h)) {
+            $this->h($h, $asClass);
+        }
     }
 
     protected function viewData(): array

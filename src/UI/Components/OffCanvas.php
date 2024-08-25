@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content, Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class OffCanvas extends AbstractWithComponents
 {

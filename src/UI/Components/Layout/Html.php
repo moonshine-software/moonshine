@@ -10,17 +10,41 @@ final class Html extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.html';
 
+    public function __construct(
+        iterable $components = [],
+        protected bool $withAlpineJs = false,
+        protected bool $withThemes = false
+    )
+    {
+        parent::__construct($components);
+    }
+
     public function withAlpineJs(): self
     {
-        return $this->customAttributes([
-            'x-data' => '',
-        ]);
+        $this->withAlpineJs = true;
+
+        return $this;
     }
 
     public function withThemes(): self
     {
-        return $this->customAttributes([
-            ':class' => "\$store.darkMode.on && 'dark'",
-        ]);
+        $this->withThemes = true;
+
+        return $this;
+    }
+
+    protected function prepareBeforeRender(): void
+    {
+        if($this->withAlpineJs) {
+            $this->customAttributes([
+                'x-data' => '',
+            ]);
+        }
+
+        if($this->withThemes) {
+            $this->customAttributes([
+                ':class' => "\$store.darkMode.on && 'dark'",
+            ]);
+        }
     }
 }

@@ -12,9 +12,9 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Contracts\UI\LayoutContract;
-use MoonShine\UI\Components\Layout\{LayoutBuilder};
+use MoonShine\UI\Components\Layout\{Layout};
 
-abstract class Layout implements LayoutContract
+abstract class AbstractLayout implements LayoutContract
 {
     public function __construct(
         protected readonly CoreContract $core,
@@ -79,5 +79,5 @@ abstract class Layout implements LayoutContract
         return [];
     }
 
-    abstract public function build(): LayoutBuilder;
+    abstract public function build(): Layout;
 }

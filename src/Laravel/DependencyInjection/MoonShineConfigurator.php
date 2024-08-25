@@ -14,7 +14,7 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;
-use MoonShine\UI\Layout;
+use MoonShine\UI\AbstractLayout;
 use Throwable;
 
 final class MoonShineConfigurator implements ConfiguratorContract
@@ -306,7 +306,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return class-string<Layout>
+     * @return class-string<AbstractLayout>
      */
     public function getLayout(): string
     {
@@ -314,7 +314,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @param  class-string<Layout>|Closure  $layout
+     * @param  class-string<AbstractLayout>|Closure  $layout
      */
     public function layout(string|Closure $layout): self
     {

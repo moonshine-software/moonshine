@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\UI\Components\Tabs;
+namespace MoonShine\UI\Components;
 
 use Closure;
 use MoonShine\Contracts\UI\RenderablesContract;
-use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
@@ -19,6 +19,23 @@ class Tabs extends AbstractWithComponents
     protected string $justifyAlign = 'start';
 
     protected bool $vertical = false;
+
+    public function __construct(iterable $components = [], public array $items = [])
+    {
+        parent::__construct($components);
+
+        if($this->items !== []) {
+            $tabs = [];
+
+            foreach ($this->items as $label => $content) {
+                $tabs[] = Tab::make($label, [
+                    FlexibleRender::make($content),
+                ]);
+            }
+
+            $this->setComponents($tabs);
+        }
+    }
 
     public function active(string|int $active): static
     {

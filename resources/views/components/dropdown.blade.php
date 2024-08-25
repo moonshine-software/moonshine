@@ -47,7 +47,7 @@
             @endif
         </div>
 
-        @if($footer?->isNotEmpty())
+        @if($footer ?? false)
             <div class="dropdown-footer">
                 {{ $footer ?? '' }}
             </div>

@@ -14,15 +14,15 @@ use MoonShine\UI\Components\MoonShineComponent;
  */
 class Menu extends MoonShineComponent
 {
-    protected bool $top = false;
-
-    protected bool $scrollTo = true;
-
     protected string $view = 'moonshine::components.menu.index';
 
     public MenuElementsContract $items;
 
-    public function __construct(private readonly MenuManagerContract $menuManager)
+    public function __construct(
+        private readonly MenuManagerContract $menuManager,
+        protected bool $top = false,
+        protected bool $scrollTo = true,
+    )
     {
         parent::__construct();
 

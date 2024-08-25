@@ -23,6 +23,7 @@ final class Logo extends MoonShineComponent
         public string $logo,
         public ?string $logoSmall = null,
         public ?string $title = null,
+        public bool $minimized = false,
     ) {
         parent::__construct();
 
@@ -47,10 +48,19 @@ final class Logo extends MoonShineComponent
 
     public function minimized(): self
     {
-        return $this->logoAttributes([
-            ':class' => "minimizedMenu && '!hidden'",
-        ])->logoSmallAttributes([
-            ':class' => "minimizedMenu && '!block'",
-        ]);
+        $this->minimized = true;
+
+        return $this;
+    }
+
+    protected function prepareBeforeRender(): void
+    {
+        if($this->minimized) {
+            $this->logoAttributes([
+                ':class' => "minimizedMenu && '!hidden'",
+            ])->logoSmallAttributes([
+                ':class' => "minimizedMenu && '!block'",
+            ]);
+        }
     }
 }
