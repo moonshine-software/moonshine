@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use Closure;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\FileItem;
 

@@ -24,7 +24,6 @@ use MoonShine\UI\Components\Layout\Sidebar;
 use MoonShine\UI\Components\Layout\ThemeSwitcher;
 use MoonShine\UI\Components\Layout\TopBar;
 use MoonShine\UI\Components\When;
-use MoonShine\UI\Layout;
 
 abstract class BaseLayout extends AbstractLayout
 {
