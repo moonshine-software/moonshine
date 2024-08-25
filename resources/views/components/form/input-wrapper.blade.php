@@ -32,7 +32,7 @@
         {{ $afterSlot ?? '' }}
     </div>
 
-    @if(isset($errors[0]))
+    @if(is_array($errors) && isset($errors[0]))
         <x-moonshine::form.input-error>
             {{ $errors[0] }}
         </x-moonshine::form.input-error>
