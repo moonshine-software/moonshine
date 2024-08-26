@@ -30,8 +30,8 @@ export default () => ({
   },
 
   dispatchEvents(componentEvent, exclude = null, extra = {}) {
-    const url = new URL(this.$el.href);
-    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search));
+    const url = new URL(this.$el.href)
+    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search))
 
     de(componentEvent, '', this, extra)
   },
