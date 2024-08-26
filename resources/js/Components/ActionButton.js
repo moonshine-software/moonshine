@@ -1,5 +1,6 @@
 import selectorsParams from '../Support/SelectorsParams.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import request from '../Request/Core.js'
 
 export default () => ({
@@ -26,6 +27,13 @@ export default () => ({
         ? '<div class="spinner spinner--primary spinner-sm"></div>' + btnText
         : btnText
     })
+  },
+
+  dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    const url = new URL(this.$el.href);
+    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search));
+
+    de(componentEvent, '', this, extra)
   },
 
   request() {

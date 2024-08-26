@@ -156,8 +156,15 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function dispatchEvent(array|string $events): static
     {
+        if(!$this->getAttributes()->has('x-data')) {
+            $this->xDataMethod('actionButton');
+        }
+
         return $this->onClick(
-            static fn (): string => AlpineJs::dispatchEvents($events),
+            static fn (): string => "dispatchEvents(
+                 `" . AlpineJs::prepareEvents($events) . "`,
+                 `_component_name,_token,_method`
+             )",
             'prevent'
         );
     }
