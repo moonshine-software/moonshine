@@ -1,8 +1,4 @@
-import {
-  dispatchEvents as de,
-  moonShineRequest,
-  withSelectorsParams,
-} from './asyncFunctions'
+import {dispatchEvents as de, moonShineRequest, withSelectorsParams} from './asyncFunctions'
 import {ComponentRequestData} from '../moonshine.js'
 
 export default () => ({
@@ -32,8 +28,8 @@ export default () => ({
   },
 
   dispatchEvents(componentEvent, exclude = null, extra = {}) {
-    const url = new URL(this.$el.href);
-    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search));
+    const url = new URL(this.$el.href)
+    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search))
 
     de(componentEvent, '', this, extra)
   },

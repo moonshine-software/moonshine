@@ -27,14 +27,14 @@ export default (asyncUpdateRoute = '') => ({
 
     const query = new URLSearchParams(body)
 
-    if(this.$event.detail) {
+    if (this.$event.detail) {
       for (const [key, value] of Object.entries(this.$event.detail)) {
         if (typeof value === 'object' && value !== null) {
           for (const k in value) {
-            query.append(`${key}[${k}]`, value[k]);
+            query.append(`${key}[${k}]`, value[k])
           }
         } else {
-          query.append(key, value);
+          query.append(key, value)
         }
       }
     }
