@@ -1,4 +1,8 @@
-import {moonShineRequest, withSelectorsParams} from './asyncFunctions'
+import {
+  dispatchEvents as de,
+  moonShineRequest,
+  withSelectorsParams,
+} from './asyncFunctions'
 import {ComponentRequestData} from '../moonshine.js'
 
 export default () => ({
@@ -25,6 +29,13 @@ export default () => ({
         ? '<div class="spinner spinner--primary spinner-sm"></div>' + btnText
         : btnText
     })
+  },
+
+  dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    const url = new URL(this.$el.href);
+    extra['_query'] = Object.fromEntries(new URLSearchParams(url.search));
+
+    de(componentEvent, '', this, extra)
   },
 
   request() {
