@@ -117,7 +117,7 @@ export default (
     let table = this.table
 
     this.$nextTick(() => {
-      MoonShine.iterable.reindex(table, 'tr')
+      MoonShine.iterable.reindex(table, 'tbody > tr:not(tr tr)', 'tr')
     })
   },
   asyncFormRequest() {
