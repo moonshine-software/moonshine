@@ -59,6 +59,9 @@ final class BelongsToOrManyButton
             ->inModal(
                 title: static fn (): array|string|null => __('moonshine::ui.create'),
                 content: static fn (?Model $data): string => (string) FormBuilder::make($action)
+                    ->reactiveUrl(
+                        moonshineRouter()->getEndpoints()->reactive($resource->getFormPage(), $resource)
+                    )
                     ->switchFormMode(
                         true,
                         [
