@@ -25,7 +25,19 @@ export default (asyncUpdateRoute = '') => ({
 
     const t = this
 
-    const query = new URLSearchParams(body).toString()
+    const query = new URLSearchParams(body)
+
+    if(this.$event.detail) {
+      for (const [key, value] of Object.entries(this.$event.detail)) {
+        if (typeof value === 'object' && value !== null) {
+          for (const k in value) {
+            query.append(`${key}[${k}]`, value[k]);
+          }
+        } else {
+          query.append(key, value);
+        }
+      }
+    }
 
     t.asyncUpdateRoute += t.asyncUpdateRoute.includes('?') ? '&' + query : '?' + query
 
