@@ -19,30 +19,30 @@ export class Iterable {
 
     block.setAttribute('data-r-block', true)
 
-    if(!topLevelBlock.hasAttribute('data-r-item-selector')) {
+    if (!topLevelBlock.hasAttribute('data-r-item-selector')) {
       topLevelBlock.setAttribute('data-r-item-selector', itemSelector)
     }
 
-    if(!block.hasAttribute('data-r-closest-selector')) {
+    if (!block.hasAttribute('data-r-closest-selector')) {
       block.setAttribute('data-r-closest-selector', closestSelector)
     }
 
     function reindexProcess(el, level, prev, index = null) {
       let levelFields = el.querySelectorAll(`[data-level="${level}"]`)
 
-      if(levelFields.length === 0) {
+      if (levelFields.length === 0) {
         return
       }
 
       levelFields.forEach(function (fieldOrBlock) {
         // return skip already processed block
-        if(fieldOrBlock.hasAttribute('data-r-done')) {
+        if (fieldOrBlock.hasAttribute('data-r-done')) {
           return
         }
 
         fieldOrBlock.setAttribute('data-r-done', true)
 
-        if(fieldOrBlock.hasAttribute('data-r-block')) {
+        if (fieldOrBlock.hasAttribute('data-r-block')) {
           let currentPrev = {...prev}
           currentPrev['${index' + (level + 1) + '}'] = 1
 
@@ -71,24 +71,31 @@ export class Iterable {
     }
 
     // return skip already processed blocks
-    await this.$nextTick;
+    await this.$nextTick
 
-    if(block.hasAttribute('data-r-done')) {
+    if (block.hasAttribute('data-r-done')) {
       return
     }
 
-    topLevelBlock.querySelectorAll(topLevelBlock.dataset.rItemSelector).forEach(function (element, index) {
-      const i = parseInt(index) + 1
+    topLevelBlock
+      .querySelectorAll(topLevelBlock.dataset.rItemSelector)
+      .forEach(function (element, index) {
+        const i = parseInt(index) + 1
 
-      reindexProcess(element, 0, {
-        '${index0}': i
-      }, i)
-    })
+        reindexProcess(
+          element,
+          0,
+          {
+            '${index0}': i,
+          },
+          i,
+        )
+      })
 
     // return skipped to reindex process
-    await this.$nextTick;
+    await this.$nextTick
 
-    topLevelBlock.querySelectorAll('[data-r-done]').forEach(function(element) {
+    topLevelBlock.querySelectorAll('[data-r-done]').forEach(function (element) {
       element.removeAttribute('data-r-done')
     })
   }
