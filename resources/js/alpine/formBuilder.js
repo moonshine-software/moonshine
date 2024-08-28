@@ -4,10 +4,14 @@ import {
   isValidateShow,
   showWhenVisibilityChange,
 } from './showWhenFunctions'
-import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
-import {containsAttribute, getAncestorsUntil, isTextInput} from './supportFunctions.js'
+import {
+  moonShineRequest,
+  dispatchEvents as de,
+} from './asyncFunctions'
+import {containsAttribute, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
 import {addInvalidListener} from './formFunctions.js'
+import {formToJSON} from 'axios'
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -209,6 +213,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
   },
 
   dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    extra['_form'] = formToJSON(new FormData(this.$el))
+
     de(componentEvent, '', this, extra)
   },
 
