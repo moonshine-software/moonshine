@@ -62,7 +62,7 @@ export default (
       return
     }
 
-    if(!this.table) {
+    if (!this.table) {
       return
     }
 
@@ -103,7 +103,7 @@ export default (
     })
   },
   initColumnSelection() {
-    if(!this.block) {
+    if (!this.block) {
       return
     }
 
@@ -121,7 +121,7 @@ export default (
     const el = element ?? this.$el
     localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
 
-    if(!this.table) {
+    if (!this.table) {
       return
     }
 
