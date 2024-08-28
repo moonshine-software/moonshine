@@ -1,6 +1,7 @@
 import selectorsParams from '../Support/SelectorsParams.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import request from '../Request/Core.js'
+import {getQueryString} from '../Support/Forms.js'
 
 export default (asyncUpdateRoute = '') => ({
   asyncUpdateRoute: asyncUpdateRoute,
@@ -26,20 +27,10 @@ export default (asyncUpdateRoute = '') => ({
 
     const t = this
 
-    const query = new URLSearchParams(body)
+    const query = new URLSearchParams(body).toString()
 
-    if (this.$event.detail) {
-      for (const [key, value] of Object.entries(this.$event.detail)) {
-        if (typeof value === 'object' && value !== null) {
-          for (const k in value) {
-            query.append(`${key}[${k}]`, value[k])
-          }
-        } else {
-          query.append(key, value)
-        }
-      }
-    }
     t.asyncUpdateRoute += t.asyncUpdateRoute.includes('?') ? '&' + query : '?' + query
+    t.asyncUpdateRoute += getQueryString(this.$event.detail)
 
     let stopLoading = function (data, t) {
       t.loading = false

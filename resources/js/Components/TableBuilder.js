@@ -62,6 +62,10 @@ export default (
       return
     }
 
+    if(!this.table) {
+      return
+    }
+
     const total = this.table.querySelectorAll('tbody > tr').length
     const limit = this.table.dataset?.creatableLimit
 
@@ -71,7 +75,7 @@ export default (
 
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
 
-    const form = this.table.closest('from[data-component]')
+    const form = this.table.closest('form[data-component]')
     if (form) {
       const formName = form.getAttribute('data-component')
       this.$dispatch('show_when_refresh:' + formName)
@@ -99,6 +103,10 @@ export default (
     })
   },
   initColumnSelection() {
+    if(!this.block) {
+      return
+    }
+
     this.block.querySelectorAll('[data-column-selection-checker]').forEach(el => {
       let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
@@ -112,6 +120,10 @@ export default (
   columnSelection(element = null) {
     const el = element ?? this.$el
     localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
+
+    if(!this.table) {
+      return
+    }
 
     this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach(e => {
       e.hidden = !el.checked

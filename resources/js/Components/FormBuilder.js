@@ -3,6 +3,7 @@ import {addInvalidListener, containsAttribute, isTextInput} from '../Support/For
 import request from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {getInputs, showWhenChange, showWhenVisibilityChange} from '../Support/ShowWhen.js'
+import {formToJSON} from 'axios'
 
 export default (name = '', initData = {}, reactive = {}) => ({
   name: name,
@@ -226,6 +227,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
   },
 
   dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    extra['_data'] = formToJSON(new FormData(this.$el))
+
     de(componentEvent, '', this, extra)
   },
 

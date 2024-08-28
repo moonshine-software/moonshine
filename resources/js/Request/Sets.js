@@ -1,6 +1,7 @@
 import {dispatchEvents} from '../Support/DispatchEvents.js'
 import request, {urlWithQuery} from './Core.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
+import {getQueryString} from '../Support/Forms.js'
 
 export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
@@ -9,25 +10,33 @@ export function listComponentRequest(component, pushState = false) {
 
   component.loading = true
 
-  if (component.$event.detail && component.$event.detail.filterQuery) {
+  let eventData = component.$event.detail
+
+  if (eventData && eventData.filterQuery) {
     url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, component.$event.detail.filterQuery)
+    url = urlWithQuery(url, eventData.filterQuery)
+    delete eventData.filterQuery
   }
 
-  if (component.$event.detail && component.$event.detail.queryTag) {
+  if (eventData && eventData.queryTag) {
     url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, component.$event.detail.queryTag)
+    url = urlWithQuery(url, eventData.queryTag)
+    delete eventData.queryTag
   }
 
-  if (component.$event.detail && component.$event.detail.page) {
+  if (eventData && eventData.page) {
     url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, `page=${component.$event.detail.page}`)
+    url = urlWithQuery(url, `page=${eventData.page}`)
+    delete eventData.page
   }
 
-  if (component.$event.detail && component.$event.detail.sort) {
+  if (eventData && eventData.sort) {
     url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, `sort=${component.$event.detail.sort}`)
+    url = urlWithQuery(url, `sort=${eventData.sort}`)
+    delete eventData.sort
   }
+
+  url = urlWithQuery(url, getQueryString(eventData))
 
   let stopLoading = function (data, t) {
     t.loading = false

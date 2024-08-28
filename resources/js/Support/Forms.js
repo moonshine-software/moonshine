@@ -82,6 +82,30 @@ export function isTextInput(el) {
   return false
 }
 
+export function getQueryString(obj, encode = false) {
+  function serialize(obj, prefix) {
+    const queryStringParts = [];
+
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const fullKey = prefix ? `${prefix}[${key}]` : key;
+        const value = obj[key];
+
+        if (typeof value === "object" && value !== null) {
+          queryStringParts.push(serialize(value, fullKey));
+        } else {
+          queryStringParts.push(`${fullKey}=${value}`);
+        }
+      }
+    }
+
+    return queryStringParts.join("&");
+  }
+
+  const str = serialize(obj)
+  return encode === true ? encodeURI(str) : str;
+}
+
 export function crudFormQuery(formElements = null) {
   if (formElements.length === 0) {
     return ''
