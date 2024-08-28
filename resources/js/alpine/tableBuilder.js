@@ -70,6 +70,10 @@ export default (
       return
     }
 
+    if(!this.table) {
+      return
+    }
+
     const total = this.table.querySelectorAll('tbody > tr').length
     const limit = this.table?.dataset?.creatableLimit
 
@@ -90,6 +94,10 @@ export default (
     }
   },
   initColumnSelection() {
+    if(!this.block) {
+      return
+    }
+
     this.block.querySelectorAll('[data-column-selection-checker]').forEach(el => {
       let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
