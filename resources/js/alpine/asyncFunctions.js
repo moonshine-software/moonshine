@@ -218,6 +218,30 @@ export function appendQueryToUrl(url, append, callback = null) {
   return urlObject.toString() + separator + append
 }
 
+export function getQueryString(obj, encode = false) {
+  function serialize(obj, prefix) {
+    const queryStringParts = [];
+
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const fullKey = prefix ? `${prefix}[${key}]` : key;
+        const value = obj[key];
+
+        if (typeof value === "object" && value !== null) {
+          queryStringParts.push(serialize(value, fullKey));
+        } else {
+          queryStringParts.push(`${fullKey}=${value}`);
+        }
+      }
+    }
+
+    return queryStringParts.join("&");
+  }
+
+  const str = serialize(obj)
+  return encode === true ? encodeURI(str) : str;
+}
+
 export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
 
@@ -225,25 +249,33 @@ export function listComponentRequest(component, pushState = false) {
 
   component.loading = true
 
-  if (component.$event.detail && component.$event.detail.filterQuery) {
+  let eventData = component.$event.detail
+
+  if (eventData && eventData.filterQuery) {
     url = prepareListComponentRequestUrl(url)
-    url = appendQueryToUrl(url, component.$event.detail.filterQuery)
+    url = appendQueryToUrl(url, eventData.filterQuery)
+    delete eventData.filterQuery
   }
 
-  if (component.$event.detail && component.$event.detail.queryTag) {
+  if (eventData && eventData.queryTag) {
     url = prepareListComponentRequestUrl(url)
-    url = appendQueryToUrl(url, component.$event.detail.queryTag)
+    url = appendQueryToUrl(url, eventData.queryTag)
+    delete eventData.queryTag
   }
 
-  if (component.$event.detail && component.$event.detail.page) {
+  if (eventData && eventData.page) {
     url = prepareListComponentRequestUrl(url)
-    url = appendQueryToUrl(url, `page=${component.$event.detail.page}`)
+    url = appendQueryToUrl(url, `page=${eventData.page}`)
+    delete eventData.page
   }
 
-  if (component.$event.detail && component.$event.detail.sort) {
+  if (eventData && eventData.sort) {
     url = prepareListComponentRequestUrl(url)
-    url = appendQueryToUrl(url, `sort=${component.$event.detail.sort}`)
+    url = appendQueryToUrl(url, `sort=${eventData.sort}`)
+    delete eventData.sort
   }
+
+  url = appendQueryToUrl(url, getQueryString(eventData))
 
   axios
     .get(url)

@@ -57,9 +57,9 @@ export default (
     this.initColumnSelection()
   },
   getName() {
-    let name = this.table.dataset?.name ?? ''
+    let name = this.table?.dataset?.name ?? ''
 
-    if (this.table.dataset?.uniqueId) {
+    if (this.table?.dataset?.uniqueId) {
       name = `${name}-${this.table.dataset?.uniqueId}`
     }
 
@@ -70,8 +70,12 @@ export default (
       return
     }
 
+    if(!this.table) {
+      return
+    }
+
     const total = this.table.querySelectorAll('tbody > tr').length
-    const limit = this.table.dataset?.creatableLimit
+    const limit = this.table?.dataset?.creatableLimit
 
     if (limit && parseInt(total) >= parseInt(limit)) {
       return
@@ -90,6 +94,10 @@ export default (
     }
   },
   initColumnSelection() {
+    if(!this.block) {
+      return
+    }
+
     this.block.querySelectorAll('[data-column-selection-checker]').forEach(el => {
       let stored = localStorage.getItem(this.getColumnSelectionStoreKey(el))
 
@@ -104,6 +112,10 @@ export default (
   columnSelection(element = null) {
     const el = element ?? this.$el
     localStorage.setItem(this.getColumnSelectionStoreKey(el), el.checked)
+
+    if(!this.table) {
+      return
+    }
 
     this.table.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach(e => {
       e.hidden = !el.checked

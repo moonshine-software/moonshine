@@ -292,7 +292,7 @@ trait FileTrait
 
     public function getFullPathValues(): array
     {
-        $values = $this->toValue(withDefault: false);
+        $values = $this->toFormattedValue();
 
         if (! $values) {
             return [];
