@@ -4,10 +4,7 @@ import {
   isValidateShow,
   showWhenVisibilityChange,
 } from './showWhenFunctions'
-import {
-  moonShineRequest,
-  dispatchEvents as de,
-} from './asyncFunctions'
+import {moonShineRequest, dispatchEvents as de} from './asyncFunctions'
 import {containsAttribute, isTextInput} from './supportFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
 import {addInvalidListener} from './formFunctions.js'

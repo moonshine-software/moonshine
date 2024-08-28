@@ -1,8 +1,4 @@
-import {
-  getQueryString,
-  moonShineRequest,
-  withSelectorsParams,
-} from './asyncFunctions.js'
+import {getQueryString, moonShineRequest, withSelectorsParams} from './asyncFunctions.js'
 import {ComponentRequestData} from '../moonshine.js'
 
 export default (asyncUpdateRoute = '') => ({
