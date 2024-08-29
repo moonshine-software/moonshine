@@ -1,5 +1,5 @@
 @props(['extension'])
-<button @click.prevent="copy()"
+<button @click.prevent="copy('{{ $extension->getValue() }}')"
         {{ $attributes->class(['expansion']) }}
         type="button"
         x-data="tooltip('{{ __('moonshine::ui.copied') }}', {placement: 'top', trigger: 'click', delay: [0, 800]})"

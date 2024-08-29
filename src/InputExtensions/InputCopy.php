@@ -10,8 +10,8 @@ final class InputCopy extends InputExtension
 
     protected array $xData = [
         <<<'HTML'
-          copy() {
-            navigator.clipboard.writeText($refs.extensionInput.value);
+          copy(value) {
+            navigator.clipboard.writeText(value.replace('[value]', $refs.extensionInput.value));
           }
         HTML,
     ];
