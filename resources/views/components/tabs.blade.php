@@ -1,12 +1,21 @@
 @props([
     'tabs',
-    'contents',
-    'active',
+    'contents' => [],
+    'active' => null,
     'justifyAlign' => 'start',
     'isVertical' => false,
 ])
 
 @if($tabs)
+    @php
+        if (! $contents) {
+            $contents = collect($__laravel_slots ?? [])
+                ->mapWithKeys(fn($contentSlot, $name) => [Str::after($name, 'content-') => $contentSlot])
+                ->filter(fn($contentSlot, $name) => array_key_exists($name, $tabs))
+                ->all();
+        }
+    @endphp
+
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
         x-data="tabs(
@@ -38,6 +47,8 @@
                     :class="activeTab === '{{ $tabId }}' ? 'block' : 'hidden'"
                     class="tab-panel"
                     @set-active-tab="setActiveTab(`{{ $tabId }}`)"
+
+                    {{ $tabContent instanceof \Illuminate\View\ComponentSlot ? $tabContent->attributes  : '' }}
                 >
                     <div class="tabs-body">
                         {!! $tabContent !!}
