@@ -1,9 +1,6 @@
-@props([
-    'components' => [],
-])
 <div {{ $attributes }} >
-    <x-moonshine::components
-        :components="$components"
+    <x-moonshine::fields-group
+        :components="$element->getFields()"
     />
 
     {{ $slot ?? '' }}
