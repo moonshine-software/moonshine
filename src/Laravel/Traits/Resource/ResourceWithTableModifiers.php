@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Closure;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\TableRowsContract;
 
 trait ResourceWithTableModifiers
@@ -60,7 +60,7 @@ trait ResourceWithTableModifiers
 
     protected function trAttributes(): Closure
     {
-        return static fn (?CastedDataContract $data, int $row): array => [];
+        return static fn (?DataWrapperContract $data, int $row): array => [];
     }
 
     public function getTrAttributes(): Closure
@@ -70,7 +70,7 @@ trait ResourceWithTableModifiers
 
     protected function tdAttributes(): Closure
     {
-        return static fn (?CastedDataContract $data, int $row, int $cell): array => [];
+        return static fn (?DataWrapperContract $data, int $row, int $cell): array => [];
     }
 
     public function getTdAttributes(): Closure

@@ -6,7 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Components\FieldsGroup;
@@ -42,7 +42,7 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
      */
     protected function resolveFill(
         array $raw = [],
-        ?CastedDataContract $casted = null,
+        ?DataWrapperContract $casted = null,
         int $index = 0
     ): static {
         return $this

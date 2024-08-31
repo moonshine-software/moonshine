@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 
@@ -16,7 +16,7 @@ use MoonShine\Contracts\UI\ActionButtonsContract;
  */
 final class ActionButtons extends Collection implements ActionButtonsContract
 {
-    public function fill(?CastedDataContract $item): self
+    public function fill(?DataWrapperContract $item): self
     {
         return $this->map(
             static fn (ActionButtonContract $action): ActionButtonContract => (clone $action)->setData($item)

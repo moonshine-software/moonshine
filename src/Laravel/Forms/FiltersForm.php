@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
@@ -21,13 +21,13 @@ use Stringable;
 use Throwable;
 
 /**
- * @method static static make(ModelResource $resource)
+ * @method static static make(CrudResource $resource)
  */
 final readonly class FiltersForm implements FormContract
 {
     use Makeable;
 
-    public function __construct(private ModelResource $resource)
+    public function __construct(private CrudResource $resource)
     {
     }
 
@@ -55,7 +55,7 @@ final readonly class FiltersForm implements FormContract
 
         return FormBuilder::make($action, FormMethod::GET)
             ->name('filters')
-            ->fillCast($values, $resource->getModelCast())
+            ->fillCast($values, $resource->getCaster())
             ->fields(
                 $filters
                     ->when(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\ActionButton;
 
 use Closure;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
@@ -32,28 +33,28 @@ trait WithOffCanvas
 
         $async = $this->purgeAsyncTap();
 
-        $this->offCanvas = fn (mixed $data) => OffCanvas::make(
-            title: fn () => value($title, $data, $this) ?? $this->getLabel(),
-            content: fn () => value($content, $data, $this) ?? '',
-            asyncUrl: $async ? $this->getUrl($data) : null,
+        $this->offCanvas = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => OffCanvas::make(
+            title: static fn () => value($title, $item, $ctx) ?? $ctx->getLabel(),
+            content: static fn () => value($content, $item, $ctx) ?? '',
+            asyncUrl: $async ? $ctx->getUrl($item) : null,
             components: $components
         )
-            ->name(value($name, $data, $this))
+            ->name(value($name, $item, $ctx))
             ->when(
                 ! is_null($builder),
-                fn (OffCanvas $offCanvas) => $builder($offCanvas, $this)
+                static fn (OffCanvas $offCanvas) => $builder($offCanvas, $ctx)
             );
 
         return $this->onBeforeRender(
-            static fn (ActionButtonContract $btn): ActionButtonContract => $btn->toggleOffCanvas(
-                value($name, $btn->getData()?->getOriginal(), $btn)
+            static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleOffCanvas(
+                value($name, $ctx->getData()?->getOriginal(), $ctx)
             )
         );
     }
 
     public function getOffCanvas(): ?OffCanvas
     {
-        return value($this->offCanvas, $this->getData()?->getOriginal(), $this);
+        return value($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleOffCanvas(string $name = 'default'): static

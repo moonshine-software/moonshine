@@ -9,7 +9,7 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\MoonShineAuth;
 
-trait ResourceModelPolicy
+trait ResourceWithAuthorization
 {
     protected bool $withPolicy = false;
 
@@ -37,30 +37,16 @@ trait ResourceModelPolicy
     {
         $abilityEnum = $ability instanceof Ability ? $ability : Ability::tryFrom($ability);
 
-        if (! moonshineConfig()->isAuthEnabled()) {
-            return true;
-        }
-
         if (is_null($abilityEnum) || ! in_array($abilityEnum, $this->getGateAbilities(), true)) {
             throw new ResourceException("ability '$abilityEnum->value' not found in the system");
         }
 
-        $user = MoonShineAuth::getGuard()->user();
+        return $this->isCan($ability);
+    }
 
-        $checkCustomRules = moonshineConfig()
-            ->getAuthorizationRules()
-            ->every(fn ($rule) => $rule($this, $user, $abilityEnum->value, $this->getItem() ?? $this->getModel()));
-
-        if (! $checkCustomRules) {
-            return false;
-        }
-
-        if (! $this->isWithPolicy()) {
-            return true;
-        }
-
-        return Gate::forUser($user)
-            ->allows($abilityEnum->value, $this->getItem() ?? $this->getModel());
+    protected function isCan(Ability $ability): bool
+    {
+        return true;
     }
 
     public function isWithPolicy(): bool

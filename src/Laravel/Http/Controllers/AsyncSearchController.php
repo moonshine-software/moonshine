@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Support\DBOperators;
@@ -28,12 +29,16 @@ final class AsyncSearchController extends MoonShineController
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $field->getResource();
 
-        $model = $resource->getModel();
+        if (! $resource instanceof WithQueryBuilderContract) {
+            return response()->json();
+        }
+
+        $model = $resource->getDataInstance();
 
         $searchColumn = $field->getAsyncSearchColumn() ?? $resource->getColumn();
 
         if ($field instanceof MorphTo) {
-            $field->fillCast([], $resource->getModelCast());
+            $field->fillCast([], $resource->getCaster());
 
             $morphClass = $field->getWrapName()
                 ? data_get($request->input($field->getWrapName(), []), $field->getMorphType())
@@ -43,7 +48,7 @@ final class AsyncSearchController extends MoonShineController
             $searchColumn = $field->getSearchColumn($morphClass);
         }
 
-        $query = $resource->resolveQuery();
+        $query = $resource->getQuery();
         $term = $request->input('query');
 
         if (! is_null($field->getAsyncSearchQuery())) {

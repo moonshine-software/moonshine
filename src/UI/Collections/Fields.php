@@ -7,7 +7,7 @@ namespace MoonShine\UI\Collections;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
@@ -108,7 +108,7 @@ class Fields extends Renderables implements FieldsContract
      */
     public function fillCloned(
         array $raw = [],
-        ?CastedDataContract $casted = null,
+        ?DataWrapperContract $casted = null,
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): static {
@@ -120,7 +120,7 @@ class Fields extends Renderables implements FieldsContract
 
     public function fillClonedRecursively(
         array $raw = [],
-        ?CastedDataContract $casted = null,
+        ?DataWrapperContract $casted = null,
         int $index = 0,
         ?Fields $preparedFields = null
     ): static {
@@ -142,7 +142,7 @@ class Fields extends Renderables implements FieldsContract
     /**
      * @throws Throwable
      */
-    public function fill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): void
+    public function fill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): void
     {
         $this->onlyFields()->map(
             static fn (FieldContract $field): FieldContract => $field

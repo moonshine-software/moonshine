@@ -17,15 +17,15 @@ trait HasCanSee
         return $this;
     }
 
-    public function isSee(mixed $data = null): bool
+    public function isSee(): bool
     {
         if(is_null($this->canSeeCallback)) {
             return true;
         }
 
         $params = [
-            $data,
             ...$this->isSeeParams(),
+            $this
         ];
 
         return (bool) value(
@@ -36,8 +36,6 @@ trait HasCanSee
 
     protected function isSeeParams(): array
     {
-        return [
-            $this,
-        ];
+        return [];
     }
 }

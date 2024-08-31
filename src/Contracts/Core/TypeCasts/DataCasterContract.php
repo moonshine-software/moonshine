@@ -6,14 +6,17 @@ namespace MoonShine\Contracts\Core\TypeCasts;
 
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
+/**
+ * @template-covariant T
+ */
 interface DataCasterContract
 {
     /**
-     * @template-covariant T
      * @param T $data
-     * @return CastedDataContract<T>
+     *
+     * @return DataWrapperContract<T>
      */
-    public function cast(mixed $data): CastedDataContract;
+    public function cast(mixed $data): DataWrapperContract;
 
     public function paginatorCast(mixed $data): ?PaginatorContract;
 }

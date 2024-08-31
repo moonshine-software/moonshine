@@ -8,164 +8,154 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
-use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
-use MoonShine\Support\Attributes\SearchUsingFullText;
 use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant TModel of Model
+ * @template-covariant T
  */
 trait ResourceModelQuery
 {
-    /** @var ?TModel */
-    protected ?Model $item = null;
-
     protected array $with = [];
-
-    protected string $sortColumn = '';
-
-    protected string $sortDirection = 'DESC';
-
-    protected int $itemsPerPage = 25;
-
-    protected bool $usePagination = true;
-
-    protected bool $simplePaginate = false;
-
-    protected ?Builder $query = null;
-
-    protected ?Builder $customBuilder = null;
-
-    protected int|string|false|null $itemID = null;
 
     protected array $parentRelations = [];
 
-    protected bool $saveQueryState = false;
+    protected ?Builder $queryBuilder = null;
 
-    protected ?int $paginatorPage = null;
+    protected ?Builder $customQueryBuilder = null;
 
-    protected iterable $queryParams = [];
-
-    public function setQueryParams(iterable $params): static
+    /**
+     * @return Collection|Paginator
+     * @throws Throwable
+     */
+    public function getItems(): Collection|Paginator
     {
-        $this->queryParams = $params;
+        return $this->isPaginationUsed()
+            ? $this->paginate()
+            : $this->getQuery()->get();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function paginate(): Paginator
+    {
+        return $this->getQuery()
+            ->when(
+                $this->isSimplePaginate(),
+                fn (Builder $query): Paginator => $query->simplePaginate(
+                    $this->getItemsPerPage(),
+                    page: $this->getPaginatorPage()
+                ),
+                fn (Builder $query): LengthAwarePaginator => $query->paginate(
+                    $this->getItemsPerPage(),
+                    page: $this->getPaginatorPage()
+                ),
+            )
+            ->appends($this->getQueryParams()->except('page')->toArray());
+    }
+
+    /**
+     * @return T
+     */
+    public function findItem(bool $orFail = false): mixed
+    {
+        $builder = $this->modifyItemQueryBuilder(
+            $this->getModel()->newQuery()
+        );
+
+        if($orFail) {
+            return $builder->findOrFail($this->getItemID());
+        }
+
+        return $builder->find($this->getItemID());
+    }
+
+    protected function modifyItemQueryBuilder(Builder $builder): Builder
+    {
+        return $builder;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function newQuery(): Builder
+    {
+        if (! is_null($this->queryBuilder)) {
+            return $this->modifyQueryBuilder($this->queryBuilder);
+        }
+
+        $this->queryBuilder  = $this->customQueryBuilder  ?? $this->getModel()->newQuery();
+
+        if ($this->hasWith()) {
+            $this->queryBuilder->with($this->getWith());
+        }
+
+        return $this->modifyQueryBuilder($this->queryBuilder);
+    }
+
+    public function getQuery(): Builder
+    {
+        $this->queryBuilderFeatures();
+
+        return $this->newQuery();
+    }
+
+    protected function modifyQueryBuilder(Builder $builder): Builder
+    {
+        return $builder;
+    }
+
+    public function customQueryBuilder(Builder $builder): static
+    {
+        $this->customQueryBuilder = $builder;
 
         return $this;
     }
 
-    public function getQueryParams(): Collection
+    /**
+     * @throws Throwable
+     */
+    protected function queryBuilderFeatures(): void
     {
-        return collect($this->queryParams);
+        $this
+            ->withCache()
+            ->withTags()
+            ->withSearch()
+            ->withFilters()
+            ->withParentResource()
+            ->withOrder()
+            ->withCachedQueryParams();
     }
 
-    public function setItemID(int|string|false|null $itemID): static
+    public function isItemExists(): bool
     {
-        $this->itemID = $itemID;
-
-        return $this;
+        return !is_null($this->getItem()) && $this->getItem()->exists;
     }
 
-    public function getItemID(): int|string|null
+    public function hasWith(): bool
     {
-        if ($this->itemID === false) {
-            return null;
-        }
-
-        return $this->itemID ?? moonshineRequest()->getItemID();
+        return $this->with !== [];
     }
 
     /**
-     * @return ?TModel
+     * @return string[]
      */
-    protected function itemOr(Closure $closure): ?Model
+    public function getWith(): array
     {
-        if (! is_null($this->item)) {
-            return $this->item;
-        }
-
-        $this->item = $closure();
-
-        return $this->item;
+        return $this->with;
     }
 
-    protected function resolveItemQuery(): Builder
+    public function getSortColumn(): string
     {
-        return $this->getModel()->newQuery();
-    }
-
-    /**
-     * @return ?TModel
-     */
-    public function getItem(): ?Model
-    {
-        if (! is_null($this->item)) {
-            return $this->item;
-        }
-
-        if (is_null($this->getItemID())) {
-            return null;
-        }
-
-        return $this->itemOr(
-            fn () => $this
-                ->resolveItemQuery()
-                ->find($this->getItemID())
-        );
-    }
-
-    /**
-     * @param  ?TModel $model
-     */
-    public function setItem(?Model $model): static
-    {
-        $this->item = $model;
-
-        return $this;
-    }
-
-    /**
-     * @return TModel
-     */
-    public function getItemOrInstance(): Model
-    {
-        if (! is_null($this->item)) {
-            return $this->item;
-        }
-
-        if (is_null($this->getItemID())) {
-            return $this->getModel();
-        }
-
-        return $this->itemOr(
-            fn () => $this
-                ->resolveItemQuery()
-                ->findOrNew($this->getItemID())
-        );
-    }
-
-    /**
-     * @return TModel
-     */
-    public function getItemOrFail(): Model
-    {
-        if (! is_null($this->item)) {
-            return $this->item;
-        }
-
-        return $this->itemOr(
-            fn () => $this
-                ->resolveItemQuery()
-                ->findOrFail($this->getItemID())
-        );
+        return $this->sortColumn ?: $this->getModel()->getKeyName();
     }
 
     /**
@@ -183,168 +173,7 @@ trait ResourceModelQuery
         return $this->queryTags() !== [];
     }
 
-    /**
-     * @return list<QueryTag>
-     */
-    public function getQueryTags(): array
-    {
-        return $this->queryTags();
-    }
-
-    protected function getItemsPerPage(): int
-    {
-        return $this->itemsPerPage;
-    }
-
-    public function setPaginatorPage(?int $page): static
-    {
-        $this->paginatorPage = $page;
-
-        return $this;
-    }
-
-    public function getPaginatorPage(): int
-    {
-        $page = $this->paginatorPage ?? (int) $this->getQueryParams()->get('page');
-
-        if ($this->isSaveQueryState() && ! $this->getQueryParams()->has('reset')) {
-            return (int) data_get(
-                moonshineCache()->get($this->getQueryCacheKey(), []),
-                'page',
-                $page
-            );
-        }
-
-        return $page;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function paginate(): Paginator
-    {
-        return $this->resolveQuery()
-            ->when(
-                $this->isSimplePaginate(),
-                fn (Builder $query): Paginator => $query->simplePaginate(
-                    $this->getItemsPerPage(),
-                    page: $this->getPaginatorPage()
-                ),
-                fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    $this->getItemsPerPage(),
-                    page: $this->getPaginatorPage()
-                ),
-            )
-            ->appends($this->getQueryParams()->except('page')->toArray());
-    }
-
-    public function isSimplePaginate(): bool
-    {
-        return $this->simplePaginate;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function resolveQuery(): Builder
-    {
-        $this
-            ->resolveCache()
-            ->resolveTags()
-            ->resolveSearch()
-            ->resolveFilters()
-            ->resolveParentResource()
-            ->resolveOrder()
-            ->cacheQueryParams();
-
-        return $this->getQuery();
-    }
-
-    protected function query(): Builder
-    {
-        if (! is_null($this->query)) {
-            return $this->query;
-        }
-
-        $this->query = $this->customBuilder ?? $this->getModel()->newQuery();
-
-        if ($this->hasWith()) {
-            $this->query->with($this->getWith());
-        }
-
-        return $this->query;
-    }
-
-    public function getQuery(): Builder
-    {
-        return $this->query ?: $this->query();
-    }
-
-    protected function isSaveQueryState(): bool
-    {
-        return $this->saveQueryState;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getQueryParamsKeys(): array
-    {
-        return ['sort', 'filter', 'page', 'query-tag', 'search'];
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getCachedRequestKeys(): array
-    {
-        return $this->getQueryParamsKeys();
-    }
-
-    protected function cacheQueryParams(): static
-    {
-        if (! $this->isSaveQueryState()) {
-            return $this;
-        }
-
-        if ($this->getQueryParams()->has('reset')) {
-            moonshineCache()->forget($this->getQueryCacheKey());
-
-            return $this;
-        }
-
-        if ($this->getQueryParams()->hasAny($this->getCachedRequestKeys())) {
-            moonshineCache()->put(
-                $this->getQueryCacheKey(),
-                $this->getQueryParams()->only($this->getCachedRequestKeys()),
-                now()->addHours(2)
-            );
-        }
-
-        return $this;
-    }
-
-    protected function resolveCache(): static
-    {
-        if ($this->isSaveQueryState()
-            && ! $this->getQueryParams()->hasAny([
-                ...$this->getCachedRequestKeys(),
-                'reset',
-            ])
-        ) {
-            $this->setQueryParams(
-                $this->getQueryParams()->merge(
-                    collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(
-                        fn ($value, $key): bool => ! $this->getQueryParams()->has($key)
-                    )->toArray()
-                )
-            );
-        }
-
-        return $this;
-    }
-
-    protected function resolveTags(): static
+    protected function withTags(): static
     {
         /** @var QueryTag $tag */
         $tag = collect($this->getQueryTags())
@@ -353,9 +182,9 @@ trait ResourceModelQuery
             );
 
         if ($tag) {
-            $this->customBuilder(
+            $this->customQueryBuilder(
                 $tag->apply(
-                    $this->getQuery()
+                    $this->newQuery()
                 )
             );
         }
@@ -363,23 +192,12 @@ trait ResourceModelQuery
         return $this;
     }
 
-    protected function resolveSearch($queryKey = 'search'): static
+    protected function resolveSearch(string $terms, ?iterable $fullTextColumns = null): static
     {
-        if ($this->hasSearch() && filled($this->getQueryParams()->get($queryKey))) {
-            $fullTextColumns = Attributes::for($this)
-                ->attribute(SearchUsingFullText::class)
-                ->method('search')
-                ->first('columns');
-
-            $terms = str($this->getQueryParams()->get($queryKey))
-                ->squish()
-                ->value();
-
-            if (! is_null($fullTextColumns)) {
-                $this->getQuery()->whereFullText($fullTextColumns, $terms);
-            } else {
-                $this->searchQuery($terms);
-            }
+        if (! is_null($fullTextColumns)) {
+            $this->newQuery()->whereFullText($fullTextColumns, $terms);
+        } else {
+            $this->searchQuery($terms);
         }
 
         return $this;
@@ -387,7 +205,7 @@ trait ResourceModelQuery
 
     protected function searchQuery(string $terms): void
     {
-        $this->getQuery()->where(function (Builder $builder) use ($terms): void {
+        $this->newQuery()->where(function (Builder $builder) use ($terms): void {
             foreach ($this->getSearchColumns() as $key => $column) {
                 if (is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
@@ -402,7 +220,7 @@ trait ResourceModelQuery
 
                 if (is_array($column)) {
                     $builder->when(
-                        method_exists($this->getModel(), $key),
+                        method_exists($this->getDataInstance(), $key),
                         static fn (Builder $query) => $query->orWhereHas(
                             $key,
                             static fn (Builder $q) => collect($column)->each(static fn ($item) => $q->where(
@@ -427,69 +245,13 @@ trait ResourceModelQuery
     /**
      * @throws Throwable
      */
-    protected function resolveOrder(): static
+    protected function withFilters(): static
     {
-        $column = $this->getSortColumn();
-        $direction = $this->getSortDirection();
+        $filters = $this->prepareFilters();
 
-        if (($sort = $this->getQueryParams()->get('sort')) && is_string($sort)) {
-            $column = ltrim($sort, '-');
-            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
-        }
-
-        $field = $this->getIndexFields()->findByColumn($column);
-
-        $callback = $field?->getSortableCallback();
-
-        if (is_string($callback)) {
-            $column = value($callback);
-        }
-
-        if ($callback instanceof Closure) {
-            $callback($this->getQuery(), $column, $direction);
-        } else {
-            $this->getQuery()
-                ->orderBy($column, $direction);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array<array-key, mixed>
-     */
-    public function getFilterParams(): array
-    {
-        $default = $this->getQueryParams()->get('filter', []);
-
-        if ($this->isSaveQueryState()) {
-            return data_get(
-                moonshineCache()->get($this->getQueryCacheKey(), []),
-                'filter',
-                $default
-            );
-        }
-
-        return $default;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function resolveFilters(): static
-    {
-        $params = $this->getFilterParams();
-
-        if (blank($params)) {
+        if (is_null($filters)) {
             return $this;
         }
-
-        $filters = $this->getFilters()->onlyFields();
-
-        $filters->fill(
-            $params,
-            $this->getModelCast()->cast($this->getModel())
-        );
 
         $filters->each(function (Field $filter): void {
             if ($filter->getRequestValue() === false) {
@@ -511,7 +273,7 @@ trait ResourceModelQuery
 
             $filter->apply(
                 $defaultApply,
-                $this->getQuery()
+                $this->newQuery()
             );
         });
 
@@ -521,7 +283,7 @@ trait ResourceModelQuery
     /**
      * @throws ResourceException
      */
-    protected function resolveParentResource(): static
+    protected function withParentResource(): static
     {
         $relationName = moonshineRequest()->getParentRelationName();
         $parentId = moonshineRequest()->getParentRelationId();
@@ -530,13 +292,13 @@ trait ResourceModelQuery
             return $this;
         }
 
-        if (! method_exists($this->getModel(), $relationName)) {
+        if (! method_exists($this->getDataInstance(), $relationName)) {
             throw new ResourceException("Relation $relationName not found for current resource");
         }
 
-        $relation = $this->getModel()->{$relationName}();
+        $relation = $this->getDataInstance()->{$relationName}();
 
-        $this->getQuery()->when(
+        $this->newQuery()->when(
             $relation instanceof BelongsToMany,
             static fn (Builder $q) => $q->whereRelation(
                 $relationName,
@@ -552,54 +314,28 @@ trait ResourceModelQuery
         return $this;
     }
 
-    public function hasWith(): bool
-    {
-        return $this->with !== [];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getWith(): array
-    {
-        return $this->with;
-    }
-
-    public function getSortColumn(): string
-    {
-        return $this->sortColumn ?: $this->getModel()->getKeyName();
-    }
-
-    public function getSortDirection(): string
-    {
-        return in_array(strtolower($this->sortDirection), ['asc', 'desc'])
-            ? $this->sortDirection
-            : 'DESC';
-    }
-
-    protected function getQueryCacheKey(): string
-    {
-        return "moonshine_query_{$this->getUriKey()}";
-    }
-
     /**
      * @throws Throwable
      */
-    public function getItems(): Collection
+    protected function withOrder(): static
     {
-        return $this->resolveQuery()->get();
-    }
+        [$column, $direction, $callback] = $this->prepareOrder();
 
-    public function customBuilder(Builder $builder): static
-    {
-        $this->customBuilder = $builder;
+        if ($callback instanceof Closure) {
+            $callback($this->newQuery(), $column, $direction);
+        } else {
+            $this->newQuery()->orderBy($column, $direction);
+        }
 
         return $this;
     }
 
-    public function isPaginationUsed(): bool
+    /**
+     * @return list<QueryTag>
+     */
+    public function getQueryTags(): array
     {
-        return $this->usePagination;
+        return $this->queryTags();
     }
 
     /**

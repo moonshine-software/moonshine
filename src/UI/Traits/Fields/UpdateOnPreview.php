@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\HttpMethod;
@@ -106,7 +106,7 @@ trait UpdateOnPreview
         $router = $this->getCore()->getRouter();
 
         return $this->setUpdateOnPreviewUrl(
-            $url ?? static fn (?CastedDataContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateField(
+            $url ?? static fn (?DataWrapperContract $data, mixed $value, FieldContract $field): ?string => $data?->getKey() ? $router->getEndpoints()->updateField(
                 resource: $field->getNowOnResource(),
                 extra: [
                     'resourceItem' => $data->getKey(),

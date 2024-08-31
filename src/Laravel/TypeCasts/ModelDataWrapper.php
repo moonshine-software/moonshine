@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\TypeCasts;
 
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 /**
- * @implements CastedDataContract<Model>
+ * @implements DataWrapperContract<Model>
  */
-final readonly class ModelCastedData implements CastedDataContract
+final readonly class ModelDataWrapper implements DataWrapperContract
 {
     public function __construct(private Model $model)
     {

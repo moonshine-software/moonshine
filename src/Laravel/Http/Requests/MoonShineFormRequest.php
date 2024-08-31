@@ -8,11 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use Throwable;
 
 /**
- * @template-covariant T of ModelResource
+ * @template-covariant T of CrudResource
  */
 class MoonShineFormRequest extends FormRequest
 {
@@ -61,7 +61,7 @@ class MoonShineFormRequest extends FormRequest
             : [];
     }
 
-    /** @return ModelResource */
+    /** @return CrudResource */
     public function getResource(): ?ResourceContract
     {
         return moonshineRequest()->getResource();

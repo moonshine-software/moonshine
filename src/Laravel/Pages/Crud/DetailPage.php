@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -14,7 +15,7 @@ use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Heading;
@@ -25,7 +26,7 @@ use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
 
 /**
- * @method ModelResource getResource()
+ * @method CrudResource getResource()
  * @extends Page<Fields>
  */
 class DetailPage extends Page
@@ -74,9 +75,8 @@ class DetailPage extends Page
     protected function components(): iterable
     {
         $this->validateResource();
-        $item = $this->getResource()->getItem();
 
-        if (! $item?->exists) {
+        if (! $this->getResource()->isItemExists()) {
             oops404();
         }
 
@@ -90,7 +90,7 @@ class DetailPage extends Page
     protected function mainLayer(): array
     {
         $resource = $this->getResource();
-        $item = $resource->getItem();
+        $item = $resource->getCastedData();
 
         return [
             Box::make([
@@ -110,7 +110,7 @@ class DetailPage extends Page
         $components = [];
         $item = $this->getResource()->getItem();
 
-        if (! $item?->exists) {
+        if (! $this->getResource()->isItemExists()) {
             return $components;
         }
 
@@ -123,7 +123,7 @@ class DetailPage extends Page
             foreach ($outsideFields as $field) {
                 $field->fillCast(
                     $item,
-                    $field->getResource()?->getModelCast()
+                    $field->getResource()?->getCaster()
                 );
 
                 $components[] = LineBreak::make();
@@ -151,10 +151,10 @@ class DetailPage extends Page
         return array_merge($components, $this->getResource()->getDetailPageComponents());
     }
 
-    protected function getDetailComponent(?Model $item, Fields $fields): RenderableContract
+    protected function getDetailComponent(?DataWrapperContract $item, Fields $fields): RenderableContract
     {
         return TableBuilder::make($fields)
-            ->cast($this->getResource()->getModelCast())
+            ->cast($this->getResource()->getCaster())
             ->items([$item])
             ->vertical()
             ->simple()
@@ -167,7 +167,7 @@ class DetailPage extends Page
      * @throws PageException
      * @throws Throwable
      */
-    protected function getDetailComponents(?Model $item): array
+    protected function getDetailComponents(?DataWrapperContract $item): array
     {
         return [
             Fragment::make([
@@ -184,7 +184,7 @@ class DetailPage extends Page
             ActionGroup::make(
                 $this->getResource()->getDetailButtons()
             )
-                ->fill($this->getResource()->getCastedItem())
+                ->fill($this->getResource()->getCastedData())
                 ->class('justify-end'),
         ];
     }

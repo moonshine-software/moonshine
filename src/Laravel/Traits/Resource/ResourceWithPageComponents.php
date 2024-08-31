@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Traits\Resource;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FieldContract;
 
-trait ResourceModelPageComponents
+trait ResourceWithPageComponents
 {
     /**
      * @return list<FieldContract>

@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Traits\NowOn;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\AbstractWithComponents;
@@ -45,7 +45,7 @@ class Fragment extends AbstractWithComponents
         string|ResourceContract|null $resource = null,
         string|PageContract|null $page = null,
     ): static {
-        /** @var ModelResource $resource */
+        /** @var CrudResource $resource */
         $resource ??= moonshineRequest()->getResource();
         $page ??= moonshineRequest()->getPage();
 

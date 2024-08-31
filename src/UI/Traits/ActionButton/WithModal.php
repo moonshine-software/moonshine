@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\ActionButton;
 
 use Closure;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Support\AlpineJs;
@@ -38,20 +39,20 @@ trait WithModal
 
         $async = $this->purgeAsyncTap();
 
-        $this->modal = fn (mixed $data) => Modal::make(
-            title: fn () => value($title, $data, $this) ?? $this->getLabel(),
-            content: fn () => value($content, $data, $this) ?? '',
-            asyncUrl: $async ? $this->getUrl($data) : null,
+        $this->modal = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => Modal::make(
+            title: static fn () => value($title, $item, $ctx) ?? $ctx->getLabel(),
+            content: static fn () => value($content, $item, $ctx) ?? '',
+            asyncUrl: $async ? $ctx->getUrl($item) : null,
         )
-            ->name(value($name, $data, $this))
+            ->name(value($name, $item, $ctx))
             ->when(
                 ! is_null($builder),
-                fn (Modal $modal): Modal => $builder($modal, $this)
+                static fn (Modal $modal): Modal => $builder($modal, $ctx)
             );
 
         return $this->onBeforeRender(
-            static fn (ActionButtonContract $btn): ActionButtonContract => $btn->toggleModal(
-                value($name, $btn->getData()?->getOriginal(), $btn)
+            static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleModal(
+                value($name, $ctx->getData()?->getOriginal(), $ctx)
             )
         );
     }
@@ -76,9 +77,9 @@ trait WithModal
         }
 
         return $this->inModal(
-            fn (mixed $data) => value($title, $data, $this) ?? $this->getCore()->getTranslator()->get('moonshine::ui.confirm'),
-            fn (mixed $data): string => (string) FormBuilder::make(
-                $this->getUrl($data),
+            static fn (mixed $item, ActionButtonContract $ctx) => value($title, $item, $ctx) ?? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm'),
+            static fn (mixed $item, ActionButtonContract $ctx): string => (string) FormBuilder::make(
+                $ctx->getUrl($item),
                 $isDefaultMethods ? FormMethod::from($method->value) : FormMethod::POST
             )->fields(
                 array_filter([
@@ -86,32 +87,32 @@ trait WithModal
                         ? null
                         : Hidden::make('_method')->setValue($method->value),
 
-                    $this->isBulk()
-                        ? HiddenIds::make($this->getBulkForComponent())
+                    $ctx->isBulk()
+                        ? HiddenIds::make($ctx->getBulkForComponent())
                         : null,
 
-                    ...(is_null($fields) ? [] : value($fields, $data)),
+                    ...(is_null($fields) ? [] : value($fields, $item)),
 
                     Heading::make(
                         is_null($content)
-                            ? $this->getCore()->getTranslator()->get('moonshine::ui.confirm_message')
-                            : value($content, $data)
+                            ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm_message')
+                            : value($content, $item)
                     ),
                 ])
             )->when(
-                $async && ! $this->isAsyncMethod(),
+                $async && ! $ctx->isAsyncMethod(),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->async()
             )->when(
-                $this->isAsyncMethod(),
-                fn (FormBuilderContract $form): FormBuilderContract => $form->asyncMethod($this->getAsyncMethod())
+                $ctx->isAsyncMethod(),
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->asyncMethod($ctx->getAsyncMethod())
             )->submit(
                 is_null($button)
-                    ? $this->getCore()->getTranslator()->get('moonshine::ui.confirm')
-                    : value($button, $data),
+                    ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm')
+                    : value($button, $item),
                 ['class' => 'btn-secondary']
             )->when(
                 ! is_null($formBuilder),
-                static fn (FormBuilderContract $form): FormBuilderContract => value($formBuilder, $form, $data)
+                static fn (FormBuilderContract $form): FormBuilderContract => value($formBuilder, $form, $item)
             ),
             name: $name,
             builder: $modalBuilder
@@ -120,7 +121,7 @@ trait WithModal
 
     public function getModal(): ?Modal
     {
-        return value($this->modal, $this->getData()?->getOriginal(), $this);
+        return value($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleModal(string $name = 'default'): static

@@ -110,7 +110,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
 
         return TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
-            ->cast($resource->getModelCast())
+            ->cast($resource->getCaster())
             ->preview()
             ->simple()
             ->vertical()
@@ -207,7 +207,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                     ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
                     : [],
             ], static fn ($value) => filled($value)),
-                $resource->getModelCast()
+                $resource->getCaster()
             )
             ->buttons(
                 is_null($item)

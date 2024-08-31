@@ -43,7 +43,7 @@ final class HasManyController extends MoonShineController
         $update = $item->exists;
         $relation = $parent?->{$field->getRelationName()}();
 
-        $field->fillCast($parent, $request->getResource()?->getModelCast());
+        $field->fillCast($parent, $request->getResource()?->getCaster());
 
         $action = $update
             ? static fn (Model $data) => $resource->getRoute('crud.update', $data->getKey())
@@ -97,7 +97,7 @@ final class HasManyController extends MoonShineController
                 $update,
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     $item,
-                    $resource->getModelCast()
+                    $resource->getCaster()
                 ),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     array_filter([
@@ -106,7 +106,7 @@ final class HasManyController extends MoonShineController
                             ? [$field->getRelation()?->getMorphType() => $parent?->getMorphClass()]
                             : [],
                     ], static fn ($value) => filled($value)),
-                    $resource->getModelCast()
+                    $resource->getCaster()
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
@@ -137,7 +137,7 @@ final class HasManyController extends MoonShineController
 
         $field?->fillCast(
             $parentItem,
-            $parentResource->getModelCast()
+            $parentResource->getCaster()
         );
 
         $value = $field?->getComponent();

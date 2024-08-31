@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
 /**
@@ -14,9 +14,9 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 final class DummyCast implements DataCasterContract
 {
     /**
-     * @return CastedDataContract<T>
+     * @return DataWrapperContract<T>
      */
-    public function cast(mixed $data): CastedDataContract
+    public function cast(mixed $data): DataWrapperContract
     {
         //
     }

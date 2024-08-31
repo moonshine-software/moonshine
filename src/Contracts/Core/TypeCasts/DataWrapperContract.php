@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\Core\TypeCasts;
 /**
  * @template-covariant T
  */
-interface CastedDataContract
+interface DataWrapperContract
 {
     /**
      * @return T

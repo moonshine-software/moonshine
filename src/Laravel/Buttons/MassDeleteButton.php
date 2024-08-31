@@ -8,14 +8,14 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
 
 final class MassDeleteButton
 {
     public static function for(
-        ModelResource $resource,
+        CrudResource $resource,
         string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
@@ -51,7 +51,7 @@ final class MassDeleteButton
             )
             ->canSee(
                 static fn (): bool => $resource->hasAction(Action::MASS_DELETE)
-                                      && $resource->can(Ability::MASS_DELETE)
+                  && $resource->can(Ability::MASS_DELETE)
             )
             ->error()
             ->icon('trash')

@@ -194,7 +194,7 @@ class TestResource extends AbstractTestingResource
         return $this;
     }
 
-    protected function rules(Model $item): array
+    protected function rules(mixed $item): array
     {
         return $this->testRules;
     }

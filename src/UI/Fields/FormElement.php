@@ -12,7 +12,7 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\AlpineJs;
@@ -249,7 +249,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (?CastedDataContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $url = static fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([

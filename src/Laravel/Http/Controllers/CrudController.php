@@ -43,8 +43,8 @@ final class CrudController extends MoonShineController
             request()->only($resource->getQueryParamsKeys())
         );
 
-        return $resource->collectionResponse(
-            $resource->paginate()
+        return $resource->modifyCollectionResponse(
+            $resource->getItems()
         );
     }
 
@@ -58,7 +58,7 @@ final class CrudController extends MoonShineController
             abort(404, 'Resource not found');
         }
 
-        return $resource->itemResponse(
+        return $resource->modifyResponse(
             $resource->getItem()
         );
     }
@@ -85,7 +85,7 @@ final class CrudController extends MoonShineController
 
     public function destroy(DeleteFormRequest $request): Response
     {
-        /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
+        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
         $resource = $request->getResource();
 
         $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
@@ -114,7 +114,7 @@ final class CrudController extends MoonShineController
 
     public function massDelete(MassDeleteFormRequest $request): Response
     {
-        /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
+        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
         $resource = $request->getResource();
 
         $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
@@ -146,7 +146,7 @@ final class CrudController extends MoonShineController
     protected function updateOrCreate(
         MoonShineFormRequest $request
     ): Response {
-        /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
+        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 
@@ -168,7 +168,7 @@ final class CrudController extends MoonShineController
             return $this->json(
                 message: __('moonshine::ui.saved'),
                 redirect: $request->input('_redirect', $forceRedirect),
-                status: $item->wasRecentlyCreated ? Response::HTTP_CREATED : Response::HTTP_OK
+                status: $resource->isRecentlyCreated() ? Response::HTTP_CREATED : Response::HTTP_OK
             );
         }
 
