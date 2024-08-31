@@ -32,7 +32,7 @@ class UpdateFieldController extends MoonShineController
     {
         $relationField = $request->getField();
 
-        if($relationField instanceof HasFieldsContract) {
+        if ($relationField instanceof HasFieldsContract) {
             $relationField->getPreparedFields();
         }
 

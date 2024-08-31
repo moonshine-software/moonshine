@@ -26,7 +26,7 @@ trait WithComponents
 
     public function getPreparedComponents(): Components
     {
-        if(! is_null($this->preparedComponents)) {
+        if (! is_null($this->preparedComponents)) {
             return $this->preparedComponents;
         }
 
@@ -43,7 +43,7 @@ trait WithComponents
      */
     public function getComponents(): Components
     {
-        if(! $this->components instanceof Components) {
+        if (! $this->components instanceof Components) {
             return Components::make($this->components);
         }
 
@@ -60,7 +60,7 @@ trait WithComponents
 
     public function setComponents(iterable $components): static
     {
-        if($this->getCore()->runningInConsole()) {
+        if ($this->getCore()->runningInConsole()) {
             $components = collect($components)
                 ->map(static fn (object $component): object => clone $component)
                 ->toArray();

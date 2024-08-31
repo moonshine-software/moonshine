@@ -34,7 +34,7 @@ final readonly class ModelCaster implements DataCasterContract
      */
     public function cast(mixed $data): DataWrapperContract
     {
-        if(is_array($data)) {
+        if (is_array($data)) {
             /** @var T $model */
             $model = new ($this->getClass());
             $data = $model->forceFill($data);
@@ -49,7 +49,7 @@ final readonly class ModelCaster implements DataCasterContract
      */
     public function paginatorCast(mixed $data): ?PaginatorContract
     {
-        if(! $data instanceof Paginator && ! $data instanceof CursorPaginator) {
+        if (! $data instanceof Paginator && ! $data instanceof CursorPaginator) {
             return null;
         }
 

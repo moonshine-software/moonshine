@@ -27,7 +27,7 @@ trait WithOffCanvas
         ?Closure $builder = null,
         iterable $components = [],
     ): static {
-        if(is_null($name)) {
+        if (is_null($name)) {
             $name = (string) spl_object_id($this);
         }
 

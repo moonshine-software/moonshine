@@ -109,7 +109,7 @@ trait TableStates
                 )
         ;
 
-        if(! is_null($button)) {
+        if (! is_null($button)) {
             $button->customAttributes([
                 '@click.prevent' => 'add()',
             ]);
@@ -215,7 +215,7 @@ trait TableStates
 
     public function clickAction(?ClickAction $action = null, ?string $selector = null): static
     {
-        if(is_null($action)) {
+        if (is_null($action)) {
             return $this;
         }
 

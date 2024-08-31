@@ -229,11 +229,11 @@ class BelongsToMany extends ModelRelationField implements
                 ?->findMany($this->toValue()) ?? EloquentCollection::make();
         }
 
-        if($this->isSelectMode()) {
+        if ($this->isSelectMode()) {
             return $this->getValues()->toArray();
         }
 
-        if($this->isTree()) {
+        if ($this->isTree()) {
             return $this->getKeys();
         }
 
@@ -261,7 +261,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $values = $this->getValue();
 
-        if($this->isRelatedLink()) {
+        if ($this->isRelatedLink()) {
             return $this->getRelatedLink();
         }
 
@@ -387,7 +387,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $requestValues = collect($this->getRequestValue() ?: []);
 
-        if($this->isSelectMode() || $this->isTree()) {
+        if ($this->isSelectMode() || $this->isTree()) {
             return $requestValues;
         }
 
@@ -511,14 +511,14 @@ class BelongsToMany extends ModelRelationField implements
             'relationName' => $this->getRelationName(),
         ];
 
-        if($this->isSelectMode()) {
+        if ($this->isSelectMode()) {
             return [
                 ...$viewData,
                 'isSearchable' => $this->isSearchable(),
             ];
         }
 
-        if($this->isTree()) {
+        if ($this->isTree()) {
             return [
                 ...$viewData,
                 'treeHtml' => $this->toTreeHtml(),

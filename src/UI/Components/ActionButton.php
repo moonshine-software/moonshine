@@ -87,7 +87,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         $this->isBulk = true;
         $this->bulkForComponent = $forComponent;
 
-        if(is_null($this->modal)) {
+        if (is_null($this->modal)) {
             $this->customAttributes(array_filter([
                 'data-button-type' => 'bulk-button',
                 'data-for-component' => $this->getBulkForComponent(),
@@ -128,7 +128,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function setData(?DataWrapperContract $data = null): static
     {
-        if(! is_null($this->onBeforeSetCallback)) {
+        if (! is_null($this->onBeforeSetCallback)) {
             $data = value($this->onBeforeSetCallback, $data, $this);
         }
 
@@ -156,7 +156,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function dispatchEvent(array|string $events): static
     {
-        if(! $this->getAttributes()->has('x-data')) {
+        if (! $this->getAttributes()->has('x-data')) {
             $this->xDataMethod('actionButton');
         }
 
@@ -260,11 +260,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function getComponent(): ?MoonShineComponent
     {
-        if($this->isInModal()) {
+        if ($this->isInModal()) {
             return $this->getModal();
         }
 
-        if($this->isInOffCanvas()) {
+        if ($this->isInOffCanvas()) {
             return $this->getOffCanvas();
         }
 
@@ -307,7 +307,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
             ))
         );
 
-        if($this->getAttributes()->get('x-on:click.prevent') === 'request') {
+        if ($this->getAttributes()->get('x-on:click.prevent') === 'request') {
             $removeAsyncAttr[] = 'x-on:click.prevent';
         }
 

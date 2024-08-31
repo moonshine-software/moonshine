@@ -6,9 +6,9 @@ namespace MoonShine\Support\Enums;
 
 enum ClickAction: string
 {
-    case  SELECT = 'select';
+    case SELECT = 'select';
 
-    case  EDIT = 'edit';
+    case EDIT = 'edit';
 
-    case  DETAIL = 'detail';
+    case DETAIL = 'detail';
 }

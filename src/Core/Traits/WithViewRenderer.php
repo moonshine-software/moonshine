@@ -111,7 +111,7 @@ trait WithViewRenderer
      */
     public function render(): Renderable|Closure|string
     {
-        if(! $this->shouldRender()) {
+        if (! $this->shouldRender()) {
             return '';
         }
 
@@ -121,7 +121,7 @@ trait WithViewRenderer
 
         $this->prepareBeforeRender();
 
-        if(! is_null($this->onBeforeRenderCallback)) {
+        if (! is_null($this->onBeforeRenderCallback)) {
             value($this->onBeforeRenderCallback, $this);
         }
 
@@ -157,12 +157,12 @@ trait WithViewRenderer
         $states = data_forget($states, 'components');
         $states = data_forget($states, 'fields');
 
-        if($this instanceof HasComponentsContract) {
+        if ($this instanceof HasComponentsContract) {
             $components = $this->getComponents()
                 ->map(static fn (RenderableContract $component): array => $component->toStructure($withStates));
         }
 
-        if($this instanceof HasFieldsContract) {
+        if ($this instanceof HasFieldsContract) {
             $components = $this->getFields()
                 ->map(static fn (RenderableContract $component): array => $component->toStructure($withStates));
 

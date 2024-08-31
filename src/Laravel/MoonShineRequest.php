@@ -25,7 +25,7 @@ class MoonShineRequest extends Request
 
     public function getParentRelationName(): ?string
     {
-        if(is_null($parentResource = $this->getParentResourceId())) {
+        if (is_null($parentResource = $this->getParentResourceId())) {
             return null;
         }
 

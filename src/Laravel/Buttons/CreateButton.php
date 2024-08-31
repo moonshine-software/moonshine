@@ -18,13 +18,13 @@ final class CreateButton
         bool $isAsync = true,
         string $modalName = 'create-modal',
     ): ActionButtonContract {
-        if(! $resource->getFormPage()) {
+        if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
         $action = $resource->getFormPageUrl();
 
-        if($resource->isCreateInModal()) {
+        if ($resource->isCreateInModal()) {
             $action = $resource->getFormPageUrl(
                 params: [
                     '_component_name' => $componentName ?? $resource->getListComponentName(),

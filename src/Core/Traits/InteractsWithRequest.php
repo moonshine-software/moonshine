@@ -29,7 +29,7 @@ trait InteractsWithRequest
     {
         $url = $this->getRequest()->getUri()->getScheme() . '://' . $this->getHost();
 
-        if($this->getRequest()->getUri()->getPort()) {
+        if ($this->getRequest()->getUri()->getPort()) {
             $url .= ':' . $this->getRequest()->getUri()->getPort();
         }
 

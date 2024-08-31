@@ -26,7 +26,7 @@ class Heading extends MoonShineComponent
 
         $this->setLabel($label);
 
-        if(! is_null($h)) {
+        if (! is_null($h)) {
             $this->h($h, $asClass);
         }
     }

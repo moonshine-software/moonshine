@@ -48,7 +48,7 @@ final readonly class FiltersForm implements FormContract
         $action = $resource->isAsync() ? '#' : $this->getFormAction();
 
         foreach ($filters->onlyFields() as $filter) {
-            if($filter instanceof RangeFieldContract) {
+            if ($filter instanceof RangeFieldContract) {
                 data_forget($values, $filter->getColumn());
             }
         }

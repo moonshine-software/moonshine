@@ -176,7 +176,7 @@ abstract class Core implements CoreContract
         $targets = [];
 
         foreach ($items as $item) {
-            if(is_string($item) && isset($this->instances[$item])) {
+            if (is_string($item) && isset($this->instances[$item])) {
                 $targets[] = $this->instances[$item];
 
                 continue;

@@ -18,13 +18,13 @@ final class DetailButton
         CrudResource $resource,
         string $modalName = 'detail-modal',
     ): ActionButtonContract {
-        if(! $resource->getDetailPage()) {
+        if (! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
         }
 
         $action = static fn (mixed $item, ?DataWrapperContract $data): string => $resource->getDetailPageUrl($data?->getKey());
 
-        if($resource->isDetailInModal()) {
+        if ($resource->isDetailInModal()) {
             $action = static fn (mixed $item, ?DataWrapperContract $data): string => $resource->getDetailPageUrl(
                 $data?->getKey(),
                 fragment: 'crud-detail'

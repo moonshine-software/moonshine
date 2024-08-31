@@ -70,7 +70,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function addMiddlewares(array|string $middlewares): self
     {
-        if(is_string($middlewares)) {
+        if (is_string($middlewares)) {
             $middlewares = [$middlewares];
         }
 
@@ -119,7 +119,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function addLocales(array|string $locales): self
     {
-        if(is_string($locales)) {
+        if (is_string($locales)) {
             $locales = [$locales];
         }
 

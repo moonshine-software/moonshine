@@ -63,7 +63,7 @@ class MakeFieldCommand extends MoonShineCommand
 
         $field = $this->getDirectory() . "/Fields/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Fields')) {
+        if (! is_dir($this->getDirectory() . '/Fields')) {
             $this->makeDir($this->getDirectory() . '/Fields');
         }
 
@@ -79,7 +79,7 @@ class MakeFieldCommand extends MoonShineCommand
         $viewPath = resource_path('views/' . str_replace('.', DIRECTORY_SEPARATOR, $view));
         $viewPath .= '.blade.php';
 
-        if(! is_dir(dirname($viewPath))) {
+        if (! is_dir(dirname($viewPath))) {
             $this->makeDir(dirname($viewPath));
         }
 

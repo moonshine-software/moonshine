@@ -35,7 +35,7 @@ final class CrudController extends MoonShineController
 
         $resource = $request->getResource();
 
-        if(is_null($resource)) {
+        if (is_null($resource)) {
             abort(404, 'Resource not found');
         }
 
@@ -54,7 +54,7 @@ final class CrudController extends MoonShineController
 
         $resource = $request->getResource();
 
-        if(is_null($resource)) {
+        if (is_null($resource)) {
             abort(404, 'Resource not found');
         }
 

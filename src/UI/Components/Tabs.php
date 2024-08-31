@@ -122,7 +122,7 @@ class Tabs extends AbstractWithComponents
             $tabs = [];
 
             foreach ($component['items'] as $id => $label) {
-                if($component['__laravel_slots'][$id] ?? false) {
+                if ($component['__laravel_slots'][$id] ?? false) {
                     /** @var ComponentSlot $slot */
                     $slot = $component['__laravel_slots'][$id];
                     $attributes = $slot->attributes->jsonSerialize();

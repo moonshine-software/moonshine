@@ -38,7 +38,7 @@ class ErrorPage extends Page
 
         $backUrl = moonshineRouter()->getEndpoints()->home();
 
-        if($resourceUri = moonshineRouter()->extractResourceUri()) {
+        if ($resourceUri = moonshineRouter()->extractResourceUri()) {
             $backUrl = moonshine()->getResources()->findByUri($resourceUri)?->getUrl() ?? $backUrl;
         }
 

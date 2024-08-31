@@ -94,7 +94,7 @@ class IndexPage extends Page
 
     protected function getMetrics(): ?MoonShineComponent
     {
-        if($this->getResource()->isListComponentRequest()) {
+        if ($this->getResource()->isListComponentRequest()) {
             return null;
         }
 
@@ -140,7 +140,7 @@ class IndexPage extends Page
      */
     protected function getQueryTags(): array
     {
-        if(! $this->getResource() instanceof HasQueryTagsContract) {
+        if (! $this->getResource() instanceof HasQueryTagsContract) {
             return [];
         }
 

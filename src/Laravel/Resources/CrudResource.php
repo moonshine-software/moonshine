@@ -148,7 +148,7 @@ abstract class CrudResource extends Resource implements CrudResourceContract
      */
     public function getCastedData(): ?DataWrapperContract
     {
-        if(is_null($this->getItem())) {
+        if (is_null($this->getItem())) {
             return null;
         }
 

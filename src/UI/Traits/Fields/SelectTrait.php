@@ -31,7 +31,7 @@ trait SelectTrait
 
     public function getValues(): Options
     {
-        if($this->options instanceof Options) {
+        if ($this->options instanceof Options) {
             return $this->options;
         }
 

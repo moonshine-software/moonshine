@@ -11,7 +11,7 @@ trait HasPageRequest
     public function findPage(): ?PageContract
     {
         return memoize(function (): ?PageContract {
-            if(is_null($this->getPageUri())) {
+            if (is_null($this->getPageUri())) {
                 return null;
             }
 

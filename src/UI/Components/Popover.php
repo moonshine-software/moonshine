@@ -22,7 +22,7 @@ final class Popover extends MoonShineComponent
     ) {
         parent::__construct();
 
-        if($this->trigger === '') {
+        if ($this->trigger === '') {
             $this->trigger = $title;
         }
     }

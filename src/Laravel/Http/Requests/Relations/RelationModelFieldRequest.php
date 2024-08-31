@@ -32,7 +32,7 @@ class RelationModelFieldRequest extends FormRequest
         return memoize(function () {
             $fields = $this->getPage()->getComponents();
 
-            if($parentField = request()->input('_parent_field')) {
+            if ($parentField = request()->input('_parent_field')) {
                 /** @var HasFieldsContract $parent */
                 $parent = $fields
                     ->onlyFields()
@@ -44,7 +44,7 @@ class RelationModelFieldRequest extends FormRequest
                     : $parent->getFields();
             }
 
-            if(is_null($fields)) {
+            if (is_null($fields)) {
                 return null;
             }
 

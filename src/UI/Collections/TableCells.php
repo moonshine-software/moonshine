@@ -54,7 +54,7 @@ final class TableCells extends Collection implements TableCellsContract
 
     public function pushWhen(Closure|bool $condition, Closure $value): self
     {
-        if(value($condition) === false) {
+        if (value($condition) === false) {
             return $this;
         }
 
@@ -65,7 +65,7 @@ final class TableCells extends Collection implements TableCellsContract
 
     public function pushCellWhen(Closure|bool $condition, Closure|string $content, ?int $index = null, ?Closure $builder = null): self
     {
-        if(value($condition) === false) {
+        if (value($condition) === false) {
             return $this;
         }
 

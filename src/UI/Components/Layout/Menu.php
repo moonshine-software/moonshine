@@ -63,13 +63,13 @@ class Menu extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        if(! $this->isTop() && $this->isScrollTo()) {
+        if (! $this->isTop() && $this->isScrollTo()) {
             $this->customAttributes([
                 'x-init' => "\$nextTick(() => \$el.querySelector('.menu-inner-item._is-active')?.scrollIntoView())",
             ]);
         }
 
-        if($this->isTop()) {
+        if ($this->isTop()) {
             $this->items->topMode();
         }
     }

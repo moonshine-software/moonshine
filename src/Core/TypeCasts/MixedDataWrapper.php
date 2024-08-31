@@ -24,7 +24,7 @@ final readonly class MixedDataWrapper implements DataWrapperContract
 
     public function toArray(): array
     {
-        if(is_object($this->data) && method_exists($this->data, 'toArray')) {
+        if (is_object($this->data) && method_exists($this->data, 'toArray')) {
             return $this->data->toArray();
         }
 

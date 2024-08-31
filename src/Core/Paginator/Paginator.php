@@ -56,7 +56,7 @@ final class Paginator implements PaginatorContract
 
     private function changeLinkUrls(string $path): void
     {
-        if($this->path !== $path) {
+        if ($this->path !== $path) {
             $changeUrl = function (?string $link) use ($path): ?string {
                 $current = strtok($this->path, '?');
                 $new = strtok($path, '?');

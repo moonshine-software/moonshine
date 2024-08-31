@@ -145,7 +145,7 @@ trait WithAsyncSearch
     {
         $searchColumn ??= $this->getAsyncSearchColumn();
 
-        if(is_null($searchColumn)) {
+        if (is_null($searchColumn)) {
             $searchColumn = '';
         }
 

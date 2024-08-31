@@ -19,7 +19,7 @@ trait HasLink
     {
         $link = $this->link;
 
-        if(! is_null($this->getVersion())) {
+        if (! is_null($this->getVersion())) {
             $separator = str_contains($link, '?') ? '&' : '?';
 
             return $link . $separator . 'v=' . $this->getVersion();

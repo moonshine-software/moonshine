@@ -48,7 +48,7 @@ trait WithIcon
             $this->getIconPath()
         )->customAttributes($attributes);
 
-        if($this->isCustomIcon()) {
+        if ($this->isCustomIcon()) {
             $icon->custom();
         }
 

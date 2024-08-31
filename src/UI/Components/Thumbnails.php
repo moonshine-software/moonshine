@@ -17,7 +17,7 @@ final class Thumbnails extends MoonShineComponent
     ) {
         parent::__construct();
 
-        if(is_array($this->items)) {
+        if (is_array($this->items)) {
             $this->items = collect($this->items)
                 ->mapWithKeys(
                     static fn (string|array|FileItem $value, int $index): array => [
@@ -40,13 +40,13 @@ final class Thumbnails extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        if(is_null($this->items)) {
+        if (is_null($this->items)) {
             return [
                 'values' => [],
             ];
         }
 
-        if(is_string($this->items)) {
+        if (is_string($this->items)) {
             $this->items = new FileItem(
                 $this->items,
                 $this->items,
@@ -54,7 +54,7 @@ final class Thumbnails extends MoonShineComponent
             );
         }
 
-        if($this->items instanceof FileItem) {
+        if ($this->items instanceof FileItem) {
             return [
                 'value' => $this->items->toArray(),
             ];

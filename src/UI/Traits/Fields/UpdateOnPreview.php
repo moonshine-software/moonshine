@@ -96,7 +96,7 @@ trait UpdateOnPreview
             return $this;
         }
 
-        if(! is_null($resource)) {
+        if (! is_null($resource)) {
             $this->nowOn(
                 page: $resource instanceof CrudResourceContract ? $resource->getFormPage() : null,
                 resource: $resource
@@ -151,7 +151,7 @@ trait UpdateOnPreview
             return parent::resolveRender();
         }
 
-        if($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
+        if ($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
             return (string) call_user_func(
                 new UpdateOnPreviewPopover(
                     field: $this,

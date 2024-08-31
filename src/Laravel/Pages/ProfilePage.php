@@ -100,7 +100,7 @@ class ProfilePage extends Page
     {
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
-        if(is_null($user)) {
+        if (is_null($user)) {
             throw new MoonShineException('Model is required');
         }
 

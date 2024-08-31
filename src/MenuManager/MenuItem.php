@@ -44,7 +44,7 @@ class MenuItem extends MenuElement
             $this->icon($icon);
         }
 
-        if(is_string($this->filler) && str_contains($this->filler, '\\')) {
+        if (is_string($this->filler) && str_contains($this->filler, '\\')) {
             $this->filler = $this->getCore()->getInstances($this->filler);
         }
 
@@ -52,7 +52,7 @@ class MenuItem extends MenuElement
             $this->resolveFiller($this->filler);
         }
 
-        if(is_string($this->filler)) {
+        if (is_string($this->filler)) {
             $this->setUrl($this->filler);
         }
 

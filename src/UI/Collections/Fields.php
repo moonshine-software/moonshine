@@ -190,7 +190,7 @@ class Fields extends Renderables implements FieldsContract
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
             $modifyField = value($before, $parent, $field);
 
-            if($modifyField instanceof FieldContract) {
+            if ($modifyField instanceof FieldContract) {
                 $field = $modifyField;
             }
 
@@ -208,7 +208,7 @@ class Fields extends Renderables implements FieldsContract
                 $parent ? $field->getColumn() : null,
             );
 
-            if($field->getAttribute('multiple') || $field->isGroup()) {
+            if ($field->getAttribute('multiple') || $field->isGroup()) {
                 $name .= '[]';
             }
 
@@ -230,7 +230,7 @@ class Fields extends Renderables implements FieldsContract
     public function prepareShowWhenNames(): static
     {
         return $this->map(static function (FieldContract $field): FieldContract {
-            if(! $field->hasShowWhen()) {
+            if (! $field->hasShowWhen()) {
                 return $field;
             }
 

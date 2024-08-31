@@ -38,7 +38,7 @@ final class MoonShine extends Core
      */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed
     {
-        if(! is_null($id)) {
+        if (! is_null($id)) {
             return $this->container->make($id, $parameters) ?? $default;
         }
 

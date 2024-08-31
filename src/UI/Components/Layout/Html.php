@@ -34,13 +34,13 @@ final class Html extends AbstractWithComponents
 
     protected function prepareBeforeRender(): void
     {
-        if($this->withAlpineJs) {
+        if ($this->withAlpineJs) {
             $this->customAttributes([
                 'x-data' => '',
             ]);
         }
 
-        if($this->withThemes) {
+        if ($this->withThemes) {
             $this->customAttributes([
                 ':class' => "\$store.darkMode.on && 'dark'",
             ]);

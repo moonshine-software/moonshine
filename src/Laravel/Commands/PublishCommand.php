@@ -9,7 +9,6 @@ use Illuminate\Filesystem\Filesystem;
 use function Laravel\Prompts\{confirm, info, multiselect};
 
 use MoonShine\Core\Core;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:publish')]
@@ -52,7 +51,7 @@ class PublishCommand extends MoonShineCommand
                 base_path('tailwind.config.js')
             );
 
-            if(confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
+            if (confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
                 $this->flushNodeModules();
 
                 self::updateNodePackages(static fn ($packages) => [

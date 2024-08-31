@@ -96,7 +96,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     public function getRedirectAfter(Model|int|null|string $parentId): string
     {
-        if(! is_null($this->redirectAfter)) {
+        if (! is_null($this->redirectAfter)) {
             return (string) value($this->redirectAfter, $parentId, $this);
         }
 
@@ -407,7 +407,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             modalName: "has-many-modal-mass-delete"
         );
 
-        if(! is_null($this->modifyItemButtons)) {
+        if (! is_null($this->modifyItemButtons)) {
             return value(
                 $this->modifyItemButtons,
                 $detailButton,
@@ -445,7 +445,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     protected function resolvePreview(): Renderable|string
     {
         // resolve value before call toValue
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
             $this->setValue($casted?->{$this->getRelationName()});
         }
@@ -488,7 +488,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     public function getComponent(): RenderableContract
     {
         // resolve value before call toValue
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             $this->setValue($this->getValue());
         }
 

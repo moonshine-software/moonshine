@@ -60,7 +60,7 @@ abstract class MoonShineController extends BaseController
         $message = moonshine()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
         $type = ToastType::ERROR;
 
-        if($flash = session()->get('toast')) {
+        if ($flash = session()->get('toast')) {
             session()->forget(['toast', '_flash.old', '_flash.new']);
 
             $message = $flash['message'] ?? $message;
@@ -90,7 +90,7 @@ abstract class MoonShineController extends BaseController
             ? new ($table->getCast()->getClass())
             : null;
 
-        if(! $class instanceof Model) {
+        if (! $class instanceof Model) {
             return $table->getRows()->first(
                 static fn (TableRow $row): bool => $row->getKey() === request()->input('_key'),
             );

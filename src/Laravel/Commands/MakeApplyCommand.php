@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,7 +30,7 @@ class MakeApplyCommand extends MoonShineCommand
 
         $apply = $this->getDirectory() . "/Applies/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Applies')) {
+        if (! is_dir($this->getDirectory() . '/Applies')) {
             $this->makeDir($this->getDirectory() . '/Applies');
         }
 

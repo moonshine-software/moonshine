@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,7 +30,7 @@ class MakeControllerCommand extends MoonShineCommand
 
         $controller = $this->getDirectory() . "/Controllers/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Controllers')) {
+        if (! is_dir($this->getDirectory() . '/Controllers')) {
             $this->makeDir($this->getDirectory() . '/Controllers');
         }
 

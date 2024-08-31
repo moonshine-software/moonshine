@@ -77,7 +77,7 @@ final class FileModelApply implements ApplyContract
             );
         }
 
-        if(! $result = $file->store($field->getDir(), $field->getOptions())) {
+        if (! $result = $file->store($field->getDir(), $field->getOptions())) {
             throw new FieldException('Failed to save file, check your permissions');
         }
 

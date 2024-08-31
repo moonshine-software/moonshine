@@ -42,7 +42,7 @@ trait FileTrait
     public function resolveNames(): Closure
     {
         return function (string $filename, int $index = 0): string {
-            if(is_null($this->names)) {
+            if (is_null($this->names)) {
                 return $filename;
             }
 
@@ -63,7 +63,7 @@ trait FileTrait
     public function resolveItemAttributes(): Closure
     {
         return function (string $filename, int $index = 0): MoonShineComponentAttributeBag {
-            if(is_null($this->itemAttributes)) {
+            if (is_null($this->itemAttributes)) {
                 return new MoonShineComponentAttributeBag();
             }
 
@@ -186,7 +186,7 @@ trait FileTrait
 
     public function getRemainingValues(): Collection
     {
-        if(! is_null($this->remainingValues)) {
+        if (! is_null($this->remainingValues)) {
             $values = $this->remainingValues;
 
             $this->remainingValues = null;
@@ -195,7 +195,7 @@ trait FileTrait
         }
 
 
-        if(! is_null($this->remainingValuesResolver)) {
+        if (! is_null($this->remainingValuesResolver)) {
             return value($this->remainingValuesResolver, $this);
         }
 

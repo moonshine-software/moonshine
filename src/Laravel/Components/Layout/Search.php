@@ -20,7 +20,7 @@ final class Search extends MoonShineComponent
     ) {
         parent::__construct();
 
-        if($this->placeholder === '') {
+        if ($this->placeholder === '') {
             $this->placeholder = __('moonshine::ui.search') . ' (Ctrl+K)';
         }
     }

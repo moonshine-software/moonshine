@@ -27,7 +27,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        if(! $resource->hasAction(Action::UPDATE)) {
+        if (! $resource->hasAction(Action::UPDATE)) {
             return false;
         }
 

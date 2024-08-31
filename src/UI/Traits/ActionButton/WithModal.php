@@ -33,7 +33,7 @@ trait WithModal
         Closure|string|null $name = null,
         ?Closure $builder = null,
     ): static {
-        if(is_null($name)) {
+        if (is_null($name)) {
             $name = (string) spl_object_id($this);
         }
 

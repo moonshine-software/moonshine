@@ -19,7 +19,7 @@ class PageController extends MoonShineController
             ->checkUrl()
             ->loaded();
 
-        if($request->wantsJson() && $request->hasHeader('X-MS-Structure')) {
+        if ($request->wantsJson() && $request->hasHeader('X-MS-Structure')) {
             return $this->structureResponse($page, $request);
         }
 
@@ -33,13 +33,13 @@ class PageController extends MoonShineController
         $layout = $page->getLayout();
         $layoutComponents = $layout->build();
 
-        if($request->hasHeader('X-MS-Only-Layout')) {
+        if ($request->hasHeader('X-MS-Only-Layout')) {
             return response()->json(
                 $layoutComponents->toStructure($withStates)
             );
         }
 
-        if($request->hasHeader('X-MS-Without-Layout')) {
+        if ($request->hasHeader('X-MS-Without-Layout')) {
             return response()->json(
                 $page->getComponents()->toStructure($withStates)
             );

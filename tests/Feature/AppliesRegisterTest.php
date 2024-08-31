@@ -53,7 +53,7 @@ it('add new filter apply', function (): void {
         $field->getRequestValue()
     );
 
-    if(! is_null($filterApply)) {
+    if (! is_null($filterApply)) {
         $field->onApply($filterApply->apply($field));
     }
 

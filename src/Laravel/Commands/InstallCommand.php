@@ -11,7 +11,6 @@ use Illuminate\Support\ServiceProvider;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:install')]
@@ -170,7 +169,7 @@ class InstallCommand extends MoonShineCommand
 
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
 
-        if(! is_dir($this->getDirectory() . '/Layouts')) {
+        if (! is_dir($this->getDirectory() . '/Layouts')) {
             $this->makeDir($this->getDirectory() . '/Layouts');
         }
 

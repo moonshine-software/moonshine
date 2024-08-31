@@ -33,7 +33,7 @@ trait WithQuickFormElementAttributes
         $this->wrapName = $wrapName;
 
         // because showWhen can be declared after
-        if($this->showWhenState) {
+        if ($this->showWhenState) {
             [$column, $value, $operator] = $this->showWhenData;
 
             $this->showWhenCondition = collect($this->showWhenCondition)

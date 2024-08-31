@@ -24,7 +24,7 @@ final class Icon extends MoonShineComponent
 
         $this->color = $this->color instanceof Color ? $this->color->value : $this->color;
 
-        if($this->path === null || $this->path === '' || $this->path === '0') {
+        if ($this->path === null || $this->path === '' || $this->path === '0') {
             $this->path = 'moonshine::icons';
         }
     }

@@ -254,7 +254,7 @@ abstract class Field extends FormElement implements FieldContract
 
     public function toRawValue(): mixed
     {
-        if($this->isRawValueModified()) {
+        if ($this->isRawValueModified()) {
             return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
@@ -460,7 +460,7 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getValueFromRaw(mixed $raw): mixed
     {
-        if(is_null($this->fromRaw)) {
+        if (is_null($this->fromRaw)) {
             return $raw;
         }
 
@@ -469,7 +469,7 @@ abstract class Field extends FormElement implements FieldContract
 
     public function preview(): Renderable|string
     {
-        if($this->isRawMode()) {
+        if ($this->isRawMode()) {
             return (string) ($this->toRawValue() ?? '');
         }
 

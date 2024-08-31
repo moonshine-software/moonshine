@@ -30,7 +30,7 @@ final readonly class Options implements Arrayable
                     properties: $this->getProperties($value),
                 );
 
-                if(is_array($labelOrValues)) {
+                if (is_array($labelOrValues)) {
                     $options = [];
 
                     foreach ($labelOrValues as $value => $label) {
@@ -43,7 +43,7 @@ final readonly class Options implements Arrayable
                     );
                 }
 
-                if($labelOrValues instanceof Option) {
+                if ($labelOrValues instanceof Option) {
                     return $labelOrValues;
                 }
 
@@ -60,7 +60,7 @@ final readonly class Options implements Arrayable
     {
         $properties = data_get(value($this->properties), $value, []);
 
-        if($properties instanceof OptionProperty) {
+        if ($properties instanceof OptionProperty) {
             return $properties;
         }
 

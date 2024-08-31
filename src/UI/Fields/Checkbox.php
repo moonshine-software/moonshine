@@ -39,7 +39,7 @@ class Checkbox extends Field implements
 
     public function isChecked(): bool
     {
-        if($this->isSimpleMode()) {
+        if ($this->isSimpleMode()) {
             return false;
         }
 
@@ -62,7 +62,7 @@ class Checkbox extends Field implements
     {
         parent::prepareBeforeRender();
 
-        if($this->isSimpleMode()) {
+        if ($this->isSimpleMode()) {
             return;
         }
 
@@ -101,12 +101,12 @@ class Checkbox extends Field implements
     {
         $additionally = [];
 
-        if($onChange = $this->getAttributes()->get('x-on:change')) {
+        if ($onChange = $this->getAttributes()->get('x-on:change')) {
             $this->removeAttribute('x-on:change');
             $additionally['x-on:change'] = $onChange;
         }
 
-        if($url) {
+        if ($url) {
             return AlpineJs::requestWithFieldValue(
                 $url,
                 $this->getColumn(),

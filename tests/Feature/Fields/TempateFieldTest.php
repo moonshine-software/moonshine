@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Illuminate\Http\UploadedFile;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
-
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Template;
 

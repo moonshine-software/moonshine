@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use function Laravel\Prompts\outro;
-
 use function Laravel\Prompts\text;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -44,7 +43,7 @@ class MakeComponentCommand extends MoonShineCommand
 
         $component = $this->getDirectory() . "/Components/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Components')) {
+        if (! is_dir($this->getDirectory() . '/Components')) {
             $this->makeDir($this->getDirectory() . '/Components');
         }
 
@@ -52,7 +51,7 @@ class MakeComponentCommand extends MoonShineCommand
         $viewPath = resource_path('views/' . str_replace('.', DIRECTORY_SEPARATOR, $view));
         $viewPath .= '.blade.php';
 
-        if(! is_dir(dirname($viewPath))) {
+        if (! is_dir(dirname($viewPath))) {
             $this->makeDir(dirname($viewPath));
         }
 

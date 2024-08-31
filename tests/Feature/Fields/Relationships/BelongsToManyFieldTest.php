@@ -49,7 +49,7 @@ function testBelongsToManyValue(TestResource $resource, Item $item, array $data,
         ]])->sort()->toArray();
     };
 
-    if(! is_null($pivotData)) {
+    if (! is_null($pivotData)) {
         $data = $mapper($data, $pivotData);
     }
 

@@ -16,7 +16,7 @@ trait ResourceWithParent
 
     protected function getParentId(): null|string|int
     {
-        if(! is_null($this->parentId)) {
+        if (! is_null($this->parentId)) {
             return $this->parentId;
         }
 
@@ -25,23 +25,23 @@ trait ResourceWithParent
                 $this->getParentResourceClassName()
             );
 
-        if(is_null($parentResource)) {
+        if (is_null($parentResource)) {
             return null;
         }
 
         $relationName = $this->getParentRelationName();
 
-        if(moonshineRequest()->getResourceUri() === $parentResource->getUriKey()) {
+        if (moonshineRequest()->getResourceUri() === $parentResource->getUriKey()) {
             return $this->parentId = $this->getItemID();
         }
 
-        if(request($parentKey = $this->getModel()
+        if (request($parentKey = $this->getModel()
             ?->{$relationName}()
             ->getForeignKeyName())) {
             return $this->parentId = request($parentKey);
         }
 
-        if(is_null($this->getItem())) {
+        if (is_null($this->getItem())) {
             return $this->parentId = moonshineRequest()->getParentResourceId();
         }
 

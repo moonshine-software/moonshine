@@ -37,7 +37,7 @@ class FormPage extends Page
 
     public function getTitle(): string
     {
-        if($this->title) {
+        if ($this->title) {
             return $this->title;
         }
 
@@ -175,7 +175,7 @@ class FormPage extends Page
      */
     protected function getPageButtons(): array
     {
-        if(! $this->getResource()->isItemExists()) {
+        if (! $this->getResource()->isItemExists()) {
             return [];
         }
 

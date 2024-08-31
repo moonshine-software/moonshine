@@ -10,7 +10,6 @@ use function Laravel\Prompts\outro;
 use function Laravel\Prompts\suggest;
 
 use MoonShine\Laravel\MoonShineAuth;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
 
@@ -41,7 +40,7 @@ class MakePolicyCommand extends MoonShineCommand
 
         $path = app_path("/Policies/$className.php");
 
-        if(! is_dir(app_path('/Policies'))) {
+        if (! is_dir(app_path('/Policies'))) {
             $this->makeDir(app_path('/Policies'));
         }
 

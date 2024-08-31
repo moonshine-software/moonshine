@@ -177,7 +177,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     public function getRequestValue(string|int|null $index = null): mixed
     {
-        if(! is_null(static::$requestValueResolver)) {
+        if (! is_null(static::$requestValueResolver)) {
             return value(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
         }
 

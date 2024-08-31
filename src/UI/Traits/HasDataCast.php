@@ -36,11 +36,11 @@ trait HasDataCast
 
     public function castData(mixed $data): DataWrapperContract
     {
-        if($data instanceof DataWrapperContract) {
+        if ($data instanceof DataWrapperContract) {
             return $data;
         }
 
-        if(! $this->hasCast()) {
+        if (! $this->hasCast()) {
             $this->cast(new MixedDataCaster());
         }
 

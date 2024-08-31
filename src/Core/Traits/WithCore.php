@@ -21,7 +21,7 @@ trait WithCore
 
     public function getCore(): CoreContract
     {
-        if(! is_null($this->core)) {
+        if (! is_null($this->core)) {
             return $this->core;
         }
 

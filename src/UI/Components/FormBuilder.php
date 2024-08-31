@@ -201,7 +201,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     private function getReactiveUrl(): string
     {
-        if(! is_null($this->reactiveUrl)) {
+        if (! is_null($this->reactiveUrl)) {
             return value($this->reactiveUrl, $this);
         }
 
@@ -380,7 +380,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         }
 
         foreach ($fields as $field) {
-            if($field instanceof HasFieldsContract) {
+            if ($field instanceof HasFieldsContract) {
                 $this->showWhenFields($field->getPreparedFields()->onlyFields(), $data);
             }
         }

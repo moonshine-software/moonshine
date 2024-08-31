@@ -24,7 +24,7 @@ uses(TestCase::class)
 
 function fakeRequest(string $url = '/', string $method = 'GET', array $parameters = [], bool $dispatchRoute = false): void
 {
-    if(strtolower($method) === 'get') {
+    if (strtolower($method) === 'get') {
         $separator = str_contains($url, '?') ? '&' : '?';
         $url .= $separator . http_build_query($parameters);
     }
@@ -56,7 +56,7 @@ function createItem(int $countItems = 1, int $countComments = 3)
 
 function addFieldsToTestResource(array|Field $fields, ?string $setType = null, ?string $getType = null): TestResource
 {
-    if(! is_array($fields)) {
+    if (! is_array($fields)) {
         $fields = [$fields];
     }
 

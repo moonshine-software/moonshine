@@ -10,7 +10,7 @@ trait HasResourceRequest
 {
     public function getResource(): ?ResourceContract
     {
-        if(is_null($this->getResourceUri())) {
+        if (is_null($this->getResourceUri())) {
             return null;
         }
 

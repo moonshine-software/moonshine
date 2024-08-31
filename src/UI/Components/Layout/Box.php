@@ -23,14 +23,14 @@ class Box extends AbstractWithComponents
         protected string $title = '',
         protected bool $dark = false,
     ) {
-        if(is_iterable($labelOrComponents)) {
+        if (is_iterable($labelOrComponents)) {
             /** @var iterable $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);
         }
 
-        if($this->title) {
+        if ($this->title) {
             $this->setLabel($this->title);
         }
 

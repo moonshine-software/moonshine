@@ -35,7 +35,7 @@ class Template extends Field implements HasFieldsContract
 
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
-        if($this->isFillChanged()) {
+        if ($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
                 is_null($casted) ? $raw : $casted->getOriginal(),

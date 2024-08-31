@@ -55,7 +55,7 @@ final class Logo extends MoonShineComponent
 
     protected function prepareBeforeRender(): void
     {
-        if($this->minimized) {
+        if ($this->minimized) {
             $this->logoAttributes([
                 ':class' => "minimizedMenu && '!hidden'",
             ])->logoSmallAttributes([
