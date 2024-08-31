@@ -28,7 +28,6 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
-use Throwable;
 
 /**
  * @template-covariant TCaster of DataCasterContract
@@ -139,9 +138,6 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         return $this->getPages()->detailPage();
     }
 
-    /**
-     * @return DataCasterContract
-     */
     public function getCaster(): DataCasterContract
     {
         return new MixedDataCaster($this->casterKeyName);

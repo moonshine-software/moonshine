@@ -32,7 +32,6 @@ trait ResourceModelQuery
     protected ?Builder $customQueryBuilder = null;
 
     /**
-     * @return Collection|Paginator
      * @throws Throwable
      */
     public function getItems(): Collection|Paginator

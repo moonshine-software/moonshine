@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Exceptions\PageException;

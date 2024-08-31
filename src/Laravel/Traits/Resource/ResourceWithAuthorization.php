@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use Illuminate\Support\Facades\Gate;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Enums\Ability;
-use MoonShine\Laravel\MoonShineAuth;
 
 trait ResourceWithAuthorization
 {

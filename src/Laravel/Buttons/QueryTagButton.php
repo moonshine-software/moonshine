@@ -20,7 +20,7 @@ final class QueryTagButton
             ->name("query-tag-{$tag->getUri()}-button")
             ->showInLine()
             ->icon($tag->getIconValue(), $tag->isCustomIcon(), $tag->getIconPath())
-            ->canSee(static fn (mixed $data): bool => $tag->isSee($data))
+            ->canSee(static fn (mixed $data): bool => $tag->isSee())
             ->class('js-query-tag-button')
             ->xDataMethod('asyncLink', 'btn-primary', $resource->getListEventName())
             ->when(

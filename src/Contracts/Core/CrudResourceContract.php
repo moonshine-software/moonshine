@@ -52,22 +52,17 @@ interface CrudResourceContract
 
     /**
      * @param  array<int|string>  $ids
-     *
-     * @return void
      */
     public function massDelete(array $ids): void;
 
     /**
      * @param  T  $item
-     * @param  FieldsContract|null  $fields
      *
-     * @return bool
      */
     public function delete(mixed $item, ?FieldsContract $fields = null): bool;
 
     /**
      * @param  T  $item
-     * @param  FieldsContract|null  $fields
      *
      * @return T
      */

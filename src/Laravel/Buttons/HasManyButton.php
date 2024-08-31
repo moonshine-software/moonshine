@@ -11,7 +11,6 @@ use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Modal;
 use Throwable;

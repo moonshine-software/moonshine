@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Closure;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Gate;
@@ -19,7 +18,6 @@ use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
-use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use Throwable;
 
