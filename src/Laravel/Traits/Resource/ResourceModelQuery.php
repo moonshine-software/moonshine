@@ -6,10 +6,11 @@ namespace MoonShine\Laravel\Traits\Resource;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
@@ -20,6 +21,7 @@ use Throwable;
 
 /**
  * @template-covariant T
+ * @mixin ResourceQuery
  */
 trait ResourceModelQuery
 {
@@ -34,7 +36,7 @@ trait ResourceModelQuery
     /**
      * @throws Throwable
      */
-    public function getItems(): Collection|Paginator
+    public function getItems(): Collection|LazyCollection|CursorPaginator|Paginator
     {
         return $this->isPaginationUsed()
             ? $this->paginate()
@@ -44,21 +46,30 @@ trait ResourceModelQuery
     /**
      * @throws Throwable
      */
-    protected function paginate(): Paginator
+    protected function paginate(): Paginator|CursorPaginator
     {
-        return $this->getQuery()
-            ->when(
-                $this->isSimplePaginate(),
-                fn (Builder $query): Paginator => $query->simplePaginate(
-                    $this->getItemsPerPage(),
-                    page: $this->getPaginatorPage()
-                ),
-                fn (Builder $query): LengthAwarePaginator => $query->paginate(
-                    $this->getItemsPerPage(),
-                    page: $this->getPaginatorPage()
-                ),
-            )
-            ->appends($this->getQueryParams()->except('page')->toArray());
+        $query = $this->getQuery();
+
+        if ($this->isCursorPaginate()) {
+            $paginate = $query->cursorPaginate(
+                $this->getItemsPerPage(),
+                cursorName: $this->getUriKey()
+            );
+        } elseif ($this->isSimplePaginate()) {
+            $paginate = $query->simplePaginate(
+                $this->getItemsPerPage(),
+                page: $this->getPaginatorPage()
+            );
+        } else {
+            $paginate = $query->paginate(
+                $this->getItemsPerPage(),
+                page: $this->getPaginatorPage()
+            );
+        }
+
+        $params = $this->getQueryParams()->except('page')->toArray();
+
+        return $paginate->appends($params);
     }
 
     /**
@@ -70,7 +81,7 @@ trait ResourceModelQuery
             $this->getModel()->newQuery()
         );
 
-        if($orFail) {
+        if ($orFail) {
             return $builder->findOrFail($this->getItemID());
         }
 

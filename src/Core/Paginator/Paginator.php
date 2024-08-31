@@ -30,10 +30,10 @@ final class Paginator implements PaginatorContract
         private readonly bool $simple = false,
         private readonly ?int $total = null,
         private readonly ?int $lastPage = null,
-        private readonly ?string $firstPageUrl = null,
-        private readonly ?string $prevPageUrl = null,
-        private readonly ?string $lastPageUrl = null,
-        private readonly ?string $nextPageUrl = null,
+        private ?string $firstPageUrl = null,
+        private ?string $prevPageUrl = null,
+        private ?string $lastPageUrl = null,
+        private ?string $nextPageUrl = null,
         array $translates = [],
     ) {
         $this->translates = $translates;
@@ -57,15 +57,24 @@ final class Paginator implements PaginatorContract
     private function changeLinkUrls(string $path): void
     {
         if($this->path !== $path) {
-            $this->links = collect($this->links)
-                ->map(function (array $link) use ($path): array {
-                    $current = strtok($this->path, '?');
-                    $new = strtok($path, '?');
-                    $query = (string) str($path)->after('?');
+            $changeUrl = function (?string $link) use ($path): ?string {
+                $current = strtok($this->path, '?');
+                $new = strtok($path, '?');
+                $query = (string) str($path)->after('?');
 
-                    $link['url'] = $link['url']
-                        ? trim(str_replace($current, $new, $link['url']) . '&' . $query, '&')
-                        : $link['url'];
+                return $link
+                    ? trim(str_replace($current, $new, $link) . '&' . $query, '&')
+                    : $link;
+            };
+
+            $this->nextPageUrl = $changeUrl($this->nextPageUrl);
+            $this->firstPageUrl = $changeUrl($this->firstPageUrl);
+            $this->prevPageUrl = $changeUrl($this->prevPageUrl);
+            $this->lastPageUrl = $changeUrl($this->lastPageUrl);
+
+            $this->links = collect($this->links)
+                ->map(function (array $link) use ($changeUrl): array {
+                    $link['url'] = $changeUrl($link['url']);
 
                     return $link;
                 })
