@@ -177,7 +177,7 @@ class RelationRepeater extends ModelRelationField implements
      */
     protected function resolveValue(): mixed
     {
-        $emptyRow = $this->getResource()?->getModel();
+        $emptyRow = $this->getResource()?->getDataInstance();
 
         // because the TableBuilder filters the values
         if (blank($emptyRow)) {
@@ -213,7 +213,7 @@ class RelationRepeater extends ModelRelationField implements
                     ->except(['class', 'data-name', 'data-column'])
                     ->jsonSerialize()
             )
-            ->cast($this->getResource()?->getModelCast())
+            ->cast($this->getResource()?->getCaster())
             ->when(
                 $this->isVertical(),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->vertical()
@@ -235,7 +235,7 @@ class RelationRepeater extends ModelRelationField implements
 
         foreach ($requestValues as $index => $values) {
             $values = $this->getResource()
-                ?->getModel()
+                ?->getDataInstance()
                 ?->forceFill($values) ?? $values;
 
             $requestValues[$index] = $values;
@@ -245,7 +245,7 @@ class RelationRepeater extends ModelRelationField implements
 
                 $field->when($fill, fn (FieldContract $f): FieldContract => $f->fillCast(
                     $values,
-                    $this->getResource()->getModelCast()
+                    $this->getResource()->getCaster()
                 ));
 
                 $apply = $callback($field, $values, $data);

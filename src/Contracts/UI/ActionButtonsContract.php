@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\UI;
 
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use Traversable;
 
 interface ActionButtonsContract extends Traversable
 {
-    public function fill(?CastedDataContract $item): self;
+    public function fill(?DataWrapperContract $item): self;
 
     public function bulk(?string $forComponent = null): self;
 

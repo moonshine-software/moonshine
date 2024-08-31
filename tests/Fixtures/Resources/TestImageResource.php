@@ -54,7 +54,7 @@ class TestImageResource extends AbstractTestingResource
         return $this->exportFields();
     }
 
-    protected function rules(Model $item): array
+    protected function rules(mixed $item): array
     {
         return [];
     }

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -205,7 +205,7 @@ class BelongsToMany extends ModelRelationField implements
         return '_checked';
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         $values = parent::prepareFill($raw, $casted);
 
@@ -268,7 +268,7 @@ class BelongsToMany extends ModelRelationField implements
         $removeAfterClone = false;
 
         if (! $this->isPreviewMode() && $this->isAsyncSearch() && blank($values)) {
-            $values->push($this->getResource()->getModel());
+            $values->push($this->getResource()->getDataInstance());
             $removeAfterClone = true;
         }
 
@@ -300,7 +300,7 @@ class BelongsToMany extends ModelRelationField implements
                 $removeAfterClone,
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->removeAfterClone()
             )
-            ->cast($this->getResource()->getModelCast())
+            ->cast($this->getResource()->getCaster())
             ->simple()
             ->editable()
             ->reindex(prepared: true)
@@ -379,7 +379,7 @@ class BelongsToMany extends ModelRelationField implements
         return TableBuilder::make($fields, $values)
             ->preview()
             ->simple()
-            ->cast($this->getResource()->getModelCast())
+            ->cast($this->getResource()->getCaster())
             ->render();
     }
 

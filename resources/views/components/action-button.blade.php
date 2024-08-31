@@ -18,6 +18,8 @@
 </x-moonshine::link-button>
 
 @if($hasComponent)
-    {!! $component !!}
+    <template x-teleport="body">
+        {!! $component !!}
+    </template>
 @endif
 

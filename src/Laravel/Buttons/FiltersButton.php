@@ -7,12 +7,12 @@ namespace MoonShine\Laravel\Buttons;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Forms\FiltersForm;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\UI\Components\ActionButton;
 
 final class FiltersButton
 {
-    public static function for(ModelResource $resource): ActionButtonContract
+    public static function for(CrudResource $resource): ActionButtonContract
     {
         $form = moonshineConfig()->getForm('filters', FiltersForm::class, resource: $resource);
 

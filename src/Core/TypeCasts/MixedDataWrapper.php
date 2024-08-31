@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\TypeCasts;
 
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
-final readonly class DefaultCastedData implements CastedDataContract
+final readonly class MixedDataWrapper implements DataWrapperContract
 {
-    public function __construct(private mixed $data)
+    public function __construct(private mixed $data, private readonly string|int|null $key = null)
     {
     }
 
@@ -19,7 +19,7 @@ final readonly class DefaultCastedData implements CastedDataContract
 
     public function getKey(): int|string|null
     {
-        return null;
+        return $this->key;
     }
 
     public function toArray(): array

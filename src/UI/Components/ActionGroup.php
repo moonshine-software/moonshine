@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
@@ -22,7 +22,7 @@ final class ActionGroup extends AbstractWithComponents
         parent::__construct($actions);
     }
 
-    public function fill(?CastedDataContract $data = null): self
+    public function fill(?DataWrapperContract $data = null): self
     {
         $this->components = $this->getActions()->fill($data);
 

@@ -6,7 +6,7 @@ namespace MoonShine\Contracts\UI;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 interface TableBuilderContract
 {
@@ -14,7 +14,7 @@ interface TableBuilderContract
 
     public function getPaginator(bool $async = false): ?PaginatorContract;
 
-    public function getButtons(CastedDataContract $data): ActionButtonsContract;
+    public function getButtons(DataWrapperContract $data): ActionButtonsContract;
 
     public function getItems(): Collection;
 }

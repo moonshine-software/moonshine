@@ -7,7 +7,7 @@ namespace MoonShine\UI\Traits;
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\UI\Collections\Fields;
 use Throwable;
 
@@ -100,7 +100,7 @@ trait WithFields
      */
     protected function getFilledFields(
         array $raw = [],
-        ?CastedDataContract $casted = null,
+        ?DataWrapperContract $casted = null,
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): FieldsContract {

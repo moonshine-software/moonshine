@@ -8,7 +8,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\TypeCasts\ModelCastedData;
+use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Fields\Select;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,7 +60,7 @@ final class ReactiveController extends MoonShineController
 
         $fields->fill(
             $values->toArray(),
-            $casted ? new ModelCastedData($casted) : null
+            $casted ? new ModelDataWrapper($casted) : null
         );
 
         foreach ($fields as $field) {

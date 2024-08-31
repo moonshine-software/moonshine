@@ -7,13 +7,13 @@ namespace MoonShine\Laravel\Buttons;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\UI\Components\ActionButton;
 
 final class CreateButton
 {
     public static function for(
-        ModelResource $resource,
+        CrudResource $resource,
         ?string $componentName = null,
         bool $isAsync = true,
         string $modalName = 'create-modal',

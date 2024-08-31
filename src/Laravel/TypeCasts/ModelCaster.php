@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\TypeCasts;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Core\Exceptions\MoonShineException;
 
@@ -29,9 +29,9 @@ final readonly class ModelCaster implements DataCasterContract
     }
 
     /**
-     * @return CastedDataContract<T>
+     * @return DataWrapperContract<T>
      */
-    public function cast(mixed $data): CastedDataContract
+    public function cast(mixed $data): DataWrapperContract
     {
         if(is_array($data)) {
             /** @var T $model */
@@ -40,7 +40,7 @@ final readonly class ModelCaster implements DataCasterContract
             $data->exists = ! empty($data->getKey());
         }
 
-        return new ModelCastedData($data);
+        return new ModelDataWrapper($data);
     }
 
     /**

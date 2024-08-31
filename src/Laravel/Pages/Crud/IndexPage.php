@@ -10,9 +10,10 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Pages\Page;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
@@ -24,7 +25,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use Throwable;
 
 /**
- * @method ModelResource getResource()
+ * @method CrudResource getResource()
  * @extends Page<Fields>
  */
 class IndexPage extends Page
@@ -139,6 +140,10 @@ class IndexPage extends Page
      */
     protected function getQueryTags(): array
     {
+        if(! $this->getResource() instanceof HasQueryTagsContract) {
+            return [];
+        }
+
         return [
             ActionGroup::make()->when(
                 $this->getResource()->hasQueryTags(),
@@ -171,7 +176,7 @@ class IndexPage extends Page
         return TableBuilder::make(items: $items)
             ->name($this->getListComponentName())
             ->fields($fields)
-            ->cast($this->getResource()->getModelCast())
+            ->cast($this->getResource()->getCaster())
             ->withNotFound()
             ->when(
                 ! is_null($head = $this->getResource()->getHeadRows()),
@@ -220,10 +225,7 @@ class IndexPage extends Page
             request()->only($this->getResource()->getQueryParamsKeys())
         );
 
-        $items = $this->getResource()->isPaginationUsed()
-            ? $this->getResource()->paginate()
-            : $this->getResource()->getItems();
-
+        $items = $this->getResource()->getItems();
         $fields = $this->getResource()->getIndexFields();
 
         return [

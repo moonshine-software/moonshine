@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Illuminate\Contracts\Support\Renderable;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 interface FieldContract
 {
@@ -17,7 +17,7 @@ interface FieldContract
 
     public function getRequestValue(int|string|null $index = null): mixed;
 
-    public function fill(mixed $value = null, ?CastedDataContract $casted = null, int $index = 0): static;
+    public function fill(mixed $value = null, ?DataWrapperContract $casted = null, int $index = 0): static;
 
     public function toRawValue(): mixed;
 
@@ -25,7 +25,7 @@ interface FieldContract
 
     public function toFormattedValue(): mixed;
 
-    public function getData(): ?CastedDataContract;
+    public function getData(): ?DataWrapperContract;
 
     public function preview(): Renderable|string;
 }

@@ -9,7 +9,7 @@ use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Handlers\Handlers;
 use MoonShine\Support\ListOf;
 
-trait ResourceModelActions
+trait ResourceActions
 {
     /**
      * @return ListOf<Action>

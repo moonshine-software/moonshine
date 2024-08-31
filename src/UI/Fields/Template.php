@@ -7,7 +7,7 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Traits\WithFields;
@@ -33,7 +33,7 @@ class Template extends Field implements HasFieldsContract
         return '';
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if($this->isFillChanged()) {
             return value(

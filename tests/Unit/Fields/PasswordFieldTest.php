@@ -45,7 +45,7 @@ it('apply', function (): void {
 
     expect(
         $item = $this->field->apply(
-            TestResourceBuilder::new()->onSave($this->field),
+            TestResourceBuilder::new()->fieldApply($this->field),
             new class () extends Model {
                 protected $fillable = [
                     'password',

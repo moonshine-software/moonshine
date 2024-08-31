@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -295,7 +295,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
         return TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
-            ->cast($resource->getModelCast())
+            ->cast($resource->getCaster())
             ->preview()
             ->simple()
             ->when(
@@ -350,7 +350,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             )
             ->name($this->getRelationName())
             ->fields($this->getFieldsOnPreview())
-            ->cast($resource->getModelCast())
+            ->cast($resource->getCaster())
             ->withNotFound()
             ->when(
                 ! is_null($resource->getTrAttributes()),
@@ -427,7 +427,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         ];
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         return null;
     }
@@ -469,13 +469,13 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         $casted = $this->getRelatedModel();
         $relation = $casted?->{$this->getRelationName()}();
 
-        $resource->customBuilder(
+        $resource->customQueryBuilder(
             is_null($this->modifyBuilder)
                 ? $relation
                 : value($this->modifyBuilder, $relation)
         );
 
-        $items = $resource->paginate();
+        $items = $resource->getItems();
 
         $this->setValue($items);
 

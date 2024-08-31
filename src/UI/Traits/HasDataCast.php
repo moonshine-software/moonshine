@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
-use MoonShine\Core\TypeCasts\DefaultDataCaster;
+use MoonShine\Core\TypeCasts\MixedDataCaster;
 
 trait HasDataCast
 {
@@ -29,15 +29,19 @@ trait HasDataCast
         return $this->cast;
     }
 
-    public function unCastData(CastedDataContract $data): array
+    public function unCastData(DataWrapperContract $data): array
     {
         return $data->toArray();
     }
 
-    public function castData(mixed $data): CastedDataContract
+    public function castData(mixed $data): DataWrapperContract
     {
+        if($data instanceof DataWrapperContract) {
+            return $data;
+        }
+
         if(! $this->hasCast()) {
-            $this->cast(new DefaultDataCaster());
+            $this->cast(new MixedDataCaster());
         }
 
         return $this->getCast()->cast($data);

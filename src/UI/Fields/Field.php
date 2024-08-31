@@ -8,10 +8,10 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Core\TypeCasts\DefaultCastedData;
+use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\Badge;
@@ -163,7 +163,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this->columnSelection;
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
             return value(
@@ -189,7 +189,7 @@ abstract class Field extends FormElement implements FieldContract
         return $data;
     }
 
-    protected function resolveFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         $this->setData($casted);
         $this->setRowIndex($index);
@@ -215,9 +215,9 @@ abstract class Field extends FormElement implements FieldContract
 
     public function fillData(mixed $value, int $index = 0): static
     {
-        $casted = $value instanceof CastedDataContract
+        $casted = $value instanceof DataWrapperContract
             ? $value
-            : new DefaultCastedData($value);
+            : new MixedDataWrapper($value);
 
         return $this->resolveFill(
             $casted->toArray(),
@@ -228,12 +228,12 @@ abstract class Field extends FormElement implements FieldContract
 
     public function fillCast(mixed $value, ?DataCasterContract $cast = null, int $index = 0): static
     {
-        $casted = $cast ? $cast->cast($value) : new DefaultCastedData($value);
+        $casted = $cast ? $cast->cast($value) : new MixedDataWrapper($value);
 
         return $this->fillData($casted, $index);
     }
 
-    public function fill(mixed $value = null, ?CastedDataContract $casted = null, int $index = 0): static
+    public function fill(mixed $value = null, ?DataWrapperContract $casted = null, int $index = 0): static
     {
         return $this->resolveFill([
             $this->getColumn() => $value,
@@ -280,14 +280,14 @@ abstract class Field extends FormElement implements FieldContract
         return $this->setRawValue($value);
     }
 
-    protected function setData(?CastedDataContract $data = null): static
+    protected function setData(?DataWrapperContract $data = null): static
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function getData(): ?CastedDataContract
+    public function getData(): ?DataWrapperContract
     {
         return $this->data;
     }

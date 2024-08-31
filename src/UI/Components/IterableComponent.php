@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\ActionButtons;
@@ -86,7 +86,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
         return $this->buttons !== [];
     }
 
-    public function getButtons(CastedDataContract $data): ActionButtonsContract
+    public function getButtons(DataWrapperContract $data): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons)
             ->fill($data)

@@ -98,7 +98,7 @@ it('apply', function (): void {
 
     expect(
         $this->field->apply(
-            TestResourceBuilder::new()->onSave($this->field),
+            TestResourceBuilder::new()->fieldApply($this->field),
             new class () extends Model {}
         )
     )

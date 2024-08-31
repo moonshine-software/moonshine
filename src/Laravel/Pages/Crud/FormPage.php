@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Pages\Crud;
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -14,7 +15,7 @@ use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Pages\Page;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
@@ -28,7 +29,7 @@ use MoonShine\UI\Fields\Hidden;
 use Throwable;
 
 /**
- * @method ModelResource getResource()
+ * @method CrudResource getResource()
  * @extends Page<Fields>
  */
 class FormPage extends Page
@@ -94,9 +95,8 @@ class FormPage extends Page
     protected function components(): iterable
     {
         $this->validateResource();
-        $item = $this->getResource()->getItem();
 
-        if (! $item?->exists && $this->getResource()->getItemID()) {
+        if (! $this->getResource()->isItemExists() && $this->getResource()->getItemID()) {
             oops404();
         }
 
@@ -118,10 +118,10 @@ class FormPage extends Page
     protected function mainLayer(): array
     {
         $resource = $this->getResource();
-        $item = $resource->getItem();
+        $item = $resource->getCastedData();
 
         $action = $resource->getRoute(
-            $item?->exists ? 'crud.update' : 'crud.store',
+            $resource->isItemExists() ? 'crud.update' : 'crud.store',
             $item?->getKey()
         );
 
@@ -144,7 +144,7 @@ class FormPage extends Page
         $components = [];
         $item = $this->getResource()->getItem();
 
-        if (! $item?->exists) {
+        if (! $this->getResource()->isItemExists()) {
             return $components;
         }
 
@@ -162,7 +162,7 @@ class FormPage extends Page
 
                     $field->fillCast(
                         $item,
-                        $field->getResource()?->getModelCast()
+                        $field->getResource()?->getCaster()
                     ),
                 ])->name($field->getRelationName());
             }
@@ -176,15 +176,13 @@ class FormPage extends Page
      */
     protected function getPageButtons(): array
     {
-        $item = $this->getResource()->getItem();
-
-        if(! $item?->exists) {
+        if(! $this->getResource()->isItemExists()) {
             return [];
         }
 
         return [
             ActionGroup::make($this->getResource()->getFormButtons())
-                ->fill($this->getResource()->getCastedItem())
+                ->fill($this->getResource()->getCastedData())
                 ->class('mb-4'),
         ];
     }
@@ -195,7 +193,7 @@ class FormPage extends Page
      */
     protected function getFormComponents(
         string $action,
-        ?Model $item,
+        ?DataWrapperContract $item,
         bool $isAsync = true,
     ): array {
         $resource = $this->getResource();
@@ -221,17 +219,15 @@ class FormPage extends Page
      */
     protected function getFormComponent(
         string $action,
-        ?Model $item,
+        ?DataWrapperContract $item,
         Fields $fields,
         bool $isAsync = true,
     ): RenderableContract {
         $resource = $this->getResource();
 
         return FormBuilder::make($action)
-            ->fillCast(
-                $item,
-                $resource->getModelCast()
-            )
+            ->cast($this->getResource()->getCaster())
+            ->fill($item)
             ->fields([
                 ...$fields
                     ->when(
@@ -241,7 +237,7 @@ class FormPage extends Page
                         )
                     )
                     ->when(
-                        ! $item?->exists && ! $resource->isCreateInModal(),
+                        ! $resource->isItemExists() && ! $resource->isCreateInModal(),
                         static fn (Fields $fields): Fields => $fields->push(
                             Hidden::make('_force_redirect')->setValue(true)
                         )
@@ -258,12 +254,12 @@ class FormPage extends Page
                     ->async(events: array_filter([
                         $resource->getListEventName(
                             request()->input('_component_name', 'default'),
-                            $isAsync && $item?->exists ? array_filter([
+                            $isAsync && $resource->isItemExists() ? array_filter([
                                 'page' => request()->input('page'),
                                 'sort' => request()->input('sort'),
                             ]) : []
                         ),
-                        ! $item?->exists && $resource->isCreateInModal()
+                        ! $resource->isItemExists() && $resource->isCreateInModal()
                             ? AlpineJs::event(JsEvent::FORM_RESET, $resource->getUriKey())
                             : null,
                     ]))

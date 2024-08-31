@@ -40,7 +40,7 @@ class DummyResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    protected function rules(Model $item): array
+    protected function rules(mixed $item): array
     {
         return [];
     }

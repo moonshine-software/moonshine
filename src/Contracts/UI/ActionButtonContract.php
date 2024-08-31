@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\UI;
 
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 interface ActionButtonContract
 {
@@ -12,7 +12,7 @@ interface ActionButtonContract
 
     public function isBulk(): bool;
 
-    public function getData(): ?CastedDataContract;
+    public function getData(): ?DataWrapperContract;
 
-    public function setData(?CastedDataContract $data = null): static;
+    public function setData(?DataWrapperContract $data = null): static;
 }

@@ -11,7 +11,7 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateColumnFormRequest;
-use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\UI\Exceptions\FieldException;
 use Throwable;
 
@@ -51,7 +51,7 @@ class UpdateFieldController extends MoonShineController
         return $this->save($resource, $field);
     }
 
-    private function save(ModelResource $resource, FieldContract $field)
+    private function save(CrudResource $resource, FieldContract $field)
     {
         try {
             $resource->save(

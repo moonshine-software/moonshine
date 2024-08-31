@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components\Table;
 
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Contracts\UI\TableRowsContract;
@@ -300,7 +300,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
     public function getRowAsyncAttributes(): Closure
     {
-        return fn (?CastedDataContract $data, int $index): array => is_null($data)
+        return fn (?DataWrapperContract $data, int $index): array => is_null($data)
             ? []
             : [
                 AlpineJs::eventBlade(

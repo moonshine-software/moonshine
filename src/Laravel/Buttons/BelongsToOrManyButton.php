@@ -72,7 +72,7 @@ final class BelongsToOrManyButton
                     ->name($resource->getUriKey())
                     ->fillCast(
                         [],
-                        $resource->getModelCast()
+                        $resource->getCaster()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
                     ->fields($getFields),

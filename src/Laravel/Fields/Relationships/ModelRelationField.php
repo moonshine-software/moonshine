@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Exceptions\FieldException;
@@ -119,7 +119,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         );
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         return $casted?->getOriginal()?->{$this->getRelationName()};
     }
@@ -127,7 +127,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     /**
      * @throws Throwable
      */
-    protected function resolveFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): static
+    protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         if ($casted?->getOriginal() instanceof Model) {
             $this->setRelatedModel($casted?->getOriginal());

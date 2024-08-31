@@ -8,257 +8,83 @@ use Closure;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use MoonShine\Contracts\Core\CrudResourceContract;
-use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use Illuminate\Support\Facades\Gate;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Core\Resources\Resource;
-use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
+use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
+use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use MoonShine\Laravel\Pages\Crud\DetailPage;
-use MoonShine\Laravel\Pages\Crud\FormPage;
-use MoonShine\Laravel\Pages\Crud\IndexPage;
-use MoonShine\Laravel\Traits\Resource\ResourceModelActions;
-use MoonShine\Laravel\Traits\Resource\ResourceModelCrudRouter;
-use MoonShine\Laravel\Traits\Resource\ResourceModelEvents;
-use MoonShine\Laravel\Traits\Resource\ResourceModelPageComponents;
-use MoonShine\Laravel\Traits\Resource\ResourceModelPolicy;
+use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
-use MoonShine\Laravel\Traits\Resource\ResourceModelValidation;
-use MoonShine\Laravel\Traits\Resource\ResourceWithButtons;
-use MoonShine\Laravel\Traits\Resource\ResourceWithFields;
-use MoonShine\Laravel\Traits\Resource\ResourceWithTableModifiers;
+use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
-use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Enums\ClickAction;
-use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use Throwable;
 
 /**
- * @template-covariant TModel of Model
+ * @template-covariant T of Model
+ * @extends CrudResource<ModelCaster, ModelDataWrapper T>
+ *
  */
-abstract class ModelResource extends Resource implements CrudResourceContract
+abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract
 {
-    use ResourceWithFields;
-    use ResourceWithButtons;
-    use ResourceWithTableModifiers;
-
-    /** @use ResourceModelValidation<TModel> */
-    use ResourceModelValidation;
-    use ResourceModelActions;
-    use ResourceModelPolicy;
-
-    /** @use ResourceModelQuery<TModel> */
+    /**
+     * @use ResourceModelQuery<T>
+     */
     use ResourceModelQuery;
-
-    /** @use ResourceModelCrudRouter<TModel> */
-    use ResourceModelCrudRouter;
-
-    /** @use ResourceModelEvents<TModel> */
-    use ResourceModelEvents;
-    use ResourceModelPageComponents;
 
     protected string $model;
 
-    protected string $column = 'id';
-
-    protected bool $createInModal = false;
-
-    protected bool $editInModal = false;
-
-    protected bool $detailInModal = false;
-
-    protected bool $isAsync = true;
-
-    protected bool $isPrecognitive = false;
-
-    protected bool $deleteRelationships = false;
-
-    protected bool $submitShowWhen = false;
-
-    /**
-     * The click action to use when clicking on the resource in the table.
-     */
-    protected ?ClickAction $clickAction = null;
-
-    protected bool $stickyTable = false;
-
-    protected bool $columnSelection = false;
-
     public function flushState(): void
     {
-        $this->item = null;
-        $this->itemID = null;
-        $this->query = null;
-        $this->pages = null;
+        parent::flushState();
+
+        $this->queryBuilder = null;
+        $this->customQueryBuilder = null;
     }
 
     /**
-     * @return Metric
-     */
-    protected function pages(): array
-    {
-        return [
-            IndexPage::class,
-            FormPage::class,
-            DetailPage::class,
-        ];
-    }
-
-    public function getIndexPage(): ?PageContract
-    {
-        return $this->getPages()->indexPage();
-    }
-
-    public function getFormPage(): ?PageContract
-    {
-        return $this->getPages()->formPage();
-    }
-
-    public function getDetailPage(): ?PageContract
-    {
-        return $this->getPages()->detailPage();
-    }
-
-    /**
-     * @return TModel
+     * @return T
      */
     public function getModel(): Model
     {
         return new $this->model();
     }
 
-    public function getModelCast(): ModelCaster
+    public function getDataInstance(): mixed
+    {
+        return $this->getModel();
+    }
+
+    public function getCaster(): DataCasterContract
     {
         return new ModelCaster($this->model);
     }
 
-    public function getCastedItem(): ?CastedDataContract
+    protected function isCan(Ability $ability): bool
     {
-        if(is_null($this->getItem())) {
-            return null;
+        if (! moonshineConfig()->isAuthEnabled()) {
+            return true;
         }
 
-        return $this->getModelCast()->cast($this->getItem());
-    }
+        $user = MoonShineAuth::getGuard()->user();
 
-    public function getColumn(): string
-    {
-        return $this->column;
-    }
+        $checkCustomRules = moonshineConfig()
+            ->getAuthorizationRules()
+            ->every(fn ($rule) => $rule($this, $user, $ability->value, $this->getItem() ?? $this->getDataInstance()));
 
-    public function isCreateInModal(): bool
-    {
-        return $this->createInModal;
-    }
+        if (! $checkCustomRules) {
+            return false;
+        }
 
-    public function isEditInModal(): bool
-    {
-        return $this->editInModal;
-    }
+        if (! $this->isWithPolicy()) {
+            return true;
+        }
 
-    public function isDetailInModal(): bool
-    {
-        return $this->detailInModal;
-    }
-
-    public function isAsync(): bool
-    {
-        return $this->isAsync;
-    }
-
-    public function isPrecognitive(): bool
-    {
-        return $this->isPrecognitive;
-    }
-
-    public function isDeleteRelationships(): bool
-    {
-        return $this->deleteRelationships;
-    }
-
-    public function getClickAction(): ?string
-    {
-        return $this->clickAction?->value;
-    }
-
-    public function isStickyTable(): bool
-    {
-        return $this->stickyTable;
-    }
-
-    public function isColumnSelection(): bool
-    {
-        return $this->columnSelection;
-    }
-
-    public function isSubmitShowWhen(): bool
-    {
-        return $this->submitShowWhen;
-    }
-
-    /**
-     * @return list<Metric>
-     */
-    protected function metrics(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return list<Metric>
-     */
-    public function getMetrics(): array
-    {
-        return $this->metrics();
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function search(): array
-    {
-        return ['id'];
-    }
-
-    public function hasSearch(): bool
-    {
-        return $this->search() !== [];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSearchColumns(): array
-    {
-        return $this->search();
-    }
-
-    public function getListComponentName(): string
-    {
-        return rescue(
-            fn (): string => $this->getIndexPage()?->getListComponentName(),
-            "index-table-{$this->getUriKey()}",
-            false
-        );
-    }
-
-    public function isListComponentRequest(): bool
-    {
-        return request()->ajax() && request()->input('_component_name') === $this->getListComponentName();
-    }
-
-    public function getListEventName(?string $name = null, array $params = []): string
-    {
-        $name ??= $this->getListComponentName();
-
-        return rescue(
-            fn (): string => AlpineJs::event($this->getIndexPage()?->getListEventName() ?? '', $name, $params),
-            AlpineJs::event(JsEvent::TABLE_UPDATED, $name, $params),
-            false
-        );
+        return Gate::forUser($user)
+            ->allows($ability->value, $this->getItem() ?? $this->getDataInstance());
     }
 
     /**
@@ -268,30 +94,30 @@ abstract class ModelResource extends Resource implements CrudResourceContract
     {
         $this->beforeMassDeleting($ids);
 
-        $this->getModel()
+        $this->getDataInstance()
             ->newModelQuery()
-            ->whereIn($this->getModel()->getKeyName(), $ids)
+            ->whereIn($this->getDataInstance()->getKeyName(), $ids)
             ->get()
-            ->each(function (Model $item): ?bool {
+            ->each(function (mixed $item): ?bool {
                 $item = $this->beforeDeleting($item);
 
-                return tap($item->delete(), fn (): Model => $this->afterDeleted($item));
+                return (bool) tap($item->delete(), fn (): mixed => $this->afterDeleted($item));
             });
 
         $this->afterMassDeleted($ids);
     }
 
     /**
-     * @param TModel $item
+     * @param T $item
      * @throws Throwable
      */
-    public function delete(Model $item, ?Fields $fields = null): bool
+    public function delete(mixed $item, ?FieldsContract $fields = null): bool
     {
         $item = $this->beforeDeleting($item);
 
         $fields ??= $this->getFormFields()->onlyFields();
 
-        $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
+        $fields->fill($item->toArray(), $this->getCaster()->cast($item));
 
         $fields->each(static fn (FieldContract $field): mixed => $field->afterDestroy($item));
 
@@ -302,45 +128,26 @@ abstract class ModelResource extends Resource implements CrudResourceContract
                 ! $field->isToOne() ?: $relationItems = collect([$relationItems]);
 
                 $relationItems->each(
-                    static fn (Model $relationItem): mixed => $field->afterDestroy($relationItem)
+                    static fn (mixed $relationItem): mixed => $field->afterDestroy($relationItem)
                 );
             });
         }
 
-        return (bool) tap($item->delete(), fn (): Model => $this->afterDeleted($item));
-    }
-
-    public function onSave(FieldContract $field): Closure
-    {
-        /**
-         * @param TModel $item
-         * @return TModel
-         */
-        return static function (Model $item) use ($field): Model {
-            if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
-                return $item;
-            }
-
-            $value = $field->getRequestValue() !== false ? $field->getRequestValue() : null;
-
-            data_set($item, $field->getColumn(), $value);
-
-            return $item;
-        };
+        return (bool) tap($item->delete(), fn (): mixed => $this->afterDeleted($item));
     }
 
     /**
-     * @param TModel $item
-     * @return TModel
+     * @param T $item
+     * @return T
      *
      * @throws ResourceException
      * @throws Throwable
      */
-    public function save(Model $item, ?Fields $fields = null): Model
+    public function save(mixed $item, ?FieldsContract $fields = null): mixed
     {
         $fields ??= $this->getFormFields()->onlyFields();
 
-        $fields->fill($item->toArray(), $this->getModelCast()->cast($item));
+        $fields->fill($item->toArray(), $this->getCaster()->cast($item));
 
         try {
             $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($item));
@@ -354,9 +161,11 @@ abstract class ModelResource extends Resource implements CrudResourceContract
             }
 
             $fields->withoutOutside()
-                ->each(fn (FieldContract $field): mixed => $field->apply($this->onSave($field), $item));
+                ->each(fn (FieldContract $field): mixed => $field->apply($this->fieldApply($field), $item));
 
             if ($item->save()) {
+                $this->isRecentlyCreated = $item->wasRecentlyCreated;
+
                 $item = $this->afterSave($item, $fields);
             }
         } catch (QueryException $queryException) {
@@ -368,13 +177,32 @@ abstract class ModelResource extends Resource implements CrudResourceContract
         return $item;
     }
 
-    /**
-     * @param TModel $item
-     * @return TModel
-     */
-    private function afterSave(Model $item, Fields $fields): Model
+    public function fieldApply(FieldContract $field): Closure
     {
-        $wasRecentlyCreated = $item->wasRecentlyCreated;
+        /**
+         * @param T $item
+         * @return T
+         */
+        return static function (mixed $item) use ($field): mixed {
+            if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
+                return $item;
+            }
+
+            $value = $field->getRequestValue() !== false ? $field->getRequestValue() : null;
+
+            data_set($item, $field->getColumn(), $value);
+
+            return $item;
+        };
+    }
+
+    /**
+     * @param T $item
+     * @return T
+     */
+    protected function afterSave(mixed $item, FieldsContract $fields): mixed
+    {
+        $wasRecentlyCreated = $this->isRecentlyCreated();
 
         $fields->each(static fn (FieldContract $field): mixed => $field->afterApply($item));
 
@@ -391,21 +219,5 @@ abstract class ModelResource extends Resource implements CrudResourceContract
         }
 
         return $item;
-    }
-
-    /**
-     * @param  TModel  $item
-     */
-    public function itemResponse(Model $item): mixed
-    {
-        return $item;
-    }
-
-    /**
-     * @param  iterable<TModel>  $items
-     */
-    public function collectionResponse(Paginator $items): mixed
-    {
-        return $items;
     }
 }

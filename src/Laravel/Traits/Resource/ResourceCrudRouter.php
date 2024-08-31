@@ -5,27 +5,28 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
- * @template-covariant TModel of Model
- * @mixin ResourceContract
+ * @template-covariant T
+ * @mixin CrudResourceContract
  */
-trait ResourceModelCrudRouter
+trait ResourceCrudRouter
 {
     protected ?PageType $redirectAfterSave = PageType::FORM;
 
     /**
-     * @param TModel|int|string|null $key
+     * @param DataWrapperContract<T>|int|string|null $key
      */
     public function getRoute(
         string $name = null,
-        Model|int|string|null $key = null,
+        DataWrapperContract|int|string|null $key = null,
         array $query = []
     ): string {
-        $key = $key instanceof Model ? $key->getKey() : $key;
+        $key = $key instanceof DataWrapperContract ? $key->getKey() : $key;
 
         return $this->getRouter()->to(
             $name,
@@ -46,10 +47,10 @@ trait ResourceModelCrudRouter
     }
 
     /**
-     * @param TModel|int|string|null $model
+     * @param DataWrapperContract<T>|int|string|null $key
      */
     public function getFormPageUrl(
-        Model|int|string|null $model = null,
+        DataWrapperContract|int|string|null $key = null,
         array $params = [],
         ?string $fragment = null
     ): string {
@@ -57,17 +58,17 @@ trait ResourceModelCrudRouter
             $this->getFormPage(),
             params: array_filter([
                 ...$params,
-                ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
+                ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
             ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
     }
 
     /**
-     * @param TModel|int|string $model
+     * @param DataWrapperContract<T>|int|string $key
      */
     public function getDetailPageUrl(
-        Model|int|string $model,
+        DataWrapperContract|int|string $key,
         array $params = [],
         ?string $fragment = null
     ): string {
@@ -75,26 +76,26 @@ trait ResourceModelCrudRouter
             $this->getDetailPage(),
             params: array_filter([
                 ...$params,
-                ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
+                ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
             ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
     }
 
     /**
-     * @param TModel|int|string|null $model
+     * @param DataWrapperContract<T>|int|string|null $model
      */
     public function getFragmentLoadUrl(
         string $fragment,
         PageContract $page,
-        Model|int|string|null $model,
+        DataWrapperContract|int|string|null $key,
         array $params = []
     ): string {
         return $this->getPageUrl(
             $page,
             params: array_filter([
                 ...$params,
-                ...['resourceItem' => $model instanceof Model ? $model->getKey() : $model],
+                ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
             ], static fn ($value) => filled($value)),
             fragment: $fragment
         );
@@ -118,7 +119,7 @@ trait ResourceModelCrudRouter
     {
         $params = is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
             ? []
-            : ['resourceItem' => $this->getItem()?->getKey()];
+            : ['resourceItem' => $this->getCastedData()?->getKey()];
 
         if (! is_null($this->redirectAfterSave)) {
             return $this

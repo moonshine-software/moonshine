@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
- * @template-covariant TModel of Model
+ * @template-covariant T
  */
-trait ResourceModelValidation
+trait ResourceValidation
 {
     protected bool $errorsAbove = true;
 
     /**
      * Get an array of validation rules for resource related model
      *
-     * @param TModel $item
+     * @param T $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    abstract protected function rules(Model $item): array;
+    protected function rules(mixed $item): array
+    {
+        return [];
+    }
 
     public function getRules(): array
     {

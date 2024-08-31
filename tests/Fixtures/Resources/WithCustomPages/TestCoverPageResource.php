@@ -51,7 +51,7 @@ class TestCoverPageResource extends AbstractTestingResource
         return $this->indexFields();
     }
 
-    protected function rules(Model $item): array
+    protected function rules(mixed $item): array
     {
         return [];
     }

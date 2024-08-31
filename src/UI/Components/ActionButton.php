@@ -8,7 +8,7 @@ use Closure;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
@@ -24,7 +24,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, Closure|string $url = '', ?CastedDataContract $data = null)
+ * @method static static make(Closure|string $label, Closure|string $url = '', ?DataWrapperContract $data = null)
  */
 class ActionButton extends MoonShineComponent implements ActionButtonContract, HasComponentsContract
 {
@@ -53,7 +53,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     public function __construct(
         Closure|string $label,
         protected Closure|string $url = '#',
-        protected ?CastedDataContract $data = null
+        protected ?DataWrapperContract $data = null
     ) {
         parent::__construct();
 
@@ -121,12 +121,12 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         return $this;
     }
 
-    public function getData(): ?CastedDataContract
+    public function getData(): ?DataWrapperContract
     {
         return $this->data;
     }
 
-    public function setData(?CastedDataContract $data = null): static
+    public function setData(?DataWrapperContract $data = null): static
     {
         if(! is_null($this->onBeforeSetCallback)) {
             $data = value($this->onBeforeSetCallback, $data, $this);
@@ -148,7 +148,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
         }
 
         $this->customAttributes([
-            $event => $onClick($this->getData()?->getOriginal()),
+            $event => $onClick($this->getData()?->getOriginal(), $this),
         ]);
 
         return $this;
@@ -184,7 +184,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     ): static {
         $this->asyncMethod = $method;
 
-        $this->url = fn (mixed $data, ?CastedDataContract $casted): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $this->url = fn (mixed $data, ?DataWrapperContract $casted): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([
@@ -318,7 +318,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function getUrl(mixed $data = null): string
     {
-        return value($this->url, $data ?? $this->getData()?->getOriginal(), $this->getData());
+        return value($this->url, $data ?? $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function primary(Closure|bool|null $condition = null): static
@@ -379,7 +379,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     {
         return [
             $this->getData()?->getOriginal(),
-            $this,
+            $this->getData(),
         ];
     }
 
