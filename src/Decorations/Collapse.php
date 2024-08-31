@@ -6,9 +6,12 @@ namespace MoonShine\Decorations;
 
 use Closure;
 use MoonShine\Support\Condition;
+use MoonShine\Traits\WithIcon;
 
 class Collapse extends Decoration
 {
+    use WithIcon;
+
     protected string $view = 'moonshine::decorations.collapse';
 
     protected bool $open = false;

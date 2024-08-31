@@ -2,6 +2,7 @@
     'persist' => false,
     'open' => false,
     'button' => null,
+    'icon' => null,
     'title',
 ])
 <div
@@ -23,6 +24,10 @@
                     class="accordion-btn btn"
                     type="button"
             >
+                @if($icon)
+                    <x-moonshine::icon :icon="$icon" />
+                @endif
+
                 {!! $title !!}
 
                 @if($button ?? false)
