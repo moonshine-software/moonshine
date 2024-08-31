@@ -12,13 +12,13 @@ final class CreateButton
         ?string $componentName = null,
         bool $isAsync = false,
     ): ActionButton {
-        if(! $resource->formPage()) {
+        if (! $resource->formPage()) {
             return ActionButton::emptyHidden();
         }
 
         $action = $resource->formPageUrl();
 
-        if($resource->isCreateInModal()) {
+        if ($resource->isCreateInModal()) {
             $action = $resource->formPageUrl(
                 params: [
                     '_component_name' => $componentName ?? $resource->listComponentName(),

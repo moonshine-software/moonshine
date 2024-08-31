@@ -42,7 +42,7 @@ class Text extends Field implements HasDefaultValue, DefaultCanBeString, HasUpda
 
     protected function prepareRequestValue(mixed $value): mixed
     {
-        if(is_string($value)) {
+        if (is_string($value)) {
             return $this->isUnescape() ? $value : e($value);
         }
 

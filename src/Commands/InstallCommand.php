@@ -6,14 +6,12 @@ namespace MoonShine\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
-
 use Illuminate\Support\ServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\MoonShine;
 use MoonShine\Providers\MoonShineServiceProvider;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:install')]

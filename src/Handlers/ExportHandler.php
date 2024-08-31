@@ -177,7 +177,7 @@ class ExportHandler extends Handler
         array $notifyUsers = []
     ): string {
         // TODO fix it in 3.0
-        if(app()->runningInConsole()) {
+        if (app()->runningInConsole()) {
             request()->merge($query);
         }
 

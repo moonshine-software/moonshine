@@ -100,14 +100,14 @@ trait RangeTrait
         $values = parent::prepareFill($raw, $casted);
 
         // try to get from array
-        if($values instanceof FieldEmptyValue) {
+        if ($values instanceof FieldEmptyValue) {
             $castedValue = $raw[$this->column()] ?? false;
             $values = is_array($castedValue)
                 ? $castedValue
                 : $raw;
         }
 
-        if(empty($values[$this->fromField]) && empty($values[$this->toField])) {
+        if (empty($values[$this->fromField]) && empty($values[$this->toField])) {
             return new FieldEmptyValue();
         }
 
@@ -181,7 +181,7 @@ trait RangeTrait
 
     protected function onChangeEventAttributes(?string $url = null): array
     {
-        if($url) {
+        if ($url) {
             $this->fromAttributes(
                 AlpineJs::requestWithFieldValue(
                     $url,

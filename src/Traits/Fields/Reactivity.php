@@ -23,7 +23,7 @@ trait Reactivity
 
     public function reactiveCallback(Fields $fields, mixed $value, array $values): Fields
     {
-        if(is_null($this->reactiveCallback) || ! $this->isReactive()) {
+        if (is_null($this->reactiveCallback) || ! $this->isReactive()) {
             return $fields;
         }
 

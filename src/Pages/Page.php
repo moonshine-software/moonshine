@@ -112,14 +112,14 @@ abstract class Page implements MoonShineRenderable, HasResourceContract, MenuFil
 
         $assets = $this->getAssets() ?? [];
 
-        if($this->hasResource()) {
+        if ($this->hasResource()) {
             $assets = [
                 ...$assets,
                 ...$this->getResource()?->getAssets() ?? [],
             ];
         }
 
-        if($assets !== []) {
+        if ($assets !== []) {
             moonshineAssets()->add($assets);
         }
     }

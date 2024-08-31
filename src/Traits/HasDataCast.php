@@ -29,7 +29,7 @@ trait HasDataCast
 
     public function unCastData(mixed $data): mixed
     {
-        if($this->hasCast()) {
+        if ($this->hasCast()) {
             $class = $this->getCast()->getClass();
 
             return $data instanceof $class
@@ -42,7 +42,7 @@ trait HasDataCast
 
     public function castData(mixed $data): mixed
     {
-        if($this->hasCast()) {
+        if ($this->hasCast()) {
             $class = $this->getCast()->getClass();
 
             return $data instanceof $class

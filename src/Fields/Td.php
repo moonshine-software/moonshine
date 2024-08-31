@@ -101,7 +101,7 @@ class Td extends Template
      */
     protected function resolvePreview(): string|View
     {
-        if($this->isRawMode()) {
+        if ($this->isRawMode()) {
             return parent::resolvePreview();
         }
 

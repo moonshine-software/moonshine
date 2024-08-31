@@ -29,7 +29,7 @@ final class FiltersForm
         $filters->fill($values);
 
         foreach ($filters->onlyFields() as $filter) {
-            if($filter instanceof RangeField) {
+            if ($filter instanceof RangeField) {
                 data_forget($values, $filter->column());
             }
         }

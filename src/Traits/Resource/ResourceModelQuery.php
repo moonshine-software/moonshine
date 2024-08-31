@@ -62,7 +62,7 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        if($this->itemID === '') {
+        if ($this->itemID === '') {
             return null;
         }
 
@@ -149,7 +149,7 @@ trait ResourceModelQuery
             return $this->item;
         }
 
-        if(blank($this->getItemID())) {
+        if (blank($this->getItemID())) {
             throw (new ModelNotFoundException())->setModel(
                 $this->model
             );

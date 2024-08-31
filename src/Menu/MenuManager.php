@@ -20,7 +20,7 @@ class MenuManager
 
     public function all(): Collection
     {
-        if(! is_null($this->preparedMenu)) {
+        if (! is_null($this->preparedMenu)) {
             return $this->preparedMenu;
         }
 
@@ -32,11 +32,11 @@ class MenuManager
     public function hasForceActive(): bool
     {
         return $this->all()->contains(function (MenuElement $item) {
-            if($item->isForceActive()) {
+            if ($item->isForceActive()) {
                 return true;
             }
 
-            if($item instanceof MenuGroup) {
+            if ($item instanceof MenuGroup) {
                 return $item->items()->contains(fn (MenuElement $child): bool => $child->isForceActive());
             }
 

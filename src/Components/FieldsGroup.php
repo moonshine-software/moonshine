@@ -50,7 +50,7 @@ final class FieldsGroup extends WithComponents
      */
     public function mapFields(Closure $callback): self
     {
-        if(! $this->components instanceof Fields) {
+        if (! $this->components instanceof Fields) {
             $this->components = Fields::make($this->components);
         }
 

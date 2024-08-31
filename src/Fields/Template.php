@@ -32,7 +32,7 @@ class Template extends Field implements HasFields
 
     protected function prepareFill(array $raw = [], mixed $casted = null): mixed
     {
-        if($this->isFillChanged()) {
+        if ($this->isFillChanged()) {
             return value(
                 $this->fillCallback,
                 $casted ?? $raw,

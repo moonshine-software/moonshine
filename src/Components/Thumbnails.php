@@ -24,11 +24,11 @@ final class Thumbnails extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        if(is_null($this->valueOrValues)) {
+        if (is_null($this->valueOrValues)) {
             return [];
         }
 
-        if(is_null($this->itemAttributes)) {
+        if (is_null($this->itemAttributes)) {
             $this->itemAttributes = fn (string $filename, int $index = 0): ComponentAttributeBag => $this->attributes();
         }
 
@@ -37,7 +37,7 @@ final class Thumbnails extends MoonShineComponent
             'itemAttributes' => $this->itemAttributes,
         ];
 
-        if(is_string($this->valueOrValues)) {
+        if (is_string($this->valueOrValues)) {
             return [
                 'value' => $this->valueOrValues,
                 ...$data,

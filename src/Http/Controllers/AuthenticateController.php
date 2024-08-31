@@ -40,7 +40,7 @@ class AuthenticateController extends MoonShineController
             ))->thenReturn();
         }
 
-        if($request instanceof RedirectResponse) {
+        if ($request instanceof RedirectResponse) {
             return $request;
         }
 

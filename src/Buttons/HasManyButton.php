@@ -39,7 +39,7 @@ final class HasManyButton
             ]
         );
 
-        if($field->isWithoutModals()) {
+        if ($field->isWithoutModals()) {
             $action = static fn (?Model $data) => $resource->formPageUrl($data);
         }
 
@@ -58,7 +58,7 @@ final class HasManyButton
             ->primary()
             ->icon($update ? 'heroicons.outline.pencil' : 'heroicons.outline.plus');
 
-        if(! $field->isWithoutModals()) {
+        if (! $field->isWithoutModals()) {
             $actionButton = $actionButton->inModal(
                 title: fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',

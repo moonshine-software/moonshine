@@ -31,7 +31,7 @@ class MakeApplyCommand extends MoonShineCommand
 
         $apply = $this->getDirectory() . "/Applies/$className.php";
 
-        if(! is_dir($this->getDirectory() . '/Applies')) {
+        if (! is_dir($this->getDirectory() . '/Applies')) {
             $this->makeDir($this->getDirectory() . '/Applies');
         }
 

@@ -13,13 +13,13 @@ final class DetailButton
     public static function for(
         ModelResource $resource
     ): ActionButton {
-        if(! $resource->detailPage()) {
+        if (! $resource->detailPage()) {
             return ActionButton::emptyHidden();
         }
 
         $action = static fn ($data): string => $resource->detailPageUrl($data);
 
-        if($resource->isDetailInModal()) {
+        if ($resource->isDetailInModal()) {
             $action = static fn ($data): string => $resource->detailPageUrl(
                 $data,
                 fragment: 'crud-detail'

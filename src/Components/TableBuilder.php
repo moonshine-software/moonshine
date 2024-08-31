@@ -79,7 +79,7 @@ final class TableBuilder extends IterableComponent implements TableContract
             ;
 
             $fields->each(function ($field, $cellIndex) use ($hasBulk): void {
-                if($field instanceof Td && $field->hasTdAttributes()) {
+                if ($field instanceof Td && $field->hasTdAttributes()) {
                     $this->tdAttributes(
                         function ($data, $row, $cell, ComponentAttributeBag $attr) use ($field, $cellIndex, $hasBulk): ComponentAttributeBag {
                             $cell = $hasBulk ? $cell - 1 : $cell;

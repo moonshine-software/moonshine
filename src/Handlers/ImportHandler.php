@@ -182,7 +182,7 @@ class ImportHandler extends Handler
                         $value = $field->getDefault();
                     }
 
-                    if(empty($value) && $field->isNullable()) {
+                    if (empty($value) && $field->isNullable()) {
                         $value = null;
                     }
 

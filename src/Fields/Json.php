@@ -586,7 +586,7 @@ class Json extends Field implements
                 $item
             );
 
-            if(! empty($this->subRelations[$relationName])) {
+            if (! empty($this->subRelations[$relationName])) {
                 foreach ($this->subRelations[$relationName] as $subRelation) {
                     $this->saveRelation(
                         $item[$subRelation] ?? [],

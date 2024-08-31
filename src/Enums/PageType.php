@@ -6,11 +6,11 @@ namespace MoonShine\Enums;
 
 enum PageType: string
 {
-    case  INDEX = 'index-page';
+    case INDEX = 'index-page';
 
-    case  FORM = 'form-page';
+    case FORM = 'form-page';
 
-    case  DETAIL = 'detail-page';
+    case DETAIL = 'detail-page';
 
     public static function getTypeFromUri(string $uri): ?self
     {

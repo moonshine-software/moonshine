@@ -89,7 +89,7 @@ class Markdown extends Textarea
 
     protected function resolvePreview(): View|string
     {
-        if($this->isUnescape()) {
+        if ($this->isUnescape()) {
             return parent::resolvePreview();
         }
 

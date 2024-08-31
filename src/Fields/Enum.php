@@ -37,15 +37,15 @@ class Enum extends Select implements DefaultCanBeEnum
     {
         $value = $this->toFormattedValue();
 
-        if(is_null($value)) {
+        if (is_null($value)) {
             return '';
         }
 
-        if(! $value instanceof $this->attached) {
+        if (! $value instanceof $this->attached) {
             $value = rescue(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
-        if(is_scalar($value)) {
+        if (is_scalar($value)) {
             return data_get(
                 $this->values(),
                 $value,
@@ -53,11 +53,11 @@ class Enum extends Select implements DefaultCanBeEnum
             );
         }
 
-        if(method_exists($value, 'getColor')) {
+        if (method_exists($value, 'getColor')) {
             $this->badge($value->getColor());
         }
 
-        if(method_exists($value, 'toString')) {
+        if (method_exists($value, 'toString')) {
             return (string) $value->toString();
         }
 

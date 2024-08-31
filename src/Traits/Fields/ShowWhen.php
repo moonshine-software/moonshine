@@ -65,11 +65,11 @@ trait ShowWhen
         mixed $operator = null,
         mixed $value = null
     ): static {
-        if(func_num_args() === 2) {
+        if (func_num_args() === 2) {
             $value = $operator;
         }
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             foreach ($value as $key => $item) {
                 // Casting to Date type for javascript
                 $value[$key] = strtotime((string) $item) * 1000;
@@ -78,7 +78,7 @@ trait ShowWhen
             $value = strtotime((string) $value) * 1000;
         }
 
-        if(func_num_args() === 2) {
+        if (func_num_args() === 2) {
             return $this->showWhen($column, $value);
         }
 

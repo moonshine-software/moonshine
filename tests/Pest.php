@@ -30,7 +30,7 @@ function fakeRequest(string $url = '/', string $method = 'GET', array $parameter
         request()->create($url, $method, $parameters)
     );
 
-    if($dispatchRoute) {
+    if ($dispatchRoute) {
         Route::dispatchToRoute(app('request'));
     }
 }
@@ -58,7 +58,7 @@ function createItem(int $countItems = 1, int $countComments = 3)
 
 function addFieldsToTestResource(array|Field $fields): TestResource
 {
-    if(! is_array($fields)) {
+    if (! is_array($fields)) {
         $fields = [$fields];
     }
 

@@ -29,7 +29,7 @@ trait WithFormElementAttributes
     public function id(string $index = null): string
     {
         // TODO: Html id attribute will be fixed in version 3
-        if($this instanceof Hidden) {
+        if ($this instanceof Hidden) {
             return $this->attributes()->get('id', '');
         }
 
@@ -60,7 +60,7 @@ trait WithFormElementAttributes
         $this->wrapName = $wrapName;
 
         // because showWhen can be declared after
-        if($this->showWhenState) {
+        if ($this->showWhenState) {
             [$column, $value, $operator] = $this->showWhenData;
 
             $this->showWhenCondition = collect($this->showWhenCondition)

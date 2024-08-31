@@ -101,7 +101,7 @@ abstract class MoonShineComponent extends Component implements MoonShineRenderab
     {
         $mergeData = $this->viewData();
 
-        if(! is_null($this->onBeforeRenderCallback)) {
+        if (! is_null($this->onBeforeRenderCallback)) {
             value($this->onBeforeRenderCallback, $this);
         }
 

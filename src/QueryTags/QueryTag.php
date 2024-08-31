@@ -42,7 +42,7 @@ final class QueryTag
 
     public function uri(): string
     {
-        if(! is_null($this->alias)) {
+        if (! is_null($this->alias)) {
             return $this->alias;
         }
 

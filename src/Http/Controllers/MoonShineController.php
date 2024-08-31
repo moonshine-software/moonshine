@@ -51,7 +51,7 @@ abstract class MoonShineController extends BaseController
         $message = app()->isProduction() ? __('moonshine::ui.saved_error') : $e->getMessage();
         $type = 'error';
 
-        if($flash = session()->get('toast')) {
+        if ($flash = session()->get('toast')) {
             session()->forget(['toast', '_flash.old', '_flash.new']);
 
             $message = $flash['message'] ?? $message;

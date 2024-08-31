@@ -79,11 +79,11 @@ final class MoonShineRegister
 
     public function set(string $key, string $value): MoonShineRegister
     {
-        if(! $this->issetOption()) {
+        if (! $this->issetOption()) {
             $this->options[$this->activeOption][$this->activeSection] = [];
         }
 
-        if(! empty($this->options[$this->activeOption][$this->activeSection][$key])) {
+        if (! empty($this->options[$this->activeOption][$this->activeSection][$key])) {
             return $this;
         }
 
@@ -94,16 +94,16 @@ final class MoonShineRegister
 
     public function get(string $key): mixed
     {
-        if(! $this->issetOption()) {
+        if (! $this->issetOption()) {
             return null;
         }
 
-        if(
+        if (
             (! $result = $this->options[$this->activeOption][$this->activeSection][$key] ?? null)
             && class_exists($key)
         ) {
             foreach ($this->options[$this->activeOption][$this->activeSection] as $fieldApply => $applyClasse) {
-                if(is_subclass_of($key, $fieldApply)) {
+                if (is_subclass_of($key, $fieldApply)) {
                     $result = $applyClasse;
 
                     break;

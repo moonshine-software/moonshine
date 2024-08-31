@@ -94,7 +94,7 @@ final class Modal extends MoonShineComponent implements HasFields
 
         $outer = value($this->outer, $this);
 
-        if($outer instanceof ActionButton) {
+        if ($outer instanceof ActionButton) {
             $outer->openModal();
         }
 

@@ -66,7 +66,7 @@ trait HasAsync
         $this->asyncEvents = $asyncEvents;
 
         //TODO remove $callback string type in future version
-        if($asyncCallback instanceof AsyncCallback) {
+        if ($asyncCallback instanceof AsyncCallback) {
             $this->asyncCallback = $asyncCallback->success();
             $this->asyncBeforeCallback = $asyncCallback->before();
         } else {

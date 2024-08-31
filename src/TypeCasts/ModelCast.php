@@ -52,7 +52,7 @@ final class ModelCast implements MoonShineDataCast
      */
     public function dehydrate(mixed $data): array
     {
-        if(! $data instanceof Model) {
+        if (! $data instanceof Model) {
             throw new InvalidArgumentException('Model is required');
         }
 

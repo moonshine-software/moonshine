@@ -72,7 +72,7 @@ trait WithRelatedValues
         // #MongoDB Models fix
         $key = rescue(fn () => $builder->toRawSql(), fn (): bool => false, false);
 
-        if($key === false) {
+        if ($key === false) {
             return $builder->get();
         }
 

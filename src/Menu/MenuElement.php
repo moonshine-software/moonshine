@@ -91,7 +91,7 @@ abstract class MenuElement
             return false;
         }
 
-        if(moonshineMenu()->hasForceActive()) {
+        if (moonshineMenu()->hasForceActive()) {
             return false;
         }
 

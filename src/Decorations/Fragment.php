@@ -42,7 +42,7 @@ class Fragment extends Decoration
         string|Page|null $page = null,
     ): static {
 
-        if(is_null($this->getName())) {
+        if (is_null($this->getName())) {
             throw new DecorationException("To use updateAsync you must first give the fragment a name");
         }
 
@@ -51,7 +51,7 @@ class Fragment extends Decoration
 
         $page ??= moonshineRequest()->getPage();
 
-        if(is_null($resource) && is_null($page)) {
+        if (is_null($resource) && is_null($page)) {
             throw new PageException("Resource or FormPage not found when generating updateAsyncUrl");
         }
 
@@ -95,7 +95,7 @@ class Fragment extends Decoration
      */
     protected function viewData(): array
     {
-        if($this->isUpdateAsync()) {
+        if ($this->isUpdateAsync()) {
             $this->customAttributes([
                 'x-data' => 'fragment(`' . $this->updateAsyncUrl() . '`)',
                 AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName()) => 'fragmentUpdate',

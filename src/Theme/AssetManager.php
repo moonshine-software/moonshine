@@ -121,7 +121,7 @@ class AssetManager
 
     private function parseTagAttributes(array|string $attributes): string
     {
-        if(is_array($attributes)) {
+        if (is_array($attributes)) {
             $attributes = collect($attributes)
                 ->implode(fn ($v, $k) => is_int($k) ? $v : "$k='$v'", ' ');
         }

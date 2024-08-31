@@ -20,7 +20,7 @@ class Color extends Field implements HasDefaultValue, DefaultCanBeString
 
     protected function resolvePreview(): View|string
     {
-        if($this->isRawMode()) {
+        if ($this->isRawMode()) {
             return $this->toValue();
         }
 

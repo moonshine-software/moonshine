@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use function Laravel\Prompts\{error, info, password, text};
 
 use MoonShine\MoonShineAuth;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:user')]
@@ -65,7 +64,7 @@ class MakeUserCommand extends MoonShineCommand
                 )
                 ->exists();
 
-            if(! $exists) {
+            if (! $exists) {
                 break;
             }
 

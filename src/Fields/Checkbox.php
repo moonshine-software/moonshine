@@ -76,12 +76,12 @@ class Checkbox extends Field implements
     {
         $additionally = [];
 
-        if($onChange = $this->attributes()->get('x-on:change')) {
+        if ($onChange = $this->attributes()->get('x-on:change')) {
             $this->removeAttribute('x-on:change');
             $additionally['x-on:change'] = $onChange;
         }
 
-        if($url) {
+        if ($url) {
             return AlpineJs::requestWithFieldValue(
                 $url,
                 $this->column(),

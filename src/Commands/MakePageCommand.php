@@ -8,7 +8,6 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use function Laravel\Prompts\outro;
 use function Laravel\Prompts\select;
-
 use function Laravel\Prompts\text;
 
 use MoonShine\MoonShine;

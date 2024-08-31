@@ -48,7 +48,7 @@ final class Pages extends Collection
     ): ?Page {
         return $this->first(
             function (Page $page) use ($uri): bool {
-                if($page->uriKey() === $uri) {
+                if ($page->uriKey() === $uri) {
                     return true;
                 }
 

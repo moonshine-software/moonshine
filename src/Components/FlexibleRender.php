@@ -25,11 +25,11 @@ final class FlexibleRender extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        if(is_closure($this->content)) {
+        if (is_closure($this->content)) {
             $this->content = value($this->content, $this->additionalData, $this);
         }
 
-        if($this->content instanceof View) {
+        if ($this->content instanceof View) {
             $this->content = $this->content
                 ->with(value($this->additionalData))
                 ->render();

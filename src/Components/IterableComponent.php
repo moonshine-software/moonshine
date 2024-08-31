@@ -24,7 +24,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasFields
 
     public function items(iterable $items = []): static
     {
-        if($items instanceof Paginator) {
+        if ($items instanceof Paginator) {
             $this->items = $items->items();
             $this->paginator($items);
         } else {

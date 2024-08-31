@@ -107,7 +107,7 @@ trait TableStates
                 )
         ;
 
-        if(! is_null($button)) {
+        if (! is_null($button)) {
             $button->customAttributes([
                 '@click.prevent' => 'add()',
             ]);
@@ -203,7 +203,7 @@ trait TableStates
     {
         $this->columnSelection = true;
 
-        if($uniqueId !== '') {
+        if ($uniqueId !== '') {
             $this->customAttributes([
                 'data-unique-id' => $uniqueId,
             ]);

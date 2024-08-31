@@ -28,11 +28,11 @@ trait HasTreeMode
 
     public function treeKeys(): array
     {
-        if(is_null($this->toValue())) {
+        if (is_null($this->toValue())) {
             return [];
         }
 
-        if($this->isValueWithModels()) {
+        if ($this->isValueWithModels()) {
             return $this->toValue()?->modelKeys();
         }
 

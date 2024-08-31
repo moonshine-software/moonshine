@@ -134,7 +134,7 @@ if (! function_exists('actionBtn')) {
 if (! function_exists('findFieldApply')) {
     function findFieldApply(Field $field, string $type, string $for): ?ApplyContract
     {
-        if($field->hasOnApply()) {
+        if ($field->hasOnApply()) {
             return null;
         }
 
@@ -309,7 +309,7 @@ if (! function_exists('is_field')) {
 if (! function_exists('isSeeWhenExists')) {
     function isSeeWhenExists(mixed $component): bool
     {
-        if(method_exists($component, 'isSee')) {
+        if (method_exists($component, 'isSee')) {
             return $component->isSee(
                 $component instanceof Field
                     ? $component->toValue()

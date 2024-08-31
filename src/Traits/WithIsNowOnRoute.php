@@ -46,11 +46,11 @@ trait WithIsNowOnRoute
 
     public function isNowOnIndex(): bool
     {
-        if($this->forceNowOnDetail || $this->forceNowOnCreate || $this->forceNowOnUpdate) {
+        if ($this->forceNowOnDetail || $this->forceNowOnCreate || $this->forceNowOnUpdate) {
             return false;
         }
 
-        if($this->forceNowOnIndex) {
+        if ($this->forceNowOnIndex) {
             return true;
         }
 
@@ -59,7 +59,7 @@ trait WithIsNowOnRoute
 
     public function isNowOnDetail(): bool
     {
-        if($this->forceNowOnIndex || $this->forceNowOnCreate || $this->forceNowOnUpdate) {
+        if ($this->forceNowOnIndex || $this->forceNowOnCreate || $this->forceNowOnUpdate) {
             return false;
         }
 
@@ -72,7 +72,7 @@ trait WithIsNowOnRoute
 
     public function isNowOnForm(): bool
     {
-        if($this->forceNowOnDetail || $this->forceNowOnIndex) {
+        if ($this->forceNowOnDetail || $this->forceNowOnIndex) {
             return false;
         }
 
@@ -82,7 +82,7 @@ trait WithIsNowOnRoute
 
     public function isNowOnCreateForm(): bool
     {
-        if($this->forceNowOnDetail || $this->forceNowOnIndex) {
+        if ($this->forceNowOnDetail || $this->forceNowOnIndex) {
             return false;
         }
 
@@ -90,11 +90,11 @@ trait WithIsNowOnRoute
             return true;
         }
 
-        if(moonshineRequest()->routeIs('moonshine.crud.store')) {
+        if (moonshineRequest()->routeIs('moonshine.crud.store')) {
             return true;
         }
 
-        if(moonshineRequest()->routeIs('moonshine.crud.*')) {
+        if (moonshineRequest()->routeIs('moonshine.crud.*')) {
             return false;
         }
 
@@ -104,7 +104,7 @@ trait WithIsNowOnRoute
 
     public function isNowOnUpdateForm(): bool
     {
-        if($this->forceNowOnDetail || $this->forceNowOnIndex) {
+        if ($this->forceNowOnDetail || $this->forceNowOnIndex) {
             return false;
         }
 
@@ -112,11 +112,11 @@ trait WithIsNowOnRoute
             return true;
         }
 
-        if(moonshineRequest()->routeIs('moonshine.crud.update')) {
+        if (moonshineRequest()->routeIs('moonshine.crud.update')) {
             return true;
         }
 
-        if(moonshineRequest()->routeIs('moonshine.crud.*')) {
+        if (moonshineRequest()->routeIs('moonshine.crud.*')) {
             return false;
         }
 
