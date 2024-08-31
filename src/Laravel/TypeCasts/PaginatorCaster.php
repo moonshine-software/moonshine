@@ -41,9 +41,9 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
             'results' => 'moonshine::pagination.results',
         ];
 
-        $data['currentPage'] = $data['currentPage'] ?? 1;
-        $data['from'] = $data['from'] ?? 1;
-        $data['to'] = $data['to'] ?? 1;
+        $data['currentPage'] ??= 1;
+        $data['from'] ??= 1;
+        $data['to'] ??= 1;
 
         return new Paginator(...$data);
     }
