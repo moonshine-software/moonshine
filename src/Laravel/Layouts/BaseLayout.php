@@ -70,7 +70,7 @@ abstract class BaseLayout extends AbstractLayout
             ])->class('menu-heading'),
 
             Block::make([
-                Menu::make($this->getMenuManager()),
+                Menu::make(),
                 When::make(
                     fn (): bool => $this->isAuthEnabled(),
                     static fn (): array => [Profile::make(withBorder: true)]
@@ -90,7 +90,7 @@ abstract class BaseLayout extends AbstractLayout
             ])->class('menu-logo'),
 
             Block::make([
-                Menu::make($this->getMenuManager())->top(),
+                Menu::make()->top(),
             ])->class('menu-navigation'),
 
             Block::make([

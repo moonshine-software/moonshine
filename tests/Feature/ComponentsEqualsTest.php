@@ -264,7 +264,7 @@ describe('Layouts', function () {
 
     it('menu', function () {
         compare(
-            Menu::make(moonshineMenu())->top()->scrollTo(),
+            Menu::make()->top()->scrollTo(),
             ['menu-manager' => moonshineMenu(), 'top' => true, 'scroll-to' => true]
         );
     })->skip('only primitive can pass in tests');
