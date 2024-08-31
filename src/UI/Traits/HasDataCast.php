@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\TypeCasts\MixedDataCaster;
 
 trait HasDataCast

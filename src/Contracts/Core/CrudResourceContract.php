@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 /**
  * @template-covariant T

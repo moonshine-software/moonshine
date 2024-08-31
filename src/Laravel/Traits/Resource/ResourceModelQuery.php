@@ -91,7 +91,7 @@ trait ResourceModelQuery
             return $this->modifyQueryBuilder($this->queryBuilder);
         }
 
-        $this->queryBuilder  = $this->customQueryBuilder  ?? $this->getModel()->newQuery();
+        $this->queryBuilder = $this->customQueryBuilder ?? $this->getModel()->newQuery();
 
         if ($this->hasWith()) {
             $this->queryBuilder->with($this->getWith());
@@ -136,7 +136,7 @@ trait ResourceModelQuery
 
     public function isItemExists(): bool
     {
-        return !is_null($this->getItem()) && $this->getItem()->exists;
+        return ! is_null($this->getItem()) && $this->getItem()->exists;
     }
 
     public function hasWith(): bool

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\MorphMany;

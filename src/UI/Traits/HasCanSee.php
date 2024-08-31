@@ -25,7 +25,7 @@ trait HasCanSee
 
         $params = [
             ...$this->isSeeParams(),
-            $this
+            $this,
         ];
 
         return (bool) value(

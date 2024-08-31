@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Tests\Fixtures\Models\Cover;
 use MoonShine\Tests\Fixtures\Pages\CoverResource\CoverPageDetail;

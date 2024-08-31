@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Tests\Fixtures\Models\Comment;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Number;

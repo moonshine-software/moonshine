@@ -89,7 +89,7 @@ trait ResourceQuery
 
     public function isItemExists(): bool
     {
-        return !is_null($this->getCastedData()?->getKey());
+        return ! is_null($this->getCastedData()?->getKey());
     }
 
     /**

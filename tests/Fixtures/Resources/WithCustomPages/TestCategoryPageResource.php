@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources\WithCustomPages;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageDetail;

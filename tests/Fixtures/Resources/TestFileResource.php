@@ -2,7 +2,6 @@
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Tests\Fixtures\Models\FileModel;
 use MoonShine\UI\Fields\File;

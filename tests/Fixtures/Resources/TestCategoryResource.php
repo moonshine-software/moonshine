@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\UI\Components\Layout\Box;

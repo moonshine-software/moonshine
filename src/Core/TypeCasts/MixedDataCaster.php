@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Core\TypeCasts;
 
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 final readonly class MixedDataCaster implements DataCasterContract
 {

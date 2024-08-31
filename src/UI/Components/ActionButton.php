@@ -156,7 +156,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
 
     public function dispatchEvent(array|string $events): static
     {
-        if(!$this->getAttributes()->has('x-data')) {
+        if(! $this->getAttributes()->has('x-data')) {
             $this->xDataMethod('actionButton');
         }
 
