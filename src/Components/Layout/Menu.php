@@ -7,6 +7,9 @@ namespace MoonShine\Components\Layout;
 
 use MoonShine\Components\MoonShineComponent;
 
+/**
+ * @method static static make(?array $items = null)
+ */
 class Menu extends MoonShineComponent
 {
     protected bool $top = false;
