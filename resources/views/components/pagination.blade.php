@@ -18,17 +18,17 @@
     <ul class="pagination-list simple">
         {{-- Previous Page Link --}}
         <li>
-            @if ($current_page <= 1)
-                <span class="pagination-simple disabled">
-                    {!! $translates['previous'] !!}
-                </span>
-            @else
-                <a href="{{ $first_page_url }}"
+            @if ($prev_page_url)
+                <a href="{{ $prev_page_url }}"
                    @if($async) @click.prevent="asyncRequest" @endif
                    class="pagination-simple"
                 >
                     {!! $translates['previous'] !!}
                 </a>
+            @else
+                <span class="pagination-simple disabled">
+                    {!! $translates['previous'] !!}
+                </span>
             @endif
         </li>
 

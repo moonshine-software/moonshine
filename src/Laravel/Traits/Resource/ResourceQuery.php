@@ -29,6 +29,8 @@ trait ResourceQuery
 
     protected bool $simplePaginate = false;
 
+    protected bool $cursorPaginate = false;
+
     protected int|string|false|null $itemID = null;
 
     protected bool $saveQueryState = false;
@@ -233,6 +235,11 @@ trait ResourceQuery
     protected function isSimplePaginate(): bool
     {
         return $this->simplePaginate;
+    }
+
+    protected function isCursorPaginate(): bool
+    {
+        return $this->cursorPaginate;
     }
 
     public function isPaginationUsed(): bool

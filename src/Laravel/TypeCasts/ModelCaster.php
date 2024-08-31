@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\TypeCasts;
 
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
@@ -48,7 +49,7 @@ final readonly class ModelCaster implements DataCasterContract
      */
     public function paginatorCast(mixed $data): ?PaginatorContract
     {
-        if(! $data instanceof Paginator) {
+        if(! $data instanceof Paginator && ! $data instanceof CursorPaginator) {
             return null;
         }
 

@@ -19,6 +19,7 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
     public function cast(): PaginatorContract
     {
         $data = collect($this->data)
+            ->except('next_cursor', 'prev_cursor')
             ->mapWithKeys(
                 static fn (mixed $value, string $key): array => [(string) str($key)->camel() => $value]
             )
@@ -39,6 +40,10 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
             'of' => 'moonshine::pagination.of',
             'results' => 'moonshine::pagination.results',
         ];
+
+        $data['currentPage'] = $data['currentPage'] ?? 1;
+        $data['from'] = $data['from'] ?? 1;
+        $data['to'] = $data['to'] ?? 1;
 
         return new Paginator(...$data);
     }
