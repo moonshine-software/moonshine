@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\RenderablesContract;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
@@ -24,7 +26,7 @@ class Tabs extends AbstractWithComponents
     {
         parent::__construct($components);
 
-        if($this->items !== []) {
+        if ($this->items !== []) {
             $tabs = [];
 
             foreach ($this->items as $label => $content) {
@@ -101,11 +103,45 @@ class Tabs extends AbstractWithComponents
     {
         return [
             'tabs' => $this->getTabs()
+                ->filter(fn (Tab $tab) => $tab->isSee())
                 ->mapWithKeys(fn (Tab $tab) => [$tab->getId() => $tab->toArray()])
                 ->toArray(),
             'active' => $this->getActive(),
             'justifyAlign' => $this->getJustifyAlign(),
             'isVertical' => $this->isVertical(),
         ];
+    }
+
+    protected function resolveRender(): Renderable|Closure|string
+    {
+        return function (array|self $component): Renderable|Closure|string {
+            if ($component instanceof self) {
+                return $this->renderView();
+            }
+
+            $tabs = [];
+
+            foreach ($component['items'] as $id => $label) {
+                if($component['__laravel_slots'][$id] ?? false) {
+                    /** @var ComponentSlot $slot */
+                    $slot = $component['__laravel_slots'][$id];
+                    $attributes = $slot->attributes->jsonSerialize();
+
+                    $tabs[$id] = Tab::make($label, [
+                        FlexibleRender::make($slot->toHtml()),
+                    ])
+                        ->setId($id)
+                        ->customAttributes($attributes)
+                        ->toArray();
+                }
+            }
+
+            $component['tabs'] = $tabs;
+
+            return view(
+                $this->getView(),
+                $component
+            );
+        };
     }
 }

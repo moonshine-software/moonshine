@@ -1,6 +1,5 @@
 @props([
     'tabs' => [],
-    'contents' => [],
     'active' => null,
     'justifyAlign' => 'start',
     'isVertical' => false,
