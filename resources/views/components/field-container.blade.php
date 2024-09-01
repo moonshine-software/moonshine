@@ -1,10 +1,9 @@
+{{-- @internal --}}
 @props([
-    'errors' => [],
     'label' => '',
-    'name' => '',
-    'formName' => '',
-    'labelBefore' => false,
-    'inLabel' => false,
+    'errors' => [],
+    'isBeforeLabel' => false,
+    'isInsideLabel' => false,
     'before' => null,
     'after' => null,
     'beforeInner' => null,
@@ -12,26 +11,28 @@
 ])
 {!! $before !!}
 
-<x-moonshine::form.input-wrapper
+<x-moonshine::form.wrapper
     label="{{ $label }}"
-    name="{{ $name }}"
     :attributes="$attributes"
-    :formName="$formName"
-    :beforeLabel="$labelBefore"
-    :inLabel="$inLabel"
-    :errors="$errors"
+    :beforeLabel="$isBeforeLabel"
+    :insideLabel="$isInsideLabel"
+    :error="$errors[0] ?? ''"
 >
-    <x-slot:beforeSlot>
+    @if($beforeInner ?? false)
+    <x-slot:before>
         {!! $beforeInner !!}
-    </x-slot:beforeSlot>
+    </x-slot:before>
+    @endif
 
     {!! $slot !!}
 
-    <x-slot:afterSlot>
+    @if($afterInner ?? false)
+    <x-slot:after>
         <x-moonshine::form.hint>
             {!! $afterInner !!}
         </x-moonshine::form.hint>
-    </x-slot:afterSlot>
-</x-moonshine::form.input-wrapper>
+    </x-slot:after>
+    @endif
+</x-moonshine::form.wrapper>
 
 {!! $after !!}

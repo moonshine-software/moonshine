@@ -79,7 +79,7 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $isBeforeLabel = false;
 
-    protected bool $isInLabel = false;
+    protected bool $isInsideLabel = false;
 
     protected mixed $data = null;
 
@@ -537,16 +537,16 @@ abstract class Field extends FormElement implements FieldContract
         return $this->nullable;
     }
 
-    public function inLabel(): static
+    public function insideLabel(): static
     {
-        $this->isInLabel = true;
+        $this->isInsideLabel = true;
 
         return $this;
     }
 
-    public function isInLabel(): bool
+    public function isInsideLabel(): bool
     {
-        return $this->isInLabel;
+        return $this->isInsideLabel;
     }
 
     public function beforeLabel(): static

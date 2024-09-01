@@ -65,19 +65,19 @@ final class FieldContainer extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
-            'name' => $this->field->getNameAttribute(),
             'label' => $this->field->getLabel(),
-            'formName' => $this->field->getFormName(),
+
+            'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
             'before' => new ComponentSlot($this->field->getBeforeRender()),
             'after' => new ComponentSlot($this->field->getAfterRender()),
             'slot' => new ComponentSlot(value($this->slot)),
+
             'beforeInner' => $this->afterInner,
             'afterInner' => $this->beforeInner,
 
-            'labelBefore' => $this->field->isBeforeLabel(),
-            'inLabel' => $this->field->isInLabel(),
+            'isBeforeLabel' => $this->field->isBeforeLabel(),
+            'isInsideLabel' => $this->field->isInsideLabel(),
         ];
     }
 }
