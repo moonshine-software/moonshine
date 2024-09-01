@@ -87,7 +87,7 @@ class Tabs extends Decoration
                     )
                 );
             }
-        );
+        )->filter(fn(Tab $tab) => $tab->isSee($tab));
     }
 
     public function getFields(): Fields
