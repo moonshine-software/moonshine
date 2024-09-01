@@ -24,11 +24,13 @@
                     class="accordion-btn btn"
                     type="button"
             >
-                @if($icon)
-                    <x-moonshine::icon :icon="$icon" />
-                @endif
+                <div class="flex gap-2">
+                    @if($icon)
+                        <x-moonshine::icon :icon="$icon" />
+                    @endif
 
-                {!! $title !!}
+                    {!! $title !!}
+                </div>
 
                 @if($button ?? false)
                     {!! $button !!}
