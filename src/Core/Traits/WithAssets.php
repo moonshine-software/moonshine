@@ -23,7 +23,7 @@ trait WithAssets
 
     public function getAssets(): array
     {
-        if(!$this->shouldUseAssets()) {
+        if (! $this->shouldUseAssets()) {
             return [];
         }
 

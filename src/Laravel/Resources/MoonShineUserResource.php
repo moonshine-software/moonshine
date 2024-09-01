@@ -126,7 +126,7 @@ class MoonShineUserResource extends ModelResource
                             PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
                                 ->customAttributes(['autocomplete' => 'confirm-password'])
                                 ->eye(),
-                        ])->icon('lock-closed')
+                        ])->icon('lock-closed'),
                     ])->icon('lock-closed'),
                 ]),
             ]),

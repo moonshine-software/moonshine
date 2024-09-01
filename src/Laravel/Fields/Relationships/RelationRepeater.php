@@ -110,7 +110,7 @@ class RelationRepeater extends ModelRelationField implements
 
     public function getCreateButton(): ?ActionButtonContract
     {
-        if(!is_null($this->modifyCreateButton)) {
+        if (! is_null($this->modifyCreateButton)) {
             return value($this->creatableButton, $this->modifyCreateButton, $this);
         }
 

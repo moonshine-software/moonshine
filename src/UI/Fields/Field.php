@@ -563,7 +563,7 @@ abstract class Field extends FormElement implements FieldContract
 
     protected function shouldUseAssets(): bool
     {
-        return !$this->isPreviewMode();
+        return ! $this->isPreviewMode();
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
