@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\View\ComponentSlot;
+use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
@@ -13,6 +15,7 @@ use MoonShine\UI\Traits\WithLabel;
 class Collapse extends AbstractWithComponents
 {
     use WithLabel;
+    use WithIcon;
 
     protected string $view = 'moonshine::components.collapse';
 
@@ -57,6 +60,9 @@ class Collapse extends AbstractWithComponents
             'persist' => $this->isPersist(),
             'open' => $this->isOpen(),
             'title' => $this->getLabel(),
+            'icon' => new ComponentSlot(
+                $this->getIcon(5)
+            ),
         ];
     }
 }

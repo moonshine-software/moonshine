@@ -1,10 +1,11 @@
 @props([
     'components' => [],
     'label' => false,
+    'icon' => false,
     'dark' => false
 ])
 <div {{ $attributes->class(['box', 'box-dark' => $dark]) }}>
-    @if($label ?? false) <h2 class="box-title">{{ $label }}</h2> @endif
+    @if($icon || $label) <h2 class="box-title">{{ $icon ?? '' }}{{ $label ?? '' }}</h2> @endif
 
     <x-moonshine::components
         :components="$components"

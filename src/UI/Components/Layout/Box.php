@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Layout;
 
 use Closure;
+use Illuminate\View\ComponentSlot;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
@@ -14,6 +16,7 @@ use MoonShine\UI\Traits\WithLabel;
 class Box extends AbstractWithComponents
 {
     use WithLabel;
+    use WithIcon;
 
     protected string $view = 'moonshine::components.layout.box';
 
@@ -58,6 +61,9 @@ class Box extends AbstractWithComponents
             ...parent::viewData(),
             'label' => $this->getLabel(),
             'dark' => $this->isDark(),
+            'icon' => new ComponentSlot(
+                $this->getIcon(6)
+            ),
         ];
     }
 }

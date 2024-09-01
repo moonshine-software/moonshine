@@ -23,6 +23,10 @@ trait WithAssets
 
     public function getAssets(): array
     {
+        if(!$this->shouldUseAssets()) {
+            return [];
+        }
+
         return $this->assets;
     }
 
@@ -31,6 +35,11 @@ trait WithAssets
         $this->getAssetManager()->add($assets);
 
         return $this;
+    }
+
+    protected function shouldUseAssets(): bool
+    {
+        return true;
     }
 
     public function pushAssets(array $assets): static

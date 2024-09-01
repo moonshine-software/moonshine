@@ -13,8 +13,10 @@ use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Components\Collapse;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Fields\Date;
@@ -98,8 +100,13 @@ class MoonShineUserResource extends ModelResource
                             ->creatable()
                             ->valuesQuery(static fn (Builder $q) => $q->select(['id', 'name'])),
 
-                        Text::make(__('moonshine::ui.resource.name'), 'name')
-                            ->required(),
+                        Flex::make([
+                            Text::make(__('moonshine::ui.resource.name'), 'name')
+                                ->required(),
+
+                            Email::make(__('moonshine::ui.resource.email'), 'email')
+                                ->required(),
+                        ]),
 
                         Image::make(__('moonshine::ui.resource.avatar'), 'avatar')
                             ->disk(moonshineConfig()->getDisk())
@@ -109,21 +116,18 @@ class MoonShineUserResource extends ModelResource
                         Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
                             ->format("d.m.Y")
                             ->default(now()->toDateTimeString()),
-
-                        Email::make(__('moonshine::ui.resource.email'), 'email')
-                            ->required(),
                     ])->icon('user-circle'),
 
                     Tab::make(__('moonshine::ui.resource.password'), [
-                        Heading::make(__('moonshine::ui.resource.change_password')),
+                        Collapse::make(__('moonshine::ui.resource.change_password'), [
+                            Password::make(__('moonshine::ui.resource.password'), 'password')
+                                ->customAttributes(['autocomplete' => 'new-password'])
+                                ->eye(),
 
-                        Password::make(__('moonshine::ui.resource.password'), 'password')
-                            ->customAttributes(['autocomplete' => 'new-password'])
-                            ->eye(),
-
-                        PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
-                            ->customAttributes(['autocomplete' => 'confirm-password'])
-                            ->eye(),
+                            PasswordRepeat::make(__('moonshine::ui.resource.repeat_password'), 'password_repeat')
+                                ->customAttributes(['autocomplete' => 'confirm-password'])
+                                ->eye(),
+                        ])->icon('lock-closed')
                     ])->icon('lock-closed'),
                 ]),
             ]),

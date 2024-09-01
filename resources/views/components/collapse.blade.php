@@ -3,6 +3,7 @@
     'persist' => false,
     'open' => false,
     'button' => null,
+    'icon' => null,
     'title',
 ])
 <div
@@ -25,7 +26,10 @@
                     class="accordion-btn btn"
                     type="button"
             >
-                {!! $title !!}
+                <div class="flex gap-2">
+                    {{ $icon ?? '' }}
+                    {!! $title !!}
+                </div>
 
                 @if($button ?? false)
                     {!! $button !!}

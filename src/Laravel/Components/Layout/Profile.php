@@ -13,7 +13,7 @@ use MoonShine\UI\Components\MoonShineComponent;
 use Throwable;
 
 /**
- * @method static static make(?string $route = null, ?string $logOutRoute = null, ?Closure $avatar = null, ?Closure $nameOfUser = null, ?Closure $username = null, bool $withBorder = false)
+ * @method static static make(?string $route = null, ?string $logOutRoute = null, ?Closure $avatar = null, ?Closure $nameOfUser = null, ?Closure $username = null, bool $withBorder = false, ?string $guard = null)
  */
 final class Profile extends MoonShineComponent
 {
@@ -30,10 +30,11 @@ final class Profile extends MoonShineComponent
         protected ?Closure $nameOfUser = null,
         protected ?Closure $username = null,
         protected bool $withBorder = false,
+        protected ?string $guard = null,
     ) {
         parent::__construct();
 
-        $this->user = MoonShineAuth::getGuard()->user();
+        $this->user = MoonShineAuth::getGuard($guard)->user();
     }
 
     public function isWithBorder(): bool
