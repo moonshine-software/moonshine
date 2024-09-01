@@ -62,14 +62,14 @@ class Checkbox extends Field implements
     {
         parent::prepareBeforeRender();
 
-        if ($this->isSimpleMode()) {
-            return;
-        }
-
         $this->beforeLabel();
         $this->customWrapperAttributes([
             'class' => 'form-group-inline',
         ]);
+
+        if ($this->isSimpleMode()) {
+            return;
+        }
 
         $this->customAttributes([
             'x-bind:checked' => '$el.checked',

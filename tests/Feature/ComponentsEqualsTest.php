@@ -606,8 +606,8 @@ describe('Form', function () {
         expect($blade)->toContain('form-error', 'test-class', 'Content');
     });
 
-    it('input-wrapper', function () {
-        $blade = renderBlade('moonshine::form.input-wrapper', attributes: ['class' => 'test-class'], slot: 'Content');
+    it('field-wrapper', function () {
+        $blade = renderBlade('moonshine::form.wrapper', attributes: ['class' => 'test-class'], slot: 'Content');
 
         expect($blade)->toContain('form-group moonshine-field', 'test-class', 'Content');
     });

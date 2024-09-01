@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Fields;
 
 use Illuminate\Support\Collection;
+use MoonShine\UI\Fields\Checkbox;
 use Throwable;
 
 trait HasTreeMode
@@ -54,20 +55,10 @@ trait HasTreeMode
 
                 $this->getAttributes()->set('name', $this->getNameAttribute((string) $item->getKey()));
 
-                $element = moonshine()->getRenderer()->render(
-                    'moonshine::components.form.input-composition',
-                    [
-                        'attributes' => $this->getAttributes()->merge([
-                            'type' => 'checkbox',
-                            'value' => $item->getKey(),
-                            'class' => 'form-group-inline',
-                        ]),
-                        'beforeLabel' => true,
-                        'label' => $label,
-                        'errors' => $this->getErrors(),
-                    ],
-                    $this,
-                );
+                $element = Checkbox::make($label)
+                    ->simpleMode()
+                    ->customAttributes($this->getAttributes()->jsonSerialize())
+                    ->setValue($item->getKey());
 
                 $this->treeHtml .= str($element)->wrap(
                     "<li style='margin-left: " . ($offset * 30) . "px'>",

@@ -1,7 +1,10 @@
-<label {{ $attributes->merge(['class' => 'form-label'])->except('required') }}>
+@props([
+    'required' => false
+])
+<label {{ $attributes->merge(['class' => 'form-label']) }}>
     {{ $slot ?? ''  }}
 
-    @if($attributes->get('required', false))
+    @if($required)
         <span class="required">*</span>
     @endif
 </label>
