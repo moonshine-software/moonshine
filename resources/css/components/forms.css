@@ -138,7 +138,7 @@ input[type='number'] {
 .form-range {
   @apply h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 focus:outline-gray-200 dark:bg-dark-800;
   &-slider {
-    @apply relative z-0 h-2;
+    @apply relative z-0 my-1.5 h-2;
   }
   &-tracker {
     @apply absolute bottom-0 left-0 right-0 top-0 z-3 rounded-md bg-gray-200 dark:bg-dark-200;
