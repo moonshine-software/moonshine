@@ -24,9 +24,9 @@ final class MoonShineAuth
         return self::guard()->getProvider();
     }
 
-    public static function guard(): Guard|StatefulGuard
+    public static function guard(?string $guard = null): Guard|StatefulGuard
     {
-        return Auth::guard(self::guardName());
+        return Auth::guard($guard ?? self::guardName());
     }
 
     public static function guardName(): string

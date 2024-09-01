@@ -12,7 +12,7 @@ use MoonShine\MoonShineAuth;
 use MoonShine\Pages\ProfilePage;
 
 /**
- * @method static static make(?string $route = null, ?string $logOutRoute = null, Closure|string|null|false $avatar = null, Closure|string|null $nameOfUser = null, Closure|string|null $username = null, bool $withBorder = false)
+ * @method static static make(?string $route = null, ?string $logOutRoute = null, Closure|string|null|false $avatar = null, Closure|string|null $nameOfUser = null, Closure|string|null $username = null, bool $withBorder = false, ?string $guard = null)
  */
 final class Profile extends MoonShineComponent
 {
@@ -29,8 +29,9 @@ final class Profile extends MoonShineComponent
         protected Closure|string|null $nameOfUser = null,
         protected Closure|string|null $username = null,
         protected bool $withBorder = false,
+        protected ?string $guard = null,
     ) {
-        $this->user = MoonShineAuth::guard()->user();
+        $this->user = MoonShineAuth::guard($guard)->user();
         $this->defaultAvatar = asset('vendor/moonshine/avatar.jpg');
     }
 
