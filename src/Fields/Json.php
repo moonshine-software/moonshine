@@ -68,6 +68,12 @@ class Json extends Field implements
 
     protected array $subRelations = [];
 
+    protected ?Closure $modifyTable = null;
+
+    protected ?Closure $modifyCreateButton = null;
+
+    protected ?Closure $modifyRemoveButton = null;
+
     /**
      * @throws Throwable
      */
@@ -158,6 +164,10 @@ class Json extends Field implements
 
     public function creatableButton(): ?ActionButton
     {
+        if(!is_null($this->modifyCreateButton)) {
+            return value($this->creatableButton, $this->modifyCreateButton, $this);
+        }
+
         return $this->creatableButton;
     }
 
@@ -241,6 +251,36 @@ class Json extends Field implements
         return $this->asRelationResource;
     }
 
+    /**
+     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     */
+    public function modifyTable(Closure $callback): self
+    {
+        $this->modifyTable = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
+    public function modifyCreateButton(Closure $callback): self
+    {
+        $this->modifyCreateButton = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     */
+    public function modifyRemoveButton(Closure $callback): self
+    {
+        $this->modifyRemoveButton = $callback;
+
+        return $this;
+    }
+
     public function buttons(array $buttons): self
     {
         $this->buttons = $buttons;
@@ -257,11 +297,17 @@ class Json extends Field implements
         $buttons = [];
 
         if ($this->isRemovable()) {
-            $buttons[] = ActionButton::make('', '#')
+            $button = ActionButton::make('', '#')
                 ->icon('heroicons.outline.trash')
                 ->onClick(fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
+
+            if (! is_null($this->modifyRemoveButton)) {
+                $button = value($this->modifyRemoveButton, $button, $this);
+            }
+
+            $buttons[] = $button;
         }
 
         return $buttons;
@@ -401,6 +447,10 @@ class Json extends Field implements
             ->when(
                 $this->isVertical(),
                 fn (TableBuilder $table): TableBuilder => $table->vertical()
+            )
+            ->when(
+                ! is_null($this->modifyTable),
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: $this->isPreviewMode())
             );
     }
 
