@@ -58,7 +58,7 @@ final class ActionButtons extends Collection implements ActionButtonsContract
     public function onlyVisible(mixed $item = null): self
     {
         return $this->filter(
-            static fn (ActionButtonContract $action): bool => $action->isSee($item ?? $action->getData()?->getOriginal())
+            static fn (ActionButtonContract $action): bool => $action->isSee()
         );
     }
 

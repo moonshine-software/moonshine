@@ -45,7 +45,7 @@ trait BelongsToOrManyCreatable
 
         $button = BelongsToOrManyButton::for($this, button: $this->creatableButton);
 
-        return $button->isSee($this->getRelatedModel())
+        return $button->isSee()
             ? $button
             : null;
     }

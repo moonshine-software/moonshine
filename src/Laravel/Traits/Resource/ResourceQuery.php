@@ -252,6 +252,13 @@ trait ResourceQuery
         return $this->saveQueryState;
     }
 
+    public function disableSaveQueryState(): static
+    {
+        $this->saveQueryState = false;
+
+        return $this;
+    }
+
     /**
      * @return string[]
      */

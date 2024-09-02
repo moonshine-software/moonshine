@@ -9,6 +9,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Position;
 use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Text;
 
@@ -21,6 +22,7 @@ beforeEach(function (): void {
         ])
         ->setTestExportFields([
             ID::make(),
+            Position::make(),
         ])
         ->setTestIndexFields([
             ID::make()->sortable(),

@@ -26,6 +26,11 @@ class Position extends Preview
         return $this->toFormattedValue();
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return $this->toFormattedValue();
+    }
+
     protected function resolvePreview(): Renderable|string
     {
         return $this->render();

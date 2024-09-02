@@ -236,4 +236,11 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     {
         return ! $this->isOutsideComponent();
     }
+
+    protected function isSeeParams(): array
+    {
+        return [
+            $this->getRelatedModel(),
+        ];
+    }
 }

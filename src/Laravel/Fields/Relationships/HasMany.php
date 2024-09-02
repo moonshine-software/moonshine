@@ -213,7 +213,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             $button = value($this->modifyCreateButton, $button, $this);
         }
 
-        return $button->isSee($this->getRelatedModel())
+        return $button->isSee()
             ? $button
             : null;
     }
@@ -460,7 +460,8 @@ class HasMany extends ModelRelationField implements HasFieldsContract
      */
     protected function resolveValue(): mixed
     {
-        $resource = $this->getResource();
+        $resource = $this->getResource()
+            ->disableSaveQueryState();
 
         $resource->setQueryParams(
             request()->only($resource->getQueryParamsKeys())
