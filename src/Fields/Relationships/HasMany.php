@@ -455,7 +455,7 @@ class HasMany extends ModelRelationField implements HasFields
         if (is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
             $relation = $casted?->{$this->getRelationName()}();
-            $resource = $this->getResource();
+            $resource = $this->getResource()->disableSaveFilterState();
 
             $resource->customBuilder(
                 is_null($this->modifyBuilder)
