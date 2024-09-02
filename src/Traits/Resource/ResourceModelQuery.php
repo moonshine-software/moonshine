@@ -259,6 +259,13 @@ trait ResourceModelQuery
         return $this->saveFilterState;
     }
 
+    public function disableSaveFilterState(): static
+    {
+        $this->saveFilterState = false;
+
+        return $this;
+    }
+
     /**
      * @return string[]
      */
