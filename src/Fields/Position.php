@@ -29,7 +29,7 @@ class Position extends Preview
     protected function resolvePreview(): View|string
     {
         if ($this->isRawMode()) {
-            return parent::resolvePreview();
+            return (string) $this->toFormattedValue();
         }
 
         return $this->render();
