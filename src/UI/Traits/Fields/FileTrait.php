@@ -30,11 +30,11 @@ trait FileTrait
     protected ?Collection $remainingValues = null;
 
     /**
-     * @param  Closure(string $filename, int $index): string  $closure
+     * @param  Closure(string $filename, int $index): string  $callback
      */
-    public function names(Closure $closure): static
+    public function names(Closure $callback): static
     {
-        $this->names = $closure;
+        $this->names = $callback;
 
         return $this;
     }
@@ -51,11 +51,11 @@ trait FileTrait
     }
 
     /**
-     * @param  Closure(string $filename, int $index): string  $closure
+     * @param  Closure(string $filename, int $index): string  $callback
      */
-    public function itemAttributes(Closure $closure): static
+    public function itemAttributes(Closure $callback): static
     {
-        $this->itemAttributes = $closure;
+        $this->itemAttributes = $callback;
 
         return $this;
     }
@@ -170,11 +170,11 @@ trait FileTrait
     }
 
     /**
-     * @param  Closure(static $ctx): Collection  $closure
+     * @param  Closure(static $ctx): Collection  $callback
      */
-    public function remainingValuesResolver(Closure $closure): static
+    public function remainingValuesResolver(Closure $callback): static
     {
-        $this->remainingValuesResolver = $closure;
+        $this->remainingValuesResolver = $callback;
 
         return $this;
     }

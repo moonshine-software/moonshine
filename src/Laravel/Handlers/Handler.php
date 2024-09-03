@@ -49,11 +49,11 @@ abstract class Handler
     }
 
     /**
-     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $closure
+     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $callback
      */
-    public function modifyButton(Closure $closure): static
+    public function modifyButton(Closure $callback): static
     {
-        $this->modifyButton = $closure;
+        $this->modifyButton = $callback;
 
         return $this;
     }

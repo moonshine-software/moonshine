@@ -90,11 +90,11 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, self $table): array  $closure
+     * @param  Closure(mixed $data, int $row, self $table): array  $callback
      */
-    public function trAttributes(Closure $closure): self
+    public function trAttributes(Closure $callback): self
     {
-        $this->trAttributes[] = $closure;
+        $this->trAttributes[] = $callback;
 
         return $this;
     }
@@ -107,11 +107,11 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     }
 
     /**
-     * @param  Closure(mixed $data, int $row, int $cell, self $table): array  $closure
+     * @param  Closure(mixed $data, int $row, int $cell, self $table): array  $callback
      */
-    public function tdAttributes(Closure $closure): self
+    public function tdAttributes(Closure $callback): self
     {
-        $this->tdAttributes[] = $closure;
+        $this->tdAttributes[] = $callback;
 
         return $this;
     }

@@ -380,21 +380,21 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $data, self $field): mixed  $closure
+     * @param  Closure(mixed $data, self $field): mixed  $callback
      */
-    public function changeFill(Closure $closure): static
+    public function changeFill(Closure $callback): static
     {
-        $this->fillCallback = $closure;
+        $this->fillCallback = $callback;
 
         return $this;
     }
 
     /**
-     * @param  Closure(static $ctx): static  $closure
+     * @param  Closure(static $ctx): static  $callback
      */
-    public function afterFill(Closure $closure): static
+    public function afterFill(Closure $callback): static
     {
-        $this->afterFillCallback = $closure;
+        $this->afterFillCallback = $callback;
 
         return $this;
     }
@@ -405,11 +405,11 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $value, self $field): mixed  $closure
+     * @param  Closure(mixed $value, self $field): mixed  $callback
      */
-    public function changePreview(Closure $closure): static
+    public function changePreview(Closure $callback): static
     {
-        $this->previewCallback = $closure;
+        $this->previewCallback = $callback;
 
         return $this;
     }

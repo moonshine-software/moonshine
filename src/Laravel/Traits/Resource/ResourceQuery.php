@@ -68,13 +68,13 @@ trait ResourceQuery
     /**
      * @return ?T
      */
-    protected function itemOr(Closure $closure): mixed
+    protected function itemOr(Closure $callback): mixed
     {
         if (! is_null($this->item)) {
             return $this->item;
         }
 
-        $this->item = $closure();
+        $this->item = $callback();
 
         return $this->item;
     }

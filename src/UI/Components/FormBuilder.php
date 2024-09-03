@@ -302,9 +302,12 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return $this;
     }
 
-    public function onBeforeFieldsRender(Closure $closure): self
+    /**
+     * @param  Closure(FieldsContract $fields, static $ctx): FieldsContract  $callback
+     */
+    public function onBeforeFieldsRender(Closure $callback): self
     {
-        $this->onBeforeFieldsRender = $closure;
+        $this->onBeforeFieldsRender = $callback;
 
         return $this;
     }
@@ -453,7 +456,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         }
 
         if (! is_null($this->onBeforeFieldsRender)) {
-            $fields = value($this->onBeforeFieldsRender, $fields);
+            $fields = value($this->onBeforeFieldsRender, $fields, $this);
         }
 
         return [

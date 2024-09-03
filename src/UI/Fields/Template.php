@@ -47,11 +47,11 @@ class Template extends Field implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(mixed $value, static $ctx): string  $closure
+     * @param  Closure(mixed $value, static $ctx): string  $callback
      */
-    public function changeRender(Closure $closure): static
+    public function changeRender(Closure $callback): static
     {
-        $this->renderCallback = $closure;
+        $this->renderCallback = $callback;
 
         return $this;
     }

@@ -316,9 +316,9 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return true;
     }
 
-    public function beforeRender(Closure $closure): static
+    public function beforeRender(Closure $callback): static
     {
-        $this->beforeRender = $closure;
+        $this->beforeRender = $callback;
 
         return $this;
     }
@@ -330,9 +330,12 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
             : value($this->beforeRender, $this);
     }
 
-    public function afterRender(Closure $closure): static
+    /**
+     * @param  Closure(static $ctx): mixed  $callback
+     */
+    public function afterRender(Closure $callback): static
     {
-        $this->afterRender = $closure;
+        $this->afterRender = $callback;
 
         return $this;
     }
