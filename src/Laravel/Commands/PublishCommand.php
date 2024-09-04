@@ -84,7 +84,7 @@ class PublishCommand extends MoonShineCommand
 
     private function publishSystemResource(string $name, string $model): void
     {
-        $classPath = "/src/Resources/$name.php";
+        $classPath = "/src/Laravel/Resources/$name.php";
         $fullClassPath = moonshineConfig()->getDir("/Resources/$name.php");
         $targetNamespace = moonshineConfig()->getNamespace('\Resources');
 
@@ -94,7 +94,7 @@ class PublishCommand extends MoonShineCommand
         );
 
         $this->replaceInFile(
-            'namespace MoonShine\Resources;',
+            'namespace MoonShine\Laravel\Resources;',
             "namespace $targetNamespace;",
             $fullClassPath
         );
