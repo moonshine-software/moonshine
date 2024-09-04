@@ -209,6 +209,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
             $fields = $this
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
+                ->onlyVisible()
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
                     static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames()
@@ -366,7 +367,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                     ->class('w-10 text-center')
             );
 
-            foreach ($this->getPreparedFields() as $field) {
+            foreach ($this->getPreparedFields()->onlyVisible() as $field) {
                 $thContent = $field->isSortable() && ! $this->isPreview()
                     ?
                     (string) Link::make(
@@ -513,7 +514,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
      */
     protected function viewData(): array
     {
-        $columns = $this->getFields()->flatMap(
+        $columns = $this->getFields()->onlyVisible()->flatMap(
             static fn (FieldContract $field): ?array => $field->isColumnSelection()
                 ? [$field->getIdentity() => $field->getLabel()]
                 : null

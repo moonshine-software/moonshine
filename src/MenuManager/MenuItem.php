@@ -190,6 +190,7 @@ class MenuItem extends MenuElement
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
+                'previewLabel' => str($this->getLabel())->limit(2),
                 'icon' => $this->getIcon(6),
                 'top' => $this->isTopMode(),
             ]);

@@ -8,10 +8,12 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Core\Collections\Renderables;
+use MoonShine\MenuManager\MenuGroup;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Fields\ID;
@@ -170,6 +172,11 @@ class Fields extends Renderables implements FieldsContract
         $this->onlyFields()->map(
             static fn (FieldContract $field): FieldContract => $field->reset()
         );
+    }
+
+    public function onlyVisible(): static
+    {
+        return $this->filter(static fn (FieldContract $field): bool => $field->isSee());
     }
 
     public function onlyHasFields(): static

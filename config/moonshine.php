@@ -53,7 +53,7 @@ return [
     'layout' => AppLayout::class,
 
     'auth' => [
-        'enable' => true,
+        'enabled' => true,
         'guard' => 'moonshine',
         'model' => MoonshineUser::class,
         'middleware' => Authenticate::class,
