@@ -48,7 +48,7 @@ input[type='number'] {
   }
 
   &-inline {
-    @apply flex-row flex-wrap items-center justify-items-center;
+    @apply flex-row items-center justify-items-center;
 
     & > label + div {
       @apply w-full lg:w-0 lg:grow;
