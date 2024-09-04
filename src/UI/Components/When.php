@@ -13,12 +13,20 @@ class When extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.components';
 
+    protected array $valueComponents;
+
     public function __construct(
         protected Closure $condition,
         protected Closure $components,
         protected ?Closure $default = null
     ) {
         parent::__construct();
+
+        if (($this->condition)()) {
+            $this->valueComponents = ($this->components)();
+        } else {
+            $this->valueComponents = is_null($this->default) ? [] : ($this->default)();
+        }
     }
 
     /**
@@ -26,14 +34,8 @@ class When extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        if (($this->condition)()) {
-            $components = ($this->components)();
-        } else {
-            $components = is_null($this->default) ? [] : ($this->default)();
-        }
-
         return [
-            'components' => $components,
+            'components' => $this->valueComponents,
         ];
     }
 }
