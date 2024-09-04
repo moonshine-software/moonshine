@@ -13,7 +13,7 @@ class When extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.components';
 
-    protected array $valueComponents;
+    protected array $conditionComponents;
 
     public function __construct(
         protected Closure $condition,
@@ -23,9 +23,9 @@ class When extends MoonShineComponent
         parent::__construct();
 
         if (($this->condition)()) {
-            $this->valueComponents = ($this->components)();
+            $this->conditionComponents = ($this->components)();
         } else {
-            $this->valueComponents = is_null($this->default) ? [] : ($this->default)();
+            $this->conditionComponents = is_null($this->default) ? [] : ($this->default)();
         }
     }
 
@@ -35,7 +35,7 @@ class When extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'components' => $this->valueComponents,
+            'components' => $this->conditionComponents,
         ];
     }
 }
