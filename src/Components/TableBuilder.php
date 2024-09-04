@@ -72,6 +72,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
             $fields = $this
                 ->getFilledFields($raw, $casted, $index, $tableFields)
+                ->onlyVisible()
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
                     fn (Fields $f): Fields => $f->prepareReindex()
@@ -216,7 +217,7 @@ final class TableBuilder extends IterableComponent implements TableContract
 
         return [
                 'rows' => $this->rows(),
-                'fields' => $this->preparedFields(),
+                'fields' => $this->preparedFields()->onlyVisible(),
                 'name' => $this->getName(),
                 'hasPaginator' => $this->hasPaginator(),
                 'simple' => $this->isSimple(),
