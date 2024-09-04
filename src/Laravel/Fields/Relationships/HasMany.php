@@ -20,6 +20,7 @@ use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
+use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Fields\Field;
@@ -57,6 +58,8 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     protected ?ActionButtonContract $createButton = null;
 
     protected ?ActionButtonContract $editButton = null;
+
+    protected ?ActionGroup $buttons = null;
 
     protected ?Closure $modifyTable = null;
 
@@ -103,6 +106,21 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         return moonshineRequest()
             ->getResource()
             ?->getFormPageUrl($parentId) ?? '';
+    }
+
+    /**
+     * @param  list<ActionButtonContract>  $buttons
+     */
+    public function buttons(iterable $buttons): static
+    {
+        $this->buttons = ActionGroup::make($buttons);
+
+        return $this;
+    }
+
+    public function getButtons(): ActionGroup
+    {
+        return $this->buttons ?? ActionGroup::make();
     }
 
     /**
@@ -526,6 +544,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             'component' => $this->getComponent(),
             'isCreatable' => $this->isCreatable(),
             'createButton' => $this->getCreateButton(),
+            'buttons' => $this->getButtons(),
         ];
     }
 }
