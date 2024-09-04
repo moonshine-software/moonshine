@@ -74,6 +74,11 @@ final class Fields extends FormElements
         return $this->filter(static fn (Field $field): bool => ! $field instanceof HasFields);
     }
 
+    public function onlyVisible(): self
+    {
+        return $this->filter(static fn (Field $field): bool => $field->isSee($field->toValue()));
+    }
+
     /**
      * @throws Throwable
      */
