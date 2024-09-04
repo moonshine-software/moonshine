@@ -50,16 +50,16 @@ abstract class MoonShineCommand extends Command
 
         $content = str(file_get_contents($to));
 
-        if($content->contains($class)) {
+        if ($content->contains($class)) {
             return;
         }
 
-        $tab = static fn(int $times = 1): string => str_repeat(' ', $times * 4);
+        $tab = static fn (int $times = 1): string => str_repeat(' ', $times * 4);
 
         $headSection = $content->before('class ');
         $resourcesSection = $content->betweenFirst("protected function $method(): array", '}');
 
-        if($content->contains($use)) {
+        if ($content->contains($use)) {
             $use = '';
         }
 
@@ -70,7 +70,7 @@ abstract class MoonShineCommand extends Command
             ],
             [
                 $headSection->replaceLast(';', (";\nuse $namespace;" . ($use ? "\nuse $use;" : ''))),
-                $resourcesSection->replace("];", "{$tab()}$append,\n{$tab(2)}];")->value()
+                $resourcesSection->replace("];", "{$tab()}$append,\n{$tab(2)}];")->value(),
             ],
             $content->value()
         );
