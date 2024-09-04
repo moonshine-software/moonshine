@@ -106,10 +106,14 @@ class MakePageCommand extends MoonShineCommand
             )
         );
 
+        $prefix = str_contains($dir, 'Pages/')
+            ? str_replace('Pages/', '', $dir) . '\\'
+            : str_replace('Pages', '', $dir);
+
         self::addResourceOrPageToProviderFile(
             $className,
             page: true,
-            prefix: str_replace('Pages/', '', $dir) . '\\'
+            prefix: $prefix
         );
     }
 }
