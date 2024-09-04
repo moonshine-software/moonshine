@@ -21,7 +21,7 @@ trait WithInputExtensions
     }
 
     /** Just a sugar methods below */
-    public function copy(string $value = '[value]'): static
+    public function copy(string $value = '{{value}}'): static
     {
         $this->extension(new InputCopy($value));
 
