@@ -348,7 +348,7 @@ abstract class ModelResource extends Resource
         return $item;
     }
 
-    private function afterSave(Model $item, Fields $fields): Model
+    protected function afterSave(Model $item, Fields $fields): Model
     {
         $wasRecentlyCreated = $item->wasRecentlyCreated;
 
