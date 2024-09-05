@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\DependencyInjection;
 use Composer\InstalledVersions;
 use Illuminate\Support\Facades\Vite;
 use MoonShine\Contracts\AssetManager\AssetResolverContract;
-use MoonShine\Core\Core;
 
 final class AssetResolver implements AssetResolverContract
 {

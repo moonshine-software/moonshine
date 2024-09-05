@@ -13,7 +13,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Sets\UpdateOnPreviewPopover;
 
 trait UpdateOnPreview
