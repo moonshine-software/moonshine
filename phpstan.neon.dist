@@ -7,5 +7,4 @@ parameters:
     level: 1
 
     excludePaths:
-        - ./src/Http/Controllers/SocialiteController.php
-        - ./src/Traits/Makeable.php
+        - ./src/Support/src/Traits/Makeable.php
