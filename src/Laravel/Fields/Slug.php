@@ -37,7 +37,7 @@ class Slug extends Text
                 $fields,
                 fn ($fields): ?FieldContract => $fields
                 ->findByColumn($this->getColumn())
-                ?->setValue(str($title->toValue())->slug()->value())
+                ?->setValue(str($title->toValue())->slug($this->getSeparator())->value())
             );
         });
     }
