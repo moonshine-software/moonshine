@@ -7,8 +7,6 @@ namespace MoonShine\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\View\ComponentAttributeBag;
-use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Enums\ClickAction;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Exceptions\ResourceException;
