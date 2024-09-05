@@ -26,6 +26,8 @@ const vendorSafeList = [
 ]
 const clientSafeList = [
   'visible',
+  '!hidden',
+  '!block',
   'pointer-events-auto',
   'opacity-0',
   'opacity-100',
