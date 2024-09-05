@@ -10,18 +10,18 @@ use MoonShine\Contracts\UI\TableRowsContract;
 
 trait ResourceWithTableModifiers
 {
-    protected ?TableRowsContract $thead = null;
+    protected null|TableRowsContract|Closure $thead = null;
 
-    protected ?TableRowsContract $tbody = null;
+    protected null|TableRowsContract|Closure $tbody = null;
 
-    protected ?TableRowsContract $tfoot = null;
+    protected null|TableRowsContract|Closure $tfoot = null;
 
-    protected function thead(): ?TableRowsContract
+    protected function thead(): null|TableRowsContract|Closure
     {
         return null;
     }
 
-    public function getHeadRows(): ?TableRowsContract
+    public function getHeadRows(): null|TableRowsContract|Closure
     {
         if (! is_null($this->thead)) {
             return $this->thead;
@@ -30,12 +30,12 @@ trait ResourceWithTableModifiers
         return $this->thead = $this->thead();
     }
 
-    protected function tbody(): ?TableRowsContract
+    protected function tbody(): null|TableRowsContract|Closure
     {
         return null;
     }
 
-    public function getRows(): ?TableRowsContract
+    public function getRows(): null|TableRowsContract|Closure
     {
         if (! is_null($this->tbody)) {
             return $this->tbody;
@@ -44,12 +44,12 @@ trait ResourceWithTableModifiers
         return $this->tbody = $this->tbody();
     }
 
-    protected function tfoot(): ?TableRowsContract
+    protected function tfoot(): null|TableRowsContract|Closure
     {
         return null;
     }
 
-    public function getFootRows(): ?TableRowsContract
+    public function getFootRows(): null|TableRowsContract|Closure
     {
         if (! is_null($this->tfoot)) {
             return $this->tfoot;

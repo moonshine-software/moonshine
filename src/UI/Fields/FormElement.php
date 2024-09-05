@@ -365,7 +365,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
             $id = $this->attributes->get('id');
 
             $this->customAttributes([
-                $id ? 'id' : ':id' => $id ?? "\$id(`field`)",
+                $id ? 'id' : ':id' => $id ?? "\$id(`field-{$this->getFormName()}`)",
                 'name' => $this->getNameAttribute(),
             ]);
 

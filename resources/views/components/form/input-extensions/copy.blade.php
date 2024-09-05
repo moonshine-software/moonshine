@@ -2,7 +2,7 @@
     'value',
     'translates' => [],
 ])
-<button @click.prevent="copy()"
+<button @click.prevent="copy('{{ $value }}')"
         {{ $attributes->class(['expansion']) }}
         type="button"
         x-data="tooltip('{{ $translates['copied'] }}', {placement: 'top', trigger: 'click', delay: [0, 800]})"

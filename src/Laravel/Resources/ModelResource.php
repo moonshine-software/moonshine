@@ -19,11 +19,12 @@ use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
+use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use Throwable;
 
 /**
  * @template-covariant T of Model
- * @extends CrudResource<ModelCaster, ModelDataWrapper T>
+ * @extends CrudResource<ModelCaster, ModelDataWrapper, T>
  *
  */
 abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract

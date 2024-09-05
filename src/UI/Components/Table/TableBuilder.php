@@ -157,7 +157,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     }
 
     /**
-     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
+     * @param  TableRowsContract|Closure(TableRowsContract $default): TableRowsContract  $rows
      */
     public function rows(TableRowsContract|Closure $rows): self
     {
@@ -319,7 +319,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     }
 
     /**
-     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
+     * @param  TableRowsContract|Closure(TableRowsContract $default): TableRowsContract  $rows
      */
     public function headRows(TableRowsContract|Closure $rows): self
     {
@@ -416,7 +416,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     }
 
     /**
-     * @param  TableRowsContract|Closure(TableRow $default): TableRowsContract  $rows
+     * @param  TableRowsContract|Closure(TableRowsContract $default): TableRowsContract  $rows
      */
     public function footRows(TableRowsContract|Closure $rows): self
     {
