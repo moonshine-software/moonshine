@@ -1,19 +1,14 @@
 {
     "name": "moonshine/moonshine",
     "description": "Laravel administration panel",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "laravel",
         "admin",
         "dashboard",
         "moonshine"
     ],
-    "type": "library",
-    "homepage": "https://moonshine-laravel.com",
-    "license": "MIT",
-    "support": {
-        "issues": "https://github.com/moonshine-software/moonshine/issues",
-        "source": "https://github.com/moonshine-software/moonshine"
-    },
     "authors": [
         {
             "name": "Danil Shutsky",
@@ -21,49 +16,83 @@
             "homepage": "https://cutcode.dev"
         }
     ],
+    "homepage": "https://moonshine-laravel.com",
+    "support": {
+        "issues": "https://github.com/moonshine-software/moonshine/issues",
+        "source": "https://github.com/moonshine-software/moonshine"
+    },
     "require": {
-        "php": "^8.2|^8.3",
         "ext-curl": "*",
         "ext-json": "*",
+        "illuminate/contracts": "^11",
         "illuminate/support": "^11",
         "illuminate/view": "^11",
+        "lee-to/fast-attributes": "^0.1.0",
         "lee-to/laravel-package-command": "^0.9",
-        "symfony/psr-http-message-bridge": "^7",
         "nyholm/psr7": "^1",
-        "lee-to/fast-attributes": "^0.1.0"
+        "php": "^8.2",
+        "symfony/psr-http-message-bridge": "^7"
     },
     "require-dev": {
         "moonshine/import-export": "dev-master",
-        "pestphp/pest": "^2.34",
         "orchestra/testbench": "^9.0",
+        "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.4",
-        "rector/rector": "^1.0"
+        "rector/rector": "^1.0",
+        "symplify/monorepo-builder": "^11.2"
     },
+    "replace": {
+        "moonshine/asset-manager": "self.version",
+        "moonshine/color-manager": "self.version",
+        "moonshine/contracts": "self.version",
+        "moonshine/core": "self.version",
+        "moonshine/laravel": "self.version",
+        "moonshine/menu-manager": "self.version",
+        "moonshine/support": "self.version",
+        "moonshine/ui": "self.version"
+    },
+    "repositories": [
+        {
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "moonshine/import-export": "master"
+                }
+            },
+            "type": "github",
+            "url": "https://github.com/moonshine-software/import-export"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "MoonShine\\": "src/",
-            "MoonShine\\Database\\Factories\\": "database/factories/"
+            "MoonShine\\AssetManager\\": "src/AssetManager/src",
+            "MoonShine\\ColorManager\\": "src/ColorManager/src",
+            "MoonShine\\Contracts\\": "src/Contracts/src",
+            "MoonShine\\Core\\": "src/Core/src",
+            "MoonShine\\Laravel\\": "src/Laravel/src",
+            "MoonShine\\Laravel\\Database\\Factories\\": "src/Laravel/database/factories/",
+            "MoonShine\\MenuManager\\": "src/MenuManager/src",
+            "MoonShine\\Support\\": "src/Support/src",
+            "MoonShine\\UI\\": "src/UI/src"
         },
         "files": [
-            "src/Support/helpers.php",
-            "src/Laravel/helpers.php"
+            "src/Laravel/src/helpers.php",
+            "src/Support/src/helpers.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "MoonShine\\Tests\\": "tests/",
-            "MoonShine\\Database\\Factories\\": "database/factories/",
-            "App\\": "app/"
+            "App\\": "app/",
+            "MoonShine\\Tests\\": "tests/"
         }
     },
-    "conflict": {
-        "laravel/framework": "<10.48.0"
-    },
-    "scripts": {
-        "analyse": "vendor/bin/phpstan analyse src --memory-limit=-1",
-        "rector": "vendor/bin/rector process --clear-cache",
-        "test": "vendor/bin/pest",
-        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
@@ -72,21 +101,10 @@
             ]
         }
     },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
-    "repositories": [
-        {
-            "type": "github",
-            "url": "https://github.com/moonshine-software/import-export",
-            "options": {
-                "versions": {
-                    "moonshine/import-export": "master"
-                },
-                "symlink": true
-            }
-        }
-    ]
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse src --memory-limit=-1",
+        "rector": "vendor/bin/rector process --clear-cache",
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    }
 }

@@ -84,7 +84,7 @@ class TestCase extends Orchestra
         Factory::guessFactoryNamesUsing(function ($factory): string {
             $factoryBasename = class_basename($factory);
 
-            return "MoonShine\Database\Factories\\$factoryBasename" . 'Factory';
+            return "MoonShine\Laravel\Database\Factories\\$factoryBasename" . 'Factory';
         });
 
         return $this;
