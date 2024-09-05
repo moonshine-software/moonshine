@@ -10,20 +10,18 @@ use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
-        __DIR__ . '/config',
-        __DIR__ . '/lang',
-        __DIR__ . '/database',
-        __DIR__ . '/routes',
         __DIR__ . '/src',
     ]);
 
     $rectorConfig->skip([
         __DIR__ . '/app',
-        __DIR__ . '/public',
-        __DIR__ . '/resources',
         __DIR__ . '/vendor',
-        __DIR__ . '/stubs',
         __DIR__ . '/tests',
+        // UI
+        __DIR__ . '/src/UI/dist',
+        __DIR__ . '/src/UI/resources',
+        // Laravel
+        __DIR__ . '/src/Laravel/stubs',
         ExplicitBoolCompareRector::class,
         FirstClassCallableRector::class,
 

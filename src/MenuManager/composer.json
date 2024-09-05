@@ -1,0 +1,41 @@
+{
+    "name": "moonshine/menu-manager",
+    "description": "MoonShine menu manager package",
+    "keywords": [
+        "moonshine"
+    ],
+    "type": "library",
+    "homepage": "https://moonshine-laravel.com",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/moonshine-software/moonshine/issues",
+        "source": "https://github.com/moonshine-software/moonshine"
+    },
+    "authors": [
+        {
+            "name": "Danil Shutsky",
+            "email": "info@cutcode.ru",
+            "homepage": "https://cutcode.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "illuminate/support": "^11",
+        "moonshine/contracts": "self.version",
+        "moonshine/core": "self.version",
+        "moonshine/support": "self.version",
+        "moonshine/ui": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "MoonShine\\MenuManager\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
