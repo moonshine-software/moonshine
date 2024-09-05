@@ -57,9 +57,9 @@ final class Logo extends MoonShineComponent
     {
         if ($this->minimized) {
             $this->logoAttributes([
-                ':class' => "minimizedMenu && '!block'",
-            ])->logoSmallAttributes([
                 ':class' => "minimizedMenu && '!hidden'",
+            ])->logoSmallAttributes([
+                ':class' => "minimizedMenu && '!block'",
             ]);
         }
     }
