@@ -17,7 +17,12 @@
     'searchable' => false,
     'searchValue' => '',
     'name' => 'default',
-    'sticky' => false
+    'sticky' => false,
+    'thead' => null,
+    'tbody' => null,
+    'bodyBefore' => null,
+    'bodyAfter' => null,
+    'tfoot' => null,
 ])
 
 <div x-data="tableBuilder(
@@ -89,18 +94,26 @@
         >
             @if(!$vertical)
                 <x-slot:thead>
-                    <x-moonshine::table.head
-                        :rows="$rows"
-                        :fields="$fields"
-                        :actions="$bulkButtons"
-                        :asyncUrl="$asyncUrl"
-                        :preview="$preview"
-                    />
+                    @if($thead ?? false)
+                        {!! $thead !!}
+                    @else
+                        <x-moonshine::table.head
+                            :rows="$rows"
+                            :fields="$fields"
+                            :actions="$bulkButtons"
+                            :asyncUrl="$asyncUrl"
+                            :preview="$preview"
+                        />
+                    @endif
                 </x-slot:thead>
             @endif
 
             @if($rows->isNotEmpty())
                 <x-slot:tbody>
+                    {!! $bodyBefore ?? '' !!}
+                    @if($tbody ?? false)
+                        {!! $tbody !!}
+                    @else
                     <x-moonshine::table.body
                         :rows="$rows"
                         :vertical="$vertical"
@@ -111,18 +124,24 @@
                         :hasActions="$bulkButtons->isNotEmpty()"
                         :has-click-action="$attributes->get('data-click-action') !== null"
                     />
+                    @endif
+                    {!! $bodyAfter ?? '' !!}
                 </x-slot:tbody>
             @endif
 
             @if(!$preview)
-            <x-slot:tfoot
-                ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
-            >
-                <x-moonshine::table.foot
-                    :rows="$rows"
-                    :actions="$bulkButtons"
-                />
-            </x-slot:tfoot>
+                <x-slot:tfoot
+                    ::class="actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+                >
+                    @if($tfoot ?? false)
+                        {!! $tfoot !!}
+                    @else
+                    <x-moonshine::table.foot
+                        :rows="$rows"
+                        :actions="$bulkButtons"
+                    />
+                    @endif
+                </x-slot:tfoot>
             @endif
         </x-moonshine::table>
 

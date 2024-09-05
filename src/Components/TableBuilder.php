@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\ActionButtons\ActionButtons;
 use MoonShine\Contracts\Table\TableContract;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Fields\Fields;
@@ -36,6 +37,16 @@ final class TableBuilder extends IterableComponent implements TableContract
     protected ?Closure $systemTrAttributes = null;
 
     protected ?Closure $tdAttributes = null;
+
+    protected ?Closure $thead = null;
+
+    protected ?Closure $tbody = null;
+
+    protected ?Closure $bodyBefore = null;
+
+    protected ?Closure $bodyAfter = null;
+
+    protected ?Closure $tfoot = null;
 
     public function __construct(
         Fields|array $fields = [],
@@ -208,22 +219,80 @@ final class TableBuilder extends IterableComponent implements TableContract
     }
 
     /**
+     * @param  Closure(Fields $fields, self $ctx): string  $thead
+     */
+    public function thead(Closure $thead): self
+    {
+        $this->thead = $thead;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(Collection $rows, self $ctx): string  $tbody
+     */
+    public function tbody(Closure $tbody): self
+    {
+        $this->tbody = $tbody;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(ActionButtons $bulkButtons, self $ctx): string  $tfoot
+     */
+    public function tfoot(Closure $tfoot): self
+    {
+        $this->tfoot = $tfoot;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(Collection $rows, self $ctx): string  $before
+     */
+    public function bodyBefore(Closure $before): self
+    {
+        $this->bodyBefore = $before;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(Collection $rows, self $ctx): string  $after
+     */
+    public function bodyAfter(Closure $after): self
+    {
+        $this->bodyAfter = $after;
+
+        return $this;
+    }
+
+    /**
      * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array
     {
         $this->performBeforeRender();
+        $fields = $this->preparedFields()->onlyVisible();
+        $rows = $this->rows();
+        $bulkButtons = $this->getBulkButtons();
 
         return [
-                'rows' => $this->rows(),
-                'fields' => $this->preparedFields()->onlyVisible(),
+                'rows' => $rows,
+                'fields' => $fields,
+                'thead' => value($this->thead, $fields, $this),
+                'tbody' => value($this->tbody, $rows, $this),
+                'bodyBefore' => value($this->bodyBefore, $rows, $this),
+                'bodyAfter' => value($this->bodyAfter, $rows, $this),
+                'tfoot' => value($this->tfoot, $bulkButtons, $this),
                 'name' => $this->getName(),
                 'hasPaginator' => $this->hasPaginator(),
                 'simple' => $this->isSimple(),
                 'simplePaginate' => ! $this->getPaginator() instanceof LengthAwarePaginator,
                 'paginator' => $this->getPaginator(),
-                'bulkButtons' => $this->getBulkButtons(),
+                'bulkButtons' => $bulkButtons,
                 'async' => $this->isAsync(),
                 'asyncUrl' => $this->asyncUrl(),
                 'createButton' => $this->creatableButton,
