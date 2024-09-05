@@ -32,7 +32,7 @@ class Slug extends Text
                 $fields,
                 fn ($fields) => $fields
                 ->findByColumn($this->column())
-                ?->setValue(str($title->toValue())->slug()->value())
+                ?->setValue(str($title->toValue())->slug($this->getSeparator())->value())
             );
         });
     }
