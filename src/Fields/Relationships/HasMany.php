@@ -128,7 +128,7 @@ class HasMany extends ModelRelationField implements HasFields
     }
 
     /**
-     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
      */
     public function modifyTable(Closure $callback): self
     {
