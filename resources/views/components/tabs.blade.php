@@ -1,12 +1,25 @@
 @props([
     'tabs',
-    'contents',
-    'active',
+    'contents' => [],
+    'active' => null,
     'justifyAlign' => 'start',
     'isVertical' => false,
 ])
 
 @if($tabs)
+    @php
+        if ($contents === []) {
+            $tabs = collect($tabs)
+                ->mapWithKeys(fn($value, $name) => [Str::camel($name) => $value])
+                ->all();
+
+            $contents = collect($__laravel_slots ?? [])
+                ->mapWithKeys(fn($contentSlot, $name) => [Str::camel($name) => $contentSlot])
+                ->filter(fn($contentSlot, $name) => array_key_exists($name, $tabs))
+                ->all();
+        }
+    @endphp
+
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
         x-data="tabs(
