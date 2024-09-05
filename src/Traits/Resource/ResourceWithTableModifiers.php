@@ -13,7 +13,6 @@ use MoonShine\Fields\Fields;
 
 trait ResourceWithTableModifiers
 {
-
     public function trAttributes(): Closure
     {
         return fn (mixed $data, int $row, ComponentAttributeBag $attr): ComponentAttributeBag => $attr;
