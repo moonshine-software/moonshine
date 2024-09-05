@@ -154,7 +154,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @param  Closure(TableBuilderContract $table, bool $preview, static $ctx): TableBuilderContract  $callback
+     * @param  Closure(TableBuilderContract $table, bool $preview): TableBuilderContract  $callback
      */
     public function modifyTable(Closure $callback): static
     {

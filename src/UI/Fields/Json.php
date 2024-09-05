@@ -60,8 +60,6 @@ class Json extends Field implements
 
     protected ?Closure $modifyTable = null;
 
-    protected ?Closure $modifyCreateButton = null;
-
     protected ?Closure $modifyRemoveButton = null;
 
     /**
@@ -154,10 +152,6 @@ class Json extends Field implements
 
     public function getCreateButton(): ?ActionButtonContract
     {
-        if (! is_null($this->modifyCreateButton)) {
-            return value($this->creatableButton, $this->modifyCreateButton, $this);
-        }
-
         return $this->creatableButton;
     }
 
@@ -197,21 +191,11 @@ class Json extends Field implements
     }
 
     /**
-     * @param  Closure(TableBuilder $table, bool $preview, self $field): TableBuilder  $callback
+     * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
      */
     public function modifyTable(Closure $callback): self
     {
         $this->modifyTable = $callback;
-
-        return $this;
-    }
-
-    /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
-     */
-    public function modifyCreateButton(Closure $callback): self
-    {
-        $this->modifyCreateButton = $callback;
 
         return $this;
     }
