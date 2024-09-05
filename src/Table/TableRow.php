@@ -15,6 +15,9 @@ use MoonShine\Fields\ID;
 use MoonShine\Traits\Makeable;
 use Throwable;
 
+/**
+ * @method static static make(mixed $data, Fields $fields, ActionButtons $actions, ?Closure $trAttributes = null, ?Closure $tdAttributes = null, ?Closure $systemTrAttributes = null)
+ */
 final class TableRow implements MoonShineRenderable
 {
     use Makeable;
