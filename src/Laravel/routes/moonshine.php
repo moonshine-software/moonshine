@@ -36,7 +36,7 @@ Route::moonshine(static function (Router $router): void {
             ->name('profile.store');
     }
 
-    $router->middleware($authMiddleware)->group(function () use($pagePrefix): void {
+    $router->middleware($authMiddleware)->group(function () use ($pagePrefix): void {
         /**
          * @see EndpointsContract::home()
          */

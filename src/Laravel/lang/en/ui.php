@@ -74,8 +74,8 @@ return [
         'import' => [
             'imported' => 'Imported',
             'file_required' => 'File is required',
-            'extension_not_supported' => 'File extension not supported'
-        ]
+            'extension_not_supported' => 'File extension not supported',
+        ],
     ],
     'choices' => [
         'no_results' => 'No results found',
@@ -86,5 +86,5 @@ return [
         'add_item' => 'Press Enter to add ":value"',
         'max_item' => 'Only :count values can be added',
         'remove_item' => 'Remove item',
-    ]
+    ],
 ];
