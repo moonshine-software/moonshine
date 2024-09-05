@@ -6,8 +6,9 @@ namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Filesystem\Filesystem;
 
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use function Laravel\Prompts\{confirm, info, multiselect};
+
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:publish')]
