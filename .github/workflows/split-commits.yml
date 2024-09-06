@@ -28,4 +28,4 @@ jobs:
           persist-credentials: false
       - run: |
           repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
-          git push origin `git subtree push --prefix src/${{ matrix.package.namespace }} "$repo_url" ${{ github.ref_name }}`:3.x --force
+          git subtree push --prefix src/${{ matrix.package.namespace }} "$repo_url" ${{ github.ref_name }}
