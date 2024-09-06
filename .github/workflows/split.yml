@@ -41,6 +41,10 @@ jobs:
             split_repository: 'ui'
     steps:
       - uses: actions/checkout@v4
+      - name: Configure Git safe directory
+        run: |
+          git config --global --add safe.directory /tmp/monorepo_split/build_directory
+
       - uses: "symplify/monorepo-split-github-action@2.1"
         with:
           tag: ${GITHUB_REF#refs/tags/}
