@@ -1,0 +1,49 @@
+name: Split releases
+
+on:
+  release:
+    branches: ['3.x']
+    types: ['published']
+
+concurrency:
+  group: split
+
+env:
+  GH_TOKEN: ${{ secrets.SPLITTER_ACCESS_TOKEN }}
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - { namespace: AssetManager, repo: asset-manager }
+          - { namespace: ColorManager, repo: color-manager }
+          - { namespace: Contracts, repo: contracts }
+          - { namespace: Core, repo: core }
+          - { namespace: Laravel, repo: laravel }
+          - { namespace: MenuManager, repo: menu-manager }
+          - { namespace: Support, repo: support }
+          - { namespace: UI, repo: ui }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: |
+          version=${{ github.ref_name }}
+          composer_file="src/${{ matrix.package.namespace }}/composer.json"
+          if [ -f "$composer_file" ]; then
+            jq '.version = "'$version'"' "$composer_file" > tmp.json && mv tmp.json "$composer_file"
+            git add "$composer_file"
+            git commit -m "Update composer version to $version"
+          fi
+          split_sha=`git subtree split --prefix=src/${{ matrix.package.namespace }}`
+          repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
+          if [ -z $(git ls-remote --tags "$repo_url" | grep "$split_sha") ]; then \
+            gh release create ${{ github.ref_name }} \
+              --repo moonshine-software/${{ matrix.package.repo }} \
+              --target "$split_sha" \
+              --generate-notes \
+              --notes '[Full release information in MoonShine monorepo](https://github.com/moonshine-software/moonshine/releases/tag/${{ github.ref_name }}).'; \
+          fi

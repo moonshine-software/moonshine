@@ -1,0 +1,38 @@
+name: Split commits
+
+on:
+  push:
+    branches: ['3.x']
+
+concurrency:
+  group: split
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - { namespace: AssetManager, repo: asset-manager }
+          - { namespace: ColorManager, repo: color-manager }
+          - { namespace: Contracts, repo: contracts }
+          - { namespace: Core, repo: core }
+          - { namespace: Laravel, repo: laravel }
+          - { namespace: MenuManager, repo: menu-manager }
+          - { namespace: Support, repo: support }
+          - { namespace: UI, repo: ui }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: |
+          version=${{ github.ref_name }}
+          composer_file="src/${{ matrix.package.namespace }}/composer.json"
+          if [ -f "$composer_file" ]; then
+            jq '.version = "'$version'"' "$composer_file" > tmp.json && mv tmp.json "$composer_file"
+            git add "$composer_file"
+            git commit -m "Update composer version to $version"
+          fi
+          repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
+          git subtree push --prefix src/${{ matrix.package.namespace }} "$repo_url" ${{ github.ref_name }}
