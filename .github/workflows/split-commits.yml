@@ -27,6 +27,8 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
           version=${{ github.ref_name }}
           composer_file="src/${{ matrix.package.namespace }}/composer.json"
           if [ -f "$composer_file" ]; then
