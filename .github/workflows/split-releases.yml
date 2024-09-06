@@ -31,19 +31,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          version=${{ github.ref_name }}
-          composer_file="src/${{ matrix.package.namespace }}/composer.json"
-          if [ -f "$composer_file" ]; then
-            jq '.version = "'$version'"' "$composer_file" > tmp.json && mv tmp.json "$composer_file"
-
-            # Update dependencies with ^3.0
-            jq '(.require | .[] |= if . == "self.version" then "^3.0" else . end) as $require | .require = $require' "$composer_file" > tmp.json && mv tmp.json "$composer_file"
-
-            git add "$composer_file"
-            git commit -m "Update composer version and dependencies to $version"
-          fi
           split_sha=`git subtree split --prefix=src/${{ matrix.package.namespace }}`
           repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
           if [ -z $(git ls-remote --tags "$repo_url" | grep "$split_sha") ]; then \
