@@ -22,7 +22,7 @@
         "php": "^8.2",
         "ext-curl": "*",
         "ext-json": "*",
-        "illuminate/support": "^11",
+        "illuminate/support": "^10|^11",
         "moonshine/contracts": "self.version",
         "moonshine/support": "self.version"
     },

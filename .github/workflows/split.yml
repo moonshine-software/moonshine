@@ -8,7 +8,7 @@ on:
       - '*'
 
 env:
-  GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.SUPER_ACCESS_TOKEN }}
 
 jobs:
   packages_split:
@@ -64,5 +64,5 @@ jobs:
           repository_organization: 'moonshine-software'
           repository_name: '${{ matrix.package.split_repository }}'
 
-          user_name: "moonshine-ci"
-          user_email: "info@moonshine-ci.com"
+          user_name: "lee-to"
+          user_email: "thecutcode@gmail.com"
