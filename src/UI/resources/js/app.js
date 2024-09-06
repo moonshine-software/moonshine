@@ -6,7 +6,6 @@ import {MoonShine} from './moonshine.js'
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
 
-
 // Alpine components
 import formBuilder from './Components/FormBuilder'
 import tableBuilder from './Components/TableBuilder'

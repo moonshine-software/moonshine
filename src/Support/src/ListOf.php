@@ -86,4 +86,5 @@ final class ListOf
     {
         return $this->getItems();
     }
+
 }

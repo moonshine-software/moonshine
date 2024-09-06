@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 3.x
+    tags:
+      - '*'
   pull_request: null
 
   release:
