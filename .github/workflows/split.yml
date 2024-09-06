@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - 3.x
-    tags:
-      - '*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.SUPER_ACCESS_TOKEN }}
@@ -37,7 +35,7 @@ jobs:
           - local_path: 'UI'
             split_repository: 'ui'
     steps:
-      -   uses: actions/checkout@v3
+      -   uses: actions/checkout@v4
 
       # no tag
       -
@@ -49,8 +47,8 @@ jobs:
           repository_organization: 'moonshine-software'
           repository_name: '${{ matrix.package.split_repository }}'
 
-          user_name: "moonshine-ci"
-          user_email: "info@moonshine-ci.com"
+          user_name: "lee-to"
+          user_email: "thecutcode@gmail.com"
 
       # with tag
       -

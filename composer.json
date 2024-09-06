@@ -24,9 +24,9 @@
     "require": {
         "ext-curl": "*",
         "ext-json": "*",
-        "illuminate/contracts": "^11",
-        "illuminate/support": "^11",
-        "illuminate/view": "^11",
+        "illuminate/contracts": "^10|^11",
+        "illuminate/support": "^10|^11",
+        "illuminate/view": "^10|^11",
         "lee-to/fast-attributes": "^0.1.0",
         "lee-to/laravel-package-command": "^0.9",
         "nyholm/psr7": "^1",
