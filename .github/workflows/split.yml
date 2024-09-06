@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - 3.x
+  pull_request: null
+
+  release:
+    types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ secrets.SUPER_ACCESS_TOKEN }}
@@ -17,8 +21,7 @@ jobs:
       matrix:
         # define package to repository map
         package:
-          -
-            local_path: 'AssetManager'
+          - local_path: 'AssetManager'
             split_repository: 'asset-manager'
           - local_path: 'ColorManager'
             split_repository: 'color-manager'
@@ -35,25 +38,9 @@ jobs:
           - local_path: 'UI'
             split_repository: 'ui'
     steps:
-      -   uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # no tag
-      -
-        if: "!startsWith(github.ref, 'refs/tags/')"
-        uses: "symplify/monorepo-split-github-action@2.1"
-        with:
-          package_directory: 'src/${{ matrix.package.local_path }}'
-
-          repository_organization: 'moonshine-software'
-          repository_name: '${{ matrix.package.split_repository }}'
-
-          user_name: "lee-to"
-          user_email: "thecutcode@gmail.com"
-
-      # with tag
-      -
-        if: "startsWith(github.ref, 'refs/tags/')"
-        uses: "symplify/monorepo-split-github-action@2.1"
+      - uses: "symplify/monorepo-split-github-action@2.1"
         with:
           tag: ${GITHUB_REF#refs/tags/}
 
