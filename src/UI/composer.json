@@ -24,10 +24,10 @@
         "ext-curl": "*",
         "ext-json": "*",
         "illuminate/view": "^10|^11",
-        "moonshine/asset-manager": "self.version",
-        "moonshine/contracts": "self.version",
-        "moonshine/core": "self.version",
-        "moonshine/support": "self.version"
+        "moonshine/asset-manager": "^3.0",
+        "moonshine/contracts": "^3.0",
+        "moonshine/core": "^3.0",
+        "moonshine/support": "^3.0"
     },
     "autoload": {
         "psr-4": {

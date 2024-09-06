@@ -23,8 +23,8 @@
         "ext-curl": "*",
         "ext-json": "*",
         "illuminate/support": "^10|^11",
-        "moonshine/contracts": "self.version",
-        "moonshine/support": "self.version"
+        "moonshine/contracts": "^3.0",
+        "moonshine/support": "^3.0"
     },
     "autoload": {
         "psr-4": {
