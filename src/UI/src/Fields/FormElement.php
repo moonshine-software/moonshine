@@ -27,7 +27,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 {
     use NowOn;
     use WithQuickFormElementAttributes;
-    public $propertyAttributes;
 
     protected ?FormElement $parent = null;
 
@@ -44,6 +43,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     protected ?Closure $onChangeUrl = null;
 
     protected static ?Closure $requestValueResolver = null;
+
+    protected array $propertyAttributes = ['type'];
 
     public function __construct()
     {

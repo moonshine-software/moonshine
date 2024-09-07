@@ -77,8 +77,6 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $nullable = false;
 
-    protected array $propertyAttributes = ['type'];
-
     protected bool $isBeforeLabel = false;
 
     protected bool $isInsideLabel = false;
