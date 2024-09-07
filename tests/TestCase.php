@@ -64,14 +64,16 @@ class TestCase extends Orchestra
     {
         $app['config']->set('app.debug', 'true');
         $app['config']->set('moonshine.cache', 'array');
+        $app['config']->set('moonshine.use_migrations', true);
+        $app['config']->set('moonshine.use_notifications', true);
+        $app['config']->set('moonshine.use_database_notifications', true);
+        $app['config']->set('moonshine.auth.enabled', true);
     }
 
     protected function performApplication(): static
     {
         $this->artisan(InstallCommand::class, [
-            '--without-user' => true,
-            '--without-migrations' => true,
-            '--default-layout' => true,
+            '--tests-mode' => true
         ]);
 
         $this->artisan('optimize:clear');

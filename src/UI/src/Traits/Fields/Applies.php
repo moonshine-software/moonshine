@@ -33,7 +33,7 @@ trait Applies
             return true;
         }
 
-        return value($this->canApply, $this);
+        return (bool) value($this->canApply, $this);
     }
 
     protected function resolveOnApply(): ?Closure

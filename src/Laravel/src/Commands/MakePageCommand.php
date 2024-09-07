@@ -15,7 +15,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:page')]
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--force} {--crud} {--dir=} {--extends=}';
+    protected $signature = 'moonshine:page {className?} {--force} {--without-register} {--crud} {--dir=} {--extends=}';
 
     protected $description = 'Create page';
 
@@ -106,14 +106,16 @@ class MakePageCommand extends MoonShineCommand
             )
         );
 
-        $prefix = str_contains($dir, 'Pages/')
-            ? str_replace('Pages/', '', $dir) . '\\'
-            : str_replace('Pages', '', $dir);
+        if(!$this->option('without-register')) {
+            $prefix = str_contains($dir, 'Pages/')
+                ? str_replace('Pages/', '', $dir) . '\\'
+                : str_replace('Pages', '', $dir);
 
-        self::addResourceOrPageToProviderFile(
-            $className,
-            page: true,
-            prefix: $prefix
-        );
+            self::addResourceOrPageToProviderFile(
+                $className,
+                page: true,
+                prefix: $prefix
+            );
+        }
     }
 }

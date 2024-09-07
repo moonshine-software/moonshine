@@ -5,38 +5,28 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Traits\NowOn;
-use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
-use MoonShine\Support\Traits\Makeable;
-use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\WithQuickFormElementAttributes;
-use MoonShine\UI\Traits\HasCanSee;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 abstract class FormElement extends MoonShineComponent implements HasAssetsContract
 {
-    use Makeable;
     use NowOn;
     use WithQuickFormElementAttributes;
-    use WithComponentAttributes;
-    use WithViewRenderer;
-    use HasCanSee;
-    use Conditionable;
 
     protected ?FormElement $parent = null;
 
@@ -52,17 +42,30 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected ?Closure $onChangeUrl = null;
 
-    protected ?Closure $beforeRender = null;
-
-    protected ?Closure $afterRender = null;
-
     protected static ?Closure $requestValueResolver = null;
 
     public function __construct()
     {
         parent::__construct();
 
+        $this->attributes = new MoonShineComponentAttributeBag(
+            $this->getPropertyAttributes()->toArray()
+        );
+
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
+    }
+
+    protected function getPropertyAttributes(): Collection
+    {
+        return collect($this->propertyAttributes)->mapWithKeys(
+            function ($attr): array {
+                $property = (string) str($attr)->camel();
+
+                return isset($this->{$property})
+                    ? [$attr => $this->{$property}]
+                    : [];
+            }
+        );
     }
 
     public function getIdentity(string $index = null): string
@@ -271,6 +274,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     /**
      * @param  Closure(mixed $data, mixed $value, self $field): string  $url
      * @param  string[]  $events
+     *
      * @return $this
      */
     public function onChangeUrl(
@@ -316,63 +320,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return true;
     }
 
-    public function beforeRender(Closure $callback): static
-    {
-        $this->beforeRender = $callback;
-
-        return $this;
-    }
-
-    public function getBeforeRender(): Renderable|string
-    {
-        return is_null($this->beforeRender)
-            ? ''
-            : value($this->beforeRender, $this);
-    }
-
-    /**
-     * @param  Closure(static $ctx): mixed  $callback
-     */
-    public function afterRender(Closure $callback): static
-    {
-        $this->afterRender = $callback;
-
-        return $this;
-    }
-
-    public function getAfterRender(): Renderable|string
-    {
-        return is_null($this->afterRender)
-            ? ''
-            : value($this->afterRender, $this);
-    }
-
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function prepareBeforeRender(): void
-    {
-        if (! is_null($this->onChangeUrl) && $this->isOnChangeCondition()) {
-            $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
-
-            $this->customAttributes(
-                $this->getOnChangeEventAttributes($onChangeUrl),
-            );
-        }
-
-        if (! $this->isPreviewMode()) {
-            $id = $this->attributes->get('id');
-
-            $this->customAttributes([
-                $id ? 'id' : ':id' => $id ?? "\$id(`field-{$this->getFormName()}`)",
-                'name' => $this->getNameAttribute(),
-            ]);
-
-            $this->resolveValidationErrorClasses();
-        }
-    }
-
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -396,17 +343,9 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         }
     }
 
-    protected function resolveRender(): Renderable|Closure|string
+    protected function shouldUseAssets(): bool
     {
-        if ($this->isPreviewMode()) {
-            return $this->preview();
-        }
-
-        if ($this->getView() === '') {
-            return $this->toValue();
-        }
-
-        return $this->renderView();
+        return ! $this->isPreviewMode();
     }
 
     protected function systemViewData(): array

@@ -146,8 +146,8 @@ trait UpdateOnPreview
 
     protected function resolveRender(): Renderable|Closure|string
     {
-        if (! $this->isUpdateOnPreview() || $this->isRawMode()) {
-            return parent::resolveRender();
+        if ($this->isUpdateOnPreview() && $this->isPreviewMode()) {
+            $this->defaultMode();
         }
 
         if ($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
@@ -164,10 +164,6 @@ trait UpdateOnPreview
             );
         }
 
-        if ($this->getView() === '') {
-            return $this->toValue();
-        }
-
-        return $this->renderView();
+        return parent::resolveRender();
     }
 }

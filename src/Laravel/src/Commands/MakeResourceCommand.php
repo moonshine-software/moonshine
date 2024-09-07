@@ -77,6 +77,7 @@ class MakeResourceCommand extends MoonShineCommand
             $this->call(MakePageCommand::class, [
                 'className' => $name,
                 '--crud' => true,
+                '--without-register' => true,
             ]);
 
             $pageNamespace = static fn (string $name): string => moonshineConfig()->getNamespace(

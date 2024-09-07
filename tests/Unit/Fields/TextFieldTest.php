@@ -67,3 +67,17 @@ it('apply', function (): void {
         ->toBe($data['field_name'])
     ;
 });
+
+it('visual states', function () {
+    $field = Text::make('Field name')->fill('<p>Hello world</p>');
+
+    expect((string) $field->render())
+        ->toContain('input', 'type="text"')
+        ->and((string) $field->flushRenderCache()->previewMode()->render())
+        ->toBe('&lt;p&gt;Hello world&lt;/p&gt;')
+        ->and((string) $field->flushRenderCache()->rawMode()->render())
+        ->toBe('<p>Hello world</p>')
+        ->and((string) $field->flushRenderCache()->defaultMode()->rawMode()->previewMode()->render())
+        ->toContain('input', 'type="text"')
+    ;
+});

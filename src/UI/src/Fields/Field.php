@@ -6,13 +6,11 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Url;
@@ -24,6 +22,8 @@ use MoonShine\UI\Traits\Fields\WithHint;
 use MoonShine\UI\Traits\Fields\WithLink;
 use MoonShine\UI\Traits\Fields\WithSorts;
 use MoonShine\UI\Traits\WithLabel;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
@@ -53,15 +53,17 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $resolveValueOnce = false;
 
-    protected bool $rawMode = false;
-
     protected mixed $rawValue = null;
 
     protected ?Closure $rawValueCallback = null;
 
     protected ?Closure $fromRaw = null;
 
+    protected bool $defaultMode = false;
+
     protected bool $previewMode = false;
+
+    protected bool $rawMode = false;
 
     protected ?Closure $previewCallback = null;
 
@@ -87,16 +89,18 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $hasOld = true;
 
+    protected ?Closure $beforeRender = null;
+
+    protected ?Closure $afterRender = null;
+
+    protected ?Closure $renderCallback = null;
+
     public function __construct(
         Closure|string|null $label = null,
         ?string $column = null,
         ?Closure $formatted = null
     ) {
         parent::__construct();
-
-        $this->attributes = new MoonShineComponentAttributeBag(
-            $this->getPropertyAttributes()->toArray()
-        );
 
         $this->setLabel($label ?? $this->getLabel());
         $this->setColumn(
@@ -106,19 +110,6 @@ abstract class Field extends FormElement implements FieldContract
         if (! is_null($formatted)) {
             $this->setFormattedValueCallback($formatted);
         }
-    }
-
-    protected function getPropertyAttributes(): Collection
-    {
-        return collect($this->propertyAttributes)->mapWithKeys(
-            function ($attr): array {
-                $property = (string) str($attr)->camel();
-
-                return isset($this->{$property})
-                    ? [$attr => $this->{$property}]
-                    : [];
-            }
-        );
     }
 
     public function getColumn(): string
@@ -405,7 +396,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $value, self $field): mixed  $callback
+     * @param  Closure(mixed $value, static $field): mixed  $callback
      */
     public function changePreview(Closure $callback): static
     {
@@ -431,13 +422,26 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
+    public function isDefaultMode(): bool
+    {
+        return $this->defaultMode;
+    }
+
+    public function defaultMode(): static
+    {
+        $this->defaultMode = true;
+
+        return $this;
+    }
+
     public function isRawValueModified(): bool
     {
         return ! is_null($this->rawValueCallback);
     }
 
     /**
-     * @param  Closure(mixed $raw, static): mixed  $callback
+     * @param  Closure(mixed $raw, mixed $original, static): mixed  $callback
+     *
      * @return $this
      */
     public function modifyRawValue(Closure $callback): static
@@ -449,6 +453,7 @@ abstract class Field extends FormElement implements FieldContract
 
     /**
      * @param  Closure(mixed $raw, static): mixed  $callback
+     *
      * @return $this
      */
     public function fromRaw(Closure $callback): static
@@ -464,7 +469,7 @@ abstract class Field extends FormElement implements FieldContract
             return $raw;
         }
 
-        return value($this->fromRaw, $raw, $this->getData()?->getOriginal(), $this);
+        return value($this->fromRaw, $raw, $this);
     }
 
     public function preview(): Renderable|string
@@ -561,9 +566,79 @@ abstract class Field extends FormElement implements FieldContract
         return $this->isBeforeLabel;
     }
 
-    protected function shouldUseAssets(): bool
+    /**
+     * @param  Closure(static $ctx): mixed  $callback
+     */
+    public function beforeRender(Closure $callback): static
     {
-        return ! $this->isPreviewMode();
+        $this->beforeRender = $callback;
+
+        return $this;
+    }
+
+    public function getBeforeRender(): Renderable|string
+    {
+        return is_null($this->beforeRender)
+            ? ''
+            : value($this->beforeRender, $this);
+    }
+
+    /**
+     * @param  Closure(static $ctx): mixed  $callback
+     */
+    public function afterRender(Closure $callback): static
+    {
+        $this->afterRender = $callback;
+
+        return $this;
+    }
+
+    public function getAfterRender(): Renderable|string
+    {
+        return is_null($this->afterRender)
+            ? ''
+            : value($this->afterRender, $this);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function prepareBeforeRender(): void
+    {
+        if (! is_null($this->onChangeUrl) && $this->isOnChangeCondition()) {
+            $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
+
+            $this->customAttributes(
+                $this->getOnChangeEventAttributes($onChangeUrl),
+            );
+        }
+
+        if (! $this->isPreviewMode()) {
+            $id = $this->attributes->get('id');
+
+            $this->customAttributes([
+                $id ? 'id' : ':id' => $id ?? "\$id(`field-{$this->getFormName()}`)",
+                'name' => $this->getNameAttribute(),
+            ]);
+
+            $this->resolveValidationErrorClasses();
+        }
+    }
+
+    /**
+     * @param  Closure(mixed $value, static $ctx): static  $callback
+     */
+    public function changeRender(Closure $callback): static
+    {
+        $this->renderCallback = $callback;
+
+        return $this;
+    }
+
+    public function isRenderChanged(): bool
+    {
+        return ! is_null($this->renderCallback);
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
@@ -576,6 +651,31 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         return $view;
+    }
+
+    protected function resolveRender(): Renderable|Closure|string
+    {
+        if (! $this->isDefaultMode() && $this->isRawMode()) {
+            $this->previewMode();
+        }
+
+        if (! $this->isDefaultMode() && $this->isPreviewMode()) {
+            return $this->preview();
+        }
+
+        if ($this->isRenderChanged()) {
+            return value(
+                $this->renderCallback,
+                $this->toValue(),
+                $this,
+            );
+        }
+
+        if ($this->getView() === '') {
+            return $this->toValue();
+        }
+
+        return $this->renderView();
     }
 
     protected function systemViewData(): array

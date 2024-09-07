@@ -110,5 +110,11 @@ class PublishCommand extends MoonShineCommand
             "use $targetNamespace\\$name;",
             app_path('Providers/MoonShineServiceProvider.php')
         );
+
+        $provider = file_get_contents(app_path('Providers/MoonShineServiceProvider.php'));
+
+        if(!str_contains($provider, "$targetNamespace\\$name")) {
+            self::addResourceOrPageToProviderFile($name);
+        }
     }
 }

@@ -130,6 +130,13 @@ trait WithViewRenderer
         return $this->cachedRender = $this->prepareRender($view);
     }
 
+    public function flushRenderCache(): static
+    {
+        $this->cachedRender = null;
+
+        return $this;
+    }
+
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
         return $view;
