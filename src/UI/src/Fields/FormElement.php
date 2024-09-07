@@ -25,9 +25,9 @@ use Psr\Container\NotFoundExceptionInterface;
 
 abstract class FormElement extends MoonShineComponent implements HasAssetsContract
 {
-    public $propertyAttributes;
     use NowOn;
     use WithQuickFormElementAttributes;
+    public $propertyAttributes;
 
     protected ?FormElement $parent = null;
 

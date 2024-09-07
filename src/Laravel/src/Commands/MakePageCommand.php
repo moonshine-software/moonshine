@@ -106,7 +106,7 @@ class MakePageCommand extends MoonShineCommand
             )
         );
 
-        if(!$this->option('without-register')) {
+        if (! $this->option('without-register')) {
             $prefix = str_contains($dir, 'Pages/')
                 ? str_replace('Pages/', '', $dir) . '\\'
                 : str_replace('Pages', '', $dir);

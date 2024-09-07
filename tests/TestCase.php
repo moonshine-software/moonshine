@@ -73,7 +73,7 @@ class TestCase extends Orchestra
     protected function performApplication(): static
     {
         $this->artisan(InstallCommand::class, [
-            '--tests-mode' => true
+            '--tests-mode' => true,
         ]);
 
         $this->artisan('optimize:clear');
