@@ -21,18 +21,18 @@ class Position extends Preview
         ]);
     }
 
-    protected function resolveValue(): mixed
+    protected function resolveValue(): string
     {
-        return $this->toFormattedValue();
+        return (string) $this->toFormattedValue();
     }
 
-    protected function resolveRawValue(): mixed
+    protected function resolveRawValue(): string
     {
-        return $this->toFormattedValue();
+        return (string) $this->toFormattedValue();
     }
 
     protected function resolvePreview(): Renderable|string
     {
-        return $this->render();
+        return (string) $this->toFormattedValue();
     }
 }
