@@ -9,45 +9,78 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasAssetsContract;
-use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Traits\NowOn;
-use MoonShine\Support\AlpineJs;
+use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\DTOs\AsyncCallback;
-use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Traits\Fields\Applies;
+use MoonShine\UI\Traits\Fields\ShowWhen;
 use MoonShine\UI\Traits\Fields\WithQuickFormElementAttributes;
+use MoonShine\UI\Traits\WithLabel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 abstract class FormElement extends MoonShineComponent implements HasAssetsContract
 {
+    use WithLabel;
+    use ShowWhen;
+    use Applies;
     use NowOn;
     use WithQuickFormElementAttributes;
 
+    protected array $propertyAttributes = ['type'];
+
     protected ?FormElement $parent = null;
-
-    protected bool $isGroup = false;
-
-    protected bool $withWrapper = true;
-
-    protected ?string $requestKeyPrefix = null;
 
     protected ?string $formName = null;
 
-    protected MoonShineComponentAttributeBag $wrapperAttributes;
+    protected string $column;
 
-    protected ?Closure $onChangeUrl = null;
+    protected ?string $virtualColumn = null;
+
+    protected mixed $value = null;
+
+    protected mixed $resolvedValue = null;
+
+    protected bool $isValueResolved = false;
+
+    protected bool $resolveValueOnce = false;
+
+    protected mixed $rawValue = null;
+
+    protected ?Closure $rawValueCallback = null;
+
+    protected mixed $formattedValue = null;
+
+    protected ?Closure $formattedValueCallback = null;
+
+    protected ?Closure $fromRaw = null;
+
+    protected ?Closure $fillCallback = null;
+
+    protected ?Closure $afterFillCallback = null;
+
+    protected mixed $data = null;
+
+    protected int $rowIndex = 0;
 
     protected static ?Closure $requestValueResolver = null;
 
-    protected array $propertyAttributes = ['type'];
+    protected ?string $requestKeyPrefix = null;
 
-    public function __construct()
-    {
+    protected bool $hasOld = true;
+
+    protected MoonShineComponentAttributeBag $wrapperAttributes;
+
+    public function __construct(
+        Closure|string|null $label = null,
+        ?string $column = null,
+        ?Closure $formatted = null
+    ) {
         parent::__construct();
 
         $this->attributes = new MoonShineComponentAttributeBag(
@@ -55,6 +88,15 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         );
 
         $this->wrapperAttributes = new MoonShineComponentAttributeBag();
+
+        $this->setLabel($label ?? $this->getLabel());
+        $this->setColumn(
+            trim($column ?? str($this->getLabel())->lower()->snake()->value())
+        );
+
+        if (! is_null($formatted)) {
+            $this->setFormattedValueCallback($formatted);
+        }
     }
 
     protected function getPropertyAttributes(): Collection
@@ -70,15 +112,16 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         );
     }
 
-    public function getIdentity(string $index = null): string
+    public function formName(?string $formName = null): static
     {
-        return (string) str($this->getNameAttribute($index))
-            ->replace(['[', ']'], '_')
-            ->replaceMatches('/\${index\d+}/', '')
-            ->replaceMatches('/_{2,}/', '_')
-            ->trim('_')
-            ->snake()
-            ->slug('_');
+        $this->formName = $formName;
+
+        return $this;
+    }
+
+    public function getFormName(): ?string
+    {
+        return $this->formName;
     }
 
     public function getParent(): ?FormElement
@@ -98,37 +141,327 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this;
     }
 
-    protected function group(): static
+    public function getIdentity(string $index = null): string
     {
-        $this->isGroup = true;
+        return (string) str($this->getNameAttribute($index))
+            ->replace(['[', ']'], '_')
+            ->replaceMatches('/\${index\d+}/', '')
+            ->replaceMatches('/_{2,}/', '_')
+            ->trim('_')
+            ->snake()
+            ->slug('_');
+    }
+
+    public function getColumn(): string
+    {
+        return $this->column;
+    }
+
+    public function setColumn(string $column): static
+    {
+        if ($this->showWhenState) {
+            foreach (array_keys($this->showWhenCondition) as $key) {
+                $this->showWhenCondition[$key]['showField'] = $column;
+            }
+        }
+
+        $this->column = $column;
 
         return $this;
     }
 
-    public function isGroup(): bool
+    public function virtualColumn(string $column): static
     {
-        return $this->isGroup;
-    }
-
-    public function horizontal(): static
-    {
-        $this->customWrapperAttributes([
-            'class' => 'form-group-inline',
-        ]);
+        $this->virtualColumn = $column;
 
         return $this;
     }
 
-    public function withoutWrapper(mixed $condition = null): static
+    public function getVirtualColumn(): string
     {
-        $this->withWrapper = value($condition, $this) ?? false;
+        return $this->virtualColumn ?? $this->getColumn();
+    }
+
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
+    {
+        if ($this->isFillChanged()) {
+            return value(
+                $this->fillCallback,
+                is_null($casted) ? $raw : $casted->getOriginal(),
+                $this
+            );
+        }
+
+        $default = new FieldEmptyValue();
+
+        $value = data_get(is_null($casted) ? $raw : $casted->getOriginal(), $this->getColumn(), $default);
+
+        if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
+            $value = data_get($raw, $this->getColumn(), $default);
+        }
+
+        return $value;
+    }
+
+    protected function reformatFilledValue(mixed $data): mixed
+    {
+        return $data;
+    }
+
+    protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
+    {
+        $this->setData($casted);
+        $this->setRowIndex($index);
+
+        $value = $this->prepareFill($raw, $casted);
+
+        if ($value instanceof FieldEmptyValue) {
+            return $this;
+        }
+
+        $this->setRawValue($value);
+
+        $value = $this->reformatFilledValue($value);
+
+        $this->setValue($value);
+
+        if (! is_null($this->afterFillCallback)) {
+            return value($this->afterFillCallback, $this);
+        }
 
         return $this;
     }
 
-    public function hasWrapper(): bool
+    public function fillData(mixed $value, int $index = 0): static
     {
-        return $this->withWrapper;
+        $casted = $value instanceof DataWrapperContract
+            ? $value
+            : new MixedDataWrapper($value);
+
+        return $this->resolveFill(
+            $casted->toArray(),
+            $casted,
+            $index
+        );
+    }
+
+    public function fillCast(mixed $value, ?DataCasterContract $cast = null, int $index = 0): static
+    {
+        $casted = $cast ? $cast->cast($value) : new MixedDataWrapper($value);
+
+        return $this->fillData($casted, $index);
+    }
+
+    public function fill(mixed $value = null, ?DataWrapperContract $casted = null, int $index = 0): static
+    {
+        return $this->resolveFill([
+            $this->getColumn() => $value,
+        ], $casted, $index);
+    }
+
+    public function toRawValue(): mixed
+    {
+        if ($this->isRawValueModified()) {
+            return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
+        }
+
+        return $this->resolveRawValue();
+    }
+
+    protected function resolveRawValue(): mixed
+    {
+        return $this->rawValue;
+    }
+
+    protected function setRawValue(mixed $value = null): static
+    {
+        $this->rawValue = $value;
+
+        return $this;
+    }
+
+    public function setValue(mixed $value = null): static
+    {
+        $this->value = $value;
+
+        return $this->setRawValue($value);
+    }
+
+    protected function setData(?DataWrapperContract $data = null): static
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    public function getData(): ?DataWrapperContract
+    {
+        return $this->data;
+    }
+
+    public function toValue(bool $withDefault = true): mixed
+    {
+        $default = $withDefault && $this instanceof HasDefaultValueContract
+            ? $this->getDefault()
+            : null;
+
+        return $this->isBlankValue() ? $default : $this->value;
+    }
+
+    public function getValue(bool $withOld = true): mixed
+    {
+        if ($this->isValueResolved && $this->resolveValueOnce) {
+            return $this->resolvedValue;
+        }
+
+        if (! $this->hasOld) {
+            $withOld = false;
+        }
+
+        $empty = new FieldEmptyValue();
+        $old = $withOld
+            ? $this->getCore()->getRequest()->getOld($this->getNameDot(), $empty)
+            : $empty;
+
+        if ($withOld && $old !== $empty) {
+            return $old;
+        }
+
+        $this->isValueResolved = true;
+
+        return $this->resolvedValue = $this->resolveValue();
+    }
+
+    protected function resolveValue(): mixed
+    {
+        return $this->toValue();
+    }
+
+    protected function isBlankValue(): bool
+    {
+        return is_null($this->value);
+    }
+
+    protected function setFormattedValue(mixed $value = null): static
+    {
+        $this->formattedValue = $value;
+
+        return $this;
+    }
+
+    protected function setFormattedValueCallback(Closure $formattedValueCallback): void
+    {
+        $this->formattedValueCallback = $formattedValueCallback;
+    }
+
+    public function getFormattedValueCallback(): ?Closure
+    {
+        return $this->formattedValueCallback;
+    }
+
+    public function toFormattedValue(): mixed
+    {
+        if (! is_null($this->getFormattedValueCallback())) {
+            $this->setFormattedValue(
+                value(
+                    $this->getFormattedValueCallback(),
+                    $this->getData()?->getOriginal(),
+                    $this->getRowIndex()
+                )
+            );
+        }
+
+        return $this->formattedValue ?? $this->toValue(withDefault: false);
+    }
+
+    protected function setRowIndex(int $index = 0): static
+    {
+        $this->rowIndex = $index;
+
+        return $this;
+    }
+
+    public function getRowIndex(): int
+    {
+        return $this->rowIndex;
+    }
+
+    /**
+     * @param  Closure(mixed $data, static $field): mixed  $callback
+     */
+    public function changeFill(Closure $callback): static
+    {
+        $this->fillCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(static $ctx): static  $callback
+     */
+    public function afterFill(Closure $callback): static
+    {
+        $this->afterFillCallback = $callback;
+
+        return $this;
+    }
+
+    public function isFillChanged(): bool
+    {
+        return ! is_null($this->fillCallback);
+    }
+
+    public function isRawValueModified(): bool
+    {
+        return ! is_null($this->rawValueCallback);
+    }
+
+    /**
+     * @param  Closure(mixed $raw, mixed $original, static): mixed  $callback
+     *
+     * @return $this
+     */
+    public function modifyRawValue(Closure $callback): static
+    {
+        $this->rawValueCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(mixed $raw, static): mixed  $callback
+     *
+     * @return $this
+     */
+    public function fromRaw(Closure $callback): static
+    {
+        $this->fromRaw = $callback;
+
+        return $this;
+    }
+
+    public function getValueFromRaw(mixed $raw): mixed
+    {
+        if (is_null($this->fromRaw)) {
+            return $raw;
+        }
+
+        return value($this->fromRaw, $raw, $this);
+    }
+
+    public function getDefaultIfExists(): mixed
+    {
+        return $this instanceof HasDefaultValueContract
+            ? $this->getDefault()
+            : false;
+    }
+
+    public function reset(): static
+    {
+        return $this
+            ->setValue()
+            ->setRawValue()
+            ->setFormattedValue();
     }
 
     public function customWrapperAttributes(array $attributes): static
@@ -220,106 +553,9 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
             ->implode('');
     }
 
-    public function getDefaultIfExists(): mixed
-    {
-        return $this instanceof HasDefaultValueContract
-            ? $this->getDefault()
-            : false;
-    }
-
     public function getRequestKeyPrefix(): ?string
     {
         return $this->requestKeyPrefix;
-    }
-
-    public function formName(?string $formName = null): static
-    {
-        $this->formName = $formName;
-
-        return $this;
-    }
-
-    public function getFormName(): ?string
-    {
-        return $this->formName;
-    }
-
-    public function onChangeMethod(
-        string $method,
-        array|Closure $params = [],
-        ?string $message = null,
-        ?string $selector = null,
-        array $events = [],
-        ?AsyncCallback $callback = null,
-        ?PageContract $page = null,
-        ?ResourceContract $resource = null,
-    ): static {
-        $url = static fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
-            method: $method,
-            message: $message,
-            params: array_filter([
-                'resourceItem' => $data?->getKey(),
-                ...value($params, $data?->getOriginal()),
-            ], static fn ($value) => filled($value)),
-            page: $page,
-            resource: $resource,
-        );
-
-        return $this->onChangeUrl(
-            url: $url,
-            events: $events,
-            selector: $selector,
-            callback: $callback
-        );
-    }
-
-    /**
-     * @param  Closure(mixed $data, mixed $value, self $field): string  $url
-     * @param  string[]  $events
-     *
-     * @return $this
-     */
-    public function onChangeUrl(
-        Closure $url,
-        HttpMethod $method = HttpMethod::GET,
-        array $events = [],
-        ?string $selector = null,
-        ?AsyncCallback $callback = null,
-    ): static {
-        $this->onChangeUrl = $url;
-
-        return $this->onChangeAttributes(
-            method: $method,
-            events: $events,
-            selector: $selector,
-            callback: $callback
-        );
-    }
-
-    protected function onChangeAttributes(
-        HttpMethod $method = HttpMethod::GET,
-        array $events = [],
-        ?string $selector = null,
-        ?AsyncCallback $callback = null
-    ): static {
-        return $this->customAttributes(
-            AlpineJs::asyncUrlDataAttributes(
-                method: $method,
-                events: $events,
-                selector: $selector,
-                callback: $callback,
-            )
-        );
-    }
-
-    protected function getOnChangeEventAttributes(?string $url = null): array
-    {
-        return $url ? AlpineJs::requestWithFieldValue($url, $this->getColumn()) : [];
-    }
-
-    protected function isOnChangeCondition(): bool
-    {
-        return true;
     }
 
     /**
@@ -354,6 +590,9 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     {
         return [
             'attributes' => $this->getAttributes(),
+            'label' => $this->getLabel(),
+            'column' => $this->getColumn(),
+            'value' => $this->getValue(),
             'errors' => data_get($this->getErrors(), $this->getNameDot()),
         ];
     }

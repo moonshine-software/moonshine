@@ -79,7 +79,7 @@ use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
-class MoonShineServiceProvider extends ServiceProvider
+final class MoonShineServiceProvider extends ServiceProvider
 {
     protected array $commands = [
         InstallCommand::class,

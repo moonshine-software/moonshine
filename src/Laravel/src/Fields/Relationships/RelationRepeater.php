@@ -124,7 +124,7 @@ class RelationRepeater extends ModelRelationField implements
     /**
      * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
      */
-    public function modifyTable(Closure $callback): self
+    public function modifyTable(Closure $callback): static
     {
         $this->modifyTable = $callback;
 

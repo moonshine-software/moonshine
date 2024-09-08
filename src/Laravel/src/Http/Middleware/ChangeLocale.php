@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ChangeLocale
+final class ChangeLocale
 {
     final public const KEY = '_lang';
 
