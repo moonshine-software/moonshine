@@ -189,7 +189,7 @@ final class MoonShineServiceProvider extends ServiceProvider
                 function () use ($callback, $resource): void {
                     Router::group(
                         $resource ? [
-                            'prefix' => 'resource/{resourceUri}',
+                            'prefix' => '{resourceUri}',
                         ] : [],
                         fn () => $callback($this)
                     );

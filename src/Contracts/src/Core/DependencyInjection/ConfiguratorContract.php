@@ -10,6 +10,10 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Contracts\UI\LayoutContract;
 
+/**
+ * @template-covariant I of ConfiguratorContract
+ * @mixin I
+ */
 interface ConfiguratorContract extends ArrayAccess
 {
     public function getTitle(): string;

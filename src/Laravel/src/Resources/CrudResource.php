@@ -14,6 +14,7 @@ use MoonShine\Core\TypeCasts\MixedDataCaster;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Traits\Resource\ResourceActions;
 use MoonShine\Laravel\Traits\Resource\ResourceCrudRouter;
 use MoonShine\Laravel\Traits\Resource\ResourceEvents;

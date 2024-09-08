@@ -10,8 +10,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
+use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\UI\AbstractLayout;
@@ -336,6 +338,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->authorizationRules;
     }
 
+    /**
+     * @param  Closure(ResourceContract $ctx, mixed $user, Ability $ability, mixed $data): bool  $rule
+     */
     public function authorizationRules(Closure $rule): self
     {
         $this->authorizationRules->add($rule);

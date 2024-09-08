@@ -31,6 +31,11 @@ final class ListOf
             ->toArray();
     }
 
+    public function empty(): self
+    {
+        return new self($this->getType(), []);
+    }
+
     /**
      * @param  object|class-string<T>  ...$data
      *

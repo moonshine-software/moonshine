@@ -72,7 +72,7 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
 
         $checkCustomRules = moonshineConfig()
             ->getAuthorizationRules()
-            ->every(fn ($rule) => $rule($this, $user, $ability->value, $this->getItem() ?? $this->getDataInstance()));
+            ->every(fn ($rule) => $rule($this, $user, $ability, $this->getItem() ?? $this->getDataInstance()));
 
         if (! $checkCustomRules) {
             return false;
