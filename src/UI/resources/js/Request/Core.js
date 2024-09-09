@@ -21,6 +21,15 @@ export default function request(
     beforeCallback(componentRequestData.beforeFunction, t.$el, t)
   }
 
+  const inputs = t.$el.querySelectorAll('[name]')
+  if(inputs.length > 0) {
+    inputs.forEach(function(element) {
+      if(element.classList.contains('form-invalid')) {
+        element.classList.remove('form-invalid')
+      }
+    })
+  }
+
   axios({
     url: url,
     method: method,
@@ -102,6 +111,16 @@ export default function request(
       }
 
       const data = errorResponse.response.data
+
+      if(data.errors) {
+        for (let key in data.errors) {
+          let formattedKey = key.replace(/\.(\d+|\w+)/g, '[$1]')
+          const input = t.$el.querySelector(`[name="${formattedKey}"]`)
+          if(input) {
+            input.classList.add('form-invalid')
+          }
+        }
+      }
 
       if (componentRequestData.hasErrorCallback()) {
         componentRequestData.errorCallback(data, t)
