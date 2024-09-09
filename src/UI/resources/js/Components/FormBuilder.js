@@ -201,12 +201,12 @@ export default (name = '', initData = {}, reactive = {}) => ({
       .withAfterErrorCallback(function () {
         submitState(form, false)
       })
-      .withErrorCallback(function (data){
-        if(data.errors) {
+      .withErrorCallback(function (data) {
+        if (data.errors) {
           for (let key in data.errors) {
             let formattedKey = key.replace(/\.(\d+|\w+)/g, '[$1]')
             const input = t.$el.querySelector(`[name="${formattedKey}"]`)
-            if(input) {
+            if (input) {
               input.classList.add('form-invalid')
             }
           }
@@ -214,10 +214,10 @@ export default (name = '', initData = {}, reactive = {}) => ({
       })
 
     const inputs = t.$el.querySelectorAll('[name]')
-    
-    if(inputs.length > 0) {
-      inputs.forEach(function(element) {
-        if(element.classList.contains('form-invalid')) {
+
+    if (inputs.length > 0) {
+      inputs.forEach(function (element) {
+        if (element.classList.contains('form-invalid')) {
           element.classList.remove('form-invalid')
         }
       })
