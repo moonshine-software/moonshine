@@ -366,7 +366,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
                 value(
                     $this->getFormattedValueCallback(),
                     $this->getData()?->getOriginal(),
-                    $this->getRowIndex()
+                    $this->getRowIndex(),
+                    $this
                 )
             );
         }

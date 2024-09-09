@@ -170,7 +170,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                 value(
                     $this->getFormattedValueCallback(),
                     $value ?? $this->getRelation()?->getModel(),
-                    $this->getRowIndex()
+                    $this->getRowIndex(),
+                    $this
                 )
             );
         }
