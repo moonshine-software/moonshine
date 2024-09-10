@@ -333,7 +333,7 @@ function submitState(form, loading = true, reset = false) {
 }
 
 function inputsErrors(data, form) {
-  if (! data.errors) {
+  if (!data.errors) {
     return
   }
   for (let key in data.errors) {
