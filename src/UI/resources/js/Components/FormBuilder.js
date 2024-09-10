@@ -143,6 +143,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
         const data = errorResponse.response.data
 
+        inputsErrors(data, t.$el)
+
         let errors = ''
         let errorsData = data.errors
         for (const error in errorsData) {
@@ -202,26 +204,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
         submitState(form, false)
       })
       .withErrorCallback(function (data) {
-        if (data.errors) {
-          for (let key in data.errors) {
-            let formattedKey = key.replace(/\.(\d+|\w+)/g, '[$1]')
-            const input = t.$el.querySelector(`[name="${formattedKey}"]`)
-            if (input) {
-              input.classList.add('form-invalid')
-            }
-          }
-        }
+        inputsErrors(data, t.$el)
       })
-
-    const inputs = t.$el.querySelectorAll('[name]')
-
-    if (inputs.length > 0) {
-      inputs.forEach(function (element) {
-        if (element.classList.contains('form-invalid')) {
-          element.classList.remove('form-invalid')
-        }
-      })
-    }
 
     request(
       t,
@@ -334,7 +318,29 @@ function submitState(form, loading = true, reset = false) {
       form.reset()
     }
   } else {
+    const inputs = form.querySelectorAll('[name]')
+    if (inputs.length > 0) {
+      inputs.forEach(function (element) {
+        if (element.classList.contains('form-invalid')) {
+          element.classList.remove('form-invalid')
+        }
+      })
+    }
+
     form.querySelector('.js-form-submit-button').setAttribute('disabled', 'true')
     form.querySelector('.js-form-submit-button-loader').style.display = 'block'
+  }
+}
+
+function inputsErrors(data, form) {
+  if (! data.errors) {
+    return
+  }
+  for (let key in data.errors) {
+    let formattedKey = key.replace(/\.(\d+|\w+)/g, '[$1]')
+    const input = form.querySelector(`[name="${formattedKey}"]`)
+    if (input) {
+      input.classList.add('form-invalid')
+    }
   }
 }
