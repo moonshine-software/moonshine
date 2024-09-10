@@ -12,7 +12,7 @@ use MoonShine\Contracts\AssetManager\AssetElementsContract;
 use MoonShine\Contracts\AssetManager\AssetResolverContract;
 
 /**
- * @extends Collection<int, AssetElementContract>
+ * @extends Collection<array-key, AssetElementContract>
  */
 final class AssetElements extends Collection implements AssetElementsContract
 {

@@ -10,6 +10,8 @@ use Traversable;
 
 /**
  * @template-covariant T
+ *
+ * @template-implements Traversable<array-key, FieldContract>
  */
 interface FieldsContract extends Traversable
 {

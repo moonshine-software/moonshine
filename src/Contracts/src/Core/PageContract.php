@@ -6,6 +6,11 @@ namespace MoonShine\Contracts\Core;
 
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 
+/**
+ * @template-covariant  I of PageContract
+
+ * @mixin I
+ */
 interface PageContract
 {
     public function getUriKey(): string;

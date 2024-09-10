@@ -8,7 +8,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 final readonly class MixedDataWrapper implements DataWrapperContract
 {
-    public function __construct(private mixed $data, private readonly string|int|null $key = null)
+    public function __construct(private mixed $data, private string|int|null $key = null)
     {
     }
 

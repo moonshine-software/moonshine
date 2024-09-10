@@ -10,9 +10,7 @@ use MoonShine\Contracts\UI\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
 
 /**
- * @template TKey of array-key
- *
- * @extends Collection<TKey, Handler>
+ * @extends Collection<array-key, Handler>
  */
 final class Handlers extends Collection
 {

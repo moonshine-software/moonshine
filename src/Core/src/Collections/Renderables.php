@@ -17,9 +17,8 @@ use Throwable;
 
 /**
  * @template-covariant T
- * @template TKey of array-key
  *
- * @extends Collection<TKey, T>
+ * @extends Collection<array-key, T>
  */
 abstract class Renderables extends Collection implements RenderablesContract
 {

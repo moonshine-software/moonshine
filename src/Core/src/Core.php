@@ -20,7 +20,9 @@ use MoonShine\Contracts\Core\ResourcesContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Memoize\MemoizeRepository;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 abstract class Core implements CoreContract
 {
@@ -64,11 +66,6 @@ abstract class Core implements CoreContract
 
     abstract public function isProduction(): bool;
 
-    /**
-     * @template T
-     * @param class-string<T>|null $id
-     * @return T|ContainerInterface
-     */
     abstract public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
 
     abstract public function getStorage(...$parameters): StorageContract;
@@ -106,8 +103,8 @@ abstract class Core implements CoreContract
     }
 
     /**
-     * @template-covariant T of FieldsContract
-     * @return T
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getFieldsCollection(iterable $items = []): FieldsContract
     {
@@ -138,6 +135,30 @@ abstract class Core implements CoreContract
         MemoizeRepository::getInstance()->flush();
     }
 
+    private function resolveInstances(iterable $items): array
+    {
+        $targets = [];
+
+        foreach ($items as $item) {
+            if (is_string($item) && isset($this->instances[$item])) {
+                $targets[] = $this->instances[$item];
+
+                continue;
+            }
+
+            $instance = is_string($item) ? $this->getContainer()->get($item) : $item;
+            $this->instances[$instance::class] = $instance;
+            $targets[] = $instance;
+        }
+
+        return $targets;
+    }
+
+    public function getInstances(string $class): mixed
+    {
+        return $this->instances[$class] ?? $this->getContainer($class);
+    }
+
     /**
      * Register resources in the system
      *
@@ -160,7 +181,7 @@ abstract class Core implements CoreContract
     /**
      * Get collection of registered resources
      *
-     * @return Resources<int, ResourceContract>
+     * @return Resources<array-key, ResourceContract>
      */
     public function getResources(): ResourcesContract
     {
@@ -169,35 +190,6 @@ abstract class Core implements CoreContract
                 $this->resources
             )
         );
-    }
-
-    private function resolveInstances(iterable $items): array
-    {
-        $targets = [];
-
-        foreach ($items as $item) {
-            if (is_string($item) && isset($this->instances[$item])) {
-                $targets[] = $this->instances[$item];
-
-                continue;
-            }
-
-            $instance = is_string($item) ? $this->getContainer()->get($item) : $item;
-            $this->instances[$instance::class] = $instance;
-            $targets[] = $instance;
-        }
-
-        return $targets;
-    }
-
-    /**
-     * @template-covariant I
-     * @param class-string<I> $class
-     * @return ?I
-     */
-    public function getInstances(string $class): mixed
-    {
-        return $this->instances[$class] ?? $this->getContainer($class);
     }
 
     /**
@@ -221,6 +213,8 @@ abstract class Core implements CoreContract
 
     /**
      * Get collection of registered pages
+     *
+     * @return Pages<array-key, PageContract>
      */
     public function getPages(): Pages
     {

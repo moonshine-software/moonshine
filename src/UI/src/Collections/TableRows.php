@@ -11,9 +11,7 @@ use MoonShine\Contracts\UI\TableRowsContract;
 use MoonShine\UI\Components\Table\TableRow;
 
 /**
- * @template TKey of array-key
- *
- * @extends Collection<TKey, TableRow>
+ * @extends Collection<array-key, TableRow>
  */
 final class TableRows extends Collection implements TableRowsContract
 {

@@ -7,6 +7,10 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 
+/**
+ * @template-covariant I
+ * @mixin I
+ */
 interface AppliesRegisterContract
 {
     public function type(string $type): static;

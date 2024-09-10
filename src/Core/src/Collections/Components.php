@@ -13,7 +13,7 @@ use Throwable;
 
 /**
  * @template-covariant F of FieldsContract
- * @extends Renderables<int, RenderableContract>
+ * @extends Renderables<array-key, RenderableContract>
  */
 final class Components extends Renderables
 {

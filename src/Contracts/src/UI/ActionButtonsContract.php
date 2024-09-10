@@ -7,6 +7,9 @@ namespace MoonShine\Contracts\UI;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use Traversable;
 
+/**
+ * @template-implements Traversable<array-key, ActionButtonContract>
+ */
 interface ActionButtonsContract extends Traversable
 {
     public function fill(?DataWrapperContract $item): self;

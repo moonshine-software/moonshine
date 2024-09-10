@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 /**
- * @implements DataWrapperContract<Model>
+ * @template T of Model
+ *
+ * @implements DataWrapperContract<T>
  */
 final readonly class ModelDataWrapper implements DataWrapperContract
 {

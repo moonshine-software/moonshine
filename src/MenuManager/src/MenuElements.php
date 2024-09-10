@@ -10,7 +10,7 @@ use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 
 /**
- * @extends Collection<int, MenuElementContract>
+ * @extends Collection<array-key, MenuElementContract>
  */
 final class MenuElements extends Collection implements MenuElementsContract
 {

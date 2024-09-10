@@ -3,7 +3,7 @@
 namespace Illuminate\Support\Facades {
 
     /**
-     * @method static self moonshine(\Closure $callback, bool $resource = false)
+     * @method static self moonshine(\Closure $callback, bool $withResource = false, bool $withPage = false, bool $withAuthenticate = false)
      */
     class Route
     {
@@ -14,7 +14,7 @@ namespace Illuminate\Support\Facades {
 namespace Illuminate\Routing {
 
     /**
-     * @method self moonshine(\Closure $callback, bool $resource = false)
+     * @method self moonshine(\Closure $callback, bool $withResource = false, bool $withPage = false, bool $withAuthenticate = false)
      */
     class Router
     {

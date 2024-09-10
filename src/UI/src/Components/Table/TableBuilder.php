@@ -26,7 +26,7 @@ use MoonShine\UI\Traits\Table\TableStates;
 use Throwable;
 
 /**
- * @method static static make(FieldsContract|array $fields = [], iterable $items = [])
+ * @method static static make(iterable $fields = [], iterable $items = [])
  */
 final class TableBuilder extends IterableComponent implements TableBuilderContract, WithoutExtractionContract
 {
@@ -57,7 +57,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     protected MoonShineComponentAttributeBag $footAttributes;
 
     public function __construct(
-        FieldsContract|array $fields = [],
+        iterable $fields = [],
         iterable $items = [],
     ) {
         parent::__construct();
@@ -203,7 +203,8 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
             );
         }
 
-        foreach ($this->getItems() as $index => $data) {
+        $index = 0;
+        foreach ($this->getItems() as $data) {
             $casted = $this->castData($data);
             $cells = TableCells::make();
 
@@ -246,6 +247,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                     $rows->pushRow($cells, $key ?? $cellIndex);
                 }
 
+                $index++;
                 continue;
             }
 
@@ -276,6 +278,8 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                 $key,
                 builder: $trAttributes
             );
+
+            $index++;
         }
 
         return $rows->when(

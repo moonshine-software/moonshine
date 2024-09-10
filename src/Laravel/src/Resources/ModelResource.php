@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Gate;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
@@ -19,18 +21,20 @@ use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
-use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use Throwable;
 
 /**
- * @template-covariant T of Model
- * @extends CrudResource<ModelCaster, ModelDataWrapper, T>
+ * @template-covariant TData of Model
+ * @template-covariant TIndexPage of PageContract
+ * @template-covariant TFormPage of PageContract
+ * @template-covariant TDetailPage of PageContract
  *
+ * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields>
  */
 abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract
 {
     /**
-     * @use ResourceModelQuery<T>
+     * @use ResourceModelQuery<TData>
      */
     use ResourceModelQuery;
 
@@ -45,7 +49,7 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
     }
 
     /**
-     * @return T
+     * @return TData
      */
     public function getModel(): Model
     {
@@ -57,6 +61,9 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
         return $this->getModel();
     }
 
+    /**
+     * @return ModelCaster<TData>
+     */
     public function getCaster(): DataCasterContract
     {
         return new ModelCaster($this->model);
@@ -107,7 +114,8 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
     }
 
     /**
-     * @param T $item
+     * @param TData $item
+     * @param ?Fields $fields
      * @throws Throwable
      */
     public function delete(mixed $item, ?FieldsContract $fields = null): bool
@@ -136,8 +144,9 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
     }
 
     /**
-     * @param T $item
-     * @return T
+     * @param TData $item
+     * @param ?Fields $fields
+     * @return TData
      *
      * @throws ResourceException
      * @throws Throwable
@@ -179,8 +188,8 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
     public function fieldApply(FieldContract $field): Closure
     {
         /**
-         * @param T $item
-         * @return T
+         * @param TData $item
+         * @return TData
          */
         return static function (mixed $item) use ($field): mixed {
             if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
@@ -196,8 +205,9 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
     }
 
     /**
-     * @param T $item
-     * @return T
+     * @param TData $item
+     * @param Fields $fields
+     * @return TData
      */
     protected function afterSave(mixed $item, FieldsContract $fields): mixed
     {

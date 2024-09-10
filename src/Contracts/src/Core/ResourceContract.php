@@ -6,15 +6,20 @@ namespace MoonShine\Contracts\Core;
 
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 
+/**
+ * @template-covariant I of ResourceContract
+
+ * @mixin I
+ */
 interface ResourceContract
 {
     public function getPages(): PagesContract;
 
+    public function getRouter(): RouterContract;
+
     public function getUriKey(): string;
 
     public function getUrl(): string;
-
-    public function getRouter(): RouterContract;
 
     public function getTitle(): string;
 

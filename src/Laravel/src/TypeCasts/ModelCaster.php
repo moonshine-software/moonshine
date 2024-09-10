@@ -14,6 +14,8 @@ use MoonShine\Core\Exceptions\MoonShineException;
 
 /**
  * @template-covariant T of Model
+ *
+ * @implements DataCasterContract<T>
  */
 final readonly class ModelCaster implements DataCasterContract
 {
@@ -30,9 +32,9 @@ final readonly class ModelCaster implements DataCasterContract
     }
 
     /**
-     * @return DataWrapperContract<T>
+     * @return ModelDataWrapper<T>
      */
-    public function cast(mixed $data): DataWrapperContract
+    public function cast(mixed $data): ModelDataWrapper
     {
         if (is_array($data)) {
             /** @var T $model */
@@ -44,9 +46,6 @@ final readonly class ModelCaster implements DataCasterContract
         return new ModelDataWrapper($data);
     }
 
-    /**
-     * @throws MoonShineException
-     */
     public function paginatorCast(mixed $data): ?PaginatorContract
     {
         if (! $data instanceof Paginator && ! $data instanceof CursorPaginator) {

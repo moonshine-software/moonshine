@@ -7,6 +7,11 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 
+/**
+ * @template-covariant I of RouterContract
+
+ * @mixin I
+ */
 interface RouterContract
 {
     public function to(string $name = '', array $params = []): string;

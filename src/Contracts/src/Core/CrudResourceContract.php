@@ -9,44 +9,57 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 /**
- * @template-covariant T
- * @template-covariant C of iterable
+ * @template-covariant TData
+ * @template-covariant TIndexPage of PageContract
+ * @template-covariant TFormPage of PageContract
+ * @template-covariant TDetailPage of PageContract
+ * @template-covariant TFields of FieldsContract
+ * @template-covariant TItems of iterable
  */
 interface CrudResourceContract
 {
     /**
-     * @return DataCasterContract<T>
+     * @return DataCasterContract<TData>
      */
     public function getCaster(): DataCasterContract;
 
     /**
-     * @return ?DataWrapperContract<T>
+     * @return ?DataWrapperContract<TData>
      */
     public function getCastedData(): ?DataWrapperContract;
 
     /**
-     * @return ?T
+     * @return ?TData
      */
     public function getDataInstance(): mixed;
 
+    /**
+     * @return ?PageContract<TIndexPage>
+     */
     public function getIndexPage(): ?PageContract;
 
+    /**
+     * @return ?PageContract<TFormPage>
+     */
     public function getFormPage(): ?PageContract;
 
+    /**
+     * @return ?PageContract<TDetailPage>
+     */
     public function getDetailPage(): ?PageContract;
 
     /**
-     * @return ?T
+     * @return ?TData
      */
     public function getItem(): mixed;
 
     /**
-     * @return C
+     * @return TItems
      */
     public function getItems(): mixed;
 
     /**
-     * @return ?T
+     * @return ?TData
      */
     public function findItem(bool $orFail = false): mixed;
 
@@ -56,15 +69,17 @@ interface CrudResourceContract
     public function massDelete(array $ids): void;
 
     /**
-     * @param  T  $item
+     * @param  TData  $item
+     * @param ?TFields $fields
      *
      */
     public function delete(mixed $item, ?FieldsContract $fields = null): bool;
 
     /**
-     * @param  T  $item
+     * @param  TData  $item
+     * @param ?TFields $fields
      *
-     * @return T
+     * @return TData
      */
     public function save(mixed $item, ?FieldsContract $fields = null): mixed;
 }

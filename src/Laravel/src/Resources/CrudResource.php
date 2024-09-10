@@ -30,9 +30,14 @@ use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 
 /**
- * @template-covariant TCaster of DataCasterContract
- * @template-covariant TCastedData of DataWrapperContract
  * @template-covariant TData of mixed
+ * @template-covariant TIndexPage of PageContract
+ * @template-covariant TFormPage of PageContract
+ * @template-covariant TDetailPage of PageContract
+ * @template-covariant TFields of FieldsContract
+ * @template-covariant TItems of iterable
+ *
+ * @implements CrudResourceContract<TData, TIndexPage, TFormPage, TDetailPage, TFields, TItems>
  */
 abstract class CrudResource extends Resource implements CrudResourceContract
 {
@@ -51,7 +56,7 @@ abstract class CrudResource extends Resource implements CrudResourceContract
     /** @use ResourceEvents<TData> */
     use ResourceEvents;
 
-    /** @use ResourceQuery<TData> */
+    /** @use ResourceQuery<TData, TItems> */
     use ResourceQuery;
 
     protected string $column = 'id';
@@ -128,11 +133,17 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         return $this->getPages()->indexPage();
     }
 
+    /**
+     * @return ?PageContract<TFormPage>
+     */
     public function getFormPage(): ?PageContract
     {
         return $this->getPages()->formPage();
     }
 
+    /**
+     * @return ?PageContract<TDetailPage>
+     */
     public function getDetailPage(): ?PageContract
     {
         return $this->getPages()->detailPage();
@@ -143,9 +154,6 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         return new MixedDataCaster($this->casterKeyName);
     }
 
-    /**
-     * @return ?DataWrapperContract<TData>
-     */
     public function getCastedData(): ?DataWrapperContract
     {
         if (is_null($this->getItem())) {

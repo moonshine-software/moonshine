@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\DependencyInjection;
 use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Core\Core;
 use MoonShine\Core\Storage\FileStorage;
-use Psr\Container\ContainerInterface;
 
 final class MoonShine extends Core
 {
@@ -43,11 +42,6 @@ final class MoonShine extends Core
         return $this->getContainer()->isProduction();
     }
 
-    /**
-     * @template T
-     * @param class-string<T>|null $id
-     * @return T|ContainerInterface
-     */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed
     {
         if (! is_null($id)) {

@@ -9,9 +9,7 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 
 /**
- * @template TKey of array-key
- *
- * @extends Collection<TKey, ResourceContract>
+ * @extends Collection<array-key, ResourceContract>
  */
 final class Resources extends Collection implements ResourcesContract
 {

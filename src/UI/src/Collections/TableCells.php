@@ -11,9 +11,7 @@ use MoonShine\Contracts\UI\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
 
 /**
- * @template TKey of array-key
- *
- * @extends Collection<TKey, TableTd>
+ * @extends Collection<array-key, TableTd>
  */
 final class TableCells extends Collection implements TableCellsContract
 {

@@ -12,7 +12,7 @@ use MoonShine\Support\Attributes\SearchUsingFullText;
 
 /**
  * @template-covariant T
- * @template-covariant C of iterable
+ * @template-covariant TItems of iterable
  */
 trait ResourceQuery
 {
@@ -40,7 +40,7 @@ trait ResourceQuery
     protected iterable $queryParams = [];
 
     /**
-     * @return C
+     * @return TItems
      */
     abstract public function getItems(): mixed;
 

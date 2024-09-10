@@ -14,7 +14,10 @@ use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\UI\Applies\AppliesRegister;
 
 if (! function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
@@ -59,6 +62,9 @@ if (! function_exists('moonshineMenu')) {
 }
 
 if (! function_exists('moonshineRouter')) {
+    /**
+     * @return MoonShineRouter
+     */
     function moonshineRouter(): RouterContract
     {
         return app(RouterContract::class);
@@ -66,20 +72,19 @@ if (! function_exists('moonshineRouter')) {
 }
 
 if (! function_exists('moonshineConfig')) {
+    /**
+     * @return MoonShineConfigurator
+     */
     function moonshineConfig(): ConfiguratorContract
     {
         return app(ConfiguratorContract::class);
     }
 }
 
-if (! function_exists('moonshineStorage')) {
-    function moonshineStorage(...$parameters): StorageContract
-    {
-        return moonshine()->getStorage(...$parameters);
-    }
-}
-
 if (! function_exists('appliesRegister')) {
+    /**
+     * @return AppliesRegister
+     */
     function appliesRegister(): AppliesRegisterContract
     {
         return app(AppliesRegisterContract::class);

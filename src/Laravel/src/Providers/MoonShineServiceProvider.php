@@ -184,15 +184,23 @@ final class MoonShineServiceProvider extends ServiceProvider
     {
         Router::macro(
             'moonshine',
-            fn (Closure $callback, bool $resource = false) => $this->group(
+            fn (Closure $callback, bool $withResource = false, bool $withPage = false, bool $withAuthenticate = false) => $this->group(
                 moonshineConfig()->getDefaultRouteGroup(),
-                function () use ($callback, $resource): void {
+                function () use ($callback, $withResource, $withPage, $withAuthenticate): void {
+                    $parameters = [];
+
+                    if($withResource) {
+                        $parameters['prefix'] = '{resourceUri}';
+                    }
+
+                    if($withPage) {
+                        $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUrl}';
+                    }
+
                     Router::group(
-                        $resource ? [
-                            'prefix' => '{resourceUri}',
-                        ] : [],
+                        $parameters,
                         fn () => $callback($this)
-                    );
+                    )->middleware($withAuthenticate ? moonshineConfig()->getAuthMiddleware() : null);
                 }
             )
         );
