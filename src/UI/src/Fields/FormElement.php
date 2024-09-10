@@ -78,7 +78,6 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     /**
      * @param  (Closure(static $ctx): string)|string|null  $label
-     * @param  ?string  $column
      * @param  ?Closure(mixed $original, int $index, static $ctx): mixed  $formatted
      */
     public function __construct(

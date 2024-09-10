@@ -10,7 +10,6 @@ use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
-use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;

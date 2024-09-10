@@ -17,9 +17,7 @@ use Traversable;
 interface PagesContract extends Traversable
 {
     /**
-     * @param  PageType  $type
      * @param  ?PageContract<TPage>  $default
-     *
      * @return ?PageContract<TPage>
      */
     public function findByType(
@@ -40,9 +38,7 @@ interface PagesContract extends Traversable
     ): ?PageContract;
 
     /**
-     * @param  string $uri
      * @param  ?PageContract<TPage>  $default
-     *
      * @return ?PageContract<TPage>
      */
     public function findByUri(
