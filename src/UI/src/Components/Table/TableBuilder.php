@@ -248,6 +248,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                 }
 
                 $index++;
+
                 continue;
             }
 

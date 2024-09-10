@@ -189,11 +189,11 @@ final class MoonShineServiceProvider extends ServiceProvider
                 function () use ($callback, $withResource, $withPage, $withAuthenticate): void {
                     $parameters = [];
 
-                    if($withResource) {
+                    if ($withResource) {
                         $parameters['prefix'] = '{resourceUri}';
                     }
 
-                    if($withPage) {
+                    if ($withPage) {
                         $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUrl}';
                     }
 
