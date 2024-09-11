@@ -11,8 +11,11 @@ export default () => ({
   },
 
   fire(id) {
-    this.visible.push(this.toasts.find(toast => toast.id == id))
-    const timeShown = 2000 * this.visible.length
+    const toast = this.toasts.find(toast => toast.id == id);
+    this.visible.push(toast);
+    const baseTime = 2000; // Базовое время показа в миллисекундах 2 секунды
+    const timePerCharacter = 50; // Время на каждый символ 50 миллисекунд
+    const timeShown = baseTime + (toast.text.length * timePerCharacter);
     setTimeout(() => {
       this.remove(id)
     }, timeShown)
