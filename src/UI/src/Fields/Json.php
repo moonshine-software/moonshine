@@ -122,7 +122,8 @@ class Json extends Field implements
     /**
      * @throws Throwable
      */
-    public function object(): static {
+    public function object(): static
+    {
         $this->objectMode = true;
 
         return $this;
@@ -261,7 +262,7 @@ class Json extends Field implements
 
     protected function prepareFields(): FieldsContract
     {
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             return $this->getFields()
                 ->wrapNames($this->getColumn());
         }
@@ -282,7 +283,7 @@ class Json extends Field implements
 
     protected function resolvePreview(): Renderable|string
     {
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             return $this->resolveValue()
                 ->previewMode()
                 ->render();
@@ -349,11 +350,11 @@ class Json extends Field implements
 
         $fields = $this->getPreparedFields();
 
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             return FieldsGroup::make(
                 $fields
             )->fill($values->toArray())->mapFields(
-                fn(FieldContract $field) => $field
+                fn (FieldContract $field) => $field
                     ->formName($this->getFormName())
                     ->setParent($this)
             );
@@ -409,9 +410,9 @@ class Json extends Field implements
      */
     protected function viewData(): array
     {
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             return [
-                'component' => $this->resolveValue()
+                'component' => $this->resolveValue(),
             ];
         }
 
@@ -471,13 +472,13 @@ class Json extends Field implements
         $requestValues = array_filter($this->getRequestValue() ?: []);
         $applyValues = [];
 
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             $requestValues = [$requestValues];
         }
 
         foreach ($requestValues as $index => $values) {
             foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
-                if(!$this->isObjectMode()) {
+                if (! $this->isObjectMode()) {
                     $field->setNameIndex($index);
                 }
 
@@ -496,7 +497,7 @@ class Json extends Field implements
         $preparedValues = $this->prepareOnApply($applyValues);
         $values = $this->isKeyValue() ? $preparedValues : array_values($preparedValues);
 
-        if($this->isObjectMode()) {
+        if ($this->isObjectMode()) {
             $values = $values[0] ?? [];
         }
 

@@ -22,7 +22,8 @@ trait WithComponentsPusher
     protected function getPushedComponents(): array
     {
         return collect(static::$pushedComponents)
-            ->map(fn (Closure|RenderableContract $component) => $component instanceof Closure
+            ->map(
+                fn (Closure|RenderableContract $component) => $component instanceof Closure
                 ? value($component, $this)
                 : $component
             )
