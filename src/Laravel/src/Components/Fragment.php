@@ -45,7 +45,7 @@ class Fragment extends AbstractWithComponents
         string|ResourceContract|null $resource = null,
         string|PageContract|null $page = null,
     ): static {
-        /** @var CrudResource $resource */
+        /** @var ?CrudResource $resource */
         $resource ??= moonshineRequest()->getResource();
         $page ??= moonshineRequest()->getPage();
 

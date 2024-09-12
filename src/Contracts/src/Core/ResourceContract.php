@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\Core;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 
 /**
- * @template-covariant I of ResourceContract
+ * @template I of ResourceContract
 
  * @mixin I
  */

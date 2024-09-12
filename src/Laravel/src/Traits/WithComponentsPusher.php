@@ -10,7 +10,7 @@ use MoonShine\Contracts\Core\RenderableContract;
 trait WithComponentsPusher
 {
     /**
-     * @var array<string, RenderableContract>
+     * @var array<string, Closure|RenderableContract>
      */
     private static array $pushedComponents = [];
 
@@ -22,7 +22,10 @@ trait WithComponentsPusher
     protected function getPushedComponents(): array
     {
         return collect(static::$pushedComponents)
-            ->map(fn (Closure|RenderableContract $component) => value($component, $this))
+            ->map(fn (Closure|RenderableContract $component) => $component instanceof Closure
+                ? value($component, $this)
+                : $component
+            )
             ->toArray();
     }
 }

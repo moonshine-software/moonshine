@@ -6,6 +6,6 @@ namespace MoonShine\Laravel\Exceptions;
 
 use MoonShine\Core\Exceptions\MoonShineException;
 
-class AuthException extends MoonShineException
+final class AuthException extends MoonShineException
 {
 }

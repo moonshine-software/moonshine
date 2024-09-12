@@ -11,7 +11,7 @@ use MoonShine\Support\DTOs\Select\Options;
 use MoonShine\UI\Exceptions\FieldException;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\MorphTo>
+ * @extends BelongsTo<\Illuminate\Database\Eloquent\Relations\MorphTo>
  */
 class MorphTo extends BelongsTo
 {

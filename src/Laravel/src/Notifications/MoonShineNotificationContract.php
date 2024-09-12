@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Support\Enums\Color;
 
 /**
- * @template-covariant I of NotificationItemContract
+ * @template I of NotificationItemContract
  */
 interface MoonShineNotificationContract
 {

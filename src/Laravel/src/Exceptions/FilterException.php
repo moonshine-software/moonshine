@@ -6,6 +6,6 @@ namespace MoonShine\Laravel\Exceptions;
 
 use MoonShine\Core\Exceptions\MoonShineException;
 
-class FilterException extends MoonShineException
+final class FilterException extends MoonShineException
 {
 }

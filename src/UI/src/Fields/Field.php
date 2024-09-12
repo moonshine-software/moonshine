@@ -50,8 +50,6 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $withWrapper = true;
 
-    protected bool $isGroup = false;
-
     protected bool $columnSelection = true;
 
     protected bool $nullable = false;
@@ -147,18 +145,6 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
-    protected function group(): static
-    {
-        $this->isGroup = true;
-
-        return $this;
-    }
-
-    public function isGroup(): bool
-    {
-        return $this->isGroup;
-    }
-
     public function withoutWrapper(mixed $condition = null): static
     {
         $this->withWrapper = value($condition, $this) ?? false;
@@ -205,7 +191,7 @@ abstract class Field extends FormElement implements FieldContract
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = static fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $url = fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([
@@ -271,6 +257,18 @@ abstract class Field extends FormElement implements FieldContract
     protected function isOnChangeCondition(): bool
     {
         return true;
+    }
+
+    protected function resolveAssets(): void
+    {
+        if (! $this->isConsoleMode() && ! $this->isPreviewMode()) {
+            $this->getAssetManager()->add($this->getAssets());
+        }
+    }
+
+    protected function shouldUseAssets(): bool
+    {
+        return ! $this->isPreviewMode();
     }
 
     /**

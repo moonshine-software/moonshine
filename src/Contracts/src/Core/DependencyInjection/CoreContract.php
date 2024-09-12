@@ -12,14 +12,14 @@ use Psr\Container\ContainerInterface;
 interface CoreContract
 {
     /**
-     * @template-covariant T
+     * @template T
      * @param class-string<T>|null $id
      * @return T|ContainerInterface
      */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
 
     /**
-     * @template-covariant TInstance
+     * @template TInstance
      * @param class-string<TInstance> $class
      * @return ?TInstance
      */
@@ -35,10 +35,6 @@ interface CoreContract
 
     public function getTranslator(): TranslatorContract;
 
-    /**
-     * @template-covariant TCollection of FieldsContract
-     * @return TCollection
-     */
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 
     /**

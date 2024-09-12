@@ -12,7 +12,7 @@ use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Support\Enums\Color;
 
 /**
- * @implements MoonShineNotification<NotificationItem>
+ * @implements MoonShineNotificationContract<NotificationItem>
  */
 final class MoonShineNotification implements MoonShineNotificationContract
 {

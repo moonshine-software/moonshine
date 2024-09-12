@@ -6,10 +6,10 @@ namespace MoonShine\UI\Exceptions;
 
 use MoonShine\Core\Exceptions\MoonShineException;
 
-class ActionButtonException extends MoonShineException
+final class ActionButtonException extends MoonShineException
 {
-    public static function resourceRequired(): static
+    public static function resourceRequired(): self
     {
-        return new static('Resource is required for action');
+        return new self('Resource is required for action');
     }
 }

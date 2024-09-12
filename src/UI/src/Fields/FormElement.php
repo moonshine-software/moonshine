@@ -11,6 +11,7 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -34,7 +35,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected array $propertyAttributes = ['type'];
 
-    protected ?FormElement $parent = null;
+    protected ?FieldContract $parent = null;
 
     protected ?string $formName = null;
 
@@ -73,6 +74,8 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     protected ?string $requestKeyPrefix = null;
 
     protected bool $hasOld = true;
+
+    protected bool $isGroup = false;
 
     protected MoonShineComponentAttributeBag $wrapperAttributes;
 
@@ -128,7 +131,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this->formName;
     }
 
-    public function getParent(): ?FormElement
+    public function getParent(): ?FieldContract
     {
         return $this->parent;
     }
@@ -138,7 +141,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return ! is_null($this->parent);
     }
 
-    public function setParent(FormElement $field): static
+    public function setParent(FieldContract $field): static
     {
         $this->parent = $field;
 
@@ -579,16 +582,16 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this->getCore()->getRequest()->getFormErrors($this->getFormName());
     }
 
-    protected function resolveAssets(): void
+    protected function group(): static
     {
-        if (! $this->isConsoleMode() && ! $this->isPreviewMode()) {
-            $this->getAssetManager()->add($this->getAssets());
-        }
+        $this->isGroup = true;
+
+        return $this;
     }
 
-    protected function shouldUseAssets(): bool
+    public function isGroup(): bool
     {
-        return ! $this->isPreviewMode();
+        return $this->isGroup;
     }
 
     protected function systemViewData(): array

@@ -28,14 +28,15 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ClickAction;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
+use Traversable;
 
 /**
- * @template-covariant TData of mixed
+ * @template TData of mixed
  * @template-covariant TIndexPage of PageContract
  * @template-covariant TFormPage of PageContract
  * @template-covariant TDetailPage of PageContract
- * @template-covariant TFields of FieldsContract
- * @template-covariant TItems of iterable
+ * @template TFields of FieldsContract
+ * @template-covariant TItems of Traversable
  *
  * @implements CrudResourceContract<TData, TIndexPage, TFormPage, TDetailPage, TFields, TItems>
  */

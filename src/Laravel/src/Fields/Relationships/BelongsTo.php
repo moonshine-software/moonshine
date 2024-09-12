@@ -26,7 +26,7 @@ use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsTo>
- * @extends HasResource<ModelResource, ModelResource>
+ * @use HasResource<ModelResource, ModelResource>
  */
 class BelongsTo extends ModelRelationField implements
     HasAsyncSearchContract,

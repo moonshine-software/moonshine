@@ -16,7 +16,7 @@ use MoonShine\Contracts\UI\WithoutExtractionContract;
 use Throwable;
 
 /**
- * @template-covariant T
+ * @template T
  *
  * @extends Collection<array-key, T>
  */

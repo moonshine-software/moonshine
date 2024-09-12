@@ -10,7 +10,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
- * @template-covariant T
+ * @template T
  * @mixin CrudResourceContract
  */
 trait ResourceCrudRouter
@@ -82,7 +82,7 @@ trait ResourceCrudRouter
     }
 
     /**
-     * @param DataWrapperContract<T>|int|string|null $model
+     * @param DataWrapperContract<T>|int|string|null $key
      */
     public function getFragmentLoadUrl(
         string $fragment,

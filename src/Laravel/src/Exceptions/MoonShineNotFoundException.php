@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\Laravel\Pages\ErrorPage;
 
-class MoonShineNotFoundException extends MoonShineException
+final class MoonShineNotFoundException extends MoonShineException
 {
     public function report(): bool
     {
@@ -28,8 +28,8 @@ class MoonShineNotFoundException extends MoonShineException
         return response($page)->setStatusCode(Response::HTTP_NOT_FOUND);
     }
 
-    public static function pageNotFound(): static
+    public static function pageNotFound(): self
     {
-        return new static('Page not found');
+        return new self('Page not found');
     }
 }

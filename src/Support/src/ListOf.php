@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support;
 
 /**
- * @template-covariant T
+ * @template T
  */
 final class ListOf
 {

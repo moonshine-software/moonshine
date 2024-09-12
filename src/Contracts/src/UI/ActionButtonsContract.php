@@ -8,7 +8,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use Traversable;
 
 /**
- * @template-implements Traversable<array-key, ActionButtonContract>
+ * @extends Traversable<array-key, ActionButtonContract>
  */
 interface ActionButtonsContract extends Traversable
 {

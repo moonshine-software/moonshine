@@ -6,18 +6,18 @@ namespace MoonShine\UI\Exceptions;
 
 use MoonShine\Core\Exceptions\MoonShineException;
 
-class FieldException extends MoonShineException
+final class FieldException extends MoonShineException
 {
-    public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): static
+    public static function resourceRequired(string $fieldClass, ?string $fieldIdentification = null): self
     {
-        return new static(
+        return new self(
             "Resource is required for $fieldClass"
             . ($fieldIdentification ? " ($fieldIdentification)" : "")
         );
     }
 
-    public static function notFound(): static
+    public static function notFound(): self
     {
-        return new static('Field not found');
+        return new self('Field not found');
     }
 }

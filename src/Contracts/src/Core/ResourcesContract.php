@@ -8,10 +8,10 @@ use Traversable;
 
 /**
  * @template-covariant I of ResourcesContract
- * @template-covariant TResource of ResourceContract
+ * @template TResource of ResourceContract
  * @mixin I
  *
- * @template-implements Traversable<array-key, TResource>
+ * @extends Traversable<array-key, TResource>
  */
 interface ResourcesContract extends Traversable
 {

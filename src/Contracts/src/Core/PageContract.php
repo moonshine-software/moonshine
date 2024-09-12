@@ -20,4 +20,6 @@ interface PageContract
     public function getRouter(): RouterContract;
 
     public function getTitle(): string;
+
+    public function flushState(): void;
 }

@@ -7,14 +7,15 @@ namespace MoonShine\Contracts\Core;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use Traversable;
 
 /**
- * @template-covariant TData
+ * @template TData
  * @template-covariant TIndexPage of PageContract
  * @template-covariant TFormPage of PageContract
  * @template-covariant TDetailPage of PageContract
- * @template-covariant TFields of FieldsContract
- * @template-covariant TItems of iterable
+ * @template TFields of FieldsContract
+ * @template-covariant TItems of Traversable
  */
 interface CrudResourceContract
 {

@@ -184,7 +184,7 @@ trait WithComponentAttributes
 
         $type = $if ? 'if' : 'show';
 
-        if ($if) {
+        if ($if && $this instanceof FieldContract) {
             return $this
                 ->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">')
                 ->afterRender(fn (): string => '</template>');

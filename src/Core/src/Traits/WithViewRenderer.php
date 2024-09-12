@@ -14,6 +14,9 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
+/**
+ * @mixin WithAssets
+ */
 trait WithViewRenderer
 {
     protected string $view = '';

@@ -14,6 +14,7 @@ use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
@@ -39,6 +40,8 @@ class Json extends Field implements
     protected bool $keyValue = false;
 
     protected bool $onlyValue = false;
+
+    protected bool $objectMode = false;
 
     protected bool $isGroup = true;
 
@@ -114,6 +117,20 @@ class Json extends Field implements
     public function isOnlyValue(): bool
     {
         return $this->onlyValue;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function object(): static {
+        $this->objectMode = true;
+
+        return $this;
+    }
+
+    public function isObjectMode(): bool
+    {
+        return $this->objectMode;
     }
 
     public function isKeyOrOnlyValue(): bool
@@ -244,6 +261,11 @@ class Json extends Field implements
 
     protected function prepareFields(): FieldsContract
     {
+        if($this->isObjectMode()) {
+            return $this->getFields()
+                ->wrapNames($this->getColumn());
+        }
+
         return $this->getFields()
             ->prepareAttributes()
             ->prepareReindexNames(parent: $this, before: static function (self $parent, FieldContract $field): void {
@@ -260,6 +282,12 @@ class Json extends Field implements
 
     protected function resolvePreview(): Renderable|string
     {
+        if($this->isObjectMode()) {
+            return $this->resolveValue()
+                ->previewMode()
+                ->render();
+        }
+
         return $this->resolveValue()
             ->simple()
             ->preview()
@@ -319,12 +347,23 @@ class Json extends Field implements
             ? $value
             : [$value ?? $emptyRow];
 
+        $fields = $this->getPreparedFields();
+
+        if($this->isObjectMode()) {
+            return FieldsGroup::make(
+                $fields
+            )->fill($values->toArray())->mapFields(
+                fn(FieldContract $field) => $field
+                    ->formName($this->getFormName())
+                    ->setParent($this)
+            );
+        }
+
         $values = collect($values)->when(
             ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );
 
-        $fields = $this->getPreparedFields();
         $reorderable = ! $this->isPreviewMode()
             && $this->isReorderable();
 
@@ -370,6 +409,12 @@ class Json extends Field implements
      */
     protected function viewData(): array
     {
+        if($this->isObjectMode()) {
+            return [
+                'component' => $this->resolveValue()
+            ];
+        }
+
         return [
             'component' => $this->resolveValue()
                 ->editable()
@@ -426,9 +471,15 @@ class Json extends Field implements
         $requestValues = array_filter($this->getRequestValue() ?: []);
         $applyValues = [];
 
+        if($this->isObjectMode()) {
+            $requestValues = [$requestValues];
+        }
+
         foreach ($requestValues as $index => $values) {
             foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
-                $field->setNameIndex($index);
+                if(!$this->isObjectMode()) {
+                    $field->setNameIndex($index);
+                }
 
                 $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));
 
@@ -444,6 +495,10 @@ class Json extends Field implements
 
         $preparedValues = $this->prepareOnApply($applyValues);
         $values = $this->isKeyValue() ? $preparedValues : array_values($preparedValues);
+
+        if($this->isObjectMode()) {
+            $values = $values[0] ?? [];
+        }
 
         return is_null($response) ? data_set(
             $data,

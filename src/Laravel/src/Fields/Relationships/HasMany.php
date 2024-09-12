@@ -29,7 +29,7 @@ use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasMany>
- * @extends HasResource<ModelResource, ModelResource>
+ * @use HasResource<ModelResource, ModelResource>
  */
 class HasMany extends ModelRelationField implements HasFieldsContract
 {

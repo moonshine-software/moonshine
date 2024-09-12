@@ -9,10 +9,10 @@ use Traversable;
 
 /**
  * @template-covariant I of PagesContract
- * @template-covariant TPage of PageContract
+ * @template TPage of PageContract
  * @mixin I
  *
- * @template-implements Traversable<array-key, TPage>
+ * @extends Traversable<array-key, TPage>
  */
 interface PagesContract extends Traversable
 {

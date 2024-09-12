@@ -11,7 +11,7 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 
 /**
- * @template-covariant T of Model
+ * @template T of Model
  *
  * @implements DataCasterContract<T>
  */

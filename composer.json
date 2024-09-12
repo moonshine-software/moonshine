@@ -39,7 +39,8 @@
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.4",
         "rector/rector": "^1.0",
-        "symplify/monorepo-builder": "^11.2"
+        "symplify/monorepo-builder": "^11.2",
+        "larastan/larastan": "^2.0"
     },
     "replace": {
         "moonshine/asset-manager": "self.version",

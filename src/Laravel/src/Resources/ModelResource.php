@@ -24,7 +24,7 @@ use MoonShine\Laravel\TypeCasts\ModelCaster;
 use Throwable;
 
 /**
- * @template-covariant TData of Model
+ * @template TData of Model
  * @template-covariant TIndexPage of PageContract
  * @template-covariant TFormPage of PageContract
  * @template-covariant TDetailPage of PageContract

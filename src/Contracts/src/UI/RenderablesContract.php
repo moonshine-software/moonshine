@@ -9,7 +9,7 @@ use MoonShine\Contracts\Core\RenderableContract;
 use Traversable;
 
 /**
- * @template-implements Traversable<array-key, RenderableContract>
+ * @extends Traversable<array-key, RenderableContract>
  */
 interface RenderablesContract extends Traversable
 {

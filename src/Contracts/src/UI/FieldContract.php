@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\UI;
 
+use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 interface FieldContract
 {
+    public function hasParent(): bool;
+
+    public function getParent(): ?FieldContract;
+
     public function getColumn(): string;
 
     public function getLabel(): string;
+
+    public function getNameAttribute(string $index = null): string;
 
     public function getValue(bool $withOld = true): mixed;
 
@@ -28,4 +35,10 @@ interface FieldContract
     public function getData(): ?DataWrapperContract;
 
     public function preview(): Renderable|string;
+
+    public function customWrapperAttributes(array $attributes): static;
+
+    public function beforeRender(Closure $callback): static;
+
+    public function afterRender(Closure $callback): static;
 }

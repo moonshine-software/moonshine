@@ -8,15 +8,15 @@ use MoonShine\Core\Exceptions\MoonShineException;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
 
-class MoonShineComponentException extends MoonShineException
+final class MoonShineComponentException extends MoonShineException
 {
-    public static function tabsAreNotRendering(): static
+    public static function tabsAreNotRendering(): self
     {
-        return new static('Can`t render. You need to use ' . Tabs::class . ' class');
+        return new self('Can`t render. You need to use ' . Tabs::class . ' class');
     }
 
-    public static function onlyTabAllowed(): static
+    public static function onlyTabAllowed(): self
     {
-        return new static('Tab must be a class of ' . Tab::class);
+        return new self('Tab must be a class of ' . Tab::class);
     }
 }

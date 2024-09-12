@@ -27,7 +27,7 @@ use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
- * @extends HasResource<ModelResource, ModelResource>
+ * @use HasResource<ModelResource, ModelResource>
  */
 class HasOne extends ModelRelationField implements HasFieldsContract
 {

@@ -9,10 +9,11 @@ use Illuminate\Support\Collection;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Support\Attributes\SearchUsingFullText;
+use Traversable;
 
 /**
- * @template-covariant T
- * @template-covariant TItems of iterable
+ * @template T
+ * @template-covariant TItems of Traversable
  */
 trait ResourceQuery
 {
@@ -183,7 +184,7 @@ trait ResourceQuery
 
         $callback = $field?->getSortableCallback();
 
-        if (is_string($callback)) {
+        if ($callback instanceof Closure) {
             $column = value($callback);
         }
 

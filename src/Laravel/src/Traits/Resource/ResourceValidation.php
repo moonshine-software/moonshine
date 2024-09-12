@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 /**
- * @template-covariant T
+ * @template T
  */
 trait ResourceValidation
 {

@@ -11,6 +11,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use MoonShine\Laravel\Database\Factories\MoonshineUserFactory;
 
+/**
+ * @property string $email
+ * @property string $name
+ * @property string $avatar
+ * @property int $moonshine_user_role_id
+ * @property string $password
+ */
 class MoonshineUser extends Authenticatable
 {
     use HasFactory;

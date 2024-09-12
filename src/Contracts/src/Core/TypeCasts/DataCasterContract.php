@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\Core\TypeCasts;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
 /**
- * @template-covariant T
+ * @template T
  */
 interface DataCasterContract
 {

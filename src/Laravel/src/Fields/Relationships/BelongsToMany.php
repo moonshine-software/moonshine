@@ -44,7 +44,7 @@ use Throwable;
 
 /**
  * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsToMany>
- * @extends HasResource<ModelResource, ModelResource>
+ * @use HasResource<ModelResource, ModelResource>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValuesContact,

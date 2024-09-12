@@ -169,6 +169,14 @@ trait FileTrait
             ->value();
     }
 
+    public function getHiddenAttributes(): MoonShineComponentAttributeBag
+    {
+        return $this->getAttributes()->only(['data-level'])->merge([
+            'name' => $this->getHiddenRemainingValuesName(),
+            'data-name' => $this->getHiddenRemainingValuesName(),
+        ]);
+    }
+
     /**
      * @param  Closure(static $ctx): Collection  $callback
      */

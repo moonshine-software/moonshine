@@ -24,13 +24,13 @@ interface ConfiguratorContract extends ArrayAccess
     public function getLayout(): string;
 
     /**
-     * @template-covariant T of FormContract
+     * @template T of FormContract
      * @param  class-string<T>  $default
      */
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract;
 
     /**
-     * @template-covariant T of PageContract
+     * @template T of PageContract
      * @param  class-string<T>  $default
      */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract;

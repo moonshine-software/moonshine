@@ -22,7 +22,7 @@ final class Locales extends MoonShineComponent
 
         $this->current = $this->getCore()->getConfig()->getLocale();
         $this->locales = collect($this->getCore()->getConfig()->getLocales())
-            ->mapWithKeys(static fn ($locale): array => [
+            ->mapWithKeys(fn ($locale): array => [
                 $this->getCore()->getRequest()->getUrlWithQuery([
                     ChangeLocale::KEY => $locale,
                 ]) => $locale,
