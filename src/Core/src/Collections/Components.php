@@ -14,48 +14,17 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Traits\WithCore;
+use MoonShine\UI\Fields\Field;
 use Throwable;
 use Closure;
 
 /**
  * @template-covariant TFields of FieldsContract
- *
  */
-final class Components extends Collection implements ComponentsContract
+final class Components extends BaseCollection implements ComponentsContract
 {
     use WithCore;
     use Conditionable;
-
-    /**
-     * @param  Closure(ComponentContract): bool  $except
-     */
-    public function exceptElements(Closure $except): static
-    {
-        return $this->filter(static function (ComponentContract $element) use ($except): bool {
-            if ($except($element) === true) {
-                return false;
-            }
-
-            if ($element instanceof HasFieldsContract) {
-                $element->fields(
-                    $element->getFields()->exceptElements($except)->toArray()
-                );
-            } elseif ($element instanceof HasComponentsContract) {
-                $element->setComponents(
-                    $element->getComponents()->exceptElements($except)->toArray()
-                );
-            }
-
-            return true;
-        })->filter()->values();
-    }
-
-    public function onlyVisible(): static
-    {
-        return $this->filter(
-            static fn (ComponentContract $item): bool => $item->isSee()
-        );
-    }
 
     /**
      * @param  list<ComponentContract>  $elements
@@ -75,13 +44,6 @@ final class Components extends Collection implements ComponentsContract
                 $this->extractOnly($element->getComponents(), $type, $data);
             }
         }
-    }
-
-    public function toStructure(bool $withStates = true): array
-    {
-        return $this->map(
-            static fn (ComponentContract $component): array => $component->toStructure($withStates)
-        )->toArray();
     }
 
     /**

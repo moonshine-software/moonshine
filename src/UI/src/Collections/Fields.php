@@ -14,45 +14,20 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Contracts\UI\WithoutExtractionContract;
+use MoonShine\Core\Collections\BaseCollection;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use Throwable;
-use Closure;
 
 
 /**
  * @implements FieldsContract<Field>
  */
-class Fields extends Collection implements FieldsContract
+class Fields extends BaseCollection implements FieldsContract
 {
     use Conditionable;
-
-    /**
-     * @param  Closure(ComponentContract): bool  $except
-     */
-    public function exceptElements(Closure $except): static
-    {
-        return $this->filter(static function (ComponentContract $element) use ($except): bool {
-            if ($except($element) === true) {
-                return false;
-            }
-
-            if ($element instanceof HasFieldsContract) {
-                $element->fields(
-                    $element->getFields()->exceptElements($except)->toArray()
-                );
-            } elseif ($element instanceof HasComponentsContract) {
-                $element->setComponents(
-                    $element->getComponents()->exceptElements($except)->toArray()
-                );
-            }
-
-            return true;
-        })->filter()->values();
-    }
-
 
     /**
      * @param list<ComponentContract> $elements
@@ -220,11 +195,6 @@ class Fields extends Collection implements FieldsContract
         $this->onlyFields()->map(
             static fn (FieldContract $field): FieldContract => $field->reset()
         );
-    }
-
-    public function onlyVisible(): static
-    {
-        return $this->filter(static fn (FieldContract $field): bool => $field->isSee());
     }
 
     public function onlyHasFields(): static

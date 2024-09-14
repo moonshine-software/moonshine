@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\HasStructureContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -18,13 +19,11 @@ use MoonShine\Contracts\UI\TableBuilderContract;
  *
  * @mixin Collection
  */
-interface ComponentsContract extends Enumerable
+interface ComponentsContract extends Enumerable, HasStructureContract
 {
     public function onlyVisible(): static;
 
     public function exceptElements(Closure $except): static;
-
-    public function toStructure(bool $withStates = true): array;
 
     public function onlyFields(bool $withWrappers = false): FieldsContract;
 

@@ -7,6 +7,7 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
+use MoonShine\Contracts\Core\HasStructureContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 
@@ -16,7 +17,7 @@ use MoonShine\Contracts\UI\FieldContract;
  *
  * @mixin Collection
  */
-interface FieldsContract extends Enumerable
+interface FieldsContract extends Enumerable, HasStructureContract
 {
     public function onlyVisible(): static;
 
