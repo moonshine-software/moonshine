@@ -11,7 +11,9 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Support\Enums\PageType;
 
 /**
- * @extends Collection<array-key, PageContract>
+ * @template T of PageContract
+ *
+ * @implements PagesContract<self, T>
  */
 final class Pages extends Collection implements PagesContract
 {

@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits\ActionButton;
 use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
@@ -18,6 +19,9 @@ use MoonShine\UI\Components\Modal;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\HiddenIds;
 
+/**
+ * @template-covariant T of ComponentContract
+ */
 trait WithModal
 {
     protected ?Closure $modal = null;
@@ -119,7 +123,10 @@ trait WithModal
         );
     }
 
-    public function getModal(): ?Modal
+    /**
+     * @return ?T
+     */
+    public function getModal(): ?ComponentContract
     {
         return value($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
     }

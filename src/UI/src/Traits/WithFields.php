@@ -6,14 +6,13 @@ namespace MoonShine\UI\Traits;
 
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\UI\Collections\Fields;
+use MoonShine\Contracts\UI\ComponentContract;
 use Throwable;
 
 /**
  * @template T of FieldsContract
- * @mixin RenderableContract
+ * @mixin ComponentContract
  */
 trait WithFields
 {
@@ -29,7 +28,7 @@ trait WithFields
     }
 
     /**
-     * @return Fields<T>
+     * @return T
      * @throws Throwable
      */
     public function getPreparedFields(): FieldsContract
@@ -42,7 +41,7 @@ trait WithFields
     }
 
     /**
-     * @return Fields<T>
+     * @return T
      * @throws Throwable
      */
     protected function prepareFields(): FieldsContract
@@ -51,7 +50,7 @@ trait WithFields
     }
 
     /**
-     * @return Fields<T>
+     * @return T
      * @throws Throwable
      */
     public function getFields(): FieldsContract
@@ -63,7 +62,7 @@ trait WithFields
 
     public function getRawFields(): iterable
     {
-        return value($this->fields, $this) ?? [];
+        return value($this->fields, $this);
     }
 
     /**
@@ -75,7 +74,7 @@ trait WithFields
     }
 
     /**
-     * @param  Fields<T>|Closure(FieldsContract $ctx): list<T>|array  $fields
+     * @param T|Closure(T $ctx): T  $fields
      */
     public function fields(FieldsContract|Closure|iterable $fields): static
     {
@@ -95,7 +94,7 @@ trait WithFields
     }
 
     /**
-     * @return Fields<T>
+     * @return T
      * @throws Throwable
      */
     protected function getFilledFields(

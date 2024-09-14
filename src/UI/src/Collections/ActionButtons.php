@@ -7,7 +7,7 @@ namespace MoonShine\UI\Collections;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 
 /**
  * @extends Collection<array-key, ActionButtonContract>
@@ -27,7 +27,7 @@ final class ActionButtons extends Collection implements ActionButtonsContract
             static fn (
                 ActionButtonContract $action
             ): bool => $action->isBulk()
-        )->map(static fn (ActionButtonContract $action) => $action->bulk($forComponent));
+        )->map(static fn (ActionButtonContract $action): ActionButtonContract => $action->bulk($forComponent));
     }
 
     public function withoutBulk(): self
@@ -53,7 +53,7 @@ final class ActionButtons extends Collection implements ActionButtonsContract
         );
     }
 
-    public function onlyVisible(mixed $item = null): self
+    public function onlyVisible(): self
     {
         return $this->filter(
             static fn (ActionButtonContract $action): bool => $action->isSee()

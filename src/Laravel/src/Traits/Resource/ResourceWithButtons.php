@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Resource;
 
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Laravel\Buttons\CreateButton;
 use MoonShine\Laravel\Buttons\DeleteButton;
 use MoonShine\Laravel\Buttons\DetailButton;

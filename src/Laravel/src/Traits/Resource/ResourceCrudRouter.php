@@ -45,9 +45,6 @@ trait ResourceCrudRouter
         return $this->getPageUrl($this->getIndexPage(), params: $params, fragment: $fragment);
     }
 
-    /**
-     * @param DataWrapperContract<T>|int|string|null $key
-     */
     public function getFormPageUrl(
         DataWrapperContract|int|string|null $key = null,
         array $params = [],
@@ -63,9 +60,6 @@ trait ResourceCrudRouter
         );
     }
 
-    /**
-     * @param DataWrapperContract<T>|int|string $key
-     */
     public function getDetailPageUrl(
         DataWrapperContract|int|string $key,
         array $params = [],

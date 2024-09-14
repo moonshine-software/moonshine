@@ -6,8 +6,7 @@ namespace MoonShine\MenuManager;
 
 use Closure;
 use Illuminate\Support\Traits\Macroable;
-use MoonShine\Contracts\Core\HasCanSeeContract;
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\HasViewRendererContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
@@ -18,7 +17,7 @@ use MoonShine\UI\Traits\HasCanSee;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
-abstract class MenuElement implements MenuElementContract, RenderableContract, HasCanSeeContract
+abstract class MenuElement implements MenuElementContract, HasViewRendererContract
 {
     use Makeable;
     use Macroable;

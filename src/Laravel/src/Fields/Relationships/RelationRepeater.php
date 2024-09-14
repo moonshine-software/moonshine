@@ -9,7 +9,6 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -231,7 +230,7 @@ class RelationRepeater extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    protected function getComponent(): RenderableContract
+    protected function getComponent(): TableBuilder
     {
         $fields = $this->getPreparedFields();
 

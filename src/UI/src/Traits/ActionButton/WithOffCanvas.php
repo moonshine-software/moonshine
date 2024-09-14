@@ -7,10 +7,14 @@ namespace MoonShine\UI\Traits\ActionButton;
 use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
 
+/**
+ * @template-covariant T of ComponentContract
+ */
 trait WithOffCanvas
 {
     protected ?Closure $offCanvas = null;
@@ -52,7 +56,10 @@ trait WithOffCanvas
         );
     }
 
-    public function getOffCanvas(): ?OffCanvas
+    /**
+     * @return ?T
+     */
+    public function getOffCanvas(): ?ComponentContract
     {
         return value($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
     }

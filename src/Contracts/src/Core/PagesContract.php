@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use MoonShine\Support\Enums\PageType;
-use Traversable;
 
 /**
  * @template-covariant I of PagesContract
  * @template TPage of PageContract
  * @mixin I
  *
- * @extends Traversable<array-key, TPage>
+ * @template-extends Enumerable<array-key, TPage>
+ *
+ * @mixin Collection
  */
-interface PagesContract extends Traversable
+interface PagesContract extends Enumerable
 {
     /**
      * @param  ?PageContract<TPage>  $default

@@ -4,8 +4,12 @@ includes:
 parameters:
     paths:
         - src/
-    level: 1
+    level: 2
 
+    ignoreErrors:
+        - '#Cannot cast Closure to string#'
+        - '#Cannot cast Closure\|null to string#'
+        - '#mixin contains invalid type Illuminate\\Support\\Traits\\Conditionable#'
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
         - ./src/Laravel/routes/moonshine.php

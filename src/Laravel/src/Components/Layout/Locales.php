@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Components\Layout;
 
 use Illuminate\Support\Collection;
+use MoonShine\Core\Traits\WithCore;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
 use MoonShine\UI\Components\MoonShineComponent;
 
+/**
+ * @use WithCore<MoonShine>
+ */
 final class Locales extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.locales';

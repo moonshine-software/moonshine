@@ -10,7 +10,8 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -59,7 +60,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     protected bool $errorsAbove = true;
 
-    protected MoonShineComponentAttributeBag $submitAttributes;
+    protected ComponentAttributesBagContract $submitAttributes;
 
     protected ?Closure $onBeforeFieldsRender = null;
 
@@ -139,7 +140,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     public function action(string $action): self
     {
         $this->action = $action;
-        $this->attributes->set('action', $action);
+        $this->setAttribute('action', $action);
 
         return $this;
     }
@@ -211,7 +212,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     public function method(FormMethod $method): self
     {
         $this->method = $method;
-        $this->attributes->set('method', $method->toString());
+        $this->setAttribute('method', $method->toString());
 
         return $this;
     }
@@ -263,7 +264,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return $this;
     }
 
-    public function getSubmitAttributes(): MoonShineComponentAttributeBag
+    public function getSubmitAttributes(): ComponentAttributesBagContract
     {
         return $this->submitAttributes;
     }

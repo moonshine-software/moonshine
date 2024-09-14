@@ -6,6 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\HasIconContract;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -13,7 +15,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $href, Closure|string $label = '')
  */
-final class Link extends MoonShineComponent
+final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract
 {
     use WithBadge;
     use WithLabel;

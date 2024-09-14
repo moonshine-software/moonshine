@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -32,13 +33,14 @@ use Traversable;
 
 /**
  * @template TData of mixed
- * @template-covariant TIndexPage of PageContract
- * @template-covariant TFormPage of PageContract
- * @template-covariant TDetailPage of PageContract
+ * @template-covariant TIndexPage of CrudPageContract
+ * @template-covariant TFormPage of CrudPageContract
+ * @template-covariant TDetailPage of CrudPageContract
  * @template TFields of FieldsContract
  * @template-covariant TItems of Traversable
  *
  * @implements CrudResourceContract<TData, TIndexPage, TFormPage, TDetailPage, TFields, TItems>
+ * @extends Resource<CrudPageContract>
  */
 abstract class CrudResource extends Resource implements CrudResourceContract
 {

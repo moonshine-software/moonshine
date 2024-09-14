@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Buttons\QueryTagButton;
@@ -12,7 +12,6 @@ use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Enums\Ability;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
@@ -26,9 +25,8 @@ use Throwable;
 
 /**
  * @method CrudResource getResource()
- * @extends Page<Fields>
  */
-class IndexPage extends Page
+class IndexPage extends CrudPage
 {
     protected ?PageType $pageType = PageType::INDEX;
 
@@ -171,7 +169,7 @@ class IndexPage extends Page
         return JsEvent::TABLE_UPDATED->value;
     }
 
-    protected function getItemsComponent(iterable $items, Fields $fields): RenderableContract
+    protected function getItemsComponent(iterable $items, Fields $fields): ComponentContract
     {
         return TableBuilder::make(items: $items)
             ->name($this->getListComponentName())

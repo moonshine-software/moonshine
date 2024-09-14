@@ -7,7 +7,6 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 use ArrayAccess;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Contracts\UI\LayoutContract;
 
 /**
@@ -24,14 +23,18 @@ interface ConfiguratorContract extends ArrayAccess
     public function getLayout(): string;
 
     /**
-     * @template T of FormContract
+     * @template T of FormBuilderContract
      * @param  class-string<T>  $default
+     *
+     * @return T
      */
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract;
 
     /**
      * @template T of PageContract
      * @param  class-string<T>  $default
+     *
+     * @return T
      */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract;
 
@@ -39,6 +42,8 @@ interface ConfiguratorContract extends ArrayAccess
      * @return string[]
      */
     public function getLocales(): array;
+
+    public function getLocale(): string;
 
     public function getDisk(): string;
 

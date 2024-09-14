@@ -6,6 +6,8 @@ namespace MoonShine\UI\Components\Layout;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\HasIconContract;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -13,7 +15,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
  */
-class Box extends AbstractWithComponents
+class Box extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {
     use WithLabel;
     use WithIcon;

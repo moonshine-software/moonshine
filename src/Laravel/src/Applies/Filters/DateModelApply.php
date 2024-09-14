@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
+use MoonShine\UI\Fields\Date;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 
+/**
+ * @implements ApplyContract<Date>
+ */
 class DateModelApply implements ApplyContract
 {
     /* @param \MoonShine\UI\Fields\Date $field */

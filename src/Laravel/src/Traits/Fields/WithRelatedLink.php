@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Fields;
 
 use Closure;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
@@ -62,7 +62,7 @@ trait WithRelatedLink
         }
 
         $value = $this->toValue();
-        $count = $value instanceof Paginator
+        $count = $value instanceof LengthAwarePaginator
             ? $value->total()
             : $value->count();
 

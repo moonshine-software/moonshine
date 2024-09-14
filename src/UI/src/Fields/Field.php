@@ -84,9 +84,9 @@ abstract class Field extends FormElement implements FieldContract
         return $this->previewMode;
     }
 
-    public function rawMode(Closure|bool|null $condition = null): static
+    public function rawMode(): static
     {
-        $this->rawMode = value($condition, $this) ?? true;
+        $this->rawMode = true;
 
         return $this;
     }

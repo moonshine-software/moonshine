@@ -7,9 +7,10 @@ namespace MoonShine\Laravel\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Gate;
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
@@ -25,11 +26,11 @@ use Throwable;
 
 /**
  * @template TData of Model
- * @template-covariant TIndexPage of PageContract
- * @template-covariant TFormPage of PageContract
- * @template-covariant TDetailPage of PageContract
+ * @template-covariant TIndexPage of CrudPageContract
+ * @template-covariant TFormPage of CrudPageContract
+ * @template-covariant TDetailPage of CrudPageContract
  *
- * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields>
+ * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields, Enumerable>
  */
 abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract
 {

@@ -8,7 +8,11 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\UI\Fields\Checkbox;
 
+/**
+ * @implements ApplyContract<Checkbox>
+ */
 class CheckboxModelApply implements ApplyContract
 {
     /* @param \MoonShine\UI\Fields\Checkbox $field */

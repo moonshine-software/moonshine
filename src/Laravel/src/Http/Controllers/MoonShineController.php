@@ -13,6 +13,7 @@ use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\Laravel\Pages\QuickPage;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Components\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -86,8 +87,11 @@ abstract class MoonShineController extends BaseController
             return $table;
         }
 
+        /** @var ModelCaster $cast */
+        $cast = $table->getCast();
+
         $class = $table->hasCast()
-            ? new ($table->getCast()->getClass())
+            ? new ($cast->getClass())
             : null;
 
         if (! $class instanceof Model) {

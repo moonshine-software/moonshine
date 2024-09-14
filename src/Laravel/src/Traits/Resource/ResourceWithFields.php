@@ -52,6 +52,9 @@ trait ResourceWithFields
      */
     public function getFormFields(bool $withOutside = false): Fields
     {
+        /**
+         * @var Fields $fields
+         */
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
             ?->getFields();
@@ -88,7 +91,7 @@ trait ResourceWithFields
         }
 
         return $fields
-            ->ensure([FieldContract::class, ModelRelationField::class, FieldsWrapperContract::class])
+            ->ensure([FieldsWrapperContract::class, FieldContract::class, ModelRelationField::class])
             ->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
     }
 
@@ -98,6 +101,9 @@ trait ResourceWithFields
      */
     public function getOutsideFields(): Fields
     {
+        /**
+         * @var Fields $fields
+         */
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
             ?->getFields();

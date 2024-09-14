@@ -9,8 +9,19 @@ use MoonShine\Contracts\Core\PagesContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @template TConfig of ConfiguratorContract
+ */
 interface CoreContract
 {
+    public function runningUnitTests(): bool;
+
+    public function runningInConsole(): bool;
+
+    public function isLocal(): bool;
+
+    public function isProduction(): bool;
+
     /**
      * @template T
      * @param class-string<T>|null $id
@@ -31,9 +42,14 @@ interface CoreContract
 
     public function getRouter(): RouterContract;
 
+    /**
+     * @return ConfiguratorContract<TConfig>
+     */
     public function getConfig(): ConfiguratorContract;
 
     public function getTranslator(): TranslatorContract;
+
+    public function getStorage(...$parameters): StorageContract;
 
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 

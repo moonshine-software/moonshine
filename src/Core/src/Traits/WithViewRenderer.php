@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -169,12 +169,12 @@ trait WithViewRenderer
 
         if ($this instanceof HasComponentsContract) {
             $components = $this->getComponents()
-                ->map(static fn (RenderableContract $component): array => $component->toStructure($withStates));
+                ->map(static fn (ComponentContract $component): array => $component->toStructure($withStates));
         }
 
         if ($this instanceof HasFieldsContract) {
             $components = $this->getFields()
-                ->map(static fn (RenderableContract $component): array => $component->toStructure($withStates));
+                ->map(static fn (ComponentContract $component): array => $component->toStructure($withStates));
 
             $states['fields'] = $components;
         }

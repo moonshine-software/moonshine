@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Pages;
 
-use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
-use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
-use MoonShine\Contracts\Core\HasAssetsContract;
-use MoonShine\Contracts\Core\HasComponentsContract;
-use MoonShine\Contracts\Core\HasResourceContract;
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\RenderableContract;
-use MoonShine\Contracts\MenuManager\MenuFillerContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Core\Traits\HasResource;
@@ -24,19 +18,8 @@ use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Enums\Layer;
 use MoonShine\Support\Enums\PageType;
-use Stringable;
 
-/**
- * @template-covariant F of FieldsContract
- */
-abstract class Page implements
-    PageContract,
-    Renderable,
-    HasComponentsContract,
-    HasResourceContract,
-    MenuFillerContract,
-    HasAssetsContract,
-    Stringable
+abstract class Page implements PageContract
 {
     use WithCore;
     use HasResource;
@@ -94,7 +77,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     abstract protected function components(): iterable;
 
@@ -120,23 +103,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
-     */
-    protected function fields(): iterable
-    {
-        return [];
-    }
-
-    /**
-     * @return F
-     */
-    public function getFields(): FieldsContract
-    {
-        return $this->getCore()->getFieldsCollection($this->fields());
-    }
-
-    /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     protected function topLayer(): array
     {
@@ -144,7 +111,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     protected function mainLayer(): array
     {
@@ -152,7 +119,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     protected function bottomLayer(): array
     {
@@ -217,7 +184,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     public function getLayers(): array
     {
@@ -229,7 +196,7 @@ abstract class Page implements
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      */
     public function getLayerComponents(Layer $layer): array
     {
@@ -239,7 +206,7 @@ abstract class Page implements
         );
     }
 
-    public function pushToLayer(Layer $layer, RenderableContract $component): static
+    public function pushToLayer(Layer $layer, ComponentContract $component): static
     {
         $this->layersComponents[$layer->value][] = $component;
 

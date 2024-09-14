@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\TypeCasts;
 
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
@@ -50,6 +51,9 @@ final readonly class ModelCaster implements DataCasterContract
             return null;
         }
 
+        /**
+         * @phpstan-var (Paginator|CursorPaginator)&Arrayable $data
+         */
         $paginator = new PaginatorCaster(
             $data->appends(
                 moonshine()->getRequest()->getExcept('page')

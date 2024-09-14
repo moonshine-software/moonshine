@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\Support\Components;
 
 use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 
-final class MoonShineComponentAttributeBag extends ComponentAttributeBag
+final class MoonShineComponentAttributeBag extends ComponentAttributeBag implements ComponentAttributesBagContract
 {
     public function concat(string $name, string $value, string $separator = ' '): void
     {

@@ -7,14 +7,17 @@ namespace MoonShine\Core\Resources;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\PagesContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 
-abstract class Resource implements ResourceContract, MenuFillerContract
+/**
+ * @template TPage of PageContract
+ */
+abstract class Resource implements ResourceContract
 {
     use WithCore;
     use WithUriKey;
@@ -40,7 +43,10 @@ abstract class Resource implements ResourceContract, MenuFillerContract
      */
     abstract protected function pages(): array;
 
-    public function getPages(): Pages
+    /**
+     * @return Pages<TPage>
+     */
+    public function getPages(): PagesContract
     {
         if (! is_null($this->pages)) {
             return $this->pages;

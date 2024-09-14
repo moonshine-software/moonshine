@@ -8,11 +8,9 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Core\Exceptions\PageException;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
@@ -25,8 +23,9 @@ use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsTo>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsTo
+ *
+ * @extends ModelRelationField<R>
  */
 class BelongsTo extends ModelRelationField implements
     HasAsyncSearchContract,

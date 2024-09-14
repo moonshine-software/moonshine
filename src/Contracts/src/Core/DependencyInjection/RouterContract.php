@@ -21,4 +21,10 @@ interface RouterContract
     public function extractPageUri(?PageContract $page = null): ?string;
 
     public function extractResourceUri(?ResourceContract $resource = null): ?string;
+
+    public function withPage(?PageContract $page = null): static;
+
+    public function withResource(?ResourceContract $resource = null): static;
+
+    public function flushState(): void;
 }

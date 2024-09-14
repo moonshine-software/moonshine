@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Support\Traits;
 
 use Closure;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use Throwable;
 
 trait WithComponentAttributes
@@ -14,25 +14,25 @@ trait WithComponentAttributes
     /**
      * The component attributes.
      *
-     * @var MoonShineComponentAttributeBag
+     * @var ComponentAttributesBagContract
      */
     public $attributes;
 
     protected array $withAttributes = [];
 
-    public function getAttributes(): MoonShineComponentAttributeBag
+    public function getAttributes(): ComponentAttributesBagContract
     {
         return $this->attributes;
     }
 
     public function getAttribute(string $name, mixed $default = null): mixed
     {
-        return $this->attributes->get($name, $default);
+        return $this->getAttributes()->get($name, $default);
     }
 
     public function mergeAttribute(string $name, string $value, string $separator = ' '): static
     {
-        $this->attributes->concat($name, $value, $separator);
+        $this->getAttributes()->concat($name, $value, $separator);
 
         return $this;
     }
@@ -53,14 +53,14 @@ trait WithComponentAttributes
 
     public function setAttribute(string $name, string|bool $value): static
     {
-        $this->attributes->set($name, $value);
+        $this->getAttributes()->set($name, $value);
 
         return $this;
     }
 
     public function removeAttribute(string $name): static
     {
-        $this->attributes->remove($name);
+        $this->getAttributes()->remove($name);
 
         return $this;
     }

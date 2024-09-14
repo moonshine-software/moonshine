@@ -7,11 +7,11 @@ namespace MoonShine\UI\Collections;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\UI\TableCellsContract;
+use MoonShine\Contracts\UI\Collection\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
 
 /**
- * @extends Collection<array-key, TableTd>
+ * @implements TableCellsContract<TableTd>
  */
 final class TableCells extends Collection implements TableCellsContract
 {

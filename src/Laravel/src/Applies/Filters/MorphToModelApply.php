@@ -10,6 +10,9 @@ use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 
+/**
+ * @implements ApplyContract<MorphTo>
+ */
 class MorphToModelApply implements ApplyContract
 {
     /** @param MorphTo $field */

@@ -6,6 +6,7 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Traits\WithStorage;
 
@@ -62,7 +63,7 @@ trait FileTrait
 
     public function resolveItemAttributes(): Closure
     {
-        return function (string $filename, int $index = 0): MoonShineComponentAttributeBag {
+        return function (string $filename, int $index = 0): ComponentAttributesBagContract {
             if (is_null($this->itemAttributes)) {
                 return new MoonShineComponentAttributeBag();
             }
@@ -169,7 +170,7 @@ trait FileTrait
             ->value();
     }
 
-    public function getHiddenAttributes(): MoonShineComponentAttributeBag
+    public function getHiddenAttributes(): ComponentAttributesBagContract
     {
         return $this->getAttributes()->only(['data-level'])->merge([
             'name' => $this->getHiddenRemainingValuesName(),

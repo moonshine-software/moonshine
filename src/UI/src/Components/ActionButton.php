@@ -31,9 +31,11 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     use WithBadge;
     use WithLabel;
     use WithIcon;
+    /** @use WithOffCanvas<OffCanvas> */
     use WithOffCanvas;
-    use InDropdownOrLine;
+    /** @use WithModal<Modal> */
     use WithModal;
+    use InDropdownOrLine;
     use WithComponents;
 
     protected string $view = 'moonshine::components.action-button';

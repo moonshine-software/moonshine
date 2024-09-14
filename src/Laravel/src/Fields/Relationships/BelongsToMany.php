@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
@@ -43,8 +41,9 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsToMany>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany
+ *
+ * @extends ModelRelationField<R>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValuesContact,
@@ -257,7 +256,7 @@ class BelongsToMany extends ModelRelationField implements
         });
     }
 
-    protected function getComponent(): RenderableContract
+    protected function getComponent(): ComponentContract
     {
         $values = $this->getValue();
 

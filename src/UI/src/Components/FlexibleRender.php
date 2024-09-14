@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\View;
 
 /**
  * @method static static make(Closure|Renderable|string $content, Closure|array $additionalData = [])
@@ -29,7 +30,7 @@ final class FlexibleRender extends MoonShineComponent
             $this->content = value($this->content, $this->additionalData, $this);
         }
 
-        if ($this->content instanceof Renderable) {
+        if ($this->content instanceof View) {
             $this->content = $this->content
                 ->with(value($this->additionalData))
                 ->render();

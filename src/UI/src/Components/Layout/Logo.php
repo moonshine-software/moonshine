@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\MoonShineComponent;
 
@@ -14,9 +15,9 @@ final class Logo extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.logo';
 
-    public MoonShineComponentAttributeBag $logoAttributes;
+    public ComponentAttributesBagContract $logoAttributes;
 
-    public MoonShineComponentAttributeBag $logoSmallAttributes;
+    public ComponentAttributesBagContract $logoSmallAttributes;
 
     public function __construct(
         public string $href,

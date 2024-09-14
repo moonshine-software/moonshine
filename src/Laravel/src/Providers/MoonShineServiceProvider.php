@@ -35,7 +35,7 @@ use MoonShine\Laravel\Applies\Filters\DateModelApply;
 use MoonShine\Laravel\Applies\Filters\DateRangeModelApply;
 use MoonShine\Laravel\Applies\Filters\MorphToModelApply;
 use MoonShine\Laravel\Applies\Filters\RangeModelApply;
-use MoonShine\Laravel\Applies\Filters\RepeaterModelApply;
+use MoonShine\Laravel\Applies\Filters\JsonModelApply;
 use MoonShine\Laravel\Applies\Filters\SelectModelApply;
 use MoonShine\Laravel\Applies\Filters\TextModelApply;
 use MoonShine\Laravel\Collections\Fields;
@@ -121,7 +121,7 @@ final class MoonShineServiceProvider extends ServiceProvider
     protected function registerRouteMiddleware(): self
     {
         app('router')->middlewareGroup('moonshine', [
-            ...moonshineConfig()->getMiddlewares(),
+            ...moonshineConfig()->getMiddleware(),
         ]);
 
         return $this;
@@ -222,7 +222,7 @@ final class MoonShineServiceProvider extends ServiceProvider
             DateRange::class => DateRangeModelApply::class,
             BelongsToMany::class => BelongsToManyModelApply::class,
             MorphTo::class => MorphToModelApply::class,
-            Json::class => RepeaterModelApply::class,
+            Json::class => JsonModelApply::class,
             Text::class => TextModelApply::class,
             Textarea::class => TextModelApply::class,
             Checkbox::class => CheckboxModelApply::class,

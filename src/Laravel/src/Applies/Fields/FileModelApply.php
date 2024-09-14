@@ -12,9 +12,14 @@ use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\File;
 use Throwable;
 
+/**
+ * @implements ApplyContract<File>
+ */
 final class FileModelApply implements ApplyContract
 {
-    /* @param  File  $field */
+    /**
+     * @param  File  $field
+     */
     public function apply(FieldContract $field): Closure
     {
         return function (mixed $item) use ($field): mixed {

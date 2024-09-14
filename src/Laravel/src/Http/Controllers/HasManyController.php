@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Collections\Renderables;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Laravel\Fields\Relationships\MorphMany;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -30,7 +30,7 @@ final class HasManyController extends MoonShineController
     {
         $parent = $request->getResource()?->getItemOrInstance();
 
-        /** @var HasMany $field */
+        /** @var HasMany|MorphMany $field */
         $field = $request->getField();
 
         /** @var ModelResource $resource */
@@ -110,7 +110,7 @@ final class HasManyController extends MoonShineController
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (Fields $fields): Fields => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
@@ -133,6 +133,9 @@ final class HasManyController extends MoonShineController
 
         $parentItem = $parentResource->getItemOrInstance();
 
+        /**
+         * @var HasMany $field
+         */
         $field = $request->getField();
 
         $field?->fillCast(

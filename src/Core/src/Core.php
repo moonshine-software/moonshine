@@ -24,6 +24,11 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * @template TConfig of ConfiguratorContract
+ *
+ * @implements CoreContract<TConfig>
+ */
 abstract class Core implements CoreContract
 {
     use Conditionable;
@@ -214,7 +219,7 @@ abstract class Core implements CoreContract
     /**
      * Get collection of registered pages
      *
-     * @return Pages<array-key, PageContract>
+     * @return Pages<PageContract>
      */
     public function getPages(): Pages
     {

@@ -7,9 +7,10 @@ namespace MoonShine\UI\Components\Table;
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\Collection\TableRowsContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Contracts\UI\TableRowsContract;
 use MoonShine\Contracts\UI\WithoutExtractionContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -50,11 +51,11 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
     protected array $tdAttributes = [];
 
-    protected MoonShineComponentAttributeBag $headAttributes;
+    protected ComponentAttributesBagContract $headAttributes;
 
-    protected MoonShineComponentAttributeBag $bodyAttributes;
+    protected ComponentAttributesBagContract $bodyAttributes;
 
-    protected MoonShineComponentAttributeBag $footAttributes;
+    protected ComponentAttributesBagContract $footAttributes;
 
     public function __construct(
         iterable $fields = [],

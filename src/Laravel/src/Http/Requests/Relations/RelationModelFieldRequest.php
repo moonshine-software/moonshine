@@ -6,7 +6,10 @@ namespace MoonShine\Laravel\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use MoonShine\Contracts\Core\CrudPageContract;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
@@ -16,7 +19,9 @@ use Throwable;
 
 class RelationModelFieldRequest extends FormRequest
 {
+    /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
+    /** @use HasPageRequest<CrudPageContract<Fields>> */
     use HasPageRequest;
 
     public function getRelationName(): string

@@ -8,10 +8,11 @@ use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormElementContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -25,7 +26,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-abstract class FormElement extends MoonShineComponent implements HasAssetsContract
+abstract class FormElement extends MoonShineComponent implements FormElementContract
 {
     use WithLabel;
     use ShowWhen;
@@ -35,7 +36,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected array $propertyAttributes = ['type'];
 
-    protected ?FieldContract $parent = null;
+    protected ?FormElementContract $parent = null;
 
     protected ?string $formName = null;
 
@@ -77,7 +78,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected bool $isGroup = false;
 
-    protected MoonShineComponentAttributeBag $wrapperAttributes;
+    protected ComponentAttributesBagContract $wrapperAttributes;
 
     /**
      * @param  (Closure(static $ctx): string)|string|null  $label
@@ -141,7 +142,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return ! is_null($this->parent);
     }
 
-    public function setParent(FieldContract $field): static
+    public function setParent(FormElementContract $field): static
     {
         $this->parent = $field;
 
@@ -479,7 +480,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this;
     }
 
-    public function getWrapperAttributes(): MoonShineComponentAttributeBag
+    public function getWrapperAttributes(): ComponentAttributesBagContract
     {
         return $this->wrapperAttributes;
     }

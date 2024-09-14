@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
@@ -18,7 +21,7 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant R of Relation
+ * @template-covariant R of Relation|BelongsTo|HasOneOrMany|HasOneOrManyThrough
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
@@ -226,7 +229,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->relatedModel;
     }
 
-    /** @return Relation */
+    /**
+     * @return ?R
+     */
     public function getRelation(): ?Relation
     {
         return $this->getRelatedModel()

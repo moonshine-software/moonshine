@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Metrics\Wrapped;
 
 use Closure;
-use MoonShine\Contracts\Core\HasAssetsContract;
+use MoonShine\Contracts\UI\HasIconContract;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
@@ -15,7 +16,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label)
  */
-abstract class Metric extends MoonShineComponent implements HasAssetsContract
+abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract
 {
     use WithColumnSpan;
     use WithLabel;

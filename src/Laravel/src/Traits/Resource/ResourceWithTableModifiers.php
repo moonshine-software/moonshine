@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Traits\Resource;
 
 use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\TableRowsContract;
+use MoonShine\Contracts\UI\Collection\TableRowsContract;
 
 trait ResourceWithTableModifiers
 {

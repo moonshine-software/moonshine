@@ -19,28 +19,28 @@ final class AssetElements extends Collection implements AssetElementsContract
     public function js(): self
     {
         return $this->filter(
-            static fn (AssetElementContract $asset): int|bool => $asset instanceof Js
+            static fn (AssetElementContract $asset): bool => $asset instanceof Js
         );
     }
 
     public function css(): self
     {
         return $this->filter(
-            static fn (AssetElementContract $asset): int|bool => $asset instanceof Css
+            static fn (AssetElementContract $asset): bool => $asset instanceof Css
         );
     }
 
     public function inlineCss(): self
     {
         return $this->filter(
-            static fn (AssetElementContract $asset): int|bool => $asset instanceof InlineCss
+            static fn (AssetElementContract $asset): bool => $asset instanceof InlineCss
         );
     }
 
     public function inlineJs(): self
     {
         return $this->filter(
-            static fn (AssetElementContract $asset): int|bool => $asset instanceof InlineJs
+            static fn (AssetElementContract $asset): bool => $asset instanceof InlineJs
         );
     }
 

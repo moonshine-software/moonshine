@@ -7,7 +7,7 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Traits\HasDataCast;

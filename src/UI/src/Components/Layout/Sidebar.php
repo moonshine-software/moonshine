@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\AbstractWithComponents;
 
@@ -15,7 +16,7 @@ class Sidebar extends AbstractWithComponents
         'collapse_menu' => 'moonshine::ui.collapse_menu',
     ];
 
-    public MoonShineComponentAttributeBag $collapseAttributes;
+    public ComponentAttributesBagContract $collapseAttributes;
 
     public function __construct(
         iterable $components = [],

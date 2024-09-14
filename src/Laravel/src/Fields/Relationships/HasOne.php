@@ -7,13 +7,12 @@ namespace MoonShine\Laravel\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Core\Collections\Renderables;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\FormBuilder;
@@ -26,8 +25,8 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of HasOneOrMany|HasOneOrManyThrough
+ * @extends ModelRelationField<R>
  */
 class HasOne extends ModelRelationField implements HasFieldsContract
 {
@@ -138,7 +137,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         };
     }
 
-    protected function getComponent(): RenderableContract
+    protected function getComponent(): FormBuilder
     {
         $resource = $this->getResource();
 
@@ -220,7 +219,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                     )->class('btn-lg'),
                 ]
             )
-            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (Fields $fields): Fields => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

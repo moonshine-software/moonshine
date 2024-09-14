@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support\DTOs;
 
 use Illuminate\Contracts\Support\Arrayable;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 
 final readonly class FileItem implements Arrayable
@@ -13,7 +14,7 @@ final readonly class FileItem implements Arrayable
         private string $fullPath,
         private string $rawValue,
         private string $name,
-        private MoonShineComponentAttributeBag $attributes = new MoonShineComponentAttributeBag(),
+        private ComponentAttributesBagContract $attributes = new MoonShineComponentAttributeBag(),
     ) {
     }
 
@@ -32,7 +33,7 @@ final readonly class FileItem implements Arrayable
         return $this->name;
     }
 
-    public function getAttributes(): MoonShineComponentAttributeBag
+    public function getAttributes(): ComponentAttributesBagContract
     {
         return $this->attributes;
     }

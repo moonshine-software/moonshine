@@ -8,6 +8,9 @@ use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Core\Core;
 use MoonShine\Core\Storage\FileStorage;
 
+/**
+ * @extends Core<MoonShineConfigurator>
+ */
 final class MoonShine extends Core
 {
     public static function path(string $path = ''): string
@@ -45,7 +48,7 @@ final class MoonShine extends Core
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed
     {
         if (! is_null($id)) {
-            return $this->container->make($id, $parameters) ?? $default;
+            return app()->make($id, $parameters) ?? $default;
         }
 
         return $this->container;
@@ -53,6 +56,6 @@ final class MoonShine extends Core
 
     public function getStorage(...$parameters): StorageContract
     {
-        return $this->container->make(StorageContract::class, $parameters) ?? new FileStorage();
+        return app()->make(StorageContract::class, $parameters) ?? new FileStorage();
     }
 }

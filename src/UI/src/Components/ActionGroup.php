@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
 use Throwable;
 

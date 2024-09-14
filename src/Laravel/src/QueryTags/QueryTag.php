@@ -7,6 +7,9 @@ namespace MoonShine\Laravel\QueryTags;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\Core\HasCanSeeContract;
+use MoonShine\Contracts\Core\HasCoreContract;
+use MoonShine\Contracts\UI\HasIconContract;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Traits\HasCanSee;
@@ -16,7 +19,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label, Closure $builder)
  */
-final class QueryTag implements HasCanSeeContract
+final class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, HasCoreContract
 {
     use Makeable;
     use WithCore;

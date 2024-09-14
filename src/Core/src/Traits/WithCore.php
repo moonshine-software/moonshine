@@ -8,19 +8,14 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Core\Core;
 
 /**
- * @template-covariant T of CoreContract
+ * @template TCore of CoreContract
  */
 trait WithCore
 {
-    /**
-     * @var ?T
-     */
     private ?CoreContract $core = null;
 
     /**
      * We don't keep the Core by default, but there is such an option
-     *
-     * @param T $core
      */
     public function setCore(CoreContract $core): void
     {
@@ -28,7 +23,7 @@ trait WithCore
     }
 
     /**
-     * @return T
+     * @return TCore
      */
     public function getCore(): CoreContract
     {

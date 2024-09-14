@@ -54,43 +54,43 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @return list<class-string>
      */
-    public function getMiddlewares(): array
+    public function getMiddleware(): array
     {
-        return $this->get('middlewares', []);
+        return $this->get('middleware', []);
     }
 
     /**
-     * @param  list<class-string>|Closure  $middlewares
+     * @param  list<class-string>|Closure  $middleware
      */
-    public function middlewares(array|Closure $middlewares): self
+    public function middleware(array|Closure $middleware): self
     {
-        return $this->set('middlewares', $middlewares);
+        return $this->set('middleware', $middleware);
     }
 
     /**
-     * @param  list<class-string>|class-string  $middlewares
+     * @param  list<class-string>|class-string  $middleware
      */
-    public function addMiddlewares(array|string $middlewares): self
+    public function addMiddleware(array|string $middleware): self
     {
-        if (is_string($middlewares)) {
-            $middlewares = [$middlewares];
+        if (is_string($middleware)) {
+            $middleware = [$middleware];
         }
 
-        return $this->set('middlewares', [
-            ...$this->getMiddlewares(),
-            ...$middlewares,
+        return $this->set('middleware', [
+            ...$this->getMiddleware(),
+            ...$middleware,
         ]);
     }
 
-    public function exceptMiddlewares(array|string $except = []): self
+    public function exceptMiddleware(array|string $except = []): self
     {
         $except = is_string($except) ? [$except] : $except;
 
-        $middlewares = collect($this->getMiddlewares())
+        $middleware = collect($this->getMiddleware())
             ->filter(static fn ($class): bool => ! in_array($class, $except, true))
             ->toArray();
 
-        return $this->middlewares($middlewares);
+        return $this->middleware($middleware);
     }
 
     public function getTitle(): string
@@ -349,7 +349,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @template-covariant T of PageContract
+     * @template T of PageContract
      * @param  class-string<T>  $default
      */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract
@@ -385,7 +385,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @template-covariant T of FormContract
+     * @template T of FormContract
      * @param  class-string<T>  $default
      */
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 
 trait Removable
@@ -23,7 +24,7 @@ trait Removable
         return $this;
     }
 
-    public function getRemovableAttributes(): MoonShineComponentAttributeBag
+    public function getRemovableAttributes(): ComponentAttributesBagContract
     {
         return new MoonShineComponentAttributeBag($this->removableAttributes);
     }

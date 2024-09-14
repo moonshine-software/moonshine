@@ -7,18 +7,19 @@ namespace MoonShine\Laravel\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
@@ -28,8 +29,8 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasMany>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany
+ * @extends ModelRelationField<R>
  */
 class HasMany extends ModelRelationField implements HasFieldsContract
 {
@@ -346,7 +347,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     /**
      * @throws Throwable
      */
-    protected function getTableValue(): RenderableContract
+    protected function getTableValue(): TableBuilder
     {
         $items = $this->getValue();
         $resource = $this->getResource();
@@ -504,7 +505,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     /**
      * @throws Throwable
      */
-    public function getComponent(): RenderableContract
+    public function getComponent(): ComponentContract
     {
         // resolve value before call toValue
         if (is_null($this->toValue())) {

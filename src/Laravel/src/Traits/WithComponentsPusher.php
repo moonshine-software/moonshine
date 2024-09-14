@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits;
 
 use Closure;
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ComponentContract;
 
 trait WithComponentsPusher
 {
     /**
-     * @var array<string, Closure|RenderableContract>
+     * @var array<string, Closure|ComponentContract>
      */
-    private static array $pushedComponents = [];
+    protected static array $pushedComponents = [];
 
-    public static function pushComponent(Closure|RenderableContract $component): void
+    public static function pushComponent(Closure|ComponentContract $component): void
     {
         static::$pushedComponents[] = $component;
     }
@@ -23,7 +23,7 @@ trait WithComponentsPusher
     {
         return collect(static::$pushedComponents)
             ->map(
-                fn (Closure|RenderableContract $component) => $component instanceof Closure
+                fn (Closure|ComponentContract $component) => $component instanceof Closure
                 ? value($component, $this)
                 : $component
             )

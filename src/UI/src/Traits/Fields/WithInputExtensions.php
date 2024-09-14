@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\InputExtensions\InputCopy;
 use MoonShine\UI\InputExtensions\InputExt;
@@ -21,7 +22,7 @@ trait WithInputExtensions
         return collect($this->extensions);
     }
 
-    public function getExtensionsAttributes(): MoonShineComponentAttributeBag
+    public function getExtensionsAttributes(): ComponentAttributesBagContract
     {
         $extensions = $this->getExtensions();
 
