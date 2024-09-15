@@ -25,7 +25,7 @@ final class FiltersButton
             ->secondary()
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
-                static fn (): array|string|null => __('moonshine::ui.filters'),
+                static fn (): array|string => __('moonshine::ui.filters'),
                 static fn (): FormBuilderContract => $form,
                 name: 'filters-off-canvas',
                 components: [$form]

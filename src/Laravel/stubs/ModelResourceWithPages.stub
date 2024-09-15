@@ -14,7 +14,7 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Pages\Page;
 
 /**
- * @extends ModelResource<{model}>
+ * @extends ModelResource<{model}, {indexPage}, {formPage}, {detailPage}>
  */
 class DummyResource extends ModelResource
 {

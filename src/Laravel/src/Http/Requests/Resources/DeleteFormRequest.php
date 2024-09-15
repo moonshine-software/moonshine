@@ -24,6 +24,6 @@ final class DeleteFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        return $this->getResource()?->can(Ability::DELETE) ?? false;
+        return (bool) $this->getResource()?->can(Ability::DELETE);
     }
 }

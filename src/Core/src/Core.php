@@ -116,7 +116,7 @@ abstract class Core implements CoreContract
         /** @var FieldsContract $collection */
         $collection = $this->container->get(FieldsContract::class);
 
-        return $collection?->push(...$items);
+        return $collection->push(...$items);
     }
 
     public function flushState(): void

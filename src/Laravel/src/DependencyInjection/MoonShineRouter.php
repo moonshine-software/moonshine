@@ -12,7 +12,7 @@ use MoonShine\Laravel\MoonShineEndpoints;
 
 final class MoonShineRouter extends AbstractRouter
 {
-    public function getEndpoints(): EndpointsContract
+    public function getEndpoints(): MoonShineEndpoints
     {
         return new MoonShineEndpoints($this);
     }

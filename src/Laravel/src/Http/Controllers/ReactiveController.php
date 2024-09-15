@@ -19,7 +19,7 @@ final class ReactiveController extends MoonShineController
     {
         $page = $request->getPage();
 
-        /** @var FormBuilderContract $form */
+        /** @var ?FormBuilderContract $form */
         $form = $page->getComponents()->findForm(
             $request->getComponentName()
         );

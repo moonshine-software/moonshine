@@ -42,8 +42,8 @@ class UpdateFieldController extends MoonShineController
 
         $field = $relationField
             ->getFields()
-            ?->onlyFields()
-            ?->findByColumn($request->input('field'));
+            ->onlyFields()
+            ->findByColumn($request->input('field'));
 
         throw_if(
             is_null($field) || is_null($resource),

@@ -133,7 +133,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         if ($casted?->getOriginal() instanceof Model) {
-            $this->setRelatedModel($casted?->getOriginal());
+            $this->setRelatedModel($casted->getOriginal());
         }
 
         $this->setData($casted);

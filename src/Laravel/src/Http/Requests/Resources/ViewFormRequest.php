@@ -24,6 +24,6 @@ final class ViewFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        return $this->getResource()?->can(Ability::VIEW) ?? false;
+        return (bool) $this->getResource()?->can(Ability::VIEW);
     }
 }

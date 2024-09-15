@@ -34,6 +34,9 @@ abstract class Page implements PageContract
     /** @var ?class-string<LayoutContract> */
     protected ?string $layout = null;
 
+    /**
+     * @var iterable|null|Components $components
+     */
     protected ?iterable $components = null;
 
     protected array $layersComponents = [];
@@ -285,7 +288,7 @@ abstract class Page implements PageContract
 
     protected function resolveAssets(): void
     {
-        $assets = $this->getAssets() ?? [];
+        $assets = $this->getAssets();
 
         if ($this->hasResource()) {
             $assets = [

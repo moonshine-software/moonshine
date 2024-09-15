@@ -132,7 +132,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this->formName;
     }
 
-    public function getParent(): ?FieldContract
+    public function getParent(): ?FormElementContract
     {
         return $this->parent;
     }

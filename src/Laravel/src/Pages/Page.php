@@ -21,7 +21,7 @@ abstract class Page extends CorePage
         }
 
         request()
-            ?->route()
+            ->route()
             ?->setParameter('pageUri', $this->getUriKey());
     }
 

@@ -46,7 +46,7 @@ final class EditButton
             ->when(
                 $resource->isEditInModal(),
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
-                    title: static fn (): array|string|null => __('moonshine::ui.edit'),
+                    title: static fn (): array|string => __('moonshine::ui.edit'),
                     content: static fn (): string => '',
                     name: static fn (mixed $item, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}"
                 )

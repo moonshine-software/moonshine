@@ -58,22 +58,22 @@ trait ResourceWithTableModifiers
         return $this->tfoot = $this->tfoot();
     }
 
-    protected function trAttributes(): Closure
+    protected function trAttributes(): ?Closure
     {
         return static fn (?DataWrapperContract $data, int $row): array => [];
     }
 
-    public function getTrAttributes(): Closure
+    public function getTrAttributes(): ?Closure
     {
         return $this->trAttributes();
     }
 
-    protected function tdAttributes(): Closure
+    protected function tdAttributes(): ?Closure
     {
         return static fn (?DataWrapperContract $data, int $row, int $cell): array => [];
     }
 
-    public function getTdAttributes(): Closure
+    public function getTdAttributes(): ?Closure
     {
         return $this->tdAttributes();
     }

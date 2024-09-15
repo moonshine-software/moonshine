@@ -57,7 +57,7 @@ final class BelongsToOrManyButton
             ->name("belongs-to-many-{$field->getRelationName()}-button")
             ->canSee(static fn (): bool => $resource->hasAction(Action::CREATE) && $resource->can(Ability::CREATE))
             ->inModal(
-                title: static fn (): array|string|null => __('moonshine::ui.create'),
+                title: static fn (): array|string => __('moonshine::ui.create'),
                 content: static fn (?Model $data): string => (string) FormBuilder::make($action)
                     ->reactiveUrl(
                         moonshineRouter()->getEndpoints()->reactive($resource->getFormPage(), $resource)

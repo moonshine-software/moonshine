@@ -37,14 +37,14 @@ final class OffCanvas extends AbstractWithComponents
 
     public function open(Closure|bool|null $condition = null): self
     {
-        $this->open = is_null($condition) || value($condition, $this) ?? false;
+        $this->open = is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
     public function left(Closure|bool|null $condition = null): self
     {
-        $this->left = is_null($condition) || value($condition, $this) ?? false;
+        $this->left = is_null($condition) || value($condition, $this);
 
         return $this;
     }

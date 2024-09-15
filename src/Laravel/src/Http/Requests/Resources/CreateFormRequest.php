@@ -24,6 +24,6 @@ final class CreateFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        return $this->getResource()?->can(Ability::CREATE) ?? false;
+        return (bool) $this->getResource()?->can(Ability::CREATE);
     }
 }

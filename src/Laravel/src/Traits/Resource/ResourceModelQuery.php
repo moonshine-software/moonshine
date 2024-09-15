@@ -185,7 +185,7 @@ trait ResourceModelQuery
 
     protected function withTags(): static
     {
-        /** @var QueryTag $tag */
+        /** @var ?QueryTag $tag */
         $tag = collect($this->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive()

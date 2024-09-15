@@ -487,7 +487,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->isValueWithModels()) {
-            return $this->toValue()?->modelKeys();
+            return $this->toValue()->modelKeys();
         }
 
         return $this->toValue()->keys()->toArray();

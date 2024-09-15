@@ -24,6 +24,6 @@ final class EditFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        return $this->getResource()?->can(Ability::UPDATE) ?? false;
+        return (bool) $this->getResource()?->can(Ability::UPDATE);
     }
 }

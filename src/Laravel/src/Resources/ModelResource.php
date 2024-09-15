@@ -105,7 +105,7 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
             ->newModelQuery()
             ->whereIn($this->getDataInstance()->getKeyName(), $ids)
             ->get()
-            ->each(function (mixed $item): ?bool {
+            ->each(function (mixed $item): bool {
                 $item = $this->beforeDeleting($item);
 
                 return (bool) tap($item->delete(), fn (): mixed => $this->afterDeleted($item));

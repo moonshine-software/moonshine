@@ -191,7 +191,7 @@ abstract class Field extends FormElement implements FieldContract
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $url = fn (?DataWrapperContract $data): string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([
@@ -332,7 +332,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $value, static $ctx): static  $callback
+     * @param  Closure(mixed $value, static $ctx): string  $callback
      */
     public function changeRender(Closure $callback): static
     {

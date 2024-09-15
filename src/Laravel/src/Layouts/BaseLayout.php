@@ -174,6 +174,6 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function isUseNotifications(): bool
     {
-        return $this->isAuthEnabled() && $this->getCore()->getConfig()->useNotifications();
+        return $this->isAuthEnabled() && $this->getCore()->getConfig()->isUseNotifications();
     }
 }

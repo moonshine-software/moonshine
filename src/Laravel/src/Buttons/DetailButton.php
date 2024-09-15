@@ -39,7 +39,7 @@ final class DetailButton
             ->when(
                 $resource->isDetailInModal(),
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
-                    title: static fn (): array|string|null => __('moonshine::ui.show'),
+                    title: static fn (): array|string => __('moonshine::ui.show'),
                     content: static fn (): string => '',
                     name: static fn (mixed $data, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}",
                     builder: static fn (Modal $modal): Modal => $modal->wide()

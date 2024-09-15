@@ -14,7 +14,7 @@ class Position extends Preview
 {
     public function __construct(?string $label = null, ?string $column = null)
     {
-        parent::__construct($label ?? '#', $column, static fn ($item, $index): int|float => $index + 1);
+        parent::__construct($label ?? '#', $column, static fn ($item, $index): int => $index + 1);
 
         $this->customAttributes([
             'data-increment-position' => true,

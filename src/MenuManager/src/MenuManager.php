@@ -28,12 +28,6 @@ final class MenuManager implements MenuManagerContract
 
     private bool $topMode = false;
 
-    public function __construct(
-        private RequestContract $request,
-        private RouterContract $router,
-    ) {
-    }
-
     public function add(array|MenuElementContract $data): static
     {
         $this->items = array_merge(

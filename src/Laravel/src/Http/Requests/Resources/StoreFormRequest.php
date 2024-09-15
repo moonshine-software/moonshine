@@ -24,7 +24,7 @@ final class StoreFormRequest extends MoonShineFormRequest
             return false;
         }
 
-        return $this->getResource()?->can(Ability::CREATE) ?? false;
+        return (bool) $this->getResource()?->can(Ability::CREATE);
     }
 
     public function rules(): array

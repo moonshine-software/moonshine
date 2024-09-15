@@ -62,7 +62,7 @@ class MoonShineUserRoleResource extends ModelResource
     }
 
     /**
-     * @return array{name: string}
+     * @return array{name: array|string}
      */
     protected function rules($item): array
     {

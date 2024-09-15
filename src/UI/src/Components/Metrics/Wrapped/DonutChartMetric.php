@@ -52,7 +52,7 @@ class DonutChartMetric extends Metric
     }
 
     /**
-     * @return array<string, int|float>
+     * @return array<int, mixed>
      */
     public function getValues(): array
     {

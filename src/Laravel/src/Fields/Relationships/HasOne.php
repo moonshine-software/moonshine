@@ -137,11 +137,15 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         };
     }
 
+    /**
+     * @throws Throwable
+     * @throws FieldException
+     */
     protected function getComponent(): FormBuilder
     {
         $resource = $this->getResource();
 
-        /** @var ModelResource $parentResource */
+        /** @var ?ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();

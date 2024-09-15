@@ -114,7 +114,7 @@ class MenuItem extends MenuElement
 
     public function blank(Closure|bool $blankCondition = true): static
     {
-        $this->blank = value($blankCondition, $this) ?? true;
+        $this->blank = value($blankCondition, $this);
 
         return $this;
     }
