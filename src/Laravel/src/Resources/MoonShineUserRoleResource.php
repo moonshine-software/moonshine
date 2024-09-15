@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
+use Illuminate\Support\Enumerable;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
@@ -13,6 +18,9 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 
 #[Icon('bookmark')]
+/**
+ * @extends ModelResource<MoonshineUserRole, IndexPage, FormPage, DetailPage, Fields, Enumerable>
+ */
 class MoonShineUserRoleResource extends ModelResource
 {
     public string $model = MoonshineUserRole::class;

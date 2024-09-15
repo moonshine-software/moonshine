@@ -9,6 +9,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
@@ -21,7 +22,7 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant R of Relation|BelongsTo|HasOneOrMany|HasOneOrManyThrough
+ * @template-covariant R of (BelongsTo|HasOneOrMany|HasOneOrManyThrough|\Illuminate\Database\Eloquent\Relations\BelongsToMany|MorphOneOrMany)
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
@@ -234,8 +235,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
      */
     public function getRelation(): ?Relation
     {
-        return $this->getRelatedModel()
-            ?->{$this->getRelationName()}();
+        return $this->getRelatedModel()?->{$this->getRelationName()}();
     }
 
     protected function isOnChangeCondition(): bool

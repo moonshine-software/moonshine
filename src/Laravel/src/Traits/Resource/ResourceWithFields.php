@@ -28,6 +28,7 @@ trait ResourceWithFields
      */
     public function getIndexFields(): Fields
     {
+        /** @var Fields $fields */
         $fields = $this->getPages()
             ->findByType(PageType::INDEX)
             ?->getFields();
@@ -36,7 +37,9 @@ trait ResourceWithFields
             $fields = Fields::make($this->indexFields());
         }
 
-        return $fields->ensure([FieldContract::class, FieldsWrapperContract::class]);
+        $fields->ensure([FieldContract::class, FieldsWrapperContract::class]);
+
+        return $fields;
     }
 
     /**
@@ -52,9 +55,7 @@ trait ResourceWithFields
      */
     public function getFormFields(bool $withOutside = false): Fields
     {
-        /**
-         * @var Fields $fields
-         */
+        /** @var Fields $fields */
         $fields = $this->getPages()
             ->findByType(PageType::FORM)
             ?->getFields();
@@ -79,9 +80,7 @@ trait ResourceWithFields
      */
     public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): Fields
     {
-        /**
-         * @var Fields $fields
-         */
+        /** @var Fields $fields */
         $fields = $this->getPages()
             ->findByType(PageType::DETAIL)
             ?->getFields();
@@ -90,9 +89,9 @@ trait ResourceWithFields
             $fields = Fields::make($this->detailFields());
         }
 
-        return $fields
-            ->ensure([FieldsWrapperContract::class, FieldContract::class, ModelRelationField::class])
-            ->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
+        $fields->ensure([FieldsWrapperContract::class, FieldContract::class, ModelRelationField::class]);
+
+        return $fields->detailFields(withOutside: $withOutside, onlyOutside: $onlyOutside);
     }
 
     /**

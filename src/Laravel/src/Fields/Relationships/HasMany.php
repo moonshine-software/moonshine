@@ -29,7 +29,7 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany
+ * @template-covariant R of (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany)
  * @extends ModelRelationField<R>
  */
 class HasMany extends ModelRelationField implements HasFieldsContract

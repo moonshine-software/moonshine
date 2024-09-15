@@ -17,13 +17,13 @@ use MoonShine\Contracts\UI\WithoutExtractionContract;
 use MoonShine\Core\Collections\BaseCollection;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Contracts\FileableContract;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use Throwable;
 
 
 /**
- * @implements FieldsContract<Field>
+ * @template T of FieldContract
+ * @implements FieldsContract<T>
  */
 class Fields extends BaseCollection implements FieldsContract
 {

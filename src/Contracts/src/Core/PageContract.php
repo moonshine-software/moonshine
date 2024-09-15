@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\LayoutContract;
+use MoonShine\Support\Enums\PageType;
 
 /**
  * @template-covariant  I of PageContract
@@ -43,4 +44,6 @@ interface PageContract extends
     public function checkUrl(): static;
 
     public function getBreadcrumbs(): array;
+
+    public function getPageType(): ?PageType;
 }

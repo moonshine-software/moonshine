@@ -15,6 +15,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Contracts\Resource\HasHandlersContract;
 use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
@@ -32,7 +33,10 @@ use Throwable;
  *
  * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields, Enumerable>
  */
-abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract
+abstract class ModelResource extends CrudResource implements
+    HasQueryTagsContract,
+    HasHandlersContract,
+    WithQueryBuilderContract
 {
     /**
      * @use ResourceModelQuery<TData>

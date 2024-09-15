@@ -8,9 +8,11 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Collections\Components;
+use MoonShine\Core\Core;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
@@ -19,9 +21,15 @@ use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Enums\Layer;
 use MoonShine\Support\Enums\PageType;
 
+/**
+ * @template TCore of Core
+ * @template TResource of ResourceContract
+ */
 abstract class Page implements PageContract
 {
+    /** @use WithCore<TCore> */
     use WithCore;
+    /** @use HasResource<TResource, TResource> */
     use HasResource;
     use WithUriKey;
     use WithAssets;

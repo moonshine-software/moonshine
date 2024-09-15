@@ -131,13 +131,16 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         ];
     }
 
+    /**
+     * @return null|PageContract<TIndexPage>|IndexPage
+     */
     public function getIndexPage(): ?PageContract
     {
         return $this->getPages()->indexPage();
     }
 
     /**
-     * @return ?PageContract<TFormPage>
+     * @return null|PageContract<TFormPage>|FormPage
      */
     public function getFormPage(): ?PageContract
     {
@@ -145,7 +148,7 @@ abstract class CrudResource extends Resource implements CrudResourceContract
     }
 
     /**
-     * @return ?PageContract<TDetailPage>
+     * @return null|PageContract<TDetailPage>|DetailPage
      */
     public function getDetailPage(): ?PageContract
     {

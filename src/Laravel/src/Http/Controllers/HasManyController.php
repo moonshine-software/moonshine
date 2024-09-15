@@ -55,12 +55,13 @@ final class HasManyController extends MoonShineController
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()->each(static fn (FieldContract $nestedFields): FieldContract => $nestedFields->setParent($field));
+            $relation = $field->getRelation();
 
             return $fields->when(
-                $field->getRelation() instanceof MorphOneOrMany,
+                $relation instanceof MorphOneOrMany,
                 static fn (Fields $f) => $f->push(
-                    Hidden::make($field->getRelation()?->getMorphType())
-                        ->setValue($parent::class)
+                    /** @phpstan-ignore-next-line  */
+                    Hidden::make($relation?->getMorphType())->setValue($parent::class)
                 )
             )->when(
                 $update,
@@ -69,7 +70,7 @@ final class HasManyController extends MoonShineController
                 )
             )
                 ->push(
-                    Hidden::make($field->getRelation()?->getForeignKeyName())
+                    Hidden::make($relation?->getForeignKeyName())
                         ->setValue($parent->getKey())
                 )
                 ->push(Hidden::make('_async_field')->setValue($isAsync))
@@ -101,9 +102,9 @@ final class HasManyController extends MoonShineController
                 ),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     array_filter([
-                        $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
-                        ...$field->getRelation() instanceof MorphOneOrMany
-                            ? [$field->getRelation()?->getMorphType() => $parent?->getMorphClass()]
+                        $relation?->getForeignKeyName() => $parent?->getKey(),
+                        ...$relation instanceof MorphOneOrMany
+                            ? [$relation->getMorphType() => $parent?->getMorphClass()]
                             : [],
                     ], static fn ($value) => filled($value)),
                     $resource->getCaster()

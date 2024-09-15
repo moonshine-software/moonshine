@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -14,6 +15,9 @@ use MoonShine\Support\UriKey;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Throwable;
 
+/**
+ * @implements EndpointsContract<CrudResourceContract>
+ */
 final readonly class MoonShineEndpoints implements EndpointsContract
 {
     public function __construct(

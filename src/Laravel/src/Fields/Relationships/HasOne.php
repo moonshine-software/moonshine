@@ -158,6 +158,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         }
 
         $parentItem = $parentResource->getItemOrInstance();
+        /** @var HasOneOrMany|MorphOneOrMany $relation */
         $relation = $parentItem->{$this->getRelationName()}();
 
         $fields = $resource->getFormFields();
@@ -191,13 +192,13 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                         Hidden::make('_method')->setValue('PUT'),
                     )
                 )->push(
-                    Hidden::make($this->getRelation()?->getForeignKeyName())
+                    Hidden::make($relation->getForeignKeyName())
                         ->setValue($this->getRelatedModel()?->getKey())
                 )->when(
-                    $this->getRelation() instanceof MorphOneOrMany,
+                    $relation instanceof MorphOneOrMany,
                     fn (Fields $f) => $f->push(
-                        Hidden::make($this->getRelation()?->getMorphType())
-                            ->setValue($this->getRelatedModel()::class)
+                        /** @phpstan-ignore-next-line  */
+                        Hidden::make($relation->getMorphType())->setValue($this->getRelatedModel()::class)
                     )
                 )
                     ->toArray()
@@ -205,9 +206,9 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
                 $item?->toArray() ?? array_filter([
-                $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-                ...$this->getRelation() instanceof MorphOneOrMany
-                    ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
+                $relation->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
+                ...$relation instanceof MorphOneOrMany
+                    ? [$relation->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
                     : [],
             ], static fn ($value) => filled($value)),
                 $resource->getCaster()

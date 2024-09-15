@@ -31,7 +31,10 @@ final class ActionGroup extends AbstractWithComponents
 
     public function getActions(): ActionButtonsContract
     {
-        return ActionButtons::make($this->components)->ensure(ActionButtonContract::class);
+        $buttons = ActionButtons::make($this->components);
+        $buttons->ensure(ActionButtonContract::class);
+
+        return $buttons;
     }
 
     public function add(ActionButtonContract $item): self

@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -176,7 +177,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         array $events = [],
         ?AsyncCallback $callback = null,
         ?PageContract $page = null,
-        ?ResourceContract $resource = null,
+        ?CrudResourceContract $resource = null,
     ): self {
         $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->method(
             $method,
@@ -353,9 +354,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
             $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($values));
 
-            $fields
-                ->withoutOutside()
-                ->each(static fn (FieldContract $field): mixed => $field->apply($default($field), $values));
+            $fields->each(static fn (FieldContract $field): mixed => $field->apply($default($field), $values));
 
             $apply($values, $fields);
 

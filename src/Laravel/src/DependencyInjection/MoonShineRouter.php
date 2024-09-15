@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\DependencyInjection;
 
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -52,7 +53,7 @@ final class MoonShineRouter extends AbstractRouter
 
     public function extractResourceItem(
         int|string|null $key = null,
-        ?ResourceContract $resource = null
+        ?CrudResourceContract $resource = null
     ): string|int|null {
         if (is_null($key)) {
             $key = $resource

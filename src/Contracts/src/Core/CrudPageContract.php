@@ -12,8 +12,6 @@ use MoonShine\Support\Enums\PageType;
  */
 interface CrudPageContract extends PageContract
 {
-    public function getPageType(): ?PageType;
-
     /**
      * @return TFields
      */
