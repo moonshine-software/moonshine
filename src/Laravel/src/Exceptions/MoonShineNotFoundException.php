@@ -25,7 +25,7 @@ final class MoonShineNotFoundException extends MoonShineException
             ->code(Response::HTTP_NOT_FOUND)
             ->message(__('moonshine::ui.404'));
 
-        return response($page)->setStatusCode(Response::HTTP_NOT_FOUND);
+        return response((string) $page)->setStatusCode(Response::HTTP_NOT_FOUND);
     }
 
     public static function pageNotFound(): self

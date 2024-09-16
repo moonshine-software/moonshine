@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -13,7 +13,6 @@ use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
@@ -26,9 +25,9 @@ use Throwable;
 
 /**
  * @method CrudResource getResource()
- * @extends Page<Fields>
+
  */
-class DetailPage extends Page
+class DetailPage extends CrudPage
 {
     protected ?PageType $pageType = PageType::DETAIL;
 
@@ -68,7 +67,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function components(): iterable
@@ -83,7 +82,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -101,7 +100,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -150,7 +149,7 @@ class DetailPage extends Page
         return array_merge($components, $this->getResource()->getDetailPageComponents());
     }
 
-    protected function getDetailComponent(?DataWrapperContract $item, Fields $fields): RenderableContract
+    protected function getDetailComponent(?DataWrapperContract $item, Fields $fields): ComponentContract
     {
         return TableBuilder::make($fields)
             ->cast($this->getResource()->getCaster())
@@ -161,7 +160,7 @@ class DetailPage extends Page
     }
 
     /**
-     * @return list<RenderableContract>
+     * @return list<ComponentContract>
      * @throws MoonShineComponentException
      * @throws PageException
      * @throws Throwable

@@ -6,15 +6,20 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
+/**
+ * @implements  HasFieldsContract<Fields|FieldsContract>
+ */
 class StackFields extends Field implements HasFieldsContract, FieldsWrapperContract
 {
     use WithFields;

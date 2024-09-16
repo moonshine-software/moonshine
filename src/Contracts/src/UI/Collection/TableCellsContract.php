@@ -2,13 +2,21 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Contracts\UI;
+namespace MoonShine\Contracts\UI\Collection;
 
 use Closure;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use Traversable;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\TableCellContract;
 
-interface TableCellsContract extends Traversable
+/**
+ * @template-extends Enumerable<array-key, TableCellContract>
+ *
+ * @mixin Collection
+ */
+interface TableCellsContract extends Enumerable
 {
     public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self;
 

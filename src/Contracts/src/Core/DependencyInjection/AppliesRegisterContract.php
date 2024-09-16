@@ -6,6 +6,7 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormElementContract;
 
 /**
  * @template-covariant I
@@ -24,7 +25,7 @@ interface AppliesRegisterContract
     public function getDefaultFor(): string;
 
     public function findByField(
-        FieldContract $field,
+        FormElementContract $field,
         string $type = 'fields',
         ?string $for = null
     ): ?ApplyContract;

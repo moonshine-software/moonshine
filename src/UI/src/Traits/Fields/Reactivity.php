@@ -8,9 +8,10 @@ use Closure;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\UI\Collections\Fields;
 
-/** @mixin FieldContract */
+/**
+ * @mixin FieldContract
+ */
 trait Reactivity
 {
     protected ?Closure $reactiveCallback = null;
@@ -28,13 +29,9 @@ trait Reactivity
             return $fields;
         }
 
-        return value($this->reactiveCallback, $fields, $value, $this, $values);
+        return call_user_func($this->reactiveCallback, $fields, $value, $this, $values);
     }
 
-    /**
-     * @param  ?Closure(Fields $fields, mixed $value, static $ctx, array $values): Fields  $callback
-     * @return $this
-     */
     public function reactive(
         ?Closure $callback = null,
         bool $lazy = false,

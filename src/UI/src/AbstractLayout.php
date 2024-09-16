@@ -14,8 +14,14 @@ use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\UI\Components\Layout\{Layout};
 
+/**
+ * @template TCore of CoreContract
+ */
 abstract class AbstractLayout implements LayoutContract
 {
+    /**
+     * @param  TCore  $core
+     */
     public function __construct(
         protected readonly CoreContract $core,
         protected readonly PageContract $page,
@@ -41,6 +47,9 @@ abstract class AbstractLayout implements LayoutContract
         return $this->page;
     }
 
+    /**
+     * @return TCore
+     */
     protected function getCore(): CoreContract
     {
         return $this->core;

@@ -5,8 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
+use Illuminate\Support\Traits\Conditionable;
+use Stringable;
 
-interface FormBuilderContract extends HasFieldsContract
+/**
+ * @mixin Conditionable
+ * @mixin HasFieldsContract
+ * @mixin HasCasterContract
+ */
+interface FormBuilderContract extends
+    ComponentContract,
+    HasAsyncContract
 {
     public function action(string $action): self;
 

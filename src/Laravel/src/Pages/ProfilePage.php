@@ -6,7 +6,6 @@ namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\MoonShineException;
-use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Traits\WithComponentsPusher;
@@ -22,9 +21,6 @@ use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\PasswordRepeat;
 use MoonShine\UI\Fields\Text;
 
-/**
- * @extends Page<Fields>
- */
 class ProfilePage extends Page
 {
     use WithComponentsPusher;

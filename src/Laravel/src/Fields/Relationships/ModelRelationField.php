@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
@@ -18,8 +22,10 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant R of Relation
+ * @template-covariant R of (BelongsTo|HasOneOrMany|HasOneOrManyThrough|\Illuminate\Database\Eloquent\Relations\BelongsToMany|MorphOneOrMany)
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
+ *
+ * @implements HasResourceContract<ModelResource>
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -83,15 +89,16 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     }
 
     /**
-     * @param  ?class-string<ResourceContract>  $classString
+     * @param  ?class-string<ModelResource>  $classString
      * @throws Throwable
      */
-    protected function findResource(?string $classString = null): ResourceContract
+    protected function findResource(?string $classString = null): ModelResource
     {
         if ($this->hasResource()) {
             return $this->getResource();
         }
 
+        /** @var ?ModelResource $resource */
         $resource = $classString
             ? moonshine()->getResources()->findByClass($classString)
             : moonshine()->getResources()->findByUri(
@@ -103,6 +110,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
         if (is_null($resource) && $this->isMorph()) {
+            /** @var ModelResource $resource */
             $resource = moonshine()->getResources()->findByUri(
                 moonshineRequest()->getResourceUri()
             );
@@ -110,7 +118,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         return tap(
             $resource,
-            function (?ResourceContract $resource): void {
+            function (?ModelResource $resource): void {
                 throw_if(
                     is_null($resource),
                     FieldException::resourceRequired(static::class, $this->getRelationName())
@@ -130,7 +138,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         if ($casted?->getOriginal() instanceof Model) {
-            $this->setRelatedModel($casted?->getOriginal());
+            $this->setRelatedModel($casted->getOriginal());
         }
 
         $this->setData($casted);
@@ -155,7 +163,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         if (! is_null($this->afterFillCallback)) {
-            return value($this->afterFillCallback, $this);
+            return call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;
@@ -167,7 +175,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         if ($this->isToOne() && ! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                value(
+                call_user_func(
                     $this->getFormattedValueCallback(),
                     $value ?? $this->getRelation()?->getModel(),
                     $this->getRowIndex(),
@@ -226,11 +234,12 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->relatedModel;
     }
 
-    /** @return Relation */
+    /**
+     * @return ?R
+     */
     public function getRelation(): ?Relation
     {
-        return $this->getRelatedModel()
-            ?->{$this->getRelationName()}();
+        return $this->getRelatedModel()?->{$this->getRelationName()}();
     }
 
     protected function isOnChangeCondition(): bool

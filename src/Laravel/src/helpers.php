@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Illuminate\Cache\Repository;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;

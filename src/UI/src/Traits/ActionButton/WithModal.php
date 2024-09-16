@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits\ActionButton;
 use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
@@ -20,6 +21,9 @@ use MoonShine\UI\Fields\HiddenIds;
 
 trait WithModal
 {
+    /**
+     * @var ?Closure(mixed, DataWrapperContract, static): ComponentContract
+     */
     protected ?Closure $modal = null;
 
     public function isInModal(): bool
@@ -63,6 +67,7 @@ trait WithModal
         Closure|string|null $button = null,
         Closure|array|null $fields = null,
         HttpMethod $method = HttpMethod::POST,
+        /** @var ?Closure(mixed): FormBuilderContract $formBuilder */
         ?Closure $formBuilder = null,
         ?Closure $modalBuilder = null,
         Closure|string|null $name = null,
@@ -112,16 +117,20 @@ trait WithModal
                 ['class' => 'btn-secondary']
             )->when(
                 ! is_null($formBuilder),
-                static fn (FormBuilderContract $form): FormBuilderContract => value($formBuilder, $form, $item)
+                static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder($form, $item)
             ),
             name: $name,
             builder: $modalBuilder
         );
     }
 
-    public function getModal(): ?Modal
+    public function getModal(): ?ComponentContract
     {
-        return value($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
+        if(!$this->isInModal()) {
+            return null;
+        }
+
+        return call_user_func($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleModal(string $name = 'default'): static

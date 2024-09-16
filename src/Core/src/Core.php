@@ -24,6 +24,11 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * @template TConfig of ConfiguratorContract
+ *
+ * @implements CoreContract<TConfig>
+ */
 abstract class Core implements CoreContract
 {
     use Conditionable;
@@ -53,7 +58,10 @@ abstract class Core implements CoreContract
         static::$instance = $core;
     }
 
-    public static function getInstance(): static
+    /**
+     * @return CoreContract<TConfig>
+     */
+    public static function getInstance(): CoreContract
     {
         return value(static::$instance);
     }
@@ -109,9 +117,11 @@ abstract class Core implements CoreContract
     public function getFieldsCollection(iterable $items = []): FieldsContract
     {
         /** @var FieldsContract $collection */
-        $collection = $this->container->get(FieldsContract::class);
+        $collection = $this->container
+            ->get(FieldsContract::class)
+            ->push(...$items);
 
-        return $collection?->push(...$items);
+        return $collection;
     }
 
     public function flushState(): void
@@ -214,7 +224,7 @@ abstract class Core implements CoreContract
     /**
      * Get collection of registered pages
      *
-     * @return Pages<array-key, PageContract>
+     * @return Pages<PageContract>
      */
     public function getPages(): Pages
     {

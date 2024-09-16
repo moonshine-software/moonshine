@@ -9,7 +9,6 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -26,8 +25,13 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
+/**
+ * @implements HasFieldsContract<Fields|FieldsContract>
+ */
 class RelationRepeater extends ModelRelationField implements
     HasFieldsContract,
     RemovableContract,
@@ -35,7 +39,6 @@ class RelationRepeater extends ModelRelationField implements
     CanBeArray,
     CanBeObject
 {
-    /** @use WithFields<Fields> */
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -173,6 +176,9 @@ class RelationRepeater extends ModelRelationField implements
         return $buttons;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindexNames(parent: $this, before: static function (self $parent, Field $field): void {
@@ -184,6 +190,11 @@ class RelationRepeater extends ModelRelationField implements
         });
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Throwable
+     * @throws NotFoundExceptionInterface
+     */
     protected function resolvePreview(): string|Renderable
     {
         return $this
@@ -231,7 +242,7 @@ class RelationRepeater extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    protected function getComponent(): RenderableContract
+    protected function getComponent(): TableBuilder
     {
         $fields = $this->getPreparedFields();
 
@@ -250,7 +261,7 @@ class RelationRepeater extends ModelRelationField implements
             )
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: $this->isPreviewMode())
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
 
@@ -285,6 +296,7 @@ class RelationRepeater extends ModelRelationField implements
                 $apply = $callback($field, $values, $data);
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
                     data_get($apply, $field->getColumn())

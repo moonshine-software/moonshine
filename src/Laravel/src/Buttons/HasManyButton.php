@@ -38,7 +38,7 @@ final class HasManyButton
             'has-many.form',
             moonshineRequest()->getItemID(),
             [
-                'pageUri' => $parentPage?->getUriKey(),
+                'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
                 '_key' => $data?->getKey(),
             ]
@@ -67,7 +67,7 @@ final class HasManyButton
 
         if (! $field->isWithoutModals()) {
             $actionButton = $actionButton->inModal(
-                title: static fn (): array|string|null => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
+                title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                 content: '',
                 name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
                 builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)

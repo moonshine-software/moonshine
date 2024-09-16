@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
-use MoonShine\Contracts\UI\RenderablesContract;
+use MoonShine\Contracts\UI\Collection\ComponentsContract;
 
 interface HasComponentsContract
 {
@@ -12,5 +12,5 @@ interface HasComponentsContract
 
     public function hasComponents(): bool;
 
-    public function getComponents(): RenderablesContract;
+    public function getComponents(): ComponentsContract;
 }

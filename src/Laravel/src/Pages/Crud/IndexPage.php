@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Enums\Ability;
-use MoonShine\Laravel\Pages\Page;
-use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
@@ -24,11 +24,7 @@ use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\Table\TableBuilder;
 use Throwable;
 
-/**
- * @method CrudResource getResource()
- * @extends Page<Fields>
- */
-class IndexPage extends Page
+class IndexPage extends CrudPage
 {
     protected ?PageType $pageType = PageType::INDEX;
 
@@ -48,7 +44,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function components(): iterable
@@ -59,7 +55,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function topLayer(): array
     {
@@ -72,7 +68,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -85,14 +81,14 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();
     }
 
-    protected function getMetrics(): ?MoonShineComponent
+    protected function getMetrics(): ?ComponentContract
     {
         if ($this->getResource()->isListComponentRequest()) {
             return null;
@@ -107,7 +103,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getPageButtons(): array
     {
@@ -136,21 +132,23 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getQueryTags(): array
     {
-        if (! $this->getResource() instanceof HasQueryTagsContract) {
+        $resource = $this->getResource();
+
+        if (! $resource instanceof HasQueryTagsContract) {
             return [];
         }
 
         return [
             ActionGroup::make()->when(
-                $this->getResource()->hasQueryTags(),
-                function (ActionGroup $group): ActionGroup {
-                    foreach ($this->getResource()->getQueryTags() as $tag) {
+                $resource->hasQueryTags(),
+                static function (ActionGroup $group) use($resource): ActionGroup {
+                    foreach ($resource->getQueryTags() as $tag) {
                         $group->add(
-                            QueryTagButton::for($this->getResource(), $tag)
+                            QueryTagButton::for($resource, $tag)
                         );
                     }
 
@@ -171,7 +169,7 @@ class IndexPage extends Page
         return JsEvent::TABLE_UPDATED->value;
     }
 
-    protected function getItemsComponent(iterable $items, Fields $fields): RenderableContract
+    protected function getItemsComponent(iterable $items, Fields $fields): ComponentContract
     {
         return TableBuilder::make(items: $items)
             ->name($this->getListComponentName())
@@ -216,7 +214,7 @@ class IndexPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function getItemsComponents(): array

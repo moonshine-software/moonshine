@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
+use MoonShine\UI\Fields\Json;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 
-class RepeaterModelApply implements ApplyContract
+/**
+ * @implements ApplyContract<Json>
+ */
+class JsonModelApply implements ApplyContract
 {
     /* @param  \MoonShine\UI\Fields\Json  $field */
     public function apply(FieldContract $field): Closure

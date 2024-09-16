@@ -7,9 +7,7 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
-use MoonShine\Contracts\Core\HasAssetsContract;
-use MoonShine\Contracts\Core\HasCanSeeContract;
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
@@ -18,7 +16,8 @@ use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Traits\HasCanSee;
 
-abstract class MoonShineComponent extends Component implements RenderableContract, HasCanSeeContract
+abstract class MoonShineComponent extends Component implements
+    ComponentContract
 {
     use Conditionable;
     use Macroable;
@@ -36,7 +35,7 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
     ) {
         $this->attributes = new MoonShineComponentAttributeBag();
 
-        if ($this instanceof HasAssetsContract && ! $this->isConsoleMode()) {
+        if (! $this->isConsoleMode()) {
             $this->resolveAssets();
         }
     }
@@ -69,6 +68,7 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
      */
     public function withAttributes(array $attributes): static
     {
+        /** @phpstan-ignore-next-line */
         $this->attributes = $this->attributes ?: $this->newAttributeBag();
         $this->attributes->setAttributes(
             array_merge($this->attributes->jsonSerialize(), $attributes)
@@ -77,7 +77,7 @@ abstract class MoonShineComponent extends Component implements RenderableContrac
         return $this;
     }
 
-    /** @internal  */
+    /** @internal */
     public function data(): array
     {
         return array_merge($this->extractPublicProperties(), [

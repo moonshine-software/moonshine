@@ -6,8 +6,14 @@ namespace MoonShine\Laravel\Traits\Request;
 
 use MoonShine\Contracts\Core\ResourceContract;
 
+/**
+ * @template T of ResourceContract
+ */
 trait HasResourceRequest
 {
+    /**
+     * @return ?T
+     */
     public function getResource(): ?ResourceContract
     {
         if (is_null($this->getResourceUri())) {

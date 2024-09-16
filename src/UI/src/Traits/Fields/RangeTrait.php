@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\Rating;
 
@@ -17,9 +18,9 @@ trait RangeTrait
 
     public string $toField = 'to';
 
-    protected ?MoonShineComponentAttributeBag $fromAttributes = null;
+    protected ?ComponentAttributesBagContract $fromAttributes = null;
 
-    protected ?MoonShineComponentAttributeBag $toAttributes = null;
+    protected ?ComponentAttributesBagContract $toAttributes = null;
 
     public function fromAttributes(array $attributes): static
     {
@@ -31,22 +32,22 @@ trait RangeTrait
     }
 
     protected function reformatAttributes(
-        ?MoonShineComponentAttributeBag $attributes = null,
+        ?ComponentAttributesBagContract $attributes = null,
         string $name = ''
-    ): MoonShineComponentAttributeBag {
+    ): ComponentAttributesBagContract {
         $dataName = $this->getAttributes()->get('data-name');
 
         return ($attributes ?? $this->getAttributes())
             ->except(['data-name'])
             ->when(
                 $dataName,
-                static fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
+                static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
                     'data-name' => str($dataName)->replaceLast('[]', "[$name]"),
                 ])
             );
     }
 
-    public function getFromAttributes(): MoonShineComponentAttributeBag
+    public function getFromAttributes(): ComponentAttributesBagContract
     {
         return $this->reformatAttributes($this->fromAttributes, $this->fromField);
     }
@@ -60,7 +61,7 @@ trait RangeTrait
         return $this;
     }
 
-    public function getToAttributes(): MoonShineComponentAttributeBag
+    public function getToAttributes(): ComponentAttributesBagContract
     {
         return $this->reformatAttributes($this->toAttributes, $this->toField);
     }

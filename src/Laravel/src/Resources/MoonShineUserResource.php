@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Enumerable;
 use Illuminate\Validation\Rule;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
@@ -27,6 +32,9 @@ use MoonShine\UI\Fields\PasswordRepeat;
 use MoonShine\UI\Fields\Text;
 
 #[Icon('users')]
+/**
+ * @extends ModelResource<MoonshineUser, IndexPage, FormPage, DetailPage, Fields, Enumerable>
+ */
 class MoonShineUserResource extends ModelResource
 {
     public string $model = MoonshineUser::class;
@@ -134,7 +142,7 @@ class MoonShineUserResource extends ModelResource
     }
 
     /**
-     * @return array{name: string, moonshine_user_role_id: string, email: array, password: string}
+     * @return array{name: array|string, moonshine_user_role_id: array|string, email: array|string, password: array|string}
      */
     protected function rules($item): array
     {

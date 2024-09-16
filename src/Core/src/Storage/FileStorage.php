@@ -48,7 +48,7 @@ final class FileStorage implements StorageContract
 
     public function store(string $path, mixed $file = null, array $options = []): false|string
     {
-        return move_uploaded_file($file, $path);
+        return move_uploaded_file($file, $path) ? $path : false;
     }
 
     public function storeAs(string $path, mixed $file, $name = null, array $options = []): false|string

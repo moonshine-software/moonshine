@@ -6,8 +6,9 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 use Illuminate\View\ComponentSlot;
-use MoonShine\Contracts\UI\RenderablesContract;
+use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
@@ -79,14 +80,14 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @return RenderablesContract<int, Tab>
+     * @return ComponentsContract<Tab>
      * @throws Throwable
      */
-    public function getTabs(): RenderablesContract
+    public function getTabs(): ComponentsContract
     {
         return tap(
             $this->getComponents(),
-            static function (RenderablesContract $tabs): void {
+            static function (ComponentsContract $tabs): void {
                 throw_if(
                     $tabs->every(static fn ($tab): bool => ! $tab instanceof Tab),
                     MoonShineComponentException::onlyTabAllowed()
@@ -101,8 +102,11 @@ class Tabs extends AbstractWithComponents
      */
     protected function viewData(): array
     {
+        /** @var Collection<array-key, Tab> $tabs */
+        $tabs = $this->getTabs();
+
         return [
-            'tabs' => $this->getTabs()
+            'tabs' => $tabs
                 ->filter(fn (Tab $tab): bool => $tab->isSee())
                 ->mapWithKeys(fn (Tab $tab) => [$tab->getId() => $tab->toArray()])
                 ->toArray(),

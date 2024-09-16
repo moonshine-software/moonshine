@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Enums\Ability;
@@ -54,43 +55,43 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @return list<class-string>
      */
-    public function getMiddlewares(): array
+    public function getMiddleware(): array
     {
-        return $this->get('middlewares', []);
+        return $this->get('middleware', []);
     }
 
     /**
-     * @param  list<class-string>|Closure  $middlewares
+     * @param  list<class-string>|Closure  $middleware
      */
-    public function middlewares(array|Closure $middlewares): self
+    public function middleware(array|Closure $middleware): self
     {
-        return $this->set('middlewares', $middlewares);
+        return $this->set('middleware', $middleware);
     }
 
     /**
-     * @param  list<class-string>|class-string  $middlewares
+     * @param  list<class-string>|class-string  $middleware
      */
-    public function addMiddlewares(array|string $middlewares): self
+    public function addMiddleware(array|string $middleware): self
     {
-        if (is_string($middlewares)) {
-            $middlewares = [$middlewares];
+        if (is_string($middleware)) {
+            $middleware = [$middleware];
         }
 
-        return $this->set('middlewares', [
-            ...$this->getMiddlewares(),
-            ...$middlewares,
+        return $this->set('middleware', [
+            ...$this->getMiddleware(),
+            ...$middleware,
         ]);
     }
 
-    public function exceptMiddlewares(array|string $except = []): self
+    public function exceptMiddleware(array|string $except = []): self
     {
         $except = is_string($except) ? [$except] : $except;
 
-        $middlewares = collect($this->getMiddlewares())
+        $middleware = collect($this->getMiddleware())
             ->filter(static fn ($class): bool => ! in_array($class, $except, true))
             ->toArray();
 
-        return $this->middlewares($middlewares);
+        return $this->middleware($middleware);
     }
 
     public function getTitle(): string
@@ -225,12 +226,12 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->get('auth.guard', 'moonshine');
     }
 
-    public function getUserField(string $field, string $default = null): string
+    public function getUserField(string $field, string $default = null): string|false
     {
         return $this->get("user_fields.$field", $default ?? $field);
     }
 
-    public function userField(string $field, string|Closure $value): self
+    public function userField(string|false $field, string|Closure $value): self
     {
         return $this->set("user_fields.$field", $value);
     }
@@ -348,10 +349,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this;
     }
 
-    /**
-     * @template-covariant T of PageContract
-     * @param  class-string<T>  $default
-     */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract
     {
         $class = $this->get("pages.$name", $default);
@@ -370,7 +367,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @param  class-string<PageContract>  $old
      * @param  class-string<PageContract>  $new
-     * @return $this
+     * @return self
      */
     public function changePage(string $old, string $new): self
     {
@@ -384,10 +381,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         );
     }
 
-    /**
-     * @template-covariant T of FormContract
-     * @param  class-string<T>  $default
-     */
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract
     {
         $class = $this->get("forms.$name", $default);

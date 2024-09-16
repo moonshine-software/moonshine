@@ -2,15 +2,19 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Contracts\UI;
+namespace MoonShine\Contracts\UI\Collection;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use Traversable;
+use MoonShine\Contracts\UI\ActionButtonContract;
 
 /**
- * @extends Traversable<array-key, ActionButtonContract>
+ * @template-extends Enumerable<array-key, ActionButtonContract>
+ *
+ * @mixin Collection
  */
-interface ActionButtonsContract extends Traversable
+interface ActionButtonsContract extends Enumerable
 {
     public function fill(?DataWrapperContract $item): self;
 
@@ -20,7 +24,7 @@ interface ActionButtonsContract extends Traversable
 
     public function mergeIfNotExists(ActionButtonContract $new): self;
 
-    public function onlyVisible(mixed $item = null): self;
+    public function onlyVisible(): self;
 
     public function inLine(): self;
 

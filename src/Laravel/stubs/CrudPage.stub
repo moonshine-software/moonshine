@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Laravel\Pages\Crud\{extendShort};
-use MoonShine\UI\Components\MoonShineComponent;
-use MoonShine\UI\Fields\Field;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
 class DummyPage extends {extendShort}
 {
     /**
-     * @return list<MoonShineComponent|Field>
+     * @return list<ComponentContract|FieldContract>
      */
     protected function fields(): iterable
     {
@@ -20,7 +20,7 @@ class DummyPage extends {extendShort}
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function topLayer(): array
@@ -31,7 +31,7 @@ class DummyPage extends {extendShort}
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -42,7 +42,7 @@ class DummyPage extends {extendShort}
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function bottomLayer(): array

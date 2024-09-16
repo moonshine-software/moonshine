@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
@@ -16,6 +17,9 @@ use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 
+/**
+ * @implements HasReactivityContract<Fields>
+ */
 class Date extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract, HasReactivityContract
 {
     use DateTrait;

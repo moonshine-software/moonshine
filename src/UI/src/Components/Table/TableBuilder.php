@@ -7,13 +7,19 @@ namespace MoonShine\UI\Components\Table;
 use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\Collection\TableRowsContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Contracts\UI\TableRowsContract;
+use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\Contracts\UI\WithoutExtractionContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Collections\TableRows;
 use MoonShine\UI\Components\ActionGroup;
@@ -23,13 +29,19 @@ use MoonShine\UI\Components\Link;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Traits\HasAsync;
 use MoonShine\UI\Traits\Table\TableStates;
+use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @method static static make(iterable $fields = [], iterable $items = [])
+ *
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
-final class TableBuilder extends IterableComponent implements TableBuilderContract, WithoutExtractionContract
+final class TableBuilder extends IterableComponent implements
+    TableBuilderContract,
+    HasFieldsContract
 {
+    use WithFields;
     use TableStates;
     use HasAsync;
 
@@ -50,11 +62,11 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
     protected array $tdAttributes = [];
 
-    protected MoonShineComponentAttributeBag $headAttributes;
+    protected ComponentAttributesBagContract $headAttributes;
 
-    protected MoonShineComponentAttributeBag $bodyAttributes;
+    protected ComponentAttributesBagContract $bodyAttributes;
 
-    protected MoonShineComponentAttributeBag $footAttributes;
+    protected ComponentAttributesBagContract $footAttributes;
 
     public function __construct(
         iterable $fields = [],
@@ -102,6 +114,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     public function getTrAttributes(mixed $data, int $row): array
     {
         return collect($this->trAttributes)
+            /** @phpstan-ignore-next-line  */
             ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $this))
             ->toArray();
     }
@@ -119,6 +132,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     public function getTdAttributes(mixed $data, int $row, int $cell): array
     {
         return collect($this->tdAttributes)
+            /** @phpstan-ignore-next-line  */
             ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $cell, $this))
             ->toArray();
     }
@@ -176,7 +190,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         }
 
         if (! is_null($this->rows)) {
-            return $this->rows = value($this->rows, $this->resolveRows(), $this);
+            return $this->rows = call_user_func($this->rows, $this->resolveRows(), $this);
         }
 
         return $this->rows = $this->resolveRows();
@@ -222,7 +236,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
                 $this->getTdAttributes($casted, $index + 1, $td->getIndex())
             );
 
-            $trAttributes = fn (TableRow $tr): TableRow => $tr->customAttributes(
+            $trAttributes = fn (TableRowContract $tr): ComponentContract => $tr->customAttributes(
                 $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1))
             );
 
@@ -283,6 +297,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
             $index++;
         }
 
+        /** @var TableRowsContract */
         return $rows->when(
             $this->isVertical(),
             static fn (TableRowsContract $rows) => $rows->flatten()
@@ -343,7 +358,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         }
 
         if (! is_null($this->headRows)) {
-            return $this->headRows = value($this->headRows, $this->resolveHeadRow(), $this);
+            return $this->headRows = call_user_func($this->headRows, $this->resolveHeadRow(), $this);
         }
 
         return $this->headRows = TableRows::make([
@@ -354,7 +369,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
     /**
      * @throws Throwable
      */
-    private function resolveHeadRow(): TableRow
+    private function resolveHeadRow(): TableRowContract
     {
         $cells = TableCells::make();
 
@@ -365,7 +380,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
             $cells->pushWhen(
                 $hasBulk,
-                fn () => TableTh::make(
+                fn (): TableTh => TableTh::make(
                     (string) $this->getRowBulkCheckbox()
                 )
                     ->customAttributes($tdAttributes(0))
@@ -399,7 +414,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
 
             $cells->pushWhen(
                 $this->hasButtons(),
-                static fn () => TableTh::make('')->customAttributes($tdAttributes($index))
+                static fn (): TableTh => TableTh::make('')->customAttributes($tdAttributes($index))
             );
         }
 
@@ -430,6 +445,13 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         return $this;
     }
 
+    public function inside(string $entity): self
+    {
+        return $this->customAttributes([
+            'data-inside' => $entity,
+        ]);
+    }
+
     protected function getFootRows(): TableRowsContract
     {
         if ($this->footRows instanceof TableRowsContract) {
@@ -437,7 +459,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         }
 
         if (! is_null($this->footRows)) {
-            return $this->footRows = value($this->footRows, $this->resolveFootRow(), $this);
+            return $this->footRows = call_user_func($this->footRows, $this->resolveFootRow(), $this);
         }
 
         return $this->footRows = TableRows::make([
@@ -445,7 +467,7 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         ]);
     }
 
-    private function resolveFootRow(): TableRow
+    private function resolveFootRow(): TableRowContract
     {
         $cells = TableCells::make()->pushCellWhen(
             ! $this->isPreview(),
@@ -504,13 +526,6 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         }
 
         return $this;
-    }
-
-    public function inside(string $entity): self
-    {
-        return $this->customAttributes([
-            'data-inside' => $entity,
-        ]);
     }
 
     /**

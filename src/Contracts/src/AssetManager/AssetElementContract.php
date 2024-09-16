@@ -7,6 +7,8 @@ namespace MoonShine\Contracts\AssetManager;
 use Illuminate\Contracts\Support\Htmlable;
 use Stringable;
 
-interface AssetElementContract extends Htmlable, Stringable
+interface AssetElementContract extends
+    Htmlable,
+    Stringable
 {
 }

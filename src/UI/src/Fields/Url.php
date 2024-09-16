@@ -45,7 +45,7 @@ class Url extends Text
             href: $value,
             value: is_null($this->titleCallback)
                 ? $title
-                : (string) value($this->titleCallback, $title, $this),
+                : (string) call_user_func($this->titleCallback, $title, $this),
             blank: $this->blank
         )->render();
     }

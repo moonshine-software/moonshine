@@ -32,16 +32,18 @@ class UpdateFieldController extends MoonShineController
     {
         $relationField = $request->getField();
 
-        if ($relationField instanceof HasFieldsContract) {
-            $relationField->getPreparedFields();
+        if (!$relationField instanceof HasFieldsContract) {
+            throw new FieldException('Field is not a HasFieldsContract');
         }
+
+        $relationField->getPreparedFields();
 
         $resource = $relationField->getResource();
 
         $field = $relationField
             ->getFields()
-            ?->onlyFields()
-            ?->findByColumn($request->input('field'));
+            ->onlyFields()
+            ->findByColumn($request->input('field'));
 
         throw_if(
             is_null($field) || is_null($resource),

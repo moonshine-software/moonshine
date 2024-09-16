@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Components;
 
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Collections\Components;
 use Throwable;
 
 /**
- * @mixin RenderableContract
+ * @mixin ComponentContract
  */
 trait WithComponents
 {
@@ -24,6 +24,9 @@ trait WithComponents
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getPreparedComponents(): Components
     {
         if (! is_null($this->preparedComponents)) {
@@ -33,6 +36,9 @@ trait WithComponents
         return $this->preparedComponents = $this->prepareComponents();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function prepareComponents(): Components
     {
         return $this->getComponents();

@@ -33,7 +33,7 @@ trait Applies
             return true;
         }
 
-        return (bool) value($this->canApply, $this);
+        return (bool) call_user_func($this->canApply, $this);
     }
 
     protected function resolveOnApply(): ?Closure
@@ -97,7 +97,7 @@ trait Applies
 
         return is_null($this->onBeforeApply)
             ? $this->resolveBeforeApply($data)
-            : value($this->onBeforeApply, $data, $this->getRequestValue(), $this);
+            : call_user_func($this->onBeforeApply, $data, $this->getRequestValue(), $this);
     }
 
     public function afterApply(mixed $data): mixed
@@ -108,14 +108,14 @@ trait Applies
 
         return is_null($this->onAfterApply)
             ? $this->resolveAfterApply($data)
-            : value($this->onAfterApply, $data, $this->getRequestValue(), $this);
+            : call_user_func($this->onAfterApply, $data, $this->getRequestValue(), $this);
     }
 
     public function afterDestroy(mixed $data): mixed
     {
         return is_null($this->onAfterDestroy)
             ? $this->resolveAfterDestroy($data)
-            : value($this->onAfterDestroy, $data, $this->getRequestValue(), $this);
+            : call_user_func($this->onAfterDestroy, $data, $this->getRequestValue(), $this);
     }
 
     /**

@@ -6,8 +6,15 @@ namespace MoonShine\Laravel\Pages;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\View\View;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Core\Pages\Page as CorePage;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 
+/**
+ * @template TResource of CrudResourceContract
+ * @extends CorePage<MoonShine, TResource>
+ */
 abstract class Page extends CorePage
 {
     protected function prepareBeforeRender(): void
@@ -20,12 +27,15 @@ abstract class Page extends CorePage
         }
 
         request()
-            ?->route()
+            ->route()
             ?->setParameter('pageUri', $this->getUriKey());
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
+        /**
+         * @var View $view
+         */
         return $view->fragmentIf(
             moonshineRequest()->isFragmentLoad(),
             moonshineRequest()->getFragmentLoad()

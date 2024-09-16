@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Fields;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\UI\Fields\Text;
@@ -30,7 +31,7 @@ class Slug extends Text
 
     public function live(): static
     {
-        return $this->reactive(function (Fields $fields): Fields {
+        return $this->reactive(function (FieldsContract $fields): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
             return tap(

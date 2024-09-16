@@ -6,8 +6,14 @@ namespace MoonShine\Laravel\Traits\Request;
 
 use MoonShine\Contracts\Core\PageContract;
 
+/**
+ * @template TPage of PageContract
+ */
 trait HasPageRequest
 {
+    /**
+     * @return ?TPage
+     */
     public function findPage(): ?PageContract
     {
         return memoize(function (): ?PageContract {
@@ -27,6 +33,9 @@ trait HasPageRequest
         });
     }
 
+    /**
+     * @return TPage
+     */
     public function getPage(): PageContract
     {
         $page = $this->findPage();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\AssetManager;
 
 use MoonShine\Contracts\AssetManager\AssetElementContract;
+use MoonShine\Contracts\UI\HasComponentAttributesContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
@@ -12,7 +13,7 @@ use MoonShine\Support\Traits\WithComponentAttributes;
 /**
  * @method static static make(string $content)
  */
-final class InlineCss implements AssetElementContract
+final class InlineCss implements AssetElementContract, HasComponentAttributesContract
 {
     use Makeable;
     use WithComponentAttributes;
@@ -31,7 +32,7 @@ final class InlineCss implements AssetElementContract
     public function toHtml(): string
     {
         return <<<HTML
-            <style {$this->getAttributes()}>{$this->getContent()}</style>
+            <style {$this->getAttributes()->toHtml()}>{$this->getContent()}</style>
         HTML;
     }
 

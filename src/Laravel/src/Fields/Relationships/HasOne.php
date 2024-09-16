@@ -7,13 +7,12 @@ namespace MoonShine\Laravel\Fields\Relationships;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Core\Collections\Renderables;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\FormBuilder;
@@ -26,12 +25,12 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\HasOne>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of HasOneOrMany|HasOneOrManyThrough
+ * @extends ModelRelationField<R>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
 class HasOne extends ModelRelationField implements HasFieldsContract
 {
-    /** @use WithFields<Fields> */
     use WithFields;
 
     protected string $view = 'moonshine::fields.relationships.has-one';
@@ -85,9 +84,10 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             return $this->getFields();
         }
 
-        return $this->getFields()
-            ->onlyFields(withWrappers: true)
-            ->detailFields(withOutside: false);
+        /** @var Fields $fields */
+        $fields = $this->getFields()->onlyFields(withWrappers: true);
+
+        return $fields->detailFields(withOutside: false);
     }
 
     protected function resolveRawValue(): mixed
@@ -138,11 +138,15 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         };
     }
 
-    protected function getComponent(): RenderableContract
+    /**
+     * @throws Throwable
+     * @throws FieldException
+     */
+    protected function getComponent(): FormBuilder
     {
         $resource = $this->getResource();
 
-        /** @var ModelResource $parentResource */
+        /** @var ?ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();
 
         $item = $this->toValue();
@@ -155,6 +159,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         }
 
         $parentItem = $parentResource->getItemOrInstance();
+        /** @var HasOneOrMany|MorphOneOrMany $relation */
         $relation = $parentItem->{$this->getRelationName()}();
 
         $fields = $resource->getFormFields();
@@ -188,13 +193,13 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                         Hidden::make('_method')->setValue('PUT'),
                     )
                 )->push(
-                    Hidden::make($this->getRelation()?->getForeignKeyName())
+                    Hidden::make($relation->getForeignKeyName())
                         ->setValue($this->getRelatedModel()?->getKey())
                 )->when(
-                    $this->getRelation() instanceof MorphOneOrMany,
+                    $relation instanceof MorphOneOrMany,
                     fn (Fields $f) => $f->push(
-                        Hidden::make($this->getRelation()?->getMorphType())
-                            ->setValue($this->getRelatedModel()::class)
+                        /** @phpstan-ignore-next-line  */
+                        Hidden::make($relation->getMorphType())->setValue($this->getRelatedModel()::class)
                     )
                 )
                     ->toArray()
@@ -202,9 +207,9 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             ->redirect($isAsync ? null : $redirectAfter)
             ->fillCast(
                 $item?->toArray() ?? array_filter([
-                $this->getRelation()?->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
-                ...$this->getRelation() instanceof MorphOneOrMany
-                    ? [$this->getRelation()?->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
+                $relation->getForeignKeyName() => $this->getRelatedModel()?->getKey(),
+                ...$relation instanceof MorphOneOrMany
+                    ? [$relation->getMorphType() => $this->getRelatedModel()?->getMorphClass()]
                     : [],
             ], static fn ($value) => filled($value)),
                 $resource->getCaster()
@@ -220,7 +225,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                     )->class('btn-lg'),
                 ]
             )
-            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

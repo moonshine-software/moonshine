@@ -42,7 +42,7 @@ final class CreateButton
             ->when(
                 $resource->isCreateInModal(),
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
-                    static fn (): array|string|null => __('moonshine::ui.create'),
+                    static fn (): array|string => __('moonshine::ui.create'),
                     static fn (): string => '',
                     name: $modalName
                 )

@@ -94,7 +94,7 @@ final class Profile extends MoonShineComponent
         return $this->user?->{moonshineConfig()->getUserField('username', 'email')} ?? '';
     }
 
-    private function getDefaultAvatar(): false|string
+    private function getDefaultAvatar(): string
     {
         $avatar = $this->user?->{moonshineConfig()->getUserField('avatar')};
 

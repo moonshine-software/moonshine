@@ -9,6 +9,7 @@ use MoonShine\AssetManager\Contracts\HasVersionContact;
 use MoonShine\AssetManager\Traits\HasLink;
 use MoonShine\AssetManager\Traits\WithVersion;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
+use MoonShine\Contracts\UI\HasComponentAttributesContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
@@ -16,7 +17,7 @@ use MoonShine\Support\Traits\WithComponentAttributes;
 /**
  * @method static static make(string $link)
  */
-final class Js implements AssetElementContract, HasLinkContact, HasVersionContact
+final class Js implements AssetElementContract, HasComponentAttributesContract, HasLinkContact, HasVersionContact
 {
     use Makeable;
     use WithVersion;
@@ -46,7 +47,7 @@ final class Js implements AssetElementContract, HasLinkContact, HasVersionContac
         ]);
 
         return <<<HTML
-            <script {$this->getAttributes()}></script>
+            <script {$this->getAttributes()->toHtml()}></script>
         HTML;
     }
 

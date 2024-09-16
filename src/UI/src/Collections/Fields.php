@@ -5,23 +5,48 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
+use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
-use MoonShine\Core\Collections\Renderables;
+use MoonShine\Contracts\UI\WithoutExtractionContract;
+use MoonShine\Core\Collections\BaseCollection;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Fields\ID;
 use Throwable;
 
+
 /**
- * @extends Renderables<int, FieldContract>
+ * @template T of FieldContract
+ * @implements FieldsContract<T>
  */
-class Fields extends Renderables implements FieldsContract
+class Fields extends BaseCollection implements FieldsContract
 {
+    use Conditionable;
+
+    /**
+     * @param list<ComponentContract> $elements
+     * @param list<ComponentContract> $data
+     * @throws Throwable
+     */
+    protected function extractFields(iterable $elements, array &$data): void
+    {
+        foreach ($elements as $element) {
+            if ($element instanceof FieldContract) {
+                $data[] = $element;
+            } elseif ($element instanceof HasFieldsContract && ! $element instanceof WithoutExtractionContract) {
+                $this->extractFields($element->getFields(), $data);
+            } elseif ($element instanceof HasComponentsContract && ! $element instanceof WithoutExtractionContract) {
+                $this->extractFields($element->getComponents(), $data);
+            }
+        }
+    }
+
     /**
      * @throws Throwable
      */
@@ -31,9 +56,10 @@ class Fields extends Renderables implements FieldsContract
 
         $this->extractFields($this->toArray(), $data);
 
+        /** @var static */
         return static::make($data)->when(
             ! $withWrappers,
-            static fn (Fields $fields): static => $fields->withoutWrappers()
+            static fn (FieldsContract $fields): FieldsContract => $fields->withoutWrappers()
         );
     }
 
@@ -42,12 +68,13 @@ class Fields extends Renderables implements FieldsContract
      */
     public function prepareAttributes(): static
     {
+        /** @var static */
         return $this->onlyFields()
             ->map(
                 static function (FieldContract $formElement): FieldContract {
                     $formElement->when(
                         ! $formElement instanceof FileableContract,
-                        static function ($field): void {
+                        static function (FieldContract $field): void {
                             $field->mergeAttribute('x-on:change', 'onChangeField($event)', ';');
                         }
                     );
@@ -73,11 +100,13 @@ class Fields extends Renderables implements FieldsContract
             }
         );
 
+        /** @var static */
         return $modified;
     }
 
     public function withoutWrappers(): static
     {
+        /** @var static */
         return $this->unwrapElements(FieldsWrapperContract::class);
     }
 
@@ -86,6 +115,7 @@ class Fields extends Renderables implements FieldsContract
      */
     public function whenFields(): static
     {
+        /** @var static */
         return $this->filter(
             static fn (FieldContract $field): bool => $field->hasShowWhen()
         )->values();
@@ -96,6 +126,7 @@ class Fields extends Renderables implements FieldsContract
      */
     public function whenFieldsConditions(): static
     {
+        /** @var static */
         return $this->whenFields()->map(
             static fn (
                 FieldContract $field
@@ -112,6 +143,7 @@ class Fields extends Renderables implements FieldsContract
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): static {
+        /** @var static */
         return ($preparedFields ?? $this->onlyFields())->map(
             static fn (FieldContract $field): FieldContract => (clone $field)
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
@@ -122,9 +154,10 @@ class Fields extends Renderables implements FieldsContract
         array $raw = [],
         ?DataWrapperContract $casted = null,
         int $index = 0,
-        ?Fields $preparedFields = null
+        ?FieldsContract $preparedFields = null
     ): static {
-        return ($preparedFields ?? $this)->map(static function (RenderableContract $component) use ($raw, $casted, $index): RenderableContract {
+        /** @var static */
+        return ($preparedFields ?? $this)->map(static function (ComponentContract $component) use ($raw, $casted, $index): ComponentContract {
             if ($component instanceof HasFieldsContract) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
@@ -159,6 +192,7 @@ class Fields extends Renderables implements FieldsContract
             ->onlyFields()
             ->each(static fn (FieldContract $field): FieldContract => $field->wrapName($name));
 
+        /** @var static */
         return $this;
     }
 
@@ -172,28 +206,29 @@ class Fields extends Renderables implements FieldsContract
         );
     }
 
-    public function onlyVisible(): static
-    {
-        return $this->filter(static fn (FieldContract $field): bool => $field->isSee());
-    }
-
     public function onlyHasFields(): static
     {
+        /** @var static */
         return $this->filter(static fn (FieldContract $field): bool => $field instanceof HasFieldsContract);
     }
 
     public function withoutHasFields(): static
     {
+        /** @var static */
         return $this->filter(static fn (FieldContract $field): bool => ! $field instanceof HasFieldsContract);
     }
 
     /**
+     * @param  ?callable(FieldContract,FieldContract): FieldsContract  $before
+     * @param  ?callable(string,FieldContract,FieldContract): string  $performName
+     *
      * @throws Throwable
      */
     public function prepareReindexNames(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
+        /** @var static */
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
-            $modifyField = value($before, $parent, $field);
+            $modifyField = !is_null($before) ? $before($parent, $field) : $field;
 
             if ($modifyField instanceof FieldContract) {
                 $field = $modifyField;
@@ -225,7 +260,7 @@ class Fields extends Renderables implements FieldsContract
 
             return $field
                 ->setNameAttribute(
-                    is_null($performName) ? $name : value($performName, $name, $parent, $field)
+                    is_null($performName) ? $name : $performName($name, $parent, $field)
                 )
                 ->iterableAttributes($level);
         })
@@ -234,6 +269,7 @@ class Fields extends Renderables implements FieldsContract
 
     public function prepareShowWhenNames(): static
     {
+        /** @var static */
         return $this->map(static function (FieldContract $field): FieldContract {
             if (! $field->hasShowWhen()) {
                 return $field;
@@ -255,6 +291,7 @@ class Fields extends Renderables implements FieldsContract
      */
     public function reactiveFields(): static
     {
+        /** @var static */
         return $this->filter(
             static fn (FieldContract $field): bool => $field instanceof HasReactivityContract && $field->isReactive()
         );
@@ -284,12 +321,6 @@ class Fields extends Renderables implements FieldsContract
         );
     }
 
-    /**
-     * @template-covariant T of FieldContract
-     * @param  class-string<T>  $class
-     * @param ?FieldContract  $default
-     * @throws Throwable
-     */
     public function findByClass(
         string $class,
         FieldContract $default = null

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\HasIconContract;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
@@ -16,7 +19,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
  */
-class Tab extends AbstractWithComponents
+class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract
 {
     use WithLabel;
     use WithIcon;
@@ -25,7 +28,7 @@ class Tab extends AbstractWithComponents
 
     public ?string $id = null;
 
-    private MoonShineComponentAttributeBag $labelAttributes;
+    private ComponentAttributesBagContract $labelAttributes;
 
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
@@ -60,7 +63,7 @@ class Tab extends AbstractWithComponents
 
     public function active(Closure|bool|null $condition = null): static
     {
-        $this->active = is_null($condition) || (value($condition, $this) ?? false);
+        $this->active = is_null($condition) || value($condition, $this);
 
         return $this;
     }

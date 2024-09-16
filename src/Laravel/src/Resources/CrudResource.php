@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -32,13 +33,14 @@ use Traversable;
 
 /**
  * @template TData of mixed
- * @template-covariant TIndexPage of PageContract
- * @template-covariant TFormPage of PageContract
- * @template-covariant TDetailPage of PageContract
+ * @template-covariant TIndexPage of CrudPageContract
+ * @template-covariant TFormPage of CrudPageContract
+ * @template-covariant TDetailPage of CrudPageContract
  * @template TFields of FieldsContract
  * @template-covariant TItems of Traversable
  *
  * @implements CrudResourceContract<TData, TIndexPage, TFormPage, TDetailPage, TFields, TItems>
+ * @extends Resource<CrudPageContract>
  */
 abstract class CrudResource extends Resource implements CrudResourceContract
 {
@@ -129,13 +131,16 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         ];
     }
 
+    /**
+     * @return null|PageContract<TIndexPage>|IndexPage
+     */
     public function getIndexPage(): ?PageContract
     {
         return $this->getPages()->indexPage();
     }
 
     /**
-     * @return ?PageContract<TFormPage>
+     * @return null|PageContract<TFormPage>|FormPage
      */
     public function getFormPage(): ?PageContract
     {
@@ -143,7 +148,7 @@ abstract class CrudResource extends Resource implements CrudResourceContract
     }
 
     /**
-     * @return ?PageContract<TDetailPage>
+     * @return null|PageContract<TDetailPage>|DetailPage
      */
     public function getDetailPage(): ?PageContract
     {
@@ -207,9 +212,9 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         return $this->deleteRelationships;
     }
 
-    public function getClickAction(): ?string
+    public function getClickAction(): ?ClickAction
     {
-        return $this->clickAction?->value;
+        return $this->clickAction;
     }
 
     public function isStickyTable(): bool

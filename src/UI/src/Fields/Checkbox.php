@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeBool;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
@@ -18,6 +19,9 @@ use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 
+/**
+ * @implements HasReactivityContract<Fields>
+ */
 class Checkbox extends Field implements
     HasDefaultValueContract,
     CanBeNumeric,

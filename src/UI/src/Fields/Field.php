@@ -84,9 +84,9 @@ abstract class Field extends FormElement implements FieldContract
         return $this->previewMode;
     }
 
-    public function rawMode(Closure|bool|null $condition = null): static
+    public function rawMode(): static
     {
-        $this->rawMode = value($condition, $this) ?? true;
+        $this->rawMode = true;
 
         return $this;
     }
@@ -191,7 +191,7 @@ abstract class Field extends FormElement implements FieldContract
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
     ): static {
-        $url = fn (?DataWrapperContract $data): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $url = fn (?DataWrapperContract $data): string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([
@@ -214,7 +214,7 @@ abstract class Field extends FormElement implements FieldContract
      * @param  Closure(mixed $data, mixed $value, static $field): string  $url
      * @param  string[]  $events
      *
-     * @return $this
+     * @return static
      */
     public function onChangeUrl(
         Closure $url,
@@ -283,9 +283,9 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getBeforeRender(): Renderable|string
     {
-        return is_null($this->beforeRender)
-            ? ''
-            : value($this->beforeRender, $this);
+        return !is_null($this->beforeRender)
+            ? call_user_func($this->beforeRender, $this)
+            : '';
     }
 
     /**
@@ -300,9 +300,9 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getAfterRender(): Renderable|string
     {
-        return is_null($this->afterRender)
-            ? ''
-            : value($this->afterRender, $this);
+        return !is_null($this->afterRender)
+            ? call_user_func($this->afterRender, $this)
+            : '';
     }
 
     /**
@@ -312,7 +312,7 @@ abstract class Field extends FormElement implements FieldContract
     protected function prepareBeforeRender(): void
     {
         if (! is_null($this->onChangeUrl) && $this->isOnChangeCondition()) {
-            $onChangeUrl = value($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
+            $onChangeUrl = call_user_func($this->onChangeUrl, $this->getData(), $this->toValue(), $this);
 
             $this->customAttributes(
                 $this->getOnChangeEventAttributes($onChangeUrl),
@@ -332,7 +332,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $value, static $ctx): static  $callback
+     * @param  Closure(mixed $value, static $ctx): string  $callback
      */
     public function changeRender(Closure $callback): static
     {
@@ -353,7 +353,7 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         if ($this->isPreviewChanged()) {
-            return (string) value(
+            return (string) call_user_func(
                 $this->previewCallback,
                 $this->toValue(),
                 $this,
@@ -419,7 +419,7 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         if ($this->isRenderChanged()) {
-            return value(
+            return call_user_func(
                 $this->renderCallback,
                 $this->toValue(),
                 $this,

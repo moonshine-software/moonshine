@@ -26,7 +26,7 @@ return [
     'prefix' => 'admin',
     'page_prefix' => 'page',
 
-    'middlewares' => [
+    'middleware' => [
         EncryptCookies::class,
         AddQueuedCookiesToResponse::class,
         StartSession::class,

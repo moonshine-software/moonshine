@@ -28,7 +28,7 @@ trait HasCanSee
             $this,
         ];
 
-        return (bool) value(
+        return (bool) call_user_func(
             $this->canSeeCallback,
             ...$params,
         );

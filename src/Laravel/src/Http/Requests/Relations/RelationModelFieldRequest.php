@@ -6,7 +6,10 @@ namespace MoonShine\Laravel\Http\Requests\Relations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use MoonShine\Contracts\Core\CrudPageContract;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
@@ -16,7 +19,9 @@ use Throwable;
 
 class RelationModelFieldRequest extends FormRequest
 {
+    /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
+    /** @use HasPageRequest<CrudPageContract<Fields>> */
     use HasPageRequest;
 
     public function getRelationName(): string
@@ -30,10 +35,11 @@ class RelationModelFieldRequest extends FormRequest
     public function getPageField(): ?ModelRelationField
     {
         return memoize(function () {
+            /** @var Fields $fields */
             $fields = $this->getPage()->getComponents();
 
             if ($parentField = request()->input('_parent_field')) {
-                /** @var HasFieldsContract $parent */
+                /** @var HasFieldsContract<Fields> $parent */
                 $parent = $fields
                     ->onlyFields()
                     ->onlyHasFields()
@@ -70,9 +76,11 @@ class RelationModelFieldRequest extends FormRequest
                 default => $resource->getFormFields()
             };
 
-            return $fields
-                ->onlyFields()
-                ->findByRelation($this->getRelationName());
+            /* @var Fields $fields */
+            $fields = $fields->onlyFields();
+
+            /** @phpstan-ignore-next-line  */
+            return $fields->findByRelation($this->getRelationName());
         });
     }
 

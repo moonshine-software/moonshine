@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use MoonShine\UI\Collections\Fields;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use Throwable;
 
+/**
+ * @template T of FieldsContract
+ */
 trait WithAdditionalFields
 {
     protected array $additionalFields = [];
 
     /**
+     * @return T
      * @throws Throwable
      */
-    public function getAdditionalFields(): Fields
+    public function getAdditionalFields(): FieldsContract
     {
         return $this->getCore()->getFieldsCollection($this->additionalFields);
     }

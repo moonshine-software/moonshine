@@ -6,13 +6,17 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use JsonException;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Contracts\UI\HasCasterContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -28,11 +32,22 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
+ * @template TFields of FieldsContract
  * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
+ *
+ * @implements HasFieldsContract<TFields>
+ *
  */
-final class FormBuilder extends MoonShineComponent implements FormBuilderContract
+final class FormBuilder extends MoonShineComponent implements
+    FormBuilderContract,
+    HasCasterContract,
+    HasFieldsContract
 {
     use HasAsync;
+
+    /**
+     * @use WithAdditionalFields<TFields>
+     */
     use WithAdditionalFields;
     use HasDataCast;
     use WithFields;
@@ -59,7 +74,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
     protected bool $errorsAbove = true;
 
-    protected MoonShineComponentAttributeBag $submitAttributes;
+    protected ComponentAttributesBagContract $submitAttributes;
 
     protected ?Closure $onBeforeFieldsRender = null;
 
@@ -139,7 +154,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     public function action(string $action): self
     {
         $this->action = $action;
-        $this->attributes->set('action', $action);
+        $this->setAttribute('action', $action);
 
         return $this;
     }
@@ -175,7 +190,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         array $events = [],
         ?AsyncCallback $callback = null,
         ?PageContract $page = null,
-        ?ResourceContract $resource = null,
+        ?CrudResourceContract $resource = null,
     ): self {
         $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->method(
             $method,
@@ -211,7 +226,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     public function method(FormMethod $method): self
     {
         $this->method = $method;
-        $this->attributes->set('method', $method->toString());
+        $this->setAttribute('method', $method->toString());
 
         return $this;
     }
@@ -263,7 +278,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
         return $this;
     }
 
-    public function getSubmitAttributes(): MoonShineComponentAttributeBag
+    public function getSubmitAttributes(): ComponentAttributesBagContract
     {
         return $this->submitAttributes;
     }
@@ -352,9 +367,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
 
             $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($values));
 
-            $fields
-                ->withoutOutside()
-                ->each(static fn (FieldContract $field): mixed => $field->apply($default($field), $values));
+            $fields->each(static fn (FieldContract $field): mixed => $field->apply($default($field), $values));
 
             $apply($values, $fields);
 

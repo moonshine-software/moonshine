@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class Password extends Text
 {
@@ -27,9 +28,7 @@ class Password extends Text
                 data_set(
                     $item,
                     $this->getColumn(),
-                    $this->getCore()->getContainer('hash')->make(
-                        $this->getRequestValue()
-                    )
+                    $this->getCore()->getContainer(Hasher::class)->make($this->getRequestValue())
                 );
             }
 

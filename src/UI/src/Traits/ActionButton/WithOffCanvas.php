@@ -7,12 +7,16 @@ namespace MoonShine\UI\Traits\ActionButton;
 use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
 
 trait WithOffCanvas
 {
+    /**
+     * @var ?Closure(mixed, DataWrapperContract, static): ComponentContract
+     */
     protected ?Closure $offCanvas = null;
 
     public function isInOffCanvas(): bool
@@ -52,9 +56,13 @@ trait WithOffCanvas
         );
     }
 
-    public function getOffCanvas(): ?OffCanvas
+    public function getOffCanvas(): ?ComponentContract
     {
-        return value($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
+        if(!$this->isInOffCanvas()) {
+            return null;
+        }
+
+        return call_user_func($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleOffCanvas(string $name = 'default'): static

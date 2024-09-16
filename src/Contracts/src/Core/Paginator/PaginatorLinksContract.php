@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core\Paginator;
 
-interface PaginatorLinksContract
+use Illuminate\Contracts\Support\Arrayable;
+
+interface PaginatorLinksContract extends Arrayable
 {
+
 }

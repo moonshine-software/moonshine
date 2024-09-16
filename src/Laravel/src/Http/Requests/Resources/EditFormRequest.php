@@ -20,10 +20,16 @@ final class EditFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! $this->getResource()?->hasAction(Action::UPDATE)) {
+        $resource = $this->getResource();
+
+        if(is_null($resource)) {
             return false;
         }
 
-        return $this->getResource()?->can(Ability::UPDATE) ?? false;
+        if (! $resource->hasAction(Action::UPDATE)) {
+            return false;
+        }
+
+        return $resource->can(Ability::UPDATE);
     }
 }

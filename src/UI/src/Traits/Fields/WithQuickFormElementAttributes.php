@@ -9,7 +9,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\UI\FieldContract;
 
-/** @mixin FieldContract */
+/**
+ * @mixin FieldContract
+ */
 trait WithQuickFormElementAttributes
 {
     protected ?string $wrapName = null;
@@ -124,7 +126,7 @@ trait WithQuickFormElementAttributes
 
     public function setId(string $id): static
     {
-        $this->attributes->set('id', str($id)
+        $this->setAttribute('id', str($id)
             ->remove(['[', ']'])
             ->snake()
             ->value());

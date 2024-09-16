@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -13,7 +13,6 @@ use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
@@ -29,9 +28,8 @@ use Throwable;
 
 /**
  * @method CrudResource getResource()
- * @extends Page<Fields>
  */
-class FormPage extends Page
+class FormPage extends CrudPage
 {
     protected ?PageType $pageType = PageType::FORM;
 
@@ -88,7 +86,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function components(): iterable
@@ -103,7 +101,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function topLayer(): array
     {
@@ -111,7 +109,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -135,7 +133,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -171,7 +169,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getPageButtons(): array
     {
@@ -187,7 +185,7 @@ class FormPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      *@throws Throwable
      */
     protected function getFormComponents(
@@ -221,7 +219,7 @@ class FormPage extends Page
         ?DataWrapperContract $item,
         Fields $fields,
         bool $isAsync = true,
-    ): RenderableContract {
+    ): ComponentContract {
         $resource = $this->getResource();
 
         return FormBuilder::make($action)

@@ -28,12 +28,6 @@ final class MenuManager implements MenuManagerContract
 
     private bool $topMode = false;
 
-    public function __construct(
-        private RequestContract $request,
-        private RouterContract $router,
-    ) {
-    }
-
     public function add(array|MenuElementContract $data): static
     {
         $this->items = array_merge(
@@ -67,9 +61,12 @@ final class MenuManager implements MenuManagerContract
         return $this;
     }
 
+    /**
+     * @param  ?Closure(static): bool  $condition
+     */
     public function topMode(?Closure $condition = null): static
     {
-        $this->topMode = is_null($condition) || value($condition, $this);
+        $this->topMode = is_null($condition) || $condition($this) === true;
 
         return $this;
     }

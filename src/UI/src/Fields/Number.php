@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\Rating;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
@@ -18,6 +19,9 @@ use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 
+/**
+ * @implements HasReactivityContract<Fields>
+ */
 class Number extends Field implements HasDefaultValueContract, CanBeNumeric, HasUpdateOnPreviewContract, HasReactivityContract
 {
     use NumberTrait;

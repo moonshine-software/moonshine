@@ -8,10 +8,11 @@ use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
-use MoonShine\Contracts\Core\HasAssetsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormElementContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -25,7 +26,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-abstract class FormElement extends MoonShineComponent implements HasAssetsContract
+abstract class FormElement extends MoonShineComponent implements FormElementContract
 {
     use WithLabel;
     use ShowWhen;
@@ -35,7 +36,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected array $propertyAttributes = ['type'];
 
-    protected ?FieldContract $parent = null;
+    protected ?FormElementContract $parent = null;
 
     protected ?string $formName = null;
 
@@ -57,12 +58,14 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected mixed $formattedValue = null;
 
+    /** @var ?Closure(mixed, int, static): mixed $formattedValueCallback  */
     protected ?Closure $formattedValueCallback = null;
 
     protected ?Closure $fromRaw = null;
 
     protected ?Closure $fillCallback = null;
 
+    /** @var ?Closure(static): static  */
     protected ?Closure $afterFillCallback = null;
 
     protected mixed $data = null;
@@ -77,7 +80,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
 
     protected bool $isGroup = false;
 
-    protected MoonShineComponentAttributeBag $wrapperAttributes;
+    protected ComponentAttributesBagContract $wrapperAttributes;
 
     /**
      * @param  (Closure(static $ctx): string)|string|null  $label
@@ -131,7 +134,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this->formName;
     }
 
-    public function getParent(): ?FieldContract
+    public function getParent(): ?FormElementContract
     {
         return $this->parent;
     }
@@ -141,7 +144,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return ! is_null($this->parent);
     }
 
-    public function setParent(FieldContract $field): static
+    public function setParent(FormElementContract $field): static
     {
         $this->parent = $field;
 
@@ -192,7 +195,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
-            return value(
+            return call_user_func(
                 $this->fillCallback,
                 is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
@@ -233,7 +236,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         $this->setValue($value);
 
         if (! is_null($this->afterFillCallback)) {
-            return value($this->afterFillCallback, $this);
+            return call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;
@@ -269,7 +272,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     public function toRawValue(): mixed
     {
         if ($this->isRawValueModified()) {
-            return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
+            return call_user_func($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
         return $this->resolveRawValue();
@@ -361,6 +364,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         $this->formattedValueCallback = $formattedValueCallback;
     }
 
+    /** @return ?Closure(mixed $original, int $index, static $ctx): mixed  */
     public function getFormattedValueCallback(): ?Closure
     {
         return $this->formattedValueCallback;
@@ -370,7 +374,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     {
         if (! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                value(
+                call_user_func(
                     $this->getFormattedValueCallback(),
                     $this->getData()?->getOriginal(),
                     $this->getRowIndex(),
@@ -427,7 +431,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     /**
      * @param  Closure(mixed $raw, mixed $original, static): mixed  $callback
      *
-     * @return $this
+     * @return static
      */
     public function modifyRawValue(Closure $callback): static
     {
@@ -439,7 +443,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     /**
      * @param  Closure(mixed $raw, static): mixed  $callback
      *
-     * @return $this
+     * @return static
      */
     public function fromRaw(Closure $callback): static
     {
@@ -454,7 +458,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
             return $raw;
         }
 
-        return value($this->fromRaw, $raw, $this);
+        return call_user_func($this->fromRaw, $raw, $this);
     }
 
     public function getDefaultIfExists(): mixed
@@ -479,7 +483,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
         return $this;
     }
 
-    public function getWrapperAttributes(): MoonShineComponentAttributeBag
+    public function getWrapperAttributes(): ComponentAttributesBagContract
     {
         return $this->wrapperAttributes;
     }
@@ -524,7 +528,7 @@ abstract class FormElement extends MoonShineComponent implements HasAssetsContra
     public function getRequestValue(string|int|null $index = null): mixed
     {
         if (! is_null(static::$requestValueResolver)) {
-            return value(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
+            return call_user_func(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
         }
 
         return $this->prepareRequestValue(

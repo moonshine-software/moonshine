@@ -5,25 +5,24 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core;
 
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\MenuManager\MenuFillerContract;
 
 /**
  * @template I of ResourceContract
-
+ *
  * @mixin I
  */
-interface ResourceContract
+interface ResourceContract extends
+    HasCoreContract,
+    MenuFillerContract,
+    HasAssetsContract,
+    HasUriKeyContract
 {
     public function getPages(): PagesContract;
 
     public function getRouter(): RouterContract;
 
-    public function getUriKey(): string;
-
-    public function getUrl(): string;
-
     public function getTitle(): string;
-
-    public function getAssets(): array;
 
     public function booted(): static;
 

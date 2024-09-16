@@ -6,13 +6,14 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Collections\Renderables;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Laravel\Fields\Relationships\MorphMany;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -30,7 +31,7 @@ final class HasManyController extends MoonShineController
     {
         $parent = $request->getResource()?->getItemOrInstance();
 
-        /** @var HasMany $field */
+        /** @var HasMany|MorphMany $field */
         $field = $request->getField();
 
         /** @var ModelResource $resource */
@@ -55,12 +56,13 @@ final class HasManyController extends MoonShineController
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()->each(static fn (FieldContract $nestedFields): FieldContract => $nestedFields->setParent($field));
+            $relation = $field->getRelation();
 
             return $fields->when(
-                $field->getRelation() instanceof MorphOneOrMany,
+                $relation instanceof MorphOneOrMany,
                 static fn (Fields $f) => $f->push(
-                    Hidden::make($field->getRelation()?->getMorphType())
-                        ->setValue($parent::class)
+                    /** @phpstan-ignore-next-line  */
+                    Hidden::make($relation?->getMorphType())->setValue($parent::class)
                 )
             )->when(
                 $update,
@@ -69,21 +71,22 @@ final class HasManyController extends MoonShineController
                 )
             )
                 ->push(
-                    Hidden::make($field->getRelation()?->getForeignKeyName())
+                    Hidden::make($relation?->getForeignKeyName())
                         ->setValue($parent->getKey())
                 )
                 ->push(Hidden::make('_async_field')->setValue($isAsync))
                 ->toArray();
         };
 
-        $formName = "{$resource->getUriKey()}-unique-" . ($item?->getKey() ?? "create");
+        $formName = "{$resource->getUriKey()}-unique-" . ($item->getKey() ?? "create");
 
         return (string) FormBuilder::make($action($item))
+            /** @phpstan-ignore-next-line  */
             ->fields($getFields)
             ->reactiveUrl(
                 static fn (): string => moonshineRouter()
                     ->getEndpoints()
-                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
+                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item->getKey()])
             )
             ->name($formName)
             ->switchFormMode(
@@ -101,16 +104,16 @@ final class HasManyController extends MoonShineController
                 ),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->fillCast(
                     array_filter([
-                        $field->getRelation()?->getForeignKeyName() => $parent?->getKey(),
-                        ...$field->getRelation() instanceof MorphOneOrMany
-                            ? [$field->getRelation()?->getMorphType() => $parent?->getMorphClass()]
+                        $relation?->getForeignKeyName() => $parent?->getKey(),
+                        ...$relation instanceof MorphOneOrMany
+                            ? [$relation->getMorphType() => $parent?->getMorphClass()]
                             : [],
                     ], static fn ($value) => filled($value)),
                     $resource->getCaster()
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-            ->onBeforeFieldsRender(static fn (Fields $fields): Renderables => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()
@@ -133,6 +136,9 @@ final class HasManyController extends MoonShineController
 
         $parentItem = $parentResource->getItemOrInstance();
 
+        /**
+         * @var ?HasMany $field
+         */
         $field = $request->getField();
 
         $field?->fillCast(

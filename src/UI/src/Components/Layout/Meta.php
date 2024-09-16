@@ -13,11 +13,14 @@ final class Meta extends MoonShineComponent
     protected function resolveRender(): Renderable|Closure|string
     {
         return function (): string {
+            $name = $this->getName();
+            $attributes = $this->getAttributes()->toHtml();
+
             if ($this->getAttributes()->has('name')) {
-                return "<meta {$this->getAttributes()} />";
+                return "<meta $attributes />";
             }
 
-            return "<meta name=\"{$this->getName()}\" {$this->getAttributes()} />";
+            return "<meta name=\"$name\" $attributes />";
         };
     }
 }

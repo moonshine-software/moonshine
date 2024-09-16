@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
 /**
  * @template T
+ * @implements DataCasterContract<T>
  */
 final class DummyCast implements DataCasterContract
 {

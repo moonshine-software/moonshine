@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
-use Traversable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 
 /**
  * @template-covariant I of ResourcesContract
  * @template TResource of ResourceContract
  * @mixin I
  *
- * @extends Traversable<array-key, TResource>
+ * @template-extends Enumerable<array-key, TResource>
+ *
+ * @mixin Collection
  */
-interface ResourcesContract extends Traversable
+interface ResourcesContract extends Enumerable
 {
     /**
      * @param  ?ResourceContract<TResource>  $default

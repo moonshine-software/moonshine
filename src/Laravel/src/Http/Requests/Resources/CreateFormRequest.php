@@ -20,10 +20,16 @@ final class CreateFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! $this->getResource()?->hasAction(Action::CREATE)) {
+        $resource = $this->getResource();
+
+        if(is_null($resource)) {
             return false;
         }
 
-        return $this->getResource()?->can(Ability::CREATE) ?? false;
+        if (! $resource->hasAction(Action::CREATE)) {
+            return false;
+        }
+
+        return $resource->can(Ability::CREATE);
     }
 }

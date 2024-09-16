@@ -107,6 +107,7 @@ class LoginFormRequest extends MoonShineFormRequest
         return Str::transliterate(
             str($this->input('username') . '|' . $this->ip())
                 ->lower()
+                ->value()
         );
     }
 

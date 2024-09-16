@@ -6,4 +6,5 @@ namespace MoonShine\Contracts\UI;
 
 interface LayoutContract
 {
+    public function build(): mixed;
 }

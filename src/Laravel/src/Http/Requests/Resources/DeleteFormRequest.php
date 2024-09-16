@@ -20,10 +20,16 @@ final class DeleteFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! $this->getResource()?->hasAction(Action::DELETE)) {
+        $resource = $this->getResource();
+
+        if(is_null($resource)) {
             return false;
         }
 
-        return $this->getResource()?->can(Ability::DELETE) ?? false;
+        if (! $resource->hasAction(Action::DELETE)) {
+            return false;
+        }
+
+        return $resource->can(Ability::DELETE);
     }
 }

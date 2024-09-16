@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
-use MoonShine\Laravel\Applies\Filters\RepeaterModelApply;
+use MoonShine\Laravel\Applies\Filters\JsonModelApply;
 use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
@@ -229,7 +229,7 @@ it('apply as filter', function (): void {
     get('/?filter[json][0][title]=test');
 
     $field
-        ->onApply((new RepeaterModelApply())->apply($field))
+        ->onApply((new JsonModelApply())->apply($field))
         ->apply(
             static fn (Builder $query) => $query,
             $query

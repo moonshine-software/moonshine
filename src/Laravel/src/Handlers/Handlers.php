@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Handlers;
 
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
 
 /**

@@ -6,6 +6,7 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Traits\WithStorage;
 
@@ -19,12 +20,16 @@ trait FileTrait
 
     protected bool $keepOriginalFileName = false;
 
+    /** @var ?Closure(mixed, static): string   */
     protected ?Closure $customName = null;
 
+    /** @var ?Closure(string, int): string   */
     protected ?Closure $names = null;
 
+    /** @var ?Closure(string, int): string   */
     protected ?Closure $itemAttributes = null;
 
+    /** @var ?Closure(static): Collection  */
     protected ?Closure $remainingValuesResolver = null;
 
     protected ?Collection $remainingValues = null;
@@ -39,6 +44,7 @@ trait FileTrait
         return $this;
     }
 
+    /** @return Closure(string, int): string */
     public function resolveNames(): Closure
     {
         return function (string $filename, int $index = 0): string {
@@ -46,7 +52,7 @@ trait FileTrait
                 return $filename;
             }
 
-            return (string) value($this->names, $filename, $index);
+            return call_user_func($this->names, $filename, $index);
         };
     }
 
@@ -60,15 +66,18 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @return Closure(string $filename, int $index): ComponentAttributesBagContract
+     */
     public function resolveItemAttributes(): Closure
     {
-        return function (string $filename, int $index = 0): MoonShineComponentAttributeBag {
+        return function (string $filename, int $index = 0): ComponentAttributesBagContract {
             if (is_null($this->itemAttributes)) {
                 return new MoonShineComponentAttributeBag();
             }
 
             return new MoonShineComponentAttributeBag(
-                (array) value($this->itemAttributes, $filename, $index)
+                (array) call_user_func($this->itemAttributes, $filename, $index)
             );
         };
     }
@@ -85,6 +94,9 @@ trait FileTrait
         return $this->keepOriginalFileName;
     }
 
+    /**
+     * @param  Closure(mixed $file, static $ctx): string  $name
+     */
     public function customName(Closure $name): static
     {
         $this->customName = $name;
@@ -92,6 +104,9 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @return ?Closure(mixed $file, static $ctx): string
+     */
     public function getCustomName(): ?Closure
     {
         return $this->customName;
@@ -169,7 +184,7 @@ trait FileTrait
             ->value();
     }
 
-    public function getHiddenAttributes(): MoonShineComponentAttributeBag
+    public function getHiddenAttributes(): ComponentAttributesBagContract
     {
         return $this->getAttributes()->only(['data-level'])->merge([
             'name' => $this->getHiddenRemainingValuesName(),
@@ -204,7 +219,7 @@ trait FileTrait
 
 
         if (! is_null($this->remainingValuesResolver)) {
-            return value($this->remainingValuesResolver, $this);
+            return call_user_func($this->remainingValuesResolver, $this);
         }
 
         return collect(

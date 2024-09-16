@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Laravel;
 
 use Illuminate\Http\Request;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 
 class MoonShineRequest extends Request
 {
+    /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
     use HasPageRequest;
 

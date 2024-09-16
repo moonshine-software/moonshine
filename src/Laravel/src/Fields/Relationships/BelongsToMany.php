@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\RenderableContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
@@ -43,8 +41,10 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @extends ModelRelationField<\Illuminate\Database\Eloquent\Relations\BelongsToMany>
- * @use HasResource<ModelResource, ModelResource>
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany
+ *
+ * @extends ModelRelationField<R>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValuesContact,
@@ -52,7 +52,6 @@ class BelongsToMany extends ModelRelationField implements
     HasFieldsContract,
     HasAsyncSearchContract
 {
-    /** @use WithFields<Fields> */
     use WithFields;
     use WithRelatedValues;
     use Searchable;
@@ -80,10 +79,16 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLine = false;
 
+    /**
+     * @var null|(Closure(mixed, mixed, self): Link) $inLineLink
+     */
     protected ?Closure $inLineLink = null;
 
     protected string $inLineSeparator = '';
 
+    /**
+     * @var bool|(Closure(mixed, mixed, self): Badge|bool) $inLineBadge
+     */
     protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
@@ -189,6 +194,9 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindexNames(
@@ -257,7 +265,7 @@ class BelongsToMany extends ModelRelationField implements
         });
     }
 
-    protected function getComponent(): RenderableContract
+    protected function getComponent(): ComponentContract
     {
         $values = $this->getValue();
 
@@ -310,9 +318,10 @@ class BelongsToMany extends ModelRelationField implements
     protected function getColumnOrFormattedValue(Model $item, string|int $default): string|int
     {
         if (! is_null($this->getFormattedValueCallback())) {
-            return value(
+            return call_user_func(
                 $this->getFormattedValueCallback(),
                 $item,
+                0,
                 $this
             );
         }
@@ -348,7 +357,8 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $this->getColumnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if (! is_null($this->inLineLink)) {
-                    $linkValue = value($this->inLineLink, $item, $value, $this);
+                    /** @var Link|string $linkValue */
+                    $linkValue = call_user_func($this->inLineLink, $item, $value, $this);
 
                     $value = $linkValue instanceof Link
                         ? $linkValue
@@ -358,6 +368,8 @@ class BelongsToMany extends ModelRelationField implements
                         );
                 }
 
+                /** @var Badge|bool $badgeValue */
+                /** @phpstan-ignore-next-line  */
                 $badgeValue = value($this->inLineBadge, $item, $value, $this);
 
                 if ($badgeValue !== false) {
@@ -431,6 +443,7 @@ class BelongsToMany extends ModelRelationField implements
                 );
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$key],
                     str_replace($this->getPivotAs() . '.', '', $field->getColumn()),
                     data_get($apply, $field->getColumn())
@@ -488,7 +501,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->isValueWithModels()) {
-            return $this->toValue()?->modelKeys();
+            return $this->toValue()->modelKeys();
         }
 
         return $this->toValue()->keys()->toArray();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core;
 
+use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -11,14 +12,21 @@ use Traversable;
 
 /**
  * @template TData
- * @template-covariant TIndexPage of PageContract
- * @template-covariant TFormPage of PageContract
- * @template-covariant TDetailPage of PageContract
+ * @template-covariant TIndexPage of CrudPageContract
+ * @template-covariant TFormPage of CrudPageContract
+ * @template-covariant TDetailPage of CrudPageContract
  * @template TFields of FieldsContract
  * @template-covariant TItems of Traversable
+ *
  */
-interface CrudResourceContract
+interface CrudResourceContract extends ResourceContract
 {
+    public function getRoute(
+        string $name = null,
+        DataWrapperContract|int|string|null $key = null,
+        array $query = []
+    ): string;
+
     /**
      * @return DataCasterContract<TData>
      */
@@ -50,9 +58,31 @@ interface CrudResourceContract
     public function getDetailPage(): ?PageContract;
 
     /**
+     * @return TFields
+     */
+    public function getIndexFields(): FieldsContract;
+
+    /**
+     * @return TFields
+     */
+    public function getFormFields(bool $withOutside = false): FieldsContract;
+
+    /**
+     * @return TFields
+     */
+    public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): FieldsContract;
+
+    /**
      * @return ?TData
      */
     public function getItem(): mixed;
+
+    public function getItemID(): int|string|null;
+
+    /**
+     * @return TData
+     */
+    public function getItemOrInstance(): mixed;
 
     /**
      * @return TItems
@@ -83,4 +113,43 @@ interface CrudResourceContract
      * @return TData
      */
     public function save(mixed $item, ?FieldsContract $fields = null): mixed;
+
+
+    public function getIndexPageUrl(array $params = [], ?string $fragment = null): string;
+
+    /**
+     * @param DataWrapperContract<TData>|int|string|null $key
+     */
+    public function getFormPageUrl(
+        DataWrapperContract|int|string|null $key = null,
+        array $params = [],
+        ?string $fragment = null
+    ): string;
+
+    /**
+     * @param DataWrapperContract<TData>|int|string $key
+     */
+    public function getDetailPageUrl(
+        DataWrapperContract|int|string $key,
+        array $params = [],
+        ?string $fragment = null
+    ): string;
+
+    public function setQueryParams(iterable $params): static;
+
+    public function getQueryParams(): Collection;
+
+    public function getQueryParamsKeys(): array;
+
+    public function hasSearch(): bool;
+
+    /**
+     * @param TData $item
+     */
+    public function modifyResponse(mixed $item): mixed;
+
+    /**
+     * @param  iterable<TData>  $items
+     */
+    public function modifyCollectionResponse(mixed $items): mixed;
 }

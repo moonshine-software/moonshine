@@ -10,6 +10,8 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\HasModalContract;
+use MoonShine\Contracts\UI\HasOffCanvasContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -25,15 +27,19 @@ use Throwable;
 
 /**
  * @method static static make(Closure|string $label, Closure|string $url = '', ?DataWrapperContract $data = null)
+ *
+ * @implements ActionButtonContract<Modal, OffCanvas>
  */
-class ActionButton extends MoonShineComponent implements ActionButtonContract, HasComponentsContract
+class ActionButton extends MoonShineComponent implements
+    ActionButtonContract,
+    HasComponentsContract
 {
     use WithBadge;
     use WithLabel;
     use WithIcon;
     use WithOffCanvas;
-    use InDropdownOrLine;
     use WithModal;
+    use InDropdownOrLine;
     use WithComponents;
 
     protected string $view = 'moonshine::components.action-button';
@@ -129,12 +135,14 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     public function setData(?DataWrapperContract $data = null): static
     {
         if (! is_null($this->onBeforeSetCallback)) {
-            $data = value($this->onBeforeSetCallback, $data, $this);
+            $data = call_user_func($this->onBeforeSetCallback, $data, $this);
         }
 
         $this->data = $data;
 
-        value($this->onAfterSetCallback, $data, $this);
+        if (! is_null($this->onAfterSetCallback)) {
+            call_user_func($this->onAfterSetCallback, $data, $this);
+        }
 
         return $this;
     }
@@ -184,7 +192,7 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     ): static {
         $this->asyncMethod = $method;
 
-        $this->url = fn (mixed $data, ?DataWrapperContract $casted): ?string => $this->getCore()->getRouter()->getEndpoints()->method(
+        $this->url = fn (mixed $data, ?DataWrapperContract $casted): string => $this->getCore()->getRouter()->getEndpoints()->method(
             method: $method,
             message: $message,
             params: array_filter([

@@ -6,7 +6,7 @@ namespace MoonShine\UI\Components;
 
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ActionButtonsContract;
+use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
 use Throwable;
 
@@ -31,7 +31,10 @@ final class ActionGroup extends AbstractWithComponents
 
     public function getActions(): ActionButtonsContract
     {
-        return ActionButtons::make($this->components)->ensure(ActionButtonContract::class);
+        $buttons = ActionButtons::make($this->components);
+        $buttons->ensure(ActionButtonContract::class);
+
+        return $buttons;
     }
 
     public function add(ActionButtonContract $item): self

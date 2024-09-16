@@ -9,10 +9,11 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Icon;
@@ -25,6 +26,9 @@ use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
+/**
+ * @implements HasFieldsContract<Fields|FieldsContract>
+ */
 class Json extends Field implements
     HasFieldsContract,
     RemovableContract,
@@ -251,7 +255,7 @@ class Json extends Field implements
                 ->showInLine();
 
             if (! is_null($this->modifyRemoveButton)) {
-                $button = value($this->modifyRemoveButton, $button, $this);
+                $button = call_user_func($this->modifyRemoveButton, $button, $this);
             }
 
             $buttons[] = $button;
@@ -348,19 +352,21 @@ class Json extends Field implements
             ? $value
             : [$value ?? $emptyRow];
 
+        $values = collect($values);
+
         $fields = $this->getPreparedFields();
 
         if ($this->isObjectMode()) {
             return FieldsGroup::make(
                 $fields
             )->fill($values->toArray())->mapFields(
-                fn (FieldContract $field) => $field
+                fn (FieldContract $field): FieldContract => $field
                     ->formName($this->getFormName())
                     ->setParent($this)
             );
         }
 
-        $values = collect($values)->when(
+        $values = $values->when(
             ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
             static fn ($values): Collection => $values->push($emptyRow)
         );
@@ -384,7 +390,7 @@ class Json extends Field implements
                     ->except(['class', 'data-name', 'data-column'])
                     ->when(
                         $reorderable,
-                        static fn (MoonShineComponentAttributeBag $attr): MoonShineComponentAttributeBag => $attr->merge([
+                        static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
                             'data-handle' => '.handle',
                         ])
                     )
@@ -400,7 +406,7 @@ class Json extends Field implements
             )
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: $this->isPreviewMode())
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
 
@@ -487,6 +493,7 @@ class Json extends Field implements
                 $apply = $callback($field, $values, $data);
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
                     data_get($apply, $field->getColumn())

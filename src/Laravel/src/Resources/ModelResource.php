@@ -7,13 +7,15 @@ namespace MoonShine\Laravel\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Gate;
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Contracts\Resource\HasHandlersContract;
 use MoonShine\Laravel\Contracts\Resource\HasQueryTagsContract;
 use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Enums\Ability;
@@ -25,13 +27,16 @@ use Throwable;
 
 /**
  * @template TData of Model
- * @template-covariant TIndexPage of PageContract
- * @template-covariant TFormPage of PageContract
- * @template-covariant TDetailPage of PageContract
+ * @template-covariant TIndexPage of CrudPageContract
+ * @template-covariant TFormPage of CrudPageContract
+ * @template-covariant TDetailPage of CrudPageContract
  *
- * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields>
+ * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, Fields, Enumerable>
  */
-abstract class ModelResource extends CrudResource implements HasQueryTagsContract, WithQueryBuilderContract
+abstract class ModelResource extends CrudResource implements
+    HasQueryTagsContract,
+    HasHandlersContract,
+    WithQueryBuilderContract
 {
     /**
      * @use ResourceModelQuery<TData>
@@ -66,6 +71,7 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
      */
     public function getCaster(): DataCasterContract
     {
+        /** @var ModelCaster<TData> */
         return new ModelCaster($this->model);
     }
 
@@ -104,7 +110,7 @@ abstract class ModelResource extends CrudResource implements HasQueryTagsContrac
             ->newModelQuery()
             ->whereIn($this->getDataInstance()->getKeyName(), $ids)
             ->get()
-            ->each(function (mixed $item): ?bool {
+            ->each(function (mixed $item): bool {
                 $item = $this->beforeDeleting($item);
 
                 return (bool) tap($item->delete(), fn (): mixed => $this->afterDeleted($item));

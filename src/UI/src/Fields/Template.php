@@ -10,8 +10,12 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\WithFields;
 
+/**
+ * @implements  HasFieldsContract<Fields|FieldsContract>
+ */
 class Template extends Field implements HasFieldsContract
 {
     use WithFields;
@@ -36,7 +40,7 @@ class Template extends Field implements HasFieldsContract
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
-            return value(
+            return call_user_func(
                 $this->fillCallback,
                 is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
@@ -58,7 +62,11 @@ class Template extends Field implements HasFieldsContract
 
     public function render(): string
     {
-        return (string) value($this->renderCallback, $this->toValue(), $this);
+        if(is_null($this->renderCallback)) {
+            return '';
+        }
+
+        return (string) call_user_func($this->renderCallback, $this->toValue(), $this);
     }
 
     protected function resolveOnApply(): ?Closure
