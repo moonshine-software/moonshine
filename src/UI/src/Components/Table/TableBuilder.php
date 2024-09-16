@@ -434,6 +434,13 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         return $this;
     }
 
+    public function inside(string $entity): self
+    {
+        return $this->customAttributes([
+            'data-inside' => $entity,
+        ]);
+    }
+
     protected function getFootRows(): TableRowsContract
     {
         if ($this->footRows instanceof TableRowsContract) {
@@ -508,13 +515,6 @@ final class TableBuilder extends IterableComponent implements TableBuilderContra
         }
 
         return $this;
-    }
-
-    public function inside(string $entity): self
-    {
-        return $this->customAttributes([
-            'data-inside' => $entity,
-        ]);
     }
 
     /**

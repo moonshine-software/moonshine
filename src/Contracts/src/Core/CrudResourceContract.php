@@ -57,10 +57,19 @@ interface CrudResourceContract extends ResourceContract
      */
     public function getDetailPage(): ?PageContract;
 
+    /**
+     * @return TFields
+     */
     public function getIndexFields(): FieldsContract;
 
+    /**
+     * @return TFields
+     */
     public function getFormFields(bool $withOutside = false): FieldsContract;
 
+    /**
+     * @return TFields
+     */
     public function getDetailFields(bool $withOutside = false, bool $onlyOutside = false): FieldsContract;
 
     /**

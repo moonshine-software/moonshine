@@ -7,13 +7,17 @@ namespace MoonShine\UI\Components;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\HasAsync;
 use Throwable;
 
 /**
  * @method static static make(iterable $items = [], FieldsContract|array $fields = [])
+ *
+ * @extends IterableComponent<Fields|FieldsContract>
  */
 final class CardsBuilder extends IterableComponent
 {
@@ -28,22 +32,46 @@ final class CardsBuilder extends IterableComponent
 
     protected array $components = [];
 
+    /**
+     * @var (Closure(mixed, int, self): string)|string $title
+     */
     protected Closure|string $title = '';
 
-    protected Closure|array|string $subtitle = '';
+    /**
+     * @var (Closure(mixed, int, self): string)|string $subtitle
+     */
+    protected Closure|string $subtitle = '';
 
+    /**
+     * @var (Closure(mixed, int, self): string)|string $thumbnail
+     */
     protected Closure|string $thumbnail = '';
 
+    /**
+     * @var (Closure(mixed, int, self): string)|string $url
+     */
     protected Closure|string $url = '';
 
+    /**
+     * @var (Closure(mixed, int, self): string)|string $content
+     */
     protected Closure|string $content = '';
 
+    /**
+     * @var (Closure(mixed, int, self): string)|string $header
+     */
     protected Closure|string $header = '';
 
     protected bool $overlay = false;
 
+    /**
+     * @var ?Closure(mixed, int, self): ComponentContract $customComponent
+     */
     protected ?Closure $customComponent = null;
 
+    /**
+     * @var (Closure(mixed, int, self): array)|array $componentAttributes
+     */
     protected array|Closure $componentAttributes = [];
 
     public function __construct(
@@ -59,6 +87,9 @@ final class CardsBuilder extends IterableComponent
         $this->withAttributes([]);
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function title(Closure|string $value): self
     {
         $this->title = $value;
@@ -66,6 +97,9 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function subtitle(Closure|string $value): self
     {
         $this->subtitle = $value;
@@ -73,6 +107,9 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function thumbnail(Closure|string $value): self
     {
         $this->thumbnail = $value;
@@ -80,6 +117,9 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function url(Closure|string $value): self
     {
         $this->url = $value;
@@ -94,6 +134,9 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function content(Closure|string $value): self
     {
         $this->content = $value;
@@ -101,6 +144,9 @@ final class CardsBuilder extends IterableComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): string)|string $value
+     */
     public function header(Closure|string $value): self
     {
         $this->header = $value;
@@ -113,9 +159,22 @@ final class CardsBuilder extends IterableComponent
         return $url ?? fn (): string => $this->getCore()->getRouter()->getEndpoints()->component(name: $this->getName());
     }
 
+    /**
+     * @param (Closure(mixed $data, int $index, self $ctx): array)|array $attributes
+     */
     public function componentAttributes(array|Closure $attributes): self
     {
         $this->componentAttributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @param Closure(mixed $data, int $index, self $ctx): ComponentContract $component
+     */
+    public function customComponent(Closure $component): self
+    {
+        $this->customComponent = $component;
 
         return $this;
     }
@@ -151,13 +210,6 @@ final class CardsBuilder extends IterableComponent
         });
     }
 
-    public function customComponent(Closure $component): self
-    {
-        $this->customComponent = $component;
-
-        return $this;
-    }
-
     protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
         return is_string($this->{$column})
@@ -185,6 +237,11 @@ final class CardsBuilder extends IterableComponent
     {
         parent::prepareBeforeRender();
 
+        $this->performBeforeRender();
+    }
+
+    protected function performBeforeRender(): self
+    {
         $this->resolvePaginator();
 
         if ($this->isAsync() && $this->hasPaginator()) {
@@ -199,6 +256,8 @@ final class CardsBuilder extends IterableComponent
                 'data-events' => $this->getAsyncEvents(),
             ]);
         }
+
+        return $this;
     }
 
     /**
