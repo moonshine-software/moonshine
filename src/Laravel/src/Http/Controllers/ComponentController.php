@@ -30,6 +30,10 @@ final class ComponentController extends MoonShineController
             $component = $this->responseWithTable($component);
         }
 
+        if(is_string($component)) {
+            return '';
+        }
+
         return $component->render();
     }
 }

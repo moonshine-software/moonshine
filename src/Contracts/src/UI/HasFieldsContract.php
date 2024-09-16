@@ -15,7 +15,7 @@ interface HasFieldsContract
     /**
      * @param  T|Closure|array  $fields
      *
-     * @return $this
+     * @return static
      */
     public function fields(FieldsContract|Closure|array $fields): static;
 

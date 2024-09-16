@@ -10,8 +10,8 @@ use {model-namespace};
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Field;
-use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FieldContract;
 
 /**
  * @extends ModelResource<{model}>
@@ -23,7 +23,7 @@ class DummyResource extends ModelResource
     protected string $title = 'DummyTitle';
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     protected function indexFields(): iterable
     {
@@ -33,7 +33,7 @@ class DummyResource extends ModelResource
     }
 
     /**
-     * @return list<MoonShineComponent|Field>
+     * @return list<ComponentContract|FieldContract>
      */
     protected function formFields(): iterable
     {
@@ -45,7 +45,7 @@ class DummyResource extends ModelResource
     }
 
     /**
-     * @return list<Field>
+     * @return list<FieldContract>
      */
     protected function detailFields(): iterable
     {

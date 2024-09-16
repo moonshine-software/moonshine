@@ -25,7 +25,7 @@ final class Favicon extends MoonShineComponent
      *     safari-pinned-tab: string,
      *     web-manifest: string,
      * }  $assets
-     * @return $this
+     * @return self
      */
     public function assets(array $assets): self
     {

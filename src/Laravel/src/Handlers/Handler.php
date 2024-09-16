@@ -39,6 +39,7 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     use WithCore;
     use Conditionable;
 
+    /** @var ?Closure(ActionButtonContract, static): ActionButtonContract  */
     protected ?Closure $modifyButton = null;
 
     protected array|Closure $notifyUsers = [];
@@ -70,7 +71,7 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
         if (! is_null($this->modifyButton)) {
-            return value($this->modifyButton, $button, $this);
+            return call_user_func($this->modifyButton, $button, $this);
         }
 
         return $button;

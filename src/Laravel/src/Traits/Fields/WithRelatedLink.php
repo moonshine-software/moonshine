@@ -37,7 +37,7 @@ trait WithRelatedLink
     protected function isRelatedLink(): bool
     {
         if (is_callable($this->isRelatedLink) && is_null($this->toValue())) {
-            return value($this->isRelatedLink, 0, $this);
+            return (bool) value($this->isRelatedLink, 0, $this);
         }
 
         if (is_callable($this->isRelatedLink)) {
@@ -45,7 +45,7 @@ trait WithRelatedLink
                 ? $this->toValue()->count()
                 : $this->toValue()->total();
 
-            return value($this->isRelatedLink, $count, $this);
+            return (bool) value($this->isRelatedLink, $count, $this);
         }
 
         return $this->isRelatedLink;

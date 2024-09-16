@@ -44,7 +44,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function components(): iterable
@@ -55,7 +55,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function topLayer(): array
     {
@@ -68,7 +68,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -81,14 +81,14 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function bottomLayer(): array
     {
         return $this->getResource()->getIndexPageComponents();
     }
 
-    protected function getMetrics(): ?MoonShineComponent
+    protected function getMetrics(): ?ComponentContract
     {
         if ($this->getResource()->isListComponentRequest()) {
             return null;
@@ -103,7 +103,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getPageButtons(): array
     {
@@ -132,7 +132,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getQueryTags(): array
     {
@@ -214,7 +214,7 @@ class IndexPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function getItemsComponents(): array

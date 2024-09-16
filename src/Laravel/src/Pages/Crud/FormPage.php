@@ -86,7 +86,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function components(): iterable
@@ -101,7 +101,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function topLayer(): array
     {
@@ -109,7 +109,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function mainLayer(): array
@@ -133,7 +133,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      * @throws Throwable
      */
     protected function bottomLayer(): array
@@ -169,7 +169,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function getPageButtons(): array
     {
@@ -185,7 +185,7 @@ class FormPage extends CrudPage
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      *@throws Throwable
      */
     protected function getFormComponents(

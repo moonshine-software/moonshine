@@ -12,6 +12,7 @@ use MoonShine\Contracts\UI\FieldContract;
 /** @mixin FieldContract */
 trait Reactivity
 {
+    /** @var ?Closure(FieldsContract, mixed, static, array): FieldsContract   */
     protected ?Closure $reactiveCallback = null;
 
     protected bool $isReactive = false;
@@ -27,12 +28,12 @@ trait Reactivity
             return $fields;
         }
 
-        return value($this->reactiveCallback, $fields, $value, $this, $values);
+        return call_user_func($this->reactiveCallback, $fields, $value, $this, $values);
     }
 
     /**
      * @param  ?Closure(FieldsContract $fields, mixed $value, static $ctx, array $values): FieldsContract  $callback
-     * @return $this
+     * @return static
      */
     public function reactive(
         ?Closure $callback = null,

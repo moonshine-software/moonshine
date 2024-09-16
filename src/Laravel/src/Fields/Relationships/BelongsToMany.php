@@ -44,6 +44,7 @@ use Throwable;
  * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany
  *
  * @extends ModelRelationField<R>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValuesContact,
@@ -51,7 +52,7 @@ class BelongsToMany extends ModelRelationField implements
     HasFieldsContract,
     HasAsyncSearchContract
 {
-    /** @use WithFields<Fields> */
+    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use WithRelatedValues;
     use Searchable;
@@ -309,9 +310,10 @@ class BelongsToMany extends ModelRelationField implements
     protected function getColumnOrFormattedValue(Model $item, string|int $default): string|int
     {
         if (! is_null($this->getFormattedValueCallback())) {
-            return value(
+            return call_user_func(
                 $this->getFormattedValueCallback(),
                 $item,
+                0,
                 $this
             );
         }
@@ -430,6 +432,7 @@ class BelongsToMany extends ModelRelationField implements
                 );
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$key],
                     str_replace($this->getPivotAs() . '.', '', $field->getColumn()),
                     data_get($apply, $field->getColumn())

@@ -24,7 +24,7 @@ final class Carousel extends MoonShineComponent
     /**
      * @param  Closure|string[]  $value
      *
-     * @return $this
+     * @return static
      */
     public function items(Closure|array $value): self
     {

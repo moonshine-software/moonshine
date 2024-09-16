@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use MoonShine\Contracts\UI\Collection\TableCellsContract;
+use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
  * @method static static make(TableCellsContract $cells, int|string|null $key = null)
  */
-final class TableRow extends MoonShineComponent
+final class TableRow extends MoonShineComponent implements TableRowContract
 {
     protected string $view = 'moonshine::components.table.row';
 

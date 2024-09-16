@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller as BaseController;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
 use MoonShine\Laravel\Notifications\MoonShineNotificationContract;
 use MoonShine\Laravel\Pages\QuickPage;
@@ -81,7 +82,7 @@ abstract class MoonShineController extends BaseController
     /**
      * @throws Throwable
      */
-    protected function responseWithTable(TableBuilderContract $table): TableBuilderContract|TableRow|string
+    protected function responseWithTable(TableBuilderContract $table): TableBuilderContract|TableRowContract|string
     {
         if (! request()->filled('_key')) {
             return $table;
@@ -96,7 +97,7 @@ abstract class MoonShineController extends BaseController
 
         if (! $class instanceof Model) {
             return $table->getRows()->first(
-                static fn (TableRow $row): bool => $row->getKey() === request()->input('_key'),
+                static fn (TableRowContract $row): bool => $row->getKey() === request()->input('_key'),
             );
         }
 

@@ -40,7 +40,7 @@ final class Dropdown extends MoonShineComponent
     /**
      * @param  Closure|string[]  $items
      *
-     * @return $this
+     * @return static
      */
     public function items(Closure|array $items): self
     {

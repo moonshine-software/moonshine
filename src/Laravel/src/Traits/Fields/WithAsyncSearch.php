@@ -199,7 +199,7 @@ trait WithAsyncSearch
 
     /**
      * @param  ?Closure(Builder $query, MoonShineRequest $request, FieldContract $field): static  $searchQuery
-     * @return $this
+     * @return static
      */
     public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {

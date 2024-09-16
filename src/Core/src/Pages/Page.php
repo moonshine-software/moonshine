@@ -250,7 +250,7 @@ abstract class Page implements PageContract
 
     /**
      * @param  class-string<LayoutContract>  $layout
-     * @return $this
+     * @return static
      */
     public function setLayout(string $layout): static
     {

@@ -10,10 +10,13 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\WithFields;
 
+/** @implements  HasFieldsContract<Fields|FieldsContract> */
 class Template extends Field implements HasFieldsContract
 {
+    /** @implements WithFields<Fields|FieldsContract> */
     use WithFields;
 
     protected ?Closure $renderCallback = null;

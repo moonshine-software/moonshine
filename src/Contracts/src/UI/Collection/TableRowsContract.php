@@ -7,9 +7,10 @@ namespace MoonShine\Contracts\UI\Collection;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
+use MoonShine\Contracts\UI\TableRowContract;
 
 /**
- * @template-extends Enumerable<array-key, TableCellsContract>
+ * @template-extends Enumerable<array-key, TableRowContract>
  *
  * @mixin Collection
  */

@@ -6,10 +6,10 @@ namespace MoonShine\Laravel\Collections;
 
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use MoonShine\UI\Collections\Fields as ParentFields;
+use MoonShine\UI\Collections\Fields as BaseFields;
 use Throwable;
 
-final class Fields extends ParentFields
+final class Fields extends BaseFields
 {
     /**
      * @throws Throwable

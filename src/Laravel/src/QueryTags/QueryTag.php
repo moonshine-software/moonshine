@@ -33,6 +33,7 @@ final class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelCont
 
     public function __construct(
         Closure|string $label,
+        /** @var Closure(Builder): Builder $builder */
         protected Closure $builder,
     ) {
         $this->setLabel($label);
@@ -77,6 +78,6 @@ final class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelCont
 
     public function apply(Builder $builder): Builder
     {
-        return value($this->builder, $builder);
+        return call_user_func($this->builder, $builder);
     }
 }

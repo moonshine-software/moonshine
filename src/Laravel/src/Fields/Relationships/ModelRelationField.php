@@ -159,7 +159,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         }
 
         if (! is_null($this->afterFillCallback)) {
-            return value($this->afterFillCallback, $this);
+            return call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;

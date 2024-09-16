@@ -214,7 +214,7 @@ abstract class Field extends FormElement implements FieldContract
      * @param  Closure(mixed $data, mixed $value, static $field): string  $url
      * @param  string[]  $events
      *
-     * @return $this
+     * @return static
      */
     public function onChangeUrl(
         Closure $url,

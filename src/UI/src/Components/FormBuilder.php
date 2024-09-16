@@ -30,6 +30,7 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
+ * @template TFields of FieldsContract
  * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
  */
 final class FormBuilder extends MoonShineComponent implements FormBuilderContract
@@ -37,6 +38,7 @@ final class FormBuilder extends MoonShineComponent implements FormBuilderContrac
     use HasAsync;
     use WithAdditionalFields;
     use HasDataCast;
+    /** @use WithFields<TFields> */
     use WithFields;
 
     protected string $view = 'moonshine::components.form.builder';

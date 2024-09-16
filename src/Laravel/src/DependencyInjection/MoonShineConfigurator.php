@@ -370,7 +370,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @param  class-string<PageContract>  $old
      * @param  class-string<PageContract>  $new
-     * @return $this
+     * @return self
      */
     public function changePage(string $old, string $new): self
     {

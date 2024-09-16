@@ -10,9 +10,6 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\Collection\TableCellsContract;
 use MoonShine\UI\Components\Table\TableTd;
 
-/**
- * @implements TableCellsContract<TableTd>
- */
 final class TableCells extends Collection implements TableCellsContract
 {
     public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self

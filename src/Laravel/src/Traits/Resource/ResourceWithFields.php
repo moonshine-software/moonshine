@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Applies\FieldsWithoutFilters;
 use MoonShine\Laravel\Collections\Fields;
@@ -43,7 +44,7 @@ trait ResourceWithFields
     }
 
     /**
-     * @return list<FieldContract>
+     * @return list<FieldContract|ComponentContract>
      */
     protected function formFields(): iterable
     {
@@ -95,7 +96,6 @@ trait ResourceWithFields
     }
 
     /**
-     * @return Fields<int, ModelRelationField>
      * @throws Throwable
      */
     public function getOutsideFields(): Fields

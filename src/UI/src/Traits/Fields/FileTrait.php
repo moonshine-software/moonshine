@@ -20,12 +20,16 @@ trait FileTrait
 
     protected bool $keepOriginalFileName = false;
 
+    /** @var ?Closure(mixed, static): string   */
     protected ?Closure $customName = null;
 
+    /** @var ?Closure(string, int): string   */
     protected ?Closure $names = null;
 
+    /** @var ?Closure(string, int): string   */
     protected ?Closure $itemAttributes = null;
 
+    /** @var ?Closure(static): Collection  */
     protected ?Closure $remainingValuesResolver = null;
 
     protected ?Collection $remainingValues = null;
@@ -47,7 +51,7 @@ trait FileTrait
                 return $filename;
             }
 
-            return (string) value($this->names, $filename, $index);
+            return call_user_func($this->names, $filename, $index);
         };
     }
 
@@ -86,6 +90,9 @@ trait FileTrait
         return $this->keepOriginalFileName;
     }
 
+    /**
+     * @param  Closure(mixed $file, static $ctx): string  $name
+     */
     public function customName(Closure $name): static
     {
         $this->customName = $name;
@@ -93,6 +100,9 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @return ?Closure(mixed $file, static $ctx): string
+     */
     public function getCustomName(): ?Closure
     {
         return $this->customName;
@@ -205,7 +215,7 @@ trait FileTrait
 
 
         if (! is_null($this->remainingValuesResolver)) {
-            return value($this->remainingValuesResolver, $this);
+            return call_user_func($this->remainingValuesResolver, $this);
         }
 
         return collect(

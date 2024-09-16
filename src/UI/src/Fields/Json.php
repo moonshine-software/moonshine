@@ -13,6 +13,7 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Icon;
@@ -25,12 +26,16 @@ use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
+/**
+ * @implements HasFieldsContract<Fields|FieldsContract>
+ */
 class Json extends Field implements
     HasFieldsContract,
     RemovableContract,
     HasDefaultValueContract,
     CanBeArray
 {
+    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -489,6 +494,7 @@ class Json extends Field implements
                 $apply = $callback($field, $values, $data);
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
                     data_get($apply, $field->getColumn())

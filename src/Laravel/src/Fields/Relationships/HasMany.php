@@ -31,6 +31,7 @@ use Throwable;
 /**
  * @template-covariant R of (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany)
  * @extends ModelRelationField<R>
+ * @implements HasFieldsContract<Fields>
  */
 class HasMany extends ModelRelationField implements HasFieldsContract
 {
@@ -68,6 +69,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     protected ?Closure $modifyEditButton = null;
 
+    /** @var ?Closure(ActionButtonContract,ActionButtonContract,ActionButtonContract,ActionButtonContract,static): array $modifyItemButtons  */
     protected ?Closure $modifyItemButtons = null;
 
     protected ?Closure $modifyBuilder = null;
@@ -269,6 +271,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
+     * @return Fields
      * @throws Throwable
      */
     protected function prepareFields(): FieldsContract
@@ -287,6 +290,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
+     * @return Fields
      * @throws Throwable
      */
     public function prepareClonedFields(): FieldsContract
@@ -427,7 +431,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         );
 
         if (! is_null($this->modifyItemButtons)) {
-            return value(
+            return call_user_func(
                 $this->modifyItemButtons,
                 $detailButton,
                 $editButton,

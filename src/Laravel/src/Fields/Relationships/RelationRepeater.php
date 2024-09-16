@@ -25,8 +25,13 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
+/**
+ * @implements HasFieldsContract<Fields|FieldsContract>
+ */
 class RelationRepeater extends ModelRelationField implements
     HasFieldsContract,
     RemovableContract,
@@ -34,7 +39,7 @@ class RelationRepeater extends ModelRelationField implements
     CanBeArray,
     CanBeObject
 {
-    /** @use WithFields<Fields> */
+    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -172,6 +177,9 @@ class RelationRepeater extends ModelRelationField implements
         return $buttons;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindexNames(parent: $this, before: static function (self $parent, Field $field): void {
@@ -183,6 +191,11 @@ class RelationRepeater extends ModelRelationField implements
         });
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Throwable
+     * @throws NotFoundExceptionInterface
+     */
     protected function resolvePreview(): string|Renderable
     {
         return $this
@@ -284,6 +297,7 @@ class RelationRepeater extends ModelRelationField implements
                 $apply = $callback($field, $values, $data);
 
                 data_set(
+                    /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
                     data_get($apply, $field->getColumn())

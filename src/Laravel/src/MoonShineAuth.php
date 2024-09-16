@@ -7,6 +7,7 @@ namespace MoonShine\Laravel;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +20,10 @@ final class MoonShineAuth
         return $model ? new $model() : null;
     }
 
-    public static function getProvider(): ?EloquentUserProvider
+    /**
+     * @return ?EloquentUserProvider
+     */
+    public static function getProvider(): ?UserProvider
     {
         return self::getGuard()->getProvider();
     }

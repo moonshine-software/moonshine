@@ -27,6 +27,7 @@ use Throwable;
 /**
  * @template-covariant R of HasOneOrMany|HasOneOrManyThrough
  * @extends ModelRelationField<R>
+ * @implements HasFieldsContract<Fields>
  */
 class HasOne extends ModelRelationField implements HasFieldsContract
 {
@@ -72,6 +73,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
     }
 
     /**
+     * @return Fields
      * @throws Throwable
      */
     protected function prepareFields(): FieldsContract

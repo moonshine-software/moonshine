@@ -9,10 +9,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\TableCellContract;
 
 /**
- * @template T of ComponentContract
- * @template-extends Enumerable<array-key, T>
+ * @template-extends Enumerable<array-key, TableCellContract>
  *
  * @mixin Collection
  */

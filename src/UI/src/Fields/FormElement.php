@@ -58,12 +58,14 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     protected mixed $formattedValue = null;
 
+    /** @var ?Closure(mixed, int, static): mixed $formattedValueCallback  */
     protected ?Closure $formattedValueCallback = null;
 
     protected ?Closure $fromRaw = null;
 
     protected ?Closure $fillCallback = null;
 
+    /** @var ?Closure(static): static  */
     protected ?Closure $afterFillCallback = null;
 
     protected mixed $data = null;
@@ -234,7 +236,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         $this->setValue($value);
 
         if (! is_null($this->afterFillCallback)) {
-            return value($this->afterFillCallback, $this);
+            return call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;
@@ -357,11 +359,13 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this;
     }
 
+    /** @param Closure(mixed $data, int $index, static $ctx): mixed $formattedValueCallback  */
     protected function setFormattedValueCallback(Closure $formattedValueCallback): void
     {
         $this->formattedValueCallback = $formattedValueCallback;
     }
 
+    /** @return ?Closure(mixed $data, int $index, static $ctx): mixed  */
     public function getFormattedValueCallback(): ?Closure
     {
         return $this->formattedValueCallback;
@@ -428,7 +432,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     /**
      * @param  Closure(mixed $raw, mixed $original, static): mixed  $callback
      *
-     * @return $this
+     * @return static
      */
     public function modifyRawValue(Closure $callback): static
     {
@@ -440,7 +444,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     /**
      * @param  Closure(mixed $raw, static): mixed  $callback
      *
-     * @return $this
+     * @return static
      */
     public function fromRaw(Closure $callback): static
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\Laravel\Pages\Page;
-use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\Contracts\UI\ComponentContract;
 
 class DummyPage extends Page
 {
@@ -25,7 +25,7 @@ class DummyPage extends Page
     }
 
     /**
-     * @return list<MoonShineComponent>
+     * @return list<ComponentContract>
      */
     protected function components(): iterable
 	{
