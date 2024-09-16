@@ -8,7 +8,6 @@ parameters:
         - src/
     level: 5
     reportUnmatchedIgnoredErrors: false
-    checkMissingIterableValueType: false
 
     ignoreErrors:
         - '#Cannot cast Closure to string#'

@@ -99,6 +99,8 @@ class Fields extends BaseCollection implements FieldsContract
             }
         );
 
+        /** @var static */
+        /** @noRector */
         return $modified;
     }
 
