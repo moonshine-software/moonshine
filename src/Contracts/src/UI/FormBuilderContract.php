@@ -12,11 +12,7 @@ use Stringable;
  * @mixin Conditionable
  * @mixin ComponentContract
  */
-interface FormBuilderContract extends
-    HasFieldsContract,
-    HasCasterContract,
-    HasAsyncContract,
-    Stringable
+interface FormBuilderContract extends Stringable
 {
     public function action(string $action): self;
 

@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\UI\HasReactivityContract;
+use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
@@ -21,6 +22,9 @@ use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\HasAsync;
 
+/**
+ * @implements HasReactivityContract<Fields>
+ */
 class Select extends Field implements
     HasDefaultValueContract,
     CanBeArray,

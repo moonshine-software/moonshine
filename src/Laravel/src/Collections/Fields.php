@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Collections;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\UI\Collections\Fields as BaseFields;
+use MoonShine\UI\Fields\Field;
 use Throwable;
 
 final class Fields extends BaseFields

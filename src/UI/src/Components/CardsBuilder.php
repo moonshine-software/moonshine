@@ -9,18 +9,24 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\HasAsync;
+use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @method static static make(iterable $items = [], FieldsContract|array $fields = [])
  *
- * @extends IterableComponent<Fields|FieldsContract>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
-final class CardsBuilder extends IterableComponent
+final class CardsBuilder extends IterableComponent implements
+    HasFieldsContract,
+    HasAsyncContract
 {
+    use WithFields;
     use HasAsync;
     use WithColumnSpan;
 

@@ -15,6 +15,8 @@ use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Contracts\UI\HasCasterContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -32,14 +34,20 @@ use Throwable;
 /**
  * @template TFields of FieldsContract
  * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
+ *
+ * @implements HasFieldsContract<TFields>
+ *
+ * @use WithAdditionalFields<TFields>
  */
-final class FormBuilder extends MoonShineComponent implements FormBuilderContract
+final class FormBuilder extends MoonShineComponent implements
+    FormBuilderContract,
+    HasFieldsContract,
+    HasCasterContract,
+    HasAsyncContract
 {
     use HasAsync;
-    /** @use WithAdditionalFields<TFields> */
     use WithAdditionalFields;
     use HasDataCast;
-    /** @use WithFields<TFields> */
     use WithFields;
 
     protected string $view = 'moonshine::components.form.builder';

@@ -6,7 +6,7 @@ parameters:
     editorUrlTitle: "\nat packages/moonshine/%%relFile%%:%%line%%"
     paths:
         - src/
-    level: 2
+    level: 3
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:

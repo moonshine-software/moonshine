@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Core\Exceptions\PageException;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Enums\Action;
@@ -26,6 +27,8 @@ use Throwable;
  * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsTo
  *
  * @extends ModelRelationField<R>
+ *
+ * @implements HasReactivityContract<Fields>
  */
 class BelongsTo extends ModelRelationField implements
     HasAsyncSearchContract,

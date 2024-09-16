@@ -195,6 +195,9 @@ class BelongsToMany extends ModelRelationField implements
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields()->prepareAttributes()->prepareReindexNames(

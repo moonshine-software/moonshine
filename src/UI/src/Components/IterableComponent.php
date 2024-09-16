@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Illuminate\Support\Collection;
-use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
-use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\HasCasterContract;
+use MoonShine\Contracts\UI\WithoutExtractionContract;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Traits\HasDataCast;
-use MoonShine\UI\Traits\WithFields;
 
 /**
- * @template TFields of FieldsContract
- * @implements HasFieldsContract<TFields>
+ * @template TCaster of DataCasterContract
+ * @template TWrapper of DataWrapperContract
+ *
+ * @implements HasCasterContract<DataCasterContract, DataWrapperContract>
  */
-abstract class IterableComponent extends MoonShineComponent implements HasFieldsContract
+abstract class IterableComponent extends MoonShineComponent implements HasCasterContract, WithoutExtractionContract
 {
     use HasDataCast;
-    /** @use WithFields<TFields>  */
-    use WithFields;
 
     protected iterable $items = [];
 

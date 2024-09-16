@@ -19,7 +19,9 @@ use Throwable;
 use Closure;
 
 /**
- * @template-covariant TFields of FieldsContract
+ * @template TFields of FieldsContract
+ *
+ * @implements ComponentsContract<TFields>
  */
 final class Components extends BaseCollection implements ComponentsContract
 {

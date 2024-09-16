@@ -10,6 +10,8 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\Contracts\UI\WithoutExtractionContract;
@@ -26,14 +28,20 @@ use MoonShine\UI\Components\Link;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Traits\HasAsync;
 use MoonShine\UI\Traits\Table\TableStates;
+use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @method static static make(iterable $fields = [], iterable $items = [])
- * @extends IterableComponent<Fields|FieldsContract>
+ *
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
-final class TableBuilder extends IterableComponent implements TableBuilderContract, WithoutExtractionContract
+final class TableBuilder extends IterableComponent implements
+    TableBuilderContract,
+    HasFieldsContract,
+    HasAsyncContract
 {
+    use WithFields;
     use TableStates;
     use HasAsync;
 

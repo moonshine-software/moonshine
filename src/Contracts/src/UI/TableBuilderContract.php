@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Support\Enums\ClickAction;
+use Stringable;
 
 /**
+ * @mixin Conditionable
  * @mixin ComponentContract
  */
-interface TableBuilderContract extends HasCasterContract
+interface TableBuilderContract extends Stringable
 {
     public function getRows(): TableRowsContract;
 

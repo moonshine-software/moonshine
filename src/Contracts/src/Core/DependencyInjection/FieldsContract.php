@@ -71,4 +71,6 @@ interface FieldsContract extends Enumerable, HasStructureContract
     ): ?FieldContract;
 
     public function wrapNames(string $name): static;
+
+    public function withoutWrappers(): static;
 }

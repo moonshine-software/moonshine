@@ -58,7 +58,7 @@ class Fields extends BaseCollection implements FieldsContract
 
         return static::make($data)->when(
             ! $withWrappers,
-            static fn (Fields $fields): Fields => $fields->withoutWrappers()
+            static fn (FieldsContract $fields): FieldsContract => $fields->withoutWrappers()
         );
     }
 
