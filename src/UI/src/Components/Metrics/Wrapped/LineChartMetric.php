@@ -29,8 +29,6 @@ class LineChartMetric extends Metric
     /**
      * @param  array<string, array<numeric>>|Closure  $line
      * @param  string|string[]|Closure  $color
-     *
-     * @return static
      */
     public function line(
         array|Closure $line,

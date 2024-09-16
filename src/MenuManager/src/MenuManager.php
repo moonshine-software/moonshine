@@ -6,8 +6,6 @@ namespace MoonShine\MenuManager;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
-use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;

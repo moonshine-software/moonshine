@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Collections;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
@@ -14,9 +13,7 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Traits\WithCore;
-use MoonShine\UI\Fields\Field;
 use Throwable;
-use Closure;
 
 /**
  * @template TFields of FieldsContract

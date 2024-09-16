@@ -11,9 +11,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Layouts\AppLayout;
@@ -367,7 +365,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
     /**
      * @param  class-string<PageContract>  $old
      * @param  class-string<PageContract>  $new
-     * @return self
      */
     public function changePage(string $old, string $new): self
     {

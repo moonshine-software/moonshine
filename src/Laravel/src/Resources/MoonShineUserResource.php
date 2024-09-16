@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Enumerable;
 use Illuminate\Validation\Rule;
-use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
-use MoonShine\Laravel\Pages\Crud\DetailPage;
-use MoonShine\Laravel\Pages\Crud\FormPage;
-use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;

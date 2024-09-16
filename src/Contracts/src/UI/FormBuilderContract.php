@@ -6,7 +6,6 @@ namespace MoonShine\Contracts\UI;
 
 use Closure;
 use Illuminate\Support\Traits\Conditionable;
-use Stringable;
 
 /**
  * @mixin Conditionable

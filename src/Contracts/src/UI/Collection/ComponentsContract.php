@@ -10,7 +10,6 @@ use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasStructureContract;
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 

@@ -41,9 +41,6 @@ abstract class Page implements PageContract
     /** @var ?class-string<LayoutContract> */
     protected ?string $layout = null;
 
-    /**
-     * @var iterable|null|Components $components
-     */
     protected ?iterable $components = null;
 
     protected array $layersComponents = [];
@@ -249,7 +246,6 @@ abstract class Page implements PageContract
 
     /**
      * @param  class-string<LayoutContract>  $layout
-     * @return static
      */
     public function setLayout(string $layout): static
     {

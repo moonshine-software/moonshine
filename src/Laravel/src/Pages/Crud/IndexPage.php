@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Buttons\QueryTagButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Components\Fragment;
@@ -20,7 +18,6 @@ use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Layout\Block;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Components\Table\TableBuilder;
 use Throwable;
 

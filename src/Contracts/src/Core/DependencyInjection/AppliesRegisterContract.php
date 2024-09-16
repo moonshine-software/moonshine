@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use MoonShine\Contracts\UI\ApplyContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
 
 /**

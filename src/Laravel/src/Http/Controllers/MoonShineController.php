@@ -16,7 +16,6 @@ use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\Enums\ToastType;
-use MoonShine\UI\Components\Table\TableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;

@@ -14,7 +14,6 @@ class Enum extends Select implements CanBeEnum
 
     /**
      * @param  class-string<BackedEnum>  $class
-     * @return static
      */
     public function attach(string $class): static
     {

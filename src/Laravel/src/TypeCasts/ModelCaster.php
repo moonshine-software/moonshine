@@ -43,7 +43,6 @@ final readonly class ModelCaster implements DataCasterContract
             $data->exists = ! empty($data->getKey());
         }
 
-        /** @var ModelDataWrapper<T> */
         return new ModelDataWrapper($data);
     }
 

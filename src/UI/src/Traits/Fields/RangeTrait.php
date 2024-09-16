@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\AlpineJs;

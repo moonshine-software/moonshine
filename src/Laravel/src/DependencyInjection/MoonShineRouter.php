@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\DependencyInjection;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
-use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\AbstractRouter;

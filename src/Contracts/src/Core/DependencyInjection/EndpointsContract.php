@@ -13,12 +13,8 @@ use MoonShine\Contracts\Core\ResourceContract;
 interface EndpointsContract
 {
     /**
-     * @param  string|PageContract|null  $page
      * @param  string|TResource|null  $resource
-     * @param  array  $params
-     * @param  array  $extra
      *
-     * @return mixed
      */
     public function toPage(
         string|PageContract|null $page = null,
@@ -29,10 +25,7 @@ interface EndpointsContract
 
     /**
      * @param  TResource|null  $resource
-     * @param  PageContract|null  $page
-     * @param  array  $extra
      *
-     * @return string
      */
     public function updateField(
         ?ResourceContract $resource = null,
@@ -41,13 +34,8 @@ interface EndpointsContract
     ): string;
 
     /**
-     * @param  string  $method
-     * @param  string|null  $message
-     * @param  array  $params
-     * @param  PageContract|null  $page
      * @param  TResource|null  $resource
      *
-     * @return string
      */
     public function method(
         string $method,
@@ -57,23 +45,15 @@ interface EndpointsContract
         ?ResourceContract $resource = null
     ): string;
 
-    /**
-     * @param  string  $name
-     * @param  array  $additionally
-     *
-     * @return string
-     */
+    
     public function component(
         string $name,
         array $additionally = []
     ): string;
 
     /**
-     * @param  PageContract|null  $page
      * @param  TResource|null  $resource
-     * @param  array  $extra
      *
-     * @return string
      */
     public function reactive(
         ?PageContract $page = null,
@@ -81,8 +61,5 @@ interface EndpointsContract
         array $extra = []
     ): string;
 
-    /**
-     * @return string
-     */
     public function home(): string;
 }

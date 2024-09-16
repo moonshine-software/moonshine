@@ -14,8 +14,6 @@ interface HasFieldsContract
 {
     /**
      * @param  T|(Closure(T $ctx): T)|iterable  $fields
-     *
-     * @return static
      */
     public function fields(FieldsContract|Closure|iterable $fields): static;
 

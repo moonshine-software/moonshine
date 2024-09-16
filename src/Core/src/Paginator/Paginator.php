@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\HasCoreContract;
 use MoonShine\Contracts\Core\HasViewRendererContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
-use MoonShine\Contracts\Core\Paginator\PaginatorLinkContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorLinksContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;

@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Buttons;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\CrudResource;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 
 final class QueryTagButton

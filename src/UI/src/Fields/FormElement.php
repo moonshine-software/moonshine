@@ -11,7 +11,6 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
@@ -430,8 +429,6 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     /**
      * @param  Closure(mixed $raw, mixed $original, static): mixed  $callback
-     *
-     * @return static
      */
     public function modifyRawValue(Closure $callback): static
     {
@@ -442,8 +439,6 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     /**
      * @param  Closure(mixed $raw, static): mixed  $callback
-     *
-     * @return static
      */
     public function fromRaw(Closure $callback): static
     {

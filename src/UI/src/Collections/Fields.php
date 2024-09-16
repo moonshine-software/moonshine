@@ -100,7 +100,6 @@ class Fields extends BaseCollection implements FieldsContract
             }
         );
 
-        /** @var static */
         return $modified;
     }
 
@@ -192,7 +191,6 @@ class Fields extends BaseCollection implements FieldsContract
             ->onlyFields()
             ->each(static fn (FieldContract $field): FieldContract => $field->wrapName($name));
 
-        /** @var static */
         return $this;
     }
 
@@ -228,7 +226,7 @@ class Fields extends BaseCollection implements FieldsContract
     {
         /** @var static */
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
-            $modifyField = !is_null($before) ? $before($parent, $field) : $field;
+            $modifyField = is_null($before) ? $field : $before($parent, $field);
 
             if ($modifyField instanceof FieldContract) {
                 $field = $modifyField;

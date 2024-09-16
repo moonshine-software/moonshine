@@ -30,7 +30,6 @@ class MorphTo extends BelongsTo
 
     /**
      * @param  array<class-string<Model>, string|array>  $types
-     * @return static
      */
     public function types(array $types): static
     {

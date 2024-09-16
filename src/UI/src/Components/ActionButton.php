@@ -10,8 +10,6 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\HasModalContract;
-use MoonShine\Contracts\UI\HasOffCanvasContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;

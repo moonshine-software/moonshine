@@ -213,8 +213,6 @@ abstract class Field extends FormElement implements FieldContract
     /**
      * @param  Closure(mixed $data, mixed $value, static $field): string  $url
      * @param  string[]  $events
-     *
-     * @return static
      */
     public function onChangeUrl(
         Closure $url,
@@ -283,9 +281,9 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getBeforeRender(): Renderable|string
     {
-        return !is_null($this->beforeRender)
-            ? call_user_func($this->beforeRender, $this)
-            : '';
+        return is_null($this->beforeRender)
+            ? ''
+            : call_user_func($this->beforeRender, $this);
     }
 
     /**
@@ -300,9 +298,9 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getAfterRender(): Renderable|string
     {
-        return !is_null($this->afterRender)
-            ? call_user_func($this->afterRender, $this)
-            : '';
+        return is_null($this->afterRender)
+            ? ''
+            : call_user_func($this->afterRender, $this);
     }
 
     /**

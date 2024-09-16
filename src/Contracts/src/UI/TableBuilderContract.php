@@ -11,7 +11,6 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Support\Enums\ClickAction;
-use Stringable;
 
 /**
  * @mixin Conditionable

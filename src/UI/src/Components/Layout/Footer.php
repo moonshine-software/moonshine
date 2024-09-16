@@ -35,7 +35,6 @@ class Footer extends AbstractWithComponents
 
     /**
      * @param  array<string, string>  $data
-     * @return static
      */
     public function menu(array $data): static
     {

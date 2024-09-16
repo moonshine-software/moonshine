@@ -15,8 +15,6 @@ trait WithSorts
 
     /**
      * Define whether if index page can be sorted by this field
-     *
-     * @return static
      */
     public function sortable(Closure|string|null $callback = null): static
     {

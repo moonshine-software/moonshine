@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Resources\CrudResource;
 use Throwable;

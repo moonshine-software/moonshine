@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
-use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -22,7 +22,7 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant R of (BelongsTo|HasOneOrMany|HasOneOrManyThrough|\Illuminate\Database\Eloquent\Relations\BelongsToMany|MorphOneOrMany)
+ * @template-covariant R of BelongsTo|HasOneOrMany|HasOneOrManyThrough|BelongsToMany|MorphOneOrMany
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
  *
  * @implements HasResourceContract<ModelResource>

@@ -23,7 +23,6 @@ interface HasReactivityContract
 
     /**
      * @param  ?Closure(TFields $fields, mixed $value, static $ctx, array $values): TFields  $callback
-     * @return static
      */
     public function reactive(
         ?Closure $callback = null,

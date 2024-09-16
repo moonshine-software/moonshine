@@ -8,8 +8,6 @@ use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\UI\Collections\Fields;
-use Throwable;
 
 /**
  * @mixin ComponentContract
