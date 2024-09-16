@@ -41,7 +41,7 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     use WithCore;
     use Conditionable;
 
-    /** @var ?Closure(ActionButtonContract, static): ActionButtonContract  */
+    /** @var ?Closure(ActionButtonContract, static): ActionButtonContract */
     protected ?Closure $modifyButton = null;
 
     protected array|Closure $notifyUsers = [];

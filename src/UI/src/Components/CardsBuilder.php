@@ -39,44 +39,44 @@ final class CardsBuilder extends IterableComponent implements
     protected array $components = [];
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $title
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $title = '';
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $subtitle
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $subtitle = '';
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $thumbnail
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $thumbnail = '';
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $url
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $url = '';
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $content
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $content = '';
 
     /**
-     * @var (Closure(mixed, int, self): string)|string $header
+     * @var (Closure(mixed, int, self): string)|string
      */
     protected Closure|string $header = '';
 
     protected bool $overlay = false;
 
     /**
-     * @var ?Closure(mixed, int, self): ComponentContract $customComponent
+     * @var ?Closure(mixed, int, self): ComponentContract
      */
     protected ?Closure $customComponent = null;
 
     /**
-     * @var (Closure(mixed, int, self): array)|array $componentAttributes
+     * @var (Closure(mixed, int, self): array)|array
      */
     protected array|Closure $componentAttributes = [];
 

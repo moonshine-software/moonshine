@@ -24,7 +24,7 @@ final class HandlerController extends MoonShineController
             ResourceException::required()
         );
 
-        if(!$resource instanceof HasHandlersContract) {
+        if (! $resource instanceof HasHandlersContract) {
             throw new ResourceException('Resource with HasHandlersContract required');
         }
 

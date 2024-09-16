@@ -62,7 +62,7 @@ class Template extends Field implements HasFieldsContract
 
     public function render(): string
     {
-        if(is_null($this->renderCallback)) {
+        if (is_null($this->renderCallback)) {
             return '';
         }
 

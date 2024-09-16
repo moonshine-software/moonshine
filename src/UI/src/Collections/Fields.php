@@ -20,7 +20,6 @@ use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Fields\ID;
 use Throwable;
 
-
 /**
  * @template T of FieldContract
  * @implements FieldsContract<T>

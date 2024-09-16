@@ -142,7 +142,7 @@ class IndexPage extends CrudPage
         return [
             ActionGroup::make()->when(
                 $resource->hasQueryTags(),
-                static function (ActionGroup $group) use($resource): ActionGroup {
+                static function (ActionGroup $group) use ($resource): ActionGroup {
                     foreach ($resource->getQueryTags() as $tag) {
                         $group->add(
                             QueryTagButton::for($resource, $tag)

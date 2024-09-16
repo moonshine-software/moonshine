@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core;
 
 use Closure;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
+use Illuminate\Contracts\Support\Renderable;
 use JsonSerializable;
 use Stringable;
 

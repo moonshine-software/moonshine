@@ -22,7 +22,7 @@ final class CreateFormRequest extends MoonShineFormRequest
 
         $resource = $this->getResource();
 
-        if(is_null($resource)) {
+        if (is_null($resource)) {
             return false;
         }
 

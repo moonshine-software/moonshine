@@ -20,16 +20,16 @@ trait FileTrait
 
     protected bool $keepOriginalFileName = false;
 
-    /** @var ?Closure(mixed, static): string   */
+    /** @var ?Closure(mixed, static): string */
     protected ?Closure $customName = null;
 
-    /** @var ?Closure(string, int): string   */
+    /** @var ?Closure(string, int): string */
     protected ?Closure $names = null;
 
-    /** @var ?Closure(string, int): string   */
+    /** @var ?Closure(string, int): string */
     protected ?Closure $itemAttributes = null;
 
-    /** @var ?Closure(static): Collection  */
+    /** @var ?Closure(static): Collection */
     protected ?Closure $remainingValuesResolver = null;
 
     protected ?Collection $remainingValues = null;

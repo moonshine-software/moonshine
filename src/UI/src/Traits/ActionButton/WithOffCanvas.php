@@ -58,7 +58,7 @@ trait WithOffCanvas
 
     public function getOffCanvas(): ?ComponentContract
     {
-        if(!$this->isInOffCanvas()) {
+        if (! $this->isInOffCanvas()) {
             return null;
         }
 

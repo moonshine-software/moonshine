@@ -80,14 +80,14 @@ class BelongsToMany extends ModelRelationField implements
     protected bool $inLine = false;
 
     /**
-     * @var null|(Closure(mixed, mixed, self): Link) $inLineLink
+     * @var null|(Closure(mixed, mixed, self): Link)
      */
     protected ?Closure $inLineLink = null;
 
     protected string $inLineSeparator = '';
 
     /**
-     * @var bool|(Closure(mixed, mixed, self): Badge|bool) $inLineBadge
+     * @var bool|(Closure(mixed, mixed, self): Badge|bool)
      */
     protected Closure|bool $inLineBadge = false;
 

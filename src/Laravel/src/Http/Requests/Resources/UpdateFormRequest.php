@@ -22,11 +22,11 @@ final class UpdateFormRequest extends MoonShineFormRequest
 
         $resource = $this->getResource();
 
-        if(is_null($resource)) {
+        if (is_null($resource)) {
             return false;
         }
 
-        if (!$resource->hasAction(Action::UPDATE)) {
+        if (! $resource->hasAction(Action::UPDATE)) {
             return false;
         }
 

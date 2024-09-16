@@ -8,5 +8,4 @@ use Illuminate\Contracts\Support\Arrayable;
 
 interface PaginatorLinksContract extends Arrayable
 {
-
 }

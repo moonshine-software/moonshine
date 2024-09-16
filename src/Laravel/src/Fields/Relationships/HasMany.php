@@ -68,7 +68,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     protected ?Closure $modifyEditButton = null;
 
-    /** @var ?Closure(ActionButtonContract,ActionButtonContract,ActionButtonContract,ActionButtonContract,static): array $modifyItemButtons  */
+    /** @var ?Closure(ActionButtonContract,ActionButtonContract,ActionButtonContract,ActionButtonContract,static): array */
     protected ?Closure $modifyItemButtons = null;
 
     protected ?Closure $modifyBuilder = null;

@@ -45,7 +45,7 @@ interface EndpointsContract
         ?ResourceContract $resource = null
     ): string;
 
-    
+
     public function component(
         string $name,
         array $additionally = []

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Core\Collections;
 
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
-use Closure;
 
 abstract class BaseCollection extends Collection
 {

@@ -126,7 +126,7 @@ trait WithModal
 
     public function getModal(): ?ComponentContract
     {
-        if(!$this->isInModal()) {
+        if (! $this->isInModal()) {
             return null;
         }
 

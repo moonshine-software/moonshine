@@ -15,12 +15,12 @@ use Throwable;
 trait HasResource
 {
     /**
-     * @var ?T $resource
+     * @var ?T
      */
     protected ?ResourceContract $resource = null;
 
     /**
-     * @var ?PT $resource
+     * @var ?PT
      */
     protected ?ResourceContract $parentResource = null;
 

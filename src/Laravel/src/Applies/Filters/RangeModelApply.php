@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
-use MoonShine\UI\Fields\Range;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\UI\Fields\Range;
 
 /**
  * @implements ApplyContract<Range>
