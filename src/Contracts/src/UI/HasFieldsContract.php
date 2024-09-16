@@ -13,7 +13,7 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 interface HasFieldsContract
 {
     /**
-     * @param  T|Closure(T $ctx): T|iterable  $fields
+     * @param  T|(Closure(T $ctx): T)|iterable  $fields
      *
      * @return static
      */
