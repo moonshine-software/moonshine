@@ -2,6 +2,8 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
+    editorUrl: 'anything'
+    editorUrlTitle: "\nat packages/moonshine/%%relFile%%:%%line%%"
     paths:
         - src/
     level: 2

@@ -17,8 +17,14 @@ use Throwable;
  */
 trait WithFields
 {
+    /**
+     * @param iterable|Closure(T $ctx): T  $fields
+     */
     protected iterable|Closure $fields = [];
 
+    /**
+     * @var ?T $preparedFields
+     */
     protected ?FieldsContract $preparedFields = null;
 
     public function resetPreparedFields(): static
@@ -95,6 +101,7 @@ trait WithFields
     }
 
     /**
+     * @param ?T $preparedFields
      * @return T
      * @throws Throwable
      */

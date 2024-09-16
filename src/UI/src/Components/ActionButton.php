@@ -131,12 +131,14 @@ class ActionButton extends MoonShineComponent implements ActionButtonContract, H
     public function setData(?DataWrapperContract $data = null): static
     {
         if (! is_null($this->onBeforeSetCallback)) {
-            $data = value($this->onBeforeSetCallback, $data, $this);
+            $data = call_user_func($this->onBeforeSetCallback, $data, $this);
         }
 
         $this->data = $data;
 
-        value($this->onAfterSetCallback, $data, $this);
+        if (! is_null($this->onAfterSetCallback)) {
+            call_user_func($this->onAfterSetCallback, $data, $this);
+        }
 
         return $this;
     }

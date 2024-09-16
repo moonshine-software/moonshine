@@ -133,7 +133,7 @@ final class CardsBuilder extends IterableComponent
             $fields = $this->getFilledFields($casted->toArray(), $casted, $index, $fields);
 
             if (! is_null($this->customComponent)) {
-                return value($this->customComponent, $data, $index, $this);
+                return call_user_func($this->customComponent, $data, $index, $this);
             }
 
             $buttons = $this->getButtons($casted);

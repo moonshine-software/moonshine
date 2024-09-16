@@ -195,7 +195,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
-            return value(
+            return call_user_func(
                 $this->fillCallback,
                 is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
@@ -272,7 +272,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     public function toRawValue(): mixed
     {
         if ($this->isRawValueModified()) {
-            return value($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
+            return call_user_func($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
         return $this->resolveRawValue();
@@ -375,7 +375,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     {
         if (! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                value(
+                call_user_func(
                     $this->getFormattedValueCallback(),
                     $this->getData()?->getOriginal(),
                     $this->getRowIndex(),
@@ -459,7 +459,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
             return $raw;
         }
 
-        return value($this->fromRaw, $raw, $this);
+        return call_user_func($this->fromRaw, $raw, $this);
     }
 
     public function getDefaultIfExists(): mixed
@@ -529,7 +529,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     public function getRequestValue(string|int|null $index = null): mixed
     {
         if (! is_null(static::$requestValueResolver)) {
-            return value(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
+            return call_user_func(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
         }
 
         return $this->prepareRequestValue(

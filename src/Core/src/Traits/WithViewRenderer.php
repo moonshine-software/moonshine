@@ -125,7 +125,7 @@ trait WithViewRenderer
         $this->prepareBeforeRender();
 
         if (! is_null($this->onBeforeRenderCallback)) {
-            value($this->onBeforeRenderCallback, $this);
+            call_user_func($this->onBeforeRenderCallback, $this);
         }
 
         $view = $this->resolveRender();

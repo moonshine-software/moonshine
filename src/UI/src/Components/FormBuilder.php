@@ -36,6 +36,7 @@ use Throwable;
 final class FormBuilder extends MoonShineComponent implements FormBuilderContract
 {
     use HasAsync;
+    /** @use WithAdditionalFields<TFields> */
     use WithAdditionalFields;
     use HasDataCast;
     /** @use WithFields<TFields> */

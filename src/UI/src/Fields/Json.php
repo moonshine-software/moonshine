@@ -256,7 +256,7 @@ class Json extends Field implements
                 ->showInLine();
 
             if (! is_null($this->modifyRemoveButton)) {
-                $button = value($this->modifyRemoveButton, $button, $this);
+                $button = call_user_func($this->modifyRemoveButton, $button, $this);
             }
 
             $buttons[] = $button;

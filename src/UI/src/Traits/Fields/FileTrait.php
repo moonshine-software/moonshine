@@ -44,6 +44,7 @@ trait FileTrait
         return $this;
     }
 
+    /** @return Closure(string, int): string */
     public function resolveNames(): Closure
     {
         return function (string $filename, int $index = 0): string {
@@ -65,6 +66,9 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @return Closure(string $filename, int $index): ComponentAttributesBagContract
+     */
     public function resolveItemAttributes(): Closure
     {
         return function (string $filename, int $index = 0): ComponentAttributesBagContract {
@@ -73,7 +77,7 @@ trait FileTrait
             }
 
             return new MoonShineComponentAttributeBag(
-                (array) value($this->itemAttributes, $filename, $index)
+                (array) call_user_func($this->itemAttributes, $filename, $index)
             );
         };
     }

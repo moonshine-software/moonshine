@@ -171,7 +171,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         if ($this->isToOne() && ! is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                value(
+                call_user_func(
                     $this->getFormattedValueCallback(),
                     $value ?? $this->getRelation()?->getModel(),
                     $this->getRowIndex(),

@@ -37,7 +37,7 @@ trait WithBadge
     {
         $color = is_null($this->badgeColorCallback)
             ? $this->badgeColor
-            : value($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
+            : call_user_func($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
 
 
         return $color instanceof Color ? $color->value : $color;

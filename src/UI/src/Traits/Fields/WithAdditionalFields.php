@@ -7,11 +7,15 @@ namespace MoonShine\UI\Traits\Fields;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use Throwable;
 
+/**
+ * @template T of FieldsContract
+ */
 trait WithAdditionalFields
 {
     protected array $additionalFields = [];
 
     /**
+     * @return T
      * @throws Throwable
      */
     public function getAdditionalFields(): FieldsContract

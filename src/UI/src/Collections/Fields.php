@@ -208,12 +208,15 @@ class Fields extends BaseCollection implements FieldsContract
     }
 
     /**
+     * @param  ?callable(FieldContract,FieldContract): FieldsContract  $before
+     * @param  ?callable(string,FieldContract,FieldContract): string  $performName
+     *
      * @throws Throwable
      */
     public function prepareReindexNames(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
-            $modifyField = value($before, $parent, $field);
+            $modifyField = !is_null($before) ? $before($parent, $field) : $field;
 
             if ($modifyField instanceof FieldContract) {
                 $field = $modifyField;
@@ -245,7 +248,7 @@ class Fields extends BaseCollection implements FieldsContract
 
             return $field
                 ->setNameAttribute(
-                    is_null($performName) ? $name : value($performName, $name, $parent, $field)
+                    is_null($performName) ? $name : $performName($name, $parent, $field)
                 )
                 ->iterableAttributes($level);
         })
