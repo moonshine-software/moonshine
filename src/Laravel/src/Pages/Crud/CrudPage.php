@@ -26,9 +26,6 @@ abstract class CrudPage extends Page implements CrudPageContract
         return [];
     }
 
-    /**
-     * @return Fields
-     */
     public function getFields(): FieldsContract
     {
         return $this->getCore()->getFieldsCollection($this->fields());

@@ -7,9 +7,6 @@ namespace MoonShine\Core\Traits;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Core\Core;
 
-/**
- * @template TCore of CoreContract
- */
 trait WithCore
 {
     private ?CoreContract $core = null;
@@ -22,9 +19,6 @@ trait WithCore
         $this->core = $core;
     }
 
-    /**
-     * @return TCore
-     */
     public function getCore(): CoreContract
     {
         if (! is_null($this->core)) {

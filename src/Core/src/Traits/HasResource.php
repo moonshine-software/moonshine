@@ -9,13 +9,19 @@ use MoonShine\Core\Exceptions\ResourceException;
 use Throwable;
 
 /**
- * @template-covariant T of ResourceContract
- * @template-covariant PT of ResourceContract
+ * @template T of ResourceContract
+ * @template PT of ResourceContract
  */
 trait HasResource
 {
+    /**
+     * @var ?T $resource
+     */
     protected ?ResourceContract $resource = null;
 
+    /**
+     * @var ?PT $resource
+     */
     protected ?ResourceContract $parentResource = null;
 
     /**
@@ -26,6 +32,9 @@ trait HasResource
         return $this->parentResource;
     }
 
+    /**
+     * @param PT $resource
+     */
     public function setParentResource(ResourceContract $resource): static
     {
         $this->parentResource = $resource;

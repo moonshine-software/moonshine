@@ -25,6 +25,7 @@ final class MoonShineAuth
      */
     public static function getProvider(): ?UserProvider
     {
+        /** @phpstan-ignore-next-line  */
         return self::getGuard()->getProvider();
     }
 

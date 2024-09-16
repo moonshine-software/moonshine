@@ -19,13 +19,10 @@ use MoonShine\UI\Components\Modal;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\HiddenIds;
 
-/**
- * @template-covariant T of ComponentContract
- */
 trait WithModal
 {
     /**
-     * @var ?Closure(mixed, DataWrapperContract, static): T
+     * @var ?Closure(mixed, DataWrapperContract, static): ComponentContract
      */
     protected ?Closure $modal = null;
 
@@ -127,9 +124,6 @@ trait WithModal
         );
     }
 
-    /**
-     * @return ?T
-     */
     public function getModal(): ?ComponentContract
     {
         if(!$this->isInModal()) {

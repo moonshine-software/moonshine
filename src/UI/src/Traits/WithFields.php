@@ -12,19 +12,12 @@ use MoonShine\UI\Collections\Fields;
 use Throwable;
 
 /**
- * @template T of FieldsContract
  * @mixin ComponentContract
  */
 trait WithFields
 {
-    /**
-     * @param iterable|Closure(T $ctx): T  $fields
-     */
     protected iterable|Closure $fields = [];
 
-    /**
-     * @var ?T $preparedFields
-     */
     protected ?FieldsContract $preparedFields = null;
 
     public function resetPreparedFields(): static
@@ -34,10 +27,6 @@ trait WithFields
         return $this;
     }
 
-    /**
-     * @return T
-     * @throws Throwable
-     */
     public function getPreparedFields(): FieldsContract
     {
         if (! is_null($this->preparedFields)) {
@@ -47,19 +36,11 @@ trait WithFields
         return $this->preparedFields = $this->prepareFields();
     }
 
-    /**
-     * @return T
-     * @throws Throwable
-     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields();
     }
 
-    /**
-     * @return T
-     * @throws Throwable
-     */
     public function getFields(): FieldsContract
     {
         return $this->getCore()->getFieldsCollection(
@@ -72,17 +53,11 @@ trait WithFields
         return value($this->fields, $this);
     }
 
-    /**
-     * @throws Throwable
-     */
     public function hasFields(): bool
     {
         return $this->getFields()->isNotEmpty();
     }
 
-    /**
-     * @param T|Closure(T $ctx): T  $fields
-     */
     public function fields(FieldsContract|Closure|iterable $fields): static
     {
         if ($this->getCore()->runningInConsole()) {
@@ -100,11 +75,6 @@ trait WithFields
         return $this;
     }
 
-    /**
-     * @param ?T $preparedFields
-     * @return T
-     * @throws Throwable
-     */
     protected function getFilledFields(
         array $raw = [],
         ?DataWrapperContract $casted = null,

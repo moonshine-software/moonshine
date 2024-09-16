@@ -31,11 +31,10 @@ use Throwable;
 /**
  * @template-covariant R of (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany)
  * @extends ModelRelationField<R>
- * @implements HasFieldsContract<Fields>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
 class HasMany extends ModelRelationField implements HasFieldsContract
 {
-    /** @use WithFields<Fields> */
     use WithFields;
     use WithRelatedLink;
 
@@ -271,7 +270,6 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @return Fields
      * @throws Throwable
      */
     protected function prepareFields(): FieldsContract
@@ -284,13 +282,13 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             return $this->getFields();
         }
 
-        return $this->getFields()
-            ->onlyFields(withWrappers: true)
-            ->indexFields();
+        /** @var Fields $fields */
+        $fields = $this->getFields()->onlyFields(withWrappers: true);
+
+        return $fields->indexFields();
     }
 
     /**
-     * @return Fields
      * @throws Throwable
      */
     public function prepareClonedFields(): FieldsContract
@@ -323,7 +321,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             ->simple()
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, true)
             );
     }
 
@@ -390,7 +388,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             ->buttons($this->getItemButtons())
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
             );
     }
 

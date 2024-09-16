@@ -7,10 +7,16 @@ namespace MoonShine\Contracts\UI;
 use Closure;
 use MoonShine\Support\Enums\HttpMethod;
 
+/**
+ * @template-covariant T of ComponentContract
+ */
 interface HasModalContract
 {
     public function isInModal(): bool;
 
+    /**
+     * @return ?T
+     */
     public function getModal(): ?ComponentContract;
 
     public function toggleModal(string $name = 'default'): static;

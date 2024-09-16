@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -80,6 +81,7 @@ final class HasManyController extends MoonShineController
         $formName = "{$resource->getUriKey()}-unique-" . ($item->getKey() ?? "create");
 
         return (string) FormBuilder::make($action($item))
+            /** @phpstan-ignore-next-line  */
             ->fields($getFields)
             ->reactiveUrl(
                 static fn (): string => moonshineRouter()
@@ -111,7 +113,7 @@ final class HasManyController extends MoonShineController
                 )
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
-            ->onBeforeFieldsRender(static fn (Fields $fields): Fields => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

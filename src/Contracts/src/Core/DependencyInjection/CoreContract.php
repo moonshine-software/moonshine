@@ -6,6 +6,7 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\PagesContract;
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 use Psr\Container\ContainerInterface;
 
@@ -54,7 +55,7 @@ interface CoreContract
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 
     /**
-     * @param  list<class-string<ResourcesContract>>  $data
+     * @param  list<class-string<ResourceContract>>  $data
      */
     public function resources(array $data, bool $newCollection = false): static;
 

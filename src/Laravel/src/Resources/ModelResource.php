@@ -71,6 +71,7 @@ abstract class ModelResource extends CrudResource implements
      */
     public function getCaster(): DataCasterContract
     {
+        /** @var ModelCaster<TData> */
         return new ModelCaster($this->model);
     }
 

@@ -39,7 +39,6 @@ class RelationRepeater extends ModelRelationField implements
     CanBeArray,
     CanBeObject
 {
-    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -262,7 +261,7 @@ class RelationRepeater extends ModelRelationField implements
             )
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: $this->isPreviewMode())
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
 

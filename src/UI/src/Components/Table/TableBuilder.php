@@ -9,6 +9,7 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -38,8 +39,7 @@ use Throwable;
  */
 final class TableBuilder extends IterableComponent implements
     TableBuilderContract,
-    HasFieldsContract,
-    HasAsyncContract
+    HasFieldsContract
 {
     use WithFields;
     use TableStates;
@@ -114,6 +114,7 @@ final class TableBuilder extends IterableComponent implements
     public function getTrAttributes(mixed $data, int $row): array
     {
         return collect($this->trAttributes)
+            /** @phpstan-ignore-next-line  */
             ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $this))
             ->toArray();
     }
@@ -131,6 +132,7 @@ final class TableBuilder extends IterableComponent implements
     public function getTdAttributes(mixed $data, int $row, int $cell): array
     {
         return collect($this->tdAttributes)
+            /** @phpstan-ignore-next-line  */
             ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $cell, $this))
             ->toArray();
     }
@@ -234,7 +236,7 @@ final class TableBuilder extends IterableComponent implements
                 $this->getTdAttributes($casted, $index + 1, $td->getIndex())
             );
 
-            $trAttributes = fn (TableRowContract $tr): TableRowContract => $tr->customAttributes(
+            $trAttributes = fn (TableRowContract $tr): ComponentContract => $tr->customAttributes(
                 $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1))
             );
 
@@ -295,6 +297,7 @@ final class TableBuilder extends IterableComponent implements
             $index++;
         }
 
+        /** @var TableRowsContract */
         return $rows->when(
             $this->isVertical(),
             static fn (TableRowsContract $rows) => $rows->flatten()

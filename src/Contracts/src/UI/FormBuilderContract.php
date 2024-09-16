@@ -10,9 +10,12 @@ use Stringable;
 
 /**
  * @mixin Conditionable
- * @mixin ComponentContract
+ * @mixin HasFieldsContract
+ * @mixin HasCasterContract
  */
-interface FormBuilderContract extends Stringable
+interface FormBuilderContract extends
+    ComponentContract,
+    HasAsyncContract
 {
     public function action(string $action): self;
 

@@ -17,10 +17,11 @@ use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
-/** @implements  HasFieldsContract<Fields|FieldsContract> */
+/**
+ * @implements  HasFieldsContract<Fields|FieldsContract>
+ */
 class StackFields extends Field implements HasFieldsContract, FieldsWrapperContract
 {
-    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
 
     protected string $view = 'moonshine::fields.stack';

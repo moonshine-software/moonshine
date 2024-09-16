@@ -6,8 +6,9 @@ parameters:
     editorUrlTitle: "\nat packages/moonshine/%%relFile%%:%%line%%"
     paths:
         - src/
-    level: 3
+    level: 5
     reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
 
     ignoreErrors:
         - '#Cannot cast Closure to string#'
@@ -15,6 +16,9 @@ parameters:
         - '#mixin contains invalid type Illuminate\\Support\\Traits\\Conditionable#'
         - '#does not accept Illuminate\\View\\ComponentAttributeBag#'
         - '#should return MoonShine\\Contracts\\UI\\ComponentAttributesBagContract but returns Illuminate\\View\\ComponentAttributeBag#'
+        - '#getResource\(\) should return#'
+        - '#getParentResource\(\) should return#'
+        - '#when\(\) expects#'
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
         - ./src/Laravel/routes/moonshine.php

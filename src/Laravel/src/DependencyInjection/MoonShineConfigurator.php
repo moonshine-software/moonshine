@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Laravel\Enums\Ability;
@@ -348,10 +349,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this;
     }
 
-    /**
-     * @template T of PageContract
-     * @param  class-string<T>  $default
-     */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract
     {
         $class = $this->get("pages.$name", $default);
@@ -384,10 +381,6 @@ final class MoonShineConfigurator implements ConfiguratorContract
         );
     }
 
-    /**
-     * @template T of FormContract
-     * @param  class-string<T>  $default
-     */
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract
     {
         $class = $this->get("forms.$name", $default);

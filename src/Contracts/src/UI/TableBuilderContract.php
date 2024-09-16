@@ -15,9 +15,12 @@ use Stringable;
 
 /**
  * @mixin Conditionable
- * @mixin ComponentContract
+ * @mixin HasFieldsContract
+ * @mixin HasCasterContract
  */
-interface TableBuilderContract extends Stringable
+interface TableBuilderContract extends
+    ComponentContract,
+    HasAsyncContract
 {
     public function getRows(): TableRowsContract;
 

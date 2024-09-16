@@ -6,12 +6,13 @@ namespace MoonShine\Laravel\Buttons;
 
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\ActionButton;
 
 final class QueryTagButton
 {
-    public static function for(ModelResource $resource, QueryTag $tag): ActionButtonContract
+    public static function for(CrudResource $resource, QueryTag $tag): ActionButtonContract
     {
         return ActionButton::make(
             $tag->getLabel(),

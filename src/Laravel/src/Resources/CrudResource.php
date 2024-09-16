@@ -212,9 +212,9 @@ abstract class CrudResource extends Resource implements CrudResourceContract
         return $this->deleteRelationships;
     }
 
-    public function getClickAction(): ?string
+    public function getClickAction(): ?ClickAction
     {
-        return $this->clickAction?->value;
+        return $this->clickAction;
     }
 
     public function isStickyTable(): bool

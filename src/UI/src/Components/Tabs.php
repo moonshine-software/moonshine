@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\UI\Components\Tabs\Tab;
@@ -101,8 +102,11 @@ class Tabs extends AbstractWithComponents
      */
     protected function viewData(): array
     {
+        /** @var Collection<array-key, Tab> $tabs */
+        $tabs = $this->getTabs();
+
         return [
-            'tabs' => $this->getTabs()
+            'tabs' => $tabs
                 ->filter(fn (Tab $tab): bool => $tab->isSee())
                 ->mapWithKeys(fn (Tab $tab) => [$tab->getId() => $tab->toArray()])
                 ->toArray(),

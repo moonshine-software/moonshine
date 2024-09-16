@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Traits\Request;
 use MoonShine\Contracts\Core\ResourceContract;
 
 /**
- * @template-covariant T of ResourceContract
+ * @template T of ResourceContract
  */
 trait HasResourceRequest
 {

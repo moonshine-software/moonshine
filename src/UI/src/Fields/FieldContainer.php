@@ -49,7 +49,7 @@ final class FieldContainer extends MoonShineComponent
                     static fn (Link $link): Link => $link->icon($icon)
                 );
 
-            $this->beforeInner = new ComponentSlot($link);
+            $this->beforeInner = new ComponentSlot((string) $link);
         }
 
         if ($hint = $this->field->getHint()) {

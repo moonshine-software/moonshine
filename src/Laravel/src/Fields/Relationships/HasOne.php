@@ -27,11 +27,10 @@ use Throwable;
 /**
  * @template-covariant R of HasOneOrMany|HasOneOrManyThrough
  * @extends ModelRelationField<R>
- * @implements HasFieldsContract<Fields>
+ * @implements HasFieldsContract<Fields|FieldsContract>
  */
 class HasOne extends ModelRelationField implements HasFieldsContract
 {
-    /** @use WithFields<Fields> */
     use WithFields;
 
     protected string $view = 'moonshine::fields.relationships.has-one';
@@ -73,7 +72,6 @@ class HasOne extends ModelRelationField implements HasFieldsContract
     }
 
     /**
-     * @return Fields
      * @throws Throwable
      */
     protected function prepareFields(): FieldsContract
@@ -86,9 +84,10 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             return $this->getFields();
         }
 
-        return $this->getFields()
-            ->onlyFields(withWrappers: true)
-            ->detailFields(withOutside: false);
+        /** @var Fields $fields */
+        $fields = $this->getFields()->onlyFields(withWrappers: true);
+
+        return $fields->detailFields(withOutside: false);
     }
 
     protected function resolveRawValue(): mixed
@@ -226,7 +225,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                     )->class('btn-lg'),
                 ]
             )
-            ->onBeforeFieldsRender(static fn (Fields $fields): Fields => $fields->exceptElements(
+            ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
                 static fn (mixed $field): bool => $field instanceof ModelRelationField
                     && $field->isToOne()
                     && $field->getColumn() === $relation->getForeignKeyName()

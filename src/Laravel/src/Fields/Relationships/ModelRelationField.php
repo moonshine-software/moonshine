@@ -24,6 +24,8 @@ use Throwable;
 /**
  * @template-covariant R of (BelongsTo|HasOneOrMany|HasOneOrManyThrough|\Illuminate\Database\Eloquent\Relations\BelongsToMany|MorphOneOrMany)
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
+ *
+ * @implements HasResourceContract<ModelResource>
  */
 abstract class ModelRelationField extends Field implements HasResourceContract
 {
@@ -87,15 +89,16 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     }
 
     /**
-     * @param  ?class-string<ResourceContract>  $classString
+     * @param  ?class-string<ModelResource>  $classString
      * @throws Throwable
      */
-    protected function findResource(?string $classString = null): ResourceContract
+    protected function findResource(?string $classString = null): ModelResource
     {
         if ($this->hasResource()) {
             return $this->getResource();
         }
 
+        /** @var ?ModelResource $resource */
         $resource = $classString
             ? moonshine()->getResources()->findByClass($classString)
             : moonshine()->getResources()->findByUri(
@@ -107,6 +110,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
 
         if (is_null($resource) && $this->isMorph()) {
+            /** @var ModelResource $resource */
             $resource = moonshine()->getResources()->findByUri(
                 moonshineRequest()->getResourceUri()
             );
@@ -114,7 +118,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
 
         return tap(
             $resource,
-            function (?ResourceContract $resource): void {
+            function (?ModelResource $resource): void {
                 throw_if(
                     is_null($resource),
                     FieldException::resourceRequired(static::class, $this->getRelationName())

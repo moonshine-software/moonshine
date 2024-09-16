@@ -7,10 +7,13 @@ namespace MoonShine\Contracts\Core;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 
 /**
- * @template-covariant T of CoreContract
+ * @template T of CoreContract
  */
 interface HasCoreContract
 {
+    /**
+     * @param  T  $core
+     */
     public function setCore(CoreContract $core): void;
 
     /**

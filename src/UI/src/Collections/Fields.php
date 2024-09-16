@@ -56,6 +56,7 @@ class Fields extends BaseCollection implements FieldsContract
 
         $this->extractFields($this->toArray(), $data);
 
+        /** @var static */
         return static::make($data)->when(
             ! $withWrappers,
             static fn (FieldsContract $fields): FieldsContract => $fields->withoutWrappers()
@@ -67,6 +68,7 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function prepareAttributes(): static
     {
+        /** @var static */
         return $this->onlyFields()
             ->map(
                 static function (FieldContract $formElement): FieldContract {
@@ -98,11 +100,13 @@ class Fields extends BaseCollection implements FieldsContract
             }
         );
 
+        /** @var static */
         return $modified;
     }
 
     public function withoutWrappers(): static
     {
+        /** @var static */
         return $this->unwrapElements(FieldsWrapperContract::class);
     }
 
@@ -111,6 +115,7 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function whenFields(): static
     {
+        /** @var static */
         return $this->filter(
             static fn (FieldContract $field): bool => $field->hasShowWhen()
         )->values();
@@ -121,6 +126,7 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function whenFieldsConditions(): static
     {
+        /** @var static */
         return $this->whenFields()->map(
             static fn (
                 FieldContract $field
@@ -137,6 +143,7 @@ class Fields extends BaseCollection implements FieldsContract
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): static {
+        /** @var static */
         return ($preparedFields ?? $this->onlyFields())->map(
             static fn (FieldContract $field): FieldContract => (clone $field)
                 ->fillData(is_null($casted) ? $raw : $casted, $index)
@@ -149,6 +156,7 @@ class Fields extends BaseCollection implements FieldsContract
         int $index = 0,
         ?FieldsContract $preparedFields = null
     ): static {
+        /** @var static */
         return ($preparedFields ?? $this)->map(static function (ComponentContract $component) use ($raw, $casted, $index): ComponentContract {
             if ($component instanceof HasFieldsContract) {
                 $component = (clone $component)->fields(
@@ -184,6 +192,7 @@ class Fields extends BaseCollection implements FieldsContract
             ->onlyFields()
             ->each(static fn (FieldContract $field): FieldContract => $field->wrapName($name));
 
+        /** @var static */
         return $this;
     }
 
@@ -199,11 +208,13 @@ class Fields extends BaseCollection implements FieldsContract
 
     public function onlyHasFields(): static
     {
+        /** @var static */
         return $this->filter(static fn (FieldContract $field): bool => $field instanceof HasFieldsContract);
     }
 
     public function withoutHasFields(): static
     {
+        /** @var static */
         return $this->filter(static fn (FieldContract $field): bool => ! $field instanceof HasFieldsContract);
     }
 
@@ -215,6 +226,7 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function prepareReindexNames(?FieldContract $parent = null, ?callable $before = null, ?callable $performName = null): static
     {
+        /** @var static */
         return $this->map(static function (FieldContract $field) use ($parent, $before, $performName): FieldContract {
             $modifyField = !is_null($before) ? $before($parent, $field) : $field;
 
@@ -257,6 +269,7 @@ class Fields extends BaseCollection implements FieldsContract
 
     public function prepareShowWhenNames(): static
     {
+        /** @var static */
         return $this->map(static function (FieldContract $field): FieldContract {
             if (! $field->hasShowWhen()) {
                 return $field;
@@ -278,6 +291,7 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function reactiveFields(): static
     {
+        /** @var static */
         return $this->filter(
             static fn (FieldContract $field): bool => $field instanceof HasReactivityContract && $field->isReactive()
         );

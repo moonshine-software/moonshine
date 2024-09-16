@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method static static make(Closure|string $label)
+ *
+ * @implements HasResourceContract<CrudResourceContract>
  */
 abstract class Handler implements HasIconContract, HasResourceContract, HasUriKeyContract, HasLabelContract, HasCoreContract
 {

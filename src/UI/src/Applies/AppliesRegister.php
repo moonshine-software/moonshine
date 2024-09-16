@@ -6,12 +6,14 @@ namespace MoonShine\UI\Applies;
 
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\HasCoreContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormElementContract;
 use MoonShine\Core\Traits\WithCore;
 
-final class AppliesRegister implements AppliesRegisterContract
+final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
 {
     use WithCore;
 
@@ -90,7 +92,7 @@ final class AppliesRegister implements AppliesRegisterContract
     }
 
     public function findByField(
-        FieldContract $field,
+        FormElementContract $field,
         string $type = 'fields',
         ?string $for = null
     ): ?ApplyContract {

@@ -76,7 +76,7 @@ trait WithRelatedLink
             ->icon('eye')
             ->when(
                 ! is_null($this->modifyRelatedLink),
-                fn (ActionButtonContract $button) => value($this->modifyRelatedLink, $button, preview: $preview)
+                fn (ActionButtonContract $button) => value($this->modifyRelatedLink, $button, $preview)
             );
     }
 

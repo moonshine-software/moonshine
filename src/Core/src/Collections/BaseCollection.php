@@ -22,6 +22,7 @@ abstract class BaseCollection extends Collection
      */
     public function exceptElements(Closure $except): static
     {
+        /** @var static */
         return $this->filter(static function (ComponentContract $element) use ($except): bool {
             if ($except($element) === true) {
                 return false;

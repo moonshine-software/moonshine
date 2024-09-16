@@ -12,7 +12,11 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 
 /**
- * @mixin ComponentContract
+ * @template TModal of  ComponentContract
+ * @template TOffCanvas of  ComponentContract
+ *
+ * @extends HasModalContract<TModal>
+ * @extends HasOffCanvasContract<TOffCanvas>
  */
 interface ActionButtonContract extends
     ComponentContract,

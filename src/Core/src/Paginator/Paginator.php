@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace MoonShine\Core\Paginator;
 
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\Core\HasCoreContract;
+use MoonShine\Contracts\Core\HasViewRendererContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
+use MoonShine\Contracts\Core\Paginator\PaginatorLinkContract;
 use MoonShine\Contracts\Core\Paginator\PaginatorLinksContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use Traversable;
 
-final class Paginator implements PaginatorContract
+final class Paginator implements PaginatorContract, HasCoreContract, HasViewRendererContract
 {
     use WithCore;
     use WithViewRenderer;
@@ -41,7 +44,8 @@ final class Paginator implements PaginatorContract
 
     public function getLinks(): PaginatorLinksContract
     {
-        return PaginatorLinks::make($this->links)->reject(static fn (array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
+        return PaginatorLinks::make($this->links)
+            ->reject(static fn (array $link): bool => $link['url'] === '' || str($link['label'])->contains(['prev', 'next'], true));
     }
 
     public function getData(): Collection

@@ -27,7 +27,6 @@ use MoonShine\Support\Enums\PageType;
  */
 abstract class Page implements PageContract
 {
-    /** @use WithCore<TCore> */
     use WithCore;
     /** @use HasResource<TResource, TResource> */
     use HasResource;

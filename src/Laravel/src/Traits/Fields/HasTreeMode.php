@@ -60,7 +60,7 @@ trait HasTreeMode
                     ->customAttributes($this->getAttributes()->jsonSerialize())
                     ->setValue($item->getKey());
 
-                $this->treeHtml .= str($element)->wrap(
+                $this->treeHtml .= str((string) $element)->wrap(
                     "<li style='margin-left: " . ($offset * 30) . "px'>",
                     "</li>"
                 );

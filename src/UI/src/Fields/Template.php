@@ -13,10 +13,11 @@ use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Traits\WithFields;
 
-/** @implements  HasFieldsContract<Fields|FieldsContract> */
+/**
+ * @implements  HasFieldsContract<Fields|FieldsContract>
+ */
 class Template extends Field implements HasFieldsContract
 {
-    /** @implements WithFields<Fields|FieldsContract> */
     use WithFields;
 
     protected ?Closure $renderCallback = null;

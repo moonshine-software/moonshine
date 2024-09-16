@@ -12,7 +12,7 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 
 /**
- * @template T of Model
+ * @template  T of Model
  *
  * @implements DataCasterContract<T>
  */
@@ -35,6 +35,7 @@ final readonly class ModelCaster implements DataCasterContract
      */
     public function cast(mixed $data): ModelDataWrapper
     {
+        /** @phpstan-ignore-next-line  */
         if (is_array($data)) {
             /** @var T $model */
             $model = new ($this->getClass());
@@ -42,6 +43,7 @@ final readonly class ModelCaster implements DataCasterContract
             $data->exists = ! empty($data->getKey());
         }
 
+        /** @var ModelDataWrapper<T> */
         return new ModelDataWrapper($data);
     }
 

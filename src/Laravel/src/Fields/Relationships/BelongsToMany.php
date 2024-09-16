@@ -52,7 +52,6 @@ class BelongsToMany extends ModelRelationField implements
     HasFieldsContract,
     HasAsyncSearchContract
 {
-    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use WithRelatedValues;
     use Searchable;
@@ -358,6 +357,7 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $this->getColumnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if (! is_null($this->inLineLink)) {
+                    /** @var Link|string $linkValue */
                     $linkValue = call_user_func($this->inLineLink, $item, $value, $this);
 
                     $value = $linkValue instanceof Link
@@ -368,6 +368,8 @@ class BelongsToMany extends ModelRelationField implements
                         );
                 }
 
+                /** @var Badge|bool $badgeValue */
+                /** @phpstan-ignore-next-line  */
                 $badgeValue = value($this->inLineBadge, $item, $value, $this);
 
                 if ($badgeValue !== false) {

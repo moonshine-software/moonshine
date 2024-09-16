@@ -12,13 +12,10 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
 
-/**
- * @template-covariant T of ComponentContract
- */
 trait WithOffCanvas
 {
     /**
-     * @var ?Closure(mixed, DataWrapperContract, static): T
+     * @var ?Closure(mixed, DataWrapperContract, static): ComponentContract
      */
     protected ?Closure $offCanvas = null;
 
@@ -59,9 +56,6 @@ trait WithOffCanvas
         );
     }
 
-    /**
-     * @return ?T
-     */
     public function getOffCanvas(): ?ComponentContract
     {
         if(!$this->isInOffCanvas()) {

@@ -35,7 +35,6 @@ class Json extends Field implements
     HasDefaultValueContract,
     CanBeArray
 {
-    /** @use WithFields<Fields|FieldsContract> */
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -407,7 +406,7 @@ class Json extends Field implements
             )
             ->when(
                 ! is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: $this->isPreviewMode())
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
 

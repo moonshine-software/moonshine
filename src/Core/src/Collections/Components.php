@@ -21,7 +21,7 @@ use Closure;
 /**
  * @template TFields of FieldsContract
  *
- * @implements ComponentsContract<TFields>
+ * @implements ComponentsContract<ComponentContract, TFields>
  */
 final class Components extends BaseCollection implements ComponentsContract
 {
@@ -57,6 +57,7 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), FormBuilderContract::class, $data);
 
+        /** @var static */
         return self::make($data);
     }
 
@@ -69,6 +70,7 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), TableBuilderContract::class, $data);
 
+        /** @var static */
         return self::make($data);
     }
 
@@ -81,6 +83,7 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), ComponentContract::class, $data);
 
+        /** @var static */
         return self::make($data);
     }
 
