@@ -26,16 +26,16 @@ class BelongsToManyModelApply implements ApplyContract
 
             $checkedKeys = $field->getCheckedKeys();
 
-            if (is_null($field->getRelation()) || blank($checkedKeys)) {
+            $relation = $field->getRelation();
+
+            if (is_null($relation) || blank($checkedKeys)) {
                 return;
             }
-
-            $relation = $field->getRelation();
 
             $query->whereHas(
                 $field->getRelationName(),
                 static fn (Builder $q) => $q->whereIn(
-                    $relation?->getQualifiedRelatedPivotKeyName(),
+                    $relation->getQualifiedRelatedPivotKeyName(),
                     $checkedKeys
                 )
             );

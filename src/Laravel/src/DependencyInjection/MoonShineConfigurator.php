@@ -225,12 +225,12 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->get('auth.guard', 'moonshine');
     }
 
-    public function getUserField(string $field, string $default = null): string
+    public function getUserField(string $field, string $default = null): string|false
     {
         return $this->get("user_fields.$field", $default ?? $field);
     }
 
-    public function userField(string $field, string|Closure $value): self
+    public function userField(string|false $field, string|Closure $value): self
     {
         return $this->set("user_fields.$field", $value);
     }

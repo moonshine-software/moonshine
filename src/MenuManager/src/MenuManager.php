@@ -61,9 +61,12 @@ final class MenuManager implements MenuManagerContract
         return $this;
     }
 
+    /**
+     * @param  ?Closure(static): bool  $condition
+     */
     public function topMode(?Closure $condition = null): static
     {
-        $this->topMode = is_null($condition) || value($condition, $this);
+        $this->topMode = is_null($condition) || $condition($this) === true;
 
         return $this;
     }

@@ -80,10 +80,16 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLine = false;
 
+    /**
+     * @var null|(Closure(mixed, mixed, self): Link) $inLineLink
+     */
     protected ?Closure $inLineLink = null;
 
     protected string $inLineSeparator = '';
 
+    /**
+     * @var bool|(Closure(mixed, mixed, self): Badge|bool) $inLineBadge
+     */
     protected Closure|bool $inLineBadge = false;
 
     protected bool $selectMode = false;
@@ -349,7 +355,7 @@ class BelongsToMany extends ModelRelationField implements
                 $value = $this->getColumnOrFormattedValue($item, data_get($item, $column) ?? false);
 
                 if (! is_null($this->inLineLink)) {
-                    $linkValue = value($this->inLineLink, $item, $value, $this);
+                    $linkValue = call_user_func($this->inLineLink, $item, $value, $this);
 
                     $value = $linkValue instanceof Link
                         ? $linkValue

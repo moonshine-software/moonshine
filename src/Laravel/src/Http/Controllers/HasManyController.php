@@ -77,14 +77,14 @@ final class HasManyController extends MoonShineController
                 ->toArray();
         };
 
-        $formName = "{$resource->getUriKey()}-unique-" . ($item?->getKey() ?? "create");
+        $formName = "{$resource->getUriKey()}-unique-" . ($item->getKey() ?? "create");
 
         return (string) FormBuilder::make($action($item))
             ->fields($getFields)
             ->reactiveUrl(
                 static fn (): string => moonshineRouter()
                     ->getEndpoints()
-                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
+                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item->getKey()])
             )
             ->name($formName)
             ->switchFormMode(
@@ -135,7 +135,7 @@ final class HasManyController extends MoonShineController
         $parentItem = $parentResource->getItemOrInstance();
 
         /**
-         * @var HasMany $field
+         * @var ?HasMany $field
          */
         $field = $request->getField();
 

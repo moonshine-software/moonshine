@@ -20,11 +20,17 @@ final class StoreFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! $this->getResource()?->hasAction(Action::CREATE)) {
+        $resource = $this->getResource();
+
+        if(is_null($resource)) {
             return false;
         }
 
-        return (bool) $this->getResource()?->can(Ability::CREATE);
+        if (! $resource->hasAction(Action::CREATE)) {
+            return false;
+        }
+
+        return $resource->can(Ability::CREATE);
     }
 
     public function rules(): array

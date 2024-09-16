@@ -68,6 +68,7 @@ abstract class MoonShineComponent extends Component implements
      */
     public function withAttributes(array $attributes): static
     {
+        /** @phpstan-ignore-next-line */
         $this->attributes = $this->attributes ?: $this->newAttributeBag();
         $this->attributes->setAttributes(
             array_merge($this->attributes->jsonSerialize(), $attributes)

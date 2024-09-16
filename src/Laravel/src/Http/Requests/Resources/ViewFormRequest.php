@@ -20,10 +20,16 @@ final class ViewFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        if (! $this->getResource()?->hasAction(Action::VIEW)) {
+        $resource = $this->getResource();
+
+        if(is_null($resource)) {
             return false;
         }
 
-        return (bool) $this->getResource()?->can(Ability::VIEW);
+        if (! $resource->hasAction(Action::VIEW)) {
+            return false;
+        }
+
+        return $resource->can(Ability::VIEW);
     }
 }
