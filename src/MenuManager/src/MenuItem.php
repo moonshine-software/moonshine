@@ -88,6 +88,9 @@ class MenuItem extends MenuElement
         return $this->filler;
     }
 
+    /**
+     * @param Closure(string $path, string $host, static $ctx): bool  $when
+     */
     public function whenActive(Closure $when): static
     {
         $this->whenActive = $when;
@@ -131,7 +134,7 @@ class MenuItem extends MenuElement
     {
         $filler = $this->getFiller();
 
-        if ($filler instanceof MenuFillerContract) {
+        if ($filler instanceof MenuFillerContract && is_null($this->whenActive)) {
             return $filler->isActive();
         }
 
