@@ -100,6 +100,10 @@ trait ResourceQuery
      */
     public function getItem(): mixed
     {
+        if (!is_null($this->item)) {
+            return $this->item;
+        }
+
         if (is_null($this->getItemID())) {
             return null;
         }
@@ -114,6 +118,10 @@ trait ResourceQuery
      */
     public function getItemOrInstance(): mixed
     {
+        if (!is_null($this->item)) {
+            return $this->item;
+        }
+
         if (is_null($this->getItemID())) {
             return $this->getDataInstance();
         }
@@ -128,6 +136,10 @@ trait ResourceQuery
      */
     public function getItemOrFail(): mixed
     {
+        if (!is_null($this->item)) {
+            return $this->item;
+        }
+
         return $this->itemOr(
             fn () => $this->findItem(orFail: true)
         );

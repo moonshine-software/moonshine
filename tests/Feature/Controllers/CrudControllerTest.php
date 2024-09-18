@@ -159,7 +159,10 @@ function storeResource(ModelResource $resource, $saveData)
         $resource->getRoute('crud.store'),
         $saveData
     )
-        ->assertRedirect();
+        ->assertRedirect()
+        ->assertRedirectContains(
+            str_replace('5', '', $resource->getFormPageUrl(5))
+        );
 
     return Item::query()->where('name', 'Test name storeData')->first();
 }
