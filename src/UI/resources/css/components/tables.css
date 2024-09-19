@@ -70,6 +70,16 @@ table {
     }
   }
 
+  tfoot {
+    tr:not(:has(td[class$=-bulk-actions])) {
+      @apply bg-white dark:bg-dark-600;
+    }
+    td:not([class$=-bulk-actions]),
+    th {
+      @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
+    }
+  }
+
   &[data-click-action] {
     tbody {
       tr {

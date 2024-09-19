@@ -481,6 +481,12 @@ body.theme-minimalistic {
         @apply px-2 py-1.5 text-3xs;
       }
     }
+    tfoot {
+      th,
+      td:not([class$=-bulk-actions]) {
+        @apply px-2 py-1.5 text-3xs;
+      }
+    }
   }
 
   .table-sticky > table > thead {
