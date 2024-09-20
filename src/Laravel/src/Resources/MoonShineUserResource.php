@@ -28,7 +28,7 @@ use MoonShine\UI\Fields\Text;
 
 #[Icon('users')]
 /**
- * @extends ModelResource<MoonshineUser, IndexPage, FormPage, DetailPage, Fields, Enumerable>
+ * @extends ModelResource<MoonshineUser>
  */
 class MoonShineUserResource extends ModelResource
 {
