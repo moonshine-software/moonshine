@@ -39,7 +39,7 @@ class TestCase extends Orchestra
 
     protected Authenticatable|MoonshineUser $adminUser;
 
-    protected ModelResource $moonShineUserResource;
+    protected MoonShineUserResource $moonShineUserResource;
 
     protected CoreContract $moonshineCore;
 
@@ -54,7 +54,6 @@ class TestCase extends Orchestra
         $this->moonshineCore->flushState();
 
         $this->performApplication()
-            ->resolveFactories()
             ->resolveSuperUser()
             ->resolveMoonShineUserResource()
             ->registerTestResource();
@@ -62,7 +61,7 @@ class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
-        $app['config']->set('app.debug', 'true');
+        $app['config']->set('app.debug', true);
         $app['config']->set('moonshine.cache', 'array');
         $app['config']->set('moonshine.use_migrations', true);
         $app['config']->set('moonshine.use_notifications', true);
@@ -77,17 +76,6 @@ class TestCase extends Orchestra
         ]);
 
         $this->artisan('optimize:clear');
-
-        return $this;
-    }
-
-    protected function resolveFactories(): static
-    {
-        Factory::guessFactoryNamesUsing(function ($factory): string {
-            $factoryBasename = class_basename($factory);
-
-            return "MoonShine\Laravel\Database\Factories\\$factoryBasename" . 'Factory';
-        });
 
         return $this;
     }
@@ -114,7 +102,8 @@ class TestCase extends Orchestra
 
     protected function resolveMoonShineUserResource(): static
     {
-        $this->moonShineUserResource = $this->moonshineCore->getContainer(MoonShineUserResource::class);
+        $this->moonShineUserResource = $this->moonshineCore
+            ->getContainer(MoonShineUserResource::class);
 
         return $this;
     }
@@ -146,12 +135,12 @@ class TestCase extends Orchestra
         return $this;
     }
 
-    public function moonShineUserResource(): ModelResource
+    public function moonShineUserResource(): MoonShineUserResource
     {
         return $this->moonShineUserResource;
     }
 
-    public function adminUser(): Model|Builder|Authenticatable
+    public function adminUser(): Authenticatable|MoonshineUser
     {
         return $this->adminUser;
     }

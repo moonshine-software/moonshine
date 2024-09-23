@@ -3,18 +3,6 @@
 use MoonShine\UI\Fields\Field;
 use Pest\Expectation;
 
-expect()->extend('storeAvatarFile', function ($avatar, $field, $item): Expectation {
-
-    fakeRequest(method: 'POST', parameters: [
-        'avatar' => $avatar,
-    ]);
-
-    $field->save($item);
-
-    return expect($item->avatar)
-        ->toBe('files/' . $avatar->hashName());
-});
-
 expect()->extend('applies', function (Field $field): Expectation {
     return expect($field->onApply(fn ($data) => ['onApply'])->apply(fn ($data) => $data, []))
         ->toBe(['onApply'])
@@ -25,3 +13,7 @@ expect()->extend('applies', function (Field $field): Expectation {
         ->and($field->onAfterDestroy(fn ($data) => ['onAfterDestroy'])->afterDestroy([]))
         ->toBe(['onAfterDestroy']);
 });
+
+expect()->extend('hasFields', fn (array $fields = null) => expect($this->value)
+    ->toBeCollection()
+    ->toHaveCount($fields ? count($fields) : 0));
