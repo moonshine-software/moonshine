@@ -465,7 +465,7 @@ class BelongsToMany extends ModelRelationField implements
 
                 data_set(
                     $applyValues[$key],
-                    str_replace($this->getPivotAs() . '.', '', $field->column()),
+                    str_replace($this->getPivotAs() . '.', '', (string) $field->column()),
                     data_get($apply, $field->column())
                 );
             }
