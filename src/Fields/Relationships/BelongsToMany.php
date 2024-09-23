@@ -80,6 +80,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected ?string $columnLabel = null;
 
+    protected ?Closure $modifyTable = null;
+
     public function getView(): string
     {
         if ($this->isTree()) {
@@ -116,6 +118,16 @@ class BelongsToMany extends ModelRelationField implements
     public function buttons(array $buttons): self
     {
         $this->buttons = $buttons;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
+     */
+    public function modifyTable(Closure $callback): self
+    {
+        $this->modifyTable = $callback;
 
         return $this;
     }
@@ -314,6 +326,10 @@ class BelongsToMany extends ModelRelationField implements
             ->simple()
             ->editable()
             ->reindex(prepared: true)
+            ->when(
+                ! is_null($this->modifyTable),
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: false)
+            )
             ->withNotFound();
     }
 
@@ -400,6 +416,10 @@ class BelongsToMany extends ModelRelationField implements
             ->preview()
             ->simple()
             ->cast($this->getModelCast())
+            ->when(
+                ! is_null($this->modifyTable),
+                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, preview: true)
+            )
             ->render();
     }
 
