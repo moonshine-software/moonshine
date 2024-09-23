@@ -6,11 +6,11 @@ namespace MoonShine\Tests\Feature;
 
 use MoonShine\Laravel\Http\Controllers\PageController;
 use MoonShine\Laravel\Pages\Dashboard;
+use MoonShine\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
-use MoonShine\Tests\TestCase;
 
 #[CoversMethod(PageController::class, 'structureResponse')]
 #[Group('sdui')]

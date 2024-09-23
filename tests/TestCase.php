@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Tests;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
@@ -16,7 +13,6 @@ use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
