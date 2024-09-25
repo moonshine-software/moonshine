@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Laravel\Http\Controllers\CrudController;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Factories\CoverFactory;
@@ -15,6 +16,8 @@ use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Range;
 
 uses()->group('crud-controller');
+
+covers(CrudController::class);
 
 beforeEach(function (): void {
     $this->itemResource = addFieldsToTestResource([
