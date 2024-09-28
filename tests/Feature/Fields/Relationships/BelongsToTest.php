@@ -63,6 +63,20 @@ it('show field on pages', function () {
     ;
 });
 
+it('preview link', function () {
+    $resource = belongsToResource()->setTestFields([
+        BelongsTo::make('User', resource: MoonShineUserResource::class),
+    ]);
+
+    asAdmin()->get(
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: IndexPage::class, resource: $resource)
+    )
+        ->assertOk()
+        ->assertSee(app(MoonShineUserResource::class)->getFormPageUrl($this->item->user->id))
+        ->assertSee($this->item->user->name)
+    ;
+});
+
 it('belongs to searchable', function () {
     $resource = addFieldsToTestResource(
         BelongsTo::make('User', resource: MoonShineUserResource::class)

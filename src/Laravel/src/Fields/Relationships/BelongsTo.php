@@ -56,7 +56,7 @@ class BelongsTo extends ModelRelationField implements
      */
     protected function resolvePreview(): string
     {
-        if (! $this->getResource()->hasAction(Action::VIEW, Action::UPDATE)) {
+        if (! $this->getResource()->hasAnyAction(Action::VIEW, Action::UPDATE)) {
             return parent::resolvePreview();
         }
 
