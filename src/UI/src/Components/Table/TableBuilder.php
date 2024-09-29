@@ -420,6 +420,14 @@ final class TableBuilder extends IterableComponent implements
             ->customAttributes($this->getTrAttributes(null, 0));
     }
 
+    public function getCellsCount(): int
+    {
+        $count = $this->hasButtons() ? 1 : 0;
+        $count += $this->getPreparedFields()->onlyVisible()->count();
+
+        return $count + ($this->getBulkButtons()->isNotEmpty() ? 1 : 0);
+    }
+
     public function getRowBulkCheckbox(): Checkbox
     {
         return Checkbox::make('')
@@ -472,8 +480,8 @@ final class TableBuilder extends IterableComponent implements
             fn (): string => (string) Flex::make([
                 ActionGroup::make($this->getBulkButtons()->toArray()),
             ])->justifyAlign('start'),
-            builder: static fn (TableTd $td): TableTd => $td->customAttributes([
-                'colspan' => 6,
+            builder: fn (TableTd $td): TableTd => $td->customAttributes([
+                'colspan' => $this->getCellsCount(),
                 ':class' => "\$id('table-component') + '-bulk-actions'",
             ])
         );
