@@ -71,10 +71,10 @@ table {
   }
 
   tfoot {
-    tr:not(:has(td[class$=-bulk-actions])) {
+    tr:not(:has(td[class$='-bulk-actions'])) {
       @apply bg-white dark:bg-dark-600;
     }
-    td:not([class$=-bulk-actions]),
+    td:not([class$='-bulk-actions']),
     th {
       @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
     }
@@ -119,7 +119,7 @@ table {
 
     &:before {
       content: '';
-      @apply -z-1 bg-slate-50 dark:bg-dark-700 absolute top-0 left-0 w-full h-full;
+      @apply absolute left-0 top-0 -z-1 h-full w-full bg-slate-50 dark:bg-dark-700;
     }
   }
 }
