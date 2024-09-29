@@ -8,6 +8,7 @@ use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use Throwable;
 
 /**
  * @mixin ComponentContract
@@ -25,6 +26,9 @@ trait WithFields
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getPreparedFields(): FieldsContract
     {
         if (! is_null($this->preparedFields)) {
@@ -73,6 +77,9 @@ trait WithFields
         return $this;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function getFilledFields(
         array $raw = [],
         ?DataWrapperContract $casted = null,

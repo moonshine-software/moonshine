@@ -79,6 +79,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLine = false;
 
+    protected ?Closure $modifyTable = null;
+
     /**
      * @var null|(Closure(mixed, mixed, self): Link)
      */
@@ -150,6 +152,16 @@ class BelongsToMany extends ModelRelationField implements
     public function getButtons(): ActionButtonsContract
     {
         return ActionButtons::make($this->buttons);
+    }
+
+    /**
+     * @param  Closure(TableBuilderContract $table, bool $preview): TableBuilderContract  $callback
+     */
+    public function modifyTable(Closure $callback): static
+    {
+        $this->modifyTable = $callback;
+
+        return $this;
     }
 
     protected function getPivotAs(): string
@@ -312,6 +324,10 @@ class BelongsToMany extends ModelRelationField implements
             ->simple()
             ->editable()
             ->reindex(prepared: true)
+            ->when(
+                ! is_null($this->modifyTable),
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
+            )
             ->withNotFound();
     }
 
@@ -392,6 +408,10 @@ class BelongsToMany extends ModelRelationField implements
             ->preview()
             ->simple()
             ->cast($this->getResource()->getCaster())
+            ->when(
+                ! is_null($this->modifyTable),
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
+            )
             ->render();
     }
 

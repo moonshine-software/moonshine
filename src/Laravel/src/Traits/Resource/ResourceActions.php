@@ -38,6 +38,13 @@ trait ResourceActions
         return collect($actions)->every(fn (Action $action): bool => in_array($action, $this->getActiveActions()));
     }
 
+    public function hasAnyAction(Action ...$actions): bool
+    {
+        return collect($actions)
+            ->filter(fn (Action $action): bool => in_array($action, $this->getActiveActions()))
+            ->isNotEmpty();
+    }
+
     /**
      * @return ListOf<Handler>
      */

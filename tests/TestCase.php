@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Tests;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
@@ -16,7 +13,6 @@ use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
-use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
@@ -39,7 +35,7 @@ class TestCase extends Orchestra
 
     protected Authenticatable|MoonshineUser $adminUser;
 
-    protected ModelResource $moonShineUserResource;
+    protected MoonShineUserResource $moonShineUserResource;
 
     protected CoreContract $moonshineCore;
 
@@ -54,7 +50,6 @@ class TestCase extends Orchestra
         $this->moonshineCore->flushState();
 
         $this->performApplication()
-            ->resolveFactories()
             ->resolveSuperUser()
             ->resolveMoonShineUserResource()
             ->registerTestResource();
@@ -62,7 +57,7 @@ class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
-        $app['config']->set('app.debug', 'true');
+        $app['config']->set('app.debug', true);
         $app['config']->set('moonshine.cache', 'array');
         $app['config']->set('moonshine.use_migrations', true);
         $app['config']->set('moonshine.use_notifications', true);
@@ -77,17 +72,6 @@ class TestCase extends Orchestra
         ]);
 
         $this->artisan('optimize:clear');
-
-        return $this;
-    }
-
-    protected function resolveFactories(): static
-    {
-        Factory::guessFactoryNamesUsing(function ($factory): string {
-            $factoryBasename = class_basename($factory);
-
-            return "MoonShine\Laravel\Database\Factories\\$factoryBasename" . 'Factory';
-        });
 
         return $this;
     }
@@ -114,7 +98,8 @@ class TestCase extends Orchestra
 
     protected function resolveMoonShineUserResource(): static
     {
-        $this->moonShineUserResource = $this->moonshineCore->getContainer(MoonShineUserResource::class);
+        $this->moonShineUserResource = $this->moonshineCore
+            ->getContainer(MoonShineUserResource::class);
 
         return $this;
     }
@@ -146,12 +131,12 @@ class TestCase extends Orchestra
         return $this;
     }
 
-    public function moonShineUserResource(): ModelResource
+    public function moonShineUserResource(): MoonShineUserResource
     {
         return $this->moonShineUserResource;
     }
 
-    public function adminUser(): Model|Builder|Authenticatable
+    public function adminUser(): Authenticatable|MoonshineUser
     {
         return $this->adminUser;
     }

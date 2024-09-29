@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
@@ -13,11 +12,8 @@ use MoonShine\Tests\TestCase;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Text;
-use Pest\Expectation;
 
 use function Pest\Laravel\actingAs;
-
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 uses(TestCase::class)
     ->in(__DIR__);
@@ -79,27 +75,3 @@ function exampleFields(): Fields
         Text::make('Field 2'),
     ]);
 }
-
-function createRequest($method, $uri): Request
-{
-    $symfonyRequest = SymfonyRequest::create(
-        $uri,
-        $method,
-    );
-
-    return Request::createFromBase($symfonyRequest);
-}
-
-expect()->extend('isForbidden', fn (): Expectation => expect($this->value->isForbidden())->toBeTrue());
-
-expect()->extend('isSuccessful', fn (): Expectation => expect($this->value->status())->toBeIn([200]));
-
-expect()->extend('isRedirect', fn (): Expectation => expect($this->value->status())->toBeIn([301, 302]));
-
-expect()->extend('isSuccessfulOrRedirect', fn (): Expectation => expect($this->value->status())->toBeIn([200, 301, 302]));
-
-expect()->extend('see', fn (string $value): Expectation => expect($this->value->content())->toContain($value));
-
-expect()->extend('hasFields', fn (array $fields = null) => expect($this->value)
-    ->toBeCollection()
-    ->toHaveCount($fields ? count($fields) : 0));

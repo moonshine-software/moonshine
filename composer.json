@@ -36,8 +36,8 @@
     "require-dev": {
         "moonshine/import-export": "dev-master",
         "orchestra/testbench": "^9.0",
-        "pestphp/pest": "^2.34",
-        "pestphp/pest-plugin-laravel": "^2.4",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
         "rector/rector": "^1.0",
         "symplify/monorepo-builder": "^11.2",
         "larastan/larastan": "^2.0"

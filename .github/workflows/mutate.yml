@@ -1,0 +1,50 @@
+name: mutate-tests
+
+on:
+  push:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - reopened
+      - synchronize
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  moonshine-tests:
+    if: ${{ github.event_name == 'push' || !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.2, 8.3]
+        laravel: [11]
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: xdebug
+      - uses: actions/checkout@v4
+
+      - name: Set up MySQL
+        env:
+          DB_USERNAME: root
+          DB_PASSWORD: root
+          DB_DATABASE: moonshine_tests
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }}
+      - name: Copy phpunit.xml.dist
+        run: php -r "file_exists('phpunit.xml.dist') || copy('phpunit-example.xml.dist', 'phpunit.xml.dist');"
+
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Execute tests via PEST(PHPUnit)
+        env:
+          DB_PASSWORD: root
+        run: ./vendor/bin/pest --bail --mutate

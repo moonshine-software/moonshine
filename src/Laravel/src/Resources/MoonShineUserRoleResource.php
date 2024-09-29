@@ -14,7 +14,7 @@ use MoonShine\UI\Fields\Text;
 
 #[Icon('bookmark')]
 /**
- * @extends ModelResource<MoonshineUserRole, IndexPage, FormPage, DetailPage, Fields, Enumerable>
+ * @extends ModelResource<MoonshineUserRole>
  */
 class MoonShineUserRoleResource extends ModelResource
 {
