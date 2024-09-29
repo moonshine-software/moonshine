@@ -486,13 +486,15 @@ final class TableBuilder extends IterableComponent implements
             ])
         );
 
+        $row = TableRow::make($cells);
+
         if ($this->getBulkButtons()->isNotEmpty()) {
-            $this->footAttributes([
-                ':class' => "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'",
-            ]);
+            $row->mergeAttribute(
+                ':class', "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+            );
         }
 
-        return TableRow::make($cells);
+        return $row;
     }
 
     protected function prepareBeforeRender(): void
