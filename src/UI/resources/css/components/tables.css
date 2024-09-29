@@ -115,6 +115,11 @@ table {
   max-height: calc(70dvh);
 
   & > table > thead {
-    @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-700;
+    @apply sticky -top-1 z-1;
+
+    &:before {
+      content: '';
+      @apply -z-1 bg-slate-50 dark:bg-dark-700 absolute top-0 left-0 w-full h-full;
+    }
   }
 }

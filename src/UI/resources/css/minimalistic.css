@@ -489,7 +489,7 @@ body.theme-minimalistic {
     }
   }
 
-  .table-sticky > table > thead {
+  .table-sticky > table > thead:before {
     @apply dark:bg-dark-800;
   }
 
