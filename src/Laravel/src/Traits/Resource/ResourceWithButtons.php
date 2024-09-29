@@ -195,7 +195,7 @@ trait ResourceWithButtons
     public function getEditButton(
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'edit-modal'
+        string $modalName = 'resource-edit-modal'
     ): ActionButtonContract {
         return $this->modifyEditButton(
             EditButton::for(
@@ -212,7 +212,7 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getDetailButton(string $modalName = 'detail-modal'): ActionButtonContract
+    public function getDetailButton(string $modalName = 'resource-detail-modal'): ActionButtonContract
     {
         return $this->modifyDetailButton(
             DetailButton::for(
