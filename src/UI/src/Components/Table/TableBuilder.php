@@ -490,7 +490,8 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->getBulkButtons()->isNotEmpty()) {
             $row->mergeAttribute(
-                ':class', "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+                ':class',
+                "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
             );
         }
 
