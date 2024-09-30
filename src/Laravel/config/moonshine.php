@@ -22,9 +22,8 @@ use MoonShine\Laravel\Pages\ProfilePage;
 return [
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
     'domain' => env('MOONSHINE_DOMAIN'),
-
-    'prefix' => 'admin',
-    'page_prefix' => 'page',
+    'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
+    'page_prefix' =>env('MOONSHINE_PAGE_PREFIX', 'page'),
 
     'middleware' => [
         EncryptCookies::class,

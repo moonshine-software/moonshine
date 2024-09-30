@@ -38,6 +38,8 @@ trait TableStates
 
     protected bool $isSticky = false;
 
+    protected bool $isLazy = false;
+
     protected bool $isColumnSelection = false;
 
     protected bool $searchable = false;
@@ -201,6 +203,18 @@ trait TableStates
         return $this->isSticky;
     }
 
+    public function lazy(): static
+    {
+        $this->isLazy = true;
+
+        return $this;
+    }
+
+    public function isLazy(): bool
+    {
+        return $this->isLazy;
+    }
+
     public function columnSelection(): static
     {
         $this->isColumnSelection = true;
@@ -267,6 +281,7 @@ trait TableStates
             'reorderable' => $this->isReorderable(),
             'simple' => $this->isSimple(),
             'sticky' => $this->isSticky(),
+            'lazy' => $this->isLazy(),
             'columnSelection' => $this->isColumnSelection(),
             'searchable' => $this->isSearchable(),
             'searchValue' => $this->getCore()->getRequest()->get('search', ''),
