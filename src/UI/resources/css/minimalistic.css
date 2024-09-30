@@ -470,6 +470,12 @@ body.theme-minimalistic {
         @apply p-1 text-3xs;
       }
     }
+    tfoot {
+      th,
+      td:not([class$='-bulk-actions']) {
+        @apply p-1 text-3xs;
+      }
+    }
   }
 
   .table-list {
