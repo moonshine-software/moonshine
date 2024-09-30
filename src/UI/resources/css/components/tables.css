@@ -41,6 +41,10 @@ table {
   }
 
   tfoot {
+    td:not([class$='-bulk-actions']),
+    th {
+      @apply max-w-lg break-words border-b p-2 py-3 dark:border-dark-400;
+    }
     tr:first-child {
       td,
       th {
