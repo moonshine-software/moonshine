@@ -212,12 +212,13 @@ trait ResourceWithButtons
         return $button;
     }
 
-    public function getDetailButton(string $modalName = 'resource-detail-modal'): ActionButtonContract
+    public function getDetailButton(string $modalName = 'resource-detail-modal',  bool $isSeparateModal = true): ActionButtonContract
     {
         return $this->modifyDetailButton(
             DetailButton::for(
                 $this,
                 $modalName,
+                $isSeparateModal
             )
         );
     }

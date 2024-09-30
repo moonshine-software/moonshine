@@ -19,6 +19,7 @@ final class DetailButton
     public static function for(
         CrudResource $resource,
         string $modalName = 'resource-detail-modal',
+        bool $isSeparateModal = true,
     ): ActionButtonContract {
         if (! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
@@ -39,10 +40,19 @@ final class DetailButton
         )
             ->name('detail-button')
             ->when(
-                $resource->isDetailInModal(),
+                $resource->isDetailInModal() && $isSeparateModal,
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async(
                     selector: "#$modalName",
                     events: [AlpineJs::event(JsEvent::MODAL_TOGGLED, $modalName)]
+                )
+            )
+            ->when(
+                $resource->isDetailInModal() && ! $isSeparateModal,
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
+                    title: static fn (): array|string => __('moonshine::ui.show'),
+                    content: static fn (): string => '',
+                    name: static fn (mixed $data, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}",
+                    builder: static fn (Modal $modal): Modal => $modal->wide()
                 )
             )
             ->canSee(
