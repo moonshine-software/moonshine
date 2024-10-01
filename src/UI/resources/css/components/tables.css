@@ -41,15 +41,16 @@ table {
   }
 
   tfoot {
+    td,
+    th {
+      @apply max-w-lg border-t dark:border-dark-400;
+    }
     td:not([class$='-bulk-actions']),
     th {
-      @apply max-w-lg break-words border-b p-2 py-3 dark:border-dark-400;
+      @apply break-words p-2 py-3;
     }
-    tr:first-child {
-      td,
-      th {
-        @apply max-w-lg border-t pt-3 dark:border-dark-300;
-      }
+    td[class$='-bulk-actions'] {
+      @apply pt-3 pb-3;
     }
   }
 }
