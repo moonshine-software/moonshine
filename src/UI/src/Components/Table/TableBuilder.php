@@ -493,6 +493,11 @@ final class TableBuilder extends IterableComponent implements
                 ':class',
                 "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
             );
+        } else {
+            $row->mergeAttribute(
+                'class',
+                'hidden'
+            );
         }
 
         return $row;
