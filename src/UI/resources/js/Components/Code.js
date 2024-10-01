@@ -11,10 +11,12 @@ export default (config = {}) => ({
     this.flaskInstance.onUpdate(code => (input.value = code))
     this.flaskInstance.updateCode(input.value)
 
-    this.$el.querySelector('textarea')
+    this.$el
+      .querySelector('textarea')
       .addEventListener('focus', () => container.classList.add('is-focused'))
 
-    this.$el.querySelector('textarea')
+    this.$el
+      .querySelector('textarea')
       .addEventListener('blur', () => container.classList.remove('is-focused'))
 
     input.addEventListener('reset', () => this.init())
