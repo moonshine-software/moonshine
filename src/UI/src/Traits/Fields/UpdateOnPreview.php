@@ -19,7 +19,7 @@ trait UpdateOnPreview
 {
     protected bool $updateOnPreview = false;
 
-    protected bool $updateOnPreviewPopover = true;
+    protected bool $updateOnPreviewPopover = false;
 
     protected ?string $updateOnPreviewParentComponent = null;
 
@@ -60,27 +60,9 @@ trait UpdateOnPreview
     public function updateInPopover(
         string $component
     ): static {
-        if ($this->isRawMode()) {
-            return $this;
-        }
-
-        if (is_null($this->updateOnPreviewUrl)) {
-            $this->updateOnPreview();
-        }
-
-        if (is_null($this->updateOnPreviewUrl)) {
-            return $this;
-        }
-
-        $this->updateOnPreviewParentComponent = $component;
         $this->updateOnPreviewPopover = true;
 
-        return $this->setUpdateOnPreviewUrl(
-            $this->updateOnPreviewUrl,
-            events: [
-                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
-            ]
-        );
+        return $this->withUpdateRow($component);
     }
 
     public function updateOnPreview(
