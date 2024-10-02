@@ -12,6 +12,20 @@ trait HasDataCast
 {
     protected ?DataCasterContract $cast = null;
 
+    protected ?string $castKeyName = null;
+
+    public function getCastKeyName(): ?string
+    {
+        return $this->castKeyName;
+    }
+
+    public function castKeyName(string $name): static
+    {
+        $this->castKeyName = $name;
+
+        return $this;
+    }
+
     public function hasCast(): bool
     {
         return ! is_null($this->cast);
@@ -41,7 +55,7 @@ trait HasDataCast
         }
 
         if (! $this->hasCast()) {
-            $this->cast(new MixedDataCaster());
+            $this->cast(new MixedDataCaster($this->getCastKeyName()));
         }
 
         return $this->getCast()->cast($data);
