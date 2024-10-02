@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
 uses()->group('core');
@@ -51,10 +53,25 @@ it('find resource', function (): void {
 
 
 it('onlyLink parameters', function (): void {
-    fakeRequest('/admin/test-comment-resource/index-page?_parentId=test-image-99');
+    fakeRequest('/admin/test-comment-resource/index-page?_parentId=test_image-99');
 
-    expect($this->moonshineRequest->getParentRelationId())
+    expect(moonshineRequest()->getParentRelationId())
         ->toBe('99')
-        ->and($this->moonshineRequest->getParentRelationName())
+        ->and(moonshineRequest()->getParentRelationName())
         ->toBe('testImage');
 });
+
+it('correct relation name with key string', function (string $id): void {
+    $this->get("/admin/test-image-resource/index-page");
+
+    $field = HasMany::make('Images', 'testImages', resource: TestImageResource::class)->relatedLink();
+
+    $relationName = $field->getRelatedLinkRelation();
+
+    fakeRequest("/admin/test-comment-resource/index-page?_parentId=$relationName-$id");
+
+    expect(moonshineRequest()->getParentRelationId())
+        ->toBe($id)
+        ->and(moonshineRequest()->getParentRelationName())
+        ->toBe((string) str($relationName)->camel());
+})->with(['01J95W9RR73FH93AFCP0YP2VP1', 'ab193d8c-09d5-4185-a62d-d93ee1dd3bfe']);

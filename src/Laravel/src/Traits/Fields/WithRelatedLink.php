@@ -51,15 +51,26 @@ trait WithRelatedLink
         return $this->isRelatedLink;
     }
 
-    protected function getRelatedLink(bool $preview = false): ActionButtonContract
+    public function getRelatedLinkRelation(): string
     {
-        if (is_null($relationName = $this->parentRelationName)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+        if(!is_null($this->parentRelationName)) {
+            return $this->parentRelationName;
         }
 
-        if (is_null($this->parentRelationName) && $this instanceof BelongsToMany) {
-            $relationName = str($relationName)->plural();
+        $relationName = str((string) moonshineRequest()->getResourceUri())
+            ->remove('-resource')
+            ->replace('-', '_');
+
+        if ($this instanceof BelongsToMany) {
+            $relationName = $relationName->plural();
         }
+
+        return (string) $relationName;
+    }
+
+    protected function getRelatedLink(bool $preview = false): ActionButtonContract
+    {
+        $relationName = $this->getRelatedLinkRelation();
 
         $value = $this->toValue();
         $count = $value instanceof LengthAwarePaginator
