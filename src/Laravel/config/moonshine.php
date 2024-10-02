@@ -23,7 +23,7 @@ return [
     'title' => env('MOONSHINE_TITLE', 'MoonShine'),
     'domain' => env('MOONSHINE_DOMAIN'),
     'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
-    'page_prefix' =>env('MOONSHINE_PAGE_PREFIX', 'page'),
+    'page_prefix' => env('MOONSHINE_PAGE_PREFIX', 'page'),
 
     'middleware' => [
         EncryptCookies::class,
