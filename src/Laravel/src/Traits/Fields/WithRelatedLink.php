@@ -53,7 +53,7 @@ trait WithRelatedLink
 
     public function getRelatedLinkRelation(): string
     {
-        if(!is_null($this->parentRelationName)) {
+        if (! is_null($this->parentRelationName)) {
             return $this->parentRelationName;
         }
 
