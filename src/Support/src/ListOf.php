@@ -44,7 +44,7 @@ final class ListOf
     public function except(object|string ...$data): self
     {
         $condition = static fn (object $item): bool => collect($data)->every(
-            fn (object|string $i): bool => match(true) {
+            fn (object|string $i): bool => match (true) {
                 is_string($i) => $item::class !== $i,
                 is_callable($i) => ! $i($item),
                 default => $i !== $item,
@@ -54,6 +54,28 @@ final class ListOf
         $this->items = collect($this->items)
             ->filter($condition)
             ->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param  object|class-string<T>  ...$data
+     *
+     * @return ListOf<T>
+     */
+    public function only(object|string ...$data): self
+    {
+        $condition = static fn (object $item): bool => collect($data)->contains(
+            fn (object|string $i): bool => match (true) {
+                is_string($i) => $item::class === $i,
+                is_callable($i) => $i($item),
+                default => $i === $item,
+            }
+        );
+
+        $this->items = collect($this->items)
+        ->filter($condition)
+        ->toArray();
 
         return $this;
     }
@@ -91,5 +113,4 @@ final class ListOf
     {
         return $this->getItems();
     }
-
 }
