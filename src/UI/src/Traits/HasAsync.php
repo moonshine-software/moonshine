@@ -28,7 +28,7 @@ trait HasAsync
     public function whenAsync(Closure $callback): static
     {
         return $this->when(
-            fn() => $this->getCore()->getRequest()->get('_component_name') === $this->getName(),
+            fn(): bool => $this->getCore()->getRequest()->get('_component_name') === $this->getName(),
             fn() => $callback($this)
         );
     }
