@@ -41,11 +41,16 @@ table {
   }
 
   tfoot {
-    tr:first-child {
-      td,
-      th {
-        @apply max-w-lg border-t pt-3 dark:border-dark-300;
-      }
+    td,
+    th {
+      @apply max-w-lg border-t dark:border-dark-400;
+    }
+    td:not([class$='-bulk-actions']),
+    th {
+      @apply break-words p-2 py-3;
+    }
+    td[class$='-bulk-actions'] {
+      @apply pb-3 pt-3;
     }
   }
 }
@@ -65,6 +70,16 @@ table {
       @apply bg-white dark:bg-dark-600;
     }
     td,
+    th {
+      @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
+    }
+  }
+
+  tfoot {
+    tr:not(:has(td[class$='-bulk-actions'])) {
+      @apply bg-white dark:bg-dark-600;
+    }
+    td:not([class$='-bulk-actions']),
     th {
       @apply max-w-lg whitespace-nowrap px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 lg:whitespace-normal;
     }
@@ -105,6 +120,11 @@ table {
   max-height: calc(70dvh);
 
   & > table > thead {
-    @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-700;
+    @apply sticky -top-1 z-1;
+
+    &:before {
+      content: '';
+      @apply absolute left-0 top-0 -z-1 h-full w-full bg-slate-50 dark:bg-dark-700;
+    }
   }
 }
