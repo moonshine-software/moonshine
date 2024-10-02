@@ -22,6 +22,17 @@ trait HasAsync
         return ! is_null($this->asyncUrl);
     }
 
+    /**
+     * @param  Closure(static $ctx): static  $callback
+     */
+    public function whenAsync(Closure $callback): static
+    {
+        return $this->when(
+            fn() => $this->getCore()->getRequest()->get('_component_name') === $this->getName(),
+            fn() => $callback($this)
+        );
+    }
+
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
         return $url;

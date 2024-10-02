@@ -2,6 +2,7 @@ import {crudFormQuery} from '../Support/Forms.js'
 import sortableFunction from './Sortable.js'
 import {listComponentRequest} from '../Request/Sets.js'
 import {urlWithQuery} from '../Request/Core.js'
+import {dispatchEvents} from '../Support/DispatchEvents.js'
 
 export default (
   creatable = false,
@@ -13,6 +14,7 @@ export default (
   actionsOpen: false,
   lastRow: null,
   table: null,
+  container: null,
   block: null,
   async: async,
   asyncUrl: asyncUrl,
@@ -23,6 +25,8 @@ export default (
   init() {
     this.block = this.$root
     this.table = this.$root.querySelector('table')
+    this.container = this.$root.closest('.js-table-builder-container')
+
     const removeAfterClone = this.table?.dataset?.removeAfterClone
     const tbody = this.table?.querySelector('tbody')
     const tfoot = this.table?.querySelector('tfoot')
@@ -56,6 +60,14 @@ export default (
     }
 
     this.initColumnSelection()
+
+    if(this.container?.dataset?.lazy) {
+      const event = this.container?.dataset?.lazy
+      this.container.removeAttribute('data-lazy')
+
+      this.$nextTick(() => dispatchEvents(event, 'success', this))
+
+    }
   },
   add(force = false) {
     if (!this.creatable && !force) {
