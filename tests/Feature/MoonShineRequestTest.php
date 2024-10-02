@@ -6,7 +6,6 @@ use MoonShine\Enums\PageType;
 use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Models\MoonshineUser;
 use MoonShine\MoonShineRequest;
-use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -57,4 +56,3 @@ it('correct relation name with key string', function (string $id): void {
         ->and(moonshineRequest()->getParentRelationName())
         ->toBe((string) str($relationName)->camel());
 })->with(['01J95W9RR73FH93AFCP0YP2VP1', 'ab193d8c-09d5-4185-a62d-d93ee1dd3bfe']);
-

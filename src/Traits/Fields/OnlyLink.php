@@ -60,7 +60,7 @@ trait OnlyLink
 
     public function getOnlyLinkRelation(): string
     {
-        if(!is_null($this->linkRelation)) {
+        if (! is_null($this->linkRelation)) {
             return $this->linkRelation;
         }
 
