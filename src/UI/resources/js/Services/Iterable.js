@@ -53,7 +53,7 @@ export class Iterable {
         let name = fieldOrBlock.dataset.name
         let closestBlock = fieldOrBlock.closest(`[data-r-block]`)
         let parent = fieldOrBlock.closest(closestBlock.dataset.rClosestSelector)
-        let _key = parseInt(parent.dataset.key ?? parent.rowIndex ?? index)
+        let _key = parseInt(parent.dataset.rowKey ?? parent.rowIndex ?? index)
 
         prev['${index' + level + '}'] = _key
 
