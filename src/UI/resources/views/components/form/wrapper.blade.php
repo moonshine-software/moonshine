@@ -28,11 +28,11 @@
         {{ !$beforeLabel && !$insideLabel ? $slot : '' }}
 
         {{ $after ?? '' }}
-    </div>
 
-    @if($error)
-        <x-moonshine::form.input-error>
-            {{ $error }}
-        </x-moonshine::form.input-error>
-    @endif
+        @if($error)
+            <x-moonshine::form.input-error>
+                {{ $error }}
+            </x-moonshine::form.input-error>
+        @endif
+    </div>
 </div>
