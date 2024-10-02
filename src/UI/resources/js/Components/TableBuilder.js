@@ -61,12 +61,11 @@ export default (
 
     this.initColumnSelection()
 
-    if(this.container?.dataset?.lazy) {
+    if (this.container?.dataset?.lazy) {
       const event = this.container?.dataset?.lazy
       this.container.removeAttribute('data-lazy')
 
       this.$nextTick(() => dispatchEvents(event, 'success', this))
-
     }
   },
   add(force = false) {

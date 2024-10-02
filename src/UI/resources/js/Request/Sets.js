@@ -77,8 +77,8 @@ export function listComponentRequest(component, pushState = false) {
         dispatchEvents(t.$root.dataset.events, 'success', t)
       }
 
-      let tempElement = document.createElement('div');
-      tempElement.innerHTML = data;
+      let tempElement = document.createElement('div')
+      tempElement.innerHTML = data
 
       t.$root.outerHTML = tempElement.firstElementChild.innerHTML
       t.loading = false
