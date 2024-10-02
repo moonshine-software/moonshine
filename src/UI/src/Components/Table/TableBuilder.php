@@ -473,8 +473,12 @@ final class TableBuilder extends IterableComponent implements
         ]);
     }
 
-    private function resolveFootRow(): TableRowContract
+    private function resolveFootRow(): ?TableRowContract
     {
+        if ($this->getBulkButtons()->isEmpty()) {
+            return null;
+        }
+
         $cells = TableCells::make()->pushCellWhen(
             ! $this->isPreview(),
             fn (): string => (string) Flex::make([
@@ -486,21 +490,10 @@ final class TableBuilder extends IterableComponent implements
             ])
         );
 
-        $row = TableRow::make($cells);
-
-        if ($this->getBulkButtons()->isNotEmpty()) {
-            $row->mergeAttribute(
-                ':class',
-                "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
-            );
-        } else {
-            $row->mergeAttribute(
-                'class',
-                'hidden'
-            );
-        }
-
-        return $row;
+        return TableRow::make($cells)->mergeAttribute(
+            ':class',
+            "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+        );
     }
 
     protected function prepareBeforeRender(): void
