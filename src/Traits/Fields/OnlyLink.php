@@ -58,15 +58,26 @@ trait OnlyLink
         return $this->onlyLink;
     }
 
-    protected function getOnlyLinkButton(bool $preview = false): ActionButton
+    public function getOnlyLinkRelation(): string
     {
-        if (is_null($relationName = $this->linkRelation)) {
-            $relationName = str_replace('-resource', '', (string) moonshineRequest()->getResourceUri());
+        if(!is_null($this->linkRelation)) {
+            return $this->linkRelation;
         }
 
-        if (is_null($this->linkRelation) && $this instanceof BelongsToMany) {
-            $relationName = str($relationName)->plural();
+        $relationName = str((string) moonshineRequest()->getResourceUri())
+            ->remove('-resource')
+            ->replace('-', '_');
+
+        if ($this instanceof BelongsToMany) {
+            $relationName = $relationName->plural();
         }
+
+        return (string) $relationName;
+    }
+
+    protected function getOnlyLinkButton(bool $preview = false): ActionButton
+    {
+        $relationName = $this->getOnlyLinkRelation();
 
         $value = $this->toValue();
         $count = $value instanceof Paginator

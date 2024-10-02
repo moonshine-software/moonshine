@@ -51,7 +51,7 @@ class MoonShineRequest extends Request
         return
             is_null($parentResource = $this->getParentResourceId())
                 ? null
-                : str($parentResource)->explode("-")->last();
+                : str($parentResource)->after('-')->value();
     }
 
     public function onResourceRoute(): bool
