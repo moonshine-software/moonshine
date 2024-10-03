@@ -97,3 +97,37 @@ it('add object elements', function () {
 it('ensure elements', function () {
     expect((new ListOf(SomeTypeSub2::class, [SomeEnum::ONE]))->toArray());
 })->expectException(UnexpectedValueException::class);
+
+it('only elements', function () {
+    expect($this->listOfEnum->only(SomeEnum::ONE, SomeEnum::TWO)->toArray())
+        ->toHaveCount(2)
+        ->toContain(SomeEnum::ONE, SomeEnum::TWO)
+        ->not->toContain(SomeEnum::THREE);
+});
+
+it('only type', function () {
+    $listOf = $this->listOfObjects->only(SomeTypeSub1::class, SomeTypeSub2::class)->toArray();
+    expect($listOf)
+        ->toHaveCount(2)
+        ->not->toContain(new SomeTypeSub3())
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub2))
+        ->toBeTrue();
+});
+
+it('only closure', function () {
+    $listOf = $this->listOfObjects->only(fn ($item) => get_class($item) === SomeTypeSub1::class)->toArray();
+    expect($listOf)
+        ->toHaveCount(1)
+        ->not->toContain(new SomeTypeSub2(), new SomeTypeSub3())
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1))
+        ->toBeTrue();
+});
+
+it('only mixed', function () {
+    $listOf = $this->listOfObjects->only(fn ($item) => get_class($item) === SomeTypeSub1::class, SomeTypeSub3::class)->toArray();
+    expect($listOf)
+        ->toHaveCount(2)
+        ->not->toContain(new SomeTypeSub2())
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub3))
+        ->toBeTrue();
+});
