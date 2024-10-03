@@ -110,7 +110,7 @@ it('only type', function () {
     expect($listOf)
         ->toHaveCount(2)
         ->not->toContain(new SomeTypeSub3())
-        ->and(collect($listOf)->every(fn($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub2))
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub2))
         ->toBeTrue();
 });
 
@@ -119,7 +119,7 @@ it('only closure', function () {
     expect($listOf)
         ->toHaveCount(1)
         ->not->toContain(new SomeTypeSub2(), new SomeTypeSub3())
-        ->and(collect($listOf)->every(fn($item) => $item instanceof SomeTypeSub1))
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1))
         ->toBeTrue();
 });
 
@@ -128,6 +128,6 @@ it('only mixed', function () {
     expect($listOf)
         ->toHaveCount(2)
         ->not->toContain(new SomeTypeSub2())
-        ->and(collect($listOf)->every(fn($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub3))
+        ->and(collect($listOf)->every(fn ($item) => $item instanceof SomeTypeSub1 || $item instanceof SomeTypeSub3))
         ->toBeTrue();
 });
