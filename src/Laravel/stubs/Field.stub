@@ -27,9 +27,9 @@ class DummyField extends {extendShort}
         return $this->toValue();
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): Renderable|string
     {
-        return $this->toFormattedValue();
+        return (string) ($this->toFormattedValue() ?? '');
     }
 
     protected function resolveOnApply(): ?Closure
