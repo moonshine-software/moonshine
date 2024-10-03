@@ -1,3 +1,5 @@
+import {dispatchEvents as de} from '../Support/DispatchEvents.js'
+
 export default (open = false, asyncUrl = '') => ({
   open: open,
   id: '',
@@ -13,21 +15,41 @@ export default (open = false, asyncUrl = '') => ({
 
     Alpine.bind('dismissCanvas', () => ({
       '@click.outside'() {
-        this.open = false
+        if(this.open) {
+          this.open = false
+
+          this.dispatchEvents()
+        }
       },
       '@keydown.escape.window'() {
-        this.open = false
+        if(this.open) {
+          this.open = false
+
+          this.dispatchEvents()
+        }
       },
     }))
   },
 
-  toggleCanvas() {
+  dispatchEvents() {
+    if(this.open && this.$root?.dataset?.openingEvents) {
+      de(this.$root.dataset.openingEvents, '', this)
+    }
+
+    if(!this.open && this.$root?.dataset?.closingEvents) {
+      de(this.$root.dataset.closingEvents, '', this)
+    }
+  },
+
+  async toggleCanvas() {
     this.open = !this.open
 
     if (this.open && this.asyncUrl && !this.asyncLoaded) {
-      this.load(asyncUrl, this.id)
+      await this.load(asyncUrl, this.id)
 
       this.asyncLoaded = !this.$root.dataset.alwaysLoad
     }
+
+    this.dispatchEvents()
   },
 })

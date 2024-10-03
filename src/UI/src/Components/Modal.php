@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
 use Throwable;
 
 /**
@@ -84,6 +86,27 @@ final class Modal extends AbstractWithComponents
         $this->outerAttributes = $attributes;
 
         return $this;
+    }
+
+    /**
+     * @param string[] $events
+     */
+    public function toggleEvents(array $events, bool $onlyOpening = false, $onlyClosing = false): self
+    {
+        $data = [
+            'data-opening-events' => AlpineJs::prepareEvents($events),
+            'data-closing-events' => AlpineJs::prepareEvents($events),
+        ];
+
+        if($onlyOpening) {
+            unset($data['data-closing-events']);
+        }
+
+        if($onlyClosing) {
+            unset($data['data-opening-events']);
+        }
+
+        return $this->customAttributes($data);
     }
 
     /**
