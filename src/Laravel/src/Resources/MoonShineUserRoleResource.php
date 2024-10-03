@@ -18,9 +18,9 @@ use MoonShine\UI\Fields\Text;
  */
 class MoonShineUserRoleResource extends ModelResource
 {
-    public string $model = MoonshineUserRole::class;
+    protected string $model = MoonshineUserRole::class;
 
-    public string $column = 'name';
+    protected string $column = 'name';
 
     protected bool $createInModal = true;
 

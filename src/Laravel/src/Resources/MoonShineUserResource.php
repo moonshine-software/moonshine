@@ -32,11 +32,11 @@ use MoonShine\UI\Fields\Text;
  */
 class MoonShineUserResource extends ModelResource
 {
-    public string $model = MoonshineUser::class;
+    protected string $model = MoonshineUser::class;
 
-    public string $column = 'name';
+    protected string $column = 'name';
 
-    public array $with = ['moonshineUserRole'];
+    protected array $with = ['moonshineUserRole'];
 
     protected bool $simplePaginate = true;
 
