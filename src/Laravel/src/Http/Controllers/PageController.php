@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Laravel\Contracts\WithResponseModifierContract;
 use MoonShine\Laravel\MoonShineRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class PageController extends MoonShineController
 {
-    public function __invoke(MoonShineRequest $request): PageContract|JsonResponse
+    public function __invoke(MoonShineRequest $request): PageContract|JsonResponse|Response
     {
         $request->getResource()?->loaded();
 
@@ -21,6 +23,10 @@ class PageController extends MoonShineController
 
         if ($request->wantsJson() && $request->hasHeader('X-MS-Structure')) {
             return $this->structureResponse($page, $request);
+        }
+
+        if($page instanceof WithResponseModifierContract && $page->isResponseModified()) {
+            return $page->getModifiedResponse();
         }
 
         return $page;
