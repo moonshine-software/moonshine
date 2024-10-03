@@ -48,7 +48,7 @@ class MakeFieldCommand extends MoonShineCommand
 
         $extends = select(
             'Extends',
-            collect(File::files(__DIR__ . '/../../UI/Fields'))
+            collect(File::files(__DIR__ . '/../../../UI/src/Fields/'))
                 ->mapWithKeys(
                     static fn (SplFileInfo $file): array => [
                         $file->getFilenameWithoutExtension() => $file->getFilenameWithoutExtension(),
