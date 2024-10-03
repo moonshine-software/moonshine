@@ -6,7 +6,7 @@ namespace {namespace};
 
 use {extend};
 use Closure;
-use MoonShine\Contracts\Core\TypeCasts\CastedDataContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
 class DummyField extends {extendShort}
 {
@@ -17,7 +17,7 @@ class DummyField extends {extendShort}
         return parent::reformatFilledValue($data);
     }
 
-    protected function prepareFill(array $raw = [], ?CastedDataContract $casted = null, int $index = 0): mixed
+    protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): mixed
     {
         return parent::prepareFill($raw, $casted, $index);
     }
@@ -27,9 +27,9 @@ class DummyField extends {extendShort}
         return $this->toValue();
     }
 
-    protected function resolvePreview(): string
+    protected function resolvePreview(): Renderable|string
     {
-        return $this->toFormattedValue();
+        return (string) ($this->toFormattedValue() ?? '');
     }
 
     protected function resolveOnApply(): ?Closure
