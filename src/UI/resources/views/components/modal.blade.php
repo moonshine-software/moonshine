@@ -32,7 +32,7 @@
                 aria-modal="true"
                 role="dialog"
                 {{ $attributes->merge(['class' => 'modal']) }}
-                @if($closeOutside) @click.self="open=false" @endif
+                @if($closeOutside) @click.self="toggleModal" @endif
             >
                 <div class="modal-dialog
                 @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"
@@ -43,7 +43,7 @@
                             <h5 class="modal-title">{{ $title ?? '' }}</h5>
                             <button type="button"
                                     class="btn btn-close"
-                                    @click.stop="open=false"
+                                    @click.stop="toggleModal"
                                     aria-label="Close"
                             >
                                 <x-moonshine::icon
