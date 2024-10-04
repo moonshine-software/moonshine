@@ -17,7 +17,7 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
 
     Alpine.bind('dismissModal', () => ({
       '@keydown.escape.window'() {
-        if(this.open) {
+        if (this.open) {
           this.open = false
 
           this.dispatchEvents()
@@ -27,11 +27,11 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
   },
 
   dispatchEvents() {
-    if(this.open && this.$root?.dataset?.openingEvents) {
+    if (this.open && this.$root?.dataset?.openingEvents) {
       de(this.$root.dataset.openingEvents, '', this)
     }
 
-    if(!this.open && this.$root?.dataset?.closingEvents) {
+    if (!this.open && this.$root?.dataset?.closingEvents) {
       de(this.$root.dataset.closingEvents, '', this)
     }
   },
