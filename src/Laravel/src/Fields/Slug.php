@@ -56,30 +56,6 @@ class Slug extends Text
         return $this;
     }
 
-    protected function resolveOnApply(): ?Closure
-    {
-        return function ($item) {
-            $item->{$this->getColumn()} = $this->getRequestValue() !== false
-                ? $this->getRequestValue()
-                : $this->generateSlug($item->{$this->getFrom()});
-
-            if ($this->isUnique()) {
-                $item->{$this->getColumn()} = $this->makeSlugUnique($item);
-            }
-
-            return $item;
-        };
-    }
-
-    protected function generateSlug(string $value): string
-    {
-        return Str::slug(
-            $value,
-            $this->getSeparator(),
-            language: $this->getLocal()
-        );
-    }
-
     public function locale(string $local): static
     {
         $this->locale = $local;
@@ -87,7 +63,7 @@ class Slug extends Text
         return $this;
     }
 
-    public function getLocal(): string
+    public function getLocale(): string
     {
         return $this->locale ?? moonshineConfig()->getLocale();
     }
@@ -105,6 +81,15 @@ class Slug extends Text
     public function isUnique(): bool
     {
         return $this->unique;
+    }
+
+    protected function generateSlug(string $value): string
+    {
+        return Str::slug(
+            $value,
+            $this->getSeparator(),
+            language: $this->getLocale()
+        );
     }
 
     protected function makeSlugUnique(Model $item): string
@@ -127,4 +112,18 @@ class Slug extends Text
             ->exists();
     }
 
+    protected function resolveOnApply(): ?Closure
+    {
+        return function ($item) {
+            $item->{$this->getColumn()} = $this->getRequestValue() !== false
+                ? $this->getRequestValue()
+                : $this->generateSlug($item->{$this->getFrom()});
+
+            if ($this->isUnique()) {
+                $item->{$this->getColumn()} = $this->makeSlugUnique($item);
+            }
+
+            return $item;
+        };
+    }
 }
