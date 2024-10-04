@@ -411,7 +411,8 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         }
 
         $detailButton = $resource->getDetailButton(
-            modalName:  "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail"
+            modalName:  "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail",
+            isSeparateModal: false
         );
 
         $deleteButton = $resource->getDeleteButton(

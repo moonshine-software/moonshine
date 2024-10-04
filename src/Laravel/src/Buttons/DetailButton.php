@@ -9,6 +9,8 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\CrudResource;
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Modal;
 
@@ -16,7 +18,8 @@ final class DetailButton
 {
     public static function for(
         CrudResource $resource,
-        string $modalName = 'detail-modal',
+        string $modalName = 'resource-detail-modal',
+        bool $isSeparateModal = true,
     ): ActionButtonContract {
         if (! $resource->getDetailPage()) {
             return ActionButton::emptyHidden();
@@ -35,9 +38,16 @@ final class DetailButton
             '',
             $action
         )
-            ->name('detail-button')
+            ->name('resource-detail-button')
             ->when(
-                $resource->isDetailInModal(),
+                $resource->isDetailInModal() && $isSeparateModal,
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async(
+                    selector: "#$modalName",
+                    events: [AlpineJs::event(JsEvent::MODAL_TOGGLED, $modalName)]
+                )
+            )
+            ->when(
+                $resource->isDetailInModal() && ! $isSeparateModal,
                 static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
                     title: static fn (): array|string => __('moonshine::ui.show'),
                     content: static fn (): string => '',

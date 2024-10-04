@@ -9,6 +9,8 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\CrudResource;
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 
 final class EditButton
@@ -17,7 +19,7 @@ final class EditButton
         CrudResource $resource,
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'delete-modal',
+        string $modalName = 'resource-edit-modal',
     ): ActionButtonContract {
         if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
@@ -42,23 +44,22 @@ final class EditButton
             '',
             url: $action
         )
-            ->name('edit-button')
+            ->name('resource-edit-button')
             ->when(
                 $resource->isEditInModal(),
-                static fn (ActionButtonContract $button): ActionButtonContract => $button->async()->inModal(
-                    title: static fn (): array|string => __('moonshine::ui.edit'),
-                    content: static fn (): string => '',
-                    name: static fn (mixed $item, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}"
+                static fn (ActionButtonContract $button): ActionButtonContract => $button->async(
+                    selector: "#$modalName",
+                    events: [AlpineJs::event(JsEvent::MODAL_TOGGLED, $modalName)]
                 )
             )
-            ->primary()
-            ->icon('pencil')
-            ->canSee(
-                static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
-                    && $resource->hasAction(Action::UPDATE)
-                    && $resource->setItem($item)->can(Ability::UPDATE)
-            )
-            ->class('js-edit-button')
-            ->showInLine();
+                ->primary()
+                ->icon('pencil')
+                ->canSee(
+                    static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
+                        && $resource->hasAction(Action::UPDATE)
+                        && $resource->setItem($item)->can(Ability::UPDATE)
+                )
+                ->class('js-edit-button')
+                ->showInLine();
     }
 }
