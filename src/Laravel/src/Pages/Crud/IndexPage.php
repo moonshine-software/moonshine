@@ -15,7 +15,6 @@ use MoonShine\Laravel\Enums\Ability;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\ActionGroup;
-use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Block;
 use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Layout\Flex;

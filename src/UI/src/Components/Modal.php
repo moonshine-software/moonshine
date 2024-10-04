@@ -9,7 +9,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Enums\JsEvent;
 use Throwable;
 
 /**
