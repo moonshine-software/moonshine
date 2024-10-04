@@ -97,11 +97,11 @@ final class Modal extends AbstractWithComponents
             'data-closing-events' => AlpineJs::prepareEvents($events),
         ];
 
-        if($onlyOpening) {
+        if ($onlyOpening) {
             unset($data['data-closing-events']);
         }
 
-        if($onlyClosing) {
+        if ($onlyClosing) {
             unset($data['data-opening-events']);
         }
 

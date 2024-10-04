@@ -86,21 +86,23 @@ class IndexPage extends CrudPage
     {
         $pageComponents = $this->getResource()->getIndexPageComponents();
 
-        if($this->getResource()->isEditInModal()) {
+        if ($this->getResource()->isEditInModal()) {
             $pageComponents[] = Modal::make(
                 __('moonshine::ui.edit'),
                 components: [
                     Div::make()->customAttributes(['id' => 'resource-edit-modal']),
-                ])
+                ]
+            )
                 ->name('resource-edit-modal');
         }
 
-        if($this->getResource()->isDetailInModal()) {
+        if ($this->getResource()->isDetailInModal()) {
             $pageComponents[] = Modal::make(
                 __('moonshine::ui.show'),
                 components: [
                     Div::make()->customAttributes(['id' => 'resource-detail-modal']),
-                ])
+                ]
+            )
                 ->name('resource-detail-modal');
         }
 
