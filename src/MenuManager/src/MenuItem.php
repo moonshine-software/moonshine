@@ -118,7 +118,7 @@ class MenuItem extends MenuElement
     {
         $url = $this->url instanceof Closure ? call_user_func($this->url) : $this->url;
 
-        if(is_null($url)) {
+        if (is_null($url)) {
             $url = '';
         }
 
