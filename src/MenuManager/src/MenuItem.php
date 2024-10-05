@@ -116,7 +116,11 @@ class MenuItem extends MenuElement
      */
     public function getUrl(): string
     {
-        $url = value($this->url) ?? '';
+        $url = $this->url instanceof Closure ? call_user_func($this->url) : $this->url;
+
+        if(is_null($url)) {
+            $url = '';
+        }
 
         return $url instanceof MenuFillerContract ? $url->getUrl() : $url;
     }
