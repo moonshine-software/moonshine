@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Illuminate\Support\Arr;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\RangeFieldContract;
@@ -44,5 +45,22 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
             'fromAttributes' => $this->getFromAttributes(),
             'toAttributes' => $this->getToAttributes(),
         ];
+    }
+
+    public function getErrors(): array
+    {
+        $errors = collect(parent::getErrors());
+
+        return [
+            ...$errors,
+            $this->getNameDot() => [
+                ...(data_get($errors->undot()->toArray(), $this->getNameDot() . '.' . $this->fromField) ?? []),
+                ...(data_get($errors->undot()->toArray(), $this->getNameDot() . '.' . $this->toField) ?? []),
+            ]
+        ];
+    }
+
+    protected function resolveValidationErrorClasses(): void
+    {
     }
 }

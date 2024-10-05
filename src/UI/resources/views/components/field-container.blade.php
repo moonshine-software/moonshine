@@ -16,7 +16,7 @@
     :attributes="$attributes"
     :beforeLabel="$isBeforeLabel"
     :insideLabel="$isInsideLabel"
-    :error="$errors[0] ?? ''"
+    :errors="$errors"
 >
     @if($beforeInner ?? false)
     <x-slot:before>

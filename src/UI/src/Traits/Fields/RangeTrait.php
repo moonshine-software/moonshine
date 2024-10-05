@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use Illuminate\Support\Arr;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\AlpineJs;
@@ -48,7 +49,10 @@ trait RangeTrait
 
     public function getFromAttributes(): ComponentAttributesBagContract
     {
-        return $this->reformatAttributes($this->fromAttributes, $this->fromField);
+        return $this->reformatAttributes($this->fromAttributes, $this->fromField)
+            ->class([
+                'form-invalid' => Arr::has($this->getErrors(), $this->getNameDotFrom()),
+            ]);
     }
 
     public function toAttributes(array $attributes): static
@@ -62,7 +66,11 @@ trait RangeTrait
 
     public function getToAttributes(): ComponentAttributesBagContract
     {
-        return $this->reformatAttributes($this->toAttributes, $this->toField);
+        return $this->reformatAttributes($this->toAttributes, $this->toField)
+            ->class([
+                'form-invalid' => Arr::has($this->getErrors(), $this->getNameDotTo()),
+            ]);
+
     }
 
     public function fromTo(string $fromField, string $toField): static
@@ -71,6 +79,16 @@ trait RangeTrait
         $this->toField = $toField;
 
         return $this;
+    }
+
+    public function getNameDotFrom(): string
+    {
+        return "{$this->getNameDot()}.$this->fromField";
+    }
+
+    public function getNameDotTo(): string
+    {
+        return "{$this->getNameDot()}.$this->toField";
     }
 
     protected function reformatFilledValue(mixed $data): mixed
