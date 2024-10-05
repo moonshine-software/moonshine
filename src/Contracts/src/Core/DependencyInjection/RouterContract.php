@@ -6,13 +6,14 @@ namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\Core\StatefulContract;
 
 /**
  * @template-covariant I of RouterContract
 
  * @mixin I
  */
-interface RouterContract
+interface RouterContract extends StatefulContract
 {
     public function to(string $name = '', array $params = []): string;
 
@@ -25,6 +26,4 @@ interface RouterContract
     public function withPage(?PageContract $page = null): static;
 
     public function withResource(?ResourceContract $resource = null): static;
-
-    public function flushState(): void;
 }
