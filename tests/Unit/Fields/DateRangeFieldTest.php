@@ -221,4 +221,30 @@ describe('unique field methods', function () {
                 $field->toField => $to . 'T00:00',
             ]);
     });
+
+    it('step', function (): void {
+        $from = now();
+        $to = now()->addMonth();
+
+        $this->field
+            ->fill(['start' => $from, 'end' => $to])
+            ->step(5);
+
+        expect($this->field->getAttributes()->get('step'))
+            ->toBe('5');
+
+        $this->field
+            ->fill(['start' => $from, 'end' => $to])
+            ->step(5.5);
+
+        expect($this->field->getAttributes()->get('step'))
+            ->toBe('5.5');
+
+        $this->field
+            ->fill(['start' => $from, 'end' => $to])
+            ->step('5');
+
+        expect($this->field->getAttributes()->get('step'))
+            ->toBe('5');
+    });
 });

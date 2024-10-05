@@ -56,7 +56,7 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
     public function step(int|float|string $step): static
     {
         $this->step = $step;
-        $this->getAttributes()->set('step', $this->step);
+        $this->getAttributes()->set('step', (string) $this->step);
 
         return $this;
     }
