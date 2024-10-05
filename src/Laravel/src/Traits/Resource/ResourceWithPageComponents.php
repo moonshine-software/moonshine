@@ -10,7 +10,7 @@ use MoonShine\Contracts\UI\FieldContract;
 trait ResourceWithPageComponents
 {
     /**
-     * @return list<FieldContract>
+     * @return list<ComponentContract>
      */
     public function getIndexPageComponents(): array
     {
@@ -18,7 +18,7 @@ trait ResourceWithPageComponents
     }
 
     /**
-     * @return list<FieldContract>
+     * @return list<ComponentContract>
      */
     public function getFormPageComponents(): array
     {
@@ -26,7 +26,7 @@ trait ResourceWithPageComponents
     }
 
     /**
-     * @return list<FieldContract>
+     * @return list<ComponentContract>
      */
     public function getDetailPageComponents(): array
     {
@@ -42,7 +42,7 @@ trait ResourceWithPageComponents
     }
 
     /**
-     * @return list<FieldContract>
+     * @return list<ComponentContract>
      */
     protected function formPageComponents(): array
     {
@@ -58,7 +58,7 @@ trait ResourceWithPageComponents
     }
 
     /**
-     * @return list<FieldContract>
+     * @return list<ComponentContract>
      */
     protected function pageComponents(): array
     {

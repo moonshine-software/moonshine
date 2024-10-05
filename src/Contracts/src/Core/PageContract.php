@@ -23,7 +23,8 @@ interface PageContract extends
     HasAssetsContract,
     Renderable,
     HasUriKeyContract,
-    HasStructureContract
+    HasStructureContract,
+    StatefulContract
 {
     public function getRouter(): RouterContract;
 
@@ -34,8 +35,6 @@ interface PageContract extends
     public function getLayout(): LayoutContract;
 
     public function getRoute(array $params = []): string;
-
-    public function flushState(): void;
 
     public function loaded(): static;
 

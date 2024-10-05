@@ -231,11 +231,11 @@ final class TableBuilder extends IterableComponent implements
             $key = $casted->getKey();
 
             $tdAttributes = fn (TableTd $td): TableTd => $td->customAttributes(
-                $this->getTdAttributes($casted, $index + 1, $td->getIndex())
+                $this->getTdAttributes($casted->getOriginal(), $index + 1, $td->getIndex())
             );
 
             $trAttributes = fn (TableRowContract $tr): ComponentContract => $tr->customAttributes(
-                $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1))
+                $this->getTrAttributes($casted->getOriginal(), $index + ($this->isVertical() ? 0 : 1))
             );
 
             if ($this->isVertical()) {

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Support\Memoize;
 
 use Countable;
+use MoonShine\Contracts\Core\StatefulContract;
 use WeakMap;
 
-final class MemoizeRepository implements Countable
+final class MemoizeRepository implements Countable, StatefulContract
 {
     protected static self $cache;
 
@@ -54,11 +55,9 @@ final class MemoizeRepository implements Countable
         unset($this->values[$object]);
     }
 
-    public function flush(): self
+    public function flushState(): void
     {
         $this->values = new WeakMap();
-
-        return $this;
     }
 
     public function enable(): self

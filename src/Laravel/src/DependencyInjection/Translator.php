@@ -16,7 +16,9 @@ final readonly class Translator implements TranslatorContract
 
     public function all(?string $locale = null): array
     {
-        return $this->get('moonshine::ui', locale: $locale);
+        $translates = $this->get('moonshine::ui', locale: $locale);
+
+        return is_array($translates) ? $translates : [];
     }
 
     public function get(string $key, array $replace = [], ?string $locale = null): mixed

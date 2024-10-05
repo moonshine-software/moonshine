@@ -16,7 +16,8 @@ interface ResourceContract extends
     HasCoreContract,
     MenuFillerContract,
     HasAssetsContract,
-    HasUriKeyContract
+    HasUriKeyContract,
+    StatefulContract
 {
     public function getPages(): PagesContract;
 
@@ -27,6 +28,4 @@ interface ResourceContract extends
     public function booted(): static;
 
     public function loaded(): static;
-
-    public function flushState(): void;
 }
