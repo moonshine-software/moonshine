@@ -34,7 +34,7 @@
         "symfony/psr-http-message-bridge": "^7"
     },
     "require-dev": {
-        "moonshine/import-export": "dev-master",
+        "moonshine/import-export": "^1.0",
         "orchestra/testbench": "^9.0",
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
@@ -52,18 +52,6 @@
         "moonshine/support": "self.version",
         "moonshine/ui": "self.version"
     },
-    "repositories": [
-        {
-            "options": {
-                "symlink": true,
-                "versions": {
-                    "moonshine/import-export": "master"
-                }
-            },
-            "type": "github",
-            "url": "https://github.com/moonshine-software/import-export"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
