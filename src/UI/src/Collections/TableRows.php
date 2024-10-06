@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\Collection\TableCellsContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
+use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\UI\Components\Table\TableRow;
 
 final class TableRows extends Collection implements TableRowsContract
@@ -20,7 +21,7 @@ final class TableRows extends Collection implements TableRowsContract
                 $key
             )->when(
                 ! is_null($builder),
-                static fn (TableRow $tr) => $builder($tr)
+                static fn (TableRowContract $tr) => $builder($tr)
             )
         );
     }
