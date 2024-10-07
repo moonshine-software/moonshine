@@ -36,7 +36,7 @@
         "moonshine/ui": "^3.0"
     },
     "require-dev": {
-        "moonshine/import-export": "^3.0"
+        "moonshine/import-export": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -57,18 +57,6 @@
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "github",
-            "url": "https://github.com/moonshine-software/import-export",
-            "options": {
-                "versions": {
-                    "moonshine/import-export": "master"
-                },
-                "symlink": true
-            }
-        }
-    ],
     "config": {
         "sort-packages": true
     },

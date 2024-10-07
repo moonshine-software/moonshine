@@ -24,6 +24,9 @@ trait WithOffCanvas
         return ! is_null($this->offCanvas);
     }
 
+    /**
+     * @param  ?Closure(OffCanvas $offCanvas, ActionButtonContract $ctx): OffCanvas  $builder
+     */
     public function inOffCanvas(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
