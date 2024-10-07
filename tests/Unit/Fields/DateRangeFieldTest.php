@@ -247,4 +247,47 @@ describe('unique field methods', function () {
         expect($this->field->getAttributes()->get('step'))
             ->toBe('5');
     });
+
+    it('attribute order', function (): void {
+        $from = now();
+        $to = now()->addMonth();
+
+        $fieldOne = clone $this->field;
+
+        $fieldOne
+            ->fill(['start' => $from, 'end' => $to])
+            ->fromAttributes(['class'=> 'bg-lime-500'])
+            ->toAttributes(['class'=> 'bg-lime-500'])
+            ->step(10);
+
+        // because prepareBeforeRender fill and merge from/to attributes
+        $fieldOne->render();
+
+        $fromAttributes = $fieldOne->getFromAttributes();
+        $toAttributes = $fieldOne->getToAttributes();
+
+        expect($fromAttributes->get('step'))
+            ->toBe('10')
+            ->and($toAttributes->get('step'))
+            ->toBe('10');
+
+        $fieldTwo = clone $this->field;
+
+        $fieldTwo
+            ->fill(['start' => $from, 'end' => $to])
+            ->step('11')
+            ->fromAttributes(['class'=> 'bg-lime-500'])
+            ->toAttributes(['class'=> 'bg-lime-500'])
+        ;
+
+        $fieldTwo->render();
+
+        $fromAttributes = $fieldTwo->getFromAttributes();
+        $toAttributes = $fieldTwo->getToAttributes();
+
+        expect($fromAttributes->get('step'))
+            ->toBe('11')
+            ->and($toAttributes->get('step'))
+            ->toBe('11');
+    });
 });
