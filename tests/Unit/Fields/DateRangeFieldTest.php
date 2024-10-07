@@ -256,8 +256,8 @@ describe('unique field methods', function () {
 
         $fieldOne
             ->fill(['start' => $from, 'end' => $to])
-            ->fromAttributes(['class'=> 'bg-lime-500'])
-            ->toAttributes(['class'=> 'bg-lime-500'])
+            ->fromAttributes(['class' => 'bg-lime-500'])
+            ->toAttributes(['class' => 'bg-lime-500'])
             ->step(10);
 
         // because prepareBeforeRender fill and merge from/to attributes
@@ -276,8 +276,8 @@ describe('unique field methods', function () {
         $fieldTwo
             ->fill(['start' => $from, 'end' => $to])
             ->step('11')
-            ->fromAttributes(['class'=> 'bg-lime-500'])
-            ->toAttributes(['class'=> 'bg-lime-500'])
+            ->fromAttributes(['class' => 'bg-lime-500'])
+            ->toAttributes(['class' => 'bg-lime-500'])
         ;
 
         $fieldTwo->render();
