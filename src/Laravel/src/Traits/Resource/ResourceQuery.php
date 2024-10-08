@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Support\Attributes\SearchUsingFullText;
+use MoonShine\Support\Enums\SortDirection;
 use Traversable;
 
 /**
@@ -22,7 +23,7 @@ trait ResourceQuery
 
     protected string $sortColumn = '';
 
-    protected string $sortDirection = 'DESC';
+    protected SortDirection $sortDirection = SortDirection::DESC;
 
     protected int $itemsPerPage = 25;
 
@@ -177,9 +178,7 @@ trait ResourceQuery
 
     public function getSortDirection(): string
     {
-        return in_array(strtolower($this->sortDirection), ['asc', 'desc'])
-            ? $this->sortDirection
-            : 'DESC';
+        return $this->sortDirection->value;
     }
 
     protected function prepareOrder(): array

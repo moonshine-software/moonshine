@@ -67,6 +67,4 @@ interface CoreContract
     public function pages(array $data, bool $newCollection = false): static;
 
     public function getPages(): PagesContract;
-
-    public function flushState(): void;
 }

@@ -24,7 +24,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $label, Closure|string $url = '', ?DataWrapperContract $data = null)
+ * @method static static make(Closure|string $label, Closure|string $url = '#', ?DataWrapperContract $data = null)
  *
  * @implements ActionButtonContract<Modal, OffCanvas>
  */
@@ -111,6 +111,9 @@ class ActionButton extends MoonShineComponent implements
         return $this->bulkForComponent;
     }
 
+    /**
+     * @param  Closure(?DataWrapperContract $data, ActionButtonContract $ctx): ?DataWrapperContract  $onBeforeSet
+     */
     public function onBeforeSet(Closure $onBeforeSet): static
     {
         $this->onBeforeSetCallback = $onBeforeSet;
@@ -118,6 +121,9 @@ class ActionButton extends MoonShineComponent implements
         return $this;
     }
 
+    /**
+     * @param  Closure(?DataWrapperContract $data, ActionButtonContract $ctx): void  $onAfterSet
+     */
     public function onAfterSet(Closure $onAfterSet): static
     {
         $this->onAfterSetCallback = $onAfterSet;
@@ -145,6 +151,9 @@ class ActionButton extends MoonShineComponent implements
         return $this;
     }
 
+    /**
+     * @param  Closure(mixed $data, static $ctx): string  $onClick
+     */
     public function onClick(Closure $onClick, ?string $modifier = null): static
     {
         $event = 'x-on:click';

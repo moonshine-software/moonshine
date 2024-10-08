@@ -25,8 +25,13 @@ trait RangeTrait
     public function fromAttributes(array $attributes): static
     {
         $this->fromAttributes = $this->getAttributes()
-            ->except(array_keys($attributes))
-            ->merge($attributes);
+                ->except(array_keys($attributes))
+                ->merge($attributes)
+                ->when(
+                    $this->fromAttributes,
+                    fn (ComponentAttributesBagContract $attributes) => $attributes->merge($this->fromAttributes->all())
+                )
+        ;
 
         return $this;
     }
@@ -59,7 +64,12 @@ trait RangeTrait
     {
         $this->toAttributes = $this->getAttributes()
             ->except(array_keys($attributes))
-            ->merge($attributes);
+            ->merge($attributes)
+            ->when(
+                $this->toAttributes,
+                fn (ComponentAttributesBagContract $attributes) => $attributes->merge($this->toAttributes->all())
+            )
+        ;
 
         return $this;
     }

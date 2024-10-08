@@ -14,15 +14,15 @@ final class ChangeLocale
 
     public function handle(Request $request, Closure $next): Response
     {
-        $local = $request->input(
+        $locale = $request->input(
             self::KEY,
-            session(self::KEY)
+            session(self::KEY, moonshineConfig()->getLocale())
         );
 
-        if ($local) {
-            app()->setLocale($local);
-            moonshineConfig()->locale($local);
-            session()->put(self::KEY, $local);
+        if ($locale) {
+            app()->setLocale($locale);
+            moonshineConfig()->locale($locale);
+            session()->put(self::KEY, $locale);
         }
 
         return $next($request);

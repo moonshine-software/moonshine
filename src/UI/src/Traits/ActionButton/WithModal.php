@@ -31,6 +31,9 @@ trait WithModal
         return ! is_null($this->modal);
     }
 
+    /**
+     * @param  ?Closure(Modal $modal, ActionButtonContract $ctx): Modal  $builder
+     */
     public function inModal(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
@@ -61,6 +64,10 @@ trait WithModal
         );
     }
 
+    /**
+     * @param  ?Closure(FormBuilderContract $form, mixed $data): FormBuilderContract  $formBuilder
+     * @param  ?Closure(Modal $modal, ActionButtonContract $ctx): Modal  $modalBuilder
+     */
     public function withConfirm(
         Closure|string|null $title = null,
         Closure|string|null $content = null,

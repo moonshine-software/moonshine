@@ -9,10 +9,10 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Contracts\UI\TableCellContract;
 use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -230,11 +230,11 @@ final class TableBuilder extends IterableComponent implements
 
             $key = $casted->getKey();
 
-            $tdAttributes = fn (TableTd $td): TableTd => $td->customAttributes(
+            $tdAttributes = fn (TableCellContract $td): TableCellContract => $td->customAttributes(
                 $this->getTdAttributes($casted, $index + 1, $td->getIndex())
             );
 
-            $trAttributes = fn (TableRowContract $tr): ComponentContract => $tr->customAttributes(
+            $trAttributes = fn (TableRowContract $tr): TableRowContract => $tr->customAttributes(
                 $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1))
             );
 
@@ -242,14 +242,14 @@ final class TableBuilder extends IterableComponent implements
                 foreach ($fields as $cellIndex => $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
 
-                    $builder = $attributes !== [] ? static fn (TableTd $td): TableTd => $td->customAttributes(
+                    $builder = $attributes !== [] ? static fn (TableCellContract $td): TableCellContract => $td->customAttributes(
                         $field->getWrapperAttributes()->jsonSerialize()
                     ) : null;
 
                     $cells = TableCells::make()
                         ->pushCell(
                             $field->getLabel(),
-                            builder: static fn (TableTd $td): TableTd => $td->customAttributes([
+                            builder: static fn (TableCellContract $td): TableCellContract => $td->customAttributes([
                                 'width' => '20%',
                                 'class' => 'font-semibold',
                             ])
@@ -484,7 +484,7 @@ final class TableBuilder extends IterableComponent implements
             fn (): string => (string) Flex::make([
                 ActionGroup::make($this->getBulkButtons()->toArray()),
             ])->justifyAlign('start'),
-            builder: fn (TableTd $td): TableTd => $td->customAttributes([
+            builder: fn (TableCellContract $td): TableCellContract => $td->customAttributes([
                 'colspan' => $this->getCellsCount(),
                 ':class' => "\$id('table-component') + '-bulk-actions'",
             ])

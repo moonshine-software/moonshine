@@ -6,10 +6,7 @@ namespace MoonShine\Contracts\UI;
 
 use MoonShine\Contracts\UI\Collection\TableCellsContract;
 
-/**
- * @mixin ComponentContract
- */
-interface TableRowContract
+interface TableRowContract extends ComponentContract
 {
     public function hasKey(): bool;
 

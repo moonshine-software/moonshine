@@ -17,6 +17,7 @@ use MoonShine\Contracts\Core\DependencyInjection\ViewRendererContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
+use MoonShine\Contracts\Core\StatefulContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Memoize\MemoizeRepository;
@@ -29,7 +30,7 @@ use Psr\Container\NotFoundExceptionInterface;
  *
  * @implements CoreContract<TConfig>
  */
-abstract class Core implements CoreContract
+abstract class Core implements CoreContract, StatefulContract
 {
     use Conditionable;
 
@@ -142,7 +143,7 @@ abstract class Core implements CoreContract
 
         $this->getRouter()->flushState();
 
-        MemoizeRepository::getInstance()->flush();
+        MemoizeRepository::getInstance()->flushState();
     }
 
     private function resolveInstances(iterable $items): array

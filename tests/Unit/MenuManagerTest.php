@@ -158,3 +158,19 @@ it('check active element', function (): void {
         ->and($item2->isActive())
         ->toBeTrue();
 });
+
+it('check active when home', function (): void {
+    fakeRequest('/item');
+
+    $item = MenuItem::make('Item 1', fn () => config('app.url'));
+
+    expect($item->isActive())
+        ->toBeFalse();
+
+    fakeRequest();
+
+    $item = MenuItem::make('Item 1', fn () => config('app.url'));
+
+    expect($item->isActive())
+        ->toBeTrue();
+});

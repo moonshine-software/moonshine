@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\Collection\TableCellsContract;
+use MoonShine\Contracts\UI\TableCellContract;
 use MoonShine\UI\Components\Table\TableTd;
 
 final class TableCells extends Collection implements TableCellsContract
@@ -19,7 +20,7 @@ final class TableCells extends Collection implements TableCellsContract
         foreach ($fields as $field) {
             $attributes = $field->getWrapperAttributes()->jsonSerialize();
 
-            $builder = $attributes !== [] ? static fn (TableTd $td): TableTd => $td->customAttributes(
+            $builder = $attributes !== [] ? static fn (TableCellContract $td): TableCellContract => $td->customAttributes(
                 $field->getWrapperAttributes()->jsonSerialize()
             ) : $initialBuilder;
 
@@ -42,7 +43,7 @@ final class TableCells extends Collection implements TableCellsContract
         return $this->push(
             TableTd::make($content, $index)->when(
                 ! is_null($builder),
-                static fn (TableTd $td) => $builder($td)
+                static fn (TableCellContract $td) => $builder($td)
             )->customAttributes($attributes)
         );
     }
