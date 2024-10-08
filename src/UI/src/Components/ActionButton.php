@@ -286,6 +286,9 @@ class ActionButton extends MoonShineComponent implements
         return null;
     }
 
+    /**
+     * Blocked because only two components inside are allowed (Modal and OffCanvas)
+     */
     public function setComponents(iterable $components): static
     {
         return $this;
