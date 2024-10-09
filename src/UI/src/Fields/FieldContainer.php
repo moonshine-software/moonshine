@@ -67,7 +67,7 @@ final class FieldContainer extends MoonShineComponent
         return [
             'label' => $this->field->getLabel(),
 
-            'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
+            'fieldErrors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
             'before' => new ComponentSlot($this->field->getBeforeRender()),
             'after' => new ComponentSlot($this->field->getAfterRender()),

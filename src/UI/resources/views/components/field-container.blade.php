@@ -1,7 +1,7 @@
 {{-- @internal --}}
 @props([
     'label' => '',
-    'errors' => [],
+    'fieldErrors' => [],
     'isBeforeLabel' => false,
     'isInsideLabel' => false,
     'before' => null,
@@ -16,7 +16,7 @@
     :attributes="$attributes"
     :beforeLabel="$isBeforeLabel"
     :insideLabel="$isInsideLabel"
-    :errors="$errors"
+    :fieldErrors="$fieldErrors"
 >
     @if($beforeInner ?? false)
     <x-slot:before>
