@@ -99,7 +99,7 @@ trait ResourceModelQuery
     public function newQuery(): Builder
     {
         if (! is_null($this->queryBuilder)) {
-            return $this->modifyQueryBuilder($this->queryBuilder);
+            return $this->queryBuilder;
         }
 
         $this->queryBuilder = $this->customQueryBuilder ?? $this->getModel()->newQuery();
@@ -108,7 +108,7 @@ trait ResourceModelQuery
             $this->queryBuilder->with($this->getWith());
         }
 
-        return $this->modifyQueryBuilder($this->queryBuilder);
+        return $this->queryBuilder = $this->modifyQueryBuilder($this->queryBuilder);
     }
 
     public function getQuery(): Builder
