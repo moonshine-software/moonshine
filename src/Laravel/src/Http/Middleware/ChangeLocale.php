@@ -21,7 +21,7 @@ final class ChangeLocale
 
         $locale = strtolower((string) $locale);
 
-        if(!in_array($locale, moonshineConfig()->getLocales(), true)) {
+        if (! in_array($locale, moonshineConfig()->getLocales(), true)) {
             return $next($request);
         }
 
@@ -30,7 +30,7 @@ final class ChangeLocale
             moonshineConfig()->locale($locale);
         }
 
-        if($request->has(self::KEY)) {
+        if ($request->has(self::KEY)) {
             session()->put(self::KEY, $locale);
         }
 
