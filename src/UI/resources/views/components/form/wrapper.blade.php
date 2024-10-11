@@ -1,6 +1,6 @@
 @props([
     'label' => '',
-    'error' => null,
+    'fieldErrors' => [],
     'beforeLabel' => false,
     'insideLabel' => false,
     'before',
@@ -29,10 +29,10 @@
 
         {{ $after ?? '' }}
 
-        @if($error)
+        @foreach($fieldErrors as $error)
             <x-moonshine::form.input-error>
                 {{ $error }}
             </x-moonshine::form.input-error>
-        @endif
+        @endforeach
     </div>
 </div>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use Illuminate\Support\Arr;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\AlpineJs;
@@ -81,6 +82,16 @@ trait RangeTrait
         $this->toField = $toField;
 
         return $this;
+    }
+
+    public function getNameDotFrom(): string
+    {
+        return "{$this->getNameDot()}.$this->fromField";
+    }
+
+    public function getNameDotTo(): string
+    {
+        return "{$this->getNameDot()}.$this->toField";
     }
 
     protected function reformatFilledValue(mixed $data): mixed
@@ -209,5 +220,29 @@ trait RangeTrait
             ->toAttributes([
                 'name' => $this->getNameAttribute($this->toField),
             ]);
+    }
+
+    public function getErrors(): array
+    {
+        $errors = collect(parent::getErrors());
+
+        return [
+            ...$errors,
+            $this->getNameDot() => [
+                ...(data_get($errors->undot()->toArray(), $this->getNameDotFrom()) ?? []),
+                ...(data_get($errors->undot()->toArray(), $this->getNameDotTo()) ?? []),
+            ],
+        ];
+    }
+
+    protected function resolveValidationErrorClasses(): void
+    {
+        if (Arr::has($this->getErrors(), $this->getNameDotFrom())) {
+            $this->fromAttributes(['class' => 'form-invalid']);
+        }
+
+        if (Arr::has($this->getErrors(), $this->getNameDotTo())) {
+            $this->toAttributes(['class' => 'form-invalid']);
+        }
     }
 }
