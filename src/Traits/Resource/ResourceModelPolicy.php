@@ -43,9 +43,15 @@ trait ResourceModelPolicy
         }
 
         $user = MoonShineAuth::guard()->user();
+        $item = $this->getModel();
 
-        $checkCustomRules = moonshine()->authorizationRules()
-            ->every(fn ($rule) => $rule($this, $user, $ability, $this->getItem() ?? $this->getModel()));
+        if (! in_array($ability, ['create', 'massDelete'])) {
+            $item = $this->getItemOrInstance();
+        }
+
+        $checkCustomRules = moonshine()
+            ->authorizationRules()
+            ->every(fn($rule) => $rule($this, $user, $ability, $item));
 
         if (! $checkCustomRules) {
             return false;
@@ -55,8 +61,7 @@ trait ResourceModelPolicy
             return true;
         }
 
-        return Gate::forUser($user)
-            ->allows($ability, $this->getItem() ?? $this->getModel());
+        return Gate::forUser($user)->allows($ability, $item);
     }
 
     public function isWithPolicy(): bool

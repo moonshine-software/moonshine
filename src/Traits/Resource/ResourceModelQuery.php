@@ -71,11 +71,15 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        if ($this->itemID === '') {
+        if(!blank($this->itemID)) {
+            return $this->itemID;
+        }
+
+        if($this->stopGettingItemFromUrl) {
             return null;
         }
 
-        return $this->itemID ?? moonshineRequest()->getItemID();
+        return moonshineRequest()->getItemID();
     }
 
     /**
@@ -107,10 +111,6 @@ trait ResourceModelQuery
         }
 
         if (blank($this->getItemID())) {
-            return null;
-        }
-
-        if($this->stopGettingItemFromUrl && blank($this->itemID)) {
             return null;
         }
 
