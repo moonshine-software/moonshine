@@ -135,6 +135,7 @@ class HasOne extends ModelRelationField implements HasFields
     protected function resolveValue(): MoonShineRenderable
     {
         $resource = $this->getResource();
+        $resource->stopGettingItemFromUrl();
 
         /** @var ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();
