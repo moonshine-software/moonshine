@@ -111,6 +111,9 @@ trait ResourceModelQuery
         return $this->queryBuilder = $this->modifyQueryBuilder($this->queryBuilder);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getQuery(): Builder
     {
         $this->queryBuilderFeatures();
@@ -183,6 +186,9 @@ trait ResourceModelQuery
         return $this->queryTags() !== [];
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function withTags(): static
     {
         /** @var ?QueryTag $tag */

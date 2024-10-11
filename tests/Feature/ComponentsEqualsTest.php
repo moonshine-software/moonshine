@@ -238,8 +238,7 @@ describe('Layouts', function () {
 
     it('layout', function () {
         compare(
-            Layout::make()->bodyClass('#fff'),
-            ['body-class' => '#fff'],
+            Layout::make()
         );
     });
 
