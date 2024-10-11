@@ -373,6 +373,7 @@ class HasMany extends ModelRelationField implements HasFields
     protected function getItemButtons(): array
     {
         $resource = $this->getResource();
+        $resource->stopGettingItemFromUrl();
 
         $redirectAfter = $this->isAsync()
             ? ''

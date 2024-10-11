@@ -48,10 +48,19 @@ trait ResourceModelQuery
 
     protected int|string|null $itemID = null;
 
+    protected bool $stopGettingItemFromUrl = false;
+
     protected array $parentRelations = [];
 
     // TODO 3.0 rename to saveQueryState
     protected bool $saveFilterState = false;
+
+    public function stopGettingItemFromUrl(): static
+    {
+        $this->stopGettingItemFromUrl = true;
+
+        return $this;
+    }
 
     public function setItemID(int|string|null $itemID): static
     {
@@ -98,6 +107,10 @@ trait ResourceModelQuery
         }
 
         if (blank($this->getItemID())) {
+            return null;
+        }
+
+        if($this->stopGettingItemFromUrl && blank($this->itemID)) {
             return null;
         }
 
