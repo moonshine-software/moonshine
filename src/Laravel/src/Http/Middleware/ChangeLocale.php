@@ -19,7 +19,7 @@ final class ChangeLocale
             session(self::KEY, moonshineConfig()->getLocale())
         );
 
-        $locale = strtolower($locale);
+        $locale = strtolower((string) $locale);
 
         if(!in_array($locale, moonshineConfig()->getLocales(), true)) {
             return $next($request);
