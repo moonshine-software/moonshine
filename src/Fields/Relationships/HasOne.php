@@ -85,7 +85,7 @@ class HasOne extends ModelRelationField implements HasFields
                 ->implode(';');
         }
 
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         return TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
@@ -134,8 +134,7 @@ class HasOne extends ModelRelationField implements HasFields
      */
     protected function resolveValue(): MoonShineRenderable
     {
-        $resource = $this->getResource();
-        $resource->stopGettingItemFromUrl();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         /** @var ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();

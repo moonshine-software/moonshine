@@ -21,7 +21,7 @@ final class HasManyButton
         ?ActionButton $button = null,
     ): ActionButton {
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResource()->stopGettingItemFromUrl();
         $parentResource = moonshineRequest()->getResource();
         $parentPage = moonshineRequest()->getPage();
 
