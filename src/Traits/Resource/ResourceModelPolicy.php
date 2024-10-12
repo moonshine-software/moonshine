@@ -51,7 +51,7 @@ trait ResourceModelPolicy
 
         $checkCustomRules = moonshine()
             ->authorizationRules()
-            ->every(fn($rule) => $rule($this, $user, $ability, $item));
+            ->every(fn ($rule) => $rule($this, $user, $ability, $item));
 
         if (! $checkCustomRules) {
             return false;
