@@ -307,7 +307,7 @@ export default (asyncUrl = '') => ({
       const inputs = form ? form.querySelectorAll('[name]') : []
       let formQuery = ''
 
-      if(inputs.length) {
+      if (inputs.length) {
         formQuery = crudFormQuery(inputs)
       }
 
