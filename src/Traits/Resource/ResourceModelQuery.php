@@ -48,10 +48,19 @@ trait ResourceModelQuery
 
     protected int|string|null $itemID = null;
 
+    protected bool $stopGettingItemFromUrl = false;
+
     protected array $parentRelations = [];
 
     // TODO 3.0 rename to saveQueryState
     protected bool $saveFilterState = false;
+
+    public function stopGettingItemFromUrl(): static
+    {
+        $this->stopGettingItemFromUrl = true;
+
+        return $this;
+    }
 
     public function setItemID(int|string|null $itemID): static
     {
@@ -62,11 +71,20 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
-        if ($this->itemID === '') {
+        // empty string is the value that stops the logic
+        if($this->itemID === '') {
             return null;
         }
 
-        return $this->itemID ?? moonshineRequest()->getItemID();
+        if(!blank($this->itemID)) {
+            return $this->itemID;
+        }
+
+        if($this->stopGettingItemFromUrl) {
+            return null;
+        }
+
+        return moonshineRequest()->getItemID();
     }
 
     /**

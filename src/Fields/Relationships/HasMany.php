@@ -277,7 +277,7 @@ class HasMany extends ModelRelationField implements HasFields
                 ->implode(';');
         }
 
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         return TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
@@ -372,7 +372,7 @@ class HasMany extends ModelRelationField implements HasFields
 
     protected function getItemButtons(): array
     {
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         $redirectAfter = $this->isAsync()
             ? ''
