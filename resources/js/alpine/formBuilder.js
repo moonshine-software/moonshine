@@ -28,7 +28,54 @@ export default (name = '', initData = {}, reactive = {}) => ({
       if (!t.blockWatch) {
         let focused = document.activeElement
 
+        let payload = JSON.parse(
+          JSON.stringify(value)
+        )
+
+        // choices hack
+        let choices = false
+
+        if(focused.tagName.toLowerCase() === 'body') {
+          await t.$nextTick
+
+          for (const [key, value] of Object.entries(payload)) {
+            let el = t.$root.querySelector(
+              `[data-reactive-column='${key}']`,
+            )
+
+            if(el.getAttribute('class').includes('choices')) {
+              if(el.options.length === 0) {
+                payload[key] = []
+              }
+            }
+          }
+        }
+
+        if(focused.getAttribute('class').includes('choices')) {
+          choices = true
+
+          focused = focused.tagName.toLowerCase()  === 'input'
+            ? focused.parentElement.querySelector('select')
+            : focused.querySelector('select')
+        }
+
+        if(choices && focused.multiple) {
+          let values = [];
+
+          for (let i = 0; i < focused.options.length; i++) {
+            values.push(focused.options[i].value)
+          }
+
+          let c = focused.getAttribute('data-reactive-column')
+          payload[c] = values
+        }
+        // / end of choices hack
+
         componentRequestData.withAfterCallback(function (data) {
+          if(data.fields === undefined) {
+            return
+          }
+
           for (let [column, html] of Object.entries(data.fields)) {
             if (typeof html === 'string') {
               const wrapper = t.$root.querySelector('.field-' + column + '-wrapper')
@@ -44,7 +91,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
                 focused !== document.body &&
                 isTextInput(focused) &&
                 !containsAttribute(focused, 'x-model.lazy')
-                  ? t.$root.querySelector('#' + focused.id)
+                  ? t.$root.querySelector(
+                    `[data-reactive-column='${focused.getAttribute('data-reactive-column')}']`,
+                  )
                   : null
 
               if (input) {
@@ -73,7 +122,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
           'post',
           {
             _component_name: t.name,
-            values: value,
+            values: payload,
           },
           {},
           componentRequestData,
