@@ -71,6 +71,11 @@ trait ResourceModelQuery
 
     public function getItemID(): int|string|null
     {
+        // empty string is the value that stops the logic
+        if($this->itemID === '') {
+            return null;
+        }
+
         if(!blank($this->itemID)) {
             return $this->itemID;
         }
