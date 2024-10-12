@@ -24,7 +24,6 @@ import pivot from './Components/Pivot'
 import asyncSearch from './Components/AsyncSearch'
 import interactsWithAsync from './Components/InteractsWithAsync'
 import range from './Components/Range'
-import code from './Components/Code'
 import tree from './Components/Tree'
 import charts from './Components/Charts'
 import sortable from './Components/Sortable'
@@ -32,7 +31,6 @@ import asyncLink from './Components/AsyncLink'
 import fragment from './Components/Fragment'
 import tabs from './Components/Tabs.js'
 import collapse from './Components/Collapse.js'
-import easyMde from './Components/EasyMde'
 import {validationInHiddenBlocks} from './Support/Forms.js'
 
 window.MoonShine = new MoonShine()
@@ -62,12 +60,10 @@ Alpine.data('pivot', pivot)
 Alpine.data('asyncSearch', asyncSearch)
 Alpine.data('interactsWithAsync', interactsWithAsync)
 Alpine.data('range', range)
-Alpine.data('code', code)
 Alpine.data('tree', tree)
 Alpine.data('charts', charts)
 Alpine.data('fragment', fragment)
 Alpine.data('tabs', tabs)
-Alpine.data('easyMde', easyMde)
 Alpine.data('collapse', collapse)
 
 window.Alpine = Alpine
