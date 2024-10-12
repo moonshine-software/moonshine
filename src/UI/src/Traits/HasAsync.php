@@ -29,7 +29,7 @@ trait HasAsync
     {
         return $this->when(
             fn (): bool => $this->getCore()->getRequest()->get('_component_name') === $this->getName(),
-            fn () => $callback($this)
+            fn () => $callback($this),
         );
     }
 
@@ -53,7 +53,7 @@ trait HasAsync
         $asyncUri = array_filter(
             $asyncUri,
             fn ($value, $key): bool => ! $this->getCore()->getRequest()->has($key),
-            ARRAY_FILTER_USE_BOTH
+            ARRAY_FILTER_USE_BOTH,
         );
 
         if ($asyncUri !== []) {
@@ -80,8 +80,14 @@ trait HasAsync
         $this->asyncUrl = $this->prepareAsyncUrl($url);
         $this->asyncEvents = $events;
         $this->asyncCallback = $callback;
+        $this->asyncWith();
 
         return $this;
+    }
+
+    protected function asyncWith(): void
+    {
+        //
     }
 
     public function getAsyncUrl(): ?string

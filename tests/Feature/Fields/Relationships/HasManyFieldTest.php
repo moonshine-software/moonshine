@@ -123,3 +123,22 @@ it('onlyLink value condition', function () {
         ->assertDontSee('<span class="badge">16</span>', false)
     ;
 });
+
+it('stop getting id from url', function () {
+    $item = createItem(countComments: 1);
+    //$comment = $item->comments->first();
+    $hasMany = HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)->creatable();
+
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([
+        ID::make(),
+        Text::make('Name'),
+        $hasMany,
+    ]);
+
+    fakeRequest(
+        $this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id])
+    );
+
+    expect($hasMany->getResource()->getItemID())
+        ->toBeNull();
+});

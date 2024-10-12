@@ -38,6 +38,7 @@ final class HasManyController extends MoonShineController
         $resource = $field->getResource();
 
         $item = $resource
+            ->stopGettingItemFromUrl()
             ->setItemID($request->input('_key', false))
             ->getItemOrInstance();
 

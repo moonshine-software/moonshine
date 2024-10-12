@@ -352,7 +352,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     protected function getTableValue(): TableBuilder
     {
         $items = $this->getValue();
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         // Need for assets
         $resource->getFormFields();
@@ -397,7 +397,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
      */
     protected function getItemButtons(): array
     {
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         $redirectAfter = $this->isAsync()
             ? '' : $this->getRedirectAfter(

@@ -31,7 +31,7 @@ use Throwable;
 
 /**
  * @template TFields of FieldsContract
- * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|array $fields = [], mixed $values = [])
+ * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|iterable $fields = [], mixed $values = [])
  *
  * @implements HasFieldsContract<TFields>
  *
@@ -81,7 +81,7 @@ final class FormBuilder extends MoonShineComponent implements
     public function __construct(
         protected string $action = '',
         protected FormMethod $method = FormMethod::POST,
-        FieldsContract|array $fields = [],
+        FieldsContract|iterable $fields = [],
         mixed $values = []
     ) {
         parent::__construct();
@@ -326,6 +326,10 @@ final class FormBuilder extends MoonShineComponent implements
     }
 
     /**
+     * @param Closure(mixed $values, FieldsContract $fields): void $apply
+     * @param ?Closure(FieldContract $field): void $default
+     * @param ?Closure(mixed $values): mixed $before
+     * @param ?Closure(mixed $values): void $after
      * @throws Throwable
      */
     public function apply(

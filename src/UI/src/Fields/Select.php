@@ -65,8 +65,8 @@ class Select extends Field implements
                 ->when(
                     ! $this->isRawMode(),
                     fn ($collect): Collection => $collect->map(
-                        fn ($v): string => (string) data_get($this->getValues()->flatten(), "$v.label", '')
-                    )
+                        fn ($v): string => (string) data_get($this->getValues()->flatten(), "$v.label", ''),
+                    ),
                 )
                 ->implode(',');
         }
@@ -76,6 +76,16 @@ class Select extends Field implements
         }
 
         return (string) data_get($this->getValues()->flatten(), "$value.label", '');
+    }
+
+    public function asyncOnInit(): static
+    {
+        return $this->customAttributes(['data-async-on-init' => true]);
+    }
+
+    protected function asyncWith(): void
+    {
+        $this->searchable();
     }
 
     protected function viewData(): array
