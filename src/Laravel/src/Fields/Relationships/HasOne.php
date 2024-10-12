@@ -106,7 +106,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
     {
         $items = [$this->toValue()];
 
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         return TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
@@ -144,7 +144,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
      */
     protected function getComponent(): FormBuilder
     {
-        $resource = $this->getResource();
+        $resource = $this->getResource()->stopGettingItemFromUrl();
 
         /** @var ?ModelResource $parentResource */
         $parentResource = moonshineRequest()->getResource();

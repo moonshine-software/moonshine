@@ -186,6 +186,10 @@ export default (asyncUrl = '') => ({
           if (this.associatedWith && asyncUrl) {
             this.asyncSearch(true)
           }
+
+          if (this.$el.dataset.asyncOnInit) {
+            this.asyncSearch(true)
+          }
         },
         ...this.customOptions,
       })
@@ -292,7 +296,7 @@ export default (asyncUrl = '') => ({
     const query = this.searchTerms.value ?? null
     let options = []
 
-    if (query !== null && query.length) {
+    if (onInit || (query !== null && query.length)) {
       const url = asyncUrl.startsWith('/')
         ? new URL(asyncUrl, window.location.origin)
         : new URL(asyncUrl)
@@ -300,12 +304,17 @@ export default (asyncUrl = '') => ({
       url.searchParams.append('query', query)
 
       const form = this.$el.form
-      const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+      const inputs = form ? form.querySelectorAll('[name]') : []
+      let formQuery = ''
+
+      if(inputs.length) {
+        formQuery = crudFormQuery(inputs)
+      }
 
       options = await this.fromUrl(url.toString() + (formQuery.length ? '&' + formQuery : ''))
-    }
 
-    await this.choicesInstance.setChoices(options, 'value', 'label', true)
+      await this.choicesInstance.setChoices(options, 'value', 'label', true)
+    }
 
     if (!onInit) {
       this.$el.dispatchEvent(new Event('change'))

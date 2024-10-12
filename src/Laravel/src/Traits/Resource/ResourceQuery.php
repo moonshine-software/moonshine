@@ -35,6 +35,8 @@ trait ResourceQuery
 
     protected int|string|false|null $itemID = null;
 
+    protected bool $stopGettingItemFromUrl = false;
+
     protected bool $saveQueryState = false;
 
     protected ?int $paginatorPage = null;
@@ -58,13 +60,34 @@ trait ResourceQuery
         return $this;
     }
 
+    public function stopGettingItemFromUrl(): static
+    {
+        $this->stopGettingItemFromUrl = true;
+
+        return $this;
+    }
+
+    public function isStopGettingItemFromUrl(): bool
+    {
+        return $this->stopGettingItemFromUrl;
+    }
+
     public function getItemID(): int|string|null
     {
-        if ($this->itemID === false) {
+        // false is the value that stops the logic
+        if($this->itemID === false) {
             return null;
         }
 
-        return $this->itemID ?? moonshineRequest()->getItemID();
+        if (!blank($this->itemID)) {
+            return $this->itemID;
+        }
+
+        if ($this->isStopGettingItemFromUrl()) {
+            return null;
+        }
+
+        return moonshineRequest()->getItemID();
     }
 
     /**
@@ -82,7 +105,7 @@ trait ResourceQuery
     }
 
     /**
-     * @param  ?T $item
+     * @param  ?T  $item
      */
     public function setItem(mixed $item): static
     {
@@ -110,7 +133,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn () => $this->findItem()
+            fn() => $this->findItem(),
         );
     }
 
@@ -128,7 +151,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn () => $this->findItem() ?? $this->getDataInstance()
+            fn() => $this->findItem() ?? $this->getDataInstance(),
         );
     }
 
@@ -142,7 +165,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn () => $this->findItem(orFail: true)
+            fn() => $this->findItem(orFail: true),
         );
     }
 
@@ -231,13 +254,13 @@ trait ResourceQuery
 
     protected function getPaginatorPage(): int
     {
-        $page = $this->paginatorPage ?? (int) $this->getQueryParams()->get('page');
+        $page = $this->paginatorPage ?? (int)$this->getQueryParams()->get('page');
 
         if ($this->isSaveQueryState() && ! $this->getQueryParams()->has('reset')) {
-            return (int) data_get(
+            return (int)data_get(
                 moonshineCache()->get($this->getQueryCacheKey(), []),
                 'page',
-                $page
+                $page,
             );
         }
 
@@ -303,7 +326,7 @@ trait ResourceQuery
             moonshineCache()->put(
                 $this->getQueryCacheKey(),
                 $this->getQueryParams()->only($this->getCachedRequestKeys()),
-                now()->addHours(2)
+                now()->addHours(2),
             );
         }
 
@@ -326,9 +349,9 @@ trait ResourceQuery
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
                     collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(
-                        fn ($value, $key): bool => ! $this->getQueryParams()->has($key)
-                    )->toArray()
-                )
+                        fn($value, $key): bool => ! $this->getQueryParams()->has($key),
+                    )->toArray(),
+                ),
             );
         }
 
@@ -346,7 +369,7 @@ trait ResourceQuery
             return data_get(
                 moonshineCache()->get($this->getQueryCacheKey(), []),
                 'filter',
-                $default
+                $default,
             );
         }
 
@@ -365,7 +388,7 @@ trait ResourceQuery
 
         $filters->fill(
             $params,
-            $this->getCaster()->cast($this->getDataInstance())
+            $this->getCaster()->cast($this->getDataInstance()),
         );
 
         return $filters;
