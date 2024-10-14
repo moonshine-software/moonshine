@@ -45,8 +45,6 @@ use MoonShine\UI\Components\Layout\ThemeSwitcher;
 use MoonShine\UI\Components\Layout\TopBar;
 use MoonShine\UI\Components\Layout\Wrapper;
 use MoonShine\UI\Components\Link;
-use MoonShine\UI\Components\Metrics\Wrapped\DonutChartMetric;
-use MoonShine\UI\Components\Metrics\Wrapped\LineChartMetric;
 use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 use MoonShine\UI\Components\Modal;
 use MoonShine\UI\Components\MoonShineComponent;
@@ -316,25 +314,9 @@ describe('Layouts', function () {
 });
 
 describe('Metrics', function () {
-    it('line', function () {
-        compare(
-            LineChartMetric::make('Title'),
-            ['label' => 'Title'],
-            ['::id' => "\$id(`metrics`)"]
-        );
-    });
-
     it('value', function () {
         compare(
             ValueMetric::make('Title'),
-            ['label' => 'Title'],
-            ['::id' => "\$id(`metrics`)"]
-        );
-    });
-
-    it('donut', function () {
-        compare(
-            DonutChartMetric::make('Title'),
             ['label' => 'Title'],
             ['::id' => "\$id(`metrics`)"]
         );
