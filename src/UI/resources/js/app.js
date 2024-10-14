@@ -25,7 +25,6 @@ import asyncSearch from './Components/AsyncSearch'
 import interactsWithAsync from './Components/InteractsWithAsync'
 import range from './Components/Range'
 import tree from './Components/Tree'
-import charts from './Components/Charts'
 import sortable from './Components/Sortable'
 import asyncLink from './Components/AsyncLink'
 import fragment from './Components/Fragment'
@@ -61,7 +60,6 @@ Alpine.data('asyncSearch', asyncSearch)
 Alpine.data('interactsWithAsync', interactsWithAsync)
 Alpine.data('range', range)
 Alpine.data('tree', tree)
-Alpine.data('charts', charts)
 Alpine.data('fragment', fragment)
 Alpine.data('tabs', tabs)
 Alpine.data('collapse', collapse)

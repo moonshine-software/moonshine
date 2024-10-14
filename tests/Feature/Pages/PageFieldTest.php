@@ -42,8 +42,6 @@ it('fields on index', function () {
         ->assertSee('Item #1 Query Tag')
         ->assertSee('Test button')
         ->assertSee('TestValueMetric')
-        ->assertSee('TestLineChartMetric')
-        ->assertSee('TestDonutChartMetric')
         ->assertSee('data-test-td-attr')
         ->assertSee('data-test-tr-attr')
     ;

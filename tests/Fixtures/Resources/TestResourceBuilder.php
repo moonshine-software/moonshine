@@ -7,8 +7,6 @@ namespace MoonShine\Tests\Fixtures\Resources;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\Metrics\Wrapped\DonutChartMetric;
-use MoonShine\UI\Components\Metrics\Wrapped\LineChartMetric;
 use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 use MoonShine\UI\Fields\Email;
 use MoonShine\UI\Fields\Password;
@@ -55,8 +53,6 @@ class TestResourceBuilder
             ])
             ->setTestMetrics([
                 ValueMetric::make('TestValueMetric')->value(MoonshineUser::query()->count()),
-                LineChartMetric::make('TestLineChartMetric')->line(['Line' => [1 => 100, 2 => 200, 3 => 300]]),
-                DonutChartMetric::make('TestDonutChartMetric')->values(['CutCode' => 10000, 'Apple' => 9999]),
             ])
             ->setTestTdAttributes(static fn (
                 mixed $data,
