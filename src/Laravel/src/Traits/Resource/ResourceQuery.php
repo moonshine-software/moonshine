@@ -75,11 +75,11 @@ trait ResourceQuery
     public function getItemID(): int|string|null
     {
         // false is the value that stops the logic
-        if($this->itemID === false) {
+        if ($this->itemID === false) {
             return null;
         }
 
-        if (!blank($this->itemID)) {
+        if (! blank($this->itemID)) {
             return $this->itemID;
         }
 
@@ -133,7 +133,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn() => $this->findItem(),
+            fn () => $this->findItem(),
         );
     }
 
@@ -151,7 +151,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn() => $this->findItem() ?? $this->getDataInstance(),
+            fn () => $this->findItem() ?? $this->getDataInstance(),
         );
     }
 
@@ -165,7 +165,7 @@ trait ResourceQuery
         }
 
         return $this->itemOr(
-            fn() => $this->findItem(orFail: true),
+            fn () => $this->findItem(orFail: true),
         );
     }
 
@@ -349,7 +349,7 @@ trait ResourceQuery
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
                     collect(moonshineCache()->get($this->getQueryCacheKey(), []))->filter(
-                        fn($value, $key): bool => ! $this->getQueryParams()->has($key),
+                        fn ($value, $key): bool => ! $this->getQueryParams()->has($key),
                     )->toArray(),
                 ),
             );
