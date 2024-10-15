@@ -259,7 +259,6 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../UI/resources/views', 'moonshine');
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine');
 
         $this->publishes([
             MoonShine::UIPath('/dist') => public_path('vendor/moonshine'),
