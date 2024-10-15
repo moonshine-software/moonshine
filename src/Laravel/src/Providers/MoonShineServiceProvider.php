@@ -109,7 +109,7 @@ final class MoonShineServiceProvider extends ServiceProvider
 
         Config::set('auth.providers.moonshine', [
             'driver' => 'eloquent',
-            'model' => MoonshineUser::class,
+            'model' => Config::get('moonshine.auth.model', MoonshineUser::class),
         ]);
 
         return $this;
