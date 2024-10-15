@@ -19,7 +19,7 @@ final class MassDeleteButton
         string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-        string $modalName = 'mass-delete-modal',
+        string $modalName = 'resource-mass-delete-modal',
     ): ActionButtonContract {
         $action = static fn (): string => $resource->getRoute('crud.massDelete', query: [
             ...$redirectAfterDelete

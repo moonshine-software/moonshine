@@ -262,7 +262,14 @@ abstract class Page implements PageContract
             );
         }
 
-        return $this->getCore()->getContainer($this->layout, null, page: $this);
+        return $this->modifyLayout(
+            $this->getCore()->getContainer($this->layout, null, page: $this)
+        );
+    }
+
+    protected function modifyLayout(LayoutContract $layout): LayoutContract
+    {
+        return $layout;
     }
 
     public function getRoute(array $params = []): string

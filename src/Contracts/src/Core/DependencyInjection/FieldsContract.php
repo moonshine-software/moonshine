@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use MoonShine\Contracts\Core\HasStructureContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 
 /**
@@ -21,6 +22,7 @@ interface FieldsContract extends Enumerable, HasStructureContract
 {
     public function onlyVisible(): static;
 
+    /** @param Closure(ComponentContract): bool $except */
     public function exceptElements(Closure $except): static;
 
     public function onlyFields(bool $withWrappers = false): FieldsContract;

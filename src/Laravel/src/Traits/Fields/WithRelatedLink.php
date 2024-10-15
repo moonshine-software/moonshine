@@ -19,6 +19,9 @@ trait WithRelatedLink
 
     protected ?Closure $modifyRelatedLink = null;
 
+    /**
+     * @param  (Closure(int $count, static $ctx): bool)|bool|null  $condition
+     */
     public function relatedLink(?string $linkRelation = null, Closure|bool|null $condition = null): static
     {
         $this->parentRelationName = $linkRelation;

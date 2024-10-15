@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -115,11 +116,11 @@ final class HasManyController extends MoonShineController
             )
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
             ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
-                static fn (mixed $field): bool => $field instanceof ModelRelationField
-                    && $field->isToOne()
-                    && $field->getColumn() === $relation->getForeignKeyName()
+                static fn (ComponentContract $element): bool => $element instanceof ModelRelationField
+                    && $element->isToOne()
+                    && $element->getColumn() === $relation->getForeignKeyName()
             ))
-            ->buttons($resource->getCustomFormButtons())
+            ->buttons($field->getFormButtons())
             ->redirect($isAsync ? null : $field->getRedirectAfter($parent));
     }
 

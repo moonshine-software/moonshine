@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Collections\Fields;
@@ -226,9 +227,9 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                 ]
             )
             ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
-                static fn (mixed $field): bool => $field instanceof ModelRelationField
-                    && $field->isToOne()
-                    && $field->getColumn() === $relation->getForeignKeyName()
+                static fn (ComponentContract $element): bool => $element instanceof ModelRelationField
+                    && $element->isToOne()
+                    && $element->getColumn() === $relation->getForeignKeyName()
             ))
             ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg']);
     }

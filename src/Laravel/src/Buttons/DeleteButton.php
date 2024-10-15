@@ -20,7 +20,7 @@ final class DeleteButton
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-        string $modalName = 'delete-modal',
+        string $modalName = 'resource-delete-modal',
     ): ActionButtonContract {
         $action = static fn (mixed $item, ?DataWrapperContract $data): string => $resource->getRoute(
             'crud.destroy',

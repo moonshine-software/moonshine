@@ -27,8 +27,14 @@ interface ActionButtonContract extends
 {
     public function getUrl(mixed $data = null): string;
 
+    /**
+     * @param  (Closure(mixed $original, ?DataWrapperContract $casted, static $ctx): string)|string  $url
+     */
     public function setUrl(Closure|string $url): static;
 
+    /**
+     * @param  Closure(mixed $data, static $ctx): string  $onClick
+     */
     public function onClick(Closure $onClick, ?string $modifier = null): static;
 
     public function bulk(?string $forComponent = null): static;
@@ -41,8 +47,14 @@ interface ActionButtonContract extends
 
     public function setData(?DataWrapperContract $data = null): static;
 
+    /**
+     * @param  Closure(?DataWrapperContract $data, ActionButtonContract $ctx): ?DataWrapperContract  $onBeforeSet
+     */
     public function onBeforeSet(Closure $onBeforeSet): static;
 
+    /**
+     * @param  Closure(?DataWrapperContract $data, ActionButtonContract $ctx): void  $onAfterSet
+     */
     public function onAfterSet(Closure $onAfterSet): static;
 
     public function isInDropdown(): bool;
@@ -51,6 +63,9 @@ interface ActionButtonContract extends
 
     public function showInLine(): static;
 
+    /**
+     * @param array|(Closure(mixed $original): array) $params = []
+     */
     public function method(
         string $method,
         array|Closure $params = [],

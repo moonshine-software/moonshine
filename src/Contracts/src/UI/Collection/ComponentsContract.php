@@ -24,6 +24,7 @@ interface ComponentsContract extends Enumerable, HasStructureContract
 {
     public function onlyVisible(): static;
 
+    /** @param Closure(ComponentContract): bool $except */
     public function exceptElements(Closure $except): static;
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Collections;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\UI\Collections\Fields as BaseFields;
@@ -27,7 +28,7 @@ final class Fields extends BaseFields
     public function withoutOutside(): self
     {
         return $this->exceptElements(
-            static fn ($element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
+            static fn (ComponentContract $element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
         );
     }
 
@@ -47,7 +48,7 @@ final class Fields extends BaseFields
     public function withoutRelationFields(): self
     {
         return $this->exceptElements(
-            static fn ($element): bool => $element instanceof ModelRelationField
+            static fn (ComponentContract $element): bool => $element instanceof ModelRelationField
         );
     }
 
@@ -67,7 +68,7 @@ final class Fields extends BaseFields
         return $this->when(
             ! $withOutside,
             static fn (self $fields): self => $fields->exceptElements(
-                static fn ($element): bool => ($element instanceof ModelRelationField && $element->isOutsideComponent())
+                static fn (ComponentContract $element): bool => ($element instanceof ModelRelationField && $element->isOutsideComponent())
             )
         );
     }

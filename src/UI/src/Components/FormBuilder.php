@@ -12,6 +12,7 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasCasterContract;
@@ -326,7 +327,7 @@ final class FormBuilder extends MoonShineComponent implements
     }
 
     /**
-     * @param Closure(mixed $values, FieldsContract $fields): void $apply
+     * @param Closure(mixed $values, FieldsContract $fields): bool $apply
      * @param ?Closure(FieldContract $field): void $default
      * @param ?Closure(mixed $values): mixed $before
      * @param ?Closure(mixed $values): void $after
@@ -362,7 +363,7 @@ final class FormBuilder extends MoonShineComponent implements
                 ->getPreparedFields()
                 ->onlyFields()
                 ->exceptElements(
-                    fn (FieldContract $element): bool => in_array($element->getColumn(), $this->getExcludedFields(), true)
+                    fn (ComponentContract $element): bool => $element instanceof FieldContract && in_array($element->getColumn(), $this->getExcludedFields(), true)
                 );
 
             $values = is_null($before) ? $values : $before($values);

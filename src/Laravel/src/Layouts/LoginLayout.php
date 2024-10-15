@@ -14,6 +14,34 @@ final class LoginLayout extends BaseLayout
 {
     use WithComponentsPusher;
 
+    protected ?string $title = null;
+
+    protected ?string $description = null;
+
+    public function title(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function description(string $description): self
+    {
+        $this->title = $description;
+
+        return $this;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title ?? moonshineConfig()->getTitle();
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description ?? __('moonshine::ui.login.description');
+    }
+
     public function build(): Layout
     {
         return Layout::make([
@@ -30,12 +58,12 @@ final class LoginLayout extends BaseLayout
                                 Heading::make(
                                     __(
                                         'moonshine::ui.login.title',
-                                        ['moonshine_title' => moonshineConfig()->getTitle()]
+                                        ['moonshine_title' => $this->getTitle()]
                                     )
                                 ),
                                 Block::make([
                                     FlexibleRender::make(
-                                        __('moonshine::ui.login.description')
+                                        $this->getDescription()
                                     ),
                                 ])->class('description'),
                             ])->class('authentication-header'),

@@ -248,9 +248,11 @@ class TestResource extends AbstractTestingResource
         return $this->testQueryTags;
     }
 
-    protected function customIndexButtons(): ListOf
+    protected function indexButtons(): ListOf
     {
-        return new ListOf(ActionButtonContract::class, $this->testButtons);
+        return parent::indexButtons()->prepend(
+            ...$this->testButtons
+        );
     }
 
     protected function search(): array

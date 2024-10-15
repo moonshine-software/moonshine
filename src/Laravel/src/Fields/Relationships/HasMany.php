@@ -62,6 +62,10 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     protected ?ActionGroup $buttons = null;
 
+    protected array $indexButtons = [];
+
+    protected array $formButtons = [];
+
     protected ?Closure $modifyTable = null;
 
     protected ?Closure $modifyCreateButton = null;
@@ -123,6 +127,36 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     public function getButtons(): ActionGroup
     {
         return $this->buttons ?? ActionGroup::make();
+    }
+
+    /**
+     * @param  list<ActionButtonContract>  $buttons
+     */
+    public function indexButtons(array $buttons): static
+    {
+        $this->indexButtons = $buttons;
+
+        return $this;
+    }
+
+    public function getIndexButtons(): array
+    {
+        return $this->indexButtons;
+    }
+
+    /**
+     * @param  list<ActionButtonContract>  $buttons
+     */
+    public function formButtons(array $buttons): static
+    {
+        $this->formButtons = $buttons;
+
+        return $this;
+    }
+
+    public function getFormButtons(): array
+    {
+        return $this->formButtons;
     }
 
     /**
@@ -441,7 +475,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         }
 
         return [
-            ...$resource->getCustomIndexButtons(),
+            ...$this->getIndexButtons(),
             $detailButton,
             $editButton,
             $deleteButton,

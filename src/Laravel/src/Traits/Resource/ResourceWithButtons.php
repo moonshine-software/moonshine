@@ -97,67 +97,25 @@ trait ResourceWithButtons
         return ActionButtons::make($this->topButtons()->toArray());
     }
 
-    protected function customIndexButtons(): ListOf
-    {
-        return new ListOf(ActionButtonContract::class, []);
-    }
-
-    /**
-     * @return list<ActionButtonContract>
-     */
-    public function getCustomIndexButtons(): array
-    {
-        return $this->customIndexButtons()->toArray();
-    }
-
     public function getIndexButtons(): ActionButtonsContract
     {
-        return ActionButtons::make([
-            ...$this->getCustomIndexButtons(),
-            ...$this->indexButtons()->toArray(),
-        ]);
-    }
-
-    protected function customFormButtons(): ListOf
-    {
-        return new ListOf(ActionButtonContract::class, []);
-    }
-
-    /**
-     * @return list<ActionButtonContract>
-     */
-    public function getCustomFormButtons(): array
-    {
-        return $this->customFormButtons()->toArray();
+        return ActionButtons::make(
+            $this->indexButtons()->toArray(),
+        );
     }
 
     public function getFormButtons(): ActionButtonsContract
     {
-        return ActionButtons::make([
-            ...$this->getCustomFormButtons(),
-            ...$this->formButtons()->toArray(),
-        ])->withoutBulk();
-    }
-
-    protected function customDetailButtons(): ListOf
-    {
-        return new ListOf(ActionButtonContract::class, []);
-    }
-
-    /**
-     * @return list<ActionButtonContract>
-     */
-    public function getCustomDetailButtons(): array
-    {
-        return $this->customIndexButtons()->toArray();
+        return ActionButtons::make(
+            $this->formButtons()->toArray()
+        )->withoutBulk();
     }
 
     public function getDetailButtons(): ActionButtonsContract
     {
-        return ActionButtons::make([
-            ...$this->getCustomDetailButtons(),
-            ...$this->detailButtons()->toArray(),
-        ])->withoutBulk();
+        return ActionButtons::make(
+            $this->detailButtons()->toArray()
+        )->withoutBulk();
     }
 
     public function getFormBuilderButtons(): ActionButtonsContract
@@ -167,15 +125,10 @@ trait ResourceWithButtons
         )->withoutBulk();
     }
 
-    protected function modifyCreateButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
-    }
-
     public function getCreateButton(
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'create-modal'
+        string $modalName = 'resource-create-modal'
     ): ActionButtonContract {
         return $this->modifyCreateButton(
             CreateButton::for(
@@ -185,11 +138,6 @@ trait ResourceWithButtons
                 modalName: $modalName
             )
         );
-    }
-
-    protected function modifyEditButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
     }
 
     public function getEditButton(
@@ -207,12 +155,10 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyDetailButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
-    }
-
-    public function getDetailButton(string $modalName = 'resource-detail-modal',  bool $isSeparateModal = true): ActionButtonContract
+    public function getDetailButton(
+        string $modalName = 'resource-detail-modal',
+        bool $isSeparateModal = true
+    ): ActionButtonContract
     {
         return $this->modifyDetailButton(
             DetailButton::for(
@@ -223,16 +169,11 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyDeleteButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
-    }
-
     public function getDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-        string $modalName = 'delete-modal',
+        string $modalName = 'resource-delete-modal',
     ): ActionButtonContract {
         return $this->modifyDeleteButton(
             DeleteButton::for(
@@ -245,26 +186,16 @@ trait ResourceWithButtons
         );
     }
 
-    protected function modifyFiltersButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
-    }
-
     public function getFiltersButton(): ActionButtonContract
     {
         return $this->modifyFiltersButton(FiltersButton::for($this));
-    }
-
-    protected function modifyMassDeleteButton(ActionButtonContract $button): ActionButtonContract
-    {
-        return $button;
     }
 
     public function getMassDeleteButton(
         ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = true,
-        string $modalName = 'mass-delete-modal',
+        string $modalName = 'resource-mass-delete-modal',
     ): ActionButtonContract {
         return $this->modifyMassDeleteButton(
             MassDeleteButton::for(
@@ -275,5 +206,35 @@ trait ResourceWithButtons
                 modalName: $modalName
             )
         );
+    }
+
+    protected function modifyCreateButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyEditButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyDetailButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyDeleteButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyFiltersButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyMassDeleteButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
     }
 }

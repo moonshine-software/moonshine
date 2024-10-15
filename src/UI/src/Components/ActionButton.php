@@ -64,6 +64,9 @@ class ActionButton extends MoonShineComponent implements
         $this->setLabel($label);
     }
 
+    /**
+     * @param  (Closure(mixed $original, ?DataWrapperContract $casted, static $ctx): string)|string  $url
+     */
     public function setUrl(Closure|string $url): static
     {
         $this->url = $url;
@@ -185,6 +188,7 @@ class ActionButton extends MoonShineComponent implements
     }
 
     /**
+     * @param array|(Closure(mixed $original): array) $params = []
      * @throws Throwable
      */
     public function method(

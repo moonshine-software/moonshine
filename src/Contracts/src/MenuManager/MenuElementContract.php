@@ -20,5 +20,6 @@ interface MenuElementContract extends
 {
     public function isActive(): bool;
 
+    /** @param ?Closure(static $ctx): bool $condition */
     public function topMode(?Closure $condition = null): static;
 }
