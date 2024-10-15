@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use Closure;
-use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\ListOf;
 
 class TestResource extends AbstractTestingResource
