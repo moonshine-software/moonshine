@@ -148,6 +148,14 @@ abstract class CrudResource extends Resource implements CrudResourceContract
     }
 
     /**
+     * @return ?PageContract
+     */
+    public function getActivePage(): ?PageContract
+    {
+        return $this->getPages()->activePage();
+    }
+
+    /**
      * @return null|PageContract<TDetailPage>|DetailPage
      */
     public function getDetailPage(): ?PageContract

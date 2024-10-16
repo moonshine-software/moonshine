@@ -48,4 +48,6 @@ interface PagesContract extends Enumerable
         string $uri,
         PageContract $default = null
     ): ?PageContract;
+
+    public function activePage(): ?PageContract;
 }

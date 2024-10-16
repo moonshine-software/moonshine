@@ -54,6 +54,11 @@ final class Pages extends Collection implements PagesContract
         return $this->findByType(PageType::DETAIL);
     }
 
+    public function activePage(): ?PageContract
+    {
+        return $this->first(fn(PageContract $page) => $page->isActive());
+    }
+
     public function findByUri(
         string $uri,
         PageContract $default = null
