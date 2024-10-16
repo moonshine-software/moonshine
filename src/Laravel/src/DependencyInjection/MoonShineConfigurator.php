@@ -281,11 +281,18 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->get('page_prefix', 'page');
     }
 
-    public function prefixes(string|Closure $route, string|Closure $page): self
+    public function getResourcePrefix(): string
+    {
+        return $this->get('resource_prefix', 'resource');
+    }
+
+    public function prefixes(string|Closure $route, string|Closure $page, string|Closure $resource): self
     {
         return $this
             ->set('prefix', $route)
-            ->set('page_prefix', $page);
+            ->set('page_prefix', $page)
+            ->set('resource_prefix', $resource)
+        ;
     }
 
     public function domain(string|Closure $domain): self

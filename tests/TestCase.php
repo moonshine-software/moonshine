@@ -63,6 +63,7 @@ class TestCase extends Orchestra
         $app['config']->set('moonshine.use_notifications', true);
         $app['config']->set('moonshine.use_database_notifications', true);
         $app['config']->set('moonshine.auth.enabled', true);
+        $app['config']->set('moonshine.resource_prefix', '');
     }
 
     protected function performApplication(): static

@@ -27,14 +27,17 @@ final class LoginLayout extends BaseLayout
 
     public function description(string $description): self
     {
-        $this->title = $description;
+        $this->description = $description;
 
         return $this;
     }
 
     public function getTitle(): string
     {
-        return $this->title ?? moonshineConfig()->getTitle();
+        return $this->title ?? __(
+            'moonshine::ui.login.title',
+            ['moonshine_title' => moonshineConfig()->getTitle()],
+        );
     }
 
     public function getDescription(): string
@@ -56,14 +59,11 @@ final class LoginLayout extends BaseLayout
                         Block::make([
                             Block::make([
                                 Heading::make(
-                                    __(
-                                        'moonshine::ui.login.title',
-                                        ['moonshine_title' => $this->getTitle()]
-                                    )
+                                    $this->getTitle(),
                                 ),
                                 Block::make([
                                     FlexibleRender::make(
-                                        $this->getDescription()
+                                        $this->getDescription(),
                                     ),
                                 ])->class('description'),
                             ])->class('authentication-header'),

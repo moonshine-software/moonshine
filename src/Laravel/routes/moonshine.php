@@ -21,6 +21,7 @@ use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 
 Route::moonshine(static function (Router $router): void {
     $pagePrefix = moonshineConfig()->getPagePrefix();
+    $resourcePrefix = moonshineConfig()->getResourcePrefix();
     $authEnabled = moonshineConfig()->isAuthEnabled();
     $authMiddleware = moonshineConfig()->getAuthMiddleware();
 
@@ -36,7 +37,7 @@ Route::moonshine(static function (Router $router): void {
             ->name('profile.store');
     }
 
-    $router->middleware($authMiddleware)->group(function () use ($pagePrefix): void {
+    $router->middleware($authMiddleware)->group(function () use ($pagePrefix, $resourcePrefix): void {
         /**
          * @see EndpointsContract::home()
          */
@@ -98,14 +99,14 @@ Route::moonshine(static function (Router $router): void {
          * @see EndpointsContract::toPage()
          */
         Route::get(
-            "/$pagePrefix/{pageUri}",
+            ltrim("/$pagePrefix/{pageUri}", '/'),
             PageController::class
         )->name('page');
 
         /**
          * CRUD endpoints
          */
-        Route::prefix('{resourceUri}')->group(function (): void {
+        Route::prefix(ltrim("/$resourcePrefix/{resourceUri}", '/'))->group(function (): void {
             Route::delete('crud', [CrudController::class, 'massDelete'])->name('crud.massDelete');
 
             Route::resource('crud', CrudController::class)->parameter('crud', 'resourceItem');
