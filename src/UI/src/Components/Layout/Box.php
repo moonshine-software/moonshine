@@ -25,6 +25,7 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
+        // anonymous component variables
         protected string $title = '',
         protected bool $dark = false,
     ) {
