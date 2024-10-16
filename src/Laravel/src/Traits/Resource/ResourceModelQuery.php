@@ -53,17 +53,17 @@ trait ResourceModelQuery
         if ($this->isCursorPaginate()) {
             $paginate = $query->cursorPaginate(
                 $this->getItemsPerPage(),
-                cursorName: $this->getUriKey()
+                cursorName: $this->getUriKey(),
             );
         } elseif ($this->isSimplePaginate()) {
             $paginate = $query->simplePaginate(
                 $this->getItemsPerPage(),
-                page: $this->getPaginatorPage()
+                page: $this->getPaginatorPage(),
             );
         } else {
             $paginate = $query->paginate(
                 $this->getItemsPerPage(),
-                page: $this->getPaginatorPage()
+                page: $this->getPaginatorPage(),
             );
         }
 
@@ -78,7 +78,7 @@ trait ResourceModelQuery
     public function findItem(bool $orFail = false): mixed
     {
         $builder = $this->modifyItemQueryBuilder(
-            $this->getModel()->newQuery()
+            $this->getModel()->newQuery(),
         );
 
         if ($orFail) {
@@ -194,14 +194,14 @@ trait ResourceModelQuery
         /** @var ?QueryTag $tag */
         $tag = collect($this->getQueryTags())
             ->first(
-                static fn (QueryTag $tag): bool => $tag->isActive()
+                static fn (QueryTag $tag): bool => $tag->isActive(),
             );
 
         if ($tag) {
             $this->customQueryBuilder(
                 $tag->apply(
-                    $this->newQuery()
-                )
+                    $this->newQuery(),
+                ),
             );
         }
 
@@ -243,13 +243,13 @@ trait ResourceModelQuery
                                 static fn (Builder $qq) => $qq->orWhere(
                                     $item,
                                     DBOperators::byModel($qq->getModel())->like(),
-                                    "%$terms%"
-                                )
-                            ))
+                                    "%$terms%",
+                                ),
+                            )),
                         ),
                         static fn (Builder $query) => collect($column)->each(static fn ($item) => $query->orWhere(
-                            static fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms])
-                        ))
+                            static fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms]),
+                        )),
                     );
                 } else {
                     $builder->orWhere($column, DBOperators::byModel($builder->getModel())->like(), "%$terms%");
@@ -278,7 +278,7 @@ trait ResourceModelQuery
 
             $defaultApply = static fn (Builder $query): Builder => $query->where(
                 $filter->getColumn(),
-                $filter->getRequestValue()
+                $filter->getRequestValue(),
             );
 
             if ($filterApply instanceof ApplyContract) {
@@ -289,7 +289,7 @@ trait ResourceModelQuery
 
             $filter->apply(
                 $defaultApply,
-                $this->newQuery()
+                $this->newQuery(),
             );
         });
 
@@ -319,12 +319,12 @@ trait ResourceModelQuery
             static fn (Builder $q) => $q->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
-                $parentId
+                $parentId,
             ),
             static fn (Builder $q) => $q->where(
                 $relation->getForeignKeyName(),
-                $parentId
-            )
+                $parentId,
+            ),
         );
 
         return $this;
@@ -337,6 +337,14 @@ trait ResourceModelQuery
     {
         [$column, $direction, $callback] = $this->prepareOrder();
 
+        return $this->resolveOrder($column, $direction, $callback);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function resolveOrder(string $column, string $direction, ?Closure $callback): static
+    {
         if ($callback instanceof Closure) {
             $callback($this->newQuery(), $column, $direction);
         } else {
