@@ -42,9 +42,9 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
         parent::__construct($components);
     }
 
-    public function dark(): static
+    public function dark(bool $value = true): static
     {
-        $this->dark = true;
+        $this->dark = $value;
 
         return $this;
     }
