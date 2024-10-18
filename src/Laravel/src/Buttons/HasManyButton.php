@@ -45,11 +45,11 @@ final class HasManyButton
         );
 
         if ($field->isWithoutModals()) {
-            $action = static fn (?Model $data) => $resource->getFormPageUrl($data);
+            $action = static fn (?Model $data) => $resource->getFormPageUrl($data?->getKey());
         }
 
         $authorize = $update
-            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data->getKey()
+            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
                 && $resource->hasAction(Action::UPDATE)
                 && $resource->setItem($item)->can(Ability::UPDATE)
             : static fn (): bool => $resource->hasAction(Action::CREATE)
@@ -61,7 +61,9 @@ final class HasManyButton
 
         $actionButton = $actionButton
             ->canSee($authorize)
-            ->async()
+            ->when(! $field->isWithoutModals(),
+                fn(ActionButton $actionButton) => $actionButton->async()
+            )
             ->primary()
             ->icon($update ? 'pencil' : 'plus');
 
