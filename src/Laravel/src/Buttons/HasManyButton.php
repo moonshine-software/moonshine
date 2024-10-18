@@ -45,11 +45,11 @@ final class HasManyButton
         );
 
         if ($field->isWithoutModals()) {
-            $action = static fn (?Model $data) => $resource->getFormPageUrl($data);
+            $action = static fn (?Model $data) => $resource->getFormPageUrl($data?->getKey());
         }
 
         $authorize = $update
-            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data->getKey()
+            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
                 && $resource->hasAction(Action::UPDATE)
                 && $resource->setItem($item)->can(Ability::UPDATE)
             : static fn (): bool => $resource->hasAction(Action::CREATE)
@@ -61,17 +61,18 @@ final class HasManyButton
 
         $actionButton = $actionButton
             ->canSee($authorize)
-            ->async()
             ->primary()
             ->icon($update ? 'pencil' : 'plus');
 
         if (! $field->isWithoutModals()) {
-            $actionButton = $actionButton->inModal(
-                title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
-                content: '',
-                name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
-                builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
-            );
+            $actionButton = $actionButton
+                ->async()
+                ->inModal(
+                    title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
+                    content: '',
+                    name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                    builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
+                );
         }
 
         return $actionButton->name("has-many-{$field->getRelationName()}-button");
