@@ -124,6 +124,27 @@ it('onlyLink value condition', function () {
     ;
 });
 
+it('without modals', function () {
+    $item = createItem(countComments: 16);
+
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([
+        ID::make(),
+        Text::make('Name'),
+        HasMany::make('Comments title', 'comments', resource: TestCommentResource::class)
+            ->withoutModals()
+            ->creatable()
+        ,
+    ]);
+
+    asAdmin()
+        ->get($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: FormPage::class, resource: $resource, params: ['resourceItem' => $item->id]))
+        ->assertOk()
+        ->assertSee('Comments title')
+        ->assertSee($item->comments[15]->content)
+        ->assertDontSee('<span class="badge">16</span>', false)
+    ;
+})->only();
+
 it('stop getting id from url', function () {
     $item = createItem(countComments: 1);
     //$comment = $item->comments->first();
