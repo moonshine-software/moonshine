@@ -61,19 +61,18 @@ final class HasManyButton
 
         $actionButton = $actionButton
             ->canSee($authorize)
-            ->when(! $field->isWithoutModals(),
-                fn(ActionButton $actionButton) => $actionButton->async()
-            )
             ->primary()
             ->icon($update ? 'pencil' : 'plus');
 
         if (! $field->isWithoutModals()) {
-            $actionButton = $actionButton->inModal(
-                title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
-                content: '',
-                name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
-                builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
-            );
+            $actionButton = $actionButton
+                ->async()
+                ->inModal(
+                    title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
+                    content: '',
+                    name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                    builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
+                );
         }
 
         return $actionButton->name("has-many-{$field->getRelationName()}-button");
