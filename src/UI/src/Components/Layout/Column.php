@@ -29,7 +29,6 @@ class Column extends AbstractWithComponents
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
             'colSpan' => $this->getColumnSpanValue(),
             'adaptiveColSpan' => $this->getAdaptiveColumnSpanValue(),
         ];

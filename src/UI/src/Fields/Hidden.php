@@ -46,7 +46,6 @@ class Hidden extends Field implements HasDefaultValueContract, CanBeString
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
             'isShowValue' => $this->isShowValue(),
         ];
     }

@@ -61,7 +61,6 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
             'label' => $this->getLabel(),
             'dark' => $this->isDark(),
             'icon' => new ComponentSlot(

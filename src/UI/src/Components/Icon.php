@@ -44,7 +44,6 @@ final class Icon extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
             'slot' => new ComponentSlot($this->isCustom() ? $this->icon : ''),
         ];
     }

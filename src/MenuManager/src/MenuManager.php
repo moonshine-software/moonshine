@@ -72,6 +72,14 @@ final class MenuManager implements MenuManagerContract
     public function all(?iterable $items = null): MenuElementsContract
     {
         return MenuElements::make($items ?: $this->items)
+            ->map(static function(array|MenuElementContract $item): MenuElementContract {
+                if($item instanceof MenuElementContract) {
+                    return $item;
+                }
+
+                // @phpstan-ignore-next-line
+                return MenuItem::make($item['label'], $item['url']);
+            })
             ->onlyVisible()
             ->when(
                 $this->conditionItems !== [],

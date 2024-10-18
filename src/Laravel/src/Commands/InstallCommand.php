@@ -7,13 +7,12 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-
-use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
-
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Symfony\Component\Console\Attribute\AsCommand;
+
+use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 #[AsCommand(name: 'moonshine:install')]
 class InstallCommand extends MoonShineCommand
@@ -53,7 +52,9 @@ class InstallCommand extends MoonShineCommand
 
         $userCreated = false;
 
-        if (! $this->testsMode && $this->useMigrations && $this->authEnabled && ! $this->option('without-user') && confirm('Create super user ?')) {
+        if (! $this->testsMode && $this->useMigrations && $this->authEnabled && ! $this->option(
+                'without-user',
+            ) && confirm('Create super user ?')) {
             $this->call(MakeUserCommand::class);
             $userCreated = true;
         }
@@ -122,7 +123,7 @@ class InstallCommand extends MoonShineCommand
             $this->copyStub(
                 'MoonShineServiceProvider',
                 app_path('Providers/MoonShineServiceProvider.php'),
-                $replace
+                $replace,
             );
 
             if (! moonshine()->runningUnitTests()) {
@@ -136,14 +137,15 @@ class InstallCommand extends MoonShineCommand
     protected function registerServiceProvider(): void
     {
         if (method_exists(ServiceProvider::class, 'addProviderToBootstrapFile')) {
-            ServiceProvider::addProviderToBootstrapFile(\App\Providers\MoonShineServiceProvider::class); // @phpstan-ignore-line
+            // @phpstan-ignore-next-line
+            ServiceProvider::addProviderToBootstrapFile(\App\Providers\MoonShineServiceProvider::class);
 
             return;
         }
 
         $this->installServiceProviderAfter(
             'RouteServiceProvider',
-            'MoonShineServiceProvider'
+            'MoonShineServiceProvider',
         );
     }
 
@@ -151,7 +153,7 @@ class InstallCommand extends MoonShineCommand
     {
         if (is_dir($this->getDirectory())) {
             warning(
-                "{$this->getDirectory()} directory already exists!"
+                "{$this->getDirectory()} directory already exists!",
             );
         }
 
@@ -174,7 +176,7 @@ class InstallCommand extends MoonShineCommand
         $this->replaceInFile(
             "'dashboard' => Dashboard::class",
             "'dashboard' => " . moonshineConfig()->getNamespace('\Pages\Dashboard') . "::class",
-            config_path('moonshine.php')
+            config_path('moonshine.php'),
         );
 
         $this->components->task('Dashboard created');
@@ -196,7 +198,7 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'enabled' => false,",
                 "'enabled' => true,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         } else {
             $this->components->task('Authentication disabled');
@@ -206,7 +208,7 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'enabled' => true,",
                 "'enabled' => false,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         }
     }
@@ -225,13 +227,13 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'use_notifications' => false,",
                 "'use_notifications' => true,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
 
             $this->replaceInFile(
                 "'use_database_notifications' => false,",
                 "'use_database_notifications' => true,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         } else {
             $this->components->task('Notifications disabled');
@@ -239,13 +241,13 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'use_notifications' => true,",
                 "'use_notifications' => false,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
 
             $this->replaceInFile(
                 "'use_database_notifications' => true,",
                 "'use_database_notifications' => false,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         }
     }
@@ -270,13 +272,13 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'use_migrations' => false,",
                 "'use_migrations' => true,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
 
             $this->replaceInFile(
                 "'use_database_notifications' => false,",
                 "'use_database_notifications' => true,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         } else {
             $this->components->task('Installed without default migrations');
@@ -286,44 +288,29 @@ class InstallCommand extends MoonShineCommand
             $this->replaceInFile(
                 "'use_migrations' => true,",
                 "'use_migrations' => false,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
 
             $this->replaceInFile(
                 "'use_database_notifications' => true,",
                 "'use_database_notifications' => false,",
-                config_path('moonshine.php')
+                config_path('moonshine.php'),
             );
         }
     }
 
     protected function initLayout(): void
     {
-        $compact = ! $this->testsMode && ! $this->option('default-layout') && confirm('Want to use a minimalist theme?');
-
-        $className = 'MoonShineLayout';
-        $extendClassName = $compact ? 'CompactLayout' : 'AppLayout';
-
-        $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
-
-        if (! is_dir($this->getDirectory() . '/Layouts')) {
-            $this->makeDir($this->getDirectory() . '/Layouts');
-        }
-
-        $layout = $this->getDirectory() . "/Layouts/$className.php";
-
-        $this->copyStub('Layout', $layout, [
-            '{namespace}' => moonshineConfig()->getNamespace('\Layouts'),
-            '{extend}' => $extends,
-            '{extendShort}' => class_basename($extends),
-            'DummyLayout' => $className,
-        ]);
-
-        $this->replaceInFile(
-            "'layout' => AppLayout::class",
-            "'layout' => " . moonshineConfig()->getNamespace('\Layouts\\' . $className) . "::class",
-            config_path('moonshine.php')
+        $compact = ! $this->testsMode && ! $this->option('default-layout') && confirm(
+            'Want to use a minimalist theme?',
         );
+
+        $this->call(MakeLayoutCommand::class, [
+            'className' => 'MoonShineLayout',
+            '--compact' => $compact,
+            '--full' => ! $compact,
+            '--default' => true,
+        ]);
 
         $this->components->task('Layout published');
     }

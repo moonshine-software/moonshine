@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use MoonShine\UI\Traits\Components\WithSlotContent;
+use MoonShine\Support\Enums\Color;
 
-/** @method static static make(string $icon = 'bell-alert', string $type = 'default', bool $removable = false) */
+/** @method static static make(string $icon = 'bell-alert', string|Color $type = 'default', bool $removable = false) */
 final class Alert extends MoonShineComponent
 {
     use WithSlotContent;
@@ -15,9 +16,13 @@ final class Alert extends MoonShineComponent
 
     public function __construct(
         public string $icon = 'bell-alert',
-        public string $type = 'default',
+        public string|Color $type = 'default',
         public bool $removable = false,
     ) {
+        $this->type = $this->type instanceof Color
+            ? $this->type->value
+            : $this->type;
+
         parent::__construct();
     }
 

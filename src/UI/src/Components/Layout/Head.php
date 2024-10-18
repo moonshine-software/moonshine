@@ -35,7 +35,6 @@ final class Head extends AbstractWithComponents
     protected function viewData(): array
     {
         return [
-            ...parent::viewData(),
             'title' => $this->title,
             'bodyColor' => $this->bodyColor,
         ];

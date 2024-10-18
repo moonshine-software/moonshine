@@ -50,7 +50,7 @@ abstract class BaseLayout extends AbstractLayout
         return Logo::make(
             $this->getHomeUrl(),
             $this->getLogo(),
-            $this->getLogo(small: true)
+            $this->getLogo(small: true),
         );
     }
 
@@ -77,7 +77,7 @@ abstract class BaseLayout extends AbstractLayout
                 Menu::make(),
                 When::make(
                     fn (): bool => $this->isAuthEnabled(),
-                    static fn (): array => [Profile::make(withBorder: true)]
+                    static fn (): array => [Profile::make(withBorder: true)],
                 ),
             ])->customAttributes([
                 'class' => 'menu',
@@ -100,7 +100,7 @@ abstract class BaseLayout extends AbstractLayout
             Block::make([
                 When::make(
                     fn (): bool => $this->isAuthEnabled(),
-                    static fn (): array => [Profile::make()]
+                    static fn (): array => [Profile::make()],
                 ),
 
                 Block::make()->class('menu-inner-divider'),
@@ -122,32 +122,40 @@ abstract class BaseLayout extends AbstractLayout
             Search::make(),
             When::make(
                 fn (): bool => $this->isUseNotifications(),
-                static fn (): array => [Notifications::make()]
+                static fn (): array => [Notifications::make()],
             ),
             Locales::make(),
         ]);
     }
 
-    protected function getFooterComponent(?array $menu = null, ?string $copyright = null): Footer
+    protected function getFooterMenu(): array
+    {
+        return [
+            'https://moonshine-laravel.com/docs' => 'Documentation',
+        ];
+    }
+
+    protected function getFooterCopyright(): string
+    {
+        return sprintf(
+            <<<'HTML'
+                        &copy; 2021-%d Made with ❤️ by
+                        <a href="https://cutcode.dev"
+                            class="font-semibold text-primary hover:text-secondary"
+                            target="_blank"
+                        >
+                            CutCode
+                        </a>
+                        HTML,
+            now()->year,
+        );
+    }
+
+    protected function getFooterComponent(): Footer
     {
         return Footer::make()
-            ->copyright(static fn (): string => $copyright
-                ?: sprintf(
-                    <<<'HTML'
-                    &copy; 2021-%d Made with ❤️ by
-                    <a href="https://cutcode.dev"
-                        class="font-semibold text-primary hover:text-secondary"
-                        target="_blank"
-                    >
-                        CutCode
-                    </a>
-                HTML,
-                    now()->year
-                ))
-            ->menu($menu
-                ?: [
-                    'https://moonshine-laravel.com/docs' => 'Documentation',
-                ]);
+            ->copyright($this->getFooterCopyright())
+            ->menu($this->getFooterMenu());
     }
 
     protected function getHeadLang(): string
