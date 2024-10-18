@@ -42,7 +42,7 @@ class MakeLayoutCommand extends MoonShineCommand
             $this->makeDir($this->getDirectory() . "/$dir");
         }
 
-        $compact = !$this->option('full') && ($this->option('compact') || confirm('Want to use a minimalist theme?'));
+        $compact = ! $this->option('full') && ($this->option('compact') || confirm('Want to use a minimalist theme?'));
 
         $extendClassName = $compact ? 'CompactLayout' : 'AppLayout';
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
@@ -62,7 +62,7 @@ class MakeLayoutCommand extends MoonShineCommand
             )
         );
 
-        if($this->option('default') || confirm('Use the default template in the system?')) {
+        if ($this->option('default') || confirm('Use the default template in the system?')) {
             $current = config('moonshine.layout', 'AppLayout::class');
             $currentShort = class_basename($current);
             $replace = "'layout' => " . moonshineConfig()->getNamespace('\Layouts\\' . $className) . "::class";

@@ -72,8 +72,8 @@ final class MenuManager implements MenuManagerContract
     public function all(?iterable $items = null): MenuElementsContract
     {
         return MenuElements::make($items ?: $this->items)
-            ->map(static function(array|MenuElementContract $item): MenuElementContract {
-                if($item instanceof MenuElementContract) {
+            ->map(static function (array|MenuElementContract $item): MenuElementContract {
+                if ($item instanceof MenuElementContract) {
                     return $item;
                 }
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\UI\Traits\Components\WithSlotContent;
 use MoonShine\Support\Enums\Color;
+use MoonShine\UI\Traits\Components\WithSlotContent;
 
 /** @method static static make(string $icon = 'bell-alert', string|Color $type = 'default', bool $removable = false) */
 final class Alert extends MoonShineComponent

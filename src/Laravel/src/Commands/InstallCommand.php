@@ -7,12 +7,13 @@ namespace MoonShine\Laravel\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
+
+use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
+
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Symfony\Component\Console\Attribute\AsCommand;
-
-use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 #[AsCommand(name: 'moonshine:install')]
 class InstallCommand extends MoonShineCommand
@@ -53,8 +54,8 @@ class InstallCommand extends MoonShineCommand
         $userCreated = false;
 
         if (! $this->testsMode && $this->useMigrations && $this->authEnabled && ! $this->option(
-                'without-user',
-            ) && confirm('Create super user ?')) {
+            'without-user',
+        ) && confirm('Create super user ?')) {
             $this->call(MakeUserCommand::class);
             $userCreated = true;
         }
