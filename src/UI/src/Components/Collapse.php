@@ -12,7 +12,7 @@ use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label, iterable $components = [])
+ * @method static static make(Closure|string $label = '', iterable $components = [])
  */
 class Collapse extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {
@@ -22,7 +22,7 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
     protected string $view = 'moonshine::components.collapse';
 
     public function __construct(
-        Closure|string $label,
+        Closure|string $label = '',
         iterable $components = [],
         public bool $open = false,
         public bool $persist = true,

@@ -194,7 +194,7 @@ final class MoonShineServiceProvider extends ServiceProvider
                     }
 
                     if ($withPage) {
-                        $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUrl}';
+                        $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUri}';
                     }
 
                     Router::group(

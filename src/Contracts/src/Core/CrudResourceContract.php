@@ -58,6 +58,11 @@ interface CrudResourceContract extends ResourceContract
     public function getDetailPage(): ?PageContract;
 
     /**
+     * @return ?PageContract<TIndexPage|TDetailPage|TFormPage>
+     */
+    public function getActivePage(): ?PageContract;
+
+    /**
      * @return TFields
      */
     public function getIndexFields(): FieldsContract;
