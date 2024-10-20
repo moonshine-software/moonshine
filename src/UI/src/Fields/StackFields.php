@@ -26,22 +26,6 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
 
     protected string $view = 'moonshine::fields.stack';
 
-    protected bool $withWrapper = false;
-
-    protected bool $withLabels = false;
-
-    public function withLabels(): static
-    {
-        $this->withLabels = true;
-
-        return $this;
-    }
-
-    public function hasLabels(): bool
-    {
-        return $this->withLabels;
-    }
-
     /**
      * @throws Throwable
      */
@@ -62,13 +46,12 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
     protected function resolvePreview(): Renderable|string
     {
         return FieldsGroup::make(
-            $this->getFields()->onlyFields()
+            $this->getFields()
         )
             ->mapFields(fn (FieldContract $field, int $index): FieldContract => $field
                 ->fillData($this->getData())
-                ->beforeRender(fn (): string => $this->hasLabels() || $index === 0 ? '' : (string) LineBreak::make())
-                ->withoutWrapper($this->hasLabels())
-                ->previewMode())
+                ->previewMode()
+            )
             ->render();
     }
 
@@ -142,5 +125,21 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
         return [
             'fields' => $this->getFields(),
         ];
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function __clone()
+    {
+        if(!$this->fields instanceof Closure) {
+            $fields = [];
+
+            foreach ($this->getRawFields() as $index => $field) {
+                $fields[$index] = clone $field;
+            }
+
+            $this->fields($fields);
+        }
     }
 }
