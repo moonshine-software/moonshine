@@ -12,7 +12,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\FieldsGroup;
-use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
