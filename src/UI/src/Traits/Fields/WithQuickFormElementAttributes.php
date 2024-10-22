@@ -56,7 +56,7 @@ trait WithQuickFormElementAttributes
     protected function getNameUnDot(string $name): string
     {
         $parts = explode('.', $name);
-        $count = count($parts);
+        $count = \count($parts);
         $result = $parts[0];
 
         for ($i = 1; $i < $count; $i++) {
@@ -76,7 +76,7 @@ trait WithQuickFormElementAttributes
 
         return (string) str($this->getColumn())
             ->when(
-                ! is_null($wrap),
+                ! \is_null($wrap),
                 fn (Stringable $str): Stringable => $str->prepend("$wrap.")
             )
             ->pipe(fn (Stringable $str) => $this->getDotNestedToName($str->value()))

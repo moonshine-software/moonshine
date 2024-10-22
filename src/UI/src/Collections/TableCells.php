@@ -42,7 +42,7 @@ final class TableCells extends Collection implements TableCellsContract
     {
         return $this->push(
             TableTd::make($content, $index)->when(
-                ! is_null($builder),
+                ! \is_null($builder),
                 static fn (TableCellContract $td) => $builder($td)
             )->customAttributes($attributes)
         );

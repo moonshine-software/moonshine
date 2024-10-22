@@ -16,7 +16,7 @@ trait HasResourceRequest
      */
     public function getResource(): ?ResourceContract
     {
-        if (is_null($this->getResourceUri())) {
+        if (\is_null($this->getResourceUri())) {
             return null;
         }
 
@@ -27,7 +27,7 @@ trait HasResourceRequest
 
     public function hasResource(): bool
     {
-        return ! is_null($this->getResource());
+        return ! \is_null($this->getResource());
     }
 
     public function getResourceUri(): ?string

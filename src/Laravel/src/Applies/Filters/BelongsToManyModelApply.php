@@ -28,7 +28,7 @@ class BelongsToManyModelApply implements ApplyContract
 
             $relation = $field->getRelation();
 
-            if (is_null($relation) || blank($checkedKeys)) {
+            if (\is_null($relation) || blank($checkedKeys)) {
                 return;
             }
 

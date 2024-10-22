@@ -62,7 +62,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     public function withPage(?PageContract $page = null): static
     {
-        if (! is_null($pageUri = $this->extractPageUri($page))) {
+        if (! \is_null($pageUri = $this->extractPageUri($page))) {
             return $this->withParams([
                 'pageUri' => $pageUri,
             ]);
@@ -73,7 +73,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     public function withResource(?ResourceContract $resource = null): static
     {
-        if (! is_null($resourceUri = $this->extractResourceUri($resource))) {
+        if (! \is_null($resourceUri = $this->extractResourceUri($resource))) {
             return $this->withParams([
                 'resourceUri' => $resourceUri,
             ]);

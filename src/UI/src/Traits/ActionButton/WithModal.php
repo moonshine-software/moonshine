@@ -28,7 +28,7 @@ trait WithModal
 
     public function isInModal(): bool
     {
-        return ! is_null($this->modal);
+        return ! \is_null($this->modal);
     }
 
     /**
@@ -40,7 +40,7 @@ trait WithModal
         Closure|string|null $name = null,
         ?Closure $builder = null,
     ): static {
-        if (is_null($name)) {
+        if (\is_null($name)) {
             $name = (string) spl_object_id($this);
         }
 
@@ -53,7 +53,7 @@ trait WithModal
         )
             ->name(value($name, $item, $ctx))
             ->when(
-                ! is_null($builder),
+                ! \is_null($builder),
                 static fn (Modal $modal): Modal => $builder($modal, $ctx)
             );
 
@@ -79,7 +79,7 @@ trait WithModal
         ?Closure $modalBuilder = null,
         Closure|string|null $name = null,
     ): static {
-        $isDefaultMethods = in_array($method, [HttpMethod::GET, HttpMethod::POST], true);
+        $isDefaultMethods = \in_array($method, [HttpMethod::GET, HttpMethod::POST], true);
         $async = $this->purgeAsyncTap();
 
         if ($this->isBulk()) {
@@ -103,10 +103,10 @@ trait WithModal
                         ? HiddenIds::make($ctx->getBulkForComponent())
                         : null,
 
-                    ...(is_null($fields) ? [] : value($fields, $item)),
+                    ...(\is_null($fields) ? [] : value($fields, $item)),
 
                     Heading::make(
-                        is_null($content)
+                        \is_null($content)
                             ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm_message')
                             : value($content, $item)
                     ),
@@ -118,12 +118,12 @@ trait WithModal
                 $ctx->isAsyncMethod(),
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->asyncMethod($ctx->getAsyncMethod())
             )->submit(
-                is_null($button)
+                \is_null($button)
                     ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm')
                     : value($button, $item),
                 ['class' => 'btn-secondary']
             )->when(
-                ! is_null($formBuilder),
+                ! \is_null($formBuilder),
                 static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder($form, $item)
             ),
             name: $name,
@@ -137,7 +137,7 @@ trait WithModal
             return null;
         }
 
-        return call_user_func($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
+        return \call_user_func($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleModal(string $name = 'default'): static

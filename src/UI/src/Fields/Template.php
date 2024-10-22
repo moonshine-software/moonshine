@@ -40,9 +40,9 @@ class Template extends Field implements HasFieldsContract
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
-            return call_user_func(
+            return \call_user_func(
                 $this->fillCallback,
-                is_null($casted) ? $raw : $casted->getOriginal(),
+                \is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
             );
         }
@@ -62,11 +62,11 @@ class Template extends Field implements HasFieldsContract
 
     public function render(): string
     {
-        if (is_null($this->renderCallback)) {
+        if (\is_null($this->renderCallback)) {
             return '';
         }
 
-        return (string) call_user_func($this->renderCallback, $this->toValue(), $this);
+        return (string) \call_user_func($this->renderCallback, $this->toValue(), $this);
     }
 
     protected function resolveOnApply(): ?Closure

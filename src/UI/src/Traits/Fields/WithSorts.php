@@ -48,7 +48,7 @@ trait WithSorts
             'page' => $this->getCore()->getRequest()->get('page', 1),
         ];
 
-        if (is_null($url)) {
+        if (\is_null($url)) {
             return $this->getCore()->getRequest()->getUrlWithQuery($sortData);
         }
 
@@ -71,7 +71,7 @@ trait WithSorts
 
     protected function getSortColumnFromRequest(): ?string
     {
-        if (($sort = $this->getCore()->getRequest()->get('sort')) && is_string($sort)) {
+        if (($sort = $this->getCore()->getRequest()->get('sort')) && \is_string($sort)) {
             return ltrim($sort, '-');
         }
 
@@ -80,7 +80,7 @@ trait WithSorts
 
     protected function getSortDirectionFromRequest(): ?string
     {
-        if (($sort = $this->getCore()->getRequest()->get('sort')) && is_string($sort)) {
+        if (($sort = $this->getCore()->getRequest()->get('sort')) && \is_string($sort)) {
             return str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
 

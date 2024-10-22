@@ -49,7 +49,7 @@ class FormPage extends CrudPage
      */
     public function getBreadcrumbs(): array
     {
-        if (! is_null($this->breadcrumbs)) {
+        if (! \is_null($this->breadcrumbs)) {
             return $this->breadcrumbs;
         }
 
@@ -228,7 +228,7 @@ class FormPage extends CrudPage
             ->fields([
                 ...$fields
                     ->when(
-                        ! is_null($item),
+                        ! \is_null($item),
                         static fn (Fields $fields): Fields => $fields->push(
                             Hidden::make('_method')->setValue('PUT')
                         )

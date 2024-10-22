@@ -105,7 +105,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
     public function getRedirectAfter(Model|int|null|string $parentId): string
     {
-        if (! is_null($this->redirectAfter)) {
+        if (! \is_null($this->redirectAfter)) {
             return (string) value($this->redirectAfter, $parentId, $this);
         }
 
@@ -253,7 +253,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
      */
     public function getCreateButton(): ?ActionButtonContract
     {
-        if (is_null($this->getRelatedModel()?->getKey())) {
+        if (\is_null($this->getRelatedModel()?->getKey())) {
             return null;
         }
 
@@ -263,7 +263,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
         $button = HasManyButton::for($this, button: $this->createButton);
 
-        if (! is_null($this->modifyCreateButton)) {
+        if (! \is_null($this->modifyCreateButton)) {
             $button = value($this->modifyCreateButton, $button, $this);
         }
 
@@ -354,7 +354,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             ->preview()
             ->simple()
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, true)
             );
     }
@@ -408,20 +408,20 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             ->cast($resource->getCaster())
             ->withNotFound()
             ->when(
-                ! is_null($resource->getTrAttributes()),
+                ! \is_null($resource->getTrAttributes()),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->trAttributes(
                     $resource->getTrAttributes()
                 )
             )
             ->when(
-                ! is_null($resource->getTdAttributes()),
+                ! \is_null($resource->getTdAttributes()),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->tdAttributes(
                     $resource->getTdAttributes()
                 )
             )
             ->buttons($this->getItemButtons())
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
             );
     }
@@ -440,7 +440,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
 
         $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
 
-        if (! is_null($this->modifyEditButton)) {
+        if (! \is_null($this->modifyEditButton)) {
             $editButton = value($this->modifyEditButton, $editButton, $this);
         }
 
@@ -463,8 +463,8 @@ class HasMany extends ModelRelationField implements HasFieldsContract
             modalName: "has-many-modal-mass-delete"
         );
 
-        if (! is_null($this->modifyItemButtons)) {
-            return call_user_func(
+        if (! \is_null($this->modifyItemButtons)) {
+            return \call_user_func(
                 $this->modifyItemButtons,
                 $detailButton,
                 $editButton,
@@ -501,7 +501,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     protected function resolvePreview(): Renderable|string
     {
         // resolve value before call toValue
-        if (is_null($this->toValue())) {
+        if (\is_null($this->toValue())) {
             $casted = $this->getRelatedModel();
             $this->setValue($casted?->{$this->getRelationName()});
         }
@@ -527,7 +527,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
         $relation = $casted?->{$this->getRelationName()}();
 
         $resource->customQueryBuilder(
-            is_null($this->modifyBuilder)
+            \is_null($this->modifyBuilder)
                 ? $relation
                 : value($this->modifyBuilder, $relation)
         );
@@ -545,7 +545,7 @@ class HasMany extends ModelRelationField implements HasFieldsContract
     public function getComponent(): ComponentContract
     {
         // resolve value before call toValue
-        if (is_null($this->toValue())) {
+        if (\is_null($this->toValue())) {
             $this->setValue($this->getValue());
         }
 

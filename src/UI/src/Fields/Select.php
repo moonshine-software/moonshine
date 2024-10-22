@@ -57,7 +57,7 @@ class Select extends Field implements
         $value = $this->toValue();
 
         if ($this->isMultiple()) {
-            $value = is_string($value) && str($value)->isJson() ?
+            $value = \is_string($value) && str($value)->isJson() ?
                 json_decode($value, true, 512, JSON_THROW_ON_ERROR)
                 : $value;
 
@@ -71,7 +71,7 @@ class Select extends Field implements
                 ->implode(',');
         }
 
-        if (is_null($value)) {
+        if (\is_null($value)) {
             return '';
         }
 

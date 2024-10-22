@@ -20,7 +20,7 @@ final class TableRows extends Collection implements TableRowsContract
                 $cells,
                 $key
             )->when(
-                ! is_null($builder),
+                ! \is_null($builder),
                 static fn (TableRowContract $tr) => $builder($tr)
             )
         );

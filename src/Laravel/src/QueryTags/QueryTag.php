@@ -48,7 +48,7 @@ final class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelCont
 
     public function getUri(): string
     {
-        if (! is_null($this->alias)) {
+        if (! \is_null($this->alias)) {
             return $this->alias;
         }
 
@@ -78,6 +78,6 @@ final class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelCont
 
     public function apply(Builder $builder): Builder
     {
-        return call_user_func($this->builder, $builder);
+        return \call_user_func($this->builder, $builder);
     }
 }

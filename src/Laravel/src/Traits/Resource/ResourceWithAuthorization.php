@@ -35,7 +35,7 @@ trait ResourceWithAuthorization
     {
         $abilityEnum = $ability instanceof Ability ? $ability : Ability::tryFrom($ability);
 
-        if (is_null($abilityEnum) || ! in_array($abilityEnum, $this->getGateAbilities(), true)) {
+        if (\is_null($abilityEnum) || ! \in_array($abilityEnum, $this->getGateAbilities(), true)) {
             throw new ResourceException("ability '$abilityEnum->value' not found in the system");
         }
 

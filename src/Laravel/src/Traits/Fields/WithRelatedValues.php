@@ -54,14 +54,14 @@ trait WithRelatedValues
         $relation = $this->getRelation();
 
         throw_if(
-            is_null($relation),
+            \is_null($relation),
             new FieldException('Relation is required')
         );
 
         $related = $relation->getRelated();
         $query = $related->newQuery();
 
-        if (! is_null($this->valuesQuery)) {
+        if (! \is_null($this->valuesQuery)) {
             $query = value($this->valuesQuery, $query, $this);
         }
 
@@ -78,7 +78,7 @@ trait WithRelatedValues
      */
     public function getValues(): Options
     {
-        $formatted = ! is_null($this->getFormattedValueCallback());
+        $formatted = ! \is_null($this->getFormattedValueCallback());
 
         $values = $this->memoizeValues ?? $this->resolveValuesQuery()->get();
         $this->memoizeValues = $values;

@@ -215,7 +215,7 @@ final class FormBuilder extends MoonShineComponent implements
 
     private function getReactiveUrl(): string
     {
-        if (! is_null($this->reactiveUrl)) {
+        if (! \is_null($this->reactiveUrl)) {
             return value($this->reactiveUrl, $this);
         }
 
@@ -232,7 +232,7 @@ final class FormBuilder extends MoonShineComponent implements
 
     public function redirect(?string $uri = null): self
     {
-        if (! is_null($uri)) {
+        if (! \is_null($uri)) {
             $this->additionalFields[] = Hidden::make('_redirect')
                 ->setValue($uri);
         }
@@ -344,7 +344,7 @@ final class FormBuilder extends MoonShineComponent implements
             $this->getValues()
         )->getOriginal();
 
-        if (is_null($default)) {
+        if (\is_null($default)) {
             $default = static fn (FieldContract $field): Closure => static function (mixed $item) use ($field): mixed {
                 if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                     return $item;
@@ -363,10 +363,10 @@ final class FormBuilder extends MoonShineComponent implements
                 ->getPreparedFields()
                 ->onlyFields()
                 ->exceptElements(
-                    fn (ComponentContract $element): bool => $element instanceof FieldContract && in_array($element->getColumn(), $this->getExcludedFields(), true)
+                    fn (ComponentContract $element): bool => $element instanceof FieldContract && \in_array($element->getColumn(), $this->getExcludedFields(), true)
                 );
 
-            $values = is_null($before) ? $values : $before($values);
+            $values = \is_null($before) ? $values : $before($values);
 
             $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($values));
 
@@ -474,7 +474,7 @@ final class FormBuilder extends MoonShineComponent implements
             ]);
         }
 
-        if (! is_null($this->onBeforeFieldsRender)) {
+        if (! \is_null($this->onBeforeFieldsRender)) {
             $fields = value($this->onBeforeFieldsRender, $fields, $this);
         }
 

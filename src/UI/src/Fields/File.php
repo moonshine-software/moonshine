@@ -77,8 +77,8 @@ class File extends Field implements FileableContract, RemovableContract
                 $index => new FileItem(
                     fullPath: $path,
                     rawValue: data_get($this->toValue(), $index, $this->toValue()),
-                    name: (string) call_user_func($this->resolveNames(), $path, $index, $this),
-                    attributes: call_user_func($this->resolveItemAttributes(), $path, $index, $this),
+                    name: (string) \call_user_func($this->resolveNames(), $path, $index, $this),
+                    attributes: \call_user_func($this->resolveItemAttributes(), $path, $index, $this),
                 ),
             ]);
     }

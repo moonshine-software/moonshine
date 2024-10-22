@@ -51,7 +51,7 @@ final class AsyncSearchController extends MoonShineController
         $query = $resource->getQuery();
         $term = $request->input('query');
 
-        if (! is_null($field->getAsyncSearchQuery())) {
+        if (! \is_null($field->getAsyncSearchQuery())) {
             $query = value(
                 $field->getAsyncSearchQuery(),
                 $query,
@@ -63,14 +63,14 @@ final class AsyncSearchController extends MoonShineController
 
         $values = $request->input($field->getColumn(), '') ?? '';
 
-        $except = is_array($values)
+        $except = \is_array($values)
             ? array_keys($values)
             : array_filter(explode(',', (string) $values));
 
         $offset = $request->input('offset', 0);
 
         $query->when(
-            $term && is_null($field->getAsyncSearchQuery()),
+            $term && \is_null($field->getAsyncSearchQuery()),
             static fn (Builder $q) => $q->where(
                 $searchColumn,
                 DBOperators::byModel($q->getModel())->like(),

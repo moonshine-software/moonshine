@@ -31,7 +31,7 @@ trait WithFields
      */
     public function getPreparedFields(): FieldsContract
     {
-        if (! is_null($this->preparedFields)) {
+        if (! \is_null($this->preparedFields)) {
             return $this->preparedFields;
         }
 

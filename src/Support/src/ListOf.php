@@ -45,8 +45,8 @@ final class ListOf
     {
         $condition = static fn (object $item): bool => collect($data)->every(
             fn (object|string $i): bool => match (true) {
-                is_string($i) => $item::class !== $i,
-                is_callable($i) => ! $i($item),
+                \is_string($i) => $item::class !== $i,
+                \is_callable($i) => ! $i($item),
                 default => $i !== $item,
             }
         );
@@ -67,8 +67,8 @@ final class ListOf
     {
         $condition = static fn (object $item): bool => collect($data)->contains(
             fn (object|string $i): bool => match (true) {
-                is_string($i) => $item::class === $i,
-                is_callable($i) => $i($item),
+                \is_string($i) => $item::class === $i,
+                \is_callable($i) => $i($item),
                 default => $i === $item,
             }
         );

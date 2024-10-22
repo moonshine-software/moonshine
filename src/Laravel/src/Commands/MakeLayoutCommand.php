@@ -29,7 +29,7 @@ class MakeLayoutCommand extends MoonShineCommand
             required: true
         );
 
-        $dir = $this->option('dir') ?: dirname($className);
+        $dir = $this->option('dir') ?: \dirname($className);
         $className = class_basename($className);
 
         if ($dir === '.') {

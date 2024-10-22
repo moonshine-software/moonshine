@@ -30,7 +30,7 @@ final class MenuManager implements MenuManagerContract
     {
         $this->items = array_merge(
             $this->items,
-            is_array($data) ? $data : [$data]
+            \is_array($data) ? $data : [$data]
         );
 
         return $this;
@@ -64,7 +64,7 @@ final class MenuManager implements MenuManagerContract
      */
     public function topMode(?Closure $condition = null): static
     {
-        $this->topMode = is_null($condition) || $condition($this) === true;
+        $this->topMode = \is_null($condition) || $condition($this) === true;
 
         return $this;
     }

@@ -155,7 +155,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         // When need lazy load
         // $item->load($resource->getWith());
 
-        if (is_null($parentResource)) {
+        if (\is_null($parentResource)) {
             throw new FieldException('Parent resource is required');
         }
 
@@ -167,7 +167,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
         $fields->onlyFields()->each(fn (FieldContract $field): FieldContract => $field->setParent($this));
 
         $action = $resource->getRoute(
-            is_null($item) ? 'crud.store' : 'crud.update',
+            \is_null($item) ? 'crud.store' : 'crud.update',
             $item?->getKey()
         );
 
@@ -177,7 +177,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             params: ['resourceItem' => $parentItem->getKey()]
         );
 
-        $isAsync = ! is_null($item) && ($this->isAsync() || $resource->isAsync());
+        $isAsync = ! \is_null($item) && ($this->isAsync() || $resource->isAsync());
 
         return FormBuilder::make($action)
             ->reactiveUrl(
@@ -189,7 +189,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
             ->switchFormMode($isAsync)
             ->fields(
                 $fields->when(
-                    ! is_null($item),
+                    ! \is_null($item),
                     static fn (Fields $fields): Fields => $fields->push(
                         Hidden::make('_method')->setValue('PUT'),
                     )
@@ -216,7 +216,7 @@ class HasOne extends ModelRelationField implements HasFieldsContract
                 $resource->getCaster()
             )
             ->buttons(
-                is_null($item)
+                \is_null($item)
                     ? []
                     : [
                     $resource->getDeleteButton(

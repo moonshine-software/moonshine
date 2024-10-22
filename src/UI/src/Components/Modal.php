@@ -47,35 +47,35 @@ final class Modal extends AbstractWithComponents
 
     public function open(Closure|bool|null $condition = null): self
     {
-        $this->open = is_null($condition) || value($condition, $this);
+        $this->open = \is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
     public function closeOutside(Closure|bool|null $condition = null): self
     {
-        $this->closeOutside = is_null($condition) || value($condition, $this);
+        $this->closeOutside = \is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
     public function wide(Closure|bool|null $condition = null): self
     {
-        $this->wide = is_null($condition) || value($condition, $this);
+        $this->wide = \is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
     public function auto(Closure|bool|null $condition = null): self
     {
-        $this->auto = is_null($condition) || value($condition, $this);
+        $this->auto = \is_null($condition) || value($condition, $this);
 
         return $this;
     }
 
     public function autoClose(Closure|bool|null $condition = null): self
     {
-        $this->autoClose = is_null($condition) || value($condition, $this);
+        $this->autoClose = \is_null($condition) || value($condition, $this);
 
         return $this;
     }

@@ -36,7 +36,7 @@ class Enum extends Select implements CanBeEnum
     {
         $value = $this->toFormattedValue();
 
-        if (is_null($value)) {
+        if (\is_null($value)) {
             return '';
         }
 
@@ -44,7 +44,7 @@ class Enum extends Select implements CanBeEnum
             $value = rescue(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
-        if (is_scalar($value)) {
+        if (\is_scalar($value)) {
             return data_get(
                 $this->getValues(),
                 $value,

@@ -30,7 +30,7 @@ final readonly class Options implements Arrayable
                     properties: $this->getProperties($value),
                 );
 
-                if (is_array($labelOrValues)) {
+                if (\is_array($labelOrValues)) {
                     $options = [];
 
                     foreach ($labelOrValues as $value => $label) {
@@ -78,7 +78,7 @@ final readonly class Options implements Arrayable
             $current = $current->value ?? $current->name ?? null;
         }
 
-        if (is_string($current) && str($current)->isJson()) {
+        if (\is_string($current) && str($current)->isJson()) {
             $current = json_decode(
                 $current,
                 true,
@@ -92,7 +92,7 @@ final readonly class Options implements Arrayable
                 $current instanceof Collection => $current->contains(
                     $value
                 ),
-                default => in_array($value, (array) $current),
+                default => \in_array($value, (array) $current),
             };
         }
 

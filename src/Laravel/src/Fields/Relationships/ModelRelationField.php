@@ -51,13 +51,13 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         Closure|string|null $formatted = null,
         ModelResource|string|null $resource = null,
     ) {
-        if (is_string($formatted)) {
+        if (\is_string($formatted)) {
             $formatted = static fn ($item) => data_get($item, $formatted);
         }
 
         parent::__construct($label, $relationName, $formatted);
 
-        if (is_null($relationName)) {
+        if (\is_null($relationName)) {
             $relationName = str($this->getLabel())
                 ->camel()
                 ->when(
@@ -79,9 +79,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         }
 
-        if (is_string($resource)) {
+        if (\is_string($resource)) {
             $this->setResource($this->findResource($resource));
-        } elseif (is_null($resource)) {
+        } elseif (\is_null($resource)) {
             $this->setResource($this->findResource());
         } else {
             $this->setResource($resource);
@@ -109,7 +109,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
                     ->value()
             );
 
-        if (is_null($resource) && $this->isMorph()) {
+        if (\is_null($resource) && $this->isMorph()) {
             /** @var ModelResource $resource */
             $resource = moonshine()->getResources()->findByUri(
                 moonshineRequest()->getResourceUri()
@@ -120,7 +120,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             $resource,
             function (?ModelResource $resource): void {
                 throw_if(
-                    is_null($resource),
+                    \is_null($resource),
                     FieldException::resourceRequired(static::class, $this->getRelationName())
                 );
             }
@@ -162,8 +162,8 @@ abstract class ModelRelationField extends Field implements HasResourceContract
             );
         }
 
-        if (! is_null($this->afterFillCallback)) {
-            return call_user_func($this->afterFillCallback, $this);
+        if (! \is_null($this->afterFillCallback)) {
+            return \call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;
@@ -173,9 +173,9 @@ abstract class ModelRelationField extends Field implements HasResourceContract
     {
         $value = $this->toValue(withDefault: false);
 
-        if ($this->isToOne() && ! is_null($this->getFormattedValueCallback())) {
+        if ($this->isToOne() && ! \is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                call_user_func(
+                \call_user_func(
                     $this->getFormattedValueCallback(),
                     $value ?? $this->getRelation()?->getModel(),
                     $this->getRowIndex(),

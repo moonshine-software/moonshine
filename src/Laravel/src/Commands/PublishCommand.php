@@ -28,14 +28,14 @@ class PublishCommand extends MoonShineCommand
             required: true
         );
 
-        if (in_array('assets', $types, true)) {
+        if (\in_array('assets', $types, true)) {
             $this->call('vendor:publish', [
                 '--tag' => 'moonshine-assets',
                 '--force' => true,
             ]);
         }
 
-        if (in_array('assets-template', $types, true)) {
+        if (\in_array('assets-template', $types, true)) {
             $this->copyStub(
                 'assets/css',
                 resource_path('css/app.css')
@@ -72,7 +72,7 @@ class PublishCommand extends MoonShineCommand
             info("Don't forget to add to MoonShineServiceProvider `Vite::asset('resources/css/app.css')`");
         }
 
-        if (in_array('resources', $types, true)) {
+        if (\in_array('resources', $types, true)) {
             $this->publishSystemResource('MoonShineUserResource', 'MoonshineUser');
             $this->publishSystemResource('MoonShineUserRoleResource', 'MoonshineUserRole');
 

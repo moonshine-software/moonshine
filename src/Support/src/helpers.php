@@ -5,7 +5,7 @@ declare(strict_types=1);
 use MoonShine\Support\Memoize\Backtrace;
 use MoonShine\Support\Memoize\MemoizeRepository;
 
-if (! function_exists('memoize')) {
+if (! \function_exists('memoize')) {
     /**
      * @template T
      *
@@ -31,7 +31,7 @@ if (! function_exists('memoize')) {
 
         $cache = MemoizeRepository::getInstance();
 
-        if (is_string($object)) {
+        if (\is_string($object)) {
             $object = $cache;
         }
 

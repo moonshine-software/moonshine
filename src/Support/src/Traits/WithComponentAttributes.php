@@ -101,7 +101,7 @@ trait WithComponentAttributes
 
     public function x(string $type, mixed $value = null): static
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             try {
                 $value = str_replace('"', "'", json_encode($value, JSON_THROW_ON_ERROR));
             } catch (Throwable) {
@@ -176,9 +176,9 @@ trait WithComponentAttributes
         }
 
         if (! $variable instanceof Closure) {
-            $o = is_null($value) ? '=' : $operator;
+            $o = \is_null($value) ? '=' : $operator;
             $o = $o === '=' ? '==' : $o;
-            $v = is_null($value) ? $operator : $value;
+            $v = \is_null($value) ? $operator : $value;
             $variable = static fn (self $ctx): string => "$variable$o'$v'";
         }
 

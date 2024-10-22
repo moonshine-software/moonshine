@@ -60,7 +60,7 @@ trait ShowWhen
         mixed $operator = null,
         mixed $value = null
     ): static {
-        $this->showWhenData = $this->makeCondition(...func_get_args());
+        $this->showWhenData = $this->makeCondition(...\func_get_args());
         [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
@@ -80,11 +80,11 @@ trait ShowWhen
         mixed $operator = null,
         mixed $value = null
     ): static {
-        if (func_num_args() === 2) {
+        if (\func_num_args() === 2) {
             $value = $operator;
         }
 
-        if (is_array($value)) {
+        if (\is_array($value)) {
             foreach ($value as $key => $item) {
                 // Casting to Date type for javascript
                 $value[$key] = strtotime((string) $item) * 1000;
@@ -93,7 +93,7 @@ trait ShowWhen
             $value = strtotime((string) $value) * 1000;
         }
 
-        if (func_num_args() === 2) {
+        if (\func_num_args() === 2) {
             return $this->showWhen($column, $value);
         }
 
@@ -110,7 +110,7 @@ trait ShowWhen
             ...$this->prepareValueAndOperator(
                 $value,
                 $operator,
-                func_num_args() === 2
+                \func_num_args() === 2
             ),
         ];
     }
@@ -135,7 +135,7 @@ trait ShowWhen
             $operator = '=';
         }
 
-        if (in_array($operator, $this->arrayOperators) && ! is_array($value)) {
+        if (\in_array($operator, $this->arrayOperators) && ! \is_array($value)) {
             throw new InvalidArgumentException(
                 'Illegal operator and value combination. Value must be array type'
             );
@@ -146,13 +146,13 @@ trait ShowWhen
 
     protected function isInvalidOperatorAndValue($operator, $value): bool
     {
-        return is_null($value) && in_array($operator, $this->operators) &&
-            ! in_array($operator, ['=', '!=']);
+        return \is_null($value) && \in_array($operator, $this->operators) &&
+            ! \in_array($operator, ['=', '!=']);
     }
 
     protected function isInvalidOperator(mixed $operator): bool
     {
-        return ! is_string($operator) || (! in_array(
+        return ! \is_string($operator) || (! \in_array(
             strtolower($operator),
             $this->operators,
             true

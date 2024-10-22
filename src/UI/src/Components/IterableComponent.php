@@ -63,7 +63,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasCaster
 
     public function getPaginator(bool $async = false): ?PaginatorContract
     {
-        if (! is_null($this->paginator) && $async) {
+        if (! \is_null($this->paginator) && $async) {
             return $this->paginator->async();
         }
 
@@ -72,7 +72,7 @@ abstract class IterableComponent extends MoonShineComponent implements HasCaster
 
     public function hasPaginator(): bool
     {
-        return ! is_null($this->paginator);
+        return ! \is_null($this->paginator);
     }
 
     public function isSimplePaginator(): bool

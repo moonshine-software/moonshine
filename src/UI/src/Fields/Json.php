@@ -254,8 +254,8 @@ class Json extends Field implements
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
 
-            if (! is_null($this->modifyRemoveButton)) {
-                $button = call_user_func($this->modifyRemoveButton, $button, $this);
+            if (! \is_null($this->modifyRemoveButton)) {
+                $button = \call_user_func($this->modifyRemoveButton, $button, $this);
             }
 
             $buttons[] = $button;
@@ -405,7 +405,7 @@ class Json extends Field implements
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->vertical()
             )
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
@@ -508,7 +508,7 @@ class Json extends Field implements
             $values = $values[0] ?? [];
         }
 
-        return is_null($response) ? data_set(
+        return \is_null($response) ? data_set(
             $data,
             str_replace('.', '->', $this->getColumn()),
             $values

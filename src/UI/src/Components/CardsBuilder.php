@@ -197,8 +197,8 @@ final class CardsBuilder extends IterableComponent implements
 
             $fields = $this->getFilledFields($casted->toArray(), $casted, $index, $fields);
 
-            if (! is_null($this->customComponent)) {
-                return call_user_func($this->customComponent, $data, $index, $this);
+            if (! \is_null($this->customComponent)) {
+                return \call_user_func($this->customComponent, $data, $index, $this);
             }
 
             $buttons = $this->getButtons($casted);
@@ -218,7 +218,7 @@ final class CardsBuilder extends IterableComponent implements
 
     protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
-        return is_string($this->{$column})
+        return \is_string($this->{$column})
             ? data_get($data, $this->{$column}, '')
             : value($this->{$column}, $data, $index, $this);
     }

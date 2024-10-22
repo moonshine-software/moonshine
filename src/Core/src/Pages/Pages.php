@@ -70,7 +70,7 @@ final class Pages extends Collection implements PagesContract
                 }
 
                 return
-                    ! is_null($pageTypeUri = PageType::getTypeFromUri($uri))
+                    ! \is_null($pageTypeUri = PageType::getTypeFromUri($uri))
                     && $page->getPageType() === $pageTypeUri
                 ;
             },

@@ -106,7 +106,7 @@ trait RangeTrait
         // try to get from array
         if ($values instanceof FieldEmptyValue) {
             $castedValue = $raw[$this->getColumn()] ?? false;
-            $values = is_array($castedValue)
+            $values = \is_array($castedValue)
                 ? $castedValue
                 : $raw;
         }
@@ -132,7 +132,7 @@ trait RangeTrait
             ? $this->toFormattedValue()
             : $this->toValue(withDefault: false);
 
-        if (is_array($value)) {
+        if (\is_array($value)) {
             return array_filter($value) === [];
         }
 

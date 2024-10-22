@@ -24,7 +24,7 @@ final class ReactiveController extends MoonShineController
             $request->getComponentName()
         );
 
-        if (is_null($form)) {
+        if (\is_null($form)) {
             return $this->json();
         }
 

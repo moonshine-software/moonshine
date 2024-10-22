@@ -27,7 +27,7 @@ final class MoonShineRouter extends AbstractRouter
 
     public function withResourceItem(int|string|null $key = null, ?CrudResourceContract $resource = null): self
     {
-        if (! is_null($key = $this->extractResourceItem($key, $resource))) {
+        if (! \is_null($key = $this->extractResourceItem($key, $resource))) {
             return $this->withParams([
                 'resourceItem' => $key,
             ]);
@@ -54,7 +54,7 @@ final class MoonShineRouter extends AbstractRouter
         int|string|null $key = null,
         ?CrudResourceContract $resource = null
     ): string|int|null {
-        if (is_null($key)) {
+        if (\is_null($key)) {
             $key = $resource
                 ? $resource->getItem()?->getKey()
                 : $this->getParam('resourceItem', moonshineRequest()->getResource()?->getItemID());

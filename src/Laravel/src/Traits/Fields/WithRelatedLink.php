@@ -26,7 +26,7 @@ trait WithRelatedLink
     {
         $this->parentRelationName = $linkRelation;
 
-        if (is_null($condition)) {
+        if (\is_null($condition)) {
             $this->isRelatedLink = true;
 
             return $this;
@@ -39,11 +39,11 @@ trait WithRelatedLink
 
     protected function isRelatedLink(): bool
     {
-        if (is_callable($this->isRelatedLink) && is_null($this->toValue())) {
+        if (\is_callable($this->isRelatedLink) && \is_null($this->toValue())) {
             return (bool) value($this->isRelatedLink, 0, $this);
         }
 
-        if (is_callable($this->isRelatedLink)) {
+        if (\is_callable($this->isRelatedLink)) {
             $count = $this->toValue() instanceof Collection
                 ? $this->toValue()->count()
                 : $this->toValue()->total();
@@ -56,7 +56,7 @@ trait WithRelatedLink
 
     public function getRelatedLinkRelation(): string
     {
-        if (! is_null($this->parentRelationName)) {
+        if (! \is_null($this->parentRelationName)) {
             return $this->parentRelationName;
         }
 
@@ -89,7 +89,7 @@ trait WithRelatedLink
             ->badge($count)
             ->icon('eye')
             ->when(
-                ! is_null($this->modifyRelatedLink),
+                ! \is_null($this->modifyRelatedLink),
                 fn (ActionButtonContract $button) => value($this->modifyRelatedLink, $button, $preview)
             );
     }

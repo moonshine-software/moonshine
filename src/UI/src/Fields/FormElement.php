@@ -103,7 +103,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
             trim($column ?? str($this->getLabel())->lower()->snake()->value())
         );
 
-        if (! is_null($formatted)) {
+        if (! \is_null($formatted)) {
             $this->setFormattedValueCallback($formatted);
         }
     }
@@ -140,7 +140,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function hasParent(): bool
     {
-        return ! is_null($this->parent);
+        return ! \is_null($this->parent);
     }
 
     public function setParent(FormElementContract $field): static
@@ -194,18 +194,18 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
-            return call_user_func(
+            return \call_user_func(
                 $this->fillCallback,
-                is_null($casted) ? $raw : $casted->getOriginal(),
+                \is_null($casted) ? $raw : $casted->getOriginal(),
                 $this
             );
         }
 
         $default = new FieldEmptyValue();
 
-        $value = data_get(is_null($casted) ? $raw : $casted->getOriginal(), $this->getColumn(), $default);
+        $value = data_get(\is_null($casted) ? $raw : $casted->getOriginal(), $this->getColumn(), $default);
 
-        if (is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
+        if (\is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
             $value = data_get($raw, $this->getColumn(), $default);
         }
 
@@ -234,8 +234,8 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
         $this->setValue($value);
 
-        if (! is_null($this->afterFillCallback)) {
-            return call_user_func($this->afterFillCallback, $this);
+        if (! \is_null($this->afterFillCallback)) {
+            return \call_user_func($this->afterFillCallback, $this);
         }
 
         return $this;
@@ -271,7 +271,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     public function toRawValue(): mixed
     {
         if ($this->isRawValueModified()) {
-            return call_user_func($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
+            return \call_user_func($this->rawValueCallback, $this->rawValue, $this->getData()?->getOriginal(), $this);
         }
 
         return $this->resolveRawValue();
@@ -348,7 +348,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     protected function isBlankValue(): bool
     {
-        return is_null($this->value);
+        return \is_null($this->value);
     }
 
     protected function setFormattedValue(mixed $value = null): static
@@ -371,9 +371,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function toFormattedValue(): mixed
     {
-        if (! is_null($this->getFormattedValueCallback())) {
+        if (! \is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValue(
-                call_user_func(
+                \call_user_func(
                     $this->getFormattedValueCallback(),
                     $this->getData()?->getOriginal(),
                     $this->getRowIndex(),
@@ -419,12 +419,12 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function isFillChanged(): bool
     {
-        return ! is_null($this->fillCallback);
+        return ! \is_null($this->fillCallback);
     }
 
     public function isRawValueModified(): bool
     {
-        return ! is_null($this->rawValueCallback);
+        return ! \is_null($this->rawValueCallback);
     }
 
     /**
@@ -449,11 +449,11 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function getValueFromRaw(mixed $raw): mixed
     {
-        if (is_null($this->fromRaw)) {
+        if (\is_null($this->fromRaw)) {
             return $raw;
         }
 
-        return call_user_func($this->fromRaw, $raw, $this);
+        return \call_user_func($this->fromRaw, $raw, $this);
     }
 
     public function getDefaultIfExists(): mixed
@@ -522,8 +522,8 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function getRequestValue(string|int|null $index = null): mixed
     {
-        if (! is_null(static::$requestValueResolver)) {
-            return call_user_func(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
+        if (! \is_null(static::$requestValueResolver)) {
+            return \call_user_func(static::$requestValueResolver, $index, $this->getDefaultIfExists(), $this);
         }
 
         return $this->prepareRequestValue(
@@ -544,7 +544,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
                 )
             )
             ->when(
-                ! is_null($index) && $index !== '',
+                ! \is_null($index) && $index !== '',
                 static fn (Stringable $str): Stringable => $str->append(".$index")
             )->value();
     }

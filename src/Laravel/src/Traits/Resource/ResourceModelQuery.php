@@ -98,7 +98,7 @@ trait ResourceModelQuery
      */
     public function newQuery(): Builder
     {
-        if (! is_null($this->queryBuilder)) {
+        if (! \is_null($this->queryBuilder)) {
             return $this->queryBuilder;
         }
 
@@ -150,7 +150,7 @@ trait ResourceModelQuery
 
     public function isItemExists(): bool
     {
-        return ! is_null($this->getItem()) && $this->getItem()->exists;
+        return ! \is_null($this->getItem()) && $this->getItem()->exists;
     }
 
     public function hasWith(): bool
@@ -210,7 +210,7 @@ trait ResourceModelQuery
 
     protected function resolveSearch(string $terms, ?iterable $fullTextColumns = null): static
     {
-        if (! is_null($fullTextColumns)) {
+        if (! \is_null($fullTextColumns)) {
             $this->newQuery()->whereFullText($fullTextColumns, $terms);
         } else {
             $this->searchQuery($terms);
@@ -223,7 +223,7 @@ trait ResourceModelQuery
     {
         $this->newQuery()->where(function (Builder $builder) use ($terms): void {
             foreach ($this->getSearchColumns() as $key => $column) {
-                if (is_string($column) && str($column)->contains('.')) {
+                if (\is_string($column) && str($column)->contains('.')) {
                     $column = str($column)
                         ->explode('.')
                         ->tap(static function (Collection $data) use (&$key): void {
@@ -234,7 +234,7 @@ trait ResourceModelQuery
                         ->toArray();
                 }
 
-                if (is_array($column)) {
+                if (\is_array($column)) {
                     $builder->when(
                         method_exists($this->getDataInstance(), $key),
                         static fn (Builder $query) => $query->orWhereHas(
@@ -265,7 +265,7 @@ trait ResourceModelQuery
     {
         $filters = $this->prepareFilters();
 
-        if (is_null($filters)) {
+        if (\is_null($filters)) {
             return $this;
         }
 
@@ -304,7 +304,7 @@ trait ResourceModelQuery
         $relationName = moonshineRequest()->getParentRelationName();
         $parentId = moonshineRequest()->getParentRelationId();
 
-        if (is_null($relationName) || is_null($parentId)) {
+        if (\is_null($relationName) || \is_null($parentId)) {
             return $this;
         }
 

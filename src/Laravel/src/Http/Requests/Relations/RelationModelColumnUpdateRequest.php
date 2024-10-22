@@ -19,7 +19,7 @@ class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
         $resource = $this->getField()?->getResource();
 
         throw_if(
-            is_null($resource),
+            \is_null($resource),
             ResourceException::notDeclared()
         );
 

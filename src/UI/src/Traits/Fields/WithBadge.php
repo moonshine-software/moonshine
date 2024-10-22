@@ -19,7 +19,7 @@ trait WithBadge
     {
         if ($color instanceof Closure) {
             $this->badgeColorCallback = $color;
-        } elseif (! is_null($color)) {
+        } elseif (! \is_null($color)) {
             $this->badgeColor = $color;
         }
 
@@ -35,9 +35,9 @@ trait WithBadge
 
     public function getBadgeColor(mixed $value = null): string
     {
-        $color = is_null($this->badgeColorCallback)
+        $color = \is_null($this->badgeColorCallback)
             ? $this->badgeColor
-            : call_user_func($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
+            : \call_user_func($this->badgeColorCallback, $value ?? $this->toValue(withDefault: false), $this);
 
 
         return $color instanceof Color ? $color->value : $color;

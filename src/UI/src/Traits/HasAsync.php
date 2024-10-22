@@ -19,7 +19,7 @@ trait HasAsync
 
     public function isAsync(): bool
     {
-        return ! is_null($this->asyncUrl);
+        return ! \is_null($this->asyncUrl);
     }
 
     /**
@@ -97,7 +97,7 @@ trait HasAsync
 
     public function getAsyncEvents(): string|null
     {
-        if (is_null($this->asyncEvents)) {
+        if (\is_null($this->asyncEvents)) {
             return $this->asyncEvents;
         }
 

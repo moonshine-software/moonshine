@@ -19,7 +19,7 @@ final class ColorMutator
             ->map(static function ($v): string {
                 $v = dechex((int) trim($v));
 
-                if (strlen($v) < 2) {
+                if (\strlen($v) < 2) {
                     $v = '0' . $v;
                 }
 

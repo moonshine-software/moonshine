@@ -66,7 +66,7 @@ class ValueMetric extends Metric
 
     public function progress(int|float|Closure $target): static
     {
-        if (is_string($this->value)) {
+        if (\is_string($this->value)) {
             return $this;
         }
 

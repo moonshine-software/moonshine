@@ -166,7 +166,7 @@ class RelationRepeater extends ModelRelationField implements
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
                 ->showInLine();
 
-            if (! is_null($this->modifyRemoveButton)) {
+            if (! \is_null($this->modifyRemoveButton)) {
                 $button = value($this->modifyRemoveButton, $button, $this);
             }
 
@@ -260,7 +260,7 @@ class RelationRepeater extends ModelRelationField implements
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->vertical()
             )
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode())
             );
     }
@@ -306,7 +306,7 @@ class RelationRepeater extends ModelRelationField implements
 
         $values = array_values($applyValues);
 
-        return is_null($response) ? data_set(
+        return \is_null($response) ? data_set(
             $data,
             str_replace('.', '->', $this->getColumn()),
             $values

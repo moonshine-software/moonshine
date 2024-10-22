@@ -118,14 +118,14 @@ trait WithViewRenderer
             return '';
         }
 
-        if (! is_null($this->cachedRender)) {
+        if (! \is_null($this->cachedRender)) {
             return $this->cachedRender;
         }
 
         $this->prepareBeforeRender();
 
-        if (! is_null($this->onBeforeRenderCallback)) {
-            call_user_func($this->onBeforeRenderCallback, $this);
+        if (! \is_null($this->onBeforeRenderCallback)) {
+            \call_user_func($this->onBeforeRenderCallback, $this);
         }
 
         $view = $this->resolveRender();

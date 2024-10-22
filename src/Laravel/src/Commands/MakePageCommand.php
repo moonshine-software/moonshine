@@ -31,7 +31,7 @@ class MakePageCommand extends MoonShineCommand
             required: true
         );
 
-        $dir = $this->option('dir') ?: dirname($className);
+        $dir = $this->option('dir') ?: \dirname($className);
         $className = class_basename($className);
 
         if ($dir === '.') {
@@ -82,7 +82,7 @@ class MakePageCommand extends MoonShineCommand
         ?string $dir = null,
         ?string $extends = null
     ): void {
-        $dir = is_null($dir) ? 'Pages' : $dir;
+        $dir = \is_null($dir) ? 'Pages' : $dir;
         $extends = $extends === null || $extends === '' || $extends === '0' ? 'Page' : $extends;
 
         $page = $this->getDirectory() . "/$dir/$className.php";

@@ -23,7 +23,7 @@ trait ResourceWithTableModifiers
 
     public function getHeadRows(): null|TableRowsContract|Closure
     {
-        if (! is_null($this->thead)) {
+        if (! \is_null($this->thead)) {
             return $this->thead;
         }
 
@@ -37,7 +37,7 @@ trait ResourceWithTableModifiers
 
     public function getRows(): null|TableRowsContract|Closure
     {
-        if (! is_null($this->tbody)) {
+        if (! \is_null($this->tbody)) {
             return $this->tbody;
         }
 
@@ -51,7 +51,7 @@ trait ResourceWithTableModifiers
 
     public function getFootRows(): null|TableRowsContract|Closure
     {
-        if (! is_null($this->tfoot)) {
+        if (! \is_null($this->tfoot)) {
             return $this->tfoot;
         }
 

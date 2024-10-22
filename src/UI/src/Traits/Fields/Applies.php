@@ -29,11 +29,11 @@ trait Applies
 
     public function isCanApply(): bool
     {
-        if (is_null($this->canApply)) {
+        if (\is_null($this->canApply)) {
             return true;
         }
 
-        return (bool) call_user_func($this->canApply, $this);
+        return (bool) \call_user_func($this->canApply, $this);
     }
 
     protected function resolveOnApply(): ?Closure
@@ -69,22 +69,22 @@ trait Applies
             return $data;
         }
 
-        if (is_null($this->onApply) && ! $this->isConsoleMode()) {
+        if (\is_null($this->onApply) && ! $this->isConsoleMode()) {
             $classApply = $this->getCore()
                 ->getContainer(AppliesRegisterContract::class)
                 ->findByField($this);
 
             $this->when(
-                ! is_null($classApply),
+                ! \is_null($classApply),
                 static fn (FieldContract $field): FieldContract => $field->onApply($classApply->apply($field))
             );
         }
 
-        $applyFunction = is_null($this->onApply)
+        $applyFunction = \is_null($this->onApply)
             ? $this->resolveOnApply()
             : $this->onApply;
 
-        return is_null($applyFunction)
+        return \is_null($applyFunction)
             ? $default($data, $this->getRequestValue(), $this)
             : $applyFunction($data, $this->getRequestValue(), $this);
     }
@@ -95,9 +95,9 @@ trait Applies
             return $data;
         }
 
-        return is_null($this->onBeforeApply)
+        return \is_null($this->onBeforeApply)
             ? $this->resolveBeforeApply($data)
-            : call_user_func($this->onBeforeApply, $data, $this->getRequestValue(), $this);
+            : \call_user_func($this->onBeforeApply, $data, $this->getRequestValue(), $this);
     }
 
     public function afterApply(mixed $data): mixed
@@ -106,16 +106,16 @@ trait Applies
             return $data;
         }
 
-        return is_null($this->onAfterApply)
+        return \is_null($this->onAfterApply)
             ? $this->resolveAfterApply($data)
-            : call_user_func($this->onAfterApply, $data, $this->getRequestValue(), $this);
+            : \call_user_func($this->onAfterApply, $data, $this->getRequestValue(), $this);
     }
 
     public function afterDestroy(mixed $data): mixed
     {
-        return is_null($this->onAfterDestroy)
+        return \is_null($this->onAfterDestroy)
             ? $this->resolveAfterDestroy($data)
-            : call_user_func($this->onAfterDestroy, $data, $this->getRequestValue(), $this);
+            : \call_user_func($this->onAfterDestroy, $data, $this->getRequestValue(), $this);
     }
 
     /**
@@ -130,7 +130,7 @@ trait Applies
 
     public function hasOnApply(): bool
     {
-        return ! is_null($this->onApply);
+        return ! \is_null($this->onApply);
     }
 
     /**

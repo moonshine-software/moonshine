@@ -79,8 +79,8 @@ class MakeFieldCommand extends MoonShineCommand
         $viewPath = resource_path('views/' . str_replace('.', DIRECTORY_SEPARATOR, $view));
         $viewPath .= '.blade.php';
 
-        if (! is_dir(dirname($viewPath))) {
-            $this->makeDir(dirname($viewPath));
+        if (! is_dir(\dirname($viewPath))) {
+            $this->makeDir(\dirname($viewPath));
         }
 
         $this->copyStub('view', $viewPath);

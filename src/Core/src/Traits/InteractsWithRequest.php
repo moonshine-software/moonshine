@@ -49,7 +49,7 @@ trait InteractsWithRequest
     {
         $question = $this->getPath() === '/' ? '/?' : '?';
 
-        return count($this->getRequest()->getQueryParams()) > 0
+        return \count($this->getRequest()->getQueryParams()) > 0
             ? $this->getUrl() . $question . Arr::query(array_merge($this->getRequest()->getQueryParams(), $query))
             : $this->getUrl() . $question . Arr::query($query);
     }

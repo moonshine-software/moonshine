@@ -142,11 +142,11 @@ final class ColorManager implements ColorManagerContract
     {
         $data = $dark ? $this->darkColors : $this->colors;
         $value = $data[$name];
-        $value = is_null($shade)
+        $value = \is_null($shade)
             ? $value
             : $value[$shade];
 
-        $hexValue = is_array($value) ? $value['DEFAULT'] : $value;
+        $hexValue = \is_array($value) ? $value['DEFAULT'] : $value;
 
         return $hex ?
             ColorMutator::toHEX($hexValue)
@@ -159,7 +159,7 @@ final class ColorManager implements ColorManagerContract
         $data = $dark ? $this->darkColors : $this->colors;
 
         foreach ($data as $name => $shades) {
-            if (! is_array($shades)) {
+            if (! \is_array($shades)) {
                 $colors[$name] = ColorMutator::toRGB($shades);
             } else {
                 foreach ($shades as $shade => $color) {

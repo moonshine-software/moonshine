@@ -29,11 +29,11 @@ trait WithDefaultValue
             return null;
         }
 
-        if (is_array($this->default) && $this instanceof CanBeArray) {
+        if (\is_array($this->default) && $this instanceof CanBeArray) {
             return $this->default;
         }
 
-        if (is_bool($this->default) && $this instanceof CanBeBool) {
+        if (\is_bool($this->default) && $this instanceof CanBeBool) {
             return $this->default;
         }
 
@@ -43,11 +43,11 @@ trait WithDefaultValue
             return $this->default;
         }
 
-        if (is_string($this->default) && $this instanceof CanBeString) {
+        if (\is_string($this->default) && $this instanceof CanBeString) {
             return $this->default;
         }
 
-        if (is_object($this->default) && $this instanceof CanBeObject) {
+        if (\is_object($this->default) && $this instanceof CanBeObject) {
             return $this->default;
         }
 

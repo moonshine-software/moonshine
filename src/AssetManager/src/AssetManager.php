@@ -42,7 +42,7 @@ final class AssetManager implements AssetManagerContract
         $this->assets = array_unique(
             array_merge(
                 $this->assets,
-                is_array($assets) ? $assets : [$assets]
+                \is_array($assets) ? $assets : [$assets]
             )
         );
 

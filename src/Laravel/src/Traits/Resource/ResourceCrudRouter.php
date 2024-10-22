@@ -110,11 +110,11 @@ trait ResourceCrudRouter
 
     public function getRedirectAfterSave(): string
     {
-        $params = is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
+        $params = \is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
             ? []
             : ['resourceItem' => $this->getCastedData()?->getKey()];
 
-        if (! is_null($this->redirectAfterSave)) {
+        if (! \is_null($this->redirectAfterSave)) {
             return $this
                 ->getPages()
                 ->findByType($this->redirectAfterSave)

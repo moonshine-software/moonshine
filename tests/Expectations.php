@@ -16,4 +16,4 @@ expect()->extend('applies', function (Field $field): Expectation {
 
 expect()->extend('hasFields', fn (array $fields = null) => expect($this->value)
     ->toBeCollection()
-    ->toHaveCount($fields ? count($fields) : 0));
+    ->toHaveCount($fields ? \count($fields) : 0));

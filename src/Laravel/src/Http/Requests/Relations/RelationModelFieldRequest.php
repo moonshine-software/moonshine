@@ -50,7 +50,7 @@ class RelationModelFieldRequest extends FormRequest
                     : $parent->getFields();
             }
 
-            if (is_null($fields)) {
+            if (\is_null($fields)) {
                 return null;
             }
 
@@ -91,7 +91,7 @@ class RelationModelFieldRequest extends FormRequest
     {
         $field = $this->getField();
 
-        throw_if(is_null($field), FieldException::notFound());
+        throw_if(\is_null($field), FieldException::notFound());
 
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $field->getResource();

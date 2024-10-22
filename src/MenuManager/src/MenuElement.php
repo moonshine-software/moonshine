@@ -39,7 +39,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
 
     public function topMode(Closure|bool|null $condition = true): static
     {
-        $this->topMode = is_null($condition) || value($condition, $this);
+        $this->topMode = \is_null($condition) || value($condition, $this);
 
         return $this;
     }

@@ -22,7 +22,7 @@ final class ComponentController extends MoonShineController
             $request->getComponentName()
         );
 
-        if (is_null($component)) {
+        if (\is_null($component)) {
             return '';
         }
 
@@ -30,7 +30,7 @@ final class ComponentController extends MoonShineController
             $component = $this->responseWithTable($component);
         }
 
-        if (is_string($component)) {
+        if (\is_string($component)) {
             return '';
         }
 

@@ -33,7 +33,7 @@ final class MemoizeRepository implements Countable, StatefulContract
             return false;
         }
 
-        return array_key_exists($backtraceHash, $this->values[$object]);
+        return \array_key_exists($backtraceHash, $this->values[$object]);
     }
 
     public function get($object, string $backtraceHash): mixed
@@ -81,6 +81,6 @@ final class MemoizeRepository implements Countable, StatefulContract
 
     public function count(): int
     {
-        return count($this->values);
+        return \count($this->values);
     }
 }

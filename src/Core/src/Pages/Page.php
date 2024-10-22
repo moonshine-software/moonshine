@@ -143,7 +143,7 @@ abstract class Page implements PageContract
      */
     public function getBreadcrumbs(): array
     {
-        if (! is_null($this->breadcrumbs)) {
+        if (! \is_null($this->breadcrumbs)) {
             return $this->breadcrumbs;
         }
 
@@ -181,7 +181,7 @@ abstract class Page implements PageContract
 
     public function getComponents(): Components
     {
-        if (! is_null($this->components)) {
+        if (! \is_null($this->components)) {
             return $this->components;
         }
 
@@ -256,7 +256,7 @@ abstract class Page implements PageContract
 
     public function getLayout(): LayoutContract
     {
-        if (is_null($this->layout)) {
+        if (\is_null($this->layout)) {
             $this->setLayout(
                 $this->getCore()->getConfig()->getLayout()
             );

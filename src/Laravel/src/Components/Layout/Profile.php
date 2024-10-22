@@ -60,15 +60,15 @@ final class Profile extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $nameOfUser = is_null($this->nameOfUser)
+        $nameOfUser = \is_null($this->nameOfUser)
             ? $this->getDefaultName()
             : value($this->nameOfUser, $this);
 
-        $username = is_null($this->username)
+        $username = \is_null($this->username)
             ? $this->getDefaultUsername()
             : value($this->username, $this);
 
-        $avatar = is_null($this->avatar)
+        $avatar = \is_null($this->avatar)
             ? $this->getDefaultAvatar()
             : value($this->avatar, $this);
 

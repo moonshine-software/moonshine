@@ -39,11 +39,11 @@ trait UpdateOnPreview
             return $this;
         }
 
-        if (is_null($this->updateOnPreviewUrl)) {
+        if (\is_null($this->updateOnPreviewUrl)) {
             $this->updateOnPreview();
         }
 
-        if (is_null($this->updateOnPreviewUrl)) {
+        if (\is_null($this->updateOnPreviewUrl)) {
             return $this;
         }
 
@@ -77,7 +77,7 @@ trait UpdateOnPreview
             return $this;
         }
 
-        if (! is_null($resource)) {
+        if (! \is_null($resource)) {
             $this->nowOn(
                 page: $resource instanceof CrudResourceContract ? $resource->getFormPage() : null,
                 resource: $resource
@@ -119,11 +119,11 @@ trait UpdateOnPreview
 
     protected function isOnChangeCondition(): bool
     {
-        if (! is_null($this->onChangeUrl) && ! $this->isUpdateOnPreview()) {
+        if (! \is_null($this->onChangeUrl) && ! $this->isUpdateOnPreview()) {
             return true;
         }
 
-        return $this->isUpdateOnPreview() && is_null($this->getFormName());
+        return $this->isUpdateOnPreview() && \is_null($this->getFormName());
     }
 
     protected function resolveRender(): Renderable|Closure|string
@@ -133,7 +133,7 @@ trait UpdateOnPreview
         }
 
         if ($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
-            return (string) call_user_func(
+            return (string) \call_user_func(
                 new UpdateOnPreviewPopover(
                     field: $this,
                     component: $this->updateOnPreviewParentComponent,

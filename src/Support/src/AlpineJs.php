@@ -18,9 +18,9 @@ final readonly class AlpineJs
 
     public static function event(string|JsEvent $event, ?string $name = null, array $params = []): string
     {
-        $event = is_string($event) ? $event : $event->value;
+        $event = \is_string($event) ? $event : $event->value;
 
-        if (! is_null($name)) {
+        if (! \is_null($name)) {
             $event .= self::EVENT_SEPARATOR . $name;
         }
 
@@ -42,7 +42,7 @@ final readonly class AlpineJs
         ?string $call = null,
         array $params = []
     ): string {
-        $event = is_string($event) ? $event : $event->value;
+        $event = \is_string($event) ? $event : $event->value;
         $name ??= 'default';
         $call = $call ? "='$call'" : '';
 
@@ -110,7 +110,7 @@ final readonly class AlpineJs
 
     public static function prepareEvents(string|array $events): string
     {
-        if (is_array($events)) {
+        if (\is_array($events)) {
             return collect($events)
                 ->map(static fn ($value): string => (string) str($value)->lower()->squish())
                 ->filter()

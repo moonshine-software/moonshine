@@ -71,7 +71,7 @@ it('except type', function () {
 });
 
 it('except closure', function () {
-    $listOf = $this->listOfObjects->except(fn ($item) => get_class($item) === SomeTypeSub2::class)->toArray();
+    $listOf = $this->listOfObjects->except(fn ($item) => \get_class($item) === SomeTypeSub2::class)->toArray();
     expect($listOf)
         ->toHaveCount(2)
         ->and(collect($listOf)->contains(fn ($item) => $item instanceof SomeTypeSub2))
@@ -126,7 +126,7 @@ it('only type', function () {
 });
 
 it('only closure', function () {
-    $listOf = $this->listOfObjects->only(fn ($item) => get_class($item) === SomeTypeSub1::class)->toArray();
+    $listOf = $this->listOfObjects->only(fn ($item) => \get_class($item) === SomeTypeSub1::class)->toArray();
     expect($listOf)
         ->toHaveCount(1)
         ->and(collect($listOf)->contains(fn ($item) => $item instanceof SomeTypeSub2 || $item instanceof SomeTypeSub3))
@@ -136,7 +136,7 @@ it('only closure', function () {
 });
 
 it('only mixed', function () {
-    $listOf = $this->listOfObjects->only(fn ($item) => get_class($item) === SomeTypeSub1::class, SomeTypeSub3::class)->toArray();
+    $listOf = $this->listOfObjects->only(fn ($item) => \get_class($item) === SomeTypeSub1::class, SomeTypeSub3::class)->toArray();
     expect($listOf)
         ->toHaveCount(2)
         ->and(collect($listOf)->contains(fn ($item) => $item instanceof SomeTypeSub2))

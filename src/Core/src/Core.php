@@ -83,7 +83,7 @@ abstract class Core implements CoreContract, StatefulContract
     {
         $path = $path ? DIRECTORY_SEPARATOR . $path : $path;
 
-        return realpath(dirname(__DIR__)) . '/../' . trim($path, '/');
+        return realpath(\dirname(__DIR__)) . '/../' . trim($path, '/');
     }
 
     public function getRenderer(): ViewRendererContract
@@ -151,13 +151,13 @@ abstract class Core implements CoreContract, StatefulContract
         $targets = [];
 
         foreach ($items as $item) {
-            if (is_string($item) && isset($this->instances[$item])) {
+            if (\is_string($item) && isset($this->instances[$item])) {
                 $targets[] = $this->instances[$item];
 
                 continue;
             }
 
-            $instance = is_string($item) ? $this->getContainer()->get($item) : $item;
+            $instance = \is_string($item) ? $this->getContainer()->get($item) : $item;
             $this->instances[$instance::class] = $instance;
             $targets[] = $instance;
         }

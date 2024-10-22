@@ -63,7 +63,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
 
     public function active(Closure|bool|null $condition = null): static
     {
-        $this->active = is_null($condition) || value($condition, $this);
+        $this->active = \is_null($condition) || value($condition, $this);
 
         return $this;
     }

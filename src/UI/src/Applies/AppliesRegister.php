@@ -134,7 +134,7 @@ final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
     {
         $apply = $this->applies[$this->type][$this->getFor()][$fieldClass] ?? null;
 
-        if (is_null($apply)) {
+        if (\is_null($apply)) {
             foreach ($this->applies[$this->type][$this->getFor()] ?? [] as $fieldApply => $applyClass) {
                 if (is_subclass_of($fieldClass, $fieldApply)) {
                     $apply = $applyClass;
@@ -144,11 +144,11 @@ final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
             }
         }
 
-        if (is_null($apply) && ! is_null($default)) {
+        if (\is_null($apply) && ! \is_null($default)) {
             $apply = $default;
         }
 
-        if (is_null($apply)) {
+        if (\is_null($apply)) {
             return null;
         }
 

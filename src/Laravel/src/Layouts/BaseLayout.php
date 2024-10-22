@@ -137,7 +137,7 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function getFooterCopyright(): string
     {
-        return sprintf(
+        return \sprintf(
             <<<'HTML'
                         &copy; 2021-%d Made with ❤️ by
                         <a href="https://cutcode.dev"

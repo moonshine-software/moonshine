@@ -273,7 +273,7 @@ class BelongsToMany extends ModelRelationField implements
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations())
-                ->setAttribute($this->getCheckboxKey(), ! is_null($checked));
+                ->setAttribute($this->getCheckboxKey(), ! \is_null($checked));
         });
     }
 
@@ -325,7 +325,7 @@ class BelongsToMany extends ModelRelationField implements
             ->editable()
             ->reindex(prepared: true)
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
             )
             ->withNotFound();
@@ -333,8 +333,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected function getColumnOrFormattedValue(Model $item, string|int $default): string|int
     {
-        if (! is_null($this->getFormattedValueCallback())) {
-            return call_user_func(
+        if (! \is_null($this->getFormattedValueCallback())) {
+            return \call_user_func(
                 $this->getFormattedValueCallback(),
                 $item,
                 0,
@@ -372,9 +372,9 @@ class BelongsToMany extends ModelRelationField implements
             return $values->implode(function (Model $item) use ($column) {
                 $value = $this->getColumnOrFormattedValue($item, data_get($item, $column) ?? false);
 
-                if (! is_null($this->inLineLink)) {
+                if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
-                    $linkValue = call_user_func($this->inLineLink, $item, $value, $this);
+                    $linkValue = \call_user_func($this->inLineLink, $item, $value, $this);
 
                     $value = $linkValue instanceof Link
                         ? $linkValue
@@ -409,7 +409,7 @@ class BelongsToMany extends ModelRelationField implements
             ->simple()
             ->cast($this->getResource()->getCaster())
             ->when(
-                ! is_null($this->modifyTable),
+                ! \is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
             )
             ->render();
@@ -516,7 +516,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function getKeys(): array
     {
-        if (is_null($this->toValue())) {
+        if (\is_null($this->toValue())) {
             return [];
         }
 

@@ -21,7 +21,7 @@ trait WithOffCanvas
 
     public function isInOffCanvas(): bool
     {
-        return ! is_null($this->offCanvas);
+        return ! \is_null($this->offCanvas);
     }
 
     /**
@@ -34,7 +34,7 @@ trait WithOffCanvas
         ?Closure $builder = null,
         iterable $components = [],
     ): static {
-        if (is_null($name)) {
+        if (\is_null($name)) {
             $name = (string) spl_object_id($this);
         }
 
@@ -48,7 +48,7 @@ trait WithOffCanvas
         )
             ->name(value($name, $item, $ctx))
             ->when(
-                ! is_null($builder),
+                ! \is_null($builder),
                 static fn (OffCanvas $offCanvas) => $builder($offCanvas, $ctx)
             );
 
@@ -65,7 +65,7 @@ trait WithOffCanvas
             return null;
         }
 
-        return call_user_func($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
+        return \call_user_func($this->offCanvas, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
     public function toggleOffCanvas(string $name = 'default'): static

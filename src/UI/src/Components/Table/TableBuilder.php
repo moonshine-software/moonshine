@@ -187,8 +187,8 @@ final class TableBuilder extends IterableComponent implements
             return $this->rows;
         }
 
-        if (! is_null($this->rows)) {
-            return $this->rows = call_user_func($this->rows, $this->resolveRows(), $this);
+        if (! \is_null($this->rows)) {
+            return $this->rows = \call_user_func($this->rows, $this->resolveRows(), $this);
         }
 
         return $this->rows = $this->resolveRows();
@@ -209,7 +209,7 @@ final class TableBuilder extends IterableComponent implements
             );
         }
 
-        if (! is_null($this->reorderableUrl) && $this->isReorderable()) {
+        if (! \is_null($this->reorderableUrl) && $this->isReorderable()) {
             $this->trAttributes(
                 $this->getRowReorderAttributes()
             );
@@ -319,7 +319,7 @@ final class TableBuilder extends IterableComponent implements
 
     public function getRowAsyncAttributes(): Closure
     {
-        return fn (?DataWrapperContract $data, int $index): array => is_null($data)
+        return fn (?DataWrapperContract $data, int $index): array => \is_null($data)
             ? []
             : [
                 AlpineJs::eventBlade(
@@ -355,8 +355,8 @@ final class TableBuilder extends IterableComponent implements
             return $this->headRows;
         }
 
-        if (! is_null($this->headRows)) {
-            return $this->headRows = call_user_func($this->headRows, $this->resolveHeadRow(), $this);
+        if (! \is_null($this->headRows)) {
+            return $this->headRows = \call_user_func($this->headRows, $this->resolveHeadRow(), $this);
         }
 
         return $this->headRows = TableRows::make([
@@ -464,8 +464,8 @@ final class TableBuilder extends IterableComponent implements
             return $this->footRows;
         }
 
-        if (! is_null($this->footRows)) {
-            return $this->footRows = call_user_func($this->footRows, $this->resolveFootRow(), $this);
+        if (! \is_null($this->footRows)) {
+            return $this->footRows = \call_user_func($this->footRows, $this->resolveFootRow(), $this);
         }
 
         return $this->footRows = TableRows::make([
@@ -519,7 +519,7 @@ final class TableBuilder extends IterableComponent implements
             ]);
         }
 
-        if (! is_null($this->reorderableUrl) && $this->isReorderable()) {
+        if (! \is_null($this->reorderableUrl) && $this->isReorderable()) {
             $this->customAttributes([
                 'data-sortable-url' => $this->reorderableUrl,
                 'data-sortable-group' => $this->reorderableGroup,

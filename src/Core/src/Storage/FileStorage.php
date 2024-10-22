@@ -27,7 +27,7 @@ final class FileStorage implements StorageContract
 
     public function delete(array|string $paths): bool
     {
-        $paths = is_array($paths) ? $paths : func_get_args();
+        $paths = \is_array($paths) ? $paths : \func_get_args();
 
         $success = true;
 

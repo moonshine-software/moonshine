@@ -18,49 +18,49 @@ use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\UI\Applies\AppliesRegister;
 
-if (! function_exists('moonshineRequest')) {
+if (! \function_exists('moonshineRequest')) {
     function moonshineRequest(): MoonShineRequest
     {
         return app(MoonShineRequest::class);
     }
 }
 
-if (! function_exists('moonshine')) {
+if (! \function_exists('moonshine')) {
     function moonshine(): CoreContract
     {
         return app(CoreContract::class);
     }
 }
 
-if (! function_exists('moonshineCache')) {
+if (! \function_exists('moonshineCache')) {
     function moonshineCache(): Repository
     {
         return app('cache')->store(moonshineConfig()->getCacheDriver());
     }
 }
 
-if (! function_exists('moonshineAssets')) {
+if (! \function_exists('moonshineAssets')) {
     function moonshineAssets(): AssetManagerContract
     {
         return app(AssetManagerContract::class);
     }
 }
 
-if (! function_exists('moonshineColors')) {
+if (! \function_exists('moonshineColors')) {
     function moonshineColors(): ColorManagerContract
     {
         return app(ColorManagerContract::class);
     }
 }
 
-if (! function_exists('moonshineMenu')) {
+if (! \function_exists('moonshineMenu')) {
     function moonshineMenu(): MenuManagerContract
     {
         return app(MenuManagerContract::class);
     }
 }
 
-if (! function_exists('moonshineRouter')) {
+if (! \function_exists('moonshineRouter')) {
     /**
      * @return MoonShineRouter
      */
@@ -70,7 +70,7 @@ if (! function_exists('moonshineRouter')) {
     }
 }
 
-if (! function_exists('moonshineConfig')) {
+if (! \function_exists('moonshineConfig')) {
     /**
      * @return MoonShineConfigurator
      */
@@ -80,7 +80,7 @@ if (! function_exists('moonshineConfig')) {
     }
 }
 
-if (! function_exists('appliesRegister')) {
+if (! \function_exists('appliesRegister')) {
     /**
      * @return AppliesRegister
      */
@@ -90,7 +90,7 @@ if (! function_exists('appliesRegister')) {
     }
 }
 
-if (! function_exists('toPage')) {
+if (! \function_exists('toPage')) {
     /**
      * @throws Throwable
      */
@@ -113,7 +113,7 @@ if (! function_exists('toPage')) {
     }
 }
 
-if (! function_exists('oops404')) {
+if (! \function_exists('oops404')) {
     function oops404(): never
     {
         $handler = moonshineConfig()->getNotFoundException();

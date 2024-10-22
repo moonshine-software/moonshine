@@ -32,7 +32,7 @@ final class HandlerController extends MoonShineController
             ->getHandlers()
             ->findByUri($handlerUri);
 
-        if (! is_null($handler)) {
+        if (! \is_null($handler)) {
             return $handler->handle();
         }
 

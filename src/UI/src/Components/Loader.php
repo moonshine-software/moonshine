@@ -17,7 +17,7 @@ final class Loader extends MoonShineComponent
 
     public function getView(): string
     {
-        if (! is_null(self::$changedView)) {
+        if (! \is_null(self::$changedView)) {
             return self::$changedView;
         }
 

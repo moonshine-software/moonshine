@@ -124,7 +124,7 @@ it('has many see', function () {
 
     $item = createItem();
 
-    $lastComment = $item->comments[count($item->comments) - 1];
+    $lastComment = $item->comments[\count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
     asAdmin()->get(

@@ -71,7 +71,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function addMiddleware(array|string $middleware): self
     {
-        if (is_string($middleware)) {
+        if (\is_string($middleware)) {
             $middleware = [$middleware];
         }
 
@@ -83,10 +83,10 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function exceptMiddleware(array|string $except = []): self
     {
-        $except = is_string($except) ? [$except] : $except;
+        $except = \is_string($except) ? [$except] : $except;
 
         $middleware = collect($this->getMiddleware())
-            ->filter(static fn ($class): bool => ! in_array($class, $except, true))
+            ->filter(static fn ($class): bool => ! \in_array($class, $except, true))
             ->toArray();
 
         return $this->middleware($middleware);
@@ -120,7 +120,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function addLocales(array|string $locales): self
     {
-        if (is_string($locales)) {
+        if (\is_string($locales)) {
             $locales = [$locales];
         }
 
@@ -389,7 +389,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     {
         $class = $this->get("forms.$name", $default);
 
-        return call_user_func(
+        return \call_user_func(
             new $class(...$parameters)
         );
     }

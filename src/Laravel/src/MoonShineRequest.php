@@ -27,7 +27,7 @@ class MoonShineRequest extends Request
 
     public function getParentRelationName(): ?string
     {
-        if (is_null($parentResource = $this->getParentResourceId())) {
+        if (\is_null($parentResource = $this->getParentResourceId())) {
             return null;
         }
 
@@ -40,7 +40,7 @@ class MoonShineRequest extends Request
     public function getParentRelationId(): int|string|null
     {
         return
-            is_null($parentResource = $this->getParentResourceId())
+            \is_null($parentResource = $this->getParentResourceId())
                 ? null
                 : str($parentResource)->after('-')->value();
     }
@@ -70,16 +70,16 @@ class MoonShineRequest extends Request
     {
         $fragment = $this->getFragmentLoad();
 
-        if (! is_null($fragment) && ! is_null($name)) {
+        if (! \is_null($fragment) && ! \is_null($name)) {
             return $fragment === $name;
         }
 
-        return ! is_null($fragment);
+        return ! \is_null($fragment);
     }
 
     public function isMoonShineRequest(): bool
     {
-        return in_array(
+        return \in_array(
             'moonshine',
             $this->route()?->gatherMiddleware() ?? [],
             true

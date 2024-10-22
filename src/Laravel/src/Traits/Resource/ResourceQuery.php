@@ -95,7 +95,7 @@ trait ResourceQuery
      */
     protected function itemOr(Closure $callback): mixed
     {
-        if (! is_null($this->item)) {
+        if (! \is_null($this->item)) {
             return $this->item;
         }
 
@@ -116,7 +116,7 @@ trait ResourceQuery
 
     public function isItemExists(): bool
     {
-        return ! is_null($this->getCastedData()?->getKey());
+        return ! \is_null($this->getCastedData()?->getKey());
     }
 
     /**
@@ -124,11 +124,11 @@ trait ResourceQuery
      */
     public function getItem(): mixed
     {
-        if (! is_null($this->item)) {
+        if (! \is_null($this->item)) {
             return $this->item;
         }
 
-        if (is_null($this->getItemID())) {
+        if (\is_null($this->getItemID())) {
             return null;
         }
 
@@ -142,11 +142,11 @@ trait ResourceQuery
      */
     public function getItemOrInstance(): mixed
     {
-        if (! is_null($this->item)) {
+        if (! \is_null($this->item)) {
             return $this->item;
         }
 
-        if (is_null($this->getItemID())) {
+        if (\is_null($this->getItemID())) {
             return $this->getDataInstance();
         }
 
@@ -160,7 +160,7 @@ trait ResourceQuery
      */
     public function getItemOrFail(): mixed
     {
-        if (! is_null($this->item)) {
+        if (! \is_null($this->item)) {
             return $this->item;
         }
 
@@ -209,7 +209,7 @@ trait ResourceQuery
         $column = $this->getSortColumn();
         $direction = $this->getSortDirection();
 
-        if (($sort = $this->getQueryParams()->get('sort')) && is_string($sort)) {
+        if (($sort = $this->getQueryParams()->get('sort')) && \is_string($sort)) {
             $column = ltrim($sort, '-');
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }

@@ -17,7 +17,7 @@ trait HasPageRequest
     public function findPage(): ?PageContract
     {
         return memoize(function (): ?PageContract {
-            if (is_null($this->getPageUri())) {
+            if (\is_null($this->getPageUri())) {
                 return null;
             }
 
@@ -40,7 +40,7 @@ trait HasPageRequest
     {
         $page = $this->findPage();
 
-        if (is_null($page)) {
+        if (\is_null($page)) {
             oops404();
         }
 

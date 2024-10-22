@@ -51,7 +51,7 @@ trait HasResource
 
     public function hasResource(): bool
     {
-        return ! is_null($this->resource);
+        return ! \is_null($this->resource);
     }
 
     /**

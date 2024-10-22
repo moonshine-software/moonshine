@@ -44,7 +44,7 @@ class MenuItem extends MenuElement
             $this->icon($icon);
         }
 
-        if (is_string($this->filler) && str_contains($this->filler, '\\')) {
+        if (\is_string($this->filler) && str_contains($this->filler, '\\')) {
             $this->filler = $this->getCore()->getInstances($this->filler);
         }
 
@@ -52,7 +52,7 @@ class MenuItem extends MenuElement
             $this->resolveFiller($this->filler);
         }
 
-        if (is_string($this->filler)) {
+        if (\is_string($this->filler)) {
             $this->setUrl($this->filler);
         }
 
@@ -82,7 +82,7 @@ class MenuItem extends MenuElement
             $this->badge(static fn () => $filler->getBadge());
         }
 
-        if (! is_null($icon) && $this->getIconValue() === '') {
+        if (! \is_null($icon) && $this->getIconValue() === '') {
             $this->icon($icon, $this->isCustomIcon(), $this->getIconPath());
         }
     }
@@ -116,9 +116,9 @@ class MenuItem extends MenuElement
      */
     public function getUrl(): string
     {
-        $url = $this->url instanceof Closure ? call_user_func($this->url) : $this->url;
+        $url = $this->url instanceof Closure ? \call_user_func($this->url) : $this->url;
 
-        if (is_null($url)) {
+        if (\is_null($url)) {
             $url = '';
         }
 
@@ -144,7 +144,7 @@ class MenuItem extends MenuElement
     {
         $filler = $this->getFiller();
 
-        if ($filler instanceof MenuFillerContract && is_null($this->whenActive)) {
+        if ($filler instanceof MenuFillerContract && \is_null($this->whenActive)) {
             return $filler->isActive();
         }
 
@@ -165,7 +165,7 @@ class MenuItem extends MenuElement
             return $this->getCore()->getRequest()->urlIs($host ? "$url*" : "*$url*");
         };
 
-        return is_null($this->whenActive)
+        return \is_null($this->whenActive)
             ? $isActive($path, $host)
             : (bool) value($this->whenActive, $path, $host, $this);
     }

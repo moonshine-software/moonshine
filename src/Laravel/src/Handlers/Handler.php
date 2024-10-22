@@ -72,8 +72,8 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
 
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
-        if (! is_null($this->modifyButton)) {
-            return call_user_func($this->modifyButton, $button, $this);
+        if (! \is_null($this->modifyButton)) {
+            return \call_user_func($this->modifyButton, $button, $this);
         }
 
         return $button;

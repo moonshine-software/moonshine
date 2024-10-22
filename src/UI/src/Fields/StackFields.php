@@ -12,7 +12,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\FieldsGroup;
-use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -48,7 +47,8 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
         return FieldsGroup::make(
             $this->getFields()
         )
-            ->mapFields(fn (FieldContract $field, int $index): FieldContract => $field
+            ->mapFields(
+                fn (FieldContract $field, int $index): FieldContract => $field
                 ->fillData($this->getData())
                 ->previewMode()
             )
@@ -132,7 +132,7 @@ class StackFields extends Field implements HasFieldsContract, FieldsWrapperContr
      */
     public function __clone()
     {
-        if(!$this->fields instanceof Closure) {
+        if (! $this->fields instanceof Closure) {
             $fields = [];
 
             foreach ($this->getRawFields() as $index => $field) {

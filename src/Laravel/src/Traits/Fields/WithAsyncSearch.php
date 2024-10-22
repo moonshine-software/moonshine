@@ -120,7 +120,7 @@ trait WithAsyncSearch
 
     public function getAsyncSearchUrl(): string
     {
-        if (! is_null($this->asyncUrl)) {
+        if (! \is_null($this->asyncUrl)) {
             return $this->asyncUrl;
         }
 
@@ -145,12 +145,12 @@ trait WithAsyncSearch
     {
         $searchColumn ??= $this->getAsyncSearchColumn();
 
-        if (is_null($searchColumn)) {
+        if (\is_null($searchColumn)) {
             $searchColumn = '';
         }
 
         return new Option(
-            label: is_null($this->getAsyncSearchValueCallback())
+            label: \is_null($this->getAsyncSearchValueCallback())
                 ? data_get($model, $searchColumn, '')
                 : value($this->getAsyncSearchValueCallback(), $model, $this),
             value: (string) $model->getKey(),
@@ -205,7 +205,7 @@ trait WithAsyncSearch
         $defaultQuery = static fn (Builder $query, Request $request) => $query->where($column, $request->input($column));
 
         return $this->asyncSearch(
-            searchQuery: is_null($searchQuery) ? $defaultQuery : $searchQuery,
+            searchQuery: \is_null($searchQuery) ? $defaultQuery : $searchQuery,
             associatedWith: $column
         );
     }

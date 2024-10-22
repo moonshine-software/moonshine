@@ -24,7 +24,7 @@ final class TableRow extends MoonShineComponent implements TableRowContract
 
     public function hasKey(): bool
     {
-        return ! is_null($this->key);
+        return ! \is_null($this->key);
     }
 
     public function setKey(int|string|null $value): self

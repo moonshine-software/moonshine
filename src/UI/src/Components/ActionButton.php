@@ -94,7 +94,7 @@ class ActionButton extends MoonShineComponent implements
         $this->isBulk = true;
         $this->bulkForComponent = $forComponent;
 
-        if (is_null($this->modal)) {
+        if (\is_null($this->modal)) {
             $this->customAttributes(array_filter([
                 'data-button-type' => 'bulk-button',
                 'data-for-component' => $this->getBulkForComponent(),
@@ -141,14 +141,14 @@ class ActionButton extends MoonShineComponent implements
 
     public function setData(?DataWrapperContract $data = null): static
     {
-        if (! is_null($this->onBeforeSetCallback)) {
-            $data = call_user_func($this->onBeforeSetCallback, $data, $this);
+        if (! \is_null($this->onBeforeSetCallback)) {
+            $data = \call_user_func($this->onBeforeSetCallback, $data, $this);
         }
 
         $this->data = $data;
 
-        if (! is_null($this->onAfterSetCallback)) {
-            call_user_func($this->onAfterSetCallback, $data, $this);
+        if (! \is_null($this->onAfterSetCallback)) {
+            \call_user_func($this->onAfterSetCallback, $data, $this);
         }
 
         return $this;
@@ -161,7 +161,7 @@ class ActionButton extends MoonShineComponent implements
     {
         $event = 'x-on:click';
 
-        if (! is_null($modifier)) {
+        if (! \is_null($modifier)) {
             $event .= ".$modifier";
         }
 
@@ -228,7 +228,7 @@ class ActionButton extends MoonShineComponent implements
 
     public function isAsyncMethod(): bool
     {
-        return ! is_null($this->asyncMethod);
+        return ! \is_null($this->asyncMethod);
     }
 
     public function getAsyncMethod(): ?string

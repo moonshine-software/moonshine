@@ -36,7 +36,7 @@ final readonly class ModelCaster implements DataCasterContract
     public function cast(mixed $data): ModelDataWrapper
     {
         /** @phpstan-ignore-next-line  */
-        if (is_array($data)) {
+        if (\is_array($data)) {
             /** @var T $model */
             $model = new ($this->getClass());
             $data = $model->forceFill($data);

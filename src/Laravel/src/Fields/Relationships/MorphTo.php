@@ -40,7 +40,7 @@ class MorphTo extends BelongsTo
                 static fn (
                     string|array $searchColumn,
                     string $type
-                ): array => [$type => is_array($searchColumn) ? $searchColumn[0] : $searchColumn]
+                ): array => [$type => \is_array($searchColumn) ? $searchColumn[0] : $searchColumn]
             )
             ->toArray();
 
@@ -49,7 +49,7 @@ class MorphTo extends BelongsTo
                 static fn (
                     string|array $searchColumn,
                     string $type
-                ): array => [$type => is_array($searchColumn) ? $searchColumn[1] : class_basename($type)]
+                ): array => [$type => \is_array($searchColumn) ? $searchColumn[1] : class_basename($type)]
             )
             ->toArray();
 
@@ -112,11 +112,11 @@ class MorphTo extends BelongsTo
             return parent::getValues();
         }
 
-        if (is_null($item)) {
+        if (\is_null($item)) {
             return parent::getValues();
         }
 
-        if (is_null($this->getFormattedValueCallback())) {
+        if (\is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValueCallback(
                 fn ($v) => $v->{$this->getSearchColumn($v::class)}
             );
@@ -133,7 +133,7 @@ class MorphTo extends BelongsTo
             return '';
         }
 
-        if (is_null($item) || is_null($item->{$this->getRelationName()})) {
+        if (\is_null($item) || \is_null($item->{$this->getRelationName()})) {
             return '';
         }
 

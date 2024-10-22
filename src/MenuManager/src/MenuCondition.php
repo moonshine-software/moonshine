@@ -25,7 +25,7 @@ final readonly class MenuCondition
 
     public function hasBefore(): bool
     {
-        return ! is_null($this->before);
+        return ! \is_null($this->before);
     }
 
     public function isBefore(MenuElementContract $element): bool
@@ -35,7 +35,7 @@ final readonly class MenuCondition
 
     public function hasAfter(): bool
     {
-        return ! is_null($this->after);
+        return ! \is_null($this->after);
     }
 
     public function isAfter(MenuElementContract $element): bool

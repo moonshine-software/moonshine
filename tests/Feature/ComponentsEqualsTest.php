@@ -115,7 +115,7 @@ function renderBlade(string $alias, array $parameters = [], array $attributes = 
         return $str;
     };
 
-    $params = collect($parameters)->implode(fn ($k, $v) => is_array($k) ? " :$v=\"{$array($k)}\"" : " $v='$k' ");
+    $params = collect($parameters)->implode(fn ($k, $v) => \is_array($k) ? " :$v=\"{$array($k)}\"" : " $v='$k' ");
     $attr = collect($attributes)->implode(fn ($k, $v) => " $v='$k' ");
 
     return Blade::render("<x-$alias $params $attr>$slot</x-$alias>");

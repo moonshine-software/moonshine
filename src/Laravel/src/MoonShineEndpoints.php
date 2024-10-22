@@ -109,17 +109,17 @@ final readonly class MoonShineEndpoints implements EndpointsContract
         }
 
         throw_if(
-            is_null($page) && is_null($resource),
+            \is_null($page) && \is_null($resource),
             new MoonShineException('Page or resource must not be null')
         );
 
-        if (! is_null($resource)) {
+        if (! \is_null($resource)) {
             $targetResource = $resource instanceof ResourceContract
                 ? $resource
                 : moonshine()->getResources()->findByClass($resource);
 
             $targetPage = $targetResource?->getPages()->when(
-                is_null($page),
+                \is_null($page),
                 static fn (Pages $pages) => $pages->first(),
                 static fn (Pages $pages): ?PageContract => $pages->findByUri(
                     $page instanceof PageContract
@@ -129,14 +129,14 @@ final readonly class MoonShineEndpoints implements EndpointsContract
             );
         }
 
-        if (is_null($resource)) {
+        if (\is_null($resource)) {
             $targetPage = $page instanceof PageContract
                 ? $page
                 : moonshine()->getPages()->findByClass($page);
         }
 
         throw_if(
-            is_null($targetPage),
+            \is_null($targetPage),
             new MoonShineException('Page not exists')
         );
 

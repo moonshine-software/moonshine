@@ -17,7 +17,7 @@ final class MoonShine extends Core
     {
         $path = $path ? DIRECTORY_SEPARATOR . $path : $path;
 
-        return realpath(dirname(__DIR__)) . '/../' . trim($path, '/');
+        return realpath(\dirname(__DIR__)) . '/../' . trim($path, '/');
     }
 
     public static function UIPath(string $path = ''): string
@@ -47,7 +47,7 @@ final class MoonShine extends Core
 
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed
     {
-        if (! is_null($id)) {
+        if (! \is_null($id)) {
             return app()->make($id, $parameters) ?? $default;
         }
 

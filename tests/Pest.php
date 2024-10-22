@@ -52,13 +52,13 @@ function createItem(int $countItems = 1, int $countComments = 3)
 
 function addFieldsToTestResource(array|Field $fields, ?string $setType = null, ?string $getType = null): TestResource
 {
-    if (! is_array($fields)) {
+    if (! \is_array($fields)) {
         $fields = [$fields];
     }
 
-    $setter = is_null($setType) ? 'setTestFields' : 'setTest' . ucfirst($setType);
-    $getter = is_null($getType)
-        ? (is_null($setType) ? 'getFormFields' : 'get' . ucfirst($setType))
+    $setter = \is_null($setType) ? 'setTestFields' : 'setTest' . ucfirst($setType);
+    $getter = \is_null($getType)
+        ? (\is_null($setType) ? 'getFormFields' : 'get' . ucfirst($setType))
         : 'get' . ucfirst($getType);
 
     return TestResourceBuilder::new(Item::class)

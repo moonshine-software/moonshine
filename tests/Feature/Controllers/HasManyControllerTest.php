@@ -14,7 +14,7 @@ beforeEach(function (): void {
 it('search with pagination', function () {
     $item = createItem();
 
-    $lastComment = $item->comments[count($item->comments) - 1];
+    $lastComment = $item->comments[\count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
     asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.list', [
@@ -61,7 +61,7 @@ it('pagination with page', function () {
 it('pagination sort', function () {
     $item = createItem();
 
-    $lastComment = $item->comments[count($item->comments) - 1];
+    $lastComment = $item->comments[\count($item->comments) - 1];
     $firstComment = $item->comments[0];
 
     asAdmin()->get($this->moonshineCore->getRouter()->to("has-many.list", [

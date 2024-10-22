@@ -19,7 +19,7 @@ trait HasCanSee
 
     public function isSee(): bool
     {
-        if (is_null($this->canSeeCallback)) {
+        if (\is_null($this->canSeeCallback)) {
             return true;
         }
 
@@ -28,7 +28,7 @@ trait HasCanSee
             $this,
         ];
 
-        return (bool) call_user_func(
+        return (bool) \call_user_func(
             $this->canSeeCallback,
             ...$params,
         );
