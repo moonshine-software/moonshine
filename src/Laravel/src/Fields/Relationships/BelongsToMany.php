@@ -428,6 +428,20 @@ class BelongsToMany extends ModelRelationField implements
             ->keys();
 
     }
+
+    public function getKeys(): array
+    {
+        if (\is_null($this->toValue())) {
+            return [];
+        }
+
+        if ($this->isValueWithModels()) {
+            return $this->toValue()->modelKeys();
+        }
+
+        return $this->toValue()->keys()->toArray();
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return static fn ($item) => $item;
@@ -512,19 +526,6 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         return $data;
-    }
-
-    public function getKeys(): array
-    {
-        if (\is_null($this->toValue())) {
-            return [];
-        }
-
-        if ($this->isValueWithModels()) {
-            return $this->toValue()->modelKeys();
-        }
-
-        return $this->toValue()->keys()->toArray();
     }
 
     /**
