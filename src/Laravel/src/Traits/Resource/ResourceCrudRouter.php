@@ -33,9 +33,9 @@ trait ResourceCrudRouter
         );
     }
 
-    public function getPageUrl(PageContract $page, array $params = [], ?string $fragment = null): string
+    public function getPageUrl(string|PageContract $page, array $params = [], ?string $fragment = null): string
     {
-        return $this->getRouter()->getEndpoints()->toPage($page, params: $params, extra: [
+        return $this->getRouter()->getEndpoints()->toPage($page, $this, params: $params, extra: [
             'fragment' => $fragment,
         ]);
     }
