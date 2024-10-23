@@ -56,7 +56,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
     {
         return [
             'field' => ['required'],
-            'value' => ['required'],
+            'value' => ['present'],
         ];
     }
 
