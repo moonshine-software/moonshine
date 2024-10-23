@@ -25,10 +25,8 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/vendor',
         __DIR__ . '/stubs',
         __DIR__ . '/tests',
-        CallableThisArrayToAnonymousFunctionRector::class,
         ExplicitBoolCompareRector::class,
         FirstClassCallableRector::class,
-
     ]);
 
     $rectorConfig->importNames();
