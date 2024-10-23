@@ -33,6 +33,10 @@ trait ResourceCrudRouter
         );
     }
 
+    /**
+     * @param class-string<PageContract>|PageContract $page
+     * @param array<string, mixed> $params
+     */
     public function getPageUrl(string|PageContract $page, array $params = [], ?string $fragment = null): string
     {
         return $this->getRouter()->getEndpoints()->toPage($page, $this, params: $params, extra: [
