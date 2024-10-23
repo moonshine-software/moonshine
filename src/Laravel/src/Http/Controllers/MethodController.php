@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Illuminate\Validation\ValidationException;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -43,6 +44,13 @@ final class MethodController extends MoonShineController
         }
 
         $request->session()->forget('toast');
+
+        if ($result instanceof ValidationException) {
+            return $this->json($result->getMessage(), data: [
+                'message' => $result->getMessage(),
+                'errors' => $result->errors(),
+            ], messageType: ToastType::ERROR, status: $result->status);
+        }
 
         if ($result instanceof JsonResponse) {
             return $result;
