@@ -83,7 +83,7 @@ trait WithModal
         $async = $this->purgeAsyncTap();
 
         if ($this->isBulk()) {
-            $this->getAttributes()->setAttributes([
+            $this->customAttributes([
                 'data-button-type' => 'modal-button',
             ]);
         }

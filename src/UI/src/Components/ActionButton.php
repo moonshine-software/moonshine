@@ -155,7 +155,7 @@ class ActionButton extends MoonShineComponent implements
     }
 
     /**
-     * @param  Closure(mixed $data, static $ctx): string  $onClick
+     * @param  Closure(ActionButtonContract $ctx): string  $onClick
      */
     public function onClick(Closure $onClick, ?string $modifier = null): static
     {
@@ -166,7 +166,7 @@ class ActionButton extends MoonShineComponent implements
         }
 
         $this->customAttributes([
-            $event => $onClick($this->getData()?->getOriginal(), $this),
+            $event => $onClick($this),
         ]);
 
         return $this;
@@ -329,7 +329,7 @@ class ActionButton extends MoonShineComponent implements
             ))
         );
 
-        if ($this->getAttributes()->get('x-on:click.prevent') === 'request') {
+        if ($this->getAttribute('x-on:click.prevent') === 'request') {
             $removeAsyncAttr[] = 'x-on:click.prevent';
         }
 

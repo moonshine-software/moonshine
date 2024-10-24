@@ -33,7 +33,7 @@ interface ActionButtonContract extends
     public function setUrl(Closure|string $url): static;
 
     /**
-     * @param  Closure(mixed $data, static $ctx): string  $onClick
+     * @param  Closure(ActionButtonContract $ctx): string  $onClick
      */
     public function onClick(Closure $onClick, ?string $modifier = null): static;
 

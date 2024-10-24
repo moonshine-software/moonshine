@@ -105,7 +105,7 @@ class Checkbox extends Field implements
     {
         $additionally = [];
 
-        if ($onChange = $this->getAttributes()->get('x-on:change')) {
+        if ($onChange = $this->getAttribute('x-on:change')) {
             $this->removeAttribute('x-on:change');
             $additionally['x-on:change'] = $onChange;
         }

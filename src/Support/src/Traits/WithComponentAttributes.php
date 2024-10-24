@@ -145,7 +145,7 @@ trait WithComponentAttributes
         string|Closure $variable,
         ?string $operator = null,
         ?string $value = null,
-        bool $wrapper = true
+        bool $wrapper = true,
     ): static {
         return $this->xIfOrShow($variable, $operator, $value, wrapper: $wrapper);
     }
@@ -154,7 +154,7 @@ trait WithComponentAttributes
         string|Closure $variable,
         ?string $operator = null,
         ?string $value = null,
-        bool $wrapper = true
+        bool $wrapper = true,
     ): static {
         return $this->xIfOrShow($variable, $operator, $value, if: true, wrapper: $wrapper);
     }
@@ -169,7 +169,7 @@ trait WithComponentAttributes
         ?string $operator = null,
         ?string $value = null,
         bool $if = false,
-        bool $wrapper = true
+        bool $wrapper = true,
     ) {
         if ($if && ! $this instanceof FieldContract) {
             return $this;

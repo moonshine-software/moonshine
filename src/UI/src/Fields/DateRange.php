@@ -40,7 +40,7 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
     public function min(string $min): static
     {
         $this->min = $min;
-        $this->getAttributes()->set('min', $this->min);
+        $this->setAttribute('min', $this->min);
 
         return $this;
     }
@@ -48,7 +48,7 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
     public function max(string $max): static
     {
         $this->max = $max;
-        $this->getAttributes()->set('max', $this->max);
+        $this->setAttribute('max', $this->max);
 
         return $this;
     }
@@ -56,7 +56,7 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
     public function step(int|float|string $step): static
     {
         $this->step = $step;
-        $this->getAttributes()->set('step', (string) $this->step);
+        $this->setAttribute('step', (string) $this->step);
 
         return $this;
     }

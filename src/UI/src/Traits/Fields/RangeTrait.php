@@ -40,7 +40,7 @@ trait RangeTrait
         ?ComponentAttributesBagContract $attributes = null,
         string $name = ''
     ): ComponentAttributesBagContract {
-        $dataName = $this->getAttributes()->get('data-name');
+        $dataName = $this->getAttribute('data-name');
 
         return ($attributes ?? $this->getAttributes())
             ->except(['data-name'])

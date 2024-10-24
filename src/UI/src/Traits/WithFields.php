@@ -32,7 +32,7 @@ trait WithFields
     public function getPreparedFields(): FieldsContract
     {
         if (! \is_null($this->preparedFields)) {
-            return $this->preparedFields;
+            return clone $this->preparedFields;
         }
 
         return $this->preparedFields = $this->prepareFields();

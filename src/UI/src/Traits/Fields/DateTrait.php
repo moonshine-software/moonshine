@@ -29,7 +29,7 @@ trait DateTrait
 
     public function withTime(): static
     {
-        $this->getAttributes()->set('type', 'datetime-local');
+        $this->setAttribute('type', 'datetime-local');
 
         $this->inputFormat = "Y-m-d\TH:i";
 

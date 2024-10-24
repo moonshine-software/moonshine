@@ -69,6 +69,8 @@ class Json extends Field implements
 
     protected ?Closure $modifyRemoveButton = null;
 
+    protected bool $resolveValueOnce = true;
+
     /**
      * @throws Throwable
      */
@@ -84,11 +86,11 @@ class Json extends Field implements
         $this->fields([
             ($keyField ?? Text::make($key, 'key'))
                 ->setColumn('key')
-                ->customAttributes($this->getAttributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->jsonSerialize()),
 
             ($valueField ?? Text::make($value, 'value'))
                 ->setColumn('value')
-                ->customAttributes($this->getAttributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->jsonSerialize()),
         ]);
 
         return $this;
@@ -112,7 +114,7 @@ class Json extends Field implements
         $this->fields([
             ($valueField ?? Text::make($value, 'value'))
                 ->setColumn('value')
-                ->customAttributes($this->getAttributes()->getAttributes()),
+                ->customAttributes($this->getAttributes()->jsonSerialize()),
         ]);
 
         return $this;
@@ -287,13 +289,15 @@ class Json extends Field implements
 
     protected function resolvePreview(): Renderable|string
     {
+        $value = $this->getValue();
+
         if ($this->isObjectMode()) {
-            return $this->resolveValue()
+            return $value
                 ->previewMode()
                 ->render();
         }
 
-        return $this->resolveValue()
+        return $value
             ->simple()
             ->preview()
             ->render();
@@ -416,14 +420,16 @@ class Json extends Field implements
      */
     protected function viewData(): array
     {
+        $value = $this->getValue();
+
         if ($this->isObjectMode()) {
             return [
-                'component' => $this->resolveValue(),
+                'component' => $value,
             ];
         }
 
         return [
-            'component' => $this->resolveValue()
+            'component' => $value
                 ->editable()
                 ->reindex(prepared: true)
                 ->when(

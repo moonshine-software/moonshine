@@ -53,7 +53,7 @@ trait HasTreeMode
             foreach ($data->get($parentKey) as $item) {
                 $label = $this->getColumnOrFormattedValue($item, data_get($item, $this->getResourceColumn()));
 
-                $this->getAttributes()->set('name', $this->getNameAttribute((string) $item->getKey()));
+                $this->setAttribute('name', $this->getNameAttribute((string) $item->getKey()));
 
                 $element = Checkbox::make($label)
                     ->simpleMode()
