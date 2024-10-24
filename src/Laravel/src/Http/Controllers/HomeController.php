@@ -18,6 +18,7 @@ class HomeController extends MoonShineController
     {
         return moonshineConfig()
             ->getPage('dashboard', Dashboard::class)
+            ->loaded()
             ->render();
     }
 }

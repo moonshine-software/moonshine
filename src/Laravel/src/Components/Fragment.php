@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Components;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
@@ -18,7 +19,7 @@ use Throwable;
 /**
  * @method static static make(array $fields = [])
  */
-class Fragment extends AbstractWithComponents
+class Fragment extends AbstractWithComponents implements HasAsyncContract
 {
     use HasAsync;
     use NowOn;

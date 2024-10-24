@@ -26,6 +26,7 @@ class AuthenticateController extends MoonShineController
 
         return moonshineConfig()
             ->getPage('login', LoginPage::class)
+            ->loaded()
             ->render();
     }
 

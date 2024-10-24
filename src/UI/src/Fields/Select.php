@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Collection;
 use JsonException;
+use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
@@ -31,7 +32,8 @@ class Select extends Field implements
     CanBeString,
     CanBeNumeric,
     HasUpdateOnPreviewContract,
-    HasReactivityContract
+    HasReactivityContract,
+    HasAsyncContract
 {
     use CanBeMultiple;
     use Searchable;
