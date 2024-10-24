@@ -61,7 +61,7 @@ export default (
 
     this.initColumnSelection()
 
-    if(this.table) {
+    if (this.table) {
       this.actions('row', this.table.id)
     }
 
