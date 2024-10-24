@@ -66,6 +66,8 @@ final class TableBuilder extends IterableComponent implements
 
     protected ComponentAttributesBagContract $footAttributes;
 
+    protected ?Closure $modifyRowCheckbox = null;
+
     public function __construct(
         iterable $fields = [],
         iterable $items = [],
@@ -92,7 +94,7 @@ final class TableBuilder extends IterableComponent implements
                 ->map(
                     static fn (FieldContract $field): FieldContract => $field
                         ->withoutWrapper()
-                        ->previewMode()
+                        ->previewMode(),
                 );
         }
 
@@ -143,7 +145,7 @@ final class TableBuilder extends IterableComponent implements
                 'filter' => $this->getCore()->getRequest()->get('filter'),
                 'query-tag' => $this->getCore()->getRequest()->get('query-tag'),
                 'search' => $this->getCore()->getRequest()->get('search'),
-            ]
+            ],
         );
     }
 
@@ -205,13 +207,13 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->isAsync()) {
             $this->trAttributes(
-                $this->getRowAsyncAttributes()
+                $this->getRowAsyncAttributes(),
             );
         }
 
         if (! \is_null($this->reorderableUrl) && $this->isReorderable()) {
             $this->trAttributes(
-                $this->getRowReorderAttributes()
+                $this->getRowReorderAttributes(),
             );
         }
 
@@ -225,17 +227,17 @@ final class TableBuilder extends IterableComponent implements
                 ->onlyVisible()
                 ->when(
                     $this->isReindex() && ! $this->isPreparedReindex(),
-                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames()
+                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames(),
                 );
 
             $key = $casted->getKey();
 
             $tdAttributes = fn (TableCellContract $td): TableCellContract => $td->customAttributes(
-                $this->getTdAttributes($casted, $index + 1, $td->getIndex())
+                $this->getTdAttributes($casted, $index + 1, $td->getIndex()),
             );
 
             $trAttributes = fn (TableRowContract $tr): TableRowContract => $tr->customAttributes(
-                $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1))
+                $this->getTrAttributes($casted, $index + ($this->isVertical() ? 0 : 1)),
             );
 
             if ($this->isVertical()) {
@@ -243,7 +245,7 @@ final class TableBuilder extends IterableComponent implements
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
 
                     $builder = $attributes !== [] ? static fn (TableCellContract $td): TableCellContract => $td->customAttributes(
-                        $field->getWrapperAttributes()->jsonSerialize()
+                        $field->getWrapperAttributes()->jsonSerialize(),
                     ) : null;
 
                     $cells = TableCells::make()
@@ -252,7 +254,7 @@ final class TableBuilder extends IterableComponent implements
                             builder: static fn (TableCellContract $td): TableCellContract => $td->customAttributes([
                                 'width' => '20%',
                                 'class' => 'font-semibold',
-                            ])
+                            ]),
                         )
                         ->pushCell((string) $field, builder: $builder);
 
@@ -270,26 +272,26 @@ final class TableBuilder extends IterableComponent implements
             $cells
                 ->pushCellWhen(
                     $hasBulk,
-                    fn (): string => (string) $this->getRowCheckbox($key),
-                    builder: $tdAttributes
+                    fn (): string => (string) $this->getRowCheckbox($key, $casted),
+                    builder: $tdAttributes,
                 )
                 ->pushFields(
                     $fields,
                     builder: $tdAttributes,
-                    startIndex: $hasBulk ? 1 : 0
+                    startIndex: $hasBulk ? 1 : 0,
                 )
                 ->pushCell(
                     static fn (): string => (string) Flex::make([
                         ActionGroup::make($buttons->toArray()),
                     ])->justifyAlign('end'),
                     index: $fields->count() + ($hasBulk ? 1 : 0),
-                    builder: $tdAttributes
+                    builder: $tdAttributes,
                 );
 
             $rows->pushRow(
                 $cells,
                 $key,
-                builder: $trAttributes
+                builder: $trAttributes,
             );
 
             $index++;
@@ -298,13 +300,23 @@ final class TableBuilder extends IterableComponent implements
         /** @var TableRowsContract */
         return $rows->when(
             $this->isVertical(),
-            static fn (TableRowsContract $rows) => $rows->flatten()
+            static fn (TableRowsContract $rows) => $rows->flatten(),
         );
     }
 
-    public function getRowCheckbox(int|string|null $key): Checkbox
+    /**
+     * @param Closure(Checkbox $checkbox, DataWrapperContract $data, self $ctx): Checkbox $callback
+     */
+    public function modifyRowCheckbox(Closure $callback): self
     {
-        return Checkbox::make('')
+        $this->modifyRowCheckbox = $callback;
+
+        return $this;
+    }
+
+    public function getRowCheckbox(int|string|null $key, DataWrapperContract $data): Checkbox
+    {
+        $checkbox = Checkbox::make('')
             ->setValue($key)
             ->setNameAttribute("items[$key]")
             ->withoutWrapper()
@@ -315,6 +327,12 @@ final class TableBuilder extends IterableComponent implements
                 ':class' => "\$id('table-component') + '-table-action-row'",
                 'class' => 'js-table-action-row',
             ]);
+
+        if(!\is_null($this->modifyRowCheckbox)) {
+            return call_user_func($this->modifyRowCheckbox, $checkbox, $data, $this);
+        }
+
+        return $checkbox;
     }
 
     public function getRowAsyncAttributes(): Closure
@@ -379,10 +397,10 @@ final class TableBuilder extends IterableComponent implements
             $cells->pushWhen(
                 $hasBulk,
                 fn (): TableTh => TableTh::make(
-                    (string) $this->getRowBulkCheckbox()
+                    (string) $this->getRowBulkCheckbox(),
                 )
                     ->customAttributes($tdAttributes(0))
-                    ->class('w-10 text-center')
+                    ->class('w-10 text-center'),
             );
 
             foreach ($this->getPreparedFields()->onlyVisible() as $field) {
@@ -390,11 +408,11 @@ final class TableBuilder extends IterableComponent implements
                     ?
                     (string) Link::make(
                         $field->getSortQuery($this->getAsyncUrl()),
-                        $field->getLabel()
+                        $field->getLabel(),
                     )
                         ->icon(
                             $field->isSortActive() && $field->sortDirectionIs('desc') ? 'bars-arrow-down'
-                                : 'bars-arrow-up'
+                                : 'bars-arrow-up',
                         )
                         ->customAttributes([
                             '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
@@ -404,7 +422,7 @@ final class TableBuilder extends IterableComponent implements
                 $cells->push(
                     TableTh::make($thContent)
                         ->customAttributes(['data-column-selection' => $field->getIdentity()])
-                        ->customAttributes($tdAttributes($index))
+                        ->customAttributes($tdAttributes($index)),
                 );
 
                 $index++;
@@ -412,7 +430,7 @@ final class TableBuilder extends IterableComponent implements
 
             $cells->pushWhen(
                 $this->hasButtons(),
-                static fn (): TableTh => TableTh::make('')->customAttributes($tdAttributes($index))
+                static fn (): TableTh => TableTh::make('')->customAttributes($tdAttributes($index)),
             );
         }
 
@@ -487,12 +505,12 @@ final class TableBuilder extends IterableComponent implements
             builder: fn (TableCellContract $td): TableCellContract => $td->customAttributes([
                 'colspan' => $this->getCellsCount(),
                 ':class' => "\$id('table-component') + '-bulk-actions'",
-            ])
+            ]),
         );
 
         return TableRow::make($cells)->mergeAttribute(
             ':class',
-            "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'"
+            "actionsOpen ? 'translate-y-none ease-out' : '-translate-y-full ease-in hidden'",
         );
     }
 
@@ -509,7 +527,7 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->paginator(
-                $this->getPaginator()?->setPath($this->prepareAsyncUrlFromPaginator())
+                $this->getPaginator()?->setPath($this->prepareAsyncUrlFromPaginator()),
             );
         }
 
@@ -528,7 +546,7 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->isCreatable() && ! $this->isPreview()) {
             $this->items(
-                $this->getItems()->push([null])
+                $this->getItems()->push([null]),
             );
         }
 
@@ -544,7 +562,7 @@ final class TableBuilder extends IterableComponent implements
         $columns = $this->getFields()->onlyVisible()->flatMap(
             static fn (FieldContract $field): ?array => $field->isColumnSelection()
                 ? [$field->getIdentity() => $field->getLabel()]
-                : null
+                : null,
         )->filter()->toArray();
 
         return [
@@ -556,7 +574,7 @@ final class TableBuilder extends IterableComponent implements
             'hasPaginator' => $this->hasPaginator(),
             'simple' => $this->isSimple(),
             'paginator' => $this->getPaginator(
-                $this->isAsync()
+                $this->isAsync(),
             ),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
