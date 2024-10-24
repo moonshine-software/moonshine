@@ -328,8 +328,8 @@ final class TableBuilder extends IterableComponent implements
                 'class' => 'js-table-action-row',
             ]);
 
-        if(!\is_null($this->modifyRowCheckbox)) {
-            return call_user_func($this->modifyRowCheckbox, $checkbox, $data, $this);
+        if (! \is_null($this->modifyRowCheckbox)) {
+            return \call_user_func($this->modifyRowCheckbox, $checkbox, $data, $this);
         }
 
         return $checkbox;
