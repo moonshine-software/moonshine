@@ -60,7 +60,10 @@ export default (
     }
 
     this.initColumnSelection()
-    this.actions('row', this.table.id)
+
+    if(this.table) {
+      this.actions('row', this.table.id)
+    }
 
     if (this.container?.dataset?.lazy) {
       const event = this.container?.dataset?.lazy
