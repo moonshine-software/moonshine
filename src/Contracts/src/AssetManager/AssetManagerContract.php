@@ -14,12 +14,21 @@ interface AssetManagerContract extends Htmlable, StatefulContract
 
     public function getAssets(): AssetElementsContract;
 
-    /** @param Closure(array $assets): array $callback */
+    /** @param Closure(array<AssetElementContract> $assets): array<AssetElementContract> $callback */
     public function modifyAssets(Closure $callback): static;
 
+    /**
+     * @param  list<AssetElementContract> $assets
+     */
     public function add(AssetElementContract|array $assets): static;
 
+    /**
+     * @param  list<AssetElementContract> $assets
+     */
     public function prepend(AssetElementContract|array $assets): static;
 
+    /**
+     * @param  list<AssetElementContract> $assets
+     */
     public function append(AssetElementContract|array $assets): static;
 }

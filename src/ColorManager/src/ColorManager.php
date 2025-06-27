@@ -85,6 +85,9 @@ final class ColorManager implements ColorManagerContract
      */
     private array $darkColors = self::DARK;
 
+    /**
+     * @param  string  $value
+     */
     public function background(string $value): static
     {
         return $this
@@ -93,24 +96,36 @@ final class ColorManager implements ColorManagerContract
             ->set('body', $value, dark: true);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function tableRow(string $value): static
     {
         return $this
             ->set('dark.600', $value);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function borders(string $value): static
     {
         return $this
             ->set('dark.300', $value);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function dropdowns(string $value): static
     {
         return $this
             ->set('dark.400', $value);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function buttons(string $value): static
     {
         return $this
@@ -119,6 +134,9 @@ final class ColorManager implements ColorManagerContract
             ->dropdowns($value);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function dividers(string $value): static
     {
         return $this
@@ -126,6 +144,9 @@ final class ColorManager implements ColorManagerContract
             ->set('dark.200', $value);
     }
 
+    /**
+     * @param  string  $value
+     */
     public function content(string $value): static
     {
         return $this
@@ -134,18 +155,20 @@ final class ColorManager implements ColorManagerContract
     }
 
     /**
-     * @param  non-empty-string  $name
-     * @param  non-empty-string|array<string|int, string>  $value
+     * @param  string  $name
+     * @param  string|array<string|int, string>  $value
      *
      */
     public function set(string $name, string|array $value, bool $dark = false): static
     {
+        /** @phpstan-ignore-next-line */
         data_set($this->{$dark ? 'darkColors' : 'colors'}, $name, $value);
 
         return $this;
     }
 
     /**
+     * @api
      * @param array<string, string|array<string|int, string>> $colors
      */
     public function bulkAssign(array $colors, bool $dark = false): static
@@ -169,11 +192,11 @@ final class ColorManager implements ColorManagerContract
 
         return $hex ?
             ColorMutator::toHEX($hexValue)
-            : $value;
+            : $hexValue;
     }
 
     /**
-     * @return array<string, string|array<string|int, string>>
+     * @return array<string, string>
      */
     public function getAll(bool $dark = false): array
     {
@@ -195,6 +218,9 @@ final class ColorManager implements ColorManagerContract
         return $colors;
     }
 
+    /**
+     * @param array{value: string, shade: int|string|null, dark: bool}|array{string, int|string|null, bool} $arguments
+     */
     public function __call(string $name, array $arguments): static
     {
         $value = $arguments['value'] ?? $arguments[0] ?? '';
@@ -218,8 +244,13 @@ final class ColorManager implements ColorManagerContract
 
     public function toHtml(): string
     {
-        $values = static fn (array $data) => Collection::make($data)
-            ->implode(static fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
+        $values = static function (array $data): string {
+            /** @var Collection<string, string> $collection */
+            $collection = new Collection($data);
+
+            return $collection
+                ->implode(static fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
+        };
 
         return <<<HTML
         <style>

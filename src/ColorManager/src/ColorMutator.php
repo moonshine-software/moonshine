@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\ColorManager;
 
+use InvalidArgumentException;
+
 final class ColorMutator
 {
     public static function toHEX(string $value): string
@@ -54,6 +56,10 @@ final class ColorMutator
 
         $rgb = self::fromRGB($value);
 
+        if($rgb === false) {
+            return 'rgb(0,0,0)';
+        }
+
         if (isset($rgb[3])) {
             return \sprintf('rgba(%d,%d,%d,%.2f)', $rgb[0], $rgb[1], $rgb[2], (float) $rgb[3]);
         }
@@ -84,9 +90,13 @@ final class ColorMutator
 
             [$red, $green, $blue] = self::fromOKLCH($value);
         } elseif (str_starts_with($value, '#')) {
-            [$red, $green, $blue] = sscanf($value, '#%02x%02x%02x');
+            $rgb = sscanf($value, '#%02x%02x%02x');
+
+            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0,0,0];
         } else {
-            [$red, $green, $blue] = self::fromRGB($value);
+            $rgb = self::fromRGB($value);
+
+            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0,0,0];
         }
 
         $red /= 255;
@@ -122,29 +132,39 @@ final class ColorMutator
         return $result($lightness, $chroma, $hue);
     }
 
-    public static function fromRGB(string $value): false|array
+    /**
+     * @return list<int|float>|false
+     */
+    public static function fromRGB(string $value): array|false
     {
         if (preg_match('/rgba?\s*\(([^)]+)\)/i', $value, $matches)) {
             $channels = preg_split('/\s*,\s*/', trim($matches[1]));
 
-            if (\count($channels) >= 3) {
-                return $channels;
+            if (\is_array($channels) && \count($channels) >= 3) {
+                return array_map('floatval', $channels);
             }
         }
 
         $channels = preg_split('/[\s,]+/', trim($value));
 
-        if (\count($channels) >= 3) {
-            return $channels;
+        if (\is_array($channels) && \count($channels) >= 3) {
+            return array_map('floatval', $channels);
         }
 
         return false;
     }
 
+    /**
+     * @return int[]
+     */
     public static function fromOKLCH(string $value): array
     {
         preg_match('/oklch\\((.*?)\\)/', $value, $matches);
         $parts = preg_split('/\s+/', trim($matches[1]));
+
+        if ($parts === false || count($parts) < 3) {
+            throw new InvalidArgumentException("Invalid OKLCH format: $value");
+        }
 
         $l = str_ends_with($parts[0], '%')
             ? ((float) rtrim($parts[0], '%')) / 100
@@ -171,7 +191,7 @@ final class ColorMutator
         $g = -1.2684380046 * $l_ + 2.6097574011 * $m_ - 0.3413193965 * $s_;
         $b = -0.0041960863 * $l_ - 0.7034186147 * $m_ + 1.7076147010 * $s_;
 
-        $toSrgb = static fn ($v): float => $v <= 0.0031308
+        $toSrgb = static fn (float $v): float => $v <= 0.0031308
             ? 12.92 * $v
             : 1.055 * ($v ** (1 / 2.4)) - 0.055;
 

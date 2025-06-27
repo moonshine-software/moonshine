@@ -6,6 +6,7 @@ namespace MoonShine\Contracts\Core;
 
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 
 /**
  * @template TFields of FieldsContract
@@ -19,6 +20,9 @@ interface CrudPageContract extends PageContract
 
     public function isAsync(): bool;
 
+    /**
+     * @return list<ComponentContract>
+     */
     public function getEmptyModals(): array;
 
     public function getButtons(): ActionButtonsContract;
