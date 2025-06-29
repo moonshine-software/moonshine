@@ -82,6 +82,7 @@ final readonly class Options implements Arrayable
             return $properties;
         }
 
+        /** @var array{image: OptionImage} $properties */
         return new OptionProperty(
             ...$this->normalizeProperties($properties)
         );
@@ -116,9 +117,16 @@ final readonly class Options implements Arrayable
             };
         }
 
+        if(!\is_scalar($current)) {
+            return false;
+        }
+
         return (string) $current === $value;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function flatten(): array
     {
         return $this->getValues()
@@ -137,7 +145,7 @@ final readonly class Options implements Arrayable
     }
 
     /**
-     * @return array{options: array, properties: array}
+     * @return array{options: array<mixed>, properties: array<mixed>}
      */
     public function toRaw(): array
     {
@@ -178,11 +186,14 @@ final readonly class Options implements Arrayable
             return $properties;
         }
 
+        /**
+         * @var array{src: string, width: int, height: int, objectFit: null|string} $imageData
+         */
         $properties['image'] = new OptionImage(
             $imageData['src'] ?? '',
             $imageData['width'] ?? null,
             $imageData['height'] ?? null,
-            isset($imageData['objectFit']) ? ObjectFit::from($imageData['objectFit']) : null
+            isset($imageData['objectFit']) ? ObjectFit::from($imageData['objectFit']) : ObjectFit::COVER
         );
 
         return $properties;

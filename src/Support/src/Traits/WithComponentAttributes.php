@@ -10,6 +10,9 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait WithComponentAttributes
 {
     /**

@@ -9,7 +9,7 @@ if (! \function_exists('memoize')) {
     /**
      * @template T
      *
-     * @param (callable(): T | callable(array): T) $callback
+     * @param (callable(): T | callable(array<mixed>): T) $callback
      * @return T
      */
     function memoize(callable $callback): mixed
@@ -37,6 +37,10 @@ if (! \function_exists('memoize')) {
 
         if (! $cache->isEnabled()) {
             return $callback($backtrace->getArguments());
+        }
+
+        if(!\is_object($object)) {
+            throw new InvalidArgumentException('Memoize variable must be an object');
         }
 
         if (! $cache->has($object, $hash)) {

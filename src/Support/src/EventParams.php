@@ -17,7 +17,7 @@ class EventParams
     private int $delay = 0;
 
     /**
-     * @param  array<string, numeric|string>  $data
+     * @param  array<string, int|string|float|null>  $data
      */
     public function __construct(private array $data = [])
     {
@@ -77,7 +77,7 @@ class EventParams
     }
 
     /**
-     * @return array<string, int|float|string>
+     * @return array<string, int|float|string|bool|null>
      */
     public function toArray(): array
     {
