@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\Core;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 
 /**
- * @template T of CoreContract
+ * @template T of CoreContract = CoreContract
  */
 interface HasCoreContract
 {

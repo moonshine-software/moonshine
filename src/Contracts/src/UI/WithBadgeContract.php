@@ -8,7 +8,7 @@ use Closure;
 
 interface WithBadgeContract
 {
-    public function badge(Closure|string|int|float|null $value): static;
+    public function badge(Closure|string|int|float|false|null $value): static;
 
     public function hasBadge(): bool;
 

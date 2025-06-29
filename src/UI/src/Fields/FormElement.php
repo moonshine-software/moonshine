@@ -625,6 +625,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array
     {
         return $this->getCore()->getRequest()->getFormErrors($this->getFormName());

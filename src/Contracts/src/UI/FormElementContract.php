@@ -71,6 +71,9 @@ interface FormElementContract extends
 
     public function getNameAttribute(?string $index = null): string;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function customWrapperAttributes(array $attributes): static;
 
     public function getWrapperAttributes(): ComponentAttributesBagContract;
@@ -81,6 +84,9 @@ interface FormElementContract extends
 
     public function isFillChanged(): bool;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array;
 
     public function isGroup(): bool;

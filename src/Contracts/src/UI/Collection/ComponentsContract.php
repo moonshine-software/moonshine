@@ -14,11 +14,11 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 
 /**
- * @template T of ComponentContract
- * @template TFields of FieldsContract
+ * @template T of ComponentContract = ComponentContract
+ * @template TFields of FieldsContract = FieldsContract
  * @template-extends Enumerable<array-key, T>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, T>
  */
 interface ComponentsContract extends Enumerable, HasStructureContract
 {

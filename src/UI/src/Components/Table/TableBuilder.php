@@ -12,6 +12,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -610,7 +611,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topLeft(Closure $callback): self
     {
@@ -620,7 +621,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topRight(Closure $callback): self
     {

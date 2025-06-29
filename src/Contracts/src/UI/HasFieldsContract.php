@@ -8,12 +8,12 @@ use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 
 /**
- * @template T of FieldsContract
+ * @template T of FieldsContract = FieldsContract
  */
 interface HasFieldsContract
 {
     /**
-     * @param  T|(Closure(T $ctx): T)|iterable  $fields
+     * @param  T|(Closure(T $ctx): T)|iterable<ComponentContract|FieldContract>  $fields
      */
     public function fields(FieldsContract|Closure|iterable $fields): static;
 

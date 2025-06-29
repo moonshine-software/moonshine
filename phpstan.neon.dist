@@ -10,6 +10,7 @@ parameters:
     treatPhpDocTypesAsCertain: false
 
     ignoreErrors:
+        - '#PHPDoc tag @method for method make#'
         - '#mixin contains invalid type Illuminate\\Support\\Traits\\Conditionable#'
         - '#does not accept Illuminate\\View\\ComponentAttributeBag#'
         - '#should return MoonShine\\Contracts\\UI\\ComponentAttributesBagContract but returns Illuminate\\View\\ComponentAttributeBag#'

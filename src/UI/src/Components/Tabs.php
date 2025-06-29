@@ -80,7 +80,6 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @return ComponentsContract<Tab>
      * @throws Throwable
      */
     public function getTabs(): ComponentsContract

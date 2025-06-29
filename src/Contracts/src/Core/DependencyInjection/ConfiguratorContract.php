@@ -13,6 +13,7 @@ use MoonShine\Contracts\UI\LayoutContract;
 /**
  * @template-covariant I of ConfiguratorContract = ConfiguratorContract
  * @mixin I
+ * @extends ArrayAccess<string, mixed>
  */
 interface ConfiguratorContract extends ArrayAccess
 {
@@ -52,7 +53,7 @@ interface ConfiguratorContract extends ArrayAccess
     public function getLocaleKey(): string;
 
     /**
-     * @return non-empty-string
+     * @return string
      */
     public function getDisk(): string;
 

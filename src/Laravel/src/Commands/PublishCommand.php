@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use MoonShine\Laravel\Resources\MoonShineUserResource;
+use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Closure;
 use Illuminate\Filesystem\Filesystem;
 
@@ -137,13 +139,13 @@ class PublishCommand extends MoonShineCommand
 
         $replaceResources = function ($fullClassPath): void {
             $this->replaceInFile(
-                "MoonShine\Laravel\Resources\MoonShineUserResource",
+                MoonShineUserResource::class,
                 "App\MoonShine\Resources\MoonShineUser\MoonShineUserResource",
                 $fullClassPath
             );
 
             $this->replaceInFile(
-                "MoonShine\Laravel\Resources\MoonShineUserRoleResource",
+                MoonShineUserRoleResource::class,
                 "App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource",
                 $fullClassPath
             );

@@ -16,7 +16,7 @@ final class MenuManager implements MenuManagerContract
     use Conditionable;
 
     /**
-     * @var array|list<MenuElementContract>
+     * @var array<MenuElementContract>|list<MenuElementContract>
      */
     private array $items = [];
 
@@ -39,9 +39,12 @@ final class MenuManager implements MenuManagerContract
 
     public function remove(Closure $condition): static
     {
-        $this->items = Collection::make($this->items)
+        /** @var list<MenuElementContract> $items */
+        $items = Collection::make($this->items)
             ->reject($condition)
             ->toArray();
+
+        $this->items = $items;
 
         return $this;
     }
@@ -74,9 +77,10 @@ final class MenuManager implements MenuManagerContract
     {
         return MenuElements::make($items ?: $this->items)
             ->map(static function (array|MenuElementContract $item): MenuElementContract {
+                /** @var array{url: string, label: string}|MenuElementContract $item */
                 /** @phpstan-ignore-next-line  */
                 if (\is_array($item)) {
-                    return MenuItem::make($item['label'], $item['url']);
+                    return MenuItem::make($item['url'], $item['label']);
                 }
 
                 return $item;
@@ -89,10 +93,10 @@ final class MenuManager implements MenuManagerContract
                         $elements->each(static function (MenuElementContract $element, int $index) use ($elements, $conditionItem): void {
                             $elements->when(
                                 $conditionItem->hasBefore() && $conditionItem->isBefore($element),
-                                static fn (MenuElementsContract $e) => $e->splice($index, 0, $conditionItem->getData())
+                                static fn (MenuElementsContract $e) => $e->splice($index, 0, (array) $conditionItem->getData())
                             )->when(
                                 $conditionItem->hasAfter() && $conditionItem->isAfter($element),
-                                static fn (MenuElementsContract $e) => $e->splice($index + 1, 0, $conditionItem->getData())
+                                static fn (MenuElementsContract $e) => $e->splice($index + 1, 0, (array) $conditionItem->getData())
                             );
                         });
                     }

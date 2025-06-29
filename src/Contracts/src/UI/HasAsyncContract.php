@@ -13,6 +13,9 @@ interface HasAsyncContract
 
     public function disableAsync(): static;
 
+    /**
+     * @param  string|string[]|null  $events
+     */
     public function async(
         Closure|string|null $url = null,
         string|array|null $events = null,

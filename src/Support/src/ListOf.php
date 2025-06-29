@@ -28,7 +28,10 @@ final class ListOf
      */
     private function getItems(): array
     {
-        return Collection::make($this->items)
+        /** @var Collection<array-key, T> $collection */
+        $collection = new Collection($this->items);
+
+        return $collection
             ->ensure($this->getType())
             ->toArray();
     }

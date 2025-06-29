@@ -14,6 +14,9 @@ interface HasComponentAttributesContract
 
     public function removeAttribute(string $name): static;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function customAttributes(array $attributes, bool $override = false): static;
 
     public function iterableAttributes(int $level = 0): static;
@@ -22,7 +25,13 @@ interface HasComponentAttributesContract
 
     public function removeClass(string $pattern): static;
 
+    /**
+     * @param  string|array<int|string, bool|string>  $classes
+     */
     public function class(string|array $classes): static;
 
+    /**
+     * @param  string|array<int|string, bool|string>   $styles
+     */
     public function style(string|array $styles): static;
 }

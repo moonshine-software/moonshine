@@ -12,6 +12,9 @@ use JsonException;
 use MoonShine\Support\Enums\ObjectFit;
 use UnitEnum;
 
+/**
+ * @implements Arrayable<int|string, mixed>
+ */
 final readonly class Options implements Arrayable
 {
     /**
@@ -27,7 +30,7 @@ final readonly class Options implements Arrayable
     }
 
     /**
-     * @return Collection<OptionGroup|Option>
+     * @return Collection<array-key, OptionGroup|Option>
      */
     public function getValues(): Collection
     {
@@ -57,7 +60,7 @@ final readonly class Options implements Arrayable
                     }
 
                     return new OptionGroup(
-                        label: $valueOrLabel,
+                        label: (string) $valueOrLabel,
                         values: new Options($options)
                     );
                 }
@@ -125,6 +128,9 @@ final readonly class Options implements Arrayable
             ->toArray();
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public function toArray(): array
     {
         return $this->getValues()->toArray();
@@ -156,7 +162,7 @@ final readonly class Options implements Arrayable
     /**
      * @param  array{image: OptionImage}  $properties
      *
-     * @return array
+     * @return array{image: OptionImage}
      */
     private function normalizeProperties(array $properties): array
     {

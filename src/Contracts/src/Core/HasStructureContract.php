@@ -6,5 +6,8 @@ namespace MoonShine\Contracts\Core;
 
 interface HasStructureContract
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toStructure(bool $withStates = true): array;
 }

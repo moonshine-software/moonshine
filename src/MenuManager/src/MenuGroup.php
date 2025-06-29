@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\MenuManager;
 
 use Closure;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 
 /**
@@ -14,6 +15,9 @@ class MenuGroup extends MenuElement
 {
     protected string $view = 'moonshine::components.menu.group';
 
+    /**
+     * @param  iterable<array-key, MenuElementContract>  $items
+     */
     public function __construct(
         Closure|string $label,
         protected iterable $items = [],
@@ -28,6 +32,10 @@ class MenuGroup extends MenuElement
         }
     }
 
+    /**
+     * @param  iterable<array-key, MenuElementContract>  $items
+     *
+     */
     public function setItems(iterable $items): static
     {
         $this->items = $items;

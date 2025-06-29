@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
 
 /**
@@ -36,7 +37,10 @@ interface AppliesRegisterContract
     public function getDefaultFor(): string;
 
     /**
+     * @template TField of FieldContract = FieldContract
+     * @param TField $field
      * @param  ?class-string  $for
+     * @return null|ApplyContract<TField>
      */
     public function findByField(
         FormElementContract $field,
@@ -45,18 +49,22 @@ interface AppliesRegisterContract
     ): ?ApplyContract;
 
     /**
-     * @param  class-string<FormElementContract>  $fieldClass
-     * @param  class-string<ApplyContract>  $applyClass
+     * @template TField of FieldContract = FieldContract
+     * @param  class-string<TField>  $fieldClass
+     * @param  class-string<ApplyContract<TField>>  $applyClass
      */
     public function add(string $fieldClass, string $applyClass): static;
 
     /**
-     * @param  array<class-string<FormElementContract>, class-string<ApplyContract>>  $data
+     * @template TField of FieldContract = FieldContract
+     * @param  array<class-string<TField>, class-string<ApplyContract<TField>>>  $data
      */
     public function push(array $data): static;
 
     /**
-     * @param  class-string<FormElementContract>  $fieldClass
+     * @template TField of FieldContract = FieldContract
+     * @param  class-string<TField>  $fieldClass
+     * @return null|ApplyContract<TField>
      */
     public function get(string $fieldClass, ?ApplyContract $default = null): ?ApplyContract;
 }

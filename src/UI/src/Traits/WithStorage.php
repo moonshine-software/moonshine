@@ -19,7 +19,7 @@ trait WithStorage
     protected string $dir = '/';
 
     /**
-     * @param  non-empty-string  $dir
+     * @param  string  $dir
      */
     public function dir(string $dir): static
     {
@@ -36,7 +36,7 @@ trait WithStorage
     }
 
     /**
-     * @param  non-empty-string  $disk
+     * @param  string  $disk
      */
     public function disk(string $disk): static
     {
@@ -46,7 +46,7 @@ trait WithStorage
     }
 
     /**
-     * @return   non-empty-string
+     * @return   string
      */
     public function getDisk(): string
     {
@@ -75,7 +75,7 @@ trait WithStorage
     }
 
     /**
-     * @return   non-empty-string
+     * @return   string
      */
     public function getDir(): string
     {
@@ -85,8 +85,8 @@ trait WithStorage
     }
 
     /**
-     * @param  non-empty-string  $value
-     * @return   non-empty-string
+     * @param  string  $value
+     * @return   string
      */
     public function getStorageUrl(string $value): string
     {
@@ -94,7 +94,7 @@ trait WithStorage
     }
 
     /**
-     * @param  non-empty-string|string[]  $path
+     * @param  string|string[]  $path
      *
      */
     public function deleteStorageFile(string|array $path): bool
@@ -103,7 +103,7 @@ trait WithStorage
     }
 
     /**
-     * @param  non-empty-string  $dir
+     * @param  string  $dir
      */
     public function deleteStorageDirectory(string $dir): bool
     {
@@ -111,7 +111,7 @@ trait WithStorage
     }
 
     /**
-     * @param non-empty-string $dir
+     * @param string $dir
      * @return string[]
      */
     public function getStorageDirectories(string $dir): array
@@ -120,7 +120,7 @@ trait WithStorage
     }
 
     /**
-     * @param non-empty-string $dir
+     * @param string $dir
      * @return list<SplFileInfo>
      */
     public function getStorageFiles(string $dir): array

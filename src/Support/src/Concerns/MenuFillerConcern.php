@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\Concerns;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait MenuFillerConcern
 {
     public function getTitle(): string

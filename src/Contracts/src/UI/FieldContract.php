@@ -72,6 +72,11 @@ interface FieldContract extends
 
     public function withoutTextWrap(): static;
 
+    /**
+     * @param  array<string, mixed>|Closure  $params
+     * @param  string|string[]|null  $selector
+     * @param  string[]  $events
+     */
     public function onChangeMethod(
         string $method,
         array|Closure $params = [],
@@ -83,6 +88,10 @@ interface FieldContract extends
         ?ResourceContract $resource = null,
     ): static;
 
+    /**
+     * @param  string[]  $events
+     * @param  string|string[]|null  $selector
+     */
     public function onChangeUrl(
         Closure $url,
         HttpMethod $method = HttpMethod::GET,
@@ -91,6 +100,10 @@ interface FieldContract extends
         ?AsyncCallback $callback = null,
     ): static;
 
+    /**
+     * @param  string|string[]  $events
+     * @param  string[]  $exclude
+     */
     public function onChangeEvent(array|string $events, array $exclude = [], bool $withoutPayload = false): static;
 
     public function beforeRender(Closure $callback): static;

@@ -24,7 +24,15 @@ interface ComponentContract extends
 
     public function getName(): string;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     *
+     */
     public function withAttributes(array $attributes): static;
 
+    /**
+     * @return   array<string, mixed>
+     *
+     */
     public function data(): array;
 }

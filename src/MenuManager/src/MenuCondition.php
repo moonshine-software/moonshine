@@ -9,6 +9,11 @@ use MoonShine\Contracts\MenuManager\MenuElementContract;
 
 final readonly class MenuCondition
 {
+    /**
+     * @param  iterable<array-key, MenuElementContract>|MenuElementContract|(Closure(): iterable<array-key, MenuElementContract>|MenuElementContract)  $data
+     * @param  (Closure(MenuElementContract):bool)|null  $before
+     * @param  (Closure(MenuElementContract):bool)|null  $after
+     */
     public function __construct(
         private iterable|MenuElementContract|Closure $data,
         private ?Closure $before = null,
@@ -16,11 +21,20 @@ final readonly class MenuCondition
     ) {
     }
 
+    /**
+     * @return iterable<array-key, MenuElementContract>
+     */
     public function getData(): iterable
     {
-        $data = value($this->data);
+        $data = $this->data instanceof Closure
+            ? call_user_func($this->data)
+            : $this->data;
 
-        return is_iterable($data) ? $data : [$data];
+        if ($data instanceof MenuElementContract) {
+            return [$data];
+        }
+
+        return $data;
     }
 
     public function hasBefore(): bool
@@ -30,7 +44,11 @@ final readonly class MenuCondition
 
     public function isBefore(MenuElementContract $element): bool
     {
-        return (bool) value($this->before, $element);
+        if (!$this->before instanceof Closure) {
+            return false;
+        }
+
+        return call_user_func($this->before, $element);
     }
 
     public function hasAfter(): bool
@@ -40,6 +58,10 @@ final readonly class MenuCondition
 
     public function isAfter(MenuElementContract $element): bool
     {
-        return (bool) value($this->after, $element);
+        if (!$this->after instanceof Closure) {
+            return false;
+        }
+
+        return call_user_func($this->after, $element);
     }
 }

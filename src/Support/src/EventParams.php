@@ -24,7 +24,7 @@ class EventParams
     }
 
     /**
-     * @param  array<non-empty-string, scalar>  $data
+     * @param  array<string, scalar>  $data
      */
     public function selectors(array $data): static
     {
@@ -38,7 +38,7 @@ class EventParams
     }
 
     /**
-     * @param  array<non-empty-string, scalar>  $data
+     * @param  array<string, scalar>  $data
      */
     public function fieldsValues(array $data): static
     {
@@ -59,8 +59,8 @@ class EventParams
     }
 
     /**
-     * @param  array<non-empty-string, mixed>  $data
-     * @return non-empty-string
+     * @param  array<string, mixed>  $data
+     * @return string
      */
     private function transform(array $data): string
     {
@@ -76,6 +76,9 @@ class EventParams
         );
     }
 
+    /**
+     * @return array<string, int|float|string>
+     */
     public function toArray(): array
     {
         return [

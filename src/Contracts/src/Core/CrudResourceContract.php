@@ -16,10 +16,10 @@ use MoonShine\Contracts\UI\TableBuilderContract;
 use Throwable;
 
 /**
- * @template TData
- * @template-covariant TIndexPage of null|CrudPageContract
- * @template-covariant TFormPage of null|CrudPageContract
- * @template-covariant TDetailPage of null|CrudPageContract
+ * @template TData of mixed = mixed
+ * @template-covariant TIndexPage of null|CrudPageContract = null
+ * @template-covariant TFormPage of null|CrudPageContract = null
+ * @template-covariant TDetailPage of null|CrudPageContract = null
  * @template TException of Throwable = \Throwable
  * @template TFields of FieldsContract = FieldsContract
  *
@@ -46,6 +46,7 @@ interface CrudResourceContract extends
 
     /**
      * @param  DataWrapperContract<TData>|int|string|null  $key
+     * @param array<string, int|float|string|null> $query
      */
     public function getRoute(
         ?string $name = null,

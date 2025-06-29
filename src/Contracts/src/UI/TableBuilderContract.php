@@ -7,6 +7,7 @@ namespace MoonShine\Contracts\UI;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\Collection\TableRowsContract;
@@ -16,7 +17,7 @@ use MoonShine\Support\Enums\ClickAction;
  * @template TData of mixed = mixed
  * @mixin Conditionable
  * @mixin HasFieldsContract
- * @mixin HasCasterContract
+ * @mixin HasCasterContract<DataCasterContract<TData>, DataWrapperContract<TData>>
  */
 interface TableBuilderContract extends
     ComponentContract,
@@ -52,7 +53,7 @@ interface TableBuilderContract extends
     public function getItems(): Collection;
 
     /**
-     * @param  Closure(null|DataWrapperContract<TData> $data, int $row, int $cell, static $table): array  $callback
+     * @param  Closure(null|DataWrapperContract<TData> $data, int $row, int $cell, static $table): array<string, string>  $callback
      */
     public function tdAttributes(Closure $callback): static;
 
@@ -63,7 +64,7 @@ interface TableBuilderContract extends
     public function getTdAttributes(?DataWrapperContract $data, int $row, int $cell): array;
 
     /**
-     * @param  Closure(null|DataWrapperContract<TData> $data, int $row, static $table): array  $callback
+     * @param  Closure(null|DataWrapperContract<TData> $data, int $row, static $table): array<string, string>  $callback
      */
     public function trAttributes(Closure $callback): static;
 
@@ -91,12 +92,12 @@ interface TableBuilderContract extends
     public function getCellsCount(): int;
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topLeft(Closure $callback): self;
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topRight(Closure $callback): self;
 
@@ -185,6 +186,21 @@ interface TableBuilderContract extends
 
     public function isLazy(): bool;
 
+    /**
+     * @return array{
+     *     preview: bool,
+     *     notfound: bool,
+     *     creatable: bool,
+     *     reindex: bool,
+     *     reorderable: bool,
+     *     simple: bool,
+     *     sticky: bool,
+     *     stickyButtons: bool,
+     *     searchable: bool,
+     *     searchValue: string,
+     *     columnSelection: bool,
+     * }
+     */
     public function statesToArray(): array;
 
     public function clickAction(?ClickAction $action = null, ?string $selector = null): static;

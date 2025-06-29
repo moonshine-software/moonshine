@@ -35,12 +35,27 @@ interface CrudResourceWithPagesContract
 
     public function getActivePage(): ?PageContract;
 
+    /**
+     * @param  string|PageContract  $page
+     * @param  array<string, mixed>  $params
+     * @param  string|string[]|null  $fragment
+     *
+     * @return string
+     */
     public function getPageUrl(string|PageContract $page, array $params = [], null|string|array $fragment = null): string;
 
+    /**
+     * @param  array<string, mixed>  $params
+     * @param  string|string[]|null  $fragment
+     *
+     * @return string
+     */
     public function getIndexPageUrl(array $params = [], null|string|array $fragment = null): string;
 
     /**
      * @param DataWrapperContract<TData>|int|string|null $key
+     * @param  array<string, mixed>  $params
+     * @param  string|string[]|null  $fragment
      */
     public function getFormPageUrl(
         DataWrapperContract|int|string|null $key = null,
@@ -50,6 +65,8 @@ interface CrudResourceWithPagesContract
 
     /**
      * @param DataWrapperContract<TData>|int|string $key
+     * @param  array<string, mixed>  $params
+     * @param  string|string[]|null  $fragment
      */
     public function getDetailPageUrl(
         DataWrapperContract|int|string $key,

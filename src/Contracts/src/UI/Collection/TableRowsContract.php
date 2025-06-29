@@ -12,7 +12,7 @@ use MoonShine\Contracts\UI\TableRowContract;
 /**
  * @template-extends Enumerable<array-key, TableRowContract>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, TableRowContract>
  */
 interface TableRowsContract extends Enumerable
 {

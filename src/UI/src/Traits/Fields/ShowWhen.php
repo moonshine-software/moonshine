@@ -36,6 +36,9 @@ trait ShowWhen
         return $this->showWhenState;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getShowWhenCondition(): array
     {
         return $this->showWhenCondition;

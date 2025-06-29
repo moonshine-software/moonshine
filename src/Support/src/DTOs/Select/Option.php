@@ -6,6 +6,9 @@ namespace MoonShine\Support\DTOs\Select;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final readonly class Option implements Arrayable
 {
     public function __construct(
@@ -44,6 +47,9 @@ final readonly class Option implements Arrayable
         return $this->properties;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

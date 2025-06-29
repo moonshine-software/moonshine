@@ -52,6 +52,9 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
         return $this->topMode;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return [

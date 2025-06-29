@@ -28,5 +28,8 @@ interface CacheAttributesContract
         ?array $column = null,
     ): mixed;
 
+    /**
+     * @return array<class-string, array<int, array<string, mixed>>>
+     */
     public function resolve(): array;
 }

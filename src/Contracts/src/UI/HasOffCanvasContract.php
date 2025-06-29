@@ -18,6 +18,9 @@ interface HasOffCanvasContract
 
     public function isInOffCanvas(): bool;
 
+    /**
+     * @param  list<ComponentContract>  $components
+     */
     public function inOffCanvas(
         Closure|string|null $title = null,
         Closure|string|null $content = null,

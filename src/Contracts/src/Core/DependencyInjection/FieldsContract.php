@@ -16,7 +16,7 @@ use MoonShine\Contracts\UI\FieldContract;
  * @template T of FieldContract = \MoonShine\Contracts\UI\FieldContract
  * @template-extends Enumerable<array-key, T>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, T>
  */
 interface FieldsContract extends Enumerable, HasStructureContract
 {
@@ -27,8 +27,16 @@ interface FieldsContract extends Enumerable, HasStructureContract
 
     public function onlyFields(bool $withWrappers = false, bool $withApplyWrappers = false): FieldsContract;
 
+    /**
+     * @param  array<string, mixed>  $raw
+     * @param  DataWrapperContract<mixed>|null  $casted
+     */
     public function fill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): void;
 
+    /**
+     * @param  array<string, mixed>  $raw
+     * @param  DataWrapperContract<mixed>|null  $casted
+     */
     public function fillCloned(
         array $raw = [],
         ?DataWrapperContract $casted = null,
@@ -36,6 +44,10 @@ interface FieldsContract extends Enumerable, HasStructureContract
         ?FieldsContract $preparedFields = null
     ): static;
 
+    /**
+     * @param  array<string, mixed>  $raw
+     * @param  DataWrapperContract<mixed>|null  $casted
+     */
     public function fillClonedRecursively(
         array $raw = [],
         ?DataWrapperContract $casted = null,

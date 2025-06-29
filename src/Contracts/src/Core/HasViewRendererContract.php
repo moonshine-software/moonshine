@@ -18,8 +18,14 @@ interface HasViewRendererContract extends
 {
     public function getView(): string;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCustomViewData(): array;
 
+    /**
+     * @param  array<string, mixed> $data
+     */
     public function customView(string $view, array $data = []): static;
 
     public function shouldRender(): bool;
@@ -32,5 +38,8 @@ interface HasViewRendererContract extends
 
     public function toStructure(bool $withStates = true): array;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

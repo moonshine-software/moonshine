@@ -208,7 +208,7 @@ final class FormBuilder extends MoonShineComponent implements
     }
 
     /**
-     * @param  (Closure(self $ctx): non-empty-string)|non-empty-string  $reactiveUrl
+     * @param  (Closure(self $ctx): string)|string  $reactiveUrl
      */
     public function reactiveUrl(Closure|string $reactiveUrl): self
     {

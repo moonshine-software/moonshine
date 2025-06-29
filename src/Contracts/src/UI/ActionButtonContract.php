@@ -38,7 +38,7 @@ interface ActionButtonContract extends
     public function getUrl(mixed $data = null): string;
 
     /**
-     * @param  (Closure(TData $original, null|TWrapper $casted, static $ctx): string)|string  $url
+     * @param  (Closure(TData $original, null|TWrapper<TData> $casted, static $ctx): string)|string  $url
      */
     public function setUrl(Closure|string $url): static;
 
@@ -54,23 +54,23 @@ interface ActionButtonContract extends
     public function getBulkForComponent(): ?string;
 
     /**
-     * @return null|TWrapper
+     * @return null|TWrapper<TData>
      */
     public function getData(): ?DataWrapperContract;
 
     /**
-     * @param  null|TWrapper  $data
+     * @param  null|TWrapper<TData>  $data
      *
      */
     public function setData(?DataWrapperContract $data = null): static;
 
     /**
-     * @param  Closure(?DataWrapperContract $data, ActionButtonContract $ctx): ?DataWrapperContract  $onBeforeSet
+     * @param  Closure(?DataWrapperContract<TData> $data, ActionButtonContract $ctx): ?DataWrapperContract<TData>  $onBeforeSet
      */
     public function onBeforeSet(Closure $onBeforeSet): static;
 
     /**
-     * @param  Closure(null|TWrapper $data, ActionButtonContract $ctx): void  $onAfterSet
+     * @param  Closure(null|TWrapper<TData> $data, ActionButtonContract $ctx): void  $onAfterSet
      */
     public function onAfterSet(Closure $onAfterSet): static;
 
@@ -83,7 +83,9 @@ interface ActionButtonContract extends
     public function blank(): static;
 
     /**
-     * @param array|(Closure(TData $original): array) $params = []
+     * @param array<string, mixed>|(Closure(TData $original): array<string, mixed>) $params = []
+     * @param null|string|string[] $selector
+     * @param string[] $events
      */
     public function method(
         string $method,
@@ -96,10 +98,20 @@ interface ActionButtonContract extends
         ?ResourceContract $resource = null
     ): static;
 
+    /**
+     * @param  string[]  $selectors
+     */
     public function withSelectorsParams(array $selectors): static;
 
+    /**
+     * @param  string[]|string  $events
+     */
     public function dispatchEvent(array|string $events): static;
 
+    /**
+     * @param  null|string|string[]  $selector
+     * @param  string[]  $events
+     */
     public function async(
         HttpMethod $method = HttpMethod::GET,
         null|string|array $selector = null,
@@ -145,5 +157,8 @@ interface ActionButtonContract extends
 
     public function error(Closure|bool|null $condition = null): static;
 
+    /**
+     * @param non-empty-array<string> $keys
+     */
     public function hotKeys(array $keys, bool $withBadge = false): static;
 }

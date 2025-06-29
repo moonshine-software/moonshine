@@ -19,6 +19,7 @@ trait ResourceCrudRouter
 
     /**
      * @param DataWrapperContract<T>|int|string|null $key
+     * @param array<string, int|float|string|null> $query
      */
     public function getRoute(
         ?string $name = null,
@@ -35,7 +36,8 @@ trait ResourceCrudRouter
 
     /**
      * @param class-string<PageContract>|PageContract $page
-     * @param array<string, mixed> $params
+     * @param  array<string, string|int|float|null>  $params
+     * @param  string|string[]|null  $fragment
      */
     public function getPageUrl(string|PageContract $page, array $params = [], null|string|array $fragment = null): string
     {
@@ -44,11 +46,22 @@ trait ResourceCrudRouter
         ]);
     }
 
+    /**
+     * @param  array<string, string|int|float|null>  $params
+     * @param  string|string[]|null  $fragment
+     *
+     */
     public function getIndexPageUrl(array $params = [], null|string|array $fragment = null): string
     {
         return $this->getPageUrl($this->getIndexPage(), params: $params, fragment: $fragment);
     }
 
+    /**
+     * @param DataWrapperContract<T>|int|string|null $key
+     * @param  array<string, string|int|float|bool|null>  $params
+     * @param  string|string[]|null  $fragment
+     *
+     */
     public function getFormPageUrl(
         DataWrapperContract|int|string|null $key = null,
         array $params = [],
@@ -64,6 +77,12 @@ trait ResourceCrudRouter
         );
     }
 
+    /**
+     * @param DataWrapperContract<T>|int|string $key
+     * @param  array<string, string|int|float|null>  $params
+     * @param  string|string[]|null  $fragment
+     *
+     */
     public function getDetailPageUrl(
         DataWrapperContract|int|string $key,
         array $params = [],
@@ -80,7 +99,9 @@ trait ResourceCrudRouter
     }
 
     /**
+     * @param  string|string[]  $fragment
      * @param DataWrapperContract<T>|int|string|null $key
+     * @param  array<string, string|int|float|null>  $params
      */
     public function getFragmentLoadUrl(
         string|array $fragment,

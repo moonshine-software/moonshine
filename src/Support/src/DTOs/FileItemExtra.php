@@ -6,6 +6,9 @@ namespace MoonShine\Support\DTOs;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, bool|string|null>
+ */
 final readonly class FileItemExtra implements Arrayable
 {
     public function __construct(
@@ -15,6 +18,9 @@ final readonly class FileItemExtra implements Arrayable
     ) {
     }
 
+    /**
+     * @return array<string, bool|string|null>
+     */
     public function toArray(): array
     {
         return [
