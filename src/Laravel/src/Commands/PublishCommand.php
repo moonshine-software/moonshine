@@ -105,7 +105,9 @@ class PublishCommand extends MoonShineCommand
 
     private function publishSystemResource(string $name, string $model): void
     {
-        $copyInfo = $this->copySystemClass($name, 'Resources');
+        $dir = str_replace('Resource', '', $name);
+
+        $copyInfo = $this->copySystemClass($name, "Resources", "Resources/$dir");
         $fullClassPath = $copyInfo['full_class_path'];
         $targetNamespace = $copyInfo['target_namespace'];
 
@@ -116,8 +118,8 @@ class PublishCommand extends MoonShineCommand
         );
 
         $this->replaceInFile(
-            "use MoonShine\Laravel\Pages\MoonShineUser",
-            "use App\MoonShine\Pages\MoonShineUser",
+            "use MoonShine\Laravel\Pages\\$dir",
+            "use App\MoonShine\Resources\\$dir\Pages",
             $fullClassPath
         );
 
@@ -135,16 +137,20 @@ class PublishCommand extends MoonShineCommand
 
         $replaceResources = function ($fullClassPath): void {
             $this->replaceInFile(
-                "MoonShine\Laravel\Resources\\",
-                "App\MoonShine\Resources\\",
+                "MoonShine\Laravel\Resources\MoonShineUserResource",
+                "App\MoonShine\Resources\MoonShineUser\MoonShineUserResource",
+                $fullClassPath
+            );
+
+            $this->replaceInFile(
+                "MoonShine\Laravel\Resources\MoonShineUserRoleResource",
+                "App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource",
                 $fullClassPath
             );
         };
 
-        $this->copySystemClass('MoonShineUserIndexPage', 'Pages/MoonShineUser', $replaceResources);
-        $this->copySystemClass('MoonShineUserFormPage', 'Pages/MoonShineUser', $replaceResources);
-        $this->copySystemClass('MoonShineUserRoleIndexPage', 'Pages/MoonShineUserRole', $replaceResources);
-        $this->copySystemClass('MoonShineUserRoleFormPage', 'Pages/MoonShineUserRole', $replaceResources);
+        $this->copySystemClass("{$dir}IndexPage", "Pages/$dir", "Resources/$dir/Pages", then: $replaceResources);
+        $this->copySystemClass("{$dir}FormPage", "Pages/$dir", "Resources/$dir/Pages", then: $replaceResources);
     }
 
     private function publishForms(): void
@@ -231,32 +237,36 @@ class PublishCommand extends MoonShineCommand
     /**
      * @return array{full_class_path: string, target_namespace: string}
      */
-    private function copySystemClass(string $name, string $dir, ?Closure $then = null): array
+    private function copySystemClass(string $name, string $dir, ?string $outputDir = null, ?Closure $then = null): array
     {
-        $classPath = "src/$dir/$name.php";
-        $fullClassPath = $this->getDirectory("/$dir/$name.php");
-        $namespace = str_replace('/', '\\', $dir);
-        $targetNamespace = $this->getNamespace("\\$namespace");
+        $outputDir ??= $dir;
 
-        (new Filesystem())->makeDirectory($this->getDirectory($dir), recursive: true, force: true);
+        $targetClassPath = "src/$dir/$name.php";
+        $outputClassPath = $this->getDirectory("/$outputDir/$name.php");
+
+        $targetNamespace = str_replace('/', '\\', $dir);
+        $tmpNamespace = str_replace('/', '\\', $outputDir);
+        $outputNamespace = $this->getNamespace("\\$tmpNamespace");
+
+        (new Filesystem())->makeDirectory($this->getDirectory($outputDir), recursive: true, force: true);
         (new Filesystem())->put(
-            $fullClassPath,
-            file_get_contents(MoonShine::path($classPath))
+            $outputClassPath,
+            file_get_contents(MoonShine::path($targetClassPath))
         );
 
         $this->replaceInFile(
-            "namespace MoonShine\Laravel\\$namespace;",
-            "namespace $targetNamespace;",
-            $fullClassPath
+            "namespace MoonShine\Laravel\\$targetNamespace;",
+            "namespace $outputNamespace;",
+            $outputClassPath
         );
 
         if ($then instanceof Closure) {
-            $then($fullClassPath, $targetNamespace);
+            $then($outputClassPath, $outputNamespace);
         }
 
         return [
-            'full_class_path' => $fullClassPath,
-            'target_namespace' => $targetNamespace,
+            'full_class_path' => $outputClassPath,
+            'target_namespace' => $outputNamespace,
         ];
     }
 }
