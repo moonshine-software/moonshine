@@ -39,6 +39,11 @@ interface FormElementContract extends
 
     public function setValue(mixed $value = null): static;
 
+    /**
+     * @param  Closure(mixed $value, string $name, mixed $default, static $ctx): mixed  $callback
+     */
+    public function onRequestValue(Closure $callback): static;
+
     public function getRequestValue(int|string|null $index = null): mixed;
 
     public function setRequestKeyPrefix(?string $key): static;

@@ -36,6 +36,9 @@ interface HasViewRendererContract extends
 
     public function flushRenderCache(): static;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toStructure(bool $withStates = true): array;
 
     /**

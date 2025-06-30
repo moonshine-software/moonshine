@@ -79,11 +79,21 @@ class AbstractRequest implements RequestContract
         );
     }
 
+    /**
+     * @param  string[]|string  $keys
+     *
+     * @return mixed[]
+     */
     public function getOnly(array|string $keys): array
     {
         return $this->getAll()->only($keys)->toArray();
     }
 
+    /**
+     * @param  string[]|string  $keys
+     *
+     * @return mixed[]
+     */
     public function getExcept(array|string $keys): array
     {
         return $this->getAll()->except($keys)->toArray();

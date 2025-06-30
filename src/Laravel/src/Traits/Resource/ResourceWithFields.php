@@ -87,6 +87,7 @@ trait ResourceWithFields
     }
 
     /**
+     * @return Fields<ModelRelationField>
      * @throws Throwable
      */
     public function getOutsideFields(): Fields
@@ -100,6 +101,7 @@ trait ResourceWithFields
             $fields = Fields::make($this->formFields());
         }
 
+        /** @var Fields<ModelRelationField> */
         return $fields
             ->onlyFields()
             ->onlyOutside();

@@ -26,6 +26,7 @@ use Throwable;
 /**
  * @template T of FieldContract = FieldContract
  * @implements FieldsContract<T>
+ * @extends BaseCollection<T>
  */
 class Fields extends BaseCollection implements FieldsContract
 {
@@ -101,7 +102,7 @@ class Fields extends BaseCollection implements FieldsContract
                     : $element instanceof $class;
 
 
-                if ($isUnwrapped) {
+                if ($isUnwrapped && $element instanceof HasFieldsContract) {
                     $element->getFields()->onlyFields()->each(
                         static fn ($inner): Collection => $modified->push($inner)
                     );

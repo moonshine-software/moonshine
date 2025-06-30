@@ -56,7 +56,7 @@ final readonly class FileItem implements Arrayable
             'full_path' => $this->getFullPath(),
             'raw_value' => $this->getRawValue(),
             'name' => $this->getName(),
-            'attributes' => $this->getAttributes()->getAttributes(),
+            'attributes' => $this->getAttributes(),
             'extra' => $this->getExtra()?->toArray(),
         ];
     }

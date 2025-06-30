@@ -16,9 +16,11 @@ use MoonShine\Core\Traits\WithCore;
 use Throwable;
 
 /**
- * @template TFields of FieldsContract
+ * @template T of ComponentContract = ComponentContract
+ * @template TFields of FieldsContract = FieldsContract
  *
- * @implements ComponentsContract<ComponentContract, TFields>
+ * @implements ComponentsContract<T, TFields>
+ * @extends BaseCollection<T>
  */
 final class Components extends BaseCollection implements ComponentsContract
 {
@@ -49,6 +51,7 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
+     * @return static<FormBuilderContract>
      * @throws Throwable
      */
     public function onlyForms(): static
@@ -57,11 +60,14 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), FormBuilderContract::class, $data);
 
-        /** @var static */
+        /**
+         * @var static<FormBuilderContract>
+         */
         return self::make($data);
     }
 
     /**
+     * @return static<TableBuilderContract>
      * @throws Throwable
      */
     public function onlyTables(): static
@@ -70,11 +76,12 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), TableBuilderContract::class, $data);
 
-        /** @var static */
+        /** @var static<TableBuilderContract> */
         return self::make($data);
     }
 
     /**
+     * @return static<ComponentContract>
      * @throws Throwable
      */
     public function onlyComponents(): static
@@ -83,7 +90,7 @@ final class Components extends BaseCollection implements ComponentsContract
 
         $this->extractOnly($this->toArray(), ComponentContract::class, $data);
 
-        /** @var static */
+        /** @var static<ComponentContract> */
         return self::make($data);
     }
 

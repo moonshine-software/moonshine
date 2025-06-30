@@ -117,8 +117,8 @@
             "@test:types:cm",
             "@test:types:c",
             "@test:types:mm",
-            "@test:types:core",
             "@test:types:s",
+            "@test:types:core",
             "@test:types:ui",
             "@test:types:l"
         ],
