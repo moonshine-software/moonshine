@@ -13,6 +13,9 @@ final class Breadcrumbs extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.breadcrumbs';
 
+    /**
+     * @param  array<string, string|array{url: string, title: string, icon: string|null}>  $items
+     */
     public function __construct(
         public array $items = [],
     ) {

@@ -83,7 +83,7 @@ trait UpdateOnPreview
     public function updateOnPreview(
         ?Closure $url = null,
         ?ResourceContract $resource = null,
-        mixed $condition = null,
+        Closure|bool|null $condition = null,
         array $events = [],
     ): static {
         $this->updateOnPreview = value($condition, $this) ?? true;

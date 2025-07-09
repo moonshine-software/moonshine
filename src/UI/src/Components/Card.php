@@ -21,6 +21,14 @@ final class Card extends MoonShineComponent
 
     protected Closure|string $actions = '';
 
+    /**
+     * @param  (Closure(self):string)|string  $title
+     * @param  (Closure(self): string[])|string[]|string  $thumbnail
+     * @param  (Closure(self):string)|string  $url
+     * @param  (Closure(self): array<string, mixed>)|array<string, mixed>  $values
+     * @param  (Closure(self):string)|string|null  $subtitle
+     * @param  bool  $overlay
+     */
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|array|string $thumbnail = '',
@@ -60,6 +68,10 @@ final class Card extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param  (Closure(self): string[])|string[]|string  $value
+     *
+     */
     public function thumbnail(Closure|array|string $value): self
     {
         $this->thumbnail = $value;
@@ -67,6 +79,10 @@ final class Card extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param  (Closure(self): array<string, mixed>)|array<string, mixed>  $values
+     *
+     */
     public function values(Closure|array $values): self
     {
         $this->values = $values;

@@ -11,6 +11,9 @@ use MoonShine\Contracts\UI\Collection\TableCellsContract;
 use MoonShine\Contracts\UI\TableCellContract;
 use MoonShine\UI\Components\Table\TableTd;
 
+/**
+ * @extends Collection<array-key, TableCellContract>
+ */
 final class TableCells extends Collection implements TableCellsContract
 {
     public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self

@@ -32,3 +32,6 @@ jobs:
 
       - name: Execute
         run: composer test:types
+
+      - name: Packages
+        run: composer test:types:packages

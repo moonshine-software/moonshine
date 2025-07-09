@@ -15,6 +15,10 @@ final class FlexibleRender extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.flexible-render';
 
+    /**
+     * @param  (Closure(array<string, mixed>, self): string)|Renderable|string  $content
+     * @param  (Closure():array<string, mixed>)|array<string, mixed>  $additionalData
+     */
     public function __construct(
         protected Closure|Renderable|string $content,
         protected Closure|array $additionalData = [],
@@ -27,7 +31,7 @@ final class FlexibleRender extends MoonShineComponent
         parent::prepareBeforeRender();
 
         if ($this->content instanceof Closure) {
-            $this->content = value($this->content, $this->additionalData, $this);
+            $this->content = call_user_func($this->content, $this->additionalData, $this);
         }
 
         if ($this->content instanceof View) {

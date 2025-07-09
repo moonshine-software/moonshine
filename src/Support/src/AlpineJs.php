@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -63,7 +64,7 @@ final readonly class AlpineJs
     }
 
     public static function eventBladeWhen(
-        mixed $condition,
+        Closure|bool|null $condition,
         string|JsEvent $event,
         ?string $name = null,
         ?string $call = null

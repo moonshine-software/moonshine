@@ -25,6 +25,7 @@ use MoonShine\UI\Traits\HasDataCast;
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
  * @implements HasCasterContract<TCaster, TWrapper>
+ * @implements HasPaginatorContract<TData>
  */
 abstract class IterableComponent extends MoonShineComponent implements
     HasCasterContract,

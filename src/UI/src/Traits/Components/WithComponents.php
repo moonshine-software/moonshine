@@ -67,6 +67,10 @@ trait WithComponents
         return $this->getComponents()->isNotEmpty();
     }
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     */
     public function setComponents(iterable $components): static
     {
         $this->components = $components;

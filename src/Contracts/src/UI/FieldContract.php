@@ -56,7 +56,7 @@ interface FieldContract extends
 
     public function horizontal(): static;
 
-    public function withoutWrapper(mixed $condition = null): static;
+    public function withoutWrapper(Closure|bool|null $condition = null): static;
 
     public function hasWrapper(): bool;
 

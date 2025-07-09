@@ -62,8 +62,14 @@ class ActionButton extends MoonShineComponent implements
 
     protected ?AsyncCallback $asyncCallback = null;
 
+    /**
+     * @var string[]|null
+     */
     protected ?array $asyncEvents = null;
 
+    /**
+     * @var string|string[]|null
+     */
     protected null|string|array $asyncSelector = null;
 
     protected ?string $asyncMethod = null;
@@ -198,6 +204,10 @@ class ActionButton extends MoonShineComponent implements
         return $this;
     }
 
+    /**
+     * @param  string[]|string  $events
+     * @param  string[]  $exclude
+     */
     public function dispatchEvent(array|string $events, array $exclude = [], bool $withoutPayload = false): static
     {
         if (! $this->getAttributes()->has('x-data')) {
@@ -270,8 +280,9 @@ class ActionButton extends MoonShineComponent implements
     }
 
     /**
-     * @param array|(Closure(TData $original): array) $params = []
-     * @throws Throwable
+     * @param array<string, mixed>|(Closure(TData $original): array<string, mixed>) $params = []
+     * @param null|string|string[] $selector
+     * @param string[] $events
      */
     public function method(
         string $method,
@@ -325,6 +336,10 @@ class ActionButton extends MoonShineComponent implements
         return $this;
     }
 
+    /**
+     * @param  null|string|string[]  $selector
+     * @param  string[]  $events
+     */
     public function async(
         HttpMethod $method = HttpMethod::GET,
         null|string|array $selector = null,
@@ -385,6 +400,8 @@ class ActionButton extends MoonShineComponent implements
 
     /**
      * Blocked because only two components inside are allowed (Modal and OffCanvas)
+     *
+     * @param  iterable<array-key, ComponentContract>  $components
      */
     public function setComponents(iterable $components): static
     {
@@ -520,6 +537,9 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClass('btn-(primary|secondary|info|success|warning|error)');
     }
 
+    /**
+     * @return list<TData|TWrapper>
+     */
     protected function isSeeParams(): array
     {
         return [
