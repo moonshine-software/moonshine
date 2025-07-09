@@ -455,7 +455,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
-                $value = $this->getColumnOrFormattedValue($item, data_get($item, $column, ''));
+                $value = $this->getColumnOrFormattedValue($item, data_get($item, $column, '') ?? null);
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */

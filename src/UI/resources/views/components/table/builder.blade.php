@@ -36,7 +36,7 @@
 )"
         @defineEvent('table_row_added', $name, 'add(true)')
         @defineEvent('table_reindex', $name, 'resolveReindex')
-        @defineEventWhen($async, 'table_updated', $name, 'asyncRequest')
+        @defineEvent('table_updated', $name, 'asyncRequest')
         {{ $attributes }}
     >
         <x-moonshine::iterable-wrapper
