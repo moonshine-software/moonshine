@@ -13,8 +13,6 @@ use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 
-use function PHPStan\dumpType;
-
 /**
  * @mixin WithAssets
  */

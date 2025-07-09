@@ -23,7 +23,6 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 use MoonShine\Contracts\Core\StatefulContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
@@ -52,7 +51,7 @@ abstract class Core implements CoreContract, StatefulContract
     protected array $pages = [];
 
     /**
-     * @var array<class-string, object>
+     * @var array<class-string, ResourceContract|PageContract>
      */
     protected array $instances = [];
 
@@ -193,7 +192,7 @@ abstract class Core implements CoreContract, StatefulContract
     }
 
     /**
-     * @template T of object
+     * @template T of ResourceContract|PageContract
      * @param  iterable<class-string<T>|T>  $items
      * @return list<T>
      */
@@ -221,7 +220,7 @@ abstract class Core implements CoreContract, StatefulContract
     }
 
     /**
-     * @template T of object
+     * @template T of ResourceContract|PageContract
      * @param  class-string<T>  $class
      * @return T|null
      */
