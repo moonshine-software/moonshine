@@ -6,11 +6,14 @@ namespace MoonShine\Core\Traits;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+
+use function PHPStan\dumpType;
 
 /**
  * @mixin WithAssets
@@ -22,7 +25,7 @@ trait WithViewRenderer
     protected ?string $customView = null;
 
     /**
-     * @var array<string, mixed>|Closure
+     * @var array<string, mixed>|(Closure(static): array<string, mixed>)
      */
     protected array|Closure $customViewData = [];
 
@@ -30,12 +33,26 @@ trait WithViewRenderer
 
     private Renderable|Closure|string|null $cachedRender = null;
 
+    /**
+     * @var array<string, string>
+     */
     protected array $translates = [];
 
+    /**
+     * @return array<string, string>
+     */
     public function getTranslates(): array
     {
-        return Collection::make($this->translates)
-            ->mapWithKeys(fn (string $key, string $name) => [$name => $this->getCore()->getTranslator()->get($key)])
+        /**
+         * @var Collection<string, string> $collection
+         */
+        $collection = new Collection($this->translates);
+
+        /**
+         * @var array<string, string>
+         */
+        return $collection
+            ->mapWithKeys(fn (string $key, string $name): array => [$name => $this->getCore()->getTranslator()->get($key)])
             ->toArray();
     }
 
@@ -52,6 +69,9 @@ trait WithViewRenderer
         return value($this->customViewData, $this);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function customView(string $view, array $data = []): static
     {
         $this->customView = $view;
@@ -149,22 +169,29 @@ trait WithViewRenderer
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toStructure(bool $withStates = true): array
     {
         $components = [];
         $states = $withStates ? $this->toArray() : [];
 
-        $states = data_forget($states, 'componentName');
-        $states = data_forget($states, 'components');
-        $states = data_forget($states, 'fields');
+        Arr::forget($states, ['componentName', 'components', 'fields']);
 
         if ($this instanceof HasComponentsContract) {
-            $components = $this->getComponents()
+            /** @var Collection<array-key, ComponentContract> $componentsCollection */
+            $componentsCollection = $this->getComponents();
+
+            $components = $componentsCollection
                 ->map(static fn (ComponentContract $component): array => $component->toStructure($withStates));
         }
 
         if ($this instanceof HasFieldsContract) {
-            $components = $this->getFields()
+            /** @var Collection<array-key, ComponentContract> $fieldsCollection */
+            $fieldsCollection = $this->getFields();
+
+            $components = $fieldsCollection
                 ->map(static fn (ComponentContract $component): array => $component->toStructure($withStates));
 
             $states['fields'] = $components;
@@ -177,6 +204,9 @@ trait WithViewRenderer
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $this->prepareBeforeSerialize();
@@ -189,6 +219,9 @@ trait WithViewRenderer
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
@@ -196,9 +229,13 @@ trait WithViewRenderer
 
     public function __toString(): string
     {
+        /** @phpstan-ignore cast.string */
         return (string) value($this->render(), $this);
     }
 
+    /**
+     * @param bool $escape
+     */
     public function escapeWhenCastingToString($escape = true): static
     {
         return $this;

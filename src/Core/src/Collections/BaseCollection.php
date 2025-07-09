@@ -35,11 +35,11 @@ abstract class BaseCollection extends Collection
 
             if ($element instanceof HasFieldsContract) {
                 $element->fields(
-                    $element->getFields()->exceptElements($except)->toArray()
+                    $element->getFields()->exceptElements($except)
                 );
             } elseif ($element instanceof HasComponentsContract) {
                 $element->setComponents(
-                    $element->getComponents()->exceptElements($except)->toArray()
+                    $element->getComponents()->exceptElements($except)
                 );
             }
 
@@ -48,7 +48,7 @@ abstract class BaseCollection extends Collection
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function toStructure(bool $withStates = true): array
     {

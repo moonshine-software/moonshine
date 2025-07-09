@@ -45,10 +45,19 @@ abstract class Page implements PageContract
     /** @var ?class-string<LayoutContract> */
     protected ?string $layout = null;
 
+    /**
+     * @var Components|list<ComponentContract>|null
+     */
     protected ?iterable $components = null;
 
+    /**
+     * @var array<string, list<ComponentContract>>
+     */
     protected array $layersComponents = [];
 
+    /**
+     * @var array<string, string>|null
+     */
     protected ?array $breadcrumbs = null;
 
     protected ?PageType $pageType = null;
@@ -155,7 +164,7 @@ abstract class Page implements PageContract
         }
 
         return [
-            $this->getResource()?->getUrl() => $this->getResource()?->getTitle(),
+            $this->getResource()?->getUrl() ?? '' => $this->getResource()?->getTitle() ?? '',
         ];
     }
 
@@ -189,7 +198,9 @@ abstract class Page implements PageContract
     public function getComponents(): Components
     {
         if (! \is_null($this->components)) {
-            return $this->components;
+            return $this->components instanceof Components
+                ? $this->components
+                : Components::make($this->components);
         }
 
         $this->components = Components::make($this->components());
@@ -263,6 +274,7 @@ abstract class Page implements PageContract
 
     public function getLayout(): LayoutContract
     {
+        /** @var null|class-string<LayoutContract> $layout */
         $layout = $this->getCore()->getAttributes()->get(
             default: fn (): mixed => Attributes::for($this, Layout::class)->first('name'),
             target: static::class,
@@ -280,8 +292,11 @@ abstract class Page implements PageContract
             );
         }
 
+        /** @var class-string<LayoutContract> $layout */
+        $layout = $this->layout;
+
         return $this->modifyLayout(
-            $this->getCore()->getContainer($this->layout, null, page: $this)
+            $this->getCore()->getContainer($layout, null, page: $this)
         );
     }
 
@@ -306,9 +321,10 @@ abstract class Page implements PageContract
     public function getRouter(): RouterContract
     {
         $router = clone $this->getCore()->getRouter();
+        $resource = $this->getResource();
 
-        if ($this->hasResource()) {
-            $router = $this->getResource()?->getRouter();
+        if (!is_null($resource)) {
+            $router = $resource->getRouter();
         }
 
         return $router->withPage($this);

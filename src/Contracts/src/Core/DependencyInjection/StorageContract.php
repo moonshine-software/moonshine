@@ -36,7 +36,7 @@ interface StorageContract
     public function getUrl(string $path): string;
 
     /**
-     * @return list<SplFileInfo>
+     * @return list<SplFileInfo|string>
      */
     public function getFiles(string $directory, bool $recursive = false): array;
 

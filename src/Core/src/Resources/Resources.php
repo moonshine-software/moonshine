@@ -8,6 +8,10 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 
+/**
+ * @extends Collection<array-key, ResourceContract>
+ * @implements ResourcesContract<ResourceContract>
+ */
 final class Resources extends Collection implements ResourcesContract
 {
     public function findByUri(

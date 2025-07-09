@@ -13,7 +13,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use Psr\Container\ContainerInterface;
 
 /**
- * @template TConfig of ConfiguratorContract
+ * @template TConfig of ConfiguratorContract = ConfiguratorContract
  */
 interface CoreContract
 {
@@ -30,7 +30,7 @@ interface CoreContract
      * @param class-string<T>|null $id
      * @param  mixed  ...$parameters
      *
-     * @return null|T|ContainerInterface
+     * @return ($id is null ? ContainerInterface : T)
      */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
 
@@ -60,7 +60,7 @@ interface CoreContract
     public function getStorage(...$parameters): StorageContract;
 
     /**
-     * @param  list<ComponentContract|FieldContract>  $items
+     * @param  iterable<array-key, ComponentContract|FieldContract>  $items
      *
      */
     public function getFieldsCollection(iterable $items = []): FieldsContract;

@@ -9,6 +9,7 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -17,7 +18,7 @@ use Throwable;
 
 /**
  * @template T of ComponentContract = ComponentContract
- * @template TFields of FieldsContract = FieldsContract
+ * @template TFields of FieldsContract = FieldsContract<\MoonShine\Contracts\UI\FieldContract>
  *
  * @implements ComponentsContract<T, TFields>
  * @extends BaseCollection<T>
@@ -29,7 +30,7 @@ final class Components extends BaseCollection implements ComponentsContract
 
     /**
      * @template TType
-     * @param  FieldsContract|ComponentsContract|list<ComponentContract>  $elements
+     * @param  FieldsContract|ComponentsContract|iterable<array-key, ComponentContract>|self<T, TFields>  $elements
      * @param  class-string<TType>  $type
      * @param  list<TType>  $data
      *
@@ -58,7 +59,7 @@ final class Components extends BaseCollection implements ComponentsContract
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), FormBuilderContract::class, $data);
+        $this->extractOnly($this, FormBuilderContract::class, $data);
 
         /**
          * @var static<FormBuilderContract>
@@ -74,7 +75,7 @@ final class Components extends BaseCollection implements ComponentsContract
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), TableBuilderContract::class, $data);
+        $this->extractOnly($this, TableBuilderContract::class, $data);
 
         /** @var static<TableBuilderContract> */
         return self::make($data);
@@ -88,20 +89,20 @@ final class Components extends BaseCollection implements ComponentsContract
     {
         $data = [];
 
-        $this->extractOnly($this->toArray(), ComponentContract::class, $data);
+        $this->extractOnly($this, ComponentContract::class, $data);
 
         /** @var static<ComponentContract> */
         return self::make($data);
     }
 
     /**
-     * @return TFields
+     * @return FieldsContract<FieldContract>
      * @throws Throwable
      */
     public function onlyFields(bool $withWrappers = false, bool $withApplyWrappers = false): FieldsContract
     {
         return $this->getCore()
-            ->getFieldsCollection($this->toArray())
+            ->getFieldsCollection($this)
             ->onlyFields($withWrappers, $withApplyWrappers);
     }
 

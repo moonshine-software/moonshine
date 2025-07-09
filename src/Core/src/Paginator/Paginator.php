@@ -21,6 +21,12 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
 
     private bool $async = false;
 
+    /**
+     * @param  iterable<string, mixed>  $links
+     * @param  iterable<array-key, mixed>  $data
+     * @param  iterable<array-key, mixed>  $originalData
+     * @param  array<string, string>  $translates
+     */
     public function __construct(
         private string $path,
         private iterable $links,
@@ -48,11 +54,17 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
             ->reject(static fn (array $link): bool => $link['url'] === '' || ! is_numeric($link['label']));
     }
 
+    /**
+     * @return Collection<array-key, mixed>
+     */
     public function getData(): Collection
     {
         return new Collection($this->data);
     }
 
+    /**
+     * @return Collection<array-key, mixed>
+     */
     public function getOriginalData(): Collection
     {
         return new Collection($this->originalData);
@@ -67,7 +79,14 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
                 $query = Str::of($path)->contains('?') ? Str::of($path)->after('?')->value() : '';
 
                 return $link
-                    ? trim(str_replace($current, $new, $link) . '&' . $query, '&')
+                    ? trim(
+                        str_replace(
+                            $current === false ? '' : $current,
+                            $new === false ? '' : $new,
+                            $link
+                        ) . '&' . $query,
+                        '&'
+                    )
                     : $link;
             };
 
@@ -76,13 +95,18 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
             $this->prevPageUrl = $changeUrl($this->prevPageUrl);
             $this->lastPageUrl = $changeUrl($this->lastPageUrl);
 
-            $this->links = Collection::make($this->links)
-                ->map(function (array $link) use ($changeUrl): array {
-                    $link['url'] = $changeUrl($link['url']);
+            /** @var Collection<array-key, array<string, mixed>> $linksCollection */
+            $linksCollection = Collection::make($this->links);
 
-                    return $link;
-                })
-                ->toArray();
+            /**
+             * @var array<string, mixed> $links
+             */
+            $links = $linksCollection->map(function (array $link) use ($changeUrl): array {
+                $link['url'] = $changeUrl(is_string($link['url']) ? $link['url'] : null);
+                return $link;
+            })->toArray();
+
+            $this->links = $links;
         }
     }
 
@@ -177,11 +201,17 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
         return 'moonshine::components.pagination';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function systemViewData(): array
     {
         return $this->toArray();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -205,6 +235,9 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
@@ -227,7 +260,9 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->getData()->put($offset, $value);
+        if($offset !== null) {
+            $this->getData()->put($offset, $value);
+        }
     }
 
     public function offsetUnset(mixed $offset): void

@@ -13,12 +13,15 @@ use MoonShine\Core\Exceptions\ResourceException;
 trait HasResource
 {
     /**
-     * @var T
+     * @var null|T
      */
     protected ?ResourceContract $resource = null;
 
     public function setResource(ResourceContract $resource): static
     {
+        /**
+         * @phpstan-ignore assign.propertyType
+         */
         $this->resource = $resource;
 
         return $this;

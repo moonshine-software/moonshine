@@ -10,7 +10,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 interface HasComponentsContract
 {
     /**
-     * @param  list<ComponentContract>  $components
+     * @param  iterable<array-key, ComponentContract>  $components
      *
      */
     public function setComponents(iterable $components): static;

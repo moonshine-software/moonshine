@@ -48,9 +48,9 @@ interface TableBuilderContract extends
     public function items(iterable $items = []): static;
 
     /**
-     * @return Collection<array-key, TData>
+     * @return iterable<array-key, TData>
      */
-    public function getItems(): Collection;
+    public function getItems(): iterable;
 
     /**
      * @param  Closure(null|DataWrapperContract<TData> $data, int $row, int $cell, static $table): array<string, string>  $callback

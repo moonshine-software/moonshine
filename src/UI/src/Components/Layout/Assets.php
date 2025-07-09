@@ -23,7 +23,7 @@ final class Assets extends MoonShineComponent
     {
         return [
             'assets' => $this->getAssetManager()->toHtml(),
-            'colors' => $this->getCore()->getContainer(ColorManagerContract::class)?->toHtml(),
+            'colors' => $this->getCore()->getContainer(ColorManagerContract::class)->toHtml(),
         ];
     }
 }

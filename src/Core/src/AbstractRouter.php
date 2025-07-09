@@ -114,6 +114,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     public function forgetParam(string $key): static
     {
+        /** @phpstan-ignore-next-line  */
         data_forget($this->params, $key);
 
         return $this;

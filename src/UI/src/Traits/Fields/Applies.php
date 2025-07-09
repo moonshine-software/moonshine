@@ -117,7 +117,7 @@ trait Applies
         if($this instanceof FieldContract) {
             return $this->getCore()
                 ->getContainer(AppliesRegisterContract::class)
-                ?->findByField($this, $type, $for);
+                ->findByField($this, $type, $for);
         }
 
         return null;

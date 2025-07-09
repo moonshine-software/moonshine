@@ -23,6 +23,8 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
 use MoonShine\Contracts\Core\StatefulContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Pages\Pages;
 use MoonShine\Core\Resources\Resources;
 use MoonShine\Support\Memoize\MemoizeRepository;
@@ -31,7 +33,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * @template TConfig of ConfiguratorContract
+ * @template TConfig of ConfiguratorContract = ConfiguratorContract
  *
  * @implements CoreContract<TConfig>
  */
@@ -39,12 +41,24 @@ abstract class Core implements CoreContract, StatefulContract
 {
     use Conditionable;
 
+    /**
+     * @var list<class-string<ResourceContract>>
+     */
     protected array $resources = [];
 
+    /**
+     * @var list<class-string<PageContract>>
+     */
     protected array $pages = [];
 
+    /**
+     * @var array<class-string, object>
+     */
     protected array $instances = [];
 
+    /**
+     * @var (Closure(): CoreContract<ConfiguratorContract>)|CoreContract<ConfiguratorContract>
+     */
     protected static Closure|CoreContract $instance;
 
     public function __construct(
@@ -56,10 +70,18 @@ abstract class Core implements CoreContract, StatefulContract
         protected OptimizerCollectionContract $optimizer,
     ) {
         static::setInstance(
-            fn (): mixed => $this->getContainer(CoreContract::class)
+            function (): CoreContract {
+                /** @var CoreContract<TConfig> $core */
+                $core = $this->getContainer(CoreContract::class);
+
+                return $core;
+            }
         );
     }
 
+    /**
+     * @param (Closure(): CoreContract<ConfiguratorContract>)|CoreContract<ConfiguratorContract> $core
+     */
     public static function setInstance(Closure|CoreContract $core): void
     {
         static::$instance = $core;
@@ -70,6 +92,9 @@ abstract class Core implements CoreContract, StatefulContract
      */
     public static function getInstance(): CoreContract
     {
+        /**
+         * @var CoreContract<TConfig>
+         */
         return value(static::$instance);
     }
 
@@ -81,6 +106,13 @@ abstract class Core implements CoreContract, StatefulContract
 
     abstract public function isProduction(): bool;
 
+    /**
+     * @template T
+     * @param class-string<T>|null $id
+     * @param  mixed  ...$parameters
+     *
+     * @return ($id is null ? ContainerInterface : T)
+     */
     abstract public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
 
     abstract public function getStorage(...$parameters): StorageContract;
@@ -99,6 +131,9 @@ abstract class Core implements CoreContract, StatefulContract
 
     public function getRequest(): RequestContract
     {
+        /**
+         * @var RequestContract
+         */
         return $this->getContainer(RequestContract::class);
     }
 
@@ -118,17 +153,19 @@ abstract class Core implements CoreContract, StatefulContract
     }
 
     /**
+     * @param  iterable<array-key, FieldContract>  $items
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @return FieldsContract<FieldContract>
      */
     public function getFieldsCollection(iterable $items = []): FieldsContract
     {
-        /** @var FieldsContract $collection */
-        $collection = $this->container
-            ->get(FieldsContract::class)
-            ->push(...$items);
+        /** @var FieldsContract<FieldContract> $collection */
+        $collection = $this->container->get(FieldsContract::class);
 
-        return $collection;
+        /** @var FieldsContract<FieldContract> */
+        return $collection->push(...$items);
     }
 
     public function flushState(): void
@@ -149,23 +186,32 @@ abstract class Core implements CoreContract, StatefulContract
 
         $this->getRouter()->flushState();
 
-        $this->getContainer(AssetManagerContract::class)?->flushState();
-        $this->getContainer(MenuManagerContract::class)?->flushState();
+        $this->getContainer(AssetManagerContract::class)->flushState();
+        $this->getContainer(MenuManagerContract::class)->flushState();
 
         MemoizeRepository::getInstance()->flushState();
     }
 
+    /**
+     * @template T of object
+     * @param  iterable<class-string<T>|T>  $items
+     * @return list<T>
+     */
     private function resolveInstances(iterable $items): array
     {
         $targets = [];
 
         foreach ($items as $item) {
             if (\is_string($item) && isset($this->instances[$item])) {
-                $targets[] = $this->instances[$item];
+                /** @var T $instance */
+                $instance = $this->instances[$item];
+
+                $targets[] = $instance;
 
                 continue;
             }
 
+            /** @var T $instance */
             $instance = \is_string($item) ? $this->getContainer()->get($item) : $item;
             $this->instances[$instance::class] = $instance;
             $targets[] = $instance;
@@ -174,8 +220,14 @@ abstract class Core implements CoreContract, StatefulContract
         return $targets;
     }
 
+    /**
+     * @template T of object
+     * @param  class-string<T>  $class
+     * @return T|null
+     */
     public function getInstances(string $class): mixed
     {
+        /** @var T|null */
         return $this->instances[$class] ?? $this->getContainer($class);
     }
 
@@ -205,11 +257,12 @@ abstract class Core implements CoreContract, StatefulContract
      */
     public function getResources(): ResourcesContract
     {
-        return Resources::make(
-            $this->resolveInstances(
-                $this->resources
-            )
+        /** @var list<ResourceContract> $resources */
+        $resources = $this->resolveInstances(
+            $this->resources
         );
+
+        return Resources::make($resources);
     }
 
     /**
@@ -238,11 +291,12 @@ abstract class Core implements CoreContract, StatefulContract
      */
     public function getPages(): Pages
     {
-        return Pages::make(
-            $this->resolveInstances(
-                Collection::make($this->pages)->except('error')
-            )
+        /** @var list<PageContract> $pages */
+        $pages = $this->resolveInstances(
+            Collection::make($this->pages)->except('error')
         );
+
+        return Pages::make($pages);
     }
 
     public function getOptimizer(): OptimizerCollectionContract
