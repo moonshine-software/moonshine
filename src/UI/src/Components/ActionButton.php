@@ -25,7 +25,6 @@ use MoonShine\UI\Traits\Components\WithSlotContent;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
-use Throwable;
 
 /**
  * @template TData of mixed = mixed

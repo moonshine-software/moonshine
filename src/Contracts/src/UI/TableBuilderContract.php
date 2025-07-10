@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;

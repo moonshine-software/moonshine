@@ -32,7 +32,6 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Exceptions\FieldException;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\HasTabModeConcern;
 use MoonShine\UI\Traits\WithFields;

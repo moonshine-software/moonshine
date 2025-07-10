@@ -78,7 +78,6 @@ final class OptimizerCollection implements OptimizerCollectionContract
     protected function getDetected(?string $namespace, bool $withCache): array
     {
         if ($withCache && file_exists($path = $this->getCachePath())) {
-            /** @var array<class-string, array<mixed>> */
             return require $path;
         }
 

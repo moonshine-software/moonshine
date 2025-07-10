@@ -22,7 +22,6 @@ use MoonShine\Laravel\Exceptions\CrudResourceException;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
-use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**

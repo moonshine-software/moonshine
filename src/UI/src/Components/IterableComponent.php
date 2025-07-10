@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;

@@ -39,7 +39,6 @@ use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
-use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Traits\Fields\HasTabModeConcern;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;

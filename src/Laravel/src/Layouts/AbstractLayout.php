@@ -16,7 +16,6 @@ use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\UI\Components\Layout\{Layout};
-use MoonShine\Core\Pages\Page;
 
 /**
  * @template TCore of CoreContract

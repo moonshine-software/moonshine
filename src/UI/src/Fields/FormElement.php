@@ -158,7 +158,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function hasParent(): bool
     {
-        return ! \is_null($this->parent) && $this->parent->get() !== null;
+        return ! \is_null($this->parent) && $this->parent->get() instanceof FormElementContract;
     }
 
     public function setParent(FormElementContract $field): static
