@@ -16,6 +16,7 @@ use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\UI\Components\Layout\{Layout};
+use MoonShine\Core\Pages\Page;
 
 /**
  * @template TCore of CoreContract
@@ -24,12 +25,13 @@ abstract class AbstractLayout implements LayoutContract
 {
     protected bool $booted = false;
 
+    protected PageContract $page;
+
     /**
      * @param  TCore  $core
      */
     public function __construct(
         protected readonly CoreContract $core,
-        protected readonly PageContract $page,
         protected readonly AssetManagerContract $assetManager,
         protected readonly ColorManagerContract $colorManager,
         protected readonly MenuManagerContract $menuManager,
@@ -64,6 +66,13 @@ abstract class AbstractLayout implements LayoutContract
         $this->onBoot();
 
         $this->booted = true;
+
+        return $this;
+    }
+
+    public function setPage(PageContract $page): static
+    {
+        $this->page = $page;
 
         return $this;
     }

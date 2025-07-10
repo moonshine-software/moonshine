@@ -74,8 +74,16 @@ final class TableBuilder extends IterableComponent implements
 
     protected Closure|TableRowsContract|null $footRows = null;
 
+    /**
+     * @var  array<array-key, Closure>
+     *
+     */
     protected array $trAttributes = [];
 
+    /**
+     * @var  array<array-key, Closure>
+     *
+     */
     protected array $tdAttributes = [];
 
     protected ComponentAttributesBagContract $headAttributes;
@@ -92,6 +100,10 @@ final class TableBuilder extends IterableComponent implements
 
     protected bool $isWithoutKey = false;
 
+    /**
+     * @param  iterable<array-key, FieldContract>  $fields
+     * @param  iterable<array-key, TData>  $items
+     */
     public function __construct(
         iterable $fields = [],
         iterable $items = [],
@@ -129,7 +141,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  Closure(?DataWrapperContract $data, int $row, static $table): array  $callback
+     * @param  Closure(?DataWrapperContract $data, int $row, static $table): array<string, mixed>  $callback
      */
     public function trAttributes(Closure $callback): static
     {
@@ -138,16 +150,20 @@ final class TableBuilder extends IterableComponent implements
         return $this;
     }
 
+    /**
+     * @param null|DataWrapperContract<TData> $data
+     * @return  array<string, mixed>
+     */
     public function getTrAttributes(?DataWrapperContract $data, int $row): array
     {
-        return Collection::make($this->trAttributes)
-            /** @phpstan-ignore-next-line  */
-            ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $this))
+        /** @var array<array-key, array<string, mixed>> */
+        return (new Collection($this->trAttributes))
+            ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $this))
             ->toArray();
     }
 
     /**
-     * @param  Closure(?DataWrapperContract $data, int $row, int $cell, static $table): array  $callback
+     * @param  Closure(null|DataWrapperContract<TData> $data, int $row, int $cell, static $table): array<string, string>  $callback
      */
     public function tdAttributes(Closure $callback): static
     {
@@ -156,11 +172,15 @@ final class TableBuilder extends IterableComponent implements
         return $this;
     }
 
+    /**
+     * @param null|DataWrapperContract<TData> $data
+     * @return  array<string, mixed>
+     */
     public function getTdAttributes(?DataWrapperContract $data, int $row, int $cell): array
     {
-        return Collection::make($this->tdAttributes)
-            /** @phpstan-ignore-next-line  */
-            ->flatMap(fn (Closure $callback) => value($callback, $data, $row, $cell, $this))
+        /** @var array<array-key, array<string, mixed>> */
+        return (new Collection($this->tdAttributes))
+            ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $cell, $this))
             ->toArray();
     }
 
@@ -176,6 +196,9 @@ final class TableBuilder extends IterableComponent implements
         );
     }
 
+    /**
+     * @param  array<string, string>  $attributes
+     */
     public function headAttributes(array $attributes): self
     {
         $this->headAttributes = $this->headAttributes->merge($attributes);
@@ -183,6 +206,9 @@ final class TableBuilder extends IterableComponent implements
         return $this;
     }
 
+    /**
+     * @param  array<string, string>  $attributes
+     */
     public function bodyAttributes(array $attributes): self
     {
         $this->bodyAttributes = $this->bodyAttributes->merge($attributes);
@@ -190,6 +216,9 @@ final class TableBuilder extends IterableComponent implements
         return $this;
     }
 
+    /**
+     * @param  array<string, string>  $attributes
+     */
     public function footAttributes(array $attributes): self
     {
         $this->footAttributes = $this->footAttributes->merge($attributes);
@@ -637,6 +666,9 @@ final class TableBuilder extends IterableComponent implements
         return Components::make($components);
     }
 
+    /**
+     * @param  array<string, string>  $columns
+     */
     private function getTopRight(array $columns = []): Components
     {
         $components = \is_null($this->topRight) ? [] : \call_user_func($this->topRight);

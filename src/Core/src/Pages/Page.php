@@ -294,10 +294,10 @@ abstract class Page implements PageContract
 
         /** @var class-string<LayoutContract> $layout */
         $layout = $this->layout;
+        $resolvedLayout = $this->getCore()->getContainer($layout);
+        $resolvedLayout->setPage($this);
 
-        return $this->modifyLayout(
-            $this->getCore()->getContainer($layout, null, page: $this)
-        );
+        return $this->modifyLayout($resolvedLayout);
     }
 
     protected function modifyLayout(LayoutContract $layout): LayoutContract

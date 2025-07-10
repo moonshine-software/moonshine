@@ -15,7 +15,13 @@ interface RangeFieldContract
 
     public function getToField(): string;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function fromAttributes(array $attributes): static;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function toAttributes(array $attributes): static;
 }

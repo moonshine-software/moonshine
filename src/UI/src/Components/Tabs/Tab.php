@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components\Tabs;
 
 use Closure;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -15,6 +16,7 @@ use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
+use Throwable;
 
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
@@ -30,12 +32,18 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
 
     private ComponentAttributesBagContract $labelAttributes;
 
+    /**
+     * @param  (Closure(static): string)|string|iterable<array-key, ComponentContract>  $labelOrComponents
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     * @throws Throwable
+     */
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
     ) {
         if (is_iterable($labelOrComponents)) {
-            /** @var iterable $labelOrComponents */
+            /** @var iterable<array-key, ComponentContract> $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);
@@ -46,6 +54,10 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         parent::__construct($components);
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     *
+     */
     public function labelAttributes(array $attributes): static
     {
         $this->labelAttributes = $this->labelAttributes->merge($attributes);
@@ -102,6 +114,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
 
     /**
      * @return array<string, mixed>
+     * @throws Throwable
      */
     protected function viewData(): array
     {

@@ -64,6 +64,9 @@ class Json extends Field implements
 
     protected ?ActionButtonContract $creatableButton = null;
 
+    /**
+     * @var list<ActionButtonContract>
+     */
     protected array $buttons = [];
 
     protected bool $isReorderable = true;
@@ -262,6 +265,9 @@ class Json extends Field implements
         return $this;
     }
 
+    /**
+     * @param  list<ActionButtonContract>  $buttons
+     */
     public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
@@ -269,6 +275,9 @@ class Json extends Field implements
         return $this;
     }
 
+    /**
+     * @return   list<ActionButtonContract>
+     */
     public function getButtons(): array
     {
         if (array_filter($this->buttons) !== []) {
@@ -350,14 +359,24 @@ class Json extends Field implements
         }
 
         if ($this->isKeyOrOnlyValue() && ! $this->isFilterMode()) {
-            return Collection::make($data)->map(fn ($data, $key): array => $this->extractKeyValue(
+            /** @var Collection<array-key, mixed> $collection */
+            $collection = new Collection($data);
+
+            return $collection->map(fn (mixed $data, int|string $key): array => $this->extractKeyValue(
                 $this->isOnlyValue() ? [$data] : [$key => $data],
-            ))->values()->toArray();
+            ))
+                ->values()
+                ->toArray();
         }
 
         return $data;
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     *
+     * @return array<string, mixed>
+     */
     protected function extractKeyValue(array $data): array
     {
         if ($this->isKeyValue()) {
@@ -386,6 +405,8 @@ class Json extends Field implements
     }
 
     /**
+     * @param iterable<string, mixed> $collection
+     * @return array<string, mixed>
      * @throws Throwable
      */
     public function prepareOnApplyRecursive(iterable $collection): array
@@ -433,7 +454,9 @@ class Json extends Field implements
             ? $this->toFormattedValue()
             : $this->getValue();
 
-        $values = Collection::make(
+
+        /** @var Collection<array-key, mixed> $values */
+        $values = new Collection(
             is_iterable($value)
                 ? $value
                 : [],
@@ -529,6 +552,9 @@ class Json extends Field implements
     }
 
     /**
+     * @param iterable<array-key, mixed> $collection
+     * @return array<array-key, mixed>
+     *
      * @throws Throwable
      */
     public function prepareOnApply(iterable $collection): array
@@ -538,7 +564,7 @@ class Json extends Field implements
         return $collection->when(
             $this->isKeyOrOnlyValue(),
             fn (Collection $data): Collection => $data->mapWithKeys(
-                fn ($data, $key): array => $this->isOnlyValue()
+                fn (array $data, string|int $key): array => $this->isOnlyValue()
                     ? [$key => $data['value']]
                     : [$data['key'] => $data['value']],
             ),
@@ -570,7 +596,9 @@ class Json extends Field implements
         }
 
         if (is_iterable($value) && filled($value)) {
-            return Collection::make($value)
+            $collection = new Collection($value);
+
+            return $collection
                 ->filter(fn ($v): bool => $this->filterEmpty($v))
                 ->isNotEmpty();
         }

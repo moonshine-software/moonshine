@@ -12,8 +12,14 @@ trait Removable
 {
     protected bool $removable = false;
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $removableAttributes = [];
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function removable(
         Closure|bool|null $condition = null,
         array $attributes = []

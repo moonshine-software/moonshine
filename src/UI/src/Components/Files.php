@@ -22,7 +22,7 @@ final class Files extends MoonShineComponent
     ) {
         parent::__construct();
 
-        $this->files = Collection::make($this->files)
+        $this->files = (new Collection($this->files))
             ->mapWithKeys(
                 static fn(string|FileItem|array $value, int $index): array
                     => [

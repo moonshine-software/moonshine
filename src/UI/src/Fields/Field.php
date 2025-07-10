@@ -277,6 +277,10 @@ abstract class Field extends FormElement implements FieldContract
         ]);
     }
 
+    /**
+     * @param  string[]  $events
+     * @param  string|string[]|null  $selector
+     */
     protected function onChangeAttributes(
         HttpMethod $method = HttpMethod::GET,
         array $events = [],
@@ -293,6 +297,9 @@ abstract class Field extends FormElement implements FieldContract
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getOnChangeEventAttributes(?string $url = null): array
     {
         return $url ? AlpineJs::onChangeSaveField($url, $this->getColumn()) : [];
@@ -529,6 +536,9 @@ abstract class Field extends FormElement implements FieldContract
         return $this->renderView();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return [

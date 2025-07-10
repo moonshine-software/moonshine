@@ -7,7 +7,9 @@ namespace MoonShine\UI\Components;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\AlpineJs;
+use Throwable;
 
 /**
  * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
@@ -24,8 +26,17 @@ final class OffCanvas extends AbstractWithComponents
 
     protected bool $full = false;
 
+    /**
+     * @var  array<string, mixed>
+     *
+     */
     protected array $togglerAttributes = [];
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     * @throws Throwable
+     */
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|Renderable|string $content = '',
@@ -68,6 +79,10 @@ final class OffCanvas extends AbstractWithComponents
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     *
+     */
     public function togglerAttributes(array $attributes): self
     {
         $this->togglerAttributes = $attributes;
@@ -78,7 +93,7 @@ final class OffCanvas extends AbstractWithComponents
     /**
      * @param string[] $events
      */
-    public function toggleEvents(array $events, bool $onlyOpening = false, $onlyClosing = false): self
+    public function toggleEvents(array $events, bool $onlyOpening = false, bool $onlyClosing = false): self
     {
         $data = [
             'data-opening-events' => AlpineJs::prepareEvents($events),

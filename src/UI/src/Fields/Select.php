@@ -56,11 +56,14 @@ class Select extends Field implements
                 json_decode($value, true, 512, JSON_THROW_ON_ERROR)
                 : $value;
 
-            return Collection::make($value)
+            /** @var Collection<array-key, int|string> $collection */
+            $collection = new Collection($value);
+
+            return $collection
                 ->when(
                     ! $this->isRawMode(),
-                    fn ($collect): Collection => $collect->map(
-                        fn ($v): string => (string) data_get($this->getValues()->flatten(), "$v.label", ''),
+                    fn (Collection $collect): Collection => $collect->map(
+                        fn (int|string $v): string => (string) data_get($this->getValues()->flatten(), "$v.label", ''),
                     ),
                 )
                 ->implode(',');

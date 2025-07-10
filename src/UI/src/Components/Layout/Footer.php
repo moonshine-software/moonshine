@@ -6,12 +6,20 @@ namespace MoonShine\UI\Components\Layout;
 
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
+use Throwable;
 
 class Footer extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.layout.footer';
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     * @param  array<string, string>  $menu
+     *
+     * @throws Throwable
+     */
     public function __construct(
         iterable $components = [],
         // anonymous component variables
@@ -43,6 +51,9 @@ class Footer extends AbstractWithComponents
         return $this;
     }
 
+    /**
+     * @return Collection<string, string>
+     */
     public function getMenu(): Collection
     {
         return new Collection($this->menu);

@@ -39,6 +39,9 @@ trait HasCanSee
         );
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected function isSeeParams(): array
     {
         return [];

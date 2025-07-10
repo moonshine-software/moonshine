@@ -122,9 +122,9 @@ final class OptimizerCollection implements OptimizerCollectionContract
         /**
          * @var array<class-string, array<mixed>>
          */
-        return Collection::make(ClassLoader::getRegisteredLoaders())
+        return (new Collection(ClassLoader::getRegisteredLoaders()))
             ->map(
-                fn (ClassLoader $loader) => Collection::make($loader->getClassMap())
+                fn (ClassLoader $loader) => (new Collection($loader->getClassMap()))
                     ->when($namespace, static fn (Collection $items) => $items->filter(
                         static fn (string $path, string $class): bool => str_starts_with($class, (string) $namespace)
                     ))

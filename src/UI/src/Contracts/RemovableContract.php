@@ -8,6 +8,9 @@ use Closure;
 
 interface RemovableContract
 {
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function removable(
         Closure|bool|null $condition = null,
         array $attributes = [],

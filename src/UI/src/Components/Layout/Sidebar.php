@@ -34,6 +34,10 @@ class Sidebar extends AbstractWithComponents
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     *
+     */
     public function collapseAttributes(array $attributes): static
     {
         $this->collapseAttributes = $this->collapseAttributes->merge($attributes);

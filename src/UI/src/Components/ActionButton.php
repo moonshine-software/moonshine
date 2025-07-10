@@ -538,7 +538,7 @@ class ActionButton extends MoonShineComponent implements
     }
 
     /**
-     * @return list<TData|TWrapper>
+     * @return array<array-key, TData|TWrapper|null>
      */
     protected function isSeeParams(): array
     {

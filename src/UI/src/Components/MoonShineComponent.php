@@ -72,6 +72,8 @@ abstract class MoonShineComponent extends Component implements
     /**
      * @internal
      * Method is called after rendering
+     *
+     * @param array<string, mixed> $attributes
      */
     public function withAttributes(array $attributes): static
     {
@@ -84,7 +86,11 @@ abstract class MoonShineComponent extends Component implements
         return $this;
     }
 
-    /** @internal */
+    /**
+     * @internal
+     *
+     * @return array<string, mixed>
+     */
     public function data(): array
     {
         return array_merge($this->extractPublicProperties(), [
@@ -93,6 +99,9 @@ abstract class MoonShineComponent extends Component implements
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return $this->data();

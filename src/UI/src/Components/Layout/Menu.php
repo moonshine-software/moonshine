@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\UI\Components\MoonShineComponent;
@@ -18,6 +19,9 @@ class Menu extends MoonShineComponent
 
     public MenuElementsContract $items;
 
+    /**
+     * @param  iterable<array-key, MenuElementContract>|null  $elements
+     */
     public function __construct(
         private readonly ?iterable $elements = null,
         protected bool $top = false,

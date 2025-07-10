@@ -24,6 +24,9 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
 
     protected bool $isGroup = true;
 
+    /**
+     * @var string[]
+     */
     protected array $propertyAttributes = [
         'type',
         'min',
@@ -61,6 +64,10 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
         return $this;
     }
 
+    /**
+     * @param  array<string, int|string>  $value
+     * @return array<string, string>
+     */
     private function extractDates(array $value, string $format): array
     {
         return [
@@ -73,6 +80,9 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
         ];
     }
 
+    /**
+     * @return array<string, null|string>
+     */
     protected function resolveValue(): mixed
     {
         if ($this->isNullRange()) {
@@ -109,6 +119,9 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
         return "{$dates[$this->getFromField()]} - {$dates[$this->getToField()]}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

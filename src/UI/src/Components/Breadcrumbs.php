@@ -24,7 +24,7 @@ final class Breadcrumbs extends MoonShineComponent
 
     public function prepend(string $link, string $label = '', ?string $icon = null): self
     {
-        $this->items = Collection::make($this->items)
+        $this->items = (new Collection($this->items))
             ->prepend($this->addItem($label, $icon), $link)
             ->toArray();
 
@@ -33,7 +33,7 @@ final class Breadcrumbs extends MoonShineComponent
 
     public function add(string $link, string $label = '', ?string $icon = null): self
     {
-        $this->items = Collection::make($this->items)
+        $this->items = (new Collection($this->items))
             ->put($link, $this->addItem($label, $icon))
             ->toArray();
 
@@ -54,7 +54,7 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = Collection::make($this->items)->mapWithKeys(static fn (?string $title, string $url): array => [
+        $this->items = (new Collection($this->items))->mapWithKeys(static fn (?string $title, string $url): array => [
             $url => [
                 'url' => $url,
                 'title' => Str::of($title)->before(':::'),

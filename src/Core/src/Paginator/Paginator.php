@@ -96,7 +96,7 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
             $this->lastPageUrl = $changeUrl($this->lastPageUrl);
 
             /** @var Collection<array-key, array<string, mixed>> $linksCollection */
-            $linksCollection = Collection::make($this->links);
+            $linksCollection = new Collection($this->links);
 
             /**
              * @var array<string, mixed> $links

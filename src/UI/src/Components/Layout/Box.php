@@ -6,11 +6,13 @@ namespace MoonShine\UI\Components\Layout;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
+use Throwable;
 
 /**
  * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
@@ -22,6 +24,12 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
 
     protected string $view = 'moonshine::components.layout.box';
 
+    /**
+     * @param  (Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     * @throws Throwable
+     */
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
@@ -30,7 +38,7 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
         protected bool $dark = false,
     ) {
         if (is_iterable($labelOrComponents)) {
-            /** @var iterable $labelOrComponents */
+            /** @var iterable<array-key, ComponentContract> $labelOrComponents */
             $components = $labelOrComponents;
         } else {
             $this->setLabel($labelOrComponents);

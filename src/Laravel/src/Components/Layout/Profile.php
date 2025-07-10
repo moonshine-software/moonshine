@@ -151,11 +151,19 @@ final class Profile extends MoonShineComponent
             ? $this->getDefaultAvatar()
             : value($this->avatar, $this);
 
+        $rescueLogOut = static function (Closure $callback): string {
+            try {
+                return $callback();
+            } catch (Throwable) {}
+
+            return '';
+        };
+
         return [
             'route' => $this->route ?? $this->getCore()->getRouter()->getEndpoints()->toPage(
                 $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
             ),
-            'logOutRoute' => $this->logOutRoute ?? rescue(fn (): string => $this->getCore()->getRouter()->to('logout'), '', report: false),
+            'logOutRoute' => $this->logOutRoute ?? $rescueLogOut(fn (): string => $this->getCore()->getRouter()->to('logout')),
             'avatar' => $avatar,
             'nameOfUser' => $nameOfUser,
             'username' => $username,

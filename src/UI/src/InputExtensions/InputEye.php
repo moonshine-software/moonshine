@@ -8,10 +8,16 @@ final class InputEye extends InputExtension
 {
     protected string $view = 'moonshine::form.input-extensions.eye';
 
+    /**
+     * @var string[]
+     */
     protected array $xInit = [
         '$refs.extensionInput.type=`password`',
     ];
 
+    /**
+     * @var string[]
+     */
     protected array $xData = [
         'isHidden: true',
         <<<'HTML'

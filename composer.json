@@ -33,7 +33,7 @@
         "nyholm/psr7": "^1.8",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
-        "symfony/psr-http-message-bridge": "^7.2"
+        "symfony/psr-http-message-bridge": "^7.1|^7.2|^7.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.68",
@@ -110,7 +110,7 @@
         "test:types:core": "vendor/bin/phpstan analyse src/Core/src --memory-limit=-1 --level=max",
         "test:types:s": "vendor/bin/phpstan analyse src/Support/src --memory-limit=-1 --level=max",
         "test:types:mm": "vendor/bin/phpstan analyse src/MenuManager/src --memory-limit=-1 --level=max",
-        "test:types:ui": "vendor/bin/phpstan analyse src/UI/src --memory-limit=-1 --level=5",
+        "test:types:ui": "vendor/bin/phpstan analyse src/UI/src --memory-limit=-1 --level=6",
         "test:types:l": "vendor/bin/phpstan analyse src/Laravel/src --memory-limit=-1 --level=5",
         "test:types:packages": [
             "@test:types:am",

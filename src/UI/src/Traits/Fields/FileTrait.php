@@ -17,6 +17,9 @@ trait FileTrait
 {
     use WithStorage;
 
+    /**
+     * @var string[]
+     */
     protected array $allowedExtensions = [];
 
     protected bool $disableDownload = false;
@@ -29,18 +32,19 @@ trait FileTrait
     /** @var null|Closure(string, int): string */
     protected ?Closure $names = null;
 
-    /** @var null|Closure(string, int): array */
+    /** @var null|Closure(string, int): array<string, mixed> */
     protected ?Closure $itemAttributes = null;
 
     /** @var null|Closure(string, int): ?FileItemExtra */
     protected ?Closure $extraAttributes = null;
 
-    /** @var null|Closure(static): array */
+    /** @var null|Closure(static): array<string, mixed> */
     protected ?Closure $dropzoneAttributes = null;
 
-    /** @var null|Closure(static): Collection */
+    /** @var null|Closure(static): Collection<array-key, mixed> */
     protected ?Closure $remainingValuesResolver = null;
 
+    /** @var Collection<array-key, string>|null */
     protected ?Collection $remainingValues = null;
 
     public function dropzoneAttributes(Closure $attributes): static
@@ -104,7 +108,7 @@ trait FileTrait
     }
 
     /**
-     * @param  Closure(string $filename, int $index): array  $callback
+     * @param  Closure(string $filename, int $index): array<string, mixed>  $callback
      */
     public function itemAttributes(Closure $callback): static
     {
@@ -183,6 +187,9 @@ trait FileTrait
         return $this->customName;
     }
 
+    /**
+     * @param  string[]  $allowedExtensions
+     */
     public function allowedExtensions(array $allowedExtensions): static
     {
         $this->allowedExtensions = $allowedExtensions;
@@ -270,7 +277,7 @@ trait FileTrait
     }
 
     /**
-     * @param  Closure(static $ctx): Collection  $callback
+     * @param  Closure(static $ctx): Collection<array-key, null|string>  $callback
      */
     public function remainingValuesResolver(Closure $callback): static
     {
@@ -279,11 +286,15 @@ trait FileTrait
         return $this;
     }
 
+    /**
+     * @param  iterable<array-key, string>  $values
+     */
     public function setRemainingValues(iterable $values): void
     {
         $this->remainingValues = new Collection($values);
     }
 
+    /** @return Collection<array-key, string> */
     public function getRemainingValues(): Collection
     {
         if (! \is_null($this->remainingValues)) {
@@ -312,6 +323,9 @@ trait FileTrait
                || \in_array($extension, $this->getAllowedExtensions(), true);
     }
 
+    /**
+     * @return string[]
+     */
     public function getAllowedExtensions(): array
     {
         return $this->allowedExtensions;
@@ -326,6 +340,9 @@ trait FileTrait
         return parent::resolveValue();
     }
 
+    /**
+     * @return string[]
+     */
     public function getFullPathValues(): array
     {
         $values = $this->toFormattedValue();
@@ -334,11 +351,15 @@ trait FileTrait
             return [];
         }
 
-        return $this->isMultiple()
-            ? Collection::make($values)
-                ->map(fn ($value): string => $this->getPathWithDir($value))
-                ->toArray()
-            : [$this->getPathWithDir($values)];
+        if($this->isMultiple()) {
+            $collection = new Collection($values);
+
+            return $collection
+                ->map(fn (string $value): string => $this->getPathWithDir($value))
+                ->toArray();
+        }
+
+        return [$this->getPathWithDir($values)];
     }
 
     /**

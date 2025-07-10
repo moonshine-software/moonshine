@@ -15,7 +15,7 @@ trait WithHeadingGradation
         return "h$this->gradation";
     }
 
-    public function h(int $gradation = 3, $asClass = true): static
+    public function h(int $gradation = 3, bool $asClass = true): static
     {
         if ($gradation < 1 || $gradation > 6) {
             throw new InvalidArgumentException(

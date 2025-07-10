@@ -23,6 +23,9 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
 
     protected bool $isGroup = true;
 
+    /**
+     * @var string[]
+     */
     protected array $propertyAttributes = [
         'type',
         'min',
@@ -30,6 +33,9 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
         'step',
     ];
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         $min = data_get($this->getValue(), $this->getFromField(), $this->min);

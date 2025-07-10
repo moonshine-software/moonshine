@@ -8,10 +8,16 @@ final class InputLock extends InputExtension
 {
     protected string $view = 'moonshine::form.input-extensions.lock';
 
+    /**
+     * @var string[]
+     */
     protected array $xInit = [
         '$refs.extensionInput.readOnly=true',
     ];
 
+    /**
+     * @var string[]
+     */
     protected array $xData = [
         'isLock: true',
         <<<'HTML'

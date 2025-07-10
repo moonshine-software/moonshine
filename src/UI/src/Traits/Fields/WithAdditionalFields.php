@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
 /**
@@ -12,6 +13,9 @@ use Throwable;
  */
 trait WithAdditionalFields
 {
+    /**
+     * @var list<FieldContract>
+     */
     protected array $additionalFields = [];
 
     /**
