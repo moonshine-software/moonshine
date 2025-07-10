@@ -12,6 +12,9 @@ final class MemoizeRepository implements Countable, StatefulContract
 {
     protected static self $cache;
 
+    /**
+     * @var WeakMap<object, array<mixed>>
+     */
     public WeakMap $values;
 
     protected bool $enabled = true;
@@ -36,7 +39,7 @@ final class MemoizeRepository implements Countable, StatefulContract
         return \array_key_exists($backtraceHash, $this->values[$object]);
     }
 
-    public function get($object, string $backtraceHash): mixed
+    public function get(object $object, string $backtraceHash): mixed
     {
         return $this->values[$object][$backtraceHash];
     }

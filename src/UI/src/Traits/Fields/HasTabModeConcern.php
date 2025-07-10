@@ -6,6 +6,9 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait HasTabModeConcern
 {
     protected bool $isTabMode = false;

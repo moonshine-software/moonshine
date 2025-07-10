@@ -7,7 +7,7 @@ namespace MoonShine\UI\Contracts;
 interface FileableContract
 {
     /**
-     * @param  non-empty-string  $disk
+     * @param  string  $disk
      */
     public function disk(string $disk): static;
 
@@ -24,12 +24,12 @@ interface FileableContract
     public function getOptions(): array;
 
     /**
-     * @param  non-empty-string  $dir
+     * @param  string  $dir
      */
     public function dir(string $dir): static;
 
     /**
-     * @return  non-empty-string
+     * @return  string
      */
     public function getDir(): string;
 
@@ -44,7 +44,7 @@ interface FileableContract
     public function getAllowedExtensions(): array;
 
     /**
-     * @param  non-empty-string $extension
+     * @param  string $extension
      */
     public function isAllowedExtension(string $extension): bool;
 

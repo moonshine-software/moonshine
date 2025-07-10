@@ -9,6 +9,9 @@ use MoonShine\Contracts\Core\ResourceContract;
 
 interface NowOnContract
 {
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function nowOn(
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
@@ -19,11 +22,17 @@ interface NowOnContract
 
     public function nowOnResource(ResourceContract $resource): static;
 
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function nowOnParams(array $params): static;
 
     public function getNowOnResource(): ?ResourceContract;
 
     public function getNowOnPage(): ?PageContract;
 
+    /**
+     * @return   array<string, mixed>
+     */
     public function getNowOnQueryParams(): array;
 }

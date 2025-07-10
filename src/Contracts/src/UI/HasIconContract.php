@@ -10,6 +10,9 @@ interface HasIconContract
 {
     public function icon(string $icon, bool $custom = false, ?string $path = null): static;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function getIcon(
         int $size = 8,
         Color|string $color = '',

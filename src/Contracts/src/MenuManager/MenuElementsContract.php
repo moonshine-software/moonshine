@@ -11,7 +11,7 @@ use Illuminate\Support\Enumerable;
 /**
  * @template-extends Enumerable<array-key, MenuElementContract>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, MenuElementContract>
  */
 interface MenuElementsContract extends Enumerable
 {

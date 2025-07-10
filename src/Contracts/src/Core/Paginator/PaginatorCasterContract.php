@@ -6,5 +6,8 @@ namespace MoonShine\Contracts\Core\Paginator;
 
 interface PaginatorCasterContract
 {
+    /**
+     * @return PaginatorContract<mixed>
+     */
     public function cast(): PaginatorContract;
 }

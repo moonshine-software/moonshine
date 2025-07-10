@@ -16,8 +16,14 @@ use MoonShine\UI\InputExtensions\InputLock;
 
 trait WithInputExtensions
 {
+    /**
+     * @var list<InputExtension>
+     */
     protected array $extensions = [];
 
+    /**
+     * @return Collection<array-key, InputExtension>
+     */
     public function getExtensions(): Collection
     {
         return new Collection($this->extensions);
@@ -28,13 +34,16 @@ trait WithInputExtensions
         $extensions = $this->getExtensions();
 
         return new MoonShineComponentAttributeBag([
-            'x-init' => trim($extensions->implode(static fn ($extension) => $extension->getXInit()->implode(';'), ';'), ';'),
+            'x-init' => trim($extensions->implode(static fn (InputExtension $extension): string => $extension->getXInit()->implode(';'), ';'), ';'),
             'x-data' => Str::of(
-                $extensions->implode(static fn ($extension) => $extension->getXData()->implode(','), ','),
+                $extensions->implode(static fn (InputExtension $extension): string => $extension->getXData()->implode(','), ','),
             )->trim(',')->wrap('{', '}'),
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getExtensionsViewData(): array
     {
         return [

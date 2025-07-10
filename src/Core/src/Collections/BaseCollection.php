@@ -10,10 +10,15 @@ use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 
+/**
+ * @template T of ComponentContract = ComponentContract
+ * @extends Collection<array-key, T>
+ */
 abstract class BaseCollection extends Collection
 {
     public function onlyVisible(): static
     {
+        /** @var static */
         return $this->filter(static fn (ComponentContract $component): bool => $component->isSee());
     }
 
@@ -30,11 +35,11 @@ abstract class BaseCollection extends Collection
 
             if ($element instanceof HasFieldsContract) {
                 $element->fields(
-                    $element->getFields()->exceptElements($except)->toArray()
+                    $element->getFields()->exceptElements($except)
                 );
             } elseif ($element instanceof HasComponentsContract) {
                 $element->setComponents(
-                    $element->getComponents()->exceptElements($except)->toArray()
+                    $element->getComponents()->exceptElements($except)
                 );
             }
 
@@ -42,6 +47,9 @@ abstract class BaseCollection extends Collection
         })->filter()->values();
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function toStructure(bool $withStates = true): array
     {
         return $this->map(

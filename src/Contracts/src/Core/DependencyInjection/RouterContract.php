@@ -16,6 +16,9 @@ use MoonShine\Contracts\Core\StatefulContract;
  */
 interface RouterContract extends StatefulContract
 {
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function to(string $name = '', array $params = []): string;
 
     /**

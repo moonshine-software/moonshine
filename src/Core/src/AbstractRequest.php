@@ -68,20 +68,32 @@ class AbstractRequest implements RequestContract
 
     public function getAll(): Collection
     {
+        $body = $this->request->getParsedBody();
+
         return new Collection(
             array_replace_recursive(
-                $this->request->getParsedBody(),
+                \is_array($body) ? $body : [],
                 $this->request->getUploadedFiles(),
                 $this->request->getQueryParams()
             )
         );
     }
 
+    /**
+     * @param  string[]|string  $keys
+     *
+     * @return mixed[]
+     */
     public function getOnly(array|string $keys): array
     {
         return $this->getAll()->only($keys)->toArray();
     }
 
+    /**
+     * @param  string[]|string  $keys
+     *
+     * @return mixed[]
+     */
     public function getExcept(array|string $keys): array
     {
         return $this->getAll()->except($keys)->toArray();

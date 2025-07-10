@@ -27,6 +27,7 @@ interface HasCasterContract
 
     /**
      * @param  TWrapper  $data
+     * @return array<string, mixed>
      */
     public function unCastData(DataWrapperContract $data): array;
 

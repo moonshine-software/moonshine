@@ -13,6 +13,9 @@ use Throwable;
  */
 trait WithComponents
 {
+    /**
+     * @var iterable<ComponentContract>
+     */
     protected iterable $components = [];
 
     protected ?Components $preparedComponents = null;
@@ -50,7 +53,7 @@ trait WithComponents
     public function getComponents(): Components
     {
         if (! $this->components instanceof Components) {
-            return Components::make($this->components);
+            return new Components($this->components);
         }
 
         return $this->components;
@@ -64,6 +67,10 @@ trait WithComponents
         return $this->getComponents()->isNotEmpty();
     }
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     */
     public function setComponents(iterable $components): static
     {
         $this->components = $components;

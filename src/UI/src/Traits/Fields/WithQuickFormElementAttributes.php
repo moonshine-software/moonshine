@@ -40,8 +40,8 @@ trait WithQuickFormElementAttributes
         if ($this->showWhenState) {
             [$column, $value, $operator] = $this->showWhenData;
 
-            $this->showWhenCondition = Collection::make($this->showWhenCondition)
-                ->reject(fn ($data, $index): bool => $data['object_id'] === spl_object_id($this))
+            $this->showWhenCondition = (new Collection($this->showWhenCondition))
+                ->reject(fn (array $data, int|string $index): bool => $data['object_id'] === spl_object_id($this))
                 ->toArray();
 
             return $this->showWhen($column, $value, $operator);
@@ -68,7 +68,7 @@ trait WithQuickFormElementAttributes
         return $result;
     }
 
-    protected function prepareNameAttribute($index = null, $wrap = null): string
+    protected function prepareNameAttribute(int|string|null $index = null, ?string $wrap = null): string
     {
         $wrap ??= $this->wrapName;
 
@@ -94,7 +94,7 @@ trait WithQuickFormElementAttributes
     {
         return Str::of('')
             ->pipe(static function (Stringable $str) use ($values) {
-                foreach (Collection::make($values)->filter() as $value) {
+                foreach ((new Collection($values))->filter() as $value) {
                     $str = $str->append(".$value");
                 }
 

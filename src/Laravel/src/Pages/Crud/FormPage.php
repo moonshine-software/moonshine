@@ -229,7 +229,7 @@ class FormPage extends CrudPage implements FormPageContract
     }
 
     /**
-     * @param  non-empty-string  $action
+     * @param  string  $action
      * @param  DataWrapperContract<TData>|null  $item
      *
      */

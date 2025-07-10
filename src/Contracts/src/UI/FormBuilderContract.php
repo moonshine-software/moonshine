@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 
@@ -18,19 +19,19 @@ use MoonShine\Support\Enums\FormMethod;
  *
  * @mixin Conditionable
  * @mixin HasFieldsContract
- * @mixin HasCasterContract
+ * @mixin HasCasterContract<DataCasterContract<TData>, DataWrapperContract<TData>>
  */
 interface FormBuilderContract extends
     ComponentContract,
     HasAsyncContract
 {
     /**
-     * @param  non-empty-string  $action
+     * @param  string  $action
      */
     public function action(string $action): self;
 
     /**
-     * @return   non-empty-string
+     * @return   string
      */
     public function getAction(): string;
 
@@ -57,10 +58,13 @@ interface FormBuilderContract extends
     public function getValues(): mixed;
 
     /**
-     * @param  (Closure(self $ctx): non-empty-string)|non-empty-string  $reactiveUrl
+     * @param  (Closure(self $ctx): string)|string  $reactiveUrl
      */
     public function reactiveUrl(Closure|string $reactiveUrl): self;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function submit(?string $label = null, array $attributes = [], ?ActionButtonContract $button = null): self;
 
     public function getSubmit(): ActionButtonContract;
@@ -92,7 +96,7 @@ interface FormBuilderContract extends
     public function isPrecognitive(): bool;
 
     /**
-     * @param  non-empty-string  $method
+     * @param  string  $method
      * @param  string[]  $events
      */
     public function asyncMethod(
@@ -119,6 +123,8 @@ interface FormBuilderContract extends
 
     /**
      * Async or precognitive
+     *
+     * @param  string|string[]|null  $events
      */
     public function switchFormMode(bool $isAsync, string|array|null $events = ''): self;
 

@@ -80,7 +80,7 @@ abstract class MoonShineCommand extends Command
                     $content = Str::of(implode("\n", $lines));
                 }
 
-                return $content->replace("];", "{$tab()}MenuItem::make('$title', $class::class),\n{$tab(2)}];");
+                return $content->replace("];", "{$tab()}MenuItem::make($class::class, '$title'),\n{$tab(2)}];");
             },
             use: MenuItem::class
         );

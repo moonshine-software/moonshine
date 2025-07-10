@@ -15,6 +15,7 @@ use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ApplyContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Contracts\HasQueryTagsContract;
 use MoonShine\Laravel\Exceptions\CrudResourceException;
@@ -301,7 +302,7 @@ trait ResourceModelQuery
             return $this;
         }
 
-        $filters->each(function (Field $filter): void {
+        $filters->each(function (FieldContract $filter): void {
             $filter->onRequestValue(fn (mixed $value): mixed => $value === false ? $filter->getValue() : $value);
 
             if ($filter->getRequestValue() === false) {

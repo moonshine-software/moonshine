@@ -15,8 +15,18 @@ final class Dropdown extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.dropdown';
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $togglerAttributes = [];
 
+    /**
+     * @param  (Closure(self):string)|string  $toggler
+     * @param  (Closure(self):string)|Renderable|string  $content
+     * @param  (Closure(self): string[])|string[]  $items
+     * @param  (Closure(self):string)|string  $searchPlaceholder
+     * @param  (Closure(self):string)|string  $footer
+     */
     public function __construct(
         public ?string $title = null,
         protected Closure|string $toggler = '',
@@ -39,7 +49,7 @@ final class Dropdown extends MoonShineComponent
     }
 
     /**
-     * @param  Closure|string[]  $items
+     * @param  (Closure(self): string[])|string[]  $items
      */
     public function items(Closure|array $items): self
     {
@@ -76,6 +86,9 @@ final class Dropdown extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>   $attributes
+     */
     public function togglerAttributes(array $attributes): self
     {
         $this->togglerAttributes = $attributes;

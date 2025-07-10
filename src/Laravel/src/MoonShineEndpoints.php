@@ -26,6 +26,9 @@ final readonly class MoonShineEndpoints implements EndpointsContract
     ) {
     }
 
+    /**
+     * @param  array<string, string|int|float|null>  $params
+     */
     public function method(
         string $method,
         ?string $message = null,
@@ -58,6 +61,9 @@ final readonly class MoonShineEndpoints implements EndpointsContract
         ]);
     }
 
+    /**
+     * @param  array<string, mixed>  $additionally
+     */
     public function component(
         string $name,
         array $additionally = []
@@ -74,6 +80,9 @@ final readonly class MoonShineEndpoints implements EndpointsContract
         ]);
     }
 
+    /**
+     * @param array<string, mixed> $extra
+     */
     public function updateField(
         ?ResourceContract $resource = null,
         ?PageContract $page = null,
@@ -95,6 +104,9 @@ final readonly class MoonShineEndpoints implements EndpointsContract
     /**
      * @param  class-string<PageContract>|PageContract|null  $page
      * @param  class-string<ResourceContract>|ResourceContract|null  $resource
+     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, mixed>  $extra
+     *
      * @throws Throwable
      */
     public function toPage(

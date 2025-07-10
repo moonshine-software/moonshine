@@ -13,7 +13,11 @@ use JsonSerializable;
 use Stringable;
 
 /**
- * @template TData of mixed
+ * @template TData of mixed = mixed
+ *
+ * @extends Arrayable<array-key, TData>
+ * @extends ArrayAccess<array-key, TData>
+ * @extends IteratorAggregate<array-key, TData>
  */
 interface PaginatorContract extends
     Arrayable,
@@ -34,6 +38,9 @@ interface PaginatorContract extends
      */
     public function getData(): Collection;
 
+    /**
+     * @return Collection<array-key, TData>
+     */
     public function getOriginalData(): Collection;
 
     public function isSimple(): bool;
@@ -62,5 +69,8 @@ interface PaginatorContract extends
 
     public function isAsync(): bool;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTranslates(): array;
 }

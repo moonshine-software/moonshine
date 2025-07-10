@@ -8,6 +8,9 @@ interface HasShowWhenContract
 {
     public function hasShowWhen(): bool;
 
+    /**
+     * @return array<string, string>
+     */
     public function getShowWhenCondition(): array;
 
     public function modifyShowFieldName(string $name): static;

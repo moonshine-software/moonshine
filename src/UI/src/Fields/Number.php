@@ -29,6 +29,9 @@ class Number extends Field implements HasDefaultValueContract, CanBeNumeric, Has
 
     protected string $type = 'number';
 
+    /**
+     * @var string[]
+     */
     protected array $propertyAttributes = [
         'type',
         'min',

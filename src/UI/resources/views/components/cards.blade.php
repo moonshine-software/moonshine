@@ -18,7 +18,7 @@
     {{ (int) $async }},
     '{{ $asyncUrl }}'
 )"
-        @defineEventWhen($async, 'cards_updated', $name, 'asyncRequest')
+        @defineEvent('cards_updated', $name, 'asyncRequest')
         {{ $attributes }}
     >
         <x-moonshine::iterable-wrapper

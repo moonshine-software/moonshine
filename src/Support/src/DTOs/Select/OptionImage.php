@@ -7,6 +7,9 @@ namespace MoonShine\Support\DTOs\Select;
 use Illuminate\Contracts\Support\Arrayable;
 use MoonShine\Support\Enums\ObjectFit;
 
+/**
+ * @implements Arrayable<string, string|int>
+ */
 final readonly class OptionImage implements Arrayable
 {
     public function __construct(
@@ -37,6 +40,9 @@ final readonly class OptionImage implements Arrayable
         return $this->objectFit->value;
     }
 
+    /**
+     * @return array<string, string|int>
+     */
     public function toArray(): array
     {
         return [

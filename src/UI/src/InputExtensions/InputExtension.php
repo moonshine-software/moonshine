@@ -9,8 +9,14 @@ use MoonShine\UI\Components\MoonShineComponent;
 
 abstract class InputExtension extends MoonShineComponent
 {
+    /**
+     * @var string[]
+     */
     protected array $xInit = [];
 
+    /**
+     * @var string[]
+     */
     protected array $xData = [];
 
     public function __construct(protected mixed $value = null)
@@ -23,11 +29,17 @@ abstract class InputExtension extends MoonShineComponent
         return $this->value;
     }
 
+    /**
+     * @return  Collection<array-key, string>
+     */
     public function getXData(): Collection
     {
         return new Collection($this->xData);
     }
 
+    /**
+     * @return  Collection<array-key, string>
+     */
     public function getXInit(): Collection
     {
         return new Collection($this->xInit);
@@ -46,6 +58,9 @@ abstract class InputExtension extends MoonShineComponent
         $this->customView($view);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return [

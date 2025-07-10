@@ -7,6 +7,9 @@ namespace MoonShine\Core\TypeCasts;
 use ArrayAccess;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
+/**
+ * @implements ArrayAccess<array-key, mixed>
+ */
 final readonly class MixedDataWrapper implements DataWrapperContract, ArrayAccess
 {
     public function __construct(private mixed $data, private string|int|null $key = null)
@@ -23,9 +26,13 @@ final readonly class MixedDataWrapper implements DataWrapperContract, ArrayAcces
         return $this->key;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function toArray(): array
     {
         if (\is_object($this->data) && method_exists($this->data, 'toArray')) {
+            /** @var mixed[] */
             return $this->data->toArray();
         }
 
@@ -36,6 +43,10 @@ final readonly class MixedDataWrapper implements DataWrapperContract, ArrayAcces
     {
         if (\is_array($this->data)) {
             return isset($this->data[$offset]);
+        }
+
+        if(!is_string($this->data) && !is_object($this->data)) {
+            return false;
         }
 
         return property_exists($this->data, $offset);

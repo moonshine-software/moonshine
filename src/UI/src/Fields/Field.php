@@ -172,9 +172,11 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
-    public function withoutWrapper(mixed $condition = null): static
+    public function withoutWrapper(Closure|bool|null $condition = null): static
     {
-        $this->withWrapper = value($condition, $this) ?? false;
+        $result = value($condition, $this) ?? true;
+
+        $this->withWrapper = !$result;
 
         return $this;
     }
@@ -275,6 +277,10 @@ abstract class Field extends FormElement implements FieldContract
         ]);
     }
 
+    /**
+     * @param  string[]  $events
+     * @param  string|string[]|null  $selector
+     */
     protected function onChangeAttributes(
         HttpMethod $method = HttpMethod::GET,
         array $events = [],
@@ -291,6 +297,9 @@ abstract class Field extends FormElement implements FieldContract
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getOnChangeEventAttributes(?string $url = null): array
     {
         return $url ? AlpineJs::onChangeSaveField($url, $this->getColumn()) : [];
@@ -527,6 +536,9 @@ abstract class Field extends FormElement implements FieldContract
         return $this->renderView();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return [

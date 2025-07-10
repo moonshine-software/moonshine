@@ -655,7 +655,7 @@ class HasMany extends ModelRelationField implements
         $this->getResource()
             ->getFormFields()
             ->onlyFields()
-            ->each(static fn (Field $field): mixed => $field->fillData($data)->afterDestroy($data));
+            ->each(static fn (FieldContract $field): mixed => $field->fillData($data)->afterDestroy($data));
 
         return $data;
     }
@@ -683,7 +683,9 @@ class HasMany extends ModelRelationField implements
      */
     protected function modalViewData(): array
     {
+        /** @var Components<ComponentContract> $components */
         $components = new Components();
+        /** @var Components<ComponentContract> $flexComponents */
         $flexComponents = new Components();
 
         if ($this->isCreatable()) {

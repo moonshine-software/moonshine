@@ -10,7 +10,7 @@ trait WithBadge
 {
     protected Closure|string|int|float|null $badge = null;
 
-    public function badge(Closure|string|int|float|null $value): static
+    public function badge(Closure|string|int|float|false|null $value): static
     {
         $this->badge = $value;
 

@@ -36,6 +36,9 @@ final class Logo extends MoonShineComponent
         $this->logoSmallAttributes = new MoonShineComponentAttributeBag();
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function logoAttributes(array $attributes): self
     {
         $this->logoAttributes = $this->logoAttributes->merge($attributes);
@@ -43,6 +46,9 @@ final class Logo extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function logoSmallAttributes(array $attributes): self
     {
         $this->logoSmallAttributes = $this->logoSmallAttributes->merge($attributes);

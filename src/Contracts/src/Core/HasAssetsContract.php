@@ -9,6 +9,9 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 
 interface HasAssetsContract
 {
+    /**
+     * @return list<AssetElementContract>
+     */
     public function getAssets(): array;
 
     public function getAssetManager(): AssetManagerContract;

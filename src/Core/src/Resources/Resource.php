@@ -111,8 +111,10 @@ abstract class Resource implements ResourceContract
         $class = static::class;
 
         $booted = [];
+        /** @var list<object|string> $traits */
+        $traits = class_uses_recursive($class);
 
-        foreach (class_uses_recursive($class) as $trait) {
+        foreach ($traits as $trait) {
             $method = $prefix . class_basename($trait);
 
             if (method_exists($class, $method) && ! \in_array($method, $booted, true)) {

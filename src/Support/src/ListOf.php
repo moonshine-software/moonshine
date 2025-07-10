@@ -13,26 +13,36 @@ final class ListOf
 {
     /**
      * @param  class-string<T>  $type
-     * @param list<T> $items
+     * @param array<T> $items
      */
     public function __construct(private readonly string $type, private array $items)
     {
     }
 
+    /**
+     * @return class-string<T>
+     */
     private function getType(): string
     {
         return $this->type;
     }
+
     /**
-     * @return list<T>
+     * @return array<T>
      */
     private function getItems(): array
     {
-        return Collection::make($this->items)
+        /** @var Collection<array-key, T> $collection */
+        $collection = new Collection($this->items);
+
+        return $collection
             ->ensure($this->getType())
             ->toArray();
     }
 
+    /**
+     * @return self<T>
+     */
     public function empty(): self
     {
         return new self($this->getType(), []);
@@ -45,7 +55,7 @@ final class ListOf
      */
     public function except(object|string ...$data): self
     {
-        $condition = static fn (object $item): bool => Collection::make($data)->every(
+        $condition = static fn (object $item): bool => (new Collection($data))->every(
             fn (object|string $i): bool => match (true) {
                 \is_string($i) => $item::class !== $i,
                 \is_callable($i) => ! $i($item),
@@ -53,7 +63,11 @@ final class ListOf
             }
         );
 
-        $this->items = Collection::make($this->items)
+        /**
+         * @var Collection<array-key, T> $collection
+         */
+        $collection = new Collection($this->items);
+        $this->items = $collection
             ->filter($condition)
             ->toArray();
 
@@ -67,17 +81,19 @@ final class ListOf
      */
     public function only(object|string ...$data): self
     {
-        $condition = static fn (object $item): bool => Collection::make($data)->contains(
-            fn (object|string $i): bool => match (true) {
+        $condition = static fn (object $item): bool => (new Collection($data))->contains(
+            fn (object|string|callable $i): bool => match (true) {
                 \is_string($i) => $item::class === $i,
-                \is_callable($i) => $i($item),
+                \is_callable($i) => (bool) $i($item),
                 default => $i === $item,
             }
         );
 
-        $this->items = Collection::make($this->items)
-        ->filter($condition)
-        ->toArray();
+        /** @var Collection<array-key, T> $collection */
+        $collection = new Collection($this->items);
+        $this->items = $collection
+            ->filter($condition)
+            ->toArray();
 
         return $this;
     }
@@ -87,7 +103,9 @@ final class ListOf
      */
     public function add(object ...$data): self
     {
-        $this->items = Collection::make($this->items)
+        /** @var Collection<array-key, T> $collection */
+        $collection = new Collection($this->items);
+        $this->items = $collection
             ->push(...$data)
             ->toArray();
 
@@ -100,7 +118,9 @@ final class ListOf
     public function prepend(object ...$data): self
     {
         foreach ($data as $item) {
-            $this->items = Collection::make($this->items)
+            /** @var Collection<array-key, T> $collection */
+            $collection = new Collection($this->items);
+            $this->items = $collection
                 ->prepend($item)
                 ->toArray();
         }
@@ -109,7 +129,7 @@ final class ListOf
     }
 
     /**
-     * @return list<T>
+     * @return array<T>
      */
     public function toArray(): array
     {

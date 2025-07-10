@@ -160,6 +160,11 @@ final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
             return null;
         }
 
+        if ($apply instanceof ApplyContract) {
+            return $apply;
+        }
+
+        /** @var class-string<ApplyContract> $apply */
         return $this->getCore()->getContainer($apply);
     }
 }

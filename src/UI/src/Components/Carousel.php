@@ -13,6 +13,11 @@ final class Carousel extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.carousel';
 
+    /**
+     * @param  (Closure(self): string[])|string[]  $items
+     * @param  Closure|bool  $portrait
+     * @param  Closure|string  $alt
+     */
     public function __construct(
         protected Closure|array $items = [],
         protected Closure|bool $portrait = false,
@@ -22,7 +27,7 @@ final class Carousel extends MoonShineComponent
     }
 
     /**
-     * @param  Closure|string[]  $value
+     * @param  (Closure(self): string[])|string[]  $value
      */
     public function items(Closure|array $value): self
     {

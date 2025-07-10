@@ -321,7 +321,7 @@ trait ResourceQuery
     }
 
     /**
-     * @return non-empty-string
+     * @return string
      */
     protected function getSearchQueryKey(): string
     {

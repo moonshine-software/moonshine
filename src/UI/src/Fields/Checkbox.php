@@ -94,6 +94,9 @@ class Checkbox extends Field implements
         return '$el.value = $el.checked ? `' . $this->getOnValue() . '` : `' . $this->getOffValue() . '`';
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getOnChangeEventAttributes(?string $url = null): array
     {
         $additionally = [];
@@ -134,6 +137,9 @@ class Checkbox extends Field implements
         };
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
         return [

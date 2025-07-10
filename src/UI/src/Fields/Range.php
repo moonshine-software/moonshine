@@ -23,6 +23,9 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
 
     protected bool $isGroup = true;
 
+    /**
+     * @var string[]
+     */
     protected array $propertyAttributes = [
         'type',
         'min',
@@ -30,8 +33,19 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
         'step',
     ];
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function viewData(): array
     {
+        $min = data_get($this->getValue(), $this->getFromField(), $this->min);
+        $max = data_get($this->getValue(), $this->getToField(), $this->max);
+
+        if (static::class !== self::class || ! $this->isNullable()) {
+            $min ??= $this->min ?? 0;
+            $max ??= $this->max ?? $this->step;
+        }
+
         return [
             'fromField' => $this->getFromField(),
             'toField' => $this->getToField(),
@@ -39,8 +53,8 @@ class Range extends Field implements HasDefaultValueContract, CanBeArray, RangeF
             'max' => $this->max,
             'fromColumn' => "range_from_{$this->getIdentity()}",
             'toColumn' => "range_to_{$this->getIdentity()}",
-            'fromValue' => data_get($this->getValue(), $this->getFromField(), $this->min) ?? $this->min ?? 0,
-            'toValue' => data_get($this->getValue(), $this->getToField(), $this->max) ?? $this->max ?? $this->step,
+            'fromValue' => $min,
+            'toValue' => $max,
             'fromAttributes' => $this->getFromAttributes(),
             'toAttributes' => $this->getToAttributes(),
         ];

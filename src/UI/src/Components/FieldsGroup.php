@@ -24,6 +24,7 @@ final class FieldsGroup extends AbstractWithComponents
     }
 
     /**
+     * @param array<string, mixed> $raw
      * @throws Throwable
      */
     public function fill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): self

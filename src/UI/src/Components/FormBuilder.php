@@ -64,6 +64,9 @@ final class FormBuilder extends MoonShineComponent implements
      */
     protected mixed $values = [];
 
+    /**
+     * @var string[]
+     */
     protected array $excludeFields = [
         '_redirect',
         '_without-redirect',
@@ -85,6 +88,10 @@ final class FormBuilder extends MoonShineComponent implements
 
     protected Closure|string|null $reactiveUrl = null;
 
+    /**
+     * @param  FieldsContract|iterable<array-key, ComponentContract>  $fields
+     * @param  TData  $values
+     */
     public function __construct(
         protected string $action = '',
         protected FormMethod $method = FormMethod::POST,
@@ -208,7 +215,7 @@ final class FormBuilder extends MoonShineComponent implements
     }
 
     /**
-     * @param  (Closure(self $ctx): non-empty-string)|non-empty-string  $reactiveUrl
+     * @param  (Closure(self $ctx): string)|string  $reactiveUrl
      */
     public function reactiveUrl(Closure|string $reactiveUrl): self
     {
@@ -348,11 +355,17 @@ final class FormBuilder extends MoonShineComponent implements
         return $isAsync ? $this->async(events: $events) : $this->precognitive();
     }
 
+    /**
+     * @return string[]
+     */
     protected function getExcludedFields(): array
     {
         return $this->excludeFields;
     }
 
+    /**
+     * @param  string[] $excludeFields
+     */
     protected function excludeFields(array $excludeFields): self
     {
         $this->excludeFields = array_merge($this->excludeFields, $excludeFields);
@@ -433,6 +446,7 @@ final class FormBuilder extends MoonShineComponent implements
     }
 
     /**
+     * @param mixed[] $data
      * @throws Throwable
      */
     protected function showWhenFields(FieldsContract $fields, array &$data): void

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use BackedEnum;
+use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
+use Throwable;
 
 class Enum extends Select implements CanBeEnum
 {
@@ -42,7 +44,15 @@ class Enum extends Select implements CanBeEnum
         }
 
         if (! $value instanceof $this->attached) {
-            $value = rescue(fn () => $this->attached::tryFrom($value)) ?? $value;
+            $rescueEnum = static function (Closure $callback): BackedEnum|null {
+                try {
+                    return $callback();
+                } catch (Throwable) {}
+
+                return null;
+            };
+
+            $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
         if (\is_scalar($value)) {

@@ -12,6 +12,9 @@ use JsonException;
 use MoonShine\Support\Enums\ObjectFit;
 use UnitEnum;
 
+/**
+ * @implements Arrayable<int|string, mixed>
+ */
 final readonly class Options implements Arrayable
 {
     /**
@@ -27,11 +30,11 @@ final readonly class Options implements Arrayable
     }
 
     /**
-     * @return Collection<OptionGroup|Option>
+     * @return Collection<array-key, OptionGroup|Option>
      */
     public function getValues(): Collection
     {
-        return Collection::make($this->values)
+        return (new Collection($this->values))
             ->filter()
             ->map(function (array|string|OptionGroup|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
                 if ($labelOrValues instanceof Option) {
@@ -57,7 +60,7 @@ final readonly class Options implements Arrayable
                     }
 
                     return new OptionGroup(
-                        label: $valueOrLabel,
+                        label: (string) $valueOrLabel,
                         values: new Options($options)
                     );
                 }
@@ -79,6 +82,7 @@ final readonly class Options implements Arrayable
             return $properties;
         }
 
+        /** @var array{image: OptionImage} $properties */
         return new OptionProperty(
             ...$this->normalizeProperties($properties)
         );
@@ -113,9 +117,16 @@ final readonly class Options implements Arrayable
             };
         }
 
+        if(!\is_scalar($current)) {
+            return false;
+        }
+
         return (string) $current === $value;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function flatten(): array
     {
         return $this->getValues()
@@ -125,13 +136,16 @@ final readonly class Options implements Arrayable
             ->toArray();
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public function toArray(): array
     {
         return $this->getValues()->toArray();
     }
 
     /**
-     * @return array{options: array, properties: array}
+     * @return array{options: array<mixed>, properties: array<mixed>}
      */
     public function toRaw(): array
     {
@@ -139,13 +153,13 @@ final readonly class Options implements Arrayable
 
         $options = $values->mapWithKeys(function (Option|OptionGroup $option): array {
             if ($option instanceof OptionGroup) {
-                return [$option->getLabel() => Collection::make($option->getValues()->toArray())->pluck('label', 'value')->toArray()];
+                return [$option->getLabel() => (new Collection($option->getValues()->toArray()))->pluck('label', 'value')->toArray()];
             }
 
             return [$option->getValue() => $option->getLabel()];
         })->toArray();
 
-        $properties = Collection::make($this->flatten())->pluck('properties', 'value')->toArray();
+        $properties = (new Collection($this->flatten()))->pluck('properties', 'value')->toArray();
 
         return [
             'options' => $options,
@@ -156,7 +170,7 @@ final readonly class Options implements Arrayable
     /**
      * @param  array{image: OptionImage}  $properties
      *
-     * @return array
+     * @return array{image: OptionImage}
      */
     private function normalizeProperties(array $properties): array
     {
@@ -172,11 +186,14 @@ final readonly class Options implements Arrayable
             return $properties;
         }
 
+        /**
+         * @var array{src: string, width: int, height: int, objectFit: null|string} $imageData
+         */
         $properties['image'] = new OptionImage(
             $imageData['src'] ?? '',
             $imageData['width'] ?? null,
             $imageData['height'] ?? null,
-            isset($imageData['objectFit']) ? ObjectFit::from($imageData['objectFit']) : null
+            isset($imageData['objectFit']) ? ObjectFit::from($imageData['objectFit']) : ObjectFit::COVER
         );
 
         return $properties;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -18,6 +19,9 @@ final readonly class AlpineJs
 
     public const EVENT_PARAM_SEPARATOR = ';';
 
+    /**
+     * @param  array<string, mixed>|EventParams  $params
+     */
     public static function event(string|JsEvent $event, ?string $name = null, array|EventParams $params = []): string
     {
         $event = \is_string($event) ? $event : $event->value;
@@ -42,6 +46,9 @@ final readonly class AlpineJs
         return $event;
     }
 
+    /**
+     * @param  array<string, mixed>|EventParams  $params
+     */
     public static function eventBlade(
         string|JsEvent $event,
         ?string $name = null,
@@ -57,7 +64,7 @@ final readonly class AlpineJs
     }
 
     public static function eventBladeWhen(
-        mixed $condition,
+        Closure|bool|null $condition,
         string|JsEvent $event,
         ?string $name = null,
         ?string $call = null
@@ -67,6 +74,11 @@ final readonly class AlpineJs
             : '';
     }
 
+    /**
+     * @param  string[]|string $events
+     * @param  string[]|string|null $selector
+     * @return array<string, mixed>
+     */
     public static function asyncUrlDataAttributes(
         HttpMethod $method = HttpMethod::GET,
         string|array $events = [],
@@ -85,14 +97,18 @@ final readonly class AlpineJs
 
     /**
      * @param  array<string, string> $selectors
+     * @return array<string, string>
      */
     public static function asyncSelectorsParamsAttributes(array $selectors): array
     {
         return array_filter([
-            'data-async-with-params' => Collection::make($selectors)->map(static fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
+            'data-async-with-params' => (new Collection($selectors))->map(static fn ($value, $key): string => is_numeric($key) ? $value : "$value/$key")->implode(','),
         ]);
     }
 
+    /**
+     * @return true[]
+     */
     public static function asyncWithQueryParamsAttributes(): array
     {
         return [
@@ -100,6 +116,11 @@ final readonly class AlpineJs
         ];
     }
 
+    /**
+     * @param  array<string, string>  $additionally
+     *
+     * @return array<string, string>
+     */
     public static function onChangeSaveField(
         string $url,
         string $column,
@@ -112,6 +133,9 @@ final readonly class AlpineJs
         ];
     }
 
+    /**
+     * @param  string|string[]  $events
+     */
     public static function dispatchEvents(string|array $events): string
     {
         $events = explode(',', self::prepareEvents($events));
@@ -122,10 +146,13 @@ final readonly class AlpineJs
         );
     }
 
+    /**
+     * @param  string|string[]  $events
+     */
     public static function prepareEvents(string|array $events): string
     {
         if (\is_array($events)) {
-            return Collection::make($events)
+            return (new Collection($events))
                 ->map(static fn ($value): string => (string) Str::of($value)->lower()->squish())
                 ->filter()
                 ->implode(',');

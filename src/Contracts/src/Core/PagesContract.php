@@ -9,11 +9,11 @@ use Illuminate\Support\Enumerable;
 use MoonShine\Support\Enums\PageType;
 
 /**
- * @template TPage of PageContract
+ * @template TPage of PageContract = PageContract
  *
  * @template-extends Enumerable<array-key, TPage>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, TPage>
  */
 interface PagesContract extends Enumerable
 {

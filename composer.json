@@ -33,7 +33,7 @@
         "nyholm/psr7": "^1.8",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
-        "symfony/psr-http-message-bridge": "^7.2"
+        "symfony/psr-http-message-bridge": "^7.1|^7.2|^7.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.68",
@@ -104,6 +104,24 @@
             "vendor/bin/pest --bail"
         ],
         "test:types": "vendor/bin/phpstan analyse src --memory-limit=-1",
+        "test:types:cm": "vendor/bin/phpstan analyse src/ColorManager/src --memory-limit=-1 --level=max",
+        "test:types:am": "vendor/bin/phpstan analyse src/AssetManager/src --memory-limit=-1 --level=max",
+        "test:types:c": "vendor/bin/phpstan analyse src/Contracts/src --memory-limit=-1 --level=max",
+        "test:types:core": "vendor/bin/phpstan analyse src/Core/src --memory-limit=-1 --level=max",
+        "test:types:s": "vendor/bin/phpstan analyse src/Support/src --memory-limit=-1 --level=max",
+        "test:types:mm": "vendor/bin/phpstan analyse src/MenuManager/src --memory-limit=-1 --level=max",
+        "test:types:ui": "vendor/bin/phpstan analyse src/UI/src --memory-limit=-1 --level=6",
+        "test:types:l": "vendor/bin/phpstan analyse src/Laravel/src --memory-limit=-1 --level=5",
+        "test:types:packages": [
+            "@test:types:am",
+            "@test:types:cm",
+            "@test:types:c",
+            "@test:types:mm",
+            "@test:types:s",
+            "@test:types:core",
+            "@test:types:ui",
+            "@test:types:l"
+        ],
         "cs:fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
         "monorepo:merge": "vendor/bin/monorepo-builder merge"
     }

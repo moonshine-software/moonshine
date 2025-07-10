@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
@@ -28,8 +29,17 @@ final class Modal extends AbstractWithComponents
 
     protected bool $autoClose = true;
 
+    /**
+     * @var  array<string, mixed>
+     *
+     */
     protected array $outerAttributes = [];
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     *
+     * @throws Throwable
+     */
     public function __construct(
         protected Closure|string $title = '',
         protected Closure|Renderable|string $content = '',
@@ -80,6 +90,10 @@ final class Modal extends AbstractWithComponents
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     *
+     */
     public function outerAttributes(array $attributes): self
     {
         $this->outerAttributes = $attributes;
@@ -90,7 +104,7 @@ final class Modal extends AbstractWithComponents
     /**
      * @param string[] $events
      */
-    public function toggleEvents(array $events, bool $onlyOpening = false, $onlyClosing = false): self
+    public function toggleEvents(array $events, bool $onlyOpening = false, bool $onlyClosing = false): self
     {
         $data = [
             'data-opening-events' => AlpineJs::prepareEvents($events),

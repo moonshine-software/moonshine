@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait ResourceWithParent
 {
     protected null|string|int $parentId = null;

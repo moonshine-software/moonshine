@@ -16,6 +16,9 @@ use Throwable;
  */
 trait WithFields
 {
+    /**
+     * @var iterable<array-key, ComponentContract>|(Closure(static): iterable<array-key, ComponentContract>)
+     */
     protected iterable|Closure $fields = [];
 
     protected ?FieldsContract $preparedFields = null;
@@ -51,6 +54,9 @@ trait WithFields
         );
     }
 
+    /**
+     * @return iterable<array-key, ComponentContract>
+     */
     public function getRawFields(): iterable
     {
         return value($this->fields, $this);
@@ -61,13 +67,14 @@ trait WithFields
         return $this->getFields()->isNotEmpty();
     }
 
+    /**
+     * @param  FieldsContract|(Closure(static): iterable<array-key, ComponentContract>)|iterable<array-key, ComponentContract>  $fields
+     */
     public function fields(FieldsContract|Closure|iterable $fields): static
     {
         if ($this->getCore()->runningInConsole()) {
-            $fields = Collection::make(
-                value($fields, $this)
-            )
-                ->map(static fn (object $field): object => clone $field)
+            $fields = new Collection(value($fields, $this));
+            $fields = $fields->map(static fn (object $field): object => clone $field)
                 ->toArray();
         }
 
@@ -79,6 +86,7 @@ trait WithFields
     }
 
     /**
+     * @param array<string, mixed> $raw
      * @throws Throwable
      */
     protected function getFilledFields(

@@ -11,6 +11,9 @@ interface HasListComponentContract
 {
     public function getListComponent(bool $withoutFragment = false): ?ComponentContract;
 
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function getListEventName(?string $name = null, array $params = []): string;
 
     public function isListComponentRequest(): bool;

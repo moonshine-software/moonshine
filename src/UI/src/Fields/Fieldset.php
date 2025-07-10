@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
@@ -29,6 +30,9 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
 
     protected bool $withWrapper = false;
 
+    /**
+     * @param  iterable<array-key, ComponentContract>|Closure|FieldsContract  $fields
+     */
     public function __construct(string|Closure|null $label = null, iterable|Closure|FieldsContract $fields = [])
     {
         parent::__construct($label);
@@ -36,6 +40,10 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
         $this->fields($fields);
     }
 
+    /**
+     * @param  array<string, mixed>  $raw
+     * @throws Throwable
+     */
     protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         $this
@@ -130,6 +138,7 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
     }
 
     /**
+     * @return array<string, mixed>
      * @throws Throwable
      */
     protected function viewData(): array

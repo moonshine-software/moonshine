@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use MoonShine\Contracts\Core\HasComponentsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Traits\Components\WithComponents;
 use Throwable;
 
@@ -16,6 +17,7 @@ abstract class AbstractWithComponents extends MoonShineComponent implements HasC
     use WithComponents;
 
     /**
+     * @param iterable<array-key, ComponentContract> $components
      * @throws Throwable
      */
     public function __construct(iterable $components = [])

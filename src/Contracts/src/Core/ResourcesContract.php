@@ -8,11 +8,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 
 /**
- * @template TResource of ResourceContract
+ * @template TResource of ResourceContract = ResourceContract
  *
  * @template-extends Enumerable<array-key, TResource>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, TResource>
  */
 interface ResourcesContract extends Enumerable
 {

@@ -9,6 +9,9 @@ use MoonShine\UI\Contracts\RangeFieldContract;
 
 trait ShowWhen
 {
+    /**
+     * @var string[]
+     */
     public array $operators = [
         '=',
         '<',
@@ -20,6 +23,9 @@ trait ShowWhen
         'not in',
     ];
 
+    /**
+     * @var string[]
+     */
     public array $arrayOperators = [
         'in',
         'not in',
@@ -27,8 +33,14 @@ trait ShowWhen
 
     public bool $showWhenState = false;
 
+    /**
+     * @var array<array-key, mixed>
+     */
     protected array $showWhenCondition = [];
 
+    /**
+     * @var array<array-key, mixed>
+     */
     protected array $showWhenData = [];
 
     public function hasShowWhen(): bool
@@ -36,6 +48,9 @@ trait ShowWhen
         return $this->showWhenState;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getShowWhenCondition(): array
     {
         return $this->showWhenCondition;
@@ -154,6 +169,9 @@ trait ShowWhen
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected function makeCondition(
         string $column,
         mixed $operator = null,
@@ -169,10 +187,13 @@ trait ShowWhen
         ];
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected function prepareValueAndOperator(
         mixed $value,
         mixed $operator = null,
-        $useDefault = false
+        bool $useDefault = false
     ): array {
         if ($useDefault) {
             return [$operator, '='];
@@ -198,7 +219,7 @@ trait ShowWhen
         return [$value, $operator];
     }
 
-    protected function isInvalidOperatorAndValue($operator, $value): bool
+    protected function isInvalidOperatorAndValue(mixed $operator, mixed $value): bool
     {
         return \is_null($value) && \in_array($operator, $this->operators) &&
             ! \in_array($operator, ['=', '!=']);

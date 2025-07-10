@@ -8,6 +8,9 @@ use Illuminate\Contracts\Support\Arrayable;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final readonly class FileItem implements Arrayable
 {
     public function __construct(
@@ -44,6 +47,9 @@ final readonly class FileItem implements Arrayable
         return $this->attributes;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

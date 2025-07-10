@@ -8,6 +8,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\UI\Collections\ActionButtons;
+use Throwable;
 
 /**
  * @method static static make(iterable $actions = [])
@@ -16,6 +17,11 @@ final class ActionGroup extends AbstractWithComponents
 {
     protected string $view = 'moonshine::components.action-group';
 
+    /**
+     * @param  iterable<array-key, ActionButtonContract>  $actions
+     *
+     * @throws Throwable
+     */
     public function __construct(iterable $actions = [])
     {
         parent::__construct($actions);

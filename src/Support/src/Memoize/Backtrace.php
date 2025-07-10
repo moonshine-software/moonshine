@@ -6,10 +6,19 @@ namespace MoonShine\Support\Memoize;
 
 final class Backtrace
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $trace;
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $zeroStack;
 
+    /**
+     * @param array<int, array<string, mixed>> $trace
+     */
     public function __construct(array $trace)
     {
         $this->trace = $trace[1];
@@ -17,19 +26,26 @@ final class Backtrace
         $this->zeroStack = $trace[0];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getArguments(): array
     {
-        return $this->trace['args'];
+        return \is_array($this->trace['args']) ? $this->trace['args'] : [];
     }
 
     public function getFunctionName(): string
     {
-        return $this->trace['function'];
+        return \is_string($this->trace['function']) ? $this->trace['function'] : '';
     }
 
     public function getObjectName(): ?string
     {
-        return $this->trace['class'] ?? null;
+        if(\is_string($this->trace['class'])) {
+            return $this->trace['class'];
+        }
+
+        return null;
     }
 
     public function getObject(): mixed
@@ -48,6 +64,10 @@ final class Backtrace
         $prefix = $this->getObjectName() . $this->getFunctionName();
         if (str_contains($prefix, '{closure}')) {
             $prefix = $this->zeroStack['line'];
+        }
+
+        if(!\is_string($prefix)) {
+            $prefix = '';
         }
 
         return md5($prefix . serialize($normalizedArguments));

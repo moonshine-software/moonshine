@@ -7,7 +7,7 @@ namespace MoonShine\Contracts\UI;
 use Closure;
 
 /**
- * @template T of FieldContract
+ * @template T of FieldContract = FieldContract
  */
 interface ApplyContract
 {

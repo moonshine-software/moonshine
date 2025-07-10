@@ -10,6 +10,9 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use Throwable;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait WithComponentAttributes
 {
     /**
@@ -51,6 +54,9 @@ trait WithComponentAttributes
         return $this;
     }
 
+    /**
+     * @param  string|array<int|string, bool|string>  $classes
+     */
     public function class(string|array $classes): static
     {
         $this->attributes = $this->attributes->class($classes);
@@ -58,6 +64,9 @@ trait WithComponentAttributes
         return $this;
     }
 
+    /**
+     * @param  string|array<int|string, bool|string>  $styles
+     */
     public function style(string|array $styles): static
     {
         $this->attributes = $this->attributes->style($styles);

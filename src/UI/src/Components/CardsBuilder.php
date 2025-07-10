@@ -44,6 +44,9 @@ final class CardsBuilder extends IterableComponent implements
         'notfound' => 'moonshine::ui.notfound',
     ];
 
+    /**
+     * @var list<ComponentContract>
+     */
     protected array $components = [];
 
     /**
@@ -84,7 +87,7 @@ final class CardsBuilder extends IterableComponent implements
     protected ?Closure $customComponent = null;
 
     /**
-     * @var (Closure(mixed, int, self): array)|array
+     * @var (Closure(mixed, int, self): array<string, mixed>)|array<string, mixed>
      */
     protected array|Closure $componentAttributes = [];
 
@@ -94,6 +97,10 @@ final class CardsBuilder extends IterableComponent implements
 
     protected bool $searchable = false;
 
+    /**
+     * @param  iterable<array-key, TData>  $items
+     * @param  FieldsContract|iterable<array-key, FieldContract>  $fields
+     */
     public function __construct(
         iterable $items = [],
         FieldsContract|iterable $fields = [],
@@ -180,7 +187,7 @@ final class CardsBuilder extends IterableComponent implements
     }
 
     /**
-     * @param (Closure(mixed $data, int $index, self $ctx): array)|array $attributes
+     * @param (Closure(mixed $data, int $index, self $ctx): array<string, mixed>)|array<string, mixed> $attributes
      */
     public function componentAttributes(array|Closure $attributes): self
     {
@@ -200,12 +207,16 @@ final class CardsBuilder extends IterableComponent implements
     }
 
     /**
+     * @return Collection<array-key, Card>
      * @throws Throwable
      */
     public function getComponents(): Collection
     {
         $fields = $this->getPreparedFields();
 
+        /**
+         * @var Collection<array-key, Card>
+         */
         return $this->getItems()->map(function (mixed $data, int $index) use ($fields) {
             $casted = $this->castData($data);
 
@@ -230,6 +241,9 @@ final class CardsBuilder extends IterableComponent implements
         });
     }
 
+    /**
+     * @return string|array<string, string>
+     */
     protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
         return \is_string($this->{$column})
@@ -239,10 +253,14 @@ final class CardsBuilder extends IterableComponent implements
 
     /**
      * @param  TData  $data
+     * @return array<string, mixed>
      */
     protected function getMapper(mixed $data, FieldsContract $fields, int $index): array
     {
-        $values = $fields->values()
+        /** @var array<string, string> $values */
+        /** @phpstan-ignore-next-line */
+        $values = $fields
+            ->values()
             ->mapWithKeys(static fn (FieldContract $value): array => [$value->getLabel() => (string) $value->preview()])
             ->toArray();
 
@@ -257,7 +275,7 @@ final class CardsBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topLeft(Closure $callback): self
     {
@@ -267,7 +285,7 @@ final class CardsBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  Closure(self): array  $callback
+     * @param  Closure(self): list<ComponentContract>  $callback
      */
     public function topRight(Closure $callback): self
     {
@@ -343,7 +361,9 @@ final class CardsBuilder extends IterableComponent implements
                 $this->isAsync()
             ),
             'async' => $this->isAsync(),
-            'asyncUrl' => $this->getAsyncUrl(),
+            'asyncUrl' => $this->getAsyncUrl() ?? $this->getCore()->getRouter()->extractPageUri()
+                ? value($this->prepareAsyncUrl(), $this)
+                : null,
             'colSpan' => $this->getColumnSpanValue(),
             'adaptiveColSpan' => $this->getAdaptiveColumnSpanValue(),
             'topLeft' => $this->getTopLeft(),

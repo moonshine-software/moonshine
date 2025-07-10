@@ -12,7 +12,13 @@ final class MoonShineComponentAttributeBag extends ComponentAttributeBag impleme
 {
     public function concat(string $name, string $value, string $separator = ' '): void
     {
-        $this->attributes[$name] = $this->unique($this->attributes[$name] ?? '', $value, $separator);
+        $old = $this->attributes[$name] ?? '';
+
+        if(!\is_string($old)) {
+            $old = '';
+        }
+
+        $this->attributes[$name] = $this->unique($old, $value, $separator);
     }
 
     public function set(string $name, string|bool $value): void

@@ -9,12 +9,16 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 
 final readonly class PaginatorCaster implements PaginatorCasterContract
 {
+    /**
+     * @param  array<array-key, mixed>  $data
+     */
     public function __construct(private array $data)
     {
     }
 
     public function cast(): PaginatorContract
     {
+        /** @phpstan-ignore argument.type  */
         return new Paginator(...$this->data);
     }
 }

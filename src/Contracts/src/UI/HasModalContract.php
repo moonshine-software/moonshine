@@ -23,6 +23,9 @@ interface HasModalContract
 
     public function openModal(): static;
 
+    /**
+     * @param  list<ComponentContract>  $components
+     */
     public function inModal(
         Closure|string|null $title = null,
         Closure|string|null $content = null,
@@ -31,6 +34,9 @@ interface HasModalContract
         iterable $components = [],
     ): static;
 
+    /**
+     * @param  list<ComponentContract|FieldContract>  $fields
+     */
     public function withConfirm(
         Closure|string|null $title = null,
         Closure|string|null $content = null,

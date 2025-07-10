@@ -13,13 +13,16 @@ final class Thumbnails extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.thumbnails';
 
+    /**
+     * @param list<string|FileItem|array{full_path?: null|string, raw_value?: null|string, name?: null|string, attributes?: null|MoonShineComponentAttributeBag|array<string, mixed>}> $items
+     */
     public function __construct(
         protected FileItem|string|array|null $items,
     ) {
         parent::__construct();
 
         if (\is_array($this->items)) {
-            $this->items = Collection::make($this->items)
+            $this->items = (new Collection($this->items))
                 ->mapWithKeys(
                     static fn (string|array|FileItem $value, int $index): array => [
                         $index => $value instanceof FileItem

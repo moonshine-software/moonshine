@@ -146,7 +146,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return non-empty-string
+     * @return string
      */
     public function getDisk(): string
     {

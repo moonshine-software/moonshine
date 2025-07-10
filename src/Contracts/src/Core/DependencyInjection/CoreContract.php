@@ -8,10 +8,12 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\PagesContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\ResourcesContract;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use Psr\Container\ContainerInterface;
 
 /**
- * @template TConfig of ConfiguratorContract
+ * @template TConfig of ConfiguratorContract = ConfiguratorContract
  */
 interface CoreContract
 {
@@ -26,7 +28,9 @@ interface CoreContract
     /**
      * @template T
      * @param class-string<T>|null $id
-     * @return null|T|ContainerInterface
+     * @param  mixed  ...$parameters
+     *
+     * @return ($id is null ? ContainerInterface : T)
      */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed;
 
@@ -50,8 +54,15 @@ interface CoreContract
 
     public function getTranslator(): TranslatorContract;
 
+    /**
+     * @param mixed ...$parameters
+     */
     public function getStorage(...$parameters): StorageContract;
 
+    /**
+     * @param  iterable<array-key, ComponentContract|FieldContract>  $items
+     *
+     */
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 
     /**

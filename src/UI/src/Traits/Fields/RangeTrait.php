@@ -34,6 +34,9 @@ trait RangeTrait
         return $this->toField;
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function fromAttributes(array $attributes): static
     {
         $this->fromAttributes = $this->getAttributes()
@@ -69,6 +72,9 @@ trait RangeTrait
         return $this->reformatAttributes($this->fromAttributes, $this->getFromField());
     }
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function toAttributes(array $attributes): static
     {
         $this->toAttributes = $this->getAttributes()
@@ -113,6 +119,9 @@ trait RangeTrait
         return $this->extractFromTo($data);
     }
 
+    /**
+     * @param  array<string, mixed>  $raw
+     */
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): mixed
     {
         $values = parent::prepareFill($raw, $casted);
@@ -132,6 +141,11 @@ trait RangeTrait
         return $values;
     }
 
+    /**
+     * @param  array<string, int|string>  $data
+     *
+     * @return array<string, int|string>
+     */
     protected function extractFromTo(array $data): array
     {
         return [
@@ -202,6 +216,9 @@ trait RangeTrait
         };
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getOnChangeEventAttributes(?string $url = null): array
     {
         if ($url) {
@@ -238,8 +255,14 @@ trait RangeTrait
             ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array
     {
+        /**
+         * @var Collection<string, mixed> $errors
+         */
         $errors = new Collection(parent::getErrors());
 
         return [

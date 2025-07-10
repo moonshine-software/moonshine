@@ -10,13 +10,19 @@ use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\UI\Collections\Fields as BaseFields;
 use Throwable;
 
+/**
+ * @template T of FieldContract = FieldContract
+ * @extends BaseFields<T>
+ */
 final class Fields extends BaseFields
 {
     /**
+     * @return self<ModelRelationField>
      * @throws Throwable
      */
     public function onlyOutside(): self
     {
+        /** @var self<ModelRelationField> */
         return $this->filter(
             static fn (FieldContract $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
         );
@@ -33,10 +39,12 @@ final class Fields extends BaseFields
     }
 
     /**
+     * @return self<ModelRelationField>
      * @throws Throwable
      */
     public function onlyRelationFields(): self
     {
+        /** @var self<ModelRelationField> */
         return $this->filter(
             static fn (FieldContract $field): bool => $field instanceof ModelRelationField
         );
@@ -53,6 +61,7 @@ final class Fields extends BaseFields
     }
 
     /**
+     *
      * @throws Throwable
      */
     public function indexFields(): self

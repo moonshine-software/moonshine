@@ -223,7 +223,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
           t.toggleModal()
         }
 
-        submitState(form, false, false)
+        if (!('redirect' in data)) {
+          submitState(form, false, false)
+        }
 
         return callback.afterResponse
       })

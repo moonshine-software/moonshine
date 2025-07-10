@@ -6,6 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\LazyCollection;
 use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -23,6 +25,7 @@ use MoonShine\UI\Traits\HasDataCast;
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
  * @implements HasCasterContract<TCaster, TWrapper>
+ * @implements HasPaginatorContract<TData>
  */
 abstract class IterableComponent extends MoonShineComponent implements
     HasCasterContract,
@@ -94,12 +97,14 @@ abstract class IterableComponent extends MoonShineComponent implements
     }
 
     /**
-     * @return Collection<array-key, TData>
+     * @return Collection<array-key, TData>|LazyCollection<array-key, TData>
      */
-    public function getItems(): Collection
+    public function getItems(): LazyCollection|Collection
     {
         if ($this->itemsResolved) {
-            return new Collection($this->items);
+            return $this->items instanceof LazyCollection
+                ? $this->items
+                : new Collection($this->items);
         }
 
         if (! \is_null($this->itemsResolver)) {
@@ -108,6 +113,8 @@ abstract class IterableComponent extends MoonShineComponent implements
 
         $this->itemsResolved = true;
 
-        return $this->items = (new Collection($this->items))->filter();
+        return $this->items = $this->items instanceof LazyCollection
+            ? $this->items
+            : (new Collection($this->items))->filter();
     }
 }

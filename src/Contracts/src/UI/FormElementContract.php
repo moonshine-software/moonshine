@@ -39,6 +39,11 @@ interface FormElementContract extends
 
     public function setValue(mixed $value = null): static;
 
+    /**
+     * @param  Closure(mixed $value, string $name, mixed $default, static $ctx): mixed  $callback
+     */
+    public function onRequestValue(Closure $callback): static;
+
     public function getRequestValue(int|string|null $index = null): mixed;
 
     public function setRequestKeyPrefix(?string $key): static;
@@ -71,6 +76,9 @@ interface FormElementContract extends
 
     public function getNameAttribute(?string $index = null): string;
 
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
     public function customWrapperAttributes(array $attributes): static;
 
     public function getWrapperAttributes(): ComponentAttributesBagContract;
@@ -81,6 +89,9 @@ interface FormElementContract extends
 
     public function isFillChanged(): bool;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array;
 
     public function isGroup(): bool;

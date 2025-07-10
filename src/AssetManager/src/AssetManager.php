@@ -30,7 +30,7 @@ final class AssetManager implements AssetManagerContract
      */
     private array $appendedAssets = [];
 
-    /** @var array<Closure> */
+    /** @var array<Closure(array<AssetElementContract>):array<AssetElementContract>> */
     private array $assetsModifiers = [];
 
     public function __construct(
@@ -53,10 +53,12 @@ final class AssetManager implements AssetManagerContract
      */
     public function add(AssetElementContract|array $assets): static
     {
-        $this->assets = array_unique(
-            array_merge(
-                $this->assets,
-                \is_array($assets) ? $assets : [$assets]
+        $this->assets = array_values(
+            array_unique(
+                array_merge(
+                    $this->assets,
+                    \is_array($assets) ? $assets : [$assets]
+                )
             )
         );
 
@@ -94,7 +96,7 @@ final class AssetManager implements AssetManagerContract
     }
 
     /**
-     * @param Closure(array $assets): array $callback
+     * @param Closure(array<AssetElementContract> $assets): array<AssetElementContract> $callback
      */
     public function modifyAssets(Closure $callback): static
     {

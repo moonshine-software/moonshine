@@ -12,12 +12,11 @@ parameters:
     ignoreErrors:
         - '#mixin contains invalid type Illuminate\\Support\\Traits\\Conditionable#'
         - '#does not accept Illuminate\\View\\ComponentAttributeBag#'
+        - '#when\(\) expects#'
         - '#should return MoonShine\\Contracts\\UI\\ComponentAttributesBagContract but returns Illuminate\\View\\ComponentAttributeBag#'
         - '#getResource\(\) should return#'
-        - '#getParentResource\(\) should return#'
-        - '#when\(\) expects#'
         - '#Call to an undefined method Illuminate\\Http\\Request::getScalar#'
-        - '#Trait MoonShine\\Laravel\\Traits\\Resource\\ResourceWithParent is used zero times#'
+        - '#PHPDoc tag @method for method make\(\)#'
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
         - ./src/Laravel/routes/moonshine.php

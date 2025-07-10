@@ -12,7 +12,7 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 /**
  * @template-extends Enumerable<array-key, ActionButtonContract>
  *
- * @mixin Collection
+ * @mixin Collection<array-key, ActionButtonContract>
  */
 interface ActionButtonsContract extends Enumerable
 {

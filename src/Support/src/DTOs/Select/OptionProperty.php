@@ -6,6 +6,9 @@ namespace MoonShine\Support\DTOs\Select;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, mixed>
+ */
 final readonly class OptionProperty implements Arrayable
 {
     public function __construct(
@@ -18,6 +21,9 @@ final readonly class OptionProperty implements Arrayable
         return $this->image;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $image = $this->getImage();

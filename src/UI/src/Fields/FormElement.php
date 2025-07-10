@@ -35,8 +35,14 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     use NowOn;
     use WithQuickFormElementAttributes;
 
+    /**
+     * @var string[]
+     */
     protected array $propertyAttributes = ['type'];
 
+    /**
+     * @var WeakReference<FormElementContract>|null
+     */
     protected ?WeakReference $parent = null;
 
     protected ?string $formName = null;
@@ -114,10 +120,16 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         }
     }
 
+    /**
+     * @return Collection<string, mixed>
+     */
     protected function getPropertyAttributes(): Collection
     {
-        return Collection::make($this->propertyAttributes)->mapWithKeys(
-            function ($attr): array {
+        /** @var Collection<array-key, string> $collection */
+        $collection = new Collection($this->propertyAttributes);
+
+        return $collection->mapWithKeys(
+            function (string $attr): array {
                 $property = (string) Str::of($attr)->camel();
 
                 return isset($this->{$property})
@@ -197,6 +209,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this->virtualColumn ?? $this->getColumn();
     }
 
+    /**
+     * @param  array<string, mixed>  $raw
+     */
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
     {
         if ($this->isFillChanged()) {
@@ -223,6 +238,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $data;
     }
 
+    /**
+     * @param  array<string, mixed>  $raw
+     */
     protected function resolveFill(array $raw = [], ?DataWrapperContract $casted = null, int $index = 0): static
     {
         $this->setData($casted);
@@ -625,6 +643,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         ]);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getErrors(): array
     {
         return $this->getCore()->getRequest()->getFormErrors($this->getFormName());
@@ -642,6 +663,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this->isGroup;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function systemViewData(): array
     {
         return [

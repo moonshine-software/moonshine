@@ -7,6 +7,9 @@ namespace MoonShine\Support\DTOs;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
+/**
+ * @implements Arrayable<string, string|null>
+ */
 final readonly class AsyncCallback implements Arrayable, JsonSerializable
 {
     public function __construct(
@@ -50,6 +53,9 @@ final readonly class AsyncCallback implements Arrayable, JsonSerializable
         return $this->afterResponse;
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function toArray(): array
     {
         return [
@@ -59,6 +65,9 @@ final readonly class AsyncCallback implements Arrayable, JsonSerializable
         ];
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();

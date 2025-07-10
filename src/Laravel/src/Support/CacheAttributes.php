@@ -65,7 +65,7 @@ final readonly class CacheAttributes implements CacheAttributesContract
     }
 
     /**
-     * @return array<class-string, array<int, array<string, array>>>
+     * @return array<class-string, array<int, array<string, mixed>>>
      */
     public function resolve(): array
     {

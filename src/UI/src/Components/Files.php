@@ -13,15 +13,19 @@ final class Files extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.files';
 
+    /**
+     * @param list<string|FileItem|array{full_path?: null|string, raw_value?: null|string, name?: null|string, attributes?: null|array<string, mixed>}> $files
+     */
     public function __construct(
         public array $files = [],
         public bool $download = true,
     ) {
         parent::__construct();
 
-        $this->files = Collection::make($this->files)
+        $this->files = (new Collection($this->files))
             ->mapWithKeys(
-                static fn (string|FileItem|array $value, int $index): array => [
+                static fn(string|FileItem|array $value, int $index): array
+                    => [
                     $index => $value instanceof FileItem
                         ? $value->toArray()
                         : (new FileItem(
@@ -30,7 +34,7 @@ final class Files extends MoonShineComponent
                             $value['name'] ?? $value,
                             $value['attributes'] ?? new MoonShineComponentAttributeBag(),
                         ))->toArray(),
-                ]
+                ],
             )->toArray();
     }
 

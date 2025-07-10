@@ -24,7 +24,7 @@ final readonly class LaravelStorage implements StorageContract
         return $this->filesystem->putFile($path, $file, $options);
     }
 
-    public function storeAs(string $path, mixed $file, $name = null, array $options = []): false|string
+    public function storeAs(string $path, mixed $file, string|array|null $name = null, array $options = []): false|string
     {
         return $this->filesystem->putFileAs($path, $file, $name, $options);
     }

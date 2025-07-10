@@ -7,6 +7,9 @@ namespace MoonShine\Core\Traits;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait NowOn
 {
     private ?ResourceContract $nowOnResource = null;

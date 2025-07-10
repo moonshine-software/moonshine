@@ -26,14 +26,23 @@ class MenuItem extends MenuElement implements WithBadgeContract
 
     protected string $view = 'moonshine::components.menu.item';
 
+    /**
+     * @var string|null|(Closure():MenuFillerContract|string)
+     */
     protected Closure|string|null $url = null;
 
+    /**
+     * @var  bool|(Closure($this): bool)
+     */
     protected Closure|bool $blank = false;
 
     protected ?Closure $whenActive = null;
 
     protected ActionButtonContract $actionButton;
 
+    /**
+     * @param  Closure|MenuFillerContract|class-string<MenuFillerContract>  $filler
+     */
     final public function __construct(
         protected Closure|MenuFillerContract|string $filler,
         Closure|string|null $label = null,
@@ -50,8 +59,8 @@ class MenuItem extends MenuElement implements WithBadgeContract
             $this->icon($icon);
         }
 
-        if (\is_string($this->filler) && str_contains($this->filler, '\\')) {
-            $this->filler = $this->getCore()->getInstances($this->filler);
+        if (\is_string($this->filler) && str_contains($this->filler, '\\') && ($filler = $this->getCore()->getInstances($this->filler)) !== null) {
+            $this->filler = $filler;
         }
 
         if ($this->filler instanceof MenuFillerContract) {
@@ -71,6 +80,11 @@ class MenuItem extends MenuElement implements WithBadgeContract
         $this->actionButton = ActionButton::make($this->getLabel());
     }
 
+    /**
+     * @param  Closure(ActionButtonContract): ActionButtonContract  $callback
+     *
+     * @return $this
+     */
     public function changeButton(Closure $callback): static
     {
         $this->actionButton = $callback($this->actionButton->customAttributes(['@mouseenter' => false]));
@@ -87,6 +101,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
         }
 
         $icon = $this->getCore()->getAttributes()->get(
+            /** @phpstan-ignore-next-line  */
             default: fn (): ?string => Attributes::for($filler, Icon::class)->first('icon'),
             target: $filler::class,
             attribute: Icon::class,
@@ -94,6 +109,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
         ) ?? $filler->getIcon();
 
         $badge = $this->getCore()->getAttributes()->get(
+            /** @phpstan-ignore-next-line  */
             fn () => Attributes::for($filler, Badge::class)->first()?->value,
             $filler::class,
             Badge::class,
@@ -145,9 +161,16 @@ class MenuItem extends MenuElement implements WithBadgeContract
             $url = '';
         }
 
-        return $url instanceof MenuFillerContract ? $url->getUrl() : $url;
+        if($url instanceof MenuFillerContract) {
+            return $url->getUrl();
+        }
+
+        return $url;
     }
 
+    /**
+     * @param  (Closure($this): bool)|bool  $blankCondition
+     */
     public function blank(Closure|bool $blankCondition = true): static
     {
         $this->blank = value($blankCondition, $this);
@@ -157,7 +180,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
 
     public function isBlank(): bool
     {
-        return $this->blank;
+        return value($this->blank, $this);
     }
 
     /**

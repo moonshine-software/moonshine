@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core;
 
 /**
- * @template T of ResourceContract
+ * @template T of ResourceContract = ResourceContract
  */
 interface HasResourceContract
 {

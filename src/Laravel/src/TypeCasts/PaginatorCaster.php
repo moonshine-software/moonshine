@@ -12,12 +12,19 @@ use MoonShine\Core\Paginator\Paginator;
 
 final readonly class PaginatorCaster implements PaginatorCasterContract
 {
+    /**
+     * @param  array<array-key, mixed>  $data
+     * @param  iterable<array-key, mixed>  $originalData
+     */
     public function __construct(
         private array $data,
         private iterable $originalData,
     ) {
     }
 
+    /**
+     * @return PaginatorContract<mixed>
+     */
     public function cast(): PaginatorContract
     {
         $data = Collection::make($this->data)

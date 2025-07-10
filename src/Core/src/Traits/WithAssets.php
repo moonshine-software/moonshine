@@ -13,7 +13,7 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 trait WithAssets
 {
     /**
-     * @var array<string>
+     * @var list<AssetElementContract>
      */
     protected array $assets = [];
 

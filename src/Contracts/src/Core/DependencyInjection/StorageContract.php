@@ -8,12 +8,19 @@ use SplFileInfo;
 
 interface StorageContract
 {
+    /**
+     * @param  array<string, mixed>  $options
+     */
     public function store(string $path, mixed $file = null, array $options = []): false|string;
 
-    public function storeAs(string $path, mixed $file, $name = null, array $options = []): false|string;
+    /**
+     * @param  string|null|array<string, mixed>  $name
+     * @param  array<string, mixed>  $options
+     */
+    public function storeAs(string $path, mixed $file, string|array|null $name = null, array $options = []): false|string;
 
     /**
-     * @param  non-empty-string|string[]  $paths
+     * @param  string|string[]  $paths
      *
      */
     public function delete(string|array $paths): bool;
@@ -29,7 +36,7 @@ interface StorageContract
     public function getUrl(string $path): string;
 
     /**
-     * @return list<SplFileInfo>
+     * @return list<SplFileInfo|string>
      */
     public function getFiles(string $directory, bool $recursive = false): array;
 

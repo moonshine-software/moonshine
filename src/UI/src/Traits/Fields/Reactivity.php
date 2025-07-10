@@ -104,6 +104,9 @@ trait Reactivity
         return $this->customAttributes($this->getReactiveAttributes($this->getColumn()));
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getReactiveAttributes(?string $dot = null, ?string $class = null): array
     {
         if (! $this->isReactive()) {

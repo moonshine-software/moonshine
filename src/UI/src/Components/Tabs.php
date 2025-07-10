@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Exceptions\MoonShineComponentException;
 use Throwable;
@@ -23,6 +24,12 @@ class Tabs extends AbstractWithComponents
 
     protected bool $vertical = false;
 
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     * @param  array<string, string>  $items
+     *
+     * @throws Throwable
+     */
     public function __construct(iterable $components = [], public array $items = [])
     {
         parent::__construct($components);
@@ -80,7 +87,6 @@ class Tabs extends AbstractWithComponents
     }
 
     /**
-     * @return ComponentsContract<Tab>
      * @throws Throwable
      */
     public function getTabs(): ComponentsContract

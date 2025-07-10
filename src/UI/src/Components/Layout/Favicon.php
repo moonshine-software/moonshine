@@ -10,6 +10,15 @@ final class Favicon extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.favicon';
 
+    /**
+     * @param  array{
+     *     apple-touch?: string,
+     *     32?: string,
+     *     16?: string,
+     *     safari-pinned-tab?: string,
+     *     web-manifest?: string,
+     * }  $customAssets
+     */
     public function __construct(
         private array $customAssets = [],
         private ?string $bodyColor = null

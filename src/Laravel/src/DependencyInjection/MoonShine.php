@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\DependencyInjection;
 
+use Illuminate\Container\Container;
 use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -48,6 +49,13 @@ final class MoonShine extends Core
         return $this->getContainer()->isProduction();
     }
 
+    /**
+     * @template T
+     * @param class-string<T>|null $id
+     * @param  mixed  ...$parameters
+     *
+     * @return ($id is null ? \Illuminate\Foundation\Application : T)
+     */
     public function getContainer(?string $id = null, mixed $default = null, ...$parameters): mixed
     {
         if (! \is_null($id)) {

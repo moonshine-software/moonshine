@@ -20,8 +20,14 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     private string $name = '';
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $params = [];
 
+    /**
+     * @param  array<string, mixed>  $params
+     */
     abstract public function to(string $name = '', array $params = []): string;
 
     abstract public function getEndpoints(): EndpointsContract;
@@ -51,6 +57,9 @@ abstract class AbstractRouter implements RouterContract, Stringable
             ->value();
     }
 
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function withParams(array $params): static
     {
         $this->params = array_merge(
@@ -83,6 +92,10 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return $this;
     }
 
+    /**
+     * @param  array<string, mixed>  $params
+     * @return array<string, mixed>
+     */
     public function getParams(array $params = []): array
     {
         return array_filter(
@@ -101,6 +114,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     public function forgetParam(string $key): static
     {
+        /** @phpstan-ignore-next-line  */
         data_forget($this->params, $key);
 
         return $this;

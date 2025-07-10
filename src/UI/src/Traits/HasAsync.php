@@ -13,6 +13,9 @@ trait HasAsync
 {
     protected Closure|string|null $asyncUrl = null;
 
+    /**
+     * @var string|string[]|null
+     */
     protected string|array|null $asyncEvents = null;
 
     protected ?AsyncCallback $asyncCallback = null;
@@ -72,6 +75,9 @@ trait HasAsync
         return $this;
     }
 
+    /**
+     * @param  string|string[]|null  $events
+     */
     public function async(
         Closure|string|null $url = null,
         string|array|null $events = null,

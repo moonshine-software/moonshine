@@ -11,6 +11,9 @@ use MoonShine\Contracts\UI\Collection\TableRowsContract;
 use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\UI\Components\Table\TableRow;
 
+/**
+ * @extends Collection<array-key, TableRowContract>
+ */
 final class TableRows extends Collection implements TableRowsContract
 {
     public function pushRow(TableCellsContract $cells, int|string|null $key = null, ?Closure $builder = null): self

@@ -16,6 +16,7 @@ final readonly class MixedDataCaster implements DataCasterContract
 
     public function cast(mixed $data): DataWrapperContract
     {
+        /** @var null|string|int $key */
         $key = $this->keyName && $data
             ? data_get($data, $this->keyName)
             : null;

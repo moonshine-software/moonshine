@@ -30,6 +30,9 @@ final readonly class PaginatorLink implements PaginatorLinkContract
         return $this->active;
     }
 
+    /**
+     * @return array<string, string|bool>
+     */
     public function toArray(): array
     {
         return [
@@ -39,6 +42,9 @@ final readonly class PaginatorLink implements PaginatorLinkContract
         ];
     }
 
+    /**
+     * @return array<string, string|bool>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
