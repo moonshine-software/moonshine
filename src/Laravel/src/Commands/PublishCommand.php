@@ -140,13 +140,13 @@ class PublishCommand extends MoonShineCommand
         $replaceResources = function ($fullClassPath): void {
             $this->replaceInFile(
                 MoonShineUserResource::class,
-                \App\MoonShine\Resources\MoonShineUser\MoonShineUserResource::class,
+                "App\MoonShine\Resources\MoonShineUser\MoonShineUserResource",
                 $fullClassPath
             );
 
             $this->replaceInFile(
                 MoonShineUserRoleResource::class,
-                \App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource::class,
+                "App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource",
                 $fullClassPath
             );
         };

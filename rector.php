@@ -8,6 +8,7 @@ use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -31,7 +32,8 @@ return static function (RectorConfig $rectorConfig): void {
         RemoveUselessReturnTagRector::class,
         RemoveUselessVarTagRector::class,
         RemoveUselessParamTagRector::class,
-        RemoveNonExistingVarAnnotationRector::class
+        RemoveNonExistingVarAnnotationRector::class,
+        StringClassNameToClassConstantRector::class,
     ]);
 
     $rectorConfig->importNames();
