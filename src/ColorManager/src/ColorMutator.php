@@ -56,7 +56,7 @@ final class ColorMutator
 
         $rgb = self::fromRGB($value);
 
-        if($rgb === false) {
+        if ($rgb === false) {
             return 'rgb(0,0,0)';
         }
 
@@ -92,11 +92,11 @@ final class ColorMutator
         } elseif (str_starts_with($value, '#')) {
             $rgb = sscanf($value, '#%02x%02x%02x');
 
-            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0,0,0];
+            [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0,0,0];
         } else {
             $rgb = self::fromRGB($value);
 
-            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0,0,0];
+            [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0,0,0];
         }
 
         $red /= 255;
@@ -162,7 +162,7 @@ final class ColorMutator
         preg_match('/oklch\\((.*?)\\)/', $value, $matches);
         $parts = preg_split('/\s+/', trim($matches[1]));
 
-        if ($parts === false || count($parts) < 3) {
+        if ($parts === false || \count($parts) < 3) {
             throw new InvalidArgumentException("Invalid OKLCH format: $value");
         }
 

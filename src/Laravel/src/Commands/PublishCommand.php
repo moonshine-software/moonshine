@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use MoonShine\Laravel\Resources\MoonShineUserResource;
-use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Closure;
 use Illuminate\Filesystem\Filesystem;
 
 use function Laravel\Prompts\{confirm, info, multiselect};
 
 use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
+use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:publish')]

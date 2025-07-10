@@ -161,7 +161,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
             $url = '';
         }
 
-        if($url instanceof MenuFillerContract) {
+        if ($url instanceof MenuFillerContract) {
             return $url->getUrl();
         }
 

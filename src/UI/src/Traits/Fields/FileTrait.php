@@ -351,7 +351,7 @@ trait FileTrait
             return [];
         }
 
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             $collection = new Collection($values);
 
             return $collection

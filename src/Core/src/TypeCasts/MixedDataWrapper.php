@@ -45,7 +45,7 @@ final readonly class MixedDataWrapper implements DataWrapperContract, ArrayAcces
             return isset($this->data[$offset]);
         }
 
-        if(!is_string($this->data) && !is_object($this->data)) {
+        if (! \is_string($this->data) && ! \is_object($this->data)) {
             return false;
         }
 

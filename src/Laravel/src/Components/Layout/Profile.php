@@ -154,7 +154,8 @@ final class Profile extends MoonShineComponent
         $rescueLogOut = static function (Closure $callback): string {
             try {
                 return $callback();
-            } catch (Throwable) {}
+            } catch (Throwable) {
+            }
 
             return '';
         };

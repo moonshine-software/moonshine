@@ -14,7 +14,7 @@ final class MoonShineComponentAttributeBag extends ComponentAttributeBag impleme
     {
         $old = $this->attributes[$name] ?? '';
 
-        if(!\is_string($old)) {
+        if (! \is_string($old)) {
             $old = '';
         }
 

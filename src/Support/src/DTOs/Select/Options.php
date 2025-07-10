@@ -117,7 +117,7 @@ final readonly class Options implements Arrayable
             };
         }
 
-        if(!\is_scalar($current)) {
+        if (! \is_scalar($current)) {
             return false;
         }
 

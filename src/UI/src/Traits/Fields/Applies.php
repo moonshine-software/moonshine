@@ -114,7 +114,7 @@ trait Applies
      */
     public function getApplyClass(string $type = 'fields', ?string $for = null): ?ApplyContract
     {
-        if($this instanceof FieldContract) {
+        if ($this instanceof FieldContract) {
             return $this->getCore()
                 ->getContainer(AppliesRegisterContract::class)
                 ->findByField($this, $type, $for);

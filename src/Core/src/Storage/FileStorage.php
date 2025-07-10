@@ -48,7 +48,7 @@ final class FileStorage implements StorageContract
 
     public function store(string $path, mixed $file = null, array $options = []): false|string
     {
-        if(!is_string($file)) {
+        if (! \is_string($file)) {
             return false;
         }
 
@@ -62,7 +62,7 @@ final class FileStorage implements StorageContract
 
     public function getFiles(?string $directory = null, bool $recursive = false): array
     {
-        if(!is_string($directory)) {
+        if (! \is_string($directory)) {
             return [];
         }
 
@@ -94,7 +94,7 @@ final class FileStorage implements StorageContract
 
     public function getDirectories(?string $directory = null, bool $recursive = false): array
     {
-        if (! is_string($directory)) {
+        if (! \is_string($directory)) {
             return [];
         }
 

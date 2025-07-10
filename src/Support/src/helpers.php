@@ -39,7 +39,7 @@ if (! \function_exists('memoize')) {
             return $callback($backtrace->getArguments());
         }
 
-        if(!\is_object($object)) {
+        if (! \is_object($object)) {
             throw new InvalidArgumentException('Memoize variable must be an object');
         }
 

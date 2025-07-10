@@ -57,7 +57,8 @@ trait WithIcon
         $rescueIcon = static function (Closure $callback): Closure|Renderable|string {
             try {
                 return $callback();
-            } catch (Throwable) {}
+            } catch (Throwable) {
+            }
 
             return '';
         };

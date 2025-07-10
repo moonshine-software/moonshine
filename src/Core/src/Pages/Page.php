@@ -323,7 +323,7 @@ abstract class Page implements PageContract
         $router = clone $this->getCore()->getRouter();
         $resource = $this->getResource();
 
-        if (!is_null($resource)) {
+        if (! \is_null($resource)) {
             $router = $resource->getRouter();
         }
 

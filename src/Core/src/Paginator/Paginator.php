@@ -102,7 +102,8 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
              * @var array<string, mixed> $links
              */
             $links = $linksCollection->map(function (array $link) use ($changeUrl): array {
-                $link['url'] = $changeUrl(is_string($link['url']) ? $link['url'] : null);
+                $link['url'] = $changeUrl(\is_string($link['url']) ? $link['url'] : null);
+
                 return $link;
             })->toArray();
 
@@ -260,7 +261,7 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        if($offset !== null) {
+        if ($offset !== null) {
             $this->getData()->put($offset, $value);
         }
     }

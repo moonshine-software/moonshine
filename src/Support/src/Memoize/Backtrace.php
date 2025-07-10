@@ -41,7 +41,7 @@ final class Backtrace
 
     public function getObjectName(): ?string
     {
-        if(\is_string($this->trace['class'])) {
+        if (\is_string($this->trace['class'])) {
             return $this->trace['class'];
         }
 
@@ -66,7 +66,7 @@ final class Backtrace
             $prefix = $this->zeroStack['line'];
         }
 
-        if(!\is_string($prefix)) {
+        if (! \is_string($prefix)) {
             $prefix = '';
         }
 

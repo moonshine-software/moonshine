@@ -27,7 +27,7 @@ final readonly class MenuCondition
     public function getData(): iterable
     {
         $data = $this->data instanceof Closure
-            ? call_user_func($this->data)
+            ? \call_user_func($this->data)
             : $this->data;
 
         if ($data instanceof MenuElementContract) {
@@ -44,11 +44,11 @@ final readonly class MenuCondition
 
     public function isBefore(MenuElementContract $element): bool
     {
-        if (!$this->before instanceof Closure) {
+        if (! $this->before instanceof Closure) {
             return false;
         }
 
-        return call_user_func($this->before, $element);
+        return \call_user_func($this->before, $element);
     }
 
     public function hasAfter(): bool
@@ -58,10 +58,10 @@ final readonly class MenuCondition
 
     public function isAfter(MenuElementContract $element): bool
     {
-        if (!$this->after instanceof Closure) {
+        if (! $this->after instanceof Closure) {
             return false;
         }
 
-        return call_user_func($this->after, $element);
+        return \call_user_func($this->after, $element);
     }
 }

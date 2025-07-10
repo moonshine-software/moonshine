@@ -47,7 +47,8 @@ class Enum extends Select implements CanBeEnum
             $rescueEnum = static function (Closure $callback): BackedEnum|null {
                 try {
                     return $callback();
-                } catch (Throwable) {}
+                } catch (Throwable) {
+                }
 
                 return null;
             };
