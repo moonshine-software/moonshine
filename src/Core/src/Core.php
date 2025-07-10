@@ -226,6 +226,7 @@ abstract class Core implements CoreContract, StatefulContract
      */
     public function getInstances(string $class): mixed
     {
+        /** @var T|null */
         return $this->instances[$class] ?? $this->getContainer($class);
     }
 
