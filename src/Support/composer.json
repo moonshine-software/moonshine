@@ -24,7 +24,7 @@
         "illuminate/view": "^10|^11|^12",
         "illuminate/support": "^10|^11|^12",
         "illuminate/contracts": "^10|^11|^12",
-        "moonshine/contracts": "^3.0"
+        "moonshine/contracts": "4.x-dev"
     },
     "autoload": {
         "psr-4": {

@@ -28,16 +28,16 @@
         "illuminate/filesystem": "^10|^11|^12",
         "symfony/psr-http-message-bridge": "^7.2",
         "nyholm/psr7": "^1.8",
-        "moonshine/contracts": "^3.0",
-        "moonshine/asset-manager": "^3.0",
-        "moonshine/color-manager": "^3.0",
-        "moonshine/core": "^3.0",
-        "moonshine/menu-manager": "^3.0",
-        "moonshine/support": "^3.0",
-        "moonshine/ui": "^3.0"
+        "moonshine/contracts": "4.x-dev",
+        "moonshine/asset-manager": "4.x-dev",
+        "moonshine/color-manager": "4.x-dev",
+        "moonshine/core": "4.x-dev",
+        "moonshine/menu-manager": "4.x-dev",
+        "moonshine/support": "4.x-dev",
+        "moonshine/ui": "4.x-dev"
     },
     "require-dev": {
-        "moonshine/import-export": "^1.0"
+        "moonshine/import-export": "4.x-dev"
     },
     "autoload": {
         "psr-4": {

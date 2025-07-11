@@ -25,10 +25,10 @@
         "illuminate/view": "^10|^11|^12",
         "illuminate/support": "^10|^11|^12",
         "illuminate/contracts": "^10|^11|^12",
-        "moonshine/asset-manager": "^3.0",
-        "moonshine/contracts": "^3.0",
-        "moonshine/core": "^3.0",
-        "moonshine/support": "^3.0"
+        "moonshine/asset-manager": "4.x-dev",
+        "moonshine/contracts": "4.x-dev",
+        "moonshine/core": "4.x-dev",
+        "moonshine/support": "4.x-dev"
     },
     "autoload": {
         "psr-4": {
