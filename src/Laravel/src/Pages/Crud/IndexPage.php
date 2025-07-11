@@ -313,7 +313,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     protected function getFiltersButton(): ActionButtonContract
     {
         return $this->modifyFiltersButton(
-            FiltersButton::for($this->getResource())
+            $this->getResource()->getFiltersButton(),
         );
     }
 
