@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Responses;
 
-use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\ToastType;

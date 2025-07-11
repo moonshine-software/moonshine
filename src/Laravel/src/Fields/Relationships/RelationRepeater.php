@@ -490,10 +490,10 @@ class RelationRepeater extends ModelRelationField implements
 
     private function saveRelation(array $items, Model $model): Model
     {
-        $items = new Collection($items);
+        $collection = new Collection($items);
 
         if (self::$silentApply) {
-            data_set($model, $this->getRelationName(), $items);
+            data_set($model, $this->getRelationName(), $collection);
 
             return $model;
         }
@@ -505,7 +505,7 @@ class RelationRepeater extends ModelRelationField implements
         $relatedKeyName = $related->getKeyName();
         $relatedQualifiedKeyName = $related->getQualifiedKeyName();
 
-        $ids = $items
+        $ids = $collection
             ->pluck($relatedKeyName)
             ->filter()
             ->toArray();
@@ -519,7 +519,7 @@ class RelationRepeater extends ModelRelationField implements
             static fn (Builder $q) => $q->delete()
         );
 
-        foreach ($items as $item) {
+        foreach ($collection as $item) {
             if (empty($item[$relatedKeyName])) {
                 unset($item[$relatedKeyName]);
                 $model->{$relationName}()->create($item);
