@@ -11,7 +11,6 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Buttons\FiltersButton;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Concerns\Page\HasFilters;
 use MoonShine\Laravel\Concerns\Page\HasHandlers;
