@@ -146,7 +146,7 @@ final class AssetManager implements AssetManagerContract
             ->toHtml();
     }
 
-    private function isRunningHot(): bool
+    public function isRunningHot(): bool
     {
         return $this->assetResolver->isDev() && is_file($this->getHotFile());
     }
