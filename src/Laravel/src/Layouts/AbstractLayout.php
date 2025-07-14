@@ -114,6 +114,10 @@ abstract class AbstractLayout implements LayoutContract
      */
     protected function assets(): array
     {
+        if ($this->assetManager->isRunningHot()) {
+            return [];
+        }
+
         return [
             $this->getMainThemeJs(),
             $this->getMainThemeCss(),
