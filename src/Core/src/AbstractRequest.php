@@ -98,4 +98,9 @@ class AbstractRequest implements RequestContract
     {
         return $this->getAll()->except($keys)->toArray();
     }
+
+    public function isAjax(): bool
+    {
+        return $this->getRequest()->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
+    }
 }

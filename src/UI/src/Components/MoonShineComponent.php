@@ -7,6 +7,7 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;

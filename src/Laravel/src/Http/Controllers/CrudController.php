@@ -7,15 +7,17 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Http\Request;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Laravel\Contracts\Notifications\MoonShineNotificationContract;
+use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
+use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
 use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Enums\HtmlMode;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +34,11 @@ final class CrudController extends MoonShineController
             ->only(['store', 'update']);
     }
 
-    public function index(MoonShineRequest $request): Jsonable
+    public function index(Request $request, CrudRequestContract $crudRequest): Jsonable
     {
         abort_if(! $request->wantsJson(), 403);
 
-        $resource = $request->getResource();
+        $resource = $crudRequest->getResource();
 
         if (\is_null($resource)) {
             abort(404, 'Resource not found');
@@ -55,11 +57,11 @@ final class CrudController extends MoonShineController
         );
     }
 
-    public function show(MoonShineRequest $request): Jsonable
+    public function show(Request $request, CrudRequestContract $crudRequest): Jsonable
     {
         abort_if(! $request->wantsJson(), 403);
 
-        $resource = $request->getResource();
+        $resource = $crudRequest->getResource();
 
         if (\is_null($resource)) {
             abort(404, 'Resource not found');
@@ -98,7 +100,7 @@ final class CrudController extends MoonShineController
 
     public function destroy(DeleteFormRequest $request): Response
     {
-        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
+        /* @var \MoonShine\Crud\Resources\CrudResource $resource */
         $resource = $request->getResource();
 
         $resource->setActivePage(
@@ -139,7 +141,7 @@ final class CrudController extends MoonShineController
 
     public function massDelete(MassDeleteFormRequest $request): Response
     {
-        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
+        /* @var \MoonShine\Crud\Resources\CrudResource $resource */
         $resource = $request->getResource();
 
         $resource->setActivePage(
@@ -180,7 +182,7 @@ final class CrudController extends MoonShineController
     protected function updateOrCreate(
         MoonShineFormRequest $request
     ): Response {
-        /* @var \MoonShine\Laravel\Resources\CrudResource $resource */
+        /* @var \MoonShine\Crud\Resources\CrudResource $resource */
         $resource = $request->getResource();
         $item = $resource->getItemOrInstance();
 

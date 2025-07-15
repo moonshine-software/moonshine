@@ -1,7 +1,7 @@
 <?php
 
 use MoonShine\Core\Collections\Components;
-use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Crud\Components\Fragment;
 use MoonShine\Laravel\Fields\Relationships\HasOne;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\UI\Components\FormBuilder;

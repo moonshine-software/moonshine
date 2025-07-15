@@ -7,9 +7,9 @@ namespace MoonShine\Laravel\Layouts;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Laravel\Components\Fragment;
-use MoonShine\UI\Components\{
-    Layout\Body,
+use MoonShine\Crud\Components\Fragment;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\UI\Components\{Layout\Body,
     Layout\Content,
     Layout\Div,
     Layout\Flash,

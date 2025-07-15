@@ -62,4 +62,6 @@ interface RequestContract
      * @param  array<string, string|int|float|null> $query
      */
     public function getUrlWithQuery(array $query): string;
+
+    public function isAjax(): bool;
 }

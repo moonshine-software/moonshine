@@ -174,7 +174,7 @@ describe('without special fields', function () {
 describe('with base crud resource', function () {
     it('crud create ajax', function () {
         /** @var TestCommentCrudResource $crudResource */
-        $crudResource = moonshine()
+        $crudResource = $this->moonshineCore
             ->resources([TestCommentCrudResource::class])
             ->getResources()
             ->findByClass(TestCommentCrudResource::class);
@@ -196,7 +196,7 @@ describe('with base crud resource', function () {
 
     it('crud update', function () {
         /** @var TestCommentCrudResource $crudResource */
-        $crudResource = moonshine()
+        $crudResource = $this->moonshineCore
             ->resources([TestCommentCrudResource::class])
             ->getResources()
             ->findByClass(TestCommentCrudResource::class);

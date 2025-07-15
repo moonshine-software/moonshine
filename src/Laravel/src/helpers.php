@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -17,12 +17,17 @@ use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
 use MoonShine\Laravel\MoonShineEndpoints;
 use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Applies\AppliesRegister;
 
 if (! \function_exists('moonshineRequest')) {
-    function moonshineRequest(): MoonShineRequest
+    /**
+     * @return MoonShineRequest
+     */
+    function moonshineRequest(): CrudRequestContract
     {
-        return app(MoonShineRequest::class);
+        /** @var MoonShineRequest */
+        return app(CrudRequestContract::class);
     }
 }
 
@@ -30,13 +35,6 @@ if (! \function_exists('moonshine')) {
     function moonshine(): CoreContract
     {
         return app(CoreContract::class);
-    }
-}
-
-if (! \function_exists('moonshineCache')) {
-    function moonshineCache(): Repository
-    {
-        return app('cache')->store(moonshineConfig()->getCacheDriver());
     }
 }
 
@@ -88,6 +86,17 @@ if (! \function_exists('appliesRegister')) {
     function appliesRegister(): AppliesRegisterContract
     {
         return app(AppliesRegisterContract::class);
+    }
+}
+
+if(! \function_exists('toast')) {
+    function toast(string $message, ToastType $type = ToastType::INFO, null|int|false $duration = null): void
+    {
+        session()->flash('toast', [
+            'type' => $type->value,
+            'message' => $message,
+            'duration' => $duration === false ? -1 : $duration,
+        ]);
     }
 }
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Laravel\Exceptions\FileFieldException;
+use MoonShine\Crud\Exceptions\FileFieldException;
 use MoonShine\UI\Fields\File;
 
 /**

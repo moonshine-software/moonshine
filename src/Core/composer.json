@@ -27,6 +27,7 @@
         "moonshine/support": "4.x-dev",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
+        "psr/simple-cache": "^3.0",
         "lee-to/fast-attributes": "^0.3"
     },
     "autoload": {

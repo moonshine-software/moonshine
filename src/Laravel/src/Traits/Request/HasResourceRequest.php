@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Request;
 
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\ResourceContract;
 
 /**
@@ -14,7 +15,7 @@ trait HasResourceRequest
     /**
      * @return null|T
      */
-    public function getResource(): ?ResourceContract
+    public function getResource(): ?CrudResourceContract
     {
         if (\is_null($this->getResourceUri())) {
             return null;

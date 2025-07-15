@@ -17,9 +17,10 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Contracts\HasQueryTagsContract;
-use MoonShine\Laravel\Exceptions\CrudResourceException;
-use MoonShine\Laravel\QueryTags\QueryTag;
+use MoonShine\Crud\Contracts\HasQueryTagsContract;
+use MoonShine\Crud\Exceptions\CrudResourceException;
+use MoonShine\Crud\QueryTags\QueryTag;
+use MoonShine\Crud\Traits\Resource\ResourceQuery;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
 use Throwable;
@@ -84,7 +85,7 @@ trait ResourceModelQuery
     /**
      * @param  bool  $orFail
      *
-     * @return ($orFail is true ? DataWrapperContract<T> : null|DataWrapperContract<T>)
+     * @return DataWrapperContract
      * @throws ModelNotFoundException<T>
      */
     public function findItem(bool $orFail = false): ?DataWrapperContract
@@ -113,8 +114,9 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
+     * @return Builder
      */
-    public function newQuery(): Builder
+    public function newQuery(): mixed
     {
         if (! \is_null($this->queryBuilder)) {
             return $this->queryBuilder;
@@ -131,8 +133,9 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
+     * @return Builder
      */
-    public function getQuery(): Builder
+    public function getQuery(): mixed
     {
         $this->queryBuilderFeatures();
 
@@ -144,7 +147,11 @@ trait ResourceModelQuery
         return $builder;
     }
 
-    public function customQueryBuilder(Builder $builder): static
+    /**
+     * @param  Builder  $builder
+     *
+     */
+    public function customQueryBuilder(mixed $builder): static
     {
         $this->customQueryBuilder = $builder;
 
@@ -335,8 +342,8 @@ trait ResourceModelQuery
      */
     protected function withParentResource(): static
     {
-        $relationName = moonshineRequest()->getParentRelationName();
-        $parentId = moonshineRequest()->getParentRelationId();
+        $relationName = $this->getCore()->getCrudRequest()->getParentRelationName();
+        $parentId = $this->getCore()->getCrudRequest()->getParentRelationId();
 
         if (\is_null($relationName) || \is_null($parentId)) {
             return $this;

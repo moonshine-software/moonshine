@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
+
 uses()->group('core');
 
 it('recognizes internal request as MoonShine request', function (): void {
@@ -13,7 +15,10 @@ it('recognizes internal request as MoonShine request', function (): void {
         ->get($resource->getIndexPageUrl())
         ->assertOk();
 
-    expect(moonshineRequest()->isMoonShineRequest())
+
+    $this->moonshineRequest = app(CrudRequestContract::class);
+
+    expect($this->moonshineRequest->isMoonShineRequest())
         ->toBeTrue();
 
 });
@@ -21,6 +26,6 @@ it('recognizes internal request as MoonShine request', function (): void {
 it('recognizes external request as non MoonShine request', function (): void {
     $this->get('/')->assertValid();
 
-    expect(moonshineRequest()->isMoonShineRequest())
+    expect($this->moonshineRequest->isMoonShineRequest())
         ->toBeFalse();
 });

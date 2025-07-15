@@ -12,4 +12,9 @@ final class ActionButtonException extends MoonShineException
     {
         return new self('Resource is required for action');
     }
+
+    public static function dataRequired(): self
+    {
+        return new self('Data is required for action');
+    }
 }

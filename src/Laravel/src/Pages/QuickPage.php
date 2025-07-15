@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Components\FlexibleRender;
 
@@ -13,6 +14,7 @@ use MoonShine\UI\Components\FlexibleRender;
  * Note: Not used in MenuManager and not registered with the ServiceProvider
  *
  * @method static static make(string $title = '')
+ *
  */
 final class QuickPage extends Page
 {

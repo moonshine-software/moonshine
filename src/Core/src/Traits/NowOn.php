@@ -16,8 +16,14 @@ trait NowOn
 
     private ?PageContract $nowOnPage = null;
 
+    /**
+     * @var  array<string, mixed>
+     */
     private array $nowOnQueryParams = [];
 
+    /**
+     * @param  array<string, mixed>  $params
+     */
     public function nowOn(
         ?PageContract $page = null,
         ?ResourceContract $resource = null,
@@ -44,6 +50,9 @@ trait NowOn
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function nowOnParams(array $params): static
     {
         $this->nowOnQueryParams = $params;
@@ -61,6 +70,9 @@ trait NowOn
         return $this->nowOnPage;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getNowOnQueryParams(): array
     {
         return $this->nowOnQueryParams;

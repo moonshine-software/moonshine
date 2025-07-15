@@ -13,12 +13,18 @@ use Throwable;
 trait HasHorizontalMode
 {
     protected bool $isHorizontal = false;
+
     protected string $listHtml = '';
+
     protected string $minColWidth = '200px';
+
     protected string $maxColWidth = '1fr';
 
-    public function horizontalMode(Closure|bool|null $condition = null, string $minColWidth = '200px', string $maxColWidth = '1fr'): static
-    {
+    public function horizontalMode(
+        Closure|bool|null $condition = null,
+        string $minColWidth = '200px',
+        string $maxColWidth = '1fr',
+    ): static {
         $this->isHorizontal = value($condition, $this) ?? true;
 
         if ($this->isHorizontalMode()) {
@@ -39,7 +45,8 @@ trait HasHorizontalMode
      */
     public function toListHtml(): string
     {
-        $data = $this->resolveValuesQuery()
+        $data = $this
+            ->resolveValuesQuery()
             ->get();
 
         $this->listHtml = '';
@@ -60,15 +67,15 @@ trait HasHorizontalMode
                 ->simpleMode()
                 ->customAttributes($this->getAttributes()->jsonSerialize())
                 ->customAttributes($this->getReactiveAttributes())
-                ->setNameAttribute($this->getNameAttribute((string) $item->getKey()))
+                ->setNameAttribute($this->getNameAttribute((string)$item->getKey()))
                 ->setValue($item->getKey());
 
-            $this->listHtml .= Str::of((string) $element)->wrap("<li>", "</li>");
+            $this->listHtml .= Str::of((string)$element)->wrap("<li>", "</li>");
         }
 
         return Str::of($this->listHtml)->wrap(
             "<ul class='horizontal-list' style='grid-template-columns: repeat(auto-fill, minmax($this->minColWidth, $this->maxColWidth))'>",
-            "</ul>"
+            "</ul>",
         )->value();
     }
 }

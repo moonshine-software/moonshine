@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Laravel\Components\Fragment;
-use MoonShine\Laravel\Components\Layout\Locales;
-use MoonShine\Laravel\Components\Layout\Notifications;
+use MoonShine\Crud\Components\Fragment;
+use MoonShine\Crud\Components\Layout\Locales;
+use MoonShine\Crud\Components\Layout\Notifications;
+use MoonShine\Crud\Components\Layout\Search;
+use MoonShine\Crud\Layouts\AbstractLayout;
 use MoonShine\Laravel\Components\Layout\Profile;
-use MoonShine\Laravel\Components\Layout\Search;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Components;
@@ -44,7 +45,7 @@ abstract class BaseLayout extends AbstractLayout
         return Favicon::make();
     }
 
-    protected function getHeadComponent(): Head
+    protected function getHeadComponent(bool $withAssetsFragment = true): Head
     {
         return Head::make([
             Meta::make()->customAttributes([
@@ -53,9 +54,10 @@ abstract class BaseLayout extends AbstractLayout
             ]),
             $this->getFaviconComponent()->bodyColor($this->getColorManager()->get('body')),
 
-            Fragment::make([
-                Assets::make(),
-            ])->name('assets'),
+            $withAssetsFragment ?
+                Fragment::make([
+                    Assets::make(),
+                ])->name('assets') : Assets::make(),
         ])
             ->bodyColor($this->getColorManager()->get('body'))
             ->title($this->getPage()->getTitle() ?: $this->getCore()->getConfig()->getTitle());
@@ -112,8 +114,9 @@ abstract class BaseLayout extends AbstractLayout
                 ...$this->sidebarSlot(),
                 Menu::make(),
                 When::make(
-                    fn (): bool => $this->isProfileEnabled(),
-                    fn (): array => [
+                    fn(): bool => $this->isProfileEnabled(),
+                    fn(): array
+                        => [
                         $this->getProfileComponent(sidebar: true),
                     ],
                 ),
@@ -146,8 +149,9 @@ abstract class BaseLayout extends AbstractLayout
             Fragment::make([
                 ...$this->topBarSlot(),
                 When::make(
-                    fn (): bool => $this->isProfileEnabled(),
-                    fn (): array => [
+                    fn(): bool => $this->isProfileEnabled(),
+                    fn(): array
+                        => [
                         $this->getProfileComponent(),
                     ],
                 ),
@@ -170,8 +174,8 @@ abstract class BaseLayout extends AbstractLayout
             Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), icon: 'home'),
             $this->getSearchComponent(),
             When::make(
-                fn (): bool => $this->isUseNotifications(),
-                static fn (): array => [Notifications::make()],
+                fn(): bool => $this->isUseNotifications(),
+                static fn(): array => [Notifications::make()],
             ),
             Locales::make(),
         ]);

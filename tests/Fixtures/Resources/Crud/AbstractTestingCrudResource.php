@@ -10,8 +10,8 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\TypeCasts\MixedDataCaster;
+use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
-use MoonShine\Laravel\Resources\CrudResource;
 use Throwable;
 
 abstract class AbstractTestingCrudResource extends CrudResource

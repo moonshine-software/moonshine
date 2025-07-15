@@ -10,10 +10,11 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Core;
 use MoonShine\Core\Storage\FileStorage;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 
 /**
- * @extends Core<MoonShineConfigurator>
+ * @extends Core<MoonShineConfigurator, Fields, MoonShineRouter>
  */
 final class MoonShine extends Core
 {
@@ -27,6 +28,11 @@ final class MoonShine extends Core
     public static function UIPath(string $path = ''): string
     {
         return self::path("/../UI$path");
+    }
+
+    public static function crudPath(string $path = ''): string
+    {
+        return self::path("/../Crud/src$path");
     }
 
     public function runningUnitTests(): bool

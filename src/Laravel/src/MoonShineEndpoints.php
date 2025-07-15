@@ -6,11 +6,11 @@ namespace MoonShine\Laravel;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\EndpointException;
 use MoonShine\Core\Pages\Pages;
-use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\UriKey;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ use Throwable;
 final readonly class MoonShineEndpoints implements EndpointsContract
 {
     public function __construct(
-        private MoonShineRouter $router
+        private RouterContract $router
     ) {
     }
 

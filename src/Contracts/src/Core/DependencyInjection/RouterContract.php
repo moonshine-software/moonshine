@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Contracts\Core\DependencyInjection;
 
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\StatefulContract;
@@ -30,7 +31,27 @@ interface RouterContract extends StatefulContract
 
     public function extractResourceUri(?ResourceContract $resource = null): ?string;
 
+    public function extractResourceItem(
+        int|string|null $key = null,
+        ?ResourceContract $resource = null
+    ): string|int|null;
+
     public function withPage(?PageContract $page = null): static;
 
     public function withResource(?ResourceContract $resource = null): static;
+
+    public function getParam(string $key, mixed $default = null): mixed;
+
+    public function forgetParam(string $key): static;
+
+    /**
+     * @param  array<string, mixed>  $params
+     * @return array<string, mixed>
+     */
+    public function getParams(array $params = []): array;
+
+    /**
+     * @param  array<string, mixed>  $params
+     */
+    public function withParams(array $params): static;
 }

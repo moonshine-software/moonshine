@@ -11,7 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\HasCoreContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Core\Traits\WithCore;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionProperty;
@@ -131,10 +134,10 @@ trait WithAsyncSearch
             $parentName = $this->getParent()?->getColumn();
         }
 
-        $resourceUri = $this->getNowOnResource()?->getUriKey() ?? moonshineRequest()->getResourceUri();
-        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
+        $resourceUri = $this->getNowOnResource()?->getUriKey() ?? $this->getCore()->getCrudRequest()->getResourceUri();
+        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', $this->getCore()->getCrudRequest()->getItemID());
 
-        return moonshineRouter()->getEndpoints()->withRelation(
+        return $this->getCore()->getRouter()->getEndpoints()->withRelation(
             'async-search',
             resourceItem: $itemID,
             relation: $this->getRelationName(),

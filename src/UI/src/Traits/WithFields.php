@@ -73,7 +73,7 @@ trait WithFields
     public function fields(FieldsContract|Closure|iterable $fields): static
     {
         if ($this->getCore()->runningInConsole()) {
-            $fields = new Collection(value($fields, $this));
+            $fields = $this->getCore()->getFieldsCollection(value($fields, $this));
             $fields = $fields->map(static fn (object $field): object => clone $field)
                 ->toArray();
         }

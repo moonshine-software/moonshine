@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
@@ -40,12 +41,13 @@ it('find resource', function (): void {
         )
         ->assertOk();
 
+    $this->moonshineRequest = app(CrudRequestContract::class);
 
-    expect(moonshineRequest()->getResource())
+    expect($this->moonshineRequest->getResource())
         ->toBe($this->resource)
-        ->and(moonshineRequest()->hasResource())
+        ->and($this->moonshineRequest->hasResource())
         ->toBeTrue()
-        ->and(moonshineRequest()->getResourceUri())
+        ->and($this->moonshineRequest->getResourceUri())
         ->toBe($this->resource->getUriKey())
     ;
 });
@@ -54,9 +56,9 @@ it('find resource', function (): void {
 it('onlyLink parameters', function (): void {
     fakeRequest('/admin/test-comment-resource/index-page?_parentId=test_image-99');
 
-    expect(moonshineRequest()->getParentRelationId())
+    expect($this->moonshineRequest->getParentRelationId())
         ->toBe('99')
-        ->and(moonshineRequest()->getParentRelationName())
+        ->and($this->moonshineRequest->getParentRelationName())
         ->toBe('testImage');
 });
 
@@ -69,8 +71,8 @@ it('correct relation name with key string', function (string $id): void {
 
     fakeRequest("/admin/test-comment-resource/index-page?_parentId=$relationName-$id");
 
-    expect(moonshineRequest()->getParentRelationId())
+    expect($this->moonshineRequest->getParentRelationId())
         ->toBe($id)
-        ->and(moonshineRequest()->getParentRelationName())
+        ->and($this->moonshineRequest->getParentRelationName())
         ->toBe((string) Str::of($relationName)->camel());
 })->with(['01J95W9RR73FH93AFCP0YP2VP1', 'ab193d8c-09d5-4185-a62d-d93ee1dd3bfe']);

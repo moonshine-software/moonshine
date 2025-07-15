@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace {namespace};
 
 use MoonShine\UI\Exceptions\ActionButtonException;
-use MoonShine\Laravel\MoonShineUI;
-use MoonShine\Laravel\Handlers\Handler;
+use MoonShine\Crud\Handlers\Handler;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\UI\Components\ActionButton;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,7 @@ class DummyClass extends Handler
         if ($this->isQueue()) {
             // Job here
 
-            MoonShineUI::toast(
+            toast(
                 __('moonshine::ui.resource.queued')
             );
 

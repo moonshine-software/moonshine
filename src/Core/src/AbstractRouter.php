@@ -6,6 +6,7 @@ namespace MoonShine\Core;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\EndpointsContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -132,6 +133,14 @@ abstract class AbstractRouter implements RouterContract, Stringable
     }
 
     public function extractResourceUri(?ResourceContract $resource = null): ?string
+    {
+        return null;
+    }
+
+    public function extractResourceItem(
+        int|string|null $key = null,
+        ?ResourceContract $resource = null
+    ): string|int|null
     {
         return null;
     }

@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -27,7 +28,6 @@ use MoonShine\UI\Traits\Fields\WithSorts;
  * The Field class complements the FormElement class with sugar and rendering logic
  *
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
- *
  */
 abstract class Field extends FormElement implements FieldContract
 {
