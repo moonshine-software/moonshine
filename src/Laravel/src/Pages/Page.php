@@ -10,7 +10,7 @@ use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Traits\Page\OverrideCrudPage;
 
 /**
- * @template TResource of CrudResourceContract|null = null
+ * @template TResource of CrudResourceContract = CrudResourceContract
  * @extends CrudPage<TResource, MoonShine>
  */
 abstract class Page extends CrudPage

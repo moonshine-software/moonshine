@@ -52,7 +52,7 @@ final class MoonShineRouter extends AbstractRouter
 
     public function extractResourceItem(
         int|string|null $key = null,
-        ?ResourceContract $resource = null
+        ?CrudResourceContract $resource = null
     ): string|int|null {
         if (\is_null($key)) {
             $key = $resource

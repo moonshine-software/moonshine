@@ -33,7 +33,7 @@ interface RouterContract extends StatefulContract
 
     public function extractResourceItem(
         int|string|null $key = null,
-        ?ResourceContract $resource = null
+        ?CrudResourceContract $resource = null
     ): string|int|null;
 
     public function withPage(?PageContract $page = null): static;
