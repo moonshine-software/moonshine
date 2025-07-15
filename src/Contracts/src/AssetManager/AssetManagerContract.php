@@ -31,4 +31,6 @@ interface AssetManagerContract extends Htmlable, StatefulContract
      * @param  list<AssetElementContract> $assets
      */
     public function append(AssetElementContract|array $assets): static;
+
+    public function isRunningHot(): bool;
 }
