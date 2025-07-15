@@ -332,4 +332,12 @@ abstract class Core implements CoreContract, StatefulContract
     {
         return $this->getContainer(CacheAttributesContract::class);
     }
+
+    /**
+     * @api
+     */
+    public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static
+    {
+        return $this;
+    }
 }

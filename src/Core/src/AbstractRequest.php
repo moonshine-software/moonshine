@@ -6,6 +6,7 @@ namespace MoonShine\Core;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 use MoonShine\Core\Traits\InteractsWithRequest;
 use Psr\Http\Message\ServerRequestInterface;
@@ -102,5 +103,12 @@ class AbstractRequest implements RequestContract
     public function isAjax(): bool
     {
         return $this->getRequest()->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    public function isWantsJson(): bool
+    {
+        $acceptable = $this->getRequest()->getHeader('Accept');
+
+        return isset($acceptable[0]) && Str::contains(strtolower($acceptable[0]), ['/json', '+json']);
     }
 }
