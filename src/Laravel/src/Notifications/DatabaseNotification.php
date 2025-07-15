@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use MoonShine\Laravel\Contracts\Notifications\NotificationButtonContract;
+use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Support\Enums\Color;
 
 final class DatabaseNotification extends Notification

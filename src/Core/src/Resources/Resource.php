@@ -17,8 +17,9 @@ use MoonShine\Support\Concerns\MenuFillerConcern;
 
 /**
  * @template TPage of PageContract = PageContract
+ * @template TCore of CoreContract = CoreContract
  *
- * @implements ResourceContract<TPage>
+ * @implements ResourceContract<TPage, TCore>
  */
 abstract class Resource implements ResourceContract
 {

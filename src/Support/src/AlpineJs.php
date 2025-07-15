@@ -107,7 +107,7 @@ final readonly class AlpineJs
     }
 
     /**
-     * @return true[]
+     * @return array<string, mixed>
      */
     public static function asyncWithQueryParamsAttributes(): array
     {

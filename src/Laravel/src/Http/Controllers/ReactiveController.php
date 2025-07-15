@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Illuminate\Http\Request;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
-use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\UI\Components\FieldsGroup;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ReactiveController extends MoonShineController
 {
-    public function __invoke(MoonShineRequest $request): JsonResponse
+    public function __invoke(Request $request, CrudRequestContract $crudRequest): JsonResponse
     {
-        $page = $request->getPage();
+        $page = $crudRequest->getPage();
 
         /** @var ?FormBuilderContract $form */
         $form = $page->getComponents()->findForm(
-            $request->getComponentName()
+            $crudRequest->getComponentName()
         );
 
         if (\is_null($form)) {

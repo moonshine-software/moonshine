@@ -57,9 +57,9 @@ trait BelongsToOrManyCreatable
 
     public function getFragmentUrl(): string
     {
-        $resource = $this->getNowOnResource() ?? moonshineRequest()->getResource();
-        $page = $this->getNowOnPage() ?? moonshineRequest()->getPage();
-        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
+        $resource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
+        $page = $this->getNowOnPage() ?? $this->getCore()->getCrudRequest()->getPage();
+        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', $this->getCore()->getCrudRequest()->getItemID());
 
         return $this->creatableFragmentUrl ?? $this->getCore()->getRouter()->getEndpoints()->toPage(
             page: $page,

@@ -22,7 +22,7 @@ class Dashboard extends Page
 
     public function getTitle(): string
     {
-        return $this->title ?: __('moonshine::ui.dashboard');
+        return $this->title ?: $this->getCore()->getTranslator()->get('moonshine::ui.dashboard');
     }
 
     /**

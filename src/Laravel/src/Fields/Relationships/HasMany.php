@@ -24,11 +24,11 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Collections\Components;
+use MoonShine\Crud\Contracts\Fields\HasModalModeContract;
+use MoonShine\Crud\Contracts\Fields\HasOutsideSwitcherContract;
+use MoonShine\Crud\Contracts\Fields\HasTabModeContract;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Contracts\Fields\HasModalModeContract;
-use MoonShine\Laravel\Contracts\Fields\HasOutsideSwitcherContract;
-use MoonShine\Laravel\Contracts\Fields\HasTabModeContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasModalModeConcern;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
@@ -156,7 +156,7 @@ class HasMany extends ModelRelationField implements
     public function getDefaultRedirect(Model|int|null|string $parentId): ?string
     {
         /** @var ?CrudResourceContract $resource */
-        $resource = $this->getNowOnResource() ?? moonshineRequest()->getResource();
+        $resource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
         return $resource->getFormPageUrl($parentId);
     }

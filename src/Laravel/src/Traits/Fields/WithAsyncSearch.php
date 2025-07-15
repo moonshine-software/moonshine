@@ -131,10 +131,10 @@ trait WithAsyncSearch
             $parentName = $this->getParent()?->getColumn();
         }
 
-        $resourceUri = $this->getNowOnResource()?->getUriKey() ?? moonshineRequest()->getResourceUri();
-        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
+        $resourceUri = $this->getNowOnResource()?->getUriKey() ?? $this->getCore()->getCrudRequest()->getResourceUri();
+        $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', $this->getCore()->getCrudRequest()->getItemID());
 
-        return moonshineRouter()->getEndpoints()->withRelation(
+        return $this->getCore()->getRouter()->getEndpoints()->withRelation(
             'async-search',
             resourceItem: $itemID,
             relation: $this->getRelationName(),

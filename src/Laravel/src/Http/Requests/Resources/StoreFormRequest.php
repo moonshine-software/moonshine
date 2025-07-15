@@ -6,8 +6,8 @@ namespace MoonShine\Laravel\Http\Requests\Resources;
 
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
-use MoonShine\Laravel\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use Throwable;

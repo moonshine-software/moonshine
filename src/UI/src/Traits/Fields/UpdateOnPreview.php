@@ -150,9 +150,12 @@ trait UpdateOnPreview
         }
 
         if ($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
+            $label = (string) $this->getCore()->getTranslator()->get('moonshine::ui.save');
+
             return (string) \call_user_func(
                 new UpdateOnPreviewPopover(
                     field: $this,
+                    label: $label,
                     component: $this->updateOnPreviewParentComponent,
                     route: $this->getCore()->getRouter()->getEndpoints()->updateField(
                         extra: [

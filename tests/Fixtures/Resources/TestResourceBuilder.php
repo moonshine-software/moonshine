@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
-use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Pages\Custom\CustomPageIndexWithFeatures;
 use MoonShine\UI\Fields\Email;
 use MoonShine\UI\Fields\Password;
@@ -24,7 +25,7 @@ class TestResourceBuilder
             $resource->setTestModel($model);
         }
 
-        moonshine()->resources([$resource]);
+        app(CoreContract::class)->resources([$resource]);
 
         return $resource;
     }

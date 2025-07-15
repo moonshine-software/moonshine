@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Buttons\CreateButton;
-use MoonShine\Laravel\Buttons\MassDeleteButton;
+use MoonShine\Crud\Buttons\CreateButton;
+use MoonShine\Crud\Buttons\MassDeleteButton;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Tests\Fixtures\Models\Comment;
@@ -41,7 +41,7 @@ it('policies in index', function () {
         $this->resource->getIndexPageUrl()
     )
         ->assertOk()
-        ->assertSeeHtml(CreateButton::for($this->resource))
+        ->assertSeeHtml(CreateButton::for('Create', $this->resource))
         ->assertSeeHtml(MassDeleteButton::for($this->resource))
     ;
 

@@ -13,6 +13,7 @@ use MoonShine\UI\Components\FlexibleRender;
  * Note: Not used in MenuManager and not registered with the ServiceProvider
  *
  * @method static static make(string $title = '')
+ *
  */
 final class QuickPage extends Page
 {

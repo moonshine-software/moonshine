@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Contracts\HasHandlersContract;
-use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Crud\Contracts\HasHandlersContract;
 use Symfony\Component\HttpFoundation\Response;
 
 final class HandlerController extends MoonShineController
 {
-    public function __invoke(string $resourceUri, string $handlerUri, MoonShineRequest $request): Response
+    public function __invoke(string $resourceUri, string $handlerUri, CrudRequestContract $request): Response
     {
         $resource = $request->getResource();
 

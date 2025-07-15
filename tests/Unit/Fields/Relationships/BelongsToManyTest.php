@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
-use MoonShine\Laravel\Contracts\Fields\HasPivotContract;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
+use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Crud\Contracts\Fields\HasPivotContract;
+use MoonShine\Crud\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;

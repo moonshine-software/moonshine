@@ -20,10 +20,10 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Collections\Components;
+use MoonShine\Crud\Contracts\Fields\HasModalModeContract;
+use MoonShine\Crud\Contracts\Fields\HasOutsideSwitcherContract;
+use MoonShine\Crud\Contracts\Fields\HasTabModeContract;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Contracts\Fields\HasModalModeContract;
-use MoonShine\Laravel\Contracts\Fields\HasOutsideSwitcherContract;
-use MoonShine\Laravel\Contracts\Fields\HasTabModeContract;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasModalModeConcern;
@@ -113,7 +113,7 @@ class HasOne extends ModelRelationField implements
      */
     protected function prepareFields(): FieldsContract
     {
-        $page = $this->getNowOnPage() ?? moonshineRequest()->findPage();
+        $page = $this->getNowOnPage() ?? $this->getCore()->getCrudRequest()->findPage();
 
         if (! $this->hasFields()) {
             $fields = $page?->getPageType() === PageType::INDEX
@@ -218,7 +218,7 @@ class HasOne extends ModelRelationField implements
     public function getDefaultRedirect(Model|int|null|string $parentId): ?string
     {
         /** @var ?CrudResourceContract $resource */
-        $resource = $this->getNowOnResource() ?? moonshineRequest()->getResource();
+        $resource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
         return $resource->getFormPageUrl($parentId);
     }
@@ -256,7 +256,7 @@ class HasOne extends ModelRelationField implements
         $resource = $this->getResource()->stopGettingItemFromUrl();
 
         /** @var ?ModelResource $parentResource */
-        $parentResource = $this->getNowOnResource() ?? moonshineRequest()->getResource();
+        $parentResource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
         $item = $this->toValue();
 
@@ -296,7 +296,7 @@ class HasOne extends ModelRelationField implements
             ->fields(
                 $fields->when(
                     ! \is_null($item),
-                    static fn (Fields $fields): Fields => $fields->push(
+                    static fn (FieldsContract $fields): FieldsContract => $fields->push(
                         Hidden::make('_method')->setValue('PUT'),
                     )
                 )->push(

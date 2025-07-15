@@ -27,7 +27,6 @@ use MoonShine\UI\Traits\Fields\WithSorts;
  * The Field class complements the FormElement class with sugar and rendering logic
  *
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
- *
  */
 abstract class Field extends FormElement implements FieldContract
 {

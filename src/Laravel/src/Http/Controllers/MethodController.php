@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Leeto\FastAttributes\Attributes;
-use MoonShine\Laravel\MoonShineRequest;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Support\Attributes\AsyncMethod;
 use MoonShine\Support\Enums\ToastType;
 use RuntimeException;
@@ -23,7 +24,7 @@ final class MethodController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function __invoke(MoonShineRequest $request, Container $container): Response
+    public function __invoke(Request $request, CrudRequestContract $crudRequest, Container $container): Response
     {
         $toast = [
             'type' => 'info',
@@ -32,9 +33,9 @@ final class MethodController extends MoonShineController
 
         try {
             $method = $request->input('method');
-            $page = $request->getPage();
-            $pageOrResource = $request->hasResource()
-                ? $request->getResource()
+            $page = $crudRequest->getPage();
+            $pageOrResource = $crudRequest->hasResource()
+                ? $crudRequest->getResource()
                 : $page;
 
             $target = method_exists($page, $method) ? $page : $pageOrResource;

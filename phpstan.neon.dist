@@ -17,6 +17,7 @@ parameters:
         - '#getResource\(\) should return#'
         - '#Call to an undefined method Illuminate\\Http\\Request::getScalar#'
         - '#PHPDoc tag @method for method make\(\)#'
+        - '#PHPDoc tag @method for method .+make\(\)#'
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
         - ./src/Laravel/routes/moonshine.php

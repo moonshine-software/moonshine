@@ -8,8 +8,8 @@ use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
-use MoonShine\Laravel\Contracts\Notifications\MoonShineNotificationContract;
-use MoonShine\Laravel\Contracts\Notifications\NotificationButtonContract;
+use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
+use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Support\Enums\Color;
 
