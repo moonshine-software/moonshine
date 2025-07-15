@@ -39,7 +39,9 @@ use ReflectionException;
  */
 final readonly class MenuAutoloader implements MenuAutoloaderContract
 {
-    public function __construct(private CoreContract $core) {}
+    public function __construct(private CoreContract $core)
+    {
+    }
 
     /**
      * @return PSMenu
@@ -114,7 +116,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
             $resolveItems($item, $items);
         }
 
-        $excludePages = static fn(PageContract $page): bool => ! $page instanceof CrudPageContract;
+        $excludePages = static fn (PageContract $page): bool => ! $page instanceof CrudPageContract;
 
         /** @var Collection<int, PageContract> $pages */
         $pages = $this->core->getPages();
@@ -128,7 +130,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
         /**
          * @var array<string, PSMenuItem|PSMenuGroupWithItems> $items
          */
-        $sort = static function(array $items): Collection {
+        $sort = static function (array $items): Collection {
             /**
              * @var Collection<array-key, PSMenuItem|PSMenuGroupWithItems> $collection
              * @var array<string, PSMenuItem|PSMenuGroupWithItems> $items
@@ -137,7 +139,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
 
             /** @phpstan-ignore return.type */
             return $collection
-                ->sortBy(fn(array $item): mixed => $item['position'] ?? INF)
+                ->sortBy(fn (array $item): mixed => $item['position'] ?? INF)
                 ->values();
         };
 
@@ -208,7 +210,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
         $resolved = $this->core->getContainer($filler);
 
         return MenuItem::make($filler)
-            ->when($canSee, fn(MenuItem $item): MenuItem => $item->canSee($this->canSee($resolved, $canSee)));
+            ->when($canSee, fn (MenuItem $item): MenuItem => $item->canSee($this->canSee($resolved, $canSee)));
     }
 
     /**
@@ -217,12 +219,8 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
      */
     private function canSee(string|MenuFillerContract $filler, string $method): Closure
     {
-        if (\is_string($filler)) {
-            $resolved = $this->core->getContainer($filler);
-        } else {
-            $resolved = $filler;
-        }
+        $resolved = \is_string($filler) ? $this->core->getContainer($filler) : $filler;
 
-        return static fn(): bool => (bool) $resolved->{$method}();
+        return static fn (): bool => (bool) $resolved->{$method}();
     }
 }

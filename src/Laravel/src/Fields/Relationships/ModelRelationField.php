@@ -14,13 +14,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
-use MoonShine\Contracts\Core\HasCoreContract;
 use MoonShine\Contracts\Core\HasResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\RelationFieldContract;
 use MoonShine\Core\Traits\HasResource;
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
@@ -284,8 +282,7 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         array $attributes = [],
         array $relations = [],
         mixed $related = null,
-    ): mixed
-    {
+    ): mixed {
         return $this->makeRelatedModel($key, $attributes, $relations, $related);
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Notifications;
 
+use DateTime;
 use DateTimeInterface;
 use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Crud\Contracts\Notifications\NotificationItemContract;
@@ -42,7 +43,7 @@ final readonly class NotificationMemoryItem implements NotificationItemContract
 
     public function getDate(): DateTimeInterface
     {
-        return $this->date ?? new \DateTime();
+        return $this->date ?? new DateTime();
     }
 
     public function getButton(): ?NotificationButtonContract

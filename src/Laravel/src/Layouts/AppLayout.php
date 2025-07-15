@@ -6,7 +6,6 @@ namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Crud\Components\Fragment;
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;

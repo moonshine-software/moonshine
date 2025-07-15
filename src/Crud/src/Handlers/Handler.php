@@ -45,7 +45,7 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     protected ?Closure $modifyButton = null;
 
     /**
-     * @var array<array-key, string|int>|(Closure(static $ctx): array<array-key, string|int>)
+     * @var array<array-key, string|int>|(Closure(static): array<array-key, string|int>)
      */
     protected array|Closure $notifyUsers = [];
 

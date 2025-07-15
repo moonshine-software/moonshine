@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Components\FlexibleRender;
 

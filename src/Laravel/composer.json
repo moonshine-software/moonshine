@@ -32,6 +32,7 @@
         "moonshine/asset-manager": "4.x-dev",
         "moonshine/color-manager": "4.x-dev",
         "moonshine/core": "4.x-dev",
+        "moonshine/crud": "4.x-dev",
         "moonshine/menu-manager": "4.x-dev",
         "moonshine/support": "4.x-dev",
         "moonshine/ui": "4.x-dev"

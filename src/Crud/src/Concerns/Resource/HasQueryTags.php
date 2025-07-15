@@ -6,8 +6,8 @@ namespace MoonShine\Crud\Concerns\Resource;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Crud\Contracts\HasQueryTagsContract;
-use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Crud\Pages\IndexPage;
+use MoonShine\Crud\QueryTags\QueryTag;
 
 /**
  * @mixin CrudResourceContract

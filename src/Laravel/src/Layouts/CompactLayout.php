@@ -8,7 +8,6 @@ use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Crud\Components\Fragment;
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\UI\Components\{Layout\Body,
     Layout\Content,
     Layout\Div,

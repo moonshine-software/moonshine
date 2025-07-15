@@ -25,7 +25,8 @@ final readonly class UpdateOnPreviewPopover
         private string $label,
         private string $component,
         private string $route,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): Popover
     {
@@ -41,7 +42,7 @@ final readonly class UpdateOnPreviewPopover
             ->name($name)
             ->showOnClick()
             ->content(
-                fn(): string
+                fn (): string
                     => (string)FormBuilder::make()
                     ->method(FormMethod::POST)
                     ->action($this->route)

@@ -12,6 +12,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Concerns\Page\HasFilters;
 use MoonShine\Crud\Concerns\Page\HasHandlers;
 use MoonShine\Crud\Concerns\Page\HasListComponent;
@@ -19,7 +20,6 @@ use MoonShine\Crud\Concerns\Page\HasMetrics;
 use MoonShine\Crud\Concerns\Page\HasQueryTags;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Crud\Resources\CrudResource;
-use MoonShine\Crud\Collections\Fields;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\ListOf;
@@ -93,7 +93,7 @@ class IndexPage extends CrudPage implements IndexPageContract
      */
     public function prepareBeforeRender(): void
     {
-        if(! $this->getResource()->can(Ability::VIEW_ANY)) {
+        if (! $this->getResource()->can(Ability::VIEW_ANY)) {
             $this->throw403();
         }
 

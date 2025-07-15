@@ -26,7 +26,7 @@ final readonly class CacheAttributes implements CacheAttributesContract
      * @template T of mixed
      * @param  Closure(): T  $default
      * @param  class-string  $target
-     * @param  class-string<\Attribute>  $attribute
+     * @param class-string<Attribute> $attribute
      * @param  int|null  $type
      * @param  string|null  $concrete
      * @param  string[]|null  $column
@@ -62,7 +62,7 @@ final readonly class CacheAttributes implements CacheAttributesContract
 
             $key = array_key_first($column ?? []);
 
-            if($column === null) {
+            if ($column === null) {
                 return $find();
             }
 

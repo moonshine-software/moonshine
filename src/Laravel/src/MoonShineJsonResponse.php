@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
-
 use MoonShine\Crud\JsonResponse;
 
 /**
@@ -14,4 +13,5 @@ use MoonShine\Crud\JsonResponse;
  * @method static static make(array $data = [])
  */
 final class MoonShineJsonResponse extends JsonResponse
-{}
+{
+}

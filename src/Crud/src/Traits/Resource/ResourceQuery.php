@@ -6,6 +6,7 @@ namespace MoonShine\Crud\Traits\Resource;
 
 use Attribute;
 use Closure;
+use DateInterval;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -369,7 +370,7 @@ trait ResourceQuery
             $this->getCore()->getCache()->set(
                 $this->getQueryCacheKey(),
                 $this->getQueryParams()->only($this->getCachedRequestKeys()),
-                new \DateInterval('PT2H'),
+                new DateInterval('PT2H'),
             );
         }
 

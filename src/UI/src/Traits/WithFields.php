@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
-use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;

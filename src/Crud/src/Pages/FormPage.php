@@ -201,20 +201,20 @@ class FormPage extends CrudPage implements FormPageContract
                     ...$fields
                         ->when(
                             ! \is_null($item),
-                            static fn(Fields $fields): Fields
+                            static fn (Fields $fields): Fields
                                 => $fields->push(
-                                Hidden::make('_method')->setValue('PUT'),
-                            ),
+                                    Hidden::make('_method')->setValue('PUT'),
+                                ),
                         )
                         ->toArray(),
                 ])
                 ->when(
                     ! $this->hasErrorsAbove(),
-                    fn(FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($this->hasErrorsAbove()),
+                    fn (FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($this->hasErrorsAbove()),
                 )
                 ->when(
                     $isAsync,
-                    fn(FormBuilderContract $formBuilder): FormBuilderContract
+                    fn (FormBuilderContract $formBuilder): FormBuilderContract
                         => $formBuilder
                         ->async(
                             events: array_filter([
@@ -233,7 +233,7 @@ class FormPage extends CrudPage implements FormPageContract
                 )
                 ->when(
                     $this->isPrecognitive() || ($this->getCore()->getCrudRequest()->isFragmentLoad('crud-form') && ! $isAsync),
-                    static fn(FormBuilderContract $form): FormBuilderContract => $form->precognitive(),
+                    static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive(),
                 )
                 ->name($resource->getUriKey())
                 ->submit(

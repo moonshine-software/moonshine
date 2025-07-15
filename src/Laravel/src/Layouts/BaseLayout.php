@@ -114,8 +114,8 @@ abstract class BaseLayout extends AbstractLayout
                 ...$this->sidebarSlot(),
                 Menu::make(),
                 When::make(
-                    fn(): bool => $this->isProfileEnabled(),
-                    fn(): array
+                    fn (): bool => $this->isProfileEnabled(),
+                    fn (): array
                         => [
                         $this->getProfileComponent(sidebar: true),
                     ],
@@ -149,8 +149,8 @@ abstract class BaseLayout extends AbstractLayout
             Fragment::make([
                 ...$this->topBarSlot(),
                 When::make(
-                    fn(): bool => $this->isProfileEnabled(),
-                    fn(): array
+                    fn (): bool => $this->isProfileEnabled(),
+                    fn (): array
                         => [
                         $this->getProfileComponent(),
                     ],
@@ -174,8 +174,8 @@ abstract class BaseLayout extends AbstractLayout
             Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), icon: 'home'),
             $this->getSearchComponent(),
             When::make(
-                fn(): bool => $this->isUseNotifications(),
-                static fn(): array => [Notifications::make()],
+                fn (): bool => $this->isUseNotifications(),
+                static fn (): array => [Notifications::make()],
             ),
             Locales::make(),
         ]);

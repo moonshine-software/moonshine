@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
-use MoonShine\Contracts\Core\PageContract;
-use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Contracts\Fields\HasTabModeContract;

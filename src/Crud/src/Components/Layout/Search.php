@@ -20,12 +20,12 @@ final class Search extends MoonShineComponent
     protected string $view = 'moonshine::components.layout.search';
 
     /**
-     * @var (Closure(FormBuilder $form, self $ctx): FormBuilder)|null
+     * @var (Closure(FormBuilder, self): FormBuilder)|null
      */
     protected ?Closure $modifyForm = null;
 
     /**
-     * @var (Closure(Text $input, self $ctx): Text)|null
+     * @var (Closure(Text, self): Text)|null
      */
     protected ?Closure $modifyInput = null;
 

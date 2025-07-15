@@ -12,7 +12,7 @@ use MoonShine\Core\Core;
  */
 trait WithCore
 {
-    /** @var TCore|null  */
+    /** @var TCore|null */
     private ?CoreContract $core = null;
 
     /**

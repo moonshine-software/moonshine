@@ -140,8 +140,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
     public function extractResourceItem(
         int|string|null $key = null,
         ?CrudResourceContract $resource = null
-    ): string|int|null
-    {
+    ): string|int|null {
         return null;
     }
 

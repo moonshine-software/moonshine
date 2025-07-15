@@ -20,7 +20,8 @@ final class LoginForm implements FormContract
     public function __construct(
         private readonly string $action,
         private CoreContract $core
-    ) {}
+    ) {
+    }
 
     public function __invoke(): FormBuilderContract
     {

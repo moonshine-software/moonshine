@@ -34,8 +34,7 @@ final readonly class FiltersForm implements FormContract
     public function __construct(
         private CrudResourceContract $resource,
         private CoreContract $core
-    )
-    {
+    ) {
     }
 
     /**

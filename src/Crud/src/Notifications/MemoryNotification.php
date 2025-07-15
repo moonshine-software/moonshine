@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Notifications;
 
+use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
@@ -51,7 +52,7 @@ final class MemoryNotification implements MoonShineNotificationContract
             id: $id,
             message: $message,
             color: $color,
-            date: new \DateTime(),
+            date: new DateTime(),
             button: $button,
             icon: $icon
         );

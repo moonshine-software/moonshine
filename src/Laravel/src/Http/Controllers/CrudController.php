@@ -17,7 +17,6 @@ use MoonShine\Laravel\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
-use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Enums\HtmlMode;
 use Symfony\Component\HttpFoundation\Response;

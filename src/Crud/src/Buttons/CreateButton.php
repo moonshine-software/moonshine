@@ -6,7 +6,6 @@ namespace MoonShine\Crud\Buttons;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Components\ActionButton;

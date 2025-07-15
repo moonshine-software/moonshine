@@ -6,9 +6,9 @@ namespace MoonShine\Crud\Concerns\Page;
 
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Crud\Exceptions\FilterException;
-use MoonShine\Crud\Collections\Fields;
 use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\HiddenIds;

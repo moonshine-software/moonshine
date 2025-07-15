@@ -7,7 +7,6 @@ namespace MoonShine\Crud\Buttons;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
@@ -45,7 +44,7 @@ final class EditButton
                 array_filter([
                     '_component_name' => $componentName ?? $resource->getListComponentName(),
                     '_async_form' => $isAsync,
-                    ...$query
+                    ...$query,
                 ]),
                 fragment: 'crud-form'
             );

@@ -89,7 +89,7 @@ if (! \function_exists('appliesRegister')) {
     }
 }
 
-if(! \function_exists('toast')) {
+if (! \function_exists('toast')) {
     function toast(string $message, ToastType $type = ToastType::INFO, null|int|false $duration = null): void
     {
         session()->flash('toast', [

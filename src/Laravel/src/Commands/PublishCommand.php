@@ -6,12 +6,13 @@ namespace MoonShine\Laravel\Commands;
 
 use Closure;
 use Illuminate\Filesystem\Filesystem;
+
+use function Laravel\Prompts\{confirm, info, multiselect};
+
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use Symfony\Component\Console\Attribute\AsCommand;
-
-use function Laravel\Prompts\{confirm, info, multiselect};
 
 #[AsCommand(name: 'moonshine:publish')]
 class PublishCommand extends MoonShineCommand
@@ -80,7 +81,7 @@ class PublishCommand extends MoonShineCommand
         if (confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
             $this->flushNodeModules();
 
-            self::updateNodePackages(static fn($packages) => [
+            self::updateNodePackages(static fn ($packages) => [
                                                                  '@tailwindcss/typography' => '^0.5',
                                                                  '@tailwindcss/line-clamp' => '^0.4',
                                                                  '@tailwindcss/aspect-ratio' => '^0.4',
@@ -269,7 +270,7 @@ class PublishCommand extends MoonShineCommand
         );
 
         $this->replaceInFile(
-            $overrideNamespace ? "namespace $overrideNamespace;": "namespace MoonShine\Laravel\\$targetNamespace;",
+            $overrideNamespace ? "namespace $overrideNamespace;" : "namespace MoonShine\Laravel\\$targetNamespace;",
             "namespace $outputNamespace;",
             $outputClassPath,
         );

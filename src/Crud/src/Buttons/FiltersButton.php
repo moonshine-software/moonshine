@@ -8,10 +8,8 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Crud\Forms\FiltersForm;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\UI\Components\ActionButton;
-use Psr\SimpleCache\InvalidArgumentException;
 
 final class FiltersButton
 {
@@ -22,8 +20,7 @@ final class FiltersButton
         string $label,
         FormBuilderContract $form,
         CrudResourceContract $resource
-    ): ActionButtonContract
-    {
+    ): ActionButtonContract {
         $count = Collection::make($resource->getFilterParams())
             ->filter(fn ($value): bool => (new self())->withoutEmptyFilter($value))
             ->count();

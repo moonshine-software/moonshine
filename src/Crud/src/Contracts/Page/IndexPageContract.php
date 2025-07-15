@@ -7,7 +7,6 @@ namespace MoonShine\Crud\Contracts\Page;
 use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
-use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasListComponentContract;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Contracts\HasFiltersContract;

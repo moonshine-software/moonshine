@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components;
 
-use MoonShine\Contracts\Core\CrudResourceContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use JsonException;
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Crud\Resources\CrudResource;
@@ -117,9 +117,9 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         $this->customAttributes([
             AlpineJs::eventBlade(JsEvent::FRAGMENT_UPDATED, $this->getName())
             => 'fragmentUpdate(`' . $this->getAsyncEvents() . '`,' . json_encode(
-                    $this->getAsyncCallback(),
-                    JSON_THROW_ON_ERROR
-                ) . ')',
+                $this->getAsyncCallback(),
+                JSON_THROW_ON_ERROR
+            ) . ')',
         ]);
     }
 }

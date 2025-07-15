@@ -16,7 +16,7 @@ final class CrudResourceException extends MoonShineException
 
     public static function abilityNotFound(string|Ability $ability): self
     {
-        $value = is_string($ability) ? $ability : $ability->value;
+        $value = \is_string($ability) ? $ability : $ability->value;
 
         return new self("ability '$value' not found in the system");
     }

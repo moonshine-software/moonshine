@@ -183,7 +183,7 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(RequestContract::class, Request::class);
         $this->app->bind(
             CacheInterface::class,
-            static fn(Application $app): CacheInterface => $app->get('cache')->store(
+            static fn (Application $app): CacheInterface => $app->get('cache')->store(
                 $app->get(ConfiguratorContract::class)->getCacheDriver()
             )
         );
