@@ -110,7 +110,7 @@ abstract class AbstractLayout implements LayoutContract
     }
 
     /**
-     * @return non-empty-array<AssetElementContract>
+     * @return AssetElementContract[]
      */
     protected function assets(): array
     {
