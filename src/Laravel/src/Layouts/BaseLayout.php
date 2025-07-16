@@ -226,7 +226,7 @@ abstract class BaseLayout extends AbstractLayout
         $logo = $small ? 'logo-small.svg' : 'logo.svg';
 
         return $this->getAssetManager()->getAsset(
-            $this->getCore()->getConfig()->getLogo($small) ?? "vendor/moonshine/$logo",
+            $this->getCore()->getConfig()->getLogo($small) ?? "/vendor/moonshine/$logo",
         );
     }
 

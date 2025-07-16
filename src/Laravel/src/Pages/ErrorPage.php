@@ -40,7 +40,7 @@ class ErrorPage extends Page
      */
     protected function components(): iterable
     {
-        $logo = $this->getAssetManager()->getAsset('vendor/moonshine/logo-small.svg');
+        $logo = $this->getAssetManager()->getAsset('/vendor/moonshine/logo-small.svg');
 
         $backUrl = $this->getCore()->getRouter()->getEndpoints()->home();
 
