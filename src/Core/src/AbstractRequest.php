@@ -11,7 +11,7 @@ use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 use MoonShine\Core\Traits\InteractsWithRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AbstractRequest implements RequestContract
+abstract class AbstractRequest implements RequestContract
 {
     use InteractsWithRequest;
 
