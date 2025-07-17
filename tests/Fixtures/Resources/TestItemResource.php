@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Crud\JsonResponse;
+use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\MorphMany;
-use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
-use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Support\Attributes\AsyncMethod;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -133,14 +133,14 @@ class TestItemResource extends AbstractTestingResource
     }
 
     #[AsyncMethod]
-    public function testAsyncMethod(MoonShineRequest $request, MoonShineJsonResponse $response): MoonShineJsonResponse
+    public function testAsyncMethod(CrudRequestContract $request, JsonResponse $response): JsonResponse
     {
         return $response->setData([
             'var' => $request->input('var'),
         ]);
     }
 
-    public function testAsyncMethod2(MoonShineRequest $request, MoonShineJsonResponse $response): MoonShineJsonResponse
+    public function testAsyncMethod2(CrudRequestContract $request, JsonResponse $response): JsonResponse
     {
         return $response->setData([
             'var' => $request->input('var'),

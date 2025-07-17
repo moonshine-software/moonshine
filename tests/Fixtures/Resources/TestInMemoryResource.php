@@ -7,7 +7,7 @@ namespace MoonShine\Tests\Fixtures\Resources;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Laravel\Resources\CrudResource;
+use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\UI\Fields\Field;
 
 final class TestInMemoryResource extends CrudResource

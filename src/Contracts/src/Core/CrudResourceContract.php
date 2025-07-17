@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -16,6 +17,7 @@ use MoonShine\Contracts\UI\TableBuilderContract;
 use Throwable;
 
 /**
+ * @template TCore of CoreContract = CoreContract
  * @template TData of mixed = mixed
  * @template-covariant TIndexPage of null|CrudPageContract = null
  * @template-covariant TFormPage of null|CrudPageContract = null
@@ -26,7 +28,7 @@ use Throwable;
  * @extends CrudResourceWithPagesContract<TData, TIndexPage, TFormPage, TDetailPage>
  * @extends CrudResourceWithFieldsContract<TFields>
  * @extends CrudResourceWithResponseModifiersContract<TData>
- * @extends ResourceContract<CrudPageContract>
+ * @extends ResourceContract<CrudPageContract, TCore>
  */
 interface CrudResourceContract extends
     ResourceContract,

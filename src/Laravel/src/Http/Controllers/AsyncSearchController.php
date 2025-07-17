@@ -6,8 +6,8 @@ namespace MoonShine\Laravel\Http\Controllers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
-use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
+use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Crud\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;

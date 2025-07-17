@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MoonShine\Core;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 use MoonShine\Core\Traits\InteractsWithRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AbstractRequest implements RequestContract
+abstract class AbstractRequest implements RequestContract
 {
     use InteractsWithRequest;
 
@@ -23,6 +23,14 @@ class AbstractRequest implements RequestContract
     {
         return $this->request;
     }
+
+    abstract public function getSession(string $key, mixed $default = null): mixed;
+
+    abstract public function getFormErrors(?string $bag = null): array;
+
+    abstract public function getOld(string $key, mixed $default = null): mixed;
+
+    abstract public function getFile(string $key): mixed;
 
     public function get(string $key, mixed $default = null): mixed
     {
@@ -39,26 +47,6 @@ class AbstractRequest implements RequestContract
         $default = \is_scalar($default) ? $default : null;
 
         return \is_scalar($value) ? $value : $default;
-    }
-
-    public function getSession(string $key, mixed $default = null): mixed
-    {
-        return $default;
-    }
-
-    public function getFormErrors(?string $bag = null): array
-    {
-        return [];
-    }
-
-    public function getOld(string $key, mixed $default = null): mixed
-    {
-        return $default;
-    }
-
-    public function getFile(string $key): mixed
-    {
-        return Arr::get($this->getRequest()->getUploadedFiles(), $key);
     }
 
     public function has(string $key): bool
@@ -97,5 +85,17 @@ class AbstractRequest implements RequestContract
     public function getExcept(array|string $keys): array
     {
         return $this->getAll()->except($keys)->toArray();
+    }
+
+    public function isAjax(): bool
+    {
+        return $this->getRequest()->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    public function isWantsJson(): bool
+    {
+        $acceptable = $this->getRequest()->getHeader('Accept');
+
+        return isset($acceptable[0]) && Str::contains(strtolower($acceptable[0]), ['/json', '+json']);
     }
 }

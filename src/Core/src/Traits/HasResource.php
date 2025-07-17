@@ -8,7 +8,7 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\Exceptions\ResourceException;
 
 /**
- * @template T of ResourceContract|null
+ * @template T of ResourceContract
  */
 trait HasResource
 {
@@ -17,11 +17,11 @@ trait HasResource
      */
     protected ?ResourceContract $resource = null;
 
+    /**
+     * @param  T  $resource
+     */
     public function setResource(ResourceContract $resource): static
     {
-        /**
-         * @phpstan-ignore assign.propertyType
-         */
         $this->resource = $resource;
 
         return $this;
@@ -33,7 +33,7 @@ trait HasResource
     }
 
     /**
-     * @return T
+     * @return null|T
      */
     public function getResource(): ?ResourceContract
     {

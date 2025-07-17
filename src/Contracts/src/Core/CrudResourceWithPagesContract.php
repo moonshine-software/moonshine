@@ -74,6 +74,27 @@ interface CrudResourceWithPagesContract
         null|string|array $fragment = null
     ): string;
 
+    /**
+     * @param  string|string[]  $fragment
+     * @param  array<string, string|int|float|null>  $params
+     */
+    public function getFragmentLoadUrl(
+        string|array $fragment,
+        ?PageContract $page = null,
+        DataWrapperContract|int|string|null $key = null,
+        array $params = []
+    ): string;
+
+    /**
+     * @param  array<string, string|int|float|null>  $params
+     */
+    public function getAsyncMethodUrl(
+        string $method,
+        ?string $message = null,
+        array $params = [],
+        ?PageContract $page = null,
+    ): string;
+
     public function isIndexPage(): bool;
 
     public function isFormPage(): bool;

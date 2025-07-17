@@ -17,6 +17,7 @@ use Illuminate\Support\Stringable;
 use MoonShine\Contracts\Core\HasResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\RelationFieldContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Exceptions\FieldException;
@@ -28,8 +29,9 @@ use Throwable;
  * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
  *
  * @implements HasResourceContract<ModelResource>
+ * @implements RelationFieldContract<Model>
  */
-abstract class ModelRelationField extends Field implements HasResourceContract
+abstract class ModelRelationField extends Field implements RelationFieldContract, HasResourceContract
 {
     /** @use HasResource<ModelResource> */
     use HasResource;
@@ -138,7 +140,7 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         if (\is_null($resource) && $this->isMorph()) {
             /** @var ModelResource $resource */
             $resource = $this->getCore()->getResources()->findByUri(
-                moonshineRequest()->getResourceUri(),
+                $this->getCore()->getCrudRequest()->getResourceUri(),
             );
         }
 
@@ -255,9 +257,33 @@ abstract class ModelRelationField extends Field implements HasResourceContract
         return $this->getResource()?->getColumn() ?? 'id';
     }
 
+    /**
+     * @return null|Model
+     */
+    public function getRelated(): mixed
+    {
+        return $this->getRelatedModel();
+    }
+
     public function getRelatedModel(): ?Model
     {
         return $this->relatedModel;
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     * @param  array<string, mixed>  $relations
+     * @param  null|Model  $related
+     *
+     * @return null|Model
+     */
+    public function makeRelated(
+        int|string|null $key = null,
+        array $attributes = [],
+        array $relations = [],
+        mixed $related = null,
+    ): mixed {
+        return $this->makeRelatedModel($key, $attributes, $relations, $related);
     }
 
     public function makeRelatedModel(

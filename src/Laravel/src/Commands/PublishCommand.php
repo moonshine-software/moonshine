@@ -21,17 +21,19 @@ class PublishCommand extends MoonShineCommand
 
     public function handle(): int
     {
-        $types = $this->argument('type') ? [$this->argument('type')] : multiselect(
-            'Types',
-            [
-                'assets' => 'Assets',
-                'assets-template' => 'Assets template',
-                'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
-                'forms' => 'System Forms (LoginFrom, FiltersForm)',
-                'pages' => 'System Pages (ProfilePage, LoginPage, ErrorPage)',
-            ],
-            required: true
-        );
+        $types = $this->argument('type')
+            ? [$this->argument('type')]
+            : multiselect(
+                'Types',
+                [
+                    'assets' => 'Assets',
+                    'assets-template' => 'Assets template',
+                    'resources' => 'System Resources (MoonShineUserResource, MoonShineUserRoleResource)',
+                    'forms' => 'System Forms (LoginFrom, FiltersForm)',
+                    'pages' => 'System Pages (ProfilePage, LoginPage, ErrorPage)',
+                ],
+                required: true,
+            );
 
         if (\in_array('assets', $types, true)) {
             $this->call('vendor:publish', [
@@ -63,30 +65,30 @@ class PublishCommand extends MoonShineCommand
     {
         $this->copyStub(
             'assets/css',
-            resource_path('css/app.css')
+            resource_path('css/app.css'),
         );
 
         $this->copyStub(
             'assets/postcss.config.preset',
-            base_path('postcss.config.js')
+            base_path('postcss.config.js'),
         );
 
         $this->copyStub(
             'assets/tailwind.config.preset',
-            base_path('tailwind.config.js')
+            base_path('tailwind.config.js'),
         );
 
         if (confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
             $this->flushNodeModules();
 
             self::updateNodePackages(static fn ($packages) => [
-                    '@tailwindcss/typography' => '^0.5',
-                    '@tailwindcss/line-clamp' => '^0.4',
-                    '@tailwindcss/aspect-ratio' => '^0.4',
-                    'tailwindcss' => '^3',
-                    'autoprefixer' => '^10',
-                    'postcss' => '^8',
-                ] + $packages);
+                                                                 '@tailwindcss/typography' => '^0.5',
+                                                                 '@tailwindcss/line-clamp' => '^0.4',
+                                                                 '@tailwindcss/aspect-ratio' => '^0.4',
+                                                                 'tailwindcss' => '^3',
+                                                                 'autoprefixer' => '^10',
+                                                                 'postcss' => '^8',
+                                                             ] + $packages);
 
             $this->installNodePackages();
 
@@ -116,19 +118,19 @@ class PublishCommand extends MoonShineCommand
         $this->replaceInFile(
             "use MoonShine\Laravel\Models\\$model;",
             "use MoonShine\Laravel\Models\\$model;\nuse MoonShine\Laravel\Resources\ModelResource;",
-            $fullClassPath
+            $fullClassPath,
         );
 
         $this->replaceInFile(
             "use MoonShine\Laravel\Pages\\$dir",
             "use App\MoonShine\Resources\\$dir\Pages",
-            $fullClassPath
+            $fullClassPath,
         );
 
         $this->replaceInFile(
             "use MoonShine\Laravel\Resources\\$name;",
             "use $targetNamespace\\$name;",
-            app_path('Providers/MoonShineServiceProvider.php')
+            app_path('Providers/MoonShineServiceProvider.php'),
         );
 
         $provider = file_get_contents(app_path('Providers/MoonShineServiceProvider.php'));
@@ -141,13 +143,13 @@ class PublishCommand extends MoonShineCommand
             $this->replaceInFile(
                 MoonShineUserResource::class,
                 "App\MoonShine\Resources\MoonShineUser\MoonShineUserResource",
-                $fullClassPath
+                $fullClassPath,
             );
 
             $this->replaceInFile(
                 MoonShineUserRoleResource::class,
                 "App\MoonShine\Resources\MoonShineUserRole\MoonShineUserRoleResource",
-                $fullClassPath
+                $fullClassPath,
             );
         };
 
@@ -163,7 +165,7 @@ class PublishCommand extends MoonShineCommand
                 'login' => 'LoginForm',
                 'filters' => 'FiltersForm',
             ],
-            required: true
+            required: true,
         );
 
         if (\in_array('login', $formTypes, true)) {
@@ -181,12 +183,17 @@ class PublishCommand extends MoonShineCommand
     {
         $this->makeDir($this->getDirectory('/Forms'));
 
-        $this->copySystemClass($className, 'Forms');
+        $this->copySystemClass(
+            $className,
+            'Forms',
+            overrideDir: MoonShine::crudPath('/Forms'),
+            overrideNamespace: 'MoonShine\Crud\Forms',
+        );
 
         $this->replaceInConfig(
             $configKey,
             $this->getNamespace('\Forms\\' . $className) . "::class",
-            $className
+            $className,
         );
     }
 
@@ -199,7 +206,7 @@ class PublishCommand extends MoonShineCommand
                 'login' => 'LoginPage',
                 'error' => 'ErrorPage',
             ],
-            required: true
+            required: true,
         );
 
         if (\in_array('profile', $pageTypes, true)) {
@@ -226,40 +233,46 @@ class PublishCommand extends MoonShineCommand
         $this->replaceInFile(
             "namespace {$copyInfo['target_namespace']};\n",
             "namespace {$copyInfo['target_namespace']};\n\nuse MoonShine\Laravel\Pages\Page;",
-            $copyInfo['full_class_path']
+            $copyInfo['full_class_path'],
         );
 
         $this->replaceInConfig(
             $configKey,
             $this->getNamespace('\Pages\\' . $className) . "::class",
-            $className
+            $className,
         );
     }
 
     /**
      * @return array{full_class_path: string, target_namespace: string}
      */
-    private function copySystemClass(string $name, string $dir, ?string $outputDir = null, ?Closure $then = null): array
-    {
+    private function copySystemClass(
+        string $name,
+        string $dir,
+        ?string $outputDir = null,
+        ?Closure $then = null,
+        ?string $overrideDir = null,
+        ?string $overrideNamespace = null,
+    ): array {
         $outputDir ??= $dir;
 
-        $targetClassPath = "src/$dir/$name.php";
+        $targetClassPath = ($overrideDir ?: MoonShine::path("src/$dir")) . "/$name.php";
         $outputClassPath = $this->getDirectory("/$outputDir/$name.php");
 
-        $targetNamespace = str_replace('/', '\\', $dir);
+        $targetNamespace = $overrideNamespace ?: str_replace('/', '\\', $dir);
         $tmpNamespace = str_replace('/', '\\', $outputDir);
         $outputNamespace = $this->getNamespace("\\$tmpNamespace");
 
         (new Filesystem())->makeDirectory($this->getDirectory($outputDir), recursive: true, force: true);
         (new Filesystem())->put(
             $outputClassPath,
-            file_get_contents(MoonShine::path($targetClassPath))
+            file_get_contents($targetClassPath),
         );
 
         $this->replaceInFile(
-            "namespace MoonShine\Laravel\\$targetNamespace;",
+            $overrideNamespace ? "namespace $overrideNamespace;" : "namespace MoonShine\Laravel\\$targetNamespace;",
             "namespace $outputNamespace;",
-            $outputClassPath
+            $outputClassPath,
         );
 
         if ($then instanceof Closure) {

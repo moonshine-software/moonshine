@@ -20,6 +20,7 @@ use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\Core\DependencyInjection\CacheAttributesContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\DependencyInjection\OptimizerCollectionContract;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
@@ -31,6 +32,12 @@ use MoonShine\Contracts\MenuManager\MenuAutoloaderContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Core\Collections\OptimizerCollection;
 use MoonShine\Core\Core;
+use MoonShine\Core\Support\CacheAttributes;
+use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
+use MoonShine\Crud\Contracts\Page\DetailPageContract;
+use MoonShine\Crud\Contracts\Page\FormPageContract;
+use MoonShine\Crud\Contracts\Page\IndexPageContract;
+use MoonShine\Crud\Notifications\MemoryNotification;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToManyModelApply;
 use MoonShine\Laravel\Applies\Filters\BelongsToModelApply;
@@ -58,10 +65,6 @@ use MoonShine\Laravel\Commands\MakeUserCommand;
 use MoonShine\Laravel\Commands\OptimizeClearCommand;
 use MoonShine\Laravel\Commands\OptimizeCommand;
 use MoonShine\Laravel\Commands\PublishCommand;
-use MoonShine\Laravel\Contracts\Notifications\MoonShineNotificationContract;
-use MoonShine\Laravel\Contracts\Page\DetailPageContract;
-use MoonShine\Laravel\Contracts\Page\FormPageContract;
-use MoonShine\Laravel\Contracts\Page\IndexPageContract;
 use MoonShine\Laravel\DependencyInjection\AssetResolver;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
@@ -74,15 +77,13 @@ use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\MoonShineRequest;
-use MoonShine\Laravel\Notifications\MoonShineMemoryNotification;
 use MoonShine\Laravel\Notifications\MoonShineNotification;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
-use MoonShine\Laravel\Support\CacheAttributes;
-use MoonShine\Laravel\Support\MenuAutoloader;
+use MoonShine\MenuManager\MenuAutoloader;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\UI\Applies\AppliesRegister;
 use MoonShine\UI\Fields\Checkbox;
@@ -94,6 +95,7 @@ use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use Psr\SimpleCache\CacheInterface;
 
 final class MoonShineServiceProvider extends ServiceProvider
 {
@@ -154,7 +156,7 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(RouterContract::class, MoonShineRouter::class);
 
         $this->app->{app()->runningUnitTests() ? 'bind' : 'singleton'}(
-            MoonShineRequest::class,
+            CrudRequestContract::class,
             static fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
         );
 
@@ -167,7 +169,7 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->singleton(CacheAttributesContract::class, CacheAttributes::class);
         $this->app->singleton(
             MoonShineNotificationContract::class,
-            moonshineConfig()->isUseDatabaseNotifications() ? MoonShineNotification::class : MoonShineMemoryNotification::class
+            moonshineConfig()->isUseDatabaseNotifications() ? MoonShineNotification::class : MemoryNotification::class
         );
         $this->app->singleton(OptimizerCollectionContract::class, fn (): OptimizerCollection => new OptimizerCollection(
             cachePath: $this->app->basePath('bootstrap/cache/moonshine.php'),
@@ -179,6 +181,12 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
         $this->app->bind(RequestContract::class, Request::class);
+        $this->app->bind(
+            CacheInterface::class,
+            static fn (Application $app): CacheInterface => $app->get('cache')->store(
+                $app->get(ConfiguratorContract::class)->getCacheDriver()
+            )
+        );
 
         $this->app->bind(StorageContract::class, static fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
             $parameters['disk'] ?? $parameters[0] ?? 'public',
@@ -325,6 +333,7 @@ final class MoonShineServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('MoonShine\UI\Components', 'moonshine');
         Blade::componentNamespace('MoonShine\Laravel\Components', 'moonshine-laravel');
+        Blade::componentNamespace('MoonShine\Crud\Components', 'moonshine-crud');
 
         $this
             ->registerBladeDirectives()

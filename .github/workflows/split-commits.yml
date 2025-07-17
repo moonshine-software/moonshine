@@ -17,6 +17,7 @@ jobs:
           - { namespace: ColorManager, repo: color-manager }
           - { namespace: Contracts, repo: contracts }
           - { namespace: Core, repo: core }
+          - { namespace: Crud, repo: crud }
           - { namespace: Laravel, repo: laravel }
           - { namespace: MenuManager, repo: menu-manager }
           - { namespace: Support, repo: support }

@@ -5,29 +5,22 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\MenuManager;
 
 /**
- * @internal
  * @phpstan-type PSMenuItem array{
- *      filler: class-string<MenuFillerContract>,
- *      canSee: null|string,
- *      position: null|int,
- *  }
+ *     filler: class-string<MenuFillerContract>,
+ *     canSee: string,
+ *     position: null|int,
+ * }
  *
  * @phpstan-type PSMenuGroup array{
- *       label: string,
- *       class: class-string<MenuFillerContract>,
- *       icon: string|null,
- *       canSee: null|string,
- *       translatable: bool,
- *   }
+ *     label: string,
+ *     class: class-string<MenuFillerContract>,
+ *     icon: string|null,
+ *     canSee: string,
+ *     translatable: bool,
+ * }
  *
- * @phpstan-type PSMenu array{
- *      string,
- *      PSMenuItem|array{
- *           group: PSMenuGroup,
- *           items: list<PSMenuItem>,
- *           position: null|int,
- *      }
- *  }
+ * @phpstan-type PSMenuGroupWithItems array{group: PSMenuGroup, items: list<PSMenuItem>, position: null|int}
+ * @phpstan-type PSMenu list<PSMenuItem|PSMenuGroupWithItems>
  */
 interface MenuAutoloaderContract
 {

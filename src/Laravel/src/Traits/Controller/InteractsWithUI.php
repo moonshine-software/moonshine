@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Controller;
 
-use MoonShine\Laravel\Contracts\Notifications\NotificationButtonContract;
-use MoonShine\Laravel\MoonShineUI;
+use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\ToastType;
 
@@ -13,7 +12,7 @@ trait InteractsWithUI
 {
     protected function toast(string $message, ToastType $type = ToastType::INFO, null|int|false $duration = null): void
     {
-        MoonShineUI::toast($message, $type, $duration);
+        toast($message, $type, $duration);
     }
 
     /**

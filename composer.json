@@ -50,6 +50,7 @@
         "moonshine/color-manager": "self.version",
         "moonshine/contracts": "self.version",
         "moonshine/core": "self.version",
+        "moonshine/crud": "self.version",
         "moonshine/laravel": "self.version",
         "moonshine/menu-manager": "self.version",
         "moonshine/support": "self.version",
@@ -64,6 +65,7 @@
             "MoonShine\\ColorManager\\": "src/ColorManager/src",
             "MoonShine\\Contracts\\": "src/Contracts/src",
             "MoonShine\\Core\\": "src/Core/src",
+            "MoonShine\\Crud\\": "src/Crud/src",
             "MoonShine\\Laravel\\": "src/Laravel/src",
             "MoonShine\\Laravel\\Database\\Factories\\": "src/Laravel/database/factories/",
             "MoonShine\\MenuManager\\": "src/MenuManager/src",
@@ -110,6 +112,7 @@
         "test:types:core": "vendor/bin/phpstan analyse src/Core/src --memory-limit=-1 --level=max",
         "test:types:s": "vendor/bin/phpstan analyse src/Support/src --memory-limit=-1 --level=max",
         "test:types:mm": "vendor/bin/phpstan analyse src/MenuManager/src --memory-limit=-1 --level=max",
+        "test:types:crud": "vendor/bin/phpstan analyse src/Crud/src --memory-limit=-1 --level=6",
         "test:types:ui": "vendor/bin/phpstan analyse src/UI/src --memory-limit=-1 --level=6",
         "test:types:l": "vendor/bin/phpstan analyse src/Laravel/src --memory-limit=-1 --level=5",
         "test:types:packages": [
@@ -119,6 +122,7 @@
             "@test:types:mm",
             "@test:types:s",
             "@test:types:core",
+            "@test:types:crud",
             "@test:types:ui",
             "@test:types:l"
         ],

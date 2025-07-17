@@ -14,7 +14,6 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Attributes\Layout;
 use MoonShine\Core\Collections\Components;
-use MoonShine\Core\Core;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
@@ -25,11 +24,14 @@ use MoonShine\Support\Enums\Layer;
 use MoonShine\Support\Enums\PageType;
 
 /**
- * @template TCore of Core
- * @template TResource of ResourceContract|null = null
+ * @template TCore of CoreContract = CoreContract
+ * @template TResource of ResourceContract = ResourceContract
+ *
+ * @implements PageContract<TCore, TResource>
  */
 abstract class Page implements PageContract
 {
+    /** @use WithCore<TCore> */
     use WithCore;
     /** @use HasResource<TResource> */
     use HasResource;
@@ -66,6 +68,9 @@ abstract class Page implements PageContract
 
     protected bool $loaded = false;
 
+    /**
+     * @param  TCore  $core
+     */
     public function __construct(
         CoreContract $core,
     ) {
@@ -349,6 +354,16 @@ abstract class Page implements PageContract
     public function isActive(): bool
     {
         return $this->getCore()->getRouter()->extractPageUri() === $this->getUriKey();
+    }
+
+    /**
+     * @api
+     *
+     * @param null|TResource $resource
+     */
+    public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static
+    {
+        return $this;
     }
 
     /**

@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Pages;
 
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Attributes\Layout;
-use MoonShine\Laravel\Forms\LoginForm;
+use MoonShine\Crud\Forms\LoginForm;
 use MoonShine\Laravel\Layouts\LoginLayout;
 use MoonShine\MenuManager\Attributes\SkipMenu;
 
@@ -20,7 +20,12 @@ class LoginPage extends Page
     protected function components(): iterable
     {
         return [
-            $this->getCore()->getConfig()->getForm('login', LoginForm::class),
+            $this->getCore()->getConfig()->getForm(
+                'login',
+                LoginForm::class,
+                action: $this->getRouter()->to('authenticate'),
+                core: $this->getCore()
+            ),
         ];
     }
 }

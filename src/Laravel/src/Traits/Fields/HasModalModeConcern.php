@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 use Closure;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Core\Collections\Components;
-use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Crud\Components\Fragment;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Modal;
 

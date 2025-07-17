@@ -19,11 +19,13 @@ final readonly class UpdateOnPreviewPopover
 {
     /**
      * @param  FieldContract&HasUpdateOnPreviewContract  $field
-     * @param  string  $component
-     * @param  string  $route
      */
-    public function __construct(private HasUpdateOnPreviewContract $field, private string $component, private string $route)
-    {
+    public function __construct(
+        private HasUpdateOnPreviewContract $field,
+        private string $label,
+        private string $component,
+        private string $route,
+    ) {
     }
 
     public function __invoke(): Popover
@@ -32,20 +34,24 @@ final readonly class UpdateOnPreviewPopover
 
         return Popover::make(
             '',
-            (string) Link::make(
+            (string)Link::make(
                 '#',
-                (string) $this->field->toFormattedValue()
-            )->icon('pencil')
+                (string)$this->field->toFormattedValue(),
+            )->icon('pencil'),
         )
             ->name($name)
             ->showOnClick()
             ->content(
-                fn (): string => (string) FormBuilder::make()
+                fn (): string
+                    => (string)FormBuilder::make()
                     ->method(FormMethod::POST)
                     ->action($this->route)
                     ->async(events: [
                         AlpineJs::event(JsEvent::POPOVER_TOGGLED, $name),
-                        AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, $this->component . "-" . $this->field->getData()?->getKey()),
+                        AlpineJs::event(
+                            JsEvent::TABLE_ROW_UPDATED,
+                            $this->component . "-" . $this->field->getData()?->getKey(),
+                        ),
                     ])
                     ->fields([
                         Flex::make([
@@ -61,7 +67,7 @@ final readonly class UpdateOnPreviewPopover
                                 ->disableUpdateOnPreview(),
                         ]),
                     ])
-                    ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary'])
+                    ->submit($this->label, ['class' => 'btn-primary']),
             );
     }
 }

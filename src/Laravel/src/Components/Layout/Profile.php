@@ -60,7 +60,7 @@ final class Profile extends MoonShineComponent
 
     public function getAvatarPlaceholder(): string
     {
-        return $this->defaultAvatar ?? $this->getAssetManager()->getAsset('vendor/moonshine/avatar.jpg');
+        return $this->defaultAvatar ?? $this->getAssetManager()->getAsset('/vendor/moonshine/avatar.jpg');
     }
 
     private function getDefaultName(): string

@@ -11,8 +11,8 @@ use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Contracts\UI\TableRowContract;
-use MoonShine\Laravel\Contracts\Notifications\MoonShineNotificationContract;
-use MoonShine\Laravel\Http\Responses\MoonShineJsonResponse;
+use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
+use MoonShine\Crud\JsonResponse;
 use MoonShine\Laravel\Pages\QuickPage;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
@@ -31,22 +31,28 @@ abstract class MoonShineController extends BaseController
     ) {
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     protected function json(
         string $message = '',
         array $data = [],
         ?string $redirect = null,
         ToastType $messageType = ToastType::SUCCESS,
         int $status = Response::HTTP_OK
-    ): MoonShineJsonResponse {
-        return MoonShineJsonResponse::make(data: $data)
+    ): JsonResponse {
+        return JsonResponse::make(data: $data)
             ->setStatusCode($status)
             ->toast($message, $messageType)
             ->when(
                 $redirect,
-                static fn (MoonShineJsonResponse $response): MoonShineJsonResponse => $response->redirect($redirect)
+                static fn (JsonResponse $response): JsonResponse => $response->redirect($redirect)
             );
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     protected function view(string $path, array $data = []): PageContract
     {
         return QuickPage::make()->setContentView($path, $data);

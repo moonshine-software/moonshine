@@ -11,7 +11,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\Tabs\Tab;
-use MoonShine\UI\Exceptions\MoonShineComponentException;
+use MoonShine\UI\Exceptions\ComponentException;
 use Throwable;
 
 class Tabs extends AbstractWithComponents
@@ -95,7 +95,7 @@ class Tabs extends AbstractWithComponents
             $this->getComponents(),
             static function (ComponentsContract $tabs): void {
                 if ($tabs->every(static fn ($tab): bool => ! $tab instanceof Tab)) {
-                    throw MoonShineComponentException::onlyTabAllowed();
+                    throw ComponentException::onlyTabAllowed();
                 }
             }
         );

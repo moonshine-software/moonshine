@@ -68,5 +68,14 @@ interface EndpointsContract
         array $extra = []
     ): string;
 
+    public function withRelation(
+        string $action,
+        int|string|null $resourceItem = null,
+        ?string $relation = null,
+        ?string $resourceUri = null,
+        ?string $pageUri = null,
+        ?string $parentField = null,
+    ): string;
+
     public function home(): string;
 }

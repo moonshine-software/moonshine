@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
+use MoonShine\Crud\Handlers\Handler;
 use MoonShine\ImportExport\Contracts\HasImportExportContract;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\Traits\ImportExportConcern;
-use MoonShine\Laravel\Handlers\Handler;
 use MoonShine\Laravel\Resources\ModelResource;
 
 abstract class AbstractTestingResource extends ModelResource implements HasImportExportContract

@@ -7,10 +7,11 @@ namespace MoonShine\Laravel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 
-class MoonShineRequest extends Request
+class MoonShineRequest extends Request implements CrudRequestContract
 {
     /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
@@ -58,11 +59,6 @@ class MoonShineRequest extends Request
              */
             ->before('-unique-')
             ->value();
-    }
-
-    public function isOnResourceRoute(): bool
-    {
-        return Str::of($this->url())->contains('resource/');
     }
 
     public function getFragmentLoad(): ?string

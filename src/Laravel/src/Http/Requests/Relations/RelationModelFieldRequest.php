@@ -10,7 +10,9 @@ use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 use MoonShine\Support\Enums\PageType;
@@ -21,7 +23,7 @@ class RelationModelFieldRequest extends FormRequest
 {
     /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
-    /** @use HasPageRequest<CrudPageContract<Fields>> */
+    /** @use HasPageRequest<CrudPageContract<ModelResource, MoonShine, Fields>> */
     use HasPageRequest;
 
     public function getRelationName(): string
@@ -48,6 +50,9 @@ class RelationModelFieldRequest extends FormRequest
                     ->onlyHasFields()
                     ->findByColumn($parentField);
 
+                /**
+                 * @var Fields $fields
+                 */
                 $fields = $parent instanceof ModelRelationField
                     ? $parent->getResource()?->getFormFields()
                     : $parent->getFields();

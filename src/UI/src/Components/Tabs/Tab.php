@@ -13,7 +13,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
-use MoonShine\UI\Exceptions\MoonShineComponentException;
+use MoonShine\UI\Exceptions\ComponentException;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 use Throwable;
@@ -66,11 +66,11 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
     }
 
     /**
-     * @throws MoonShineComponentException
+     * @throws ComponentException
      */
     public function getView(): string
     {
-        throw MoonShineComponentException::tabsAreNotRendering();
+        throw ComponentException::tabsAreNotRendering();
     }
 
     public function active(Closure|bool|null $condition = null): static

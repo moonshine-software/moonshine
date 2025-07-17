@@ -6,10 +6,10 @@ namespace MoonShine\Laravel\Exceptions;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use MoonShine\Core\Exceptions\MoonShineException;
+use MoonShine\Crud\Exceptions\NotFoundException;
 use MoonShine\Laravel\Pages\ErrorPage;
 
-final class MoonShineNotFoundException extends MoonShineException
+final class MoonShineNotFoundException extends NotFoundException
 {
     public function report(): void
     {

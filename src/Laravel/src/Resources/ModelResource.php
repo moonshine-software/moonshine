@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -16,17 +17,23 @@ use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Attributes\DestroyHandler;
-use MoonShine\Laravel\Attributes\MassDestroyHandler;
-use MoonShine\Laravel\Attributes\SaveHandler;
+use MoonShine\Crud\Attributes\DestroyHandler;
+use MoonShine\Crud\Attributes\MassDestroyHandler;
+use MoonShine\Crud\Attributes\SaveHandler;
+use MoonShine\Crud\Concerns\Resource\HasFilters;
+use MoonShine\Crud\Contracts\Fields\HasOutsideSwitcherContract;
+use MoonShine\Crud\Contracts\Page\DetailPageContract;
+use MoonShine\Crud\Contracts\Page\FormPageContract;
+use MoonShine\Crud\Contracts\Page\IndexPageContract;
+use MoonShine\Crud\Contracts\Resource\WithQueryBuilderContract;
+use MoonShine\Crud\Resources\CrudResource;
+use MoonShine\Crud\Traits\Resource\ResourceWithFields;
+use MoonShine\Laravel\Applies\FieldsWithoutFilters;
 use MoonShine\Laravel\Collections\Fields;
-use MoonShine\Laravel\Contracts\Fields\HasOutsideSwitcherContract;
-use MoonShine\Laravel\Contracts\Page\DetailPageContract;
-use MoonShine\Laravel\Contracts\Page\FormPageContract;
-use MoonShine\Laravel\Contracts\Page\IndexPageContract;
-use MoonShine\Laravel\Contracts\Resource\WithQueryBuilderContract;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\MoonShineAuth;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\Enums\Ability;
@@ -39,7 +46,11 @@ use Throwable;
  * @template-covariant TFormPage of null|FormPageContract = null
  * @template-covariant TDetailPage of null|DetailPageContract = null
  *
- * @extends CrudResource<TData, TIndexPage, TFormPage, TDetailPage, ModelNotFoundException<TData>, Fields>
+ * @extends CrudResource<MoonShine, TData, TIndexPage, TFormPage, TDetailPage, ModelNotFoundException<TData>, Fields>
+ * @implements WithQueryBuilderContract<Builder>
+ *
+ * @use ResourceWithFields<Fields>
+ * @use HasFilters<Fields>
  */
 abstract class ModelResource extends CrudResource implements WithQueryBuilderContract
 {
@@ -52,6 +63,16 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
     protected string $model;
 
     protected string $column = '';
+
+    /**
+     * @deprecated Will be removed in 5.0
+     * @return list<class-string<FieldContract>>
+     * @see IndexPage
+     */
+    protected function getIgnoredFields(): array
+    {
+        return FieldsWithoutFilters::LIST;
+    }
 
     public function flushState(): void
     {
@@ -192,7 +213,9 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
         });
 
         if ($this->isDeleteRelationships()) {
-            $this->getOutsideFields()->each($relationDestroyer);
+            /** @var Fields<ModelRelationField> $outsideCollection */
+            $outsideCollection = $this->getOutsideFields();
+            $outsideCollection->each($relationDestroyer);
         }
 
         return (bool) tap($item->getOriginal()->delete(), fn (): DataWrapperContract => $this->afterDeleted($item));
@@ -249,7 +272,6 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
     /**
      * @param DataWrapperContract<TData> $item
-     * @param Fields $fields
      * @return TData
      */
     private function resolveSaveHandler(SaveHandler $handler, DataWrapperContract $item, FieldsContract $fields): Model

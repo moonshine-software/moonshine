@@ -4,104 +4,17 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Collections;
 
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Crud\Collections\Fields as BaseFields;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use MoonShine\UI\Collections\Fields as BaseFields;
 use Throwable;
 
 /**
  * @template T of FieldContract = FieldContract
- * @extends BaseFields<T>
+ * @extends BaseFields<T, ModelRelationField>
  */
 final class Fields extends BaseFields
 {
-    /**
-     * @return self<ModelRelationField>
-     * @throws Throwable
-     */
-    public function onlyOutside(): self
-    {
-        /** @var self<ModelRelationField> */
-        return $this->filter(
-            static fn (FieldContract $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function withoutOutside(): self
-    {
-        return $this->exceptElements(
-            static fn (ComponentContract $element): bool => $element instanceof ModelRelationField && $element->isOutsideComponent()
-        );
-    }
-
-    /**
-     * @return self<ModelRelationField>
-     * @throws Throwable
-     */
-    public function onlyRelationFields(): self
-    {
-        /** @var self<ModelRelationField> */
-        return $this->filter(
-            static fn (FieldContract $field): bool => $field instanceof ModelRelationField
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function withoutRelationFields(): self
-    {
-        return $this->exceptElements(
-            static fn (ComponentContract $element): bool => $element instanceof ModelRelationField
-        );
-    }
-
-    /**
-     *
-     * @throws Throwable
-     */
-    public function indexFields(): self
-    {
-        return $this->onlyFields(withWrappers: true);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function formFields(bool $withOutside = true): self
-    {
-        return $this->when(
-            ! $withOutside,
-            static fn (self $fields): self => $fields->exceptElements(
-                static fn (ComponentContract $element): bool => ($element instanceof ModelRelationField && $element->isOutsideComponent())
-            )
-        );
-    }
-
-    /**
-     * @throws Throwable
-     */
-    public function detailFields(bool $withOutside = false, bool $onlyOutside = false): self
-    {
-        if ($onlyOutside) {
-            return $this->filter(
-                static fn (FieldContract $field): bool => $field instanceof ModelRelationField && $field->isOutsideComponent()
-            );
-        }
-
-        if ($withOutside) {
-            return $this;
-        }
-
-        return $this->filter(
-            static fn (FieldContract $field): bool => ! ($field instanceof ModelRelationField && $field->isOutsideComponent())
-        );
-    }
-
     /**
      * @throws Throwable
      */

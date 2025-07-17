@@ -48,6 +48,11 @@ interface PageContract extends
      */
     public function getRoute(array $params = []): string;
 
+    /**
+     * @param  TResource|null  $resource
+     *
+     * @return $this
+     */
     public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static;
 
     public function getTitle(): string;

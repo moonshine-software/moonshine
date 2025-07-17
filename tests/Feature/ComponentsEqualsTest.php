@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Alert;
 use MoonShine\UI\Components\Badge;
@@ -257,7 +258,7 @@ describe('Layouts', function () {
     it('menu', function () {
         compare(
             Menu::make()->top()->scrollTo(),
-            ['menu-manager' => moonshineMenu(), 'top' => true, 'scroll-to' => true]
+            ['menu-manager' => $this->moonshineCore->getContainer(MenuManagerContract::class), 'top' => true, 'scroll-to' => true]
         );
     })->skip('only primitive can pass in tests');
 

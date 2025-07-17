@@ -8,10 +8,10 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Laravel\Commands\InstallCommand;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
-use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
@@ -40,7 +40,7 @@ class TestCase extends Orchestra
 
     protected CoreContract $moonshineCore;
 
-    protected MoonShineRequest $moonshineRequest;
+    protected CrudRequestContract $moonshineRequest;
 
     protected static bool $hasRunOnce = false;
 
@@ -49,7 +49,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->moonshineCore = $this->app->make(CoreContract::class);
-        $this->moonshineRequest = $this->moonshineCore->getContainer(MoonShineRequest::class);
+        $this->moonshineRequest = $this->moonshineCore->getContainer(CrudRequestContract::class);
         $this->moonshineCore->flushState();
 
         if (! static::$hasRunOnce) {

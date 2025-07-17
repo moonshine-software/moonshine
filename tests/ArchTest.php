@@ -7,8 +7,17 @@ arch('moonshine')
     ->toUseStrictTypes();
 
 arch('globals')
-    ->expect(['dd', 'dump', 'debugbar', 'trap', 'collect', 'str', 'rescue'])
+    ->expect(['dd', 'dump', 'dumpType', 'debugbar', 'trap', 'collect', 'str', 'rescue'])
     ->not->toBeUsed();
+
+arch('app')
+    ->expect(['app'])
+    ->not->toBeUsed()->ignoring(['MoonShine\Laravel', 'App']);
+
+arch('translates')
+    ->expect(['__'])
+    ->not->toBeUsed()
+    ->ignoring(['MoonShine\Laravel', 'App']);
 
 arch('contracts')
     ->expect('MoonShine\Contracts')
@@ -46,7 +55,21 @@ $contextDependenciesMap = [
         'Illuminate\Support',
         'Psr\Container',
         'Psr\Http\Message',
+        'Psr\SimpleCache',
         'Leeto\FastAttributes',
+    ],
+    'MoonShine\Crud' => [
+        'MoonShine\Core',
+        'MoonShine\AssetManager',
+        'MoonShine\Contracts',
+        'MoonShine\Support',
+        'MoonShine\UI',
+        'Illuminate\View',
+        'Illuminate\Support',
+        'Illuminate\Contracts',
+        'Psr\SimpleCache',
+        'Leeto\FastAttributes',
+        'Symfony\Component\HttpFoundation',
     ],
     'MoonShine\MenuManager' => [
         'MoonShine\Contracts',
@@ -77,6 +100,7 @@ $contextDependenciesMap = [
         'Illuminate\View',
         'Psr\Container',
         'Psr\Http\Message',
+        'Psr\SimpleCache',
     ],
 ];
 

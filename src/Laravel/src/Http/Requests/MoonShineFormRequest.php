@@ -7,7 +7,7 @@ namespace MoonShine\Laravel\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Core\Exceptions\ResourceException;
-use MoonShine\Laravel\Resources\CrudResource;
+use MoonShine\Crud\Resources\CrudResource;
 use Throwable;
 
 class MoonShineFormRequest extends FormRequest

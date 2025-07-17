@@ -11,9 +11,12 @@ use MoonShine\Contracts\Core\ResourcesContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use Psr\Container\ContainerInterface;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * @template TConfig of ConfiguratorContract = ConfiguratorContract
+ * @template TFields of FieldsContract = FieldsContract
+ * @template TRouter of RouterContract = RouterContract
  */
 interface CoreContract
 {
@@ -45,6 +48,11 @@ interface CoreContract
 
     public function getRequest(): RequestContract;
 
+    public function getCrudRequest(): CrudRequestContract;
+
+    /**
+     * @return TRouter
+     */
     public function getRouter(): RouterContract;
 
     /**
@@ -59,9 +67,11 @@ interface CoreContract
      */
     public function getStorage(...$parameters): StorageContract;
 
+    public function getCache(): CacheInterface;
+
     /**
      * @param  iterable<array-key, ComponentContract|FieldContract>  $items
-     *
+     * @return TFields
      */
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 

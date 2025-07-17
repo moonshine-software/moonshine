@@ -17,6 +17,8 @@ use MoonShine\Contracts\UI\LayoutContract;
  */
 interface ConfiguratorContract extends ArrayAccess
 {
+    public function getNamespace(string $path = '', ?string $base = null): string;
+
     public function getTitle(): string;
 
     /**

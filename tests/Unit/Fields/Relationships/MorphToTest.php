@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\Contracts\Fields\HasAsyncSearchContract;
-use MoonShine\Laravel\Contracts\Fields\HasRelatedValuesContact;
+use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
+use MoonShine\Crud\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Support\DTOs\Select\Option;

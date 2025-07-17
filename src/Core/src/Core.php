@@ -11,6 +11,7 @@ use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\CacheAttributesContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\DependencyInjection\OptimizerCollectionContract;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
@@ -30,23 +31,26 @@ use MoonShine\Support\Memoize\MemoizeRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * @template TConfig of ConfiguratorContract = ConfiguratorContract
+ * @template TFields of FieldsContract = FieldsContract
+ * @template TRouter of RouterContract = RouterContract
  *
- * @implements CoreContract<TConfig>
+ * @implements CoreContract<TConfig, TFields, TRouter>
  */
 abstract class Core implements CoreContract, StatefulContract
 {
     use Conditionable;
 
     /**
-     * @var list<class-string<ResourceContract>>
+     * @var list<class-string<ResourceContract>|ResourceContract>
      */
     protected array $resources = [];
 
     /**
-     * @var list<class-string<PageContract>>
+     * @var list<class-string<PageContract>|PageContract>
      */
     protected array $pages = [];
 
@@ -60,12 +64,16 @@ abstract class Core implements CoreContract, StatefulContract
      */
     protected static Closure|CoreContract $instance;
 
+    /**
+     * @param  TRouter  $router
+     */
     public function __construct(
         protected ContainerInterface $container,
         protected ViewRendererContract $viewRenderer,
         protected RouterContract $router,
         protected ConfiguratorContract $config,
         protected TranslatorContract $translator,
+        protected CacheInterface $cache,
         protected OptimizerCollectionContract $optimizer,
     ) {
         static::setInstance(
@@ -136,6 +144,17 @@ abstract class Core implements CoreContract, StatefulContract
         return $this->getContainer(RequestContract::class);
     }
 
+    public function getCrudRequest(): CrudRequestContract
+    {
+        /**
+         * @var CrudRequestContract
+         */
+        return $this->getContainer(CrudRequestContract::class);
+    }
+
+    /**
+     * @return TRouter
+     */
     public function getRouter(): RouterContract
     {
         return $this->router;
@@ -156,14 +175,15 @@ abstract class Core implements CoreContract, StatefulContract
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @return FieldsContract<FieldContract>
+     *
+     * @return TFields
      */
     public function getFieldsCollection(iterable $items = []): FieldsContract
     {
-        /** @var FieldsContract<FieldContract> $collection */
+        /** @var TFields $collection */
         $collection = $this->container->get(FieldsContract::class);
 
-        /** @var FieldsContract<FieldContract> */
+        /** @var TFields */
         return $collection->push(...$items);
     }
 
@@ -233,7 +253,7 @@ abstract class Core implements CoreContract, StatefulContract
     /**
      * Register resources in the system
      *
-     * @param  list<class-string<ResourceContract>>  $data
+     * @param  list<class-string<ResourceContract>|ResourceContract>  $data
      */
     public function resources(array $data, bool $newCollection = false): static
     {
@@ -267,7 +287,7 @@ abstract class Core implements CoreContract, StatefulContract
     /**
      * Register pages in the system
      *
-     * @param  list<class-string<PageContract>>  $data
+     * @param  list<class-string<PageContract>|PageContract>  $data
      */
     public function pages(array $data, bool $newCollection = false): static
     {
@@ -303,8 +323,21 @@ abstract class Core implements CoreContract, StatefulContract
         return $this->optimizer;
     }
 
+    public function getCache(): CacheInterface
+    {
+        return $this->cache;
+    }
+
     public function getAttributes(): CacheAttributesContract
     {
         return $this->getContainer(CacheAttributesContract::class);
+    }
+
+    /**
+     * @api
+     */
+    public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static
+    {
+        return $this;
     }
 }

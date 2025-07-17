@@ -13,7 +13,7 @@ final class BlankLayout extends BaseLayout
     {
         return Layout::make([
             Html::make([
-                $this->getHeadComponent(),
+                $this->getHeadComponent(withAssetsFragment: false),
                 Body::make([
                     Components::make($this->getPage()->getComponents()),
                 ]),
