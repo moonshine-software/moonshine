@@ -357,6 +357,16 @@ abstract class Page implements PageContract
     }
 
     /**
+     * @api
+     *
+     * @param null|TResource $resource
+     */
+    public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static
+    {
+        return $this;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function systemViewData(): array
