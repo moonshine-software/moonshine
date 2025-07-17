@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Core;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
