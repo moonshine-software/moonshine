@@ -45,12 +45,12 @@ abstract class Core implements CoreContract, StatefulContract
     use Conditionable;
 
     /**
-     * @var list<class-string<ResourceContract>>
+     * @var list<class-string<ResourceContract>|ResourceContract>
      */
     protected array $resources = [];
 
     /**
-     * @var list<class-string<PageContract>>
+     * @var list<class-string<PageContract>|PageContract>
      */
     protected array $pages = [];
 
@@ -253,7 +253,7 @@ abstract class Core implements CoreContract, StatefulContract
     /**
      * Register resources in the system
      *
-     * @param  list<class-string<ResourceContract>>  $data
+     * @param  list<class-string<ResourceContract>|ResourceContract>  $data
      */
     public function resources(array $data, bool $newCollection = false): static
     {
@@ -287,7 +287,7 @@ abstract class Core implements CoreContract, StatefulContract
     /**
      * Register pages in the system
      *
-     * @param  list<class-string<PageContract>>  $data
+     * @param  list<class-string<PageContract>|PageContract>  $data
      */
     public function pages(array $data, bool $newCollection = false): static
     {
