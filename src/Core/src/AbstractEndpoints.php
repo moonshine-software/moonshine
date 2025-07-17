@@ -19,7 +19,7 @@ use Throwable;
 abstract readonly class AbstractEndpoints implements EndpointsContract
 {
     public function __construct(
-        private RouterContract $router
+        protected RouterContract $router
     ) {
     }
 
