@@ -74,7 +74,7 @@ abstract readonly class AbstractEndpoints implements EndpointsContract
         /** @var int|string|null $key */
         $key = $extra['key'] ?? null;
 
-        if($key === null && $resource instanceof CrudResourceContract) {
+        if ($key === null && $resource instanceof CrudResourceContract) {
             $key = $resource->getCastedData()?->getKey();
         }
 
