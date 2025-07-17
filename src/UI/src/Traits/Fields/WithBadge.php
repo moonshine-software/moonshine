@@ -15,6 +15,10 @@ trait WithBadge
 
     protected ?Closure $badgeColorCallback = null;
 
+    /**
+     * @param  string|Color|(Closure(mixed $value, static $ctx): string|Color)|null  $color
+     *
+     */
     public function badge(string|Color|Closure|null $color = null): static
     {
         if ($color instanceof Closure) {
