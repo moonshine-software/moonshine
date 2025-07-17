@@ -339,6 +339,7 @@ class RelationRepeater extends ModelRelationField implements
         }
 
         $component = TableBuilder::make($fields, $this->getValue())
+            ->withoutKey()
             ->name("relation_repeater_{$this->getIdentity()}")
             ->inside('field')
             ->customAttributes(
@@ -429,6 +430,10 @@ class RelationRepeater extends ModelRelationField implements
                 ));
 
                 $apply = $callback($field, $values, $data);
+
+                if($field instanceof self) {
+                    continue;
+                }
 
                 data_set(
                     /** @phpstan-ignore-next-line  */
