@@ -7,6 +7,9 @@ on:
 concurrency:
   group: split
 
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   split:
     runs-on: ubuntu-latest
