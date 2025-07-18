@@ -31,5 +31,5 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - run: |
-          repo_url="https://${{ secrets.GITHUB_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
+          repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
           git subtree push --prefix src/${{ matrix.package.namespace }} "$repo_url" ${{ github.ref_name }}

@@ -33,7 +33,7 @@ jobs:
           persist-credentials: false
       - run: |
           split_sha=`git subtree split --prefix=src/${{ matrix.package.namespace }}`
-          repo_url="https://${{ secrets.GITHUB_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
+          repo_url="https://${{ secrets.SUPER_ACCESS_TOKEN }}@github.com/moonshine-software/${{ matrix.package.repo }}.git"
           if [ -z $(git ls-remote --tags "$repo_url" | grep "$split_sha") ]; then \
             gh release create ${{ github.ref_name }} \
               --repo moonshine-software/${{ matrix.package.repo }} \
