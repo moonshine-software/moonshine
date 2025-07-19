@@ -12,7 +12,7 @@ REPO_NAME=$1
 FOLDER_NAME=$2
 
 REMOTE_REPO="git@github.com:moonshine-software/${REPO_NAME}.git"
-REMOTE_BRANCH="3.x"
+REMOTE_BRANCH="4.x"
 LOCAL_PREFIX="src/${FOLDER_NAME}"
 TMP_BRANCH="repair-split-${REPO_NAME}"
 
