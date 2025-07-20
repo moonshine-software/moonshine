@@ -1,0 +1,168 @@
+@use 'sass:color';
+@use 'tom-select/src/scss/tom-select' as * with (
+  $select-color-dropdown-item-active: rgb(241 245 249 / 1),
+  $select-color-dropdown-item-active-text: rgb(71 85 105 / 1),
+
+  $select-padding-x: 10px,
+  $select-padding-y: 10px,
+  $select-padding-dropdown-item-y: 12px,
+  $select-max-height-dropdown: 300px,
+);
+
+$bg: rgba(var(--primary), var(--tw-bg-opacity, 1));
+$darkTextColor: rgb(203 213 225 / var(--tw-text-opacity, 1));
+
+
+:root {
+    --ts-pr-caret: 32px;
+}
+
+.#{$select-ns}-dropdown {
+    .optgroup-header {
+        opacity: .5;
+        font-size: 90%;
+        padding: 10px 12px;
+        border-bottom: 1px solid rgb(209 213 219 / var(--tw-border-opacity, 1));
+    }
+
+    [data-selectable].option {
+        font-size: 14px;
+    }
+}
+
+.#{$select-ns}-wrapper {
+    &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: $select-padding-dropdown-item-x;
+        height: 8px;
+        width: 16px;
+        z-index: 1;
+        transform: translateY(-50%);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        -webkit-print-color-adjust: exact;
+        //transition: rotate .15s, top .15s;
+    }
+
+    &.dropdown-active:after {
+        rotate: 180deg;
+        top: calc(50% - 8px);
+    }
+}
+
+.#{$select-ns}-control {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    min-height: 39px;
+
+    .item {
+        display: flex;
+        align-items: center;
+        column-gap: .5rem;
+
+        font-size: 14px;
+        border-radius: 5px;
+
+        .ts-wrapper.single.selected-empty-value & {
+            opacity: 0.7;
+        }
+
+        &.with-image {
+            display: flex;
+        }
+    }
+
+    .#{$select-ns}-wrapper.multi & > .item {
+        background: $bg;
+        color: #fff;
+        border: 1px solid $bg;
+        margin: 0;
+
+        &.active {
+            background: $bg;
+            color: #fff;
+            border: 1px solid $bg;
+            opacity: .5;
+        }
+    }
+}
+
+
+// Плагины
+.plugin {
+    &-clear_button {
+        .clear-button {
+            z-index: 2;
+            right: var(--ts-pr-caret);
+        }
+
+        &.has-items .clear-button {
+            opacity: .5;
+            font-size: 16px;
+        }
+
+        &.selected-empty-value .clear-button {
+            display: none;
+        }
+    }
+
+    &-max_items {
+        .max-items-message {
+            padding: $select-padding-dropdown-item-y $select-padding-dropdown-item-x;
+        }
+    }
+}
+
+
+// Конец плагины
+
+
+// Темная тема
+.dark {
+    .#{$select-ns}-dropdown {
+        .optgroup-header {
+            border-bottom: 1px solid rgba(var(--dark-200), 1);
+        }
+
+        .active {
+            background-color: rgba(var(--dark-900), .2);
+            color: rgb(148 163 184 / 1);
+        }
+        .create {
+            color: rgb(148 163 184 / 1);
+        }
+    }
+
+    .#{$select-ns}-control,
+    .#{$select-ns}-wrapper.single.input-active .#{$select-ns}-control,
+    .#{$select-ns}-dropdown,
+    .#{$select-ns}-dropdown .optgroup-header {
+        background-color: rgba(var(--dark-800), 1);
+        color: $darkTextColor;
+    }
+
+    .#{$select-ns}-control,
+    .#{$select-ns}-wrapper.single.input-active .#{$select-ns}-control,
+    .#{$select-ns}-dropdown {
+        border: 1px solid rgba(var(--dark-200), 1);
+    }
+
+    .#{$select-ns}-control input {
+        color: rgb(203 213 225 / 1);
+    }
+
+
+    // Плагины
+    .plugin {
+        &-clear_button.has-items .clear-button {
+            color: #d0d0d0;
+        }
+    }
+
+    // Конец плагины
+}

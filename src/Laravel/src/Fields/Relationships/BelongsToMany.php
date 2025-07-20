@@ -39,6 +39,7 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Traits\Fields\ConfigureSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\WithFields;
@@ -67,6 +68,7 @@ class BelongsToMany extends ModelRelationField implements
     use WithRelatedLink;
     use BelongsToOrManyCreatable;
     use HasHorizontalMode;
+    use ConfigureSelect;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -667,6 +669,15 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getCollectionValue()->pluck($this->getRelatedKeyName());
     }
 
+    protected function prepareBeforeRender(): void {
+        parent::prepareBeforeRender();
+
+        $this->asyncSettings([
+            'selectedValuesKey' => 'value',
+            'withAllFields' => true
+        ]);
+    }
+
     /**
      * @return array<string, mixed>
      * @throws Throwable
@@ -695,6 +706,8 @@ class BelongsToMany extends ModelRelationField implements
                 ...$viewData,
                 'isSearchable' => $this->isSearchable(),
                 'values' => $this->getAvailableValues(),
+                'settings' => $this->settings,
+                'plugins' => $this->plugins,
             ];
         }
 

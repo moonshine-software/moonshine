@@ -5,6 +5,8 @@
     'isSearchable' => false,
     'asyncUrl' => '',
     'isNative' => false,
+    'settings' => [],
+    'plugins' => [],
 ])
 <x-moonshine::form.select
         :attributes="$attributes"
@@ -13,4 +15,6 @@
         :searchable="$isSearchable"
         :asyncRoute="$asyncUrl"
         :native="$isNative"
+        :settings="$settings"
+        :plugins="$plugins"
 />

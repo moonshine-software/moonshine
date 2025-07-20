@@ -14,6 +14,7 @@ use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
+use MoonShine\UI\Traits\Fields\ConfigureSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\SelectTrait;
@@ -36,6 +37,7 @@ class Select extends Field implements
     use HasAsync;
     use UpdateOnPreview;
     use HasPlaceholder;
+    use ConfigureSelect;
 
     protected string $view = 'moonshine::fields.select';
 
@@ -76,17 +78,18 @@ class Select extends Field implements
         return (string) data_get($this->getValues()->flatten(), "$value.label", '');
     }
 
-    public function asyncOnInit(bool $whenOpen = true): static
-    {
+    public function asyncOnInit(bool $whenOpen = true, bool $withLoading = false): static {
         return $this->customAttributes([
             'data-async-on-init' => true,
             'data-async-on-init-dropdown' => $whenOpen,
+            'data-async-on-init-dropdown-with-loading' => $whenOpen && $withLoading,
         ]);
     }
 
     protected function asyncWith(): void
     {
         $this->searchable();
+        $this->asyncSettings([]);
     }
 
     public function prepareReactivityValue(mixed $value, mixed &$casted, array &$except): mixed
@@ -106,6 +109,8 @@ class Select extends Field implements
             'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
             'isNative' => $this->isNative(),
+            'settings' => $this->settings,
+            'plugins' => $this->plugins,
         ];
     }
 }
