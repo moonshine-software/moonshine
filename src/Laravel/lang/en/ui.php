@@ -79,7 +79,7 @@ return [
     ],
     'select' => [
         'no_results' => 'No results found',
-        'no_options' => 'Нет вариантов для выбора',
+        'no_options' => 'No options to choose from',
         'add_item' => 'Press Enter to add :value',
         'unique_item' => 'Only unique values can be added',
         'custom_add_item' => 'Only values matching specific conditions can be added',
