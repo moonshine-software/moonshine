@@ -32,10 +32,10 @@ trait ConfigureSelect
 
     /**
      * @param array{
-     *     queryKey: ?string,
-     *     selectedValuesKey: ?string,
-     *     resultKey: ?string,
-     *     withAllFields: bool
+     *     queryKey?: string,
+     *     selectedValuesKey?: string,
+     *     resultKey?: string,
+     *     withAllFields?: bool
      * } $settings
      */
     public function asyncSettings(array $settings): static {
