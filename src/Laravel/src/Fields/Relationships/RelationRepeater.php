@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -19,6 +20,8 @@ use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\Ability;
+use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Layout\Column;
@@ -207,7 +210,12 @@ class RelationRepeater extends ModelRelationField implements
                 ->icon('trash')
                 ->onClick(static fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
-                ->showInLine();
+                ->showInLine()
+                ->canSee(fn (Model $item, DataWrapperContract $data) : bool =>
+                    $data->getKey() === null ||
+                    ($this->getResource()->hasAction(Action::DELETE)
+                    && $this->getResource()->setItem($item)->can(Ability::DELETE))
+                );
 
             if (! \is_null($this->modifyRemoveButton)) {
                 $button = value($this->modifyRemoveButton, $button, $this);
