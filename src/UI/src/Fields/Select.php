@@ -102,9 +102,9 @@ class Select extends Field implements
     {
         parent::prepareBeforeRender();
 
-        if(!$this->getAttributes()->has('data-validation-field')) {
+        if (! $this->getAttributes()->has('data-validation-field')) {
             $this->customAttributes([
-                'data-validation-field' => preg_replace("/\[\d*]$/", '', $this->getNameAttribute())
+                'data-validation-field' => preg_replace("/\[\d*]$/", '', $this->getNameAttribute()),
             ]);
         }
     }
