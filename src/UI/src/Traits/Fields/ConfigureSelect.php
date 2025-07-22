@@ -14,8 +14,14 @@ trait ConfigureSelect
 {
     protected bool $native = false;
 
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     protected array $plugins = [];
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $settings = [];
 
     public function native(): static
@@ -54,11 +60,18 @@ trait ConfigureSelect
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $settings
+     */
     public function settings(array $settings): static {
         $this->settings = array_merge($this->settings, $settings);
         return $this;
     }
 
+    /**
+     * @param string|string[]|array<string, array<string, mixed>> $plugin
+     * @param array<string, mixed> $pluginOptions
+     */
     public function addPlugins(array|string $plugin, array $pluginOptions = []): static {
         if (is_array($plugin)) {
             foreach ($plugin as $name => $options) {
@@ -78,6 +91,9 @@ trait ConfigureSelect
         return $this;
     }
 
+    /**
+     * @param string[] $searchField
+     */
     public function fieldNames(
         ?string $valueField = null,         // default: value
         ?string $labelField = null,         // default: label
@@ -143,11 +159,14 @@ trait ConfigureSelect
     }
 
     public function maxItems(
-        ?int $limit = null
+        ?int $limit = null,
+        ?string $text = null
     ): static {
 
         return $this->settings(array_filter([
             'maxItems' => $limit,
-        ]))->addPlugins('max_items');
+        ]))->addPlugins('max_items', [
+            'text' => $text
+        ]);
     }
 }
