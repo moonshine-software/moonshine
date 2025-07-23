@@ -28,18 +28,32 @@ class Slug extends Text
         return $this;
     }
 
-    public function live(): static
+    public function live(bool $lazy = false): static
     {
         return $this->reactive(function (FieldsContract $fields): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
+            if (is_null($title)) {
+                return $fields;
+            }
+
+            $slugField = $fields->findByColumn($this->getColumn());
+
+            if (
+                $slugField &&
+                $slugField->toValue() &&
+                $slugField->toValue() !== str($title->toValue())->slug($this->getSeparator())->value()
+            ) {
+                return $fields;
+            }
+
             return tap(
                 $fields,
                 fn ($fields): ?FieldContract => $fields
-                ->findByColumn($this->getColumn())
-                ?->setValue(str($title->toValue())->slug($this->getSeparator())->value())
+                    ->findByColumn($this->getColumn())
+                    ?->setValue(str($title->toValue())->slug($this->getSeparator())->value())
             );
-        });
+        }, lazy: $lazy);
     }
 
     public function separator(string $separator): static
@@ -98,7 +112,7 @@ class Slug extends Text
         $i = 1;
 
         while (! $this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->getColumn()} . $this->getSeparator() . $i++;
+            $slug = $item->{$this->getColumn()}.$this->getSeparator().$i++;
         }
 
         return $slug;
