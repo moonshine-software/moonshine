@@ -56,7 +56,7 @@ final readonly class ModelCaster implements DataCasterContract
         }
 
         /**
-         * @phpstan-var (Paginator|CursorPaginator)&Arrayable $data
+         * @var (Paginator|CursorPaginator)&Arrayable $data
          */
         $paginator = new PaginatorCaster(
             $data->appends(
