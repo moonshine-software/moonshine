@@ -10,6 +10,8 @@
     'fragmentUrl' => '',
     'relationName' => '',
     'isNative' => false,
+    'settings' => [],
+    'plugins' => [],
 ])
 @if($isCreatable)
 {!! $createButton !!}
@@ -31,6 +33,8 @@
     :values="$values"
     :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
     :native="$isNative"
+    :settings="$settings"
+    :plugins="$plugins"
 >
 </x-moonshine::form.select>
 

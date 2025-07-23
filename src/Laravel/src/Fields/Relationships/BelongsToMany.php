@@ -39,7 +39,7 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
-use MoonShine\UI\Traits\Fields\ConfigureSelect;
+use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\WithFields;
@@ -68,7 +68,7 @@ class BelongsToMany extends ModelRelationField implements
     use WithRelatedLink;
     use BelongsToOrManyCreatable;
     use HasHorizontalMode;
-    use ConfigureSelect;
+    use ConfigurableSelect;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 

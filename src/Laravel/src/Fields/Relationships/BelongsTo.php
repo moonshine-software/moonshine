@@ -15,7 +15,7 @@ use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
-use MoonShine\UI\Traits\Fields\ConfigureSelect;
+use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
@@ -40,7 +40,7 @@ class BelongsTo extends ModelRelationField implements
     use HasPlaceholder;
     use BelongsToOrManyCreatable;
     use WithEscapedValue;
-    use ConfigureSelect;
+    use ConfigurableSelect;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 

@@ -17,6 +17,8 @@
     'fragmentUrl' => '',
     'relationName' => '',
     'translates' => [],
+    'settings' => [],
+    'plugins' => [],
 ])
 <div x-id="['belongs-to-many']"
      :id="$id('belongs-to-many')"
@@ -42,6 +44,8 @@
                     :searchable="$isSearchable"
                     :values="$values"
                     :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
+                    :settings="$settings"
+                    :plugins="$plugins"
                 >
                 </x-moonshine::form.select>
             @elseif($isTreeMode)

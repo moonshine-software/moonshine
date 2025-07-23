@@ -14,7 +14,7 @@ use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
-use MoonShine\UI\Traits\Fields\ConfigureSelect;
+use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\SelectTrait;
@@ -37,7 +37,7 @@ class Select extends Field implements
     use HasAsync;
     use UpdateOnPreview;
     use HasPlaceholder;
-    use ConfigureSelect;
+    use ConfigurableSelect;
 
     protected string $view = 'moonshine::fields.select';
 

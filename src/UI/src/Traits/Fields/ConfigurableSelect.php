@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use Closure;
-use MoonShine\Support\DTOs\Select\Option;
-use MoonShine\Support\DTOs\Select\OptionGroup;
-use MoonShine\Support\DTOs\Select\OptionProperty;
-use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\Support\DTOs\Select\FieldNames;
 
-trait ConfigureSelect
+trait ConfigurableSelect
 {
     protected bool $native = false;
 
@@ -91,41 +87,8 @@ trait ConfigureSelect
         return $this;
     }
 
-    /**
-     * @param string[] $searchField
-     */
-    public function fieldNames(
-        ?string $valueField = null,         // default: value
-        ?string $labelField = null,         // default: label
-        ?string $descriptionField = null,   // default: description
-
-        ?string $childrenField = null,      // default: values
-        ?string $optgroupValueField = null, // default: value
-        ?string $optgroupLabelField = null, // default: label
-        ?string $optgroupField = null,      // default: optgroup
-
-        ?array  $searchField = null,         // default: ['label']
-        ?string $disabledField = null,      // default: disabled
-        ?string $sortField = null           // default: $order
-    ): static {
-        if (is_null($searchField) && ! is_null($labelField)) {
-            $searchField = [$labelField];
-        }
-
-        return $this->settings(
-            array_filter(compact(
-                'valueField',
-                'labelField',
-                'descriptionField',
-                'childrenField',
-                'optgroupValueField',
-                'optgroupLabelField',
-                'optgroupField',
-                'searchField',
-                'disabledField',
-                'sortField',
-            ))
-        );
+    public function fieldNames(FieldNames $names): static {
+        return $this->settings(array_filter($names->toArray()));
     }
 
     public function createMode(

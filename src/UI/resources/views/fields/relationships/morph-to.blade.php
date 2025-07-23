@@ -10,6 +10,8 @@
     'isSearchable' => false,
     'isAsyncSearch' => false,
     'asyncSearchUrl' => '',
+    'settings' => [],
+    'plugins' => [],
 ])
 <div x-data="{morphType: '{{ $typeValue }}'}"
      class="flex items-center gap-x-2"
@@ -35,6 +37,8 @@
             :asyncRoute="$isAsyncSearch ? $asyncSearchUrl : null"
             data-async-on-init="true"
             data-async-on-init-dropdown="true"
+            :settings="$settings"
+            :plugins="$plugins"
         >
         </x-moonshine::form.select>
     </div>
