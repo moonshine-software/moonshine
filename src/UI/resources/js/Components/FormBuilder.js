@@ -322,6 +322,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
     })
 
     this.$el.setAttribute('data-reset', '1')
+
+    this.$el.querySelectorAll('[data-remove-on-form-reset]')
+      .forEach((el) => el.remove())
   },
 
   showWhenChange,
