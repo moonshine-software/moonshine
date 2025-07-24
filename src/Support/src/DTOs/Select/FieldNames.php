@@ -11,7 +11,6 @@ use MoonShine\Support\Traits\Makeable;
 /**
  * @method static static make(array $values = [])
  *
- * @phpstan-type Values array<string, mixed>
  * @implements Arrayable<string, mixed>
  */
 final class FieldNames implements Arrayable
@@ -19,7 +18,7 @@ final class FieldNames implements Arrayable
     use Makeable;
 
     /**
-     * @var Values
+     * @var array<string, mixed>
     */
     protected array $values = [
         'valueField' => null,         // default: value
@@ -37,25 +36,25 @@ final class FieldNames implements Arrayable
     ];
 
     /**
-     * @param Values $values
+     * @param array<string, mixed> $values
      */
     public function __construct(array $values = []) {
         $this->fromArray($values);
     }
 
     /**
-     * @return Values
+     * @return array<string, mixed>
      */
     public function toArray(): array {
         if (is_null($this->values['searchField']) && ! is_null($this->values['labelField'])) {
-            $this->searchField([$this->values['labelField']]);
+            $this->search([$this->values['labelField']]);
         }
 
         return $this->values;
     }
 
     /**
-     * @param Values $values
+     * @param array<string, mixed> $values
      */
     public function fromArray(array $values): static {
         foreach ($values as $name => $value) {
@@ -71,39 +70,39 @@ final class FieldNames implements Arrayable
         return $this;
     }
 
-    public function valueField(string $value): static {
+    public function value(string $value): static {
         return $this->set('valueField', $value);
     }
-    public function labelField(string $value): static {
+    public function label(string $value): static {
         return $this->set('labelField', $value);
     }
-    public function descriptionField(string $value): static {
+    public function description(string $value): static {
         return $this->set('descriptionField', $value);
     }
 
-    public function childrenField(string $value): static {
+    public function children(string $value): static {
         return $this->set('childrenField', $value);
     }
-    public function optgroupValueField(string $value): static {
+    public function optgroupValue(string $value): static {
         return $this->set('optgroupValueField', $value);
     }
-    public function optgroupLabelField(string $value): static {
+    public function optgroupLabel(string $value): static {
         return $this->set('optgroupLabelField', $value);
     }
-    public function optgroupField(string $value): static {
+    public function optgroup(string $value): static {
         return $this->set('optgroupField', $value);
     }
 
     /**
      * @param array<mixed> $value
      */
-    public function searchField(array $value): static {
+    public function search(array $value): static {
         return $this->set('searchField', $value);
     }
-    public function disabledField(string $value): static {
+    public function disabled(string $value): static {
         return $this->set('disabledField', $value);
     }
-    public function sortField(string $value): static {
+    public function sort(string $value): static {
         return $this->set('sortField', $value);
     }
 }
