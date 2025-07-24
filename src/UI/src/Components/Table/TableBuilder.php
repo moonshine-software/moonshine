@@ -21,6 +21,7 @@ use MoonShine\Contracts\UI\TableRowContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\EventParams\ListRowEventParams;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Collections\TableCells;
 use MoonShine\UI\Collections\TableRows;
@@ -441,9 +442,10 @@ final class TableBuilder extends IterableComponent implements
             ? []
             : [
                 AlpineJs::eventBlade(
-                    JsEvent::TABLE_ROW_UPDATED,
-                    "{$this->getName()}-{$data->getKey()}",
-                ) => "asyncRowRequest(`{$data->getKey()}`,`$index`)",
+                    event: JsEvent::TABLE_ROW_UPDATED,
+                    name: $this->getName(),
+                    params: ListRowEventParams::make($data->getKey() ?? $index)
+                ) => 'asyncRowRequest()',
             ];
     }
 

@@ -101,6 +101,17 @@ class Select extends Field implements
             : $result;
     }
 
+    protected function prepareBeforeRender(): void
+    {
+        parent::prepareBeforeRender();
+
+        if (! $this->getAttributes()->has('data-validation-field')) {
+            $this->customAttributes([
+                'data-validation-field' => preg_replace("/\[\d*]$/", '', $this->getNameAttribute()),
+            ]);
+        }
+    }
+
     protected function viewData(): array
     {
         return [

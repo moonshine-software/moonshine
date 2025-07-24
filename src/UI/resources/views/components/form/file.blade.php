@@ -14,7 +14,7 @@
     />
 
     @if($files !== [])
-        <div class="dropzone">
+        <div class="dropzone" data-remove-on-form-reset="1">
             <div {{ $dropzoneAttributes?->merge(['class' => 'dropzone-items']) ?? "class=dropzone-items" }}>
                 @foreach($files as $index => $file)
                     <x-moonshine::form.file-item

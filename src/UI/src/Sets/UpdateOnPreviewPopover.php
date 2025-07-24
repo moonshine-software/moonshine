@@ -8,6 +8,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\EventParams\ListRowEventParams;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Link;
@@ -49,8 +50,9 @@ final readonly class UpdateOnPreviewPopover
                     ->async(events: [
                         AlpineJs::event(JsEvent::POPOVER_TOGGLED, $name),
                         AlpineJs::event(
-                            JsEvent::TABLE_ROW_UPDATED,
-                            $this->component . "-" . $this->field->getData()?->getKey(),
+                            event: JsEvent::TABLE_ROW_UPDATED,
+                            name: $this->component,
+                            params: ListRowEventParams::make($this->field->getData()?->getKey() ?? $this->field->getRowIndex())
                         ),
                     ])
                     ->fields([

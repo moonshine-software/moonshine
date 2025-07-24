@@ -37,17 +37,6 @@ trait HasListComponent
         return $page->getListComponentName();
     }
 
-    public function getListComponentNameWithRow(null|int|string $id = null): string
-    {
-        $page = $this->getIndexPage();
-
-        if (! $page instanceof HasListComponentContract) {
-            return $this->getListComponentName() . ($id ? "-$id" : "-{row-id}");
-        }
-
-        return $page->getListComponentNameWithRow($id);
-    }
-
     public function getListEventType(): JsEvent
     {
         return JsEvent::TABLE_UPDATED;

@@ -65,7 +65,7 @@ trait UpdateOnPreview
         return $this->setUpdateOnPreviewUrl(
             $this->updateOnPreviewUrl,
             events: [
-                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "$component-{row-id}"),
+                AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, $component),
             ]
         );
     }

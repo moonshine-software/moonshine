@@ -34,9 +34,10 @@
     {{ (int) $async }},
     '{{ $asyncUrl }}'
 )"
-        @defineEvent('table_row_added', $name, 'add(true)')
+        @defineEvent('table_empty_row_added', $name, 'add(true)')
         @defineEvent('table_reindex', $name, 'resolveReindex')
         @defineEventWhen($async, 'table_updated', $name, 'asyncRequest')
+        @defineEventWhen($async, 'table_row_added', $name, 'asyncRowRequest()')
         {{ $attributes }}
     >
         <x-moonshine::iterable-wrapper

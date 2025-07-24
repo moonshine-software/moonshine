@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\EventParams\EventParams;
 
 final readonly class AlpineJs
 {
@@ -43,7 +44,7 @@ final readonly class AlpineJs
                 );
         }
 
-        return $event;
+        return str_replace('=', '~', $event);
     }
 
     /**
