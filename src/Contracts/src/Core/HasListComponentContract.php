@@ -21,6 +21,4 @@ interface HasListComponentContract
     public function getListEventType(): JsEvent;
 
     public function getListComponentName(): string;
-
-    public function getListComponentNameWithRow(null|int|string $id = null): string;
 }

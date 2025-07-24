@@ -28,7 +28,7 @@ export default () => ({
     if (pivot !== null) {
       const tableName = pivot.dataset.tableName.toLowerCase()
 
-      this.$dispatch('table_row_added:' + tableName)
+      this.$dispatch('table_empty_row_added:' + tableName)
 
       const tr = pivot.querySelector('table > tbody > tr:last-child')
       tr.querySelector('.js-pivot-title').innerHTML = item.label

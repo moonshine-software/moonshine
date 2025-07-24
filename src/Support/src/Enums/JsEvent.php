@@ -14,6 +14,10 @@ enum JsEvent: string
 
     case TABLE_ROW_UPDATED = 'table_row_updated';
 
+    case TABLE_ROW_ADDED = 'table_row_added';
+
+    case TABLE_EMPTY_ROW_ADDED = 'table_empty_row_added';
+
     case CARDS_UPDATED = 'cards_updated';
 
     case FORM_RESET = 'form_reset';

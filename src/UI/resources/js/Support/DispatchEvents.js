@@ -9,18 +9,6 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
     return
   }
 
-  if (events.includes('{row-id}') && component.$el !== undefined) {
-    if (component.$el.tagName.toLowerCase() === 'form') {
-      events = events.replace(
-        /{row-id}/g,
-        new URL(component.$el.action).searchParams.get('resourceItem') ?? 0,
-      )
-    } else {
-      const tr = component.$el.closest('tr')
-      events = events.replace(/{row-id}/g, tr?.dataset?.rowKey ?? 0)
-    }
-  }
-
   if (events !== '' && type !== 'error') {
     const allEvents = events.split(',')
 
@@ -36,7 +24,7 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
         let params = parts[1].split(';')
 
         for (let param of params) {
-          let pair = param.split('=')
+          let pair = param.split('~')
           attributes[pair[0]] = pair[1].replace(/`/g, '').trim()
         }
       }
