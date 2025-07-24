@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Support;
+namespace MoonShine\Support\EventParams;
 
 use InvalidArgumentException;
 use MoonShine\Support\Traits\Makeable;

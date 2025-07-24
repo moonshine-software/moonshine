@@ -1,6 +1,6 @@
 import {crudFormQuery} from '../Support/Forms.js'
 import sortableFunction from './Sortable.js'
-import {listComponentRequest} from '../Request/Sets.js'
+import {listComponentRequest, listRowRequest} from '../Request/Sets.js'
 import {urlWithQuery, prepareUrl} from '../Request/Core.js'
 import {dispatchEvents} from '../Support/DispatchEvents.js'
 
@@ -203,21 +203,21 @@ export default (
   asyncRequest() {
     listComponentRequest(this, this.$root?.dataset?.pushState)
   },
-  asyncRowRequest(key, index) {
-    const t = this
-    const tr = this.table.querySelector('[data-row-key="' + key + '"]')
+  asyncRowRequest(key = null, index = null) {
+    let eventData = this.$event.detail
 
-    if (tr === null) {
-      return
+    key = key || eventData.key
+    index = index || key || 0
+
+    if (key === null && this.$el.tagName.toLowerCase() === 'form') {
+      key = new URL(this.$el.action).searchParams.get('resourceItem') ?? index
+    } else if(key === null) {
+      const tr = this.$el.closest('tr')
+
+      key = tr?.dataset?.rowKey ?? index
     }
 
-    axios
-      .get(prepareUrl(t.asyncUrl + `&_key=${key}&_index=${index}`))
-      .then(response => {
-        tr.outerHTML = response.data
-        t.initColumnSelection()
-      })
-      .catch(error => {})
+    listRowRequest(this, key, index, eventData.type)
   },
   actions(type, id) {
     let all = this.$root.querySelector(`.${id}-actions-all-checked`)

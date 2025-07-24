@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Support;
+namespace MoonShine\Support\EventParams;
 
 use MoonShine\Support\Enums\ToastType;
 

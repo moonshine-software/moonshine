@@ -38,16 +38,8 @@ describe('dispatchEvents', () => {
     expect(mockDispatchEvents()).not.toHaveBeenCalled()
   })
 
-  it('should replace {row-id} with rowKey from dataset', () => {
-    dispatchEvents('{row-id}', 'eventType', component)
-
-    jest.runAllTimers()
-
-    expect(mockDispatchEvents()).toHaveBeenCalledWith(expectEvent('123'))
-  })
-
   it('delayed dispatch', () => {
-    dispatchEvents('somevent|_delay=500', 'eventType', component)
+    dispatchEvents('somevent|_delay~500', 'eventType', component)
 
     expect(mockDispatchEvents()).not.toHaveBeenCalled()
 
@@ -57,7 +49,7 @@ describe('dispatchEvents', () => {
   })
 
   it('should dispatch events correctly', () => {
-    const events = 'click|param1=value1;param2=value2,hover|param3=value3'
+    const events = 'click|param1~value1;param2~value2,hover|param3~value3'
     dispatchEvents(events, 'eventType', component, {extraParam: 'extraValue'})
 
     jest.runAllTimers()

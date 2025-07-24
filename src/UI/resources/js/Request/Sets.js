@@ -1,7 +1,54 @@
 import {dispatchEvents} from '../Support/DispatchEvents.js'
-import request, {urlWithQuery} from './Core.js'
+import request, {prepareUrl, urlWithQuery} from './Core.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import {getQueryString} from '../Support/Forms.js'
+
+export function listRowRequest(component, key = null, index = null, type = 'change') {
+  const body = component.table.querySelector('tbody')
+  const isChange = type === 'change'
+  const isRemove = type === 'remove'
+
+  let tr = body.querySelector('[data-row-key="' + key + '"]')
+
+  if ((isChange || isRemove) && tr === null) {
+    return
+  }
+
+  if (isRemove) {
+    tr.remove()
+    component.initColumnSelection()
+
+    return
+  }
+
+  axios
+  .get(prepareUrl(component.asyncUrl + `&_key=${key}&_index=${index}`))
+  .then(response => {
+    const html = response.data.trim()
+
+    if(isChange) {
+      tr.outerHTML = html
+    } else {
+      const template= document.createElement('template')
+      template.innerHTML = html
+
+      tr = template.content.firstElementChild;
+    }
+
+    if (tr === null || tr.tagName !== 'TR') {
+      return
+    }
+
+    if (type === 'prepend') {
+      body.prepend(tr)
+    } else if (type === 'append') {
+      body.appendChild(tr)
+    }
+
+    component.initColumnSelection()
+  })
+  .catch(error => {})
+}
 
 export function listComponentRequest(component, pushState = false) {
   component.$event.preventDefault()
