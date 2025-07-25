@@ -210,13 +210,7 @@ class RelationRepeater extends ModelRelationField implements
                 ->icon('trash')
                 ->onClick(static fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
-                ->showInLine()
-                ->canSee(
-                    fn (Model $item, DataWrapperContract $data): bool =>
-                    $data->getKey() === null ||
-                    ($this->getResource()->hasAction(Action::DELETE)
-                    && $this->getResource()->setItem($item)->can(Ability::DELETE))
-                );
+                ->showInLine();
 
             if (! \is_null($this->modifyRemoveButton)) {
                 $button = value($this->modifyRemoveButton, $button, $this);
