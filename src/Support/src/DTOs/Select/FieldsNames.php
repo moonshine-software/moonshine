@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace MoonShine\Support\DTOs\Select;
@@ -13,7 +12,7 @@ use MoonShine\Support\Traits\Makeable;
  *
  * @implements Arrayable<string, mixed>
  */
-final class FieldNames implements Arrayable
+final class FieldsNames implements Arrayable
 {
     use Makeable;
 

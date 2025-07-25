@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use MoonShine\Support\DTOs\Select\FieldNames;
+use MoonShine\Support\DTOs\Select\FieldsNames;
 
 trait ConfigurableSelect
 {
@@ -87,7 +87,7 @@ trait ConfigurableSelect
         return $this;
     }
 
-    public function fieldNames(FieldNames $names): static {
+    public function fieldNames(FieldsNames $names): static {
         return $this->settings(array_filter($names->toArray()));
     }
 

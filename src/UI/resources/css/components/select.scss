@@ -93,7 +93,7 @@ $darkTextColor: rgb(203 213 225 / var(--tw-text-opacity, 1));
 }
 
 
-// Плагины
+// Plugins
 .plugin {
     &-clear_button {
         .clear-button {
@@ -119,10 +119,10 @@ $darkTextColor: rgb(203 213 225 / var(--tw-text-opacity, 1));
 }
 
 
-// Конец плагины
+// End plugins
 
 
-// Темная тема
+// Dark theme
 .dark {
     .#{$select-ns}-dropdown {
         .optgroup-header {
@@ -157,12 +157,12 @@ $darkTextColor: rgb(203 213 225 / var(--tw-text-opacity, 1));
     }
 
 
-    // Плагины
+    // Plugins
     .plugin {
         &-clear_button.has-items .clear-button {
             color: #d0d0d0;
         }
     }
 
-    // Конец плагины
+    // End plugins
 }
