@@ -118,12 +118,12 @@ trait ResourceCrudRouter
 
     public function getRedirectAfterSave(): ?string
     {
-        if (\is_null($this->redirectAfterSave) && ! $this->isAsync()) {
-            $this->redirectAfterSave = PageType::FORM;
+        if ($this->isAsync()) {
+            return null;
         }
 
         if (\is_null($this->redirectAfterSave)) {
-            return null;
+            $this->redirectAfterSave = PageType::FORM;
         }
 
         $params = \is_null($this->getItem()) || $this->redirectAfterSave === PageType::INDEX
