@@ -305,10 +305,14 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
     }
 
     /**
-     * @return ?R
+     * @return null|R
      */
     public function getRelation(): ?Relation
     {
+        if($this->getParent() instanceof self) {
+            return $this->getParent()->getRelation()?->getRelated()?->{$this->getRelationName()}();
+        }
+
         return $this->getRelatedModel()?->{$this->getRelationName()}();
     }
 
