@@ -124,7 +124,7 @@ export function crudFormQuery(formElements = null, maxLength = 50) {
       !name.startsWith('hidden_')
     ) {
       const value = inputGetValue(element)
-      if(value === undefined) {
+      if (value === undefined) {
         return
       }
 
