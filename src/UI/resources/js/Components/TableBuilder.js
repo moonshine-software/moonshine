@@ -211,7 +211,7 @@ export default (
 
     if (key === null && this.$el.tagName.toLowerCase() === 'form') {
       key = new URL(this.$el.action).searchParams.get('resourceItem') ?? index
-    } else if(key === null) {
+    } else if (key === null) {
       const tr = this.$el.closest('tr')
 
       key = tr?.dataset?.rowKey ?? index
