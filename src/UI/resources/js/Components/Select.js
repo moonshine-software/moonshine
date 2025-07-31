@@ -431,8 +431,8 @@ export default (asyncUrl = '') => ({
   },
   async fromUrl(url) {
     const response = await fetch(url)
-    const json = await response.json()
-    return json
+
+    return await response.json()
   },
   normalizeOptions(items) {
     return items.map(item => {
