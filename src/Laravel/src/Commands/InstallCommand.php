@@ -60,6 +60,11 @@ class InstallCommand extends MoonShineCommand
             $this->call(PublishCommand::class, [
                 'type' => 'resources',
             ]);
+
+            $this->call('vendor:publish', [
+                '--tag' => 'moonshine-migrations',
+                '--force' => true,
+            ]);
         }
 
         if (! $this->testsMode && $this->useMigrations) {

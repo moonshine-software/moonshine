@@ -28,18 +28,25 @@ class Slug extends Text
         return $this;
     }
 
-    public function live(): static
+    public function live(bool $lazy = false): static
     {
-        return $this->reactive(function (FieldsContract $fields): FieldsContract {
+        return $this->reactive(function (FieldsContract $fields, ?string $value, Slug $ctx) use($lazy): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
-            return tap(
-                $fields,
-                fn ($fields): ?FieldContract => $fields
-                ->findByColumn($this->getColumn())
-                ?->setValue(Str::of($title->toValue())->slug($this->getSeparator())->value())
-            );
-        });
+            if (is_null($title)) {
+                return $fields;
+            }
+
+            $slug = (string) Str::of($title->toValue())->slug($this->getSeparator());
+
+            if($lazy && $value !== null) {
+                return $fields;
+            }
+
+            $ctx->setValue($slug);
+
+            return $fields;
+        }, lazy: $lazy);
     }
 
     public function separator(string $separator): static
