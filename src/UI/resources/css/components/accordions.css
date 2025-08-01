@@ -2,12 +2,13 @@
 .accordion {
   @apply -space-y-[1px];
 
-  &-item {
+  .accordion-item {
     &:first-child {
       .accordion-btn {
         @apply rounded-t-lg;
       }
     }
+
     &:last-child {
       .accordion-btn:not(._is-active),
       .accordion-content {
@@ -16,19 +17,27 @@
     }
   }
 
-  &-btn {
-    @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs current:bg-slate-100 dark:current:bg-dark-800 dark:current:hover:bg-dark-800 sm:px-4 sm:py-3;
+  .accordion-btn {
+    @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs sm:px-4 sm:py-3;
+
     > svg {
       @apply h-4 w-4;
     }
+
     &._is-active {
+      @apply
+      bg-slate-100
+      dark:bg-dark-800
+      dark:hover:bg-dark-800
+      ;
+
       > svg {
         @apply scale-y-[-1];
       }
     }
   }
 
-  &-content {
+  .accordion-content {
     @apply border border-t-0 border-gray-200 p-3 dark:border-dark-200 sm:p-4;
   }
 }

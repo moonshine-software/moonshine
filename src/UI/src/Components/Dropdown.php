@@ -36,7 +36,7 @@ final class Dropdown extends MoonShineComponent
         protected Closure|string $searchPlaceholder = '',
         public string $placement = 'bottom-start',
         public Closure|string $footer = '',
-        public string $strategy = 'fixed',
+        public string $strategy = 'absolute',
     ) {
         parent::__construct();
     }

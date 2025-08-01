@@ -1,48 +1,129 @@
 /* Tailwind Base */
-@import 'tailwindcss/base';
-@import 'base/common';
-@import 'base/layout';
+@import "tailwindcss";
+@import "./base/fonts.css";
+@import "./base/safelist.css";
+@import "./base/breakpoints.css";
+@import './components/colors.css';
+@import './base/common.css';
+@import './base/layout.css';
 
 /* Libs */
-@import 'tippy.js/dist/tippy';
+@import 'tippy.js/dist/tippy.css';
 @import 'choices.js/public/assets/styles/choices.css';
 
 /* Tailwind Components */
-@import 'tailwindcss/components';
-@import 'components/breadcrumbs';
-@import 'components/box';
-@import 'components/menu';
-@import 'components/navigation';
-@import 'components/dropdowns';
-@import 'components/dropzone';
-@import 'components/buttons';
-@import 'components/social';
-@import 'components/forms';
-@import 'components/tables';
-@import 'components/pagination';
-@import 'components/badges';
-@import 'components/modals';
-@import 'components/offcanvas';
-@import 'components/tabs';
-@import 'components/accordions';
-@import 'components/alerts';
-@import 'components/colors';
-@import 'components/cards';
-@import 'components/progressbars';
-@import 'components/popovers';
-@import 'components/spinners';
-@import 'components/toasts';
-@import 'components/notifications';
-@import 'components/carousel';
-@import 'components/theme-switcher';
-@import 'components/languages';
-@import 'components/search';
-@import 'components/profile';
+@import './components/breadcrumbs.css';
+@import './components/box.css';
+@import './components/menu.css';
+@import './components/navigation.css';
+@import './components/dropdowns.css';
+@import './components/dropzone.css';
+@import './components/buttons.css';
+@import './components/social.css';
+@import './components/forms.css';
+@import './components/tables.css';
+@import './components/pagination.css';
+@import './components/badges.css';
+@import './components/modals.css';
+@import './components/offcanvas.css';
+@import './components/tabs.css';
+@import './components/accordions.css';
+@import './components/alerts.css';
+@import './components/cards.css';
+@import './components/progressbars.css';
+@import './components/popovers.css';
+@import './components/spinners.css';
+@import './components/toasts.css';
+@import './components/notifications.css';
+@import './components/carousel.css';
+@import './components/theme-switcher.css';
+@import './components/languages.css';
+@import './components/search.css';
+@import './components/profile.css';
 
 /* Tailwind Utilities */
-@import 'tailwindcss/utilities';
-@import 'base/animation';
+@import './base/animation.css';
 
 /* Pages */
-@import 'pages/dashboard';
-@import 'pages/authentication';
+@import './pages/dashboard.css';
+@import './pages/authentication.css';
+
+
+@source '../../../../../../laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../../../../../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-3xs: 0.875rem;
+  --font-2xs: 0.9375rem;
+  --font-xs: 1rem;
+  --font-sm: 1.125rem;
+  --font-md: 1.25rem;
+  --font-lg: 1.625rem;
+  --font-xl: 2rem;
+  --font-2xl: 3rem;
+  --font-3xl: 4rem;
+}
+
+@utility text-3xs {
+  font-size: var(--font-3xs);
+}
+
+@utility text-2xs {
+  font-size: var(--font-2xs);
+}
+
+@utility text-xs {
+  font-size: var(--font-xs);
+}
+
+@utility text-sm {
+  font-size: var(--font-sm);
+}
+
+@utility text-md {
+  font-size: var(--font-md);
+}
+
+@utility text-lg {
+  font-size: var(--font-lg);
+}
+
+@utility text-xl {
+  font-size: var(--font-xl);
+}
+
+@utility text-2xl {
+  font-size: var(--font-2xl);
+}
+
+@utility text-3xl {
+  font-size: var(--font-3xl);
+}
+
+@variant mobile {
+  @media screen and (max-width: var(--breakpoint-mobile)) {
+    * {
+      max-width: var(--breakpoint-mobile);
+    }
+  }
+}
+
+@utility z-modal {
+  @apply
+  z-[1070]
+}
+
+@utility z-offcanvas {
+  @apply
+  z-[1050]
+}
+
+@utility z-toast {
+  @apply
+  z-[1500]
+}
+

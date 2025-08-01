@@ -1,103 +1,102 @@
 /* Theme layout */
-.layout {
-  &-wrapper {
-    @apply relative flex min-h-screen flex-col gap-y-5 py-3 transition-all md:p-5 lg:flex-row lg:p-6;
+.layout-wrapper {
+  @apply relative flex min-h-screen flex-col gap-y-5 py-3 transition-all md:p-5 lg:flex-row lg:p-6;
+
+  .layout-menu,
+  .layout-menu-horizontal,
+  .layout-menu-mobile {
+    & > * {
+      @apply text-gray-800 dark:text-slate-300;
+    }
+  }
+
+  .layout-menu-horizontal ~ .layout-menu,
+  .layout-menu ~ .layout-menu-horizontal {
+    @apply max-mobile:!hidden;
+  }
+
+  /* MOBILEBAR */
+  /* selector :has not supported */
+
+  .layout-menu-mobile {
+    @apply flex lg:hidden;
+  }
+
+  .layout-wrapper--mobilebar {
+    @apply gap-0;
+    @apply max-mobile:pt-16;
 
     .layout-menu,
-    .layout-menu-horizontal,
-    .layout-menu-mobile {
-      & > * {
-        @apply text-gray-800 dark:text-slate-300;
-      }
+    .layout-menu-horizontal {
+      @apply max-mobile:hidden;
     }
+  }
 
-    .layout-menu-horizontal ~ .layout-menu,
-    .layout-menu ~ .layout-menu-horizontal {
-      @apply mobile:!hidden;
-    }
-
-    /* MOBILEBAR */
-    /* selector :has not supported */
-
-    .layout-menu-mobile {
-      @apply flex lg:hidden;
-    }
-
-    &--mobilebar {
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu-mobile) {
       @apply gap-0;
-      @apply mobile:pt-16 !important;
+      @apply max-mobile:pt-16;
 
       .layout-menu,
       .layout-menu-horizontal {
-        @apply mobile:hidden;
+        @apply max-mobile:hidden;
       }
     }
+  }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu-mobile) {
-        @apply gap-0;
-        @apply mobile:pt-16 !important;
+  /* SIDEBAR */
+  /* selector :has not supported */
 
-        .layout-menu,
-        .layout-menu-horizontal {
-          @apply mobile:hidden;
-        }
-      }
+  .layout-wrapper--sidebar {
+    @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+
+    .layout-wrapper--sidebar-short {
+      @apply lg:pl-[6rem];
     }
+  }
 
-    /* SIDEBAR */
-    /* selector :has not supported */
 
-    &--sidebar {
-      @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+  /* TOPBAR */
+  /* selector :has not supported */
 
-      &-short {
-        @apply lg:pl-[6rem];
-      }
+  .layout-wrapper--top-menu {
+    @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
+    @apply lg:pt-0;
+
+    .layout-menu {
+      @apply invisible lg:visible;
     }
+  }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu) {
-        @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
-      }
-
-      &-short:has(> .layout-menu) {
-        @apply lg:pl-[6rem];
-      }
-    }
-
-    /* TOPBAR */
-    /* selector :has not supported */
-
-    &--top-menu {
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu-horizontal) {
       @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
-      @apply lg:pt-0 !important;
+      @apply lg:pt-0;
 
       .layout-menu {
         @apply invisible lg:visible;
       }
     }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu-horizontal) {
-        @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
-        @apply lg:pt-0 !important;
-
-        /* .layout-menu {
-          @apply invisible lg:visible;
-        } */
-      }
-
-      &:has(.layout-menu ~ .layout-menu-horizontal) {
-        @apply mobile:pt-16 !important;
-      }
+    &:has(.layout-menu ~ .layout-menu-horizontal) {
+      @apply max-mobile:pt-16;
     }
   }
 
-  &-menu {
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu) {
+      @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+    }
+
+    &.layout-wrapper-short:has(> .layout-menu) {
+      @apply lg:pl-[6rem];
+    }
+  }
+
+  .layout-menu {
     @apply fixed inset-y-0 left-5 z-[101] box-content flex shrink-0 flex-col justify-between lg:pt-6;
     height: calc(100vh - 4rem);
 
@@ -106,23 +105,23 @@
     }
   }
 
-  &-page {
+  .layout-page {
     @apply relative flex w-full grow flex-col rounded-2xl bg-slate-50 p-4 dark:bg-dark-700 md:p-6;
   }
 
-  &-metrics {
+  .layout-metrics {
     @apply mb-6 flex flex-col gap-x-6 gap-y-8 sm:grid sm:grid-cols-12 lg:gap-y-10;
   }
 
-  &-navigation {
-    @apply relative flex flex-wrap items-center justify-end gap-4 border-b border-gray-200 pb-4 dark:border-dark-200 md:flex-nowrap md:justify-between;
+  .layout-navigation {
+    @apply relative z-10 flex flex-wrap items-center justify-end gap-4 border-b border-gray-200 pb-4 dark:border-dark-200 md:flex-nowrap md:justify-between;
   }
 
-  &-content {
+  .layout-content {
     @apply flex-auto py-6 lg:py-8;
   }
 
-  &-footer {
+  .layout-footer {
     @apply pt-6;
   }
 }

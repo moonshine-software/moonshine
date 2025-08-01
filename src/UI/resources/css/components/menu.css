@@ -53,10 +53,11 @@
         @apply hidden;
       }
     }
+
     .profile {
       @apply lg:flex-col;
 
-      &-info {
+      .profile-info {
         @apply lg:hidden;
       }
     }
@@ -67,6 +68,24 @@
 
     .menu-inner-item-char {
       @apply !hidden;
+    }
+  }
+
+  /* Heading */
+
+  .menu-heading {
+    @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10 lg:static lg:z-3 lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:px-0 lg:py-3 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:px-4 xl:py-4;
+
+    .menu-heading-logo {
+      @apply grow-0 lg:grow;
+    }
+
+    .menu-heading-actions {
+      @apply flex items-center justify-end gap-x-3;
+    }
+
+    .menu-heading-burger {
+      @apply inline-flex items-center text-slate-300 lg:hidden;
     }
   }
 
@@ -84,30 +103,17 @@
       @apply pointer-events-auto visible translate-y-0 opacity-100;
     }
 
-    /* Heading */
-    &-heading {
-      @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10 lg:static lg:z-3 lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:px-0 lg:py-3 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:px-4 xl:py-4;
-
-      &-logo {
-        @apply grow-0 lg:grow;
-      }
-      &-actions {
-        @apply flex items-center justify-end gap-x-3;
-      }
-      &-burger {
-        @apply inline-flex items-center text-slate-300 lg:hidden;
-      }
-    }
 
     /* Main navigation */
-    &-inner {
+
+    .menu-inner {
       @apply flex flex-col gap-y-2;
 
       &:last-of-type {
         @apply grow;
       }
 
-      &-item {
+      .menu-inner-item {
         &._is-active {
           > .menu-inner-link,
           > .menu-inner-button {
@@ -116,8 +122,8 @@
         }
       }
 
-      &-link,
-      &-button {
+      .menu-inner-link,
+      .menu-inner-button {
         @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
 
         &._is-active {
@@ -134,26 +140,26 @@
         }
       }
 
-      &-link {
+      .menu-inner-link {
         &::after {
           content: '';
           @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
         }
       }
 
-      &-button {
+      .menu-inner-button {
         @apply w-full;
       }
 
-      &-text {
+      .menu-inner-text {
         @apply grow truncate text-left;
       }
 
-      &-counter {
+      .menu-inner-counter {
         @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:-right-2 lg:top-0.5 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:-right-1 xl:top-0 xl:max-w-[120px] xl:scale-100;
       }
 
-      &-arrow {
+      .menu-inner-arrow {
         @apply transition-transform;
 
         > div,
@@ -162,13 +168,14 @@
         }
       }
 
-      &-text,
-      &-arrow {
+      .menu-inner-text,
+      .menu-inner-arrow {
         @apply block lg:hidden xl:block;
       }
 
       /* Dropdown Menu */
-      &-dropdown {
+
+      .menu-inner-dropdown {
         @apply mt-2 flex flex-col gap-y-2 rounded-lg bg-menu-dropdown-bg p-1;
 
         .menu-inner-link,
@@ -195,7 +202,8 @@
       }
 
       /* Divider */
-      &-divider {
+
+      .menu-inner-divider {
         @apply relative my-2 -ml-4 flex items-center pl-4 pr-0.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:grow before:bg-slate-500;
 
         > span {
@@ -205,28 +213,34 @@
     }
 
     /* User Profile */
+
     .profile {
       @apply px-2 py-4;
 
-      &-info {
+      .profile-info {
         > .name {
           @apply text-white;
         }
-      }
-    }
-
-    /* Bottom menu */
-    &-bottom {
-      @apply hidden pr-5 lg:block;
-
-      > *:first-child {
-        @apply border-t border-dark-200 pt-2;
       }
     }
   }
 
   .profile {
     @apply flex-row lg:flex-col xl:flex-row;
+  }
+
+  /* Bottom menu */
+
+  .menu-bottom {
+    @apply hidden pr-5 lg:block;
+
+    > *:first-child {
+      @apply border-t border-dark-200 pt-2;
+    }
+
+    .menu-inner-button {
+      @apply flex gap-2 text-gray-300
+    }
   }
 }
 
@@ -239,6 +253,7 @@
   }
 
   /* Opened menu state */
+
   &._is-opened {
     @apply bg-body;
 
@@ -251,34 +266,49 @@
 
   .menu {
     /* Logotype */
-    &-logo {
+
+    & -logo {
       @apply shrink-0;
     }
 
     /* Main navigation */
-    &-navigation {
+
+    & -navigation {
       @apply block lg:grow;
     }
 
-    &-inner {
+    & -inner {
       @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
 
       &:last-of-type {
         @apply grow;
       }
 
-      &-item {
-        @apply relative rounded-lg text-white transition-all current:bg-menu-current-bg current:font-medium current:text-menu-current-color current:opacity-100 current:transition-none current:dark:font-normal current:lg:bg-slate-50 current:lg:text-black dark:current:lg:bg-dark-700 current:dark:lg:text-white;
+      & -item {
+        @apply relative rounded-lg text-white transition-all;
 
         &._is-active {
+          @apply
+          bg-menu-current-bg
+          font-medium
+          text-menu-current-color
+          opacity-100
+          transition-none
+          dark:font-normal
+          lg:bg-slate-50
+          lg:text-black
+          dark:lg:text-white
+          dark:lg:bg-dark-700
+          ;
+
           .menu-inner-link {
             @apply text-menu-current-color hover:text-menu-current-color lg:text-inherit lg:hover:text-inherit;
           }
         }
       }
 
-      &-link,
-      &-button {
+      & -link,
+      & -button {
         @apply relative flex items-center gap-x-2.5 rounded-lg p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
 
         &._is-active {
@@ -295,19 +325,19 @@
         }
       }
 
-      &-button {
+      & -button {
         @apply w-full;
       }
 
-      &-text {
+      & -text {
         @apply grow truncate text-left;
       }
 
-      &-counter {
+      & -counter {
         @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
       }
 
-      &-arrow {
+      & -arrow {
         @apply transition-transform;
 
         > div,
@@ -316,13 +346,14 @@
         }
       }
 
-      &-text,
-      &-arrow {
+      & -text,
+      & -arrow {
         @apply hidden lg:block;
       }
 
       /* Dropdown Menu */
-      &-dropdown {
+
+      & -dropdown {
         @apply fixed top-[4.85rem] z-5 flex flex-col gap-y-1 rounded-lg border border-dark-300 bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
 
         .menu-inner-link,
@@ -357,7 +388,8 @@
       }
 
       /* Divider */
-      &-divider {
+
+      & -divider {
         @apply relative mx-1 flex items-center text-slate-400 before:h-[16px] before:min-w-[1px] before:grow before:bg-white/30;
 
         > span {
@@ -367,7 +399,8 @@
     }
 
     /* Actions buttons */
-    &-actions {
+
+    & -actions {
       @apply ml-auto flex shrink-0 items-center justify-end gap-x-2 sm:gap-x-3;
 
       .menu-inner-divider {
@@ -380,25 +413,27 @@
     }
 
     /* Settings button */
-    &-settings {
+
+    & -settings {
       @apply inline-flex items-center;
     }
 
     /* Burger button */
-    &-burger {
+
+    & -burger {
       @apply inline-flex items-center text-white lg:hidden;
     }
   }
 
   @media (max-width: 1023.98px) {
     .menu {
-      &-navigation {
+      & -navigation {
         --top-space: 4.5rem;
         @apply pointer-events-none invisible absolute inset-x-0 top-[--top-space] -translate-y-2 overflow-x-auto bg-body px-3 pb-8 opacity-0 transition-all md:px-7;
         height: calc(100vh - var(--top-space));
       }
 
-      &-inner {
+      & -inner {
         @apply flex-col gap-y-0.5 overflow-x-hidden;
 
         .menu-inner-text,
@@ -413,6 +448,7 @@
         .menu-inner-divider {
           @apply before:h-[1px] before:min-w-[16px];
         }
+
         > .menu-inner-divider {
           @apply my-1;
         }
@@ -420,6 +456,7 @@
         .menu-inner-button._is-active ~ .menu-inner-dropdown {
           @apply !block;
         }
+
         .menu-inner-dropdown {
           @apply !static !mt-2 !hidden !transform-none;
         }
@@ -450,38 +487,45 @@
     }
 
     /* Heading */
-    &-heading {
+
+    .menu-heading {
       @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10;
 
-      &-logo {
+      .menu-heading-logo {
         @apply grow-0;
       }
-      &-actions {
+
+      .menu-heading-actions {
         @apply flex items-center justify-end gap-x-3;
       }
-      &-mode {
+
+      .menu-heading-mode {
         @apply inline-flex items-center justify-center;
-        &-btn {
+
+        .menu-heading-mode-btn {
           @apply h-6 w-6 overflow-hidden text-white/30 hover:text-white;
+
           > svg {
             @apply h-6 w-6;
           }
         }
       }
-      &-burger {
+
+      .menu-heading-burger {
         @apply inline-flex items-center text-white;
       }
     }
 
     /* Main navigation */
-    &-inner {
+
+    .menu-inner {
       @apply flex flex-col gap-y-2;
 
       &:last-of-type {
         @apply grow;
       }
 
-      &-item {
+      .menu-inner-item {
         &._is-active {
           > .menu-inner-link,
           > .menu-inner-button {
@@ -490,8 +534,8 @@
         }
       }
 
-      &-link,
-      &-button {
+      .menu-inner-link,
+      .menu-inner-button {
         @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
 
         &._is-active {
@@ -508,26 +552,26 @@
         }
       }
 
-      &-link {
+      .menu-inner-link {
         &::after {
           content: '';
           @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
         }
       }
 
-      &-button {
+      .menu-inner-button {
         @apply w-full;
       }
 
-      &-text {
+      .menu-inner-text {
         @apply grow truncate text-left;
       }
 
-      &-counter {
+      .menu-inner-counter {
         @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:-right-2 lg:top-0.5 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:-right-1 xl:top-0 xl:max-w-[120px] xl:scale-100;
       }
 
-      &-arrow {
+      .menu-inner-arrow {
         @apply transition-transform;
 
         > div,
@@ -536,13 +580,14 @@
         }
       }
 
-      &-text,
-      &-arrow {
+      .menu-inner-text,
+      .menu-inner-arrow {
         @apply block lg:hidden xl:block;
       }
 
       /* Dropdown Menu */
-      &-dropdown {
+
+      .menu-inner-dropdown {
         @apply mt-2 flex flex-col gap-y-2 rounded-lg bg-menu-dropdown-bg p-1;
 
         .menu-inner-link,
@@ -569,7 +614,8 @@
       }
 
       /* Divider */
-      &-divider {
+
+      .menu-inner-divider {
         @apply relative my-2 -ml-4 flex items-center pl-4 pr-0.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:grow before:bg-slate-500;
 
         > span {

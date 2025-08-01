@@ -3,7 +3,12 @@
   @apply flex h-4 rounded-lg bg-slate-100 dark:bg-dark-300;
 
   &-bar {
-    @apply flex items-center justify-center overflow-hidden rounded-lg bg-slate-500 text-3xs font-medium leading-none text-white dark:bg-dark-50 dark:text-white;
+    @apply flex items-center justify-center overflow-hidden rounded-lg bg-slate-500 text-3xs font-medium leading-none
+    text-white
+    /*  */
+    /*dark:bg-gray-50*/
+    /*  */
+    dark:text-white;
 
     /* Themes */
     &--primary {

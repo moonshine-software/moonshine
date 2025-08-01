@@ -2,41 +2,55 @@
 .pagination {
   @apply mt-5;
 
-  &-list {
-    @apply flex flex-wrap justify-center gap-2;
-  }
 
-  &-item {
+  .pagination-item {
     @apply h-7 min-w-[theme('spacing[7]')];
+
+    ._is-active {
+      @apply
+      bg-primary
+      text-white
+      pointer-events-none
+    }
   }
 
-  &-page,
-  &-dots,
-  &-first,
-  &-last {
+  .pagination-page,
+  .pagination-dots,
+  .pagination-first,
+  .pagination-last {
     @apply flex h-full w-full items-center justify-center rounded-md p-1 text-center text-3xs font-medium;
   }
 
-  &-first,
-  &-last {
+  .pagination-first,
+  .pagination-last {
     @apply text-gray-400 dark:text-slate-500;
+
     > svg {
       @apply h-3.5 w-3.5;
     }
   }
 
-  &-page {
-    @apply current:pointer-events-none current:bg-primary current:text-white;
+  .pagination-page {
+    /*@apply*/
+    /*current:pointer-events-none*/
+    /*current:bg-primary*/
+    /*current:text-white*/
+    /*;*/
   }
 
-  &-first,
-  &-last,
-  &-page {
-    @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200 focus:ring-opacity-70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
+  .pagination-first,
+  .pagination-last,
+  .pagination-page {
+    @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200/70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
   }
 
   /* Pagination results */
-  &-results {
+
+  .pagination-results {
     @apply mt-5 text-center text-3xs text-gray-400 dark:text-slate-500;
   }
+}
+
+.pagination-list {
+  @apply flex flex-wrap justify-center gap-2;
 }

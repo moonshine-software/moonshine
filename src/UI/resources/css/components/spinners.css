@@ -2,72 +2,92 @@
 .spinner {
   @apply relative h-8 w-8 rounded-full before:absolute before:inset-0 before:box-border before:rounded-full before:border-3 before:border-slate-300 dark:before:border-slate-500;
   animation: ms-loader-rotate 1s linear infinite;
+
   &::before {
     animation: ms-loader-spinner 2s linear infinite;
   }
 
   /* Fixed position */
-  &-fixed {
+
+  &.spinner-fixed {
     @apply fixed inset-0 m-auto;
   }
 
   /* Absolute position */
-  &-absolute {
+
+  &.spinner-absolute {
     @apply absolute inset-0 m-auto;
   }
 
   /* Sizes */
-  &-sm {
+
+  &.spinner-sm {
     @apply h-6 w-6 before:border-2;
   }
-  &-md {
+
+  &.spinner-md {
     @apply h-10 w-10;
   }
-  &-lg {
+
+  &.spinner-lg {
     @apply h-12 w-12 before:border-4;
   }
-  &-xl {
+
+  &.spinner-xl {
     @apply h-14 w-14 before:border-4;
   }
 
   /* Themes */
-  &--primary {
+
+  &.spinner--primary {
     @apply before:border-primary dark:before:border-primary;
   }
-  &--secondary {
+
+  &.spinner--secondary {
     @apply before:border-secondary dark:before:border-secondary;
   }
-  &--success {
+
+  &.spinner--success {
     @apply before:border-success-bg dark:before:border-success-bg;
   }
-  &--warning {
+
+  &.spinner--warning {
     @apply before:border-warning-bg dark:before:border-warning-bg;
   }
-  &--error {
+
+  &.spinner--error {
     @apply before:border-error-bg dark:before:border-error-bg;
   }
-  &--info {
+
+  &.spinner--info {
     @apply before:border-info-bg dark:before:border-info-bg;
   }
-  &--purple {
+
+  &.spinner--purple {
     @apply before:border-purple-500 dark:before:border-purple-500;
   }
-  &--pink {
+
+  &.spinner--pink {
     @apply before:border-pink-500 dark:before:border-pink-500;
   }
-  &--blue {
+
+  &.spinner--blue {
     @apply before:border-blue-500 dark:before:border-blue-500;
   }
-  &--green {
+
+  &.spinner--green {
     @apply before:border-green-500 dark:before:border-green-500;
   }
-  &--yellow {
+
+  &.spinner--yellow {
     @apply before:border-yellow-500 dark:before:border-yellow-500;
   }
-  &--red {
+
+  &.spinner--red {
     @apply before:border-red-500 dark:before:border-red-500;
   }
-  &--gray {
+
+  &.spinner--gray {
     @apply before:border-gray-500 dark:before:border-gray-500;
   }
 }

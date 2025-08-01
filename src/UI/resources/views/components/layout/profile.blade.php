@@ -88,7 +88,6 @@
                                 <x-moonshine::form.input type="hidden" name="_method" value="delete" />
 
                                 <x-moonshine::form.button
-                                    class="inline-flex items-center gap-1 max-w-full"
                                     :raw="true"
                                     type="submit"
                                 >

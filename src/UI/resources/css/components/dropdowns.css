@@ -2,54 +2,120 @@
 .dropdown {
   @apply relative;
 
-  &-body {
-    @apply pointer-events-none invisible absolute z-50 overflow-hidden rounded-md bg-white opacity-0 shadow-lg dark:bg-dark-500 dark:shadow-black/20;
-
-    &[data-show] {
-      @apply block;
-    }
+  .dropdown-btn {
+    @apply rounded-none border-0 focus:ring-0;
   }
 
-  &-heading {
-    @apply border-b-2 border-gray-200 bg-white p-4 font-medium dark:border-dark-200 dark:bg-dark-500;
-  }
+  .dropdown-body {
+    @apply
+    pointer-events-none
+    invisible
+    opacity-0
+    left-0
+    absolute
+    px-2
+    py-2
+    overflow-hidden
+    rounded-md
+    shadow-lg
+    bg-white
+    dark:bg-dark-500
+    dark:shadow-black/20
+    transition-all
+    ;
 
-  &-content {
-    @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px];
+    &.visible {
+      @apply
+      pointer-events-auto
+      visible
+      opacity-100
+      ;
 
-    .dropdown-input-search {
-      @apply mb-0 rounded-none border-0;
-    }
-  }
+      .dropdown-content {
+        /* Dropdown menu */
 
-  &-footer {
-    @apply border-t-2 border-gray-200 px-4 py-3 dark:border-dark-200;
-  }
+        .dropdown-menu {
+          @apply
+          flex
+          flex-col
+          divide-y-2
+          divide-gray-200
+          dark:divide-dark-200
+          ;
 
-  /* Dropdown menu */
-  &-menu {
-    @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
-
-    &-item {
-      &--active {
-        .dropdown-menu-link,
-        .btn {
-          @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
+          .dropdown-menu-item--active {
+            .dropdown-menu-link,
+            .btn {
+              @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
+            }
+          }
         }
       }
     }
 
-    &-link,
-    .btn {
-      @apply flex items-center justify-start gap-x-2 px-2 py-2.5 text-3xs hover:bg-gray-100 hover:text-black dark:hover:bg-dark-400 dark:hover:text-white xs:px-4 lg:text-2xs;
+    &[data-show] {
+      @apply block;
+    }
 
-      > svg {
-        @apply h-4 w-4;
+    .dropdown-heading {
+      @apply border-b-1 border-gray-200 bg-white p-2 font-medium dark:border-dark-200 dark:bg-dark-500;
+    }
+
+    .dropdown-content {
+      @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px];
+
+      .dropdown-input-search {
+        @apply mb-0 rounded-none border-0;
       }
     }
 
-    .btn {
-      @apply rounded-none border-0 focus:ring-0;
+    .dropdown-footer {
+      @apply border-t-1 border-gray-200 p-2 dark:border-dark-200;
+
+      [type=submit] {
+        @apply flex gap-2 items-center
+      }
+    }
+
+    /* Dropdown menu */
+
+    .dropdown-menu {
+      @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
+
+      .dropdown-menu-item {
+        .dropdown-menu-item--active {
+          .dropdown-menu-link,
+          .btn {
+            @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
+          }
+        }
+      }
+
+      .dropdown-menu-link,
+      .btn {
+        @apply
+        flex
+        items-center
+        justify-start
+        gap-x-2
+        px-2
+        py-2.5 text-3xs
+        hover:bg-gray-100
+        hover:text-black
+        dark:hover:bg-dark-400
+        dark:hover:text-white
+        xs:px-4
+        lg:text-2xs
+        ;
+
+        > svg {
+          @apply h-4 w-4;
+        }
+      }
+
+      .btn {
+        @apply rounded-none border-0 focus:ring-0;
+      }
     }
   }
 }

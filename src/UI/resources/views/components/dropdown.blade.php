@@ -6,7 +6,7 @@
     'searchable' => false,
     'searchPlaceholder' => '',
     'footer' => null,
-    'strategy' => 'fixed',
+    'strategy' => 'absolute',
 ])
 <div x-data="dropdown"
      @click.outside="closeDropdown"
@@ -19,7 +19,7 @@
         {{ $toggler }}
     </button>
 
-    <div {{ $attributes->merge(['class' => 'dropdown-body']) }}>
+    <div {{ $attributes->merge(['class' => 'dropdown-body']) }} style="">
         @if($title ?? false)
             <h5 class="dropdown-heading">{{ $title }}</h5>
         @endif

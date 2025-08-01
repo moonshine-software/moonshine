@@ -1,38 +1,38 @@
 /* User Profile  */
 .profile {
   @apply flex items-center gap-x-2 gap-y-4  xl:flex-row;
+}
 
-  &-main {
-    @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
+.profile-main {
+  @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
 
-    &:hover {
-      .profile-info > .name {
-        @apply text-secondary;
-      }
+  &:hover {
+    .profile-info > .name {
+      @apply text-secondary;
     }
   }
+}
 
-  &-photo {
-    @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
+.profile-photo {
+  @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
+}
+
+.profile-info {
+  @apply block min-w-0 grow lg:hidden xl:block;
+
+  > .name {
+    @apply block truncate text-2xs font-medium leading-[1.25] text-slate-600 transition-colors dark:text-slate-400;
   }
 
-  &-info {
-    @apply block min-w-0 grow lg:hidden xl:block;
-
-    > .name {
-      @apply block truncate text-2xs font-medium leading-[1.25] text-slate-600 transition-colors dark:text-slate-400;
-    }
-
-    > .email {
-      @apply block truncate text-3xs text-slate-400 dark:text-slate-500;
-    }
+  > .email {
+    @apply block truncate text-3xs text-slate-400 dark:text-slate-500;
   }
+}
 
-  &-exit {
-    @apply text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
+.profile-exit {
+  @apply text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
 
-    > svg {
-      @apply h-6 w-6;
-    }
+  > svg {
+    @apply h-6 w-6;
   }
 }

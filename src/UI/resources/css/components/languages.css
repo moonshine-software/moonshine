@@ -1,6 +1,6 @@
 /* Languages switcher */
 .languages {
-  &-icon {
+  .languages-icon {
     @apply block overflow-hidden pr-3 text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
 
     > svg {

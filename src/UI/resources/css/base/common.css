@@ -1,70 +1,39 @@
-/* Custom Fonts */
-@font-face {
-  font-family: 'Gilroy';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../../fonts/Gilroy-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Gilroy';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('../../fonts/Gilroy-Medium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Gilroy';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('../../fonts/Gilroy-SemiBold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Gilroy';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../../fonts/Gilroy-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Gilroy';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('../../fonts/Gilroy-Black.woff2') format('woff2');
-}
-
 /* Custom Scrollbar */
 :root {
   --scrollbar-color: theme('colors.gray.300');
   --scrollbar-hover-color: theme('colors.gray.200');
-}
-:root.dark {
-  --scrollbar-color: theme('colors.dark.100');
-  --scrollbar-hover-color: theme('colors.dark.50');
 
-  input,
-  textarea {
-    color-scheme: dark;
+  @variant dark {
+    --scrollbar-color: theme('colors.dark.100');
+    --scrollbar-hover-color: theme('colors.dark.50');
+
+    input,
+    textarea {
+      color-scheme: dark;
+    }
   }
 }
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-color) transparent;
 }
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 20px;
   border: 3px solid transparent;
   background-clip: padding-box;
   background-color: var(--scrollbar-color);
+
   &:hover {
     background-color: var(--scrollbar-hover-color);
   }
@@ -94,18 +63,22 @@ body {
   .h4 {
     @apply mb-6 truncate font-medium;
   }
+
   h1,
   .h1 {
     @apply text-md;
   }
+
   h2,
   .h2 {
     @apply text-sm;
   }
+
   h3,
   .h3 {
     @apply text-xs;
   }
+
   h4,
   .h4 {
     @apply text-2xs;
@@ -113,8 +86,9 @@ body {
 }
 
 a {
-  @apply inline-block transition-all hover:text-primary dark:hover:text-white;
+  @apply transition-all hover:text-primary dark:hover:text-white;
 }
+
 .link {
   @apply font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
 }
@@ -142,36 +116,45 @@ pre {
 
 .chart {
   @apply w-full;
+
   > * {
     @apply mx-auto;
   }
 }
 
-/* List marker */
-ul.list-marker {
-  @apply list-[square] space-y-2 pl-6 marker:text-primary;
-}
+ul {
+  /* List marker */
 
-/* Checkboxes tree */
-ul.tree-list {
-  @apply -m-1 space-y-1.5 overflow-x-auto p-1;
-  li {
-    @apply space-y-1.5;
-    ul {
-      @apply ml-6 space-y-1.5;
+  &.list-marker {
+    @apply list-[square] space-y-2 pl-6 marker:text-primary;
+  }
+
+  /* Checkboxes tree */
+
+  &.tree-list {
+    @apply -m-1 space-y-1.5 overflow-x-auto p-1;
+
+    li {
+      @apply space-y-1.5;
+
+      ul {
+        @apply ml-6 space-y-1.5;
+      }
     }
   }
-}
 
-/* Checkboxes horizontal */
-ul.horizontal-list {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  @apply grid items-center;
-  li {
-    @apply pb-2 pe-2;
+  /* Checkboxes horizontal */
 
-    .form-group {
-      @apply flex-nowrap;
+  &.horizontal-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    @apply grid items-center;
+
+    li {
+      @apply pb-2 pe-2;
+
+      .form-group {
+        @apply flex-nowrap;
+      }
     }
   }
 }
@@ -179,8 +162,10 @@ ul.horizontal-list {
 /* Images in a row */
 .images-row {
   @apply flex;
+
   & > * {
-    @apply h-10 w-10 overflow-hidden rounded-full border-3 border-white dark:border-dark-200;
+    @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-dark-200;
+
     &:not(:first-child) {
       @apply -ml-5;
     }
@@ -192,15 +177,63 @@ hr,
 hr.divider {
   @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
 }
+
 div.divider {
   @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
-  &-centered {
-    @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
-  }
+}
+
+div.divider-centered {
+  @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
 }
 
 .space-elements > :not([hidden], [type='hidden']) ~ :not([hidden], [type='hidden']) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+
+/* Base state */
+@utility base__default {
+  @apply
+  text-2xs
+  outline-none
+  transition-colors
+  duration-200
+  border
+  bg-white
+  border-gray-300
+  dark:bg-dark-800
+  dark:border-dark-200
+}
+
+@utility base__focus {
+  @apply
+  ring
+  border-gray-300
+  ring-gray-300/50
+  ring-offset-0
+  dark:border-dark-200
+  dark:ring-dark-100/30
+}
+
+@utility base__read-only {
+  @apply cursor-default opacity-60 focus:ring-0;
+}
+
+@utility base__disabled {
+  @apply cursor-not-allowed bg-gray-100 text-gray-400 opacity-60 dark:bg-dark-700;
+  @apply bg-gray-100 text-gray-400;
+  @apply dark:bg-dark-700 dark:text-gray-500;
+}
+
+@utility base__placeholder {
+  @apply
+  placeholder:text-2xs
+  placeholder:text-gray-400
+  dark:placeholder:text-gray-500
+}
+
+@utility base__error {
+  @apply border-error focus:ring-error/20;
+  @apply dark:border-error dark:focus:ring-error/40;
 }

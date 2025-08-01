@@ -2,45 +2,50 @@
 .modal {
   @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-transform;
 
-  &-template {
+  .modal-template {
     @apply relative z-modal;
   }
 
-  &-dialog {
+  .modal-dialog {
     @apply pointer-events-none mx-auto my-8 flex items-center px-4 sm:max-w-[520px] md:max-w-[720px];
     min-height: calc(100% - 2rem * 2);
 
-    &-auto {
+    .modal-dialog-auto {
       @apply max-w-max;
+
       .modal-header,
       .modal-body {
         @apply p-4;
       }
     }
 
-    &-xl {
+    .modal-dialog-xl {
       @apply max-w-[1640px];
     }
   }
 
-  &-content {
-    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700;
+  .modal-content {
+    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700
+    shadow-lg
+    ;
   }
 
-  &-header {
-    @apply sticky top-0 z-20 flex justify-between gap-x-4 rounded-t-lg border-b border-gray-200 bg-white p-4 dark:border-dark-200 dark:bg-dark-700 lg:p-6;
+  .modal-header {
+    @apply sticky top-0 z-20 flex justify-between gap-x-4 rounded-t-lg border-b
+    border-gray-200 bg-white p-4 dark:border-dark-200 dark:bg-dark-700 lg:p-6;
   }
 
-  &-title {
+  .modal-title {
     @apply self-center text-xs font-semibold xs:text-sm;
   }
 
-  &-body {
+  .modal-body {
     @apply grow p-4 lg:p-6;
   }
+}
 
-  /* Backdrop */
-  &-backdrop {
-    @apply fixed inset-0 z-50 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
-  }
+/* Backdrop */
+
+.modal-backdrop {
+  @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
 }

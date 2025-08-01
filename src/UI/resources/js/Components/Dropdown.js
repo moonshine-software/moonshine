@@ -9,7 +9,7 @@ export default () => ({
   dropdownBody: null,
   dropdownSearch: null,
   dropdownItems: null,
-  visibilityClasses: ['pointer-events-auto', 'visible', 'opacity-100'],
+  visibilityClasses: ['visible'],
 
   init() {
     this.dropdownBtn = this.$root.querySelector('.dropdown-btn')
@@ -25,7 +25,7 @@ export default () => ({
 
     this.popperInstance = createPopper(this.dropdownBtn, this.dropdownBody, {
       placement: dropdownPlacement ? dropdownPlacement : 'auto',
-      strategy: dropdownStrategy ? dropdownStrategy : 'fixed',
+      strategy: dropdownStrategy ? dropdownStrategy : 'absolute',
       modifiers: [
         {
           name: 'offset',

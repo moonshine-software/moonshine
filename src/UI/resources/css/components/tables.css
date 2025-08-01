@@ -1,14 +1,15 @@
 /* Tables */
 table {
-  width: calc(100% - 1px);
-  @apply border-collapse text-left;
+  @apply border-collapse text-left w-full;
 
   .dropzone-items {
     @apply max-h-[8rem] max-w-xs gap-1.5 overflow-y-auto;
   }
+
   .dropzone-item-file {
     @apply gap-1 border-0 p-1;
   }
+
   .dropzone-file-icon > svg {
     @apply h-5 w-5;
   }
@@ -19,20 +20,23 @@ table {
 
   thead {
     @apply text-3xs uppercase;
+
     td,
     th {
-      @apply max-w-lg border-b p-2 font-semibold dark:border-dark-300;
+      @apply max-w-lg border-b p-2 font-semibold border-b-gray-200 dark:border-dark-300;
     }
   }
 
   tbody {
     td,
     th {
-      @apply max-w-lg break-words border-b p-2 py-3 dark:border-dark-400;
+      @apply max-w-lg break-words border-b p-2 py-3 border-b-gray-200 dark:border-dark-400;
     }
+
     th {
       @apply font-semibold;
     }
+
     tr:last-child {
       td,
       th {
@@ -46,10 +50,12 @@ table {
     th {
       @apply max-w-lg border-t dark:border-dark-400;
     }
+
     td:not([class$='-bulk-actions']),
     th {
       @apply break-words p-2 py-3;
     }
+
     td[class$='-bulk-actions'] {
       @apply pb-3 pt-3;
     }
@@ -58,7 +64,7 @@ table {
 
 .table-divider {
   div.grid {
-    @apply !my-0 border-b py-2 dark:border-dark-400;
+    @apply !my-0 border-b py-2 border-gray-200 dark:border-dark-200;
 
     &:last-child {
       @apply border-b-0 pb-0;
@@ -80,6 +86,7 @@ table {
     tr {
       @apply bg-white dark:bg-dark-600;
     }
+
     td,
     th {
       @apply px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300;
@@ -90,6 +97,7 @@ table {
     tr:not(:has(td[class$='-bulk-actions'])) {
       @apply bg-white dark:bg-dark-600;
     }
+
     td:not([class$='-bulk-actions']),
     th {
       @apply px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300;

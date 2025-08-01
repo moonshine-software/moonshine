@@ -5,39 +5,51 @@
   &.alert-primary {
     @apply border-primary bg-primary text-white dark:border-primary dark:bg-primary/30 dark:text-white;
   }
+
   &.alert-secondary {
     @apply border-secondary bg-secondary text-white dark:border-secondary dark:bg-secondary/30 dark:text-white;
   }
+
   &.alert-success {
     @apply border-success-bg bg-success-bg text-success-text dark:border-success-bg dark:bg-success-bg/30 dark:text-success-text;
   }
+
   &.alert-warning {
     @apply border-warning-bg bg-warning-bg text-warning-text dark:border-warning-bg dark:bg-warning-bg/30 dark:text-warning-text;
   }
+
   &.alert-error {
     @apply border-error-bg bg-error-bg text-error-text dark:border-error-bg dark:bg-error-bg/30 dark:text-error-text;
   }
+
   &.alert-info {
     @apply border-info-bg bg-info-bg text-info-text dark:border-info-bg dark:bg-info-bg/30 dark:text-info-text;
   }
+
   &.alert-purple {
     @apply border-purple-500 bg-purple-500 text-white dark:border-purple-500 dark:bg-purple-500/30 dark:text-white;
   }
+
   &.alert-green {
     @apply border-green-500 bg-green-500 text-white dark:border-green-500 dark:bg-green-500/30 dark:text-white;
   }
+
   &.alert-yellow {
     @apply border-yellow-500 bg-yellow-500 text-white dark:border-yellow-500 dark:bg-yellow-500/30 dark:text-white;
   }
+
   &.alert-pink {
     @apply border-pink-500 bg-pink-500 text-white dark:border-pink-500 dark:bg-pink-500/30 dark:text-white;
   }
+
   &.alert-blue {
     @apply border-blue-500 bg-blue-500 text-white dark:border-blue-500 dark:bg-blue-500/30 dark:text-white;
   }
+
   &.alert-red {
     @apply border-red-500 bg-red-500 text-white dark:border-red-500 dark:bg-red-500/30 dark:text-white;
   }
+
   &.alert-gray {
     @apply border-gray-500 bg-gray-500 text-white dark:border-gray-500 dark:bg-gray-500/30 dark:text-white;
   }
@@ -58,6 +70,7 @@
 
   .alert-remove {
     @apply text-inherit opacity-70 hover:text-inherit hover:opacity-100;
+
     & > svg {
       @apply h-4 w-4;
     }

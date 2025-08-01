@@ -1,8 +1,15 @@
 /* Dropzone */
 .dropzone {
-  @apply relative w-full rounded-lg border-2 border-dashed p-3;
-  @apply border-gray-300; /* light theme */
-  @apply dark:border-dark-200; /* dark theme */
+  @apply
+  relative
+  w-full
+  rounded-lg
+  border-2
+  border-dashed
+  p-3
+  border-gray-300
+  dark:border-dark-200
+  ;
 
   .dropzone-items {
     @apply flex flex-wrap gap-2;
@@ -12,7 +19,7 @@
     @apply relative h-12 w-12 overflow-hidden rounded-md md:h-16 md:w-16;
 
     &.dropzone-item-file {
-      @apply __default;
+      @apply base__default;
       @apply flex h-auto w-full items-center gap-2 p-2;
 
       .dropzone-remove {
@@ -30,8 +37,10 @@
   }
 
   .dropzone-file-icon {
-    @apply text-primary; /* light theme */
-    @apply dark:text-secondary; /* dark theme */
+    @apply
+    text-primary
+    dark:text-secondary
+    ;
 
     & > svg {
       @apply h-5 w-5;

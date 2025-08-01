@@ -2,21 +2,23 @@
 .authentication {
   @apply flex min-h-screen flex-col items-center justify-center gap-y-6 px-4 py-8;
 
-  &-content {
+  .authentication-content {
     @apply w-full max-w-[420px] rounded-lg bg-white p-5 dark:bg-dark-600 lg:p-8;
   }
 
-  &-header {
+  .authentication-header {
     @apply mb-6 space-y-2 text-center;
+
     .title {
       @apply text-md font-semibold;
     }
+
     .description {
       @apply text-2xs text-slate-500 dark:text-slate-400;
     }
   }
 
-  &-footer {
+  .authentication-footer {
     @apply mt-6 space-y-4;
 
     > p {

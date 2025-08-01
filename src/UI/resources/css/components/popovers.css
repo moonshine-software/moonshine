@@ -12,11 +12,13 @@
     @apply text-white dark:text-dark-600;
   }
 }
+
 .tippy-box {
   @apply bg-dark-800 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
 
   .popover-body {
     @apply p-1.5 sm:p-2.5;
+
     .title {
       @apply mb-3 border-b border-gray-600 pb-3 text-sm font-semibold sm:text-md;
     }
