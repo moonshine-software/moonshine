@@ -295,15 +295,19 @@ final class MoonShineServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (moonshineConfig()->isUseMigrations()) {
-            $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
-        }
-
         $this->publishes([
             MoonShine::path('/config/moonshine.php') => config_path(
                 'moonshine.php'
             ),
         ]);
+
+        if (moonshineConfig()->isUseMigrations()) {
+            $this->loadMigrationsFrom(MoonShine::path('/database/migrations'));
+
+            $this->publishes([
+                MoonShine::path('/database/migrations') => database_path('migrations'),
+            ], 'moonshine-migrations');
+        }
 
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));

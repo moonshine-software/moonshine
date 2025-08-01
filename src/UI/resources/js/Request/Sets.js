@@ -22,32 +22,32 @@ export function listRowRequest(component, key = null, index = null, type = 'chan
   }
 
   axios
-  .get(prepareUrl(component.asyncUrl + `&_key=${key}&_index=${index}`))
-  .then(response => {
-    const html = response.data.trim()
+    .get(prepareUrl(component.asyncUrl + `&_key=${key}&_index=${index}`))
+    .then(response => {
+      const html = response.data.trim()
 
-    if(isChange) {
-      tr.outerHTML = html
-    } else {
-      const template= document.createElement('template')
-      template.innerHTML = html
+      if (isChange) {
+        tr.outerHTML = html
+      } else {
+        const template = document.createElement('template')
+        template.innerHTML = html
 
-      tr = template.content.firstElementChild;
-    }
+        tr = template.content.firstElementChild
+      }
 
-    if (tr === null || tr.tagName !== 'TR') {
-      return
-    }
+      if (tr === null || tr.tagName !== 'TR') {
+        return
+      }
 
-    if (type === 'prepend') {
-      body.prepend(tr)
-    } else if (type === 'append') {
-      body.appendChild(tr)
-    }
+      if (type === 'prepend') {
+        body.prepend(tr)
+      } else if (type === 'append') {
+        body.appendChild(tr)
+      }
 
-    component.initColumnSelection()
-  })
-  .catch(error => {})
+      component.initColumnSelection()
+    })
+    .catch(error => {})
 }
 
 export function listComponentRequest(component, pushState = false) {
