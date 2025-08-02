@@ -1,29 +1,25 @@
-@source inline("visible");
-@source inline("invisible");
-@source inline("!hidden");
-@source inline("!block");
-@source inline('overflow-auto');
+@source inline("visible,invisible,!hidden,hidden,!block,overflow-{auto,hidden}");
 @source inline('pointer-events-auto');
-@source inline('opacity-0');
-@source inline('opacity-100');
-@source inline('mb-6');
-@source inline('m-1');
-@source inline('mb-4');
-@source inline('w-10');
-@source inline('text-center');
-@source inline('flex-wrap');
-@source inline('w-full');
+@source inline('opacity-{0..100..50}');
 @source inline('grow');
 
-@source inline("grid");
-@source inline("grid-cols-{1..12}");
+@source inline("grid,grid-cols-{1..12}");
+@source inline("{xs:,sm:,md:,lg:,xl:,}col-span-{{1..12},full}");
 @source inline("gap-{1..10}");
-@source inline("col-span-{xs,sm,md,lg,xl,2xl,1..12}");
-@source inline("{xs,sm,md,lg,xl}:col-span-{1..12}");
+
+@source inline('flex-wrap');
 @source inline("items-{start,end,center,baseline,stretch}");
 @source inline("justify-{start,end,center,baseline,stretch}");
-@source inline("w-{1..9}");
-@source inline("h-{1..9}");
+
+@source inline("w-{auto,{1..9},full,fit}");
+@source inline("h-{auto,{1..9},full,fit}");
+
 @source inline("object-{cover,contain,fill,none,scale-down}");
+
 @source inline("text-{xs,sm,md,lg,xl,{2..4}xl}");
 @source inline("text-{primary,secondary,info,success,warning,error}");
+@source inline('text-{left,center,right}');
+
+@source inline('m-{0..10}');
+@source inline('mt-{0..10}');
+@source inline('mb-{0..10}');
