@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Text;
 
 class Slug extends Text
@@ -28,18 +27,25 @@ class Slug extends Text
         return $this;
     }
 
-    public function live(): static
+    public function live(bool $lazy = false): static
     {
-        return $this->reactive(function (FieldsContract $fields): FieldsContract {
+        return $this->reactive(function (FieldsContract $fields, ?string $value, Slug $ctx) use ($lazy): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
-            return tap(
-                $fields,
-                fn ($fields): ?FieldContract => $fields
-                ->findByColumn($this->getColumn())
-                ?->setValue(Str::of($title->toValue())->slug($this->getSeparator())->value())
-            );
-        });
+            if (\is_null($title)) {
+                return $fields;
+            }
+
+            $slug = (string) Str::of($title->toValue())->slug($this->getSeparator());
+
+            if ($lazy && $value !== null) {
+                return $fields;
+            }
+
+            $ctx->setValue($slug);
+
+            return $fields;
+        }, lazy: $lazy);
     }
 
     public function separator(string $separator): static

@@ -11,7 +11,6 @@
 <a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/dt/moonshine/moonshine" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/v/moonshine/moonshine" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/l/moonshine/moonshine" alt="License"></a>
-<a href="https://packagist.org/packages/moonshine/moonshine"><img src="https://img.shields.io/packagist/l/moonshine/moonshine" alt="License"></a>
 </p>
 
 <p align="center">

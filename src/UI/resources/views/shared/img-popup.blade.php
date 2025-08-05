@@ -2,7 +2,6 @@
     <template
         @img-popup.window="open = true; src = $event.detail.src; auto = $event.detail.auto; wide = $event.detail.wide; styles = $event.detail.styles"
         x-if="open"
-        x-teleport="body"
     >
         <div class="modal-template">
             <div

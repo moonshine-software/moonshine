@@ -28,4 +28,24 @@ class Textarea extends Field implements HasDefaultValueContract, CanBeString
             ? parent::resolvePreview()
             : $this->escapeValue((string) parent::resolvePreview());
     }
+
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        if (\is_string($value) && static::class === self::class) {
+            return $this->isUnescape() ? $value : $this->escapeValue($value);
+        }
+
+        return $value;
+    }
+
+    protected function resolveValue(): mixed
+    {
+        if (! $this->isUnescape() && static::class === self::class) {
+            return $this->escapeValue(
+                parent::resolveValue()
+            );
+        }
+
+        return parent::resolveValue();
+    }
 }
