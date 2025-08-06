@@ -55,53 +55,60 @@ final class FieldsNames implements Arrayable
     /**
      * @param array<string, mixed> $values
      */
-    public function fromArray(array $values): static {
+    public function fromArray(array $values): self {
         foreach ($values as $name => $value) {
-            if (array_key_exists($name, $this->values)) {
-                $this->set($name, $value);
+            if (method_exists($this, $name)) {
+                $this->$name($value);
             }
         }
         return $this;
     }
 
-    protected function set(string $name, mixed $value): static {
+    protected function set(string $name, mixed $value): self {
         $this->values[$name] = $value;
         return $this;
     }
 
-    public function value(string $value): static {
+    public function value(string $value): self {
         return $this->set('valueField', $value);
     }
-    public function label(string $value): static {
+
+    public function label(string $value): self {
         return $this->set('labelField', $value);
     }
-    public function description(string $value): static {
+
+    public function description(string $value): self {
         return $this->set('descriptionField', $value);
     }
 
-    public function children(string $value): static {
+    public function children(string $value): self {
         return $this->set('childrenField', $value);
     }
-    public function optgroupValue(string $value): static {
+
+    public function optgroupValue(string $value): self {
         return $this->set('optgroupValueField', $value);
     }
-    public function optgroupLabel(string $value): static {
+
+    public function optgroupLabel(string $value): self {
         return $this->set('optgroupLabelField', $value);
     }
-    public function optgroup(string $value): static {
+
+    public function optgroup(string $value): self {
         return $this->set('optgroupField', $value);
     }
 
     /**
      * @param array<mixed> $value
      */
-    public function search(array $value): static {
+    public function search(array $value): self {
         return $this->set('searchField', $value);
     }
-    public function disabled(string $value): static {
+
+    public function disabled(string $value): self {
         return $this->set('disabledField', $value);
     }
-    public function sort(string $value): static {
+
+    public function sort(string $value): self {
         return $this->set('sortField', $value);
     }
 }

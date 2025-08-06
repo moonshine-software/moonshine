@@ -115,6 +115,10 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
             }
         }
 
+        if (settings.splitOn && typeof settings.splitOn === 'object' && settings.splitOn.pattern) {
+            settings.splitOn = new RegExp(settings.splitOn.pattern, settings.splitOn.modifiers)
+        }
+
         const commonSettings: UserSettings = {
             plugins: {
                 ...commonPlugins,
@@ -232,7 +236,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
     },
 
     asyncOnInit() {
-        // Загрузка сразу после "Инициализации"
+        // Loading immediately after "Initialization"
         if (asyncUrl && this.$el.dataset.asyncOnInit) {
             if (this.$el.dataset.asyncOnInitDropdown) {
                 const asyncOnInitFocusCb = () => {
@@ -314,7 +318,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         for (const key in items) {
             let item = items[key]
 
-            // Если передаются группы в виде
+            // If groups are transmitted in the form
             // { "groupName": [...], "groupsName2": [...], .. }
             if (! /^\d+$/g.test(key) && typeof item !== 'string') {
                 item = {
@@ -323,7 +327,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 }
             }
 
-            // Если есть дочерние элементы, то форматируем как Группы.
+            // If there are child elements, then we format them as Groups.
             if (item.hasOwnProperty(childrenField)) {
                 let groupOptions = item[childrenField]
                 delete item[childrenField]
@@ -350,7 +354,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         return { options, groups }
     },
     normalizeOption(option, key, group): Record<string, any> {
-        // Если передается в виде объекта, то нормализуем
+        // If it is passed as an object, then we normalize it
         // { "value": "Label", "value_2": "Label 2", ... }
         if (typeof option === 'string') {
             option = {

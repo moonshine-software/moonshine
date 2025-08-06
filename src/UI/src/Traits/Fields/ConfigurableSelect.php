@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
+use MoonShine\Support\DTOs\Select\AsyncSettings;
 use MoonShine\Support\DTOs\Select\FieldsNames;
+use MoonShine\Support\DTOs\Select\Settings;
 
 trait ConfigurableSelect
 {
@@ -33,69 +35,50 @@ trait ConfigurableSelect
     }
 
     /**
-     * @param array{
-     *     queryKey?: string,
-     *     selectedValuesKey?: string,
-     *     resultKey?: string,
-     *     withAllFields?: bool
-     * } $settings
+     * @param array<string, mixed>|AsyncSettings $settings
      */
-    public function asyncSettings(array $settings): static {
-        $settings = array_replace([
-            'queryKey' => null, // default: query
-            'selectedValuesKey' => null,
-            'resultKey' => null,
-            'withAllFields' => false,
-        ], $settings);
+    public function asyncSettings(array|AsyncSettings $settings): static {
+        if (is_array($settings)) {
+            $settings = AsyncSettings::make($settings);
+        }
 
-        return $this->customAttributes(array_filter([
-            'data-async-query-key' => $settings['queryKey'],
-            'data-async-selected-values-key' => $settings['selectedValuesKey'],
-            'data-async-result-key' => $settings['resultKey'],
-            'data-async-with-all-fields' => $settings['withAllFields'],
-        ]));
+        return $this->customAttributes($settings->dataToArray());
     }
 
     /**
      * @param array<string, mixed> $settings
      */
-    public function settings(array $settings): static {
-        $this->settings = array_merge($this->settings, $settings);
+    public function settings(array|Settings $settings): static {
+        if (is_array($settings)) {
+            $settings = Settings::make($settings);
+        }
+
+        $this->settings = array_merge($this->settings, $settings->toArray());
         return $this;
     }
 
     /**
-     * @param string|string[]|array<string, array<string, mixed>> $plugin
+     * @param string|string[] $plugin
      * @param array<string, mixed> $pluginOptions
      */
-    public function addPlugins(array|string $plugin, array $pluginOptions = []): static {
-        if (is_array($plugin)) {
-            foreach ($plugin as $name => $options) {
-                if (is_numeric($name)) {
-                    $name = $options;
-                    $options = [];
-                }
-
-                $this->addPlugins($name, $options);
-            }
-
-            return $this;
+    public function addPlugin(array|string $plugin, array $pluginOptions = []): static {
+        foreach ((array) $plugin as $name) {
+            $this->plugins[$name] = $pluginOptions;
         }
-
-        $this->plugins[$plugin] = $pluginOptions;
 
         return $this;
     }
 
-    public function fieldNames(FieldsNames $names): static {
+    public function fieldsNames(FieldsNames $names): static {
         return $this->settings(array_filter($names->toArray()));
     }
 
-    public function createMode(
+    public function selectCreatable(
         ?string $filterRegex = null,
         bool $persist = true,
         bool $createOnBlur = false,
         bool $duplicates = false,
+        bool $addPrecedence = false,
     ): static {
         if ($filterRegex) {
             $filterRegex = preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $filterRegex, $matches)
@@ -111,6 +94,7 @@ trait ConfigurableSelect
             'createFilter' => $filterRegex,
             'persist' => $persist,
             'createOnBlur' => $createOnBlur,
+            'addPrecedence' => $addPrecedence,
         ];
 
         if ($duplicates) {
@@ -121,14 +105,13 @@ trait ConfigurableSelect
         return $this->settings($settings);
     }
 
-    public function maxItems(
+    public function selectMaxItems(
         ?int $limit = null,
         ?string $text = null
     ): static {
-
         return $this->settings(array_filter([
             'maxItems' => $limit,
-        ]))->addPlugins('max_items', [
+        ]))->addPlugin('max_items', [
             'text' => $text
         ]);
     }
