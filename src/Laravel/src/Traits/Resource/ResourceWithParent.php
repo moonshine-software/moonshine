@@ -32,8 +32,9 @@ trait ResourceWithParent
 
         $relationName = $this->getParentRelationName();
 
+
         if ($this->getCore()->getCrudRequest()->getResourceUri() === $parentResource->getUriKey()) {
-            return $this->parentId = $this->getItemID();
+            return $this->parentId = $this->getCore()->getCrudRequest()->getItemID();
         }
 
         $parentKey = $this->getModel()
