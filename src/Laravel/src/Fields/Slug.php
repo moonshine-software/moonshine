@@ -29,16 +29,16 @@ class Slug extends Text
 
     public function live(bool $lazy = false): static
     {
-        return $this->reactive(function (FieldsContract $fields, ?string $value, Slug $ctx) use($lazy): FieldsContract {
+        return $this->reactive(function (FieldsContract $fields, ?string $value, Slug $ctx) use ($lazy): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
-            if (is_null($title)) {
+            if (\is_null($title)) {
                 return $fields;
             }
 
             $slug = (string) Str::of($title->toValue())->slug($this->getSeparator());
 
-            if($lazy && $value !== null) {
+            if ($lazy && $value !== null) {
                 return $fields;
             }
 
