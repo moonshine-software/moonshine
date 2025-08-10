@@ -66,9 +66,28 @@ class DetailPage extends CrudDetailPage
                         ->previewMode();
                 }
 
+                $toOneRenderer = fn(ModelRelationField $field, ?string $redirectBack = null) => Box::make($field->getLabel(), array_filter([
+                    $field instanceof HasOne
+                        ? $field->modifyTable(fn(TableBuilderContract $table): TableBuilderContract => $table->buttons([
+                        $field->getFormModalButton(__('moonshine::ui.edit'), $redirectBack),
+
+                        DeleteButton::for(
+                            $field->getResource(),
+                            $field->getRelationName(),
+                            redirectAfterDelete: $this->getUrl(),
+                            modalName: "has-one-{$field->getRelationName()}",
+                        ),
+                    ]),
+                    ) : $field,
+
+                    !$field->toValue() && $field instanceof HasOne
+                        ? $field->getFormModalButton(__('moonshine::ui.add'), $redirectBack)
+                        : null,
+                ]));
+
                 if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                     $tabs[] = Tab::make($field->getLabel(), [
-                        $field->isToOne() ? Box::make($field->getLabel(), [$field]) : $field,
+                        $field->isToOne() ? $toOneRenderer($field, $this->getUrl()) : $field,
                     ]);
 
                     continue;
@@ -77,26 +96,7 @@ class DetailPage extends CrudDetailPage
                 $components[] = LineBreak::make();
 
                 $blocks = $field->isToOne()
-                    ? [
-                        Box::make($field->getLabel(), array_filter([
-                            $field instanceof HasOne
-                                ? $field->modifyTable(fn(TableBuilderContract $table): TableBuilderContract => $table->buttons([
-                                    $field->getFormModalButton(__('moonshine::ui.edit')),
-
-                                    DeleteButton::for(
-                                        $field->getResource(),
-                                        $field->getRelationName(),
-                                        redirectAfterDelete: $this->getUrl(),
-                                        modalName: "has-one-{$field->getRelationName()}",
-                                    ),
-                                ]),
-                            ) : $field,
-
-                            !$field->toValue() && $field instanceof HasOne
-                                ? $field->getFormModalButton(__('moonshine::ui.add'))
-                                : null,
-                        ])),
-                    ]
+                    ? [$toOneRenderer($field)]
                     : [Heading::make($field->getLabel()), $field];
 
                 $components[] = Fragment::make($blocks)

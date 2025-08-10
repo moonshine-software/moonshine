@@ -249,13 +249,17 @@ class HasOne extends ModelRelationField implements
     /**
      * @throws Throwable
      */
-    public function getFormModalButton(string $label): ActionButtonContract
+    public function getFormModalButton(string $label, ?string $redirectBack = null): ActionButtonContract
     {
         return $this->getModalButton(
             Components::make([
                 $this
+                    ->redirectAfter(fn() => $redirectBack)
                     ->getComponent()
-                    ->withoutRedirect()
+                    ->when(
+                        $redirectBack === null,
+                        fn(FormBuilderContract $form) => $form->withoutRedirect()
+                    )
                     ->async(events: [
                         AlpineJs::event(
                             JsEvent::FRAGMENT_UPDATED, $this->getRelationName()
