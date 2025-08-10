@@ -11,8 +11,6 @@ trait ResourceWithParent
 {
     protected null|string|int $parentId = null;
 
-    abstract public function getItemID(): int|string|null;
-
     abstract protected function getParentResourceClassName(): string;
 
     abstract protected function getParentRelationName(): string;
