@@ -254,11 +254,11 @@ class HasOne extends ModelRelationField implements
         return $this->getModalButton(
             Components::make([
                 $this
-                    ->redirectAfter(fn() => $redirectBack)
+                    ->redirectAfter(fn(): ?string => $redirectBack)
                     ->getComponent()
                     ->when(
                         $redirectBack === null,
-                        fn(FormBuilderContract $form) => $form->withoutRedirect()
+                        fn(FormBuilderContract $form): FormBuilderContract => $form->withoutRedirect()
                     )
                     ->async(events: [
                         AlpineJs::event(
