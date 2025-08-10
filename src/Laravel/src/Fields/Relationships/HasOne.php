@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FieldWithComponentContract;
@@ -27,6 +28,8 @@ use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasModalModeConcern;
+use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
@@ -245,7 +248,29 @@ class HasOne extends ModelRelationField implements
 
     /**
      * @throws Throwable
+     */
+    public function getFormModalButton(string $label): ActionButtonContract
+    {
+        return $this->getModalButton(
+            Components::make([
+                $this
+                    ->getComponent()
+                    ->withoutRedirect()
+                    ->async(events: [
+                        AlpineJs::event(
+                            JsEvent::FRAGMENT_UPDATED, $this->getRelationName()
+                        )
+                    ])
+            ]),
+            $label,
+            $this->getRelationName()
+        )->primary();
+    }
+
+    /**
+     * @throws Throwable
      * @throws FieldException
+     * @return FormBuilderContract
      */
     public function getComponent(): ComponentContract
     {
