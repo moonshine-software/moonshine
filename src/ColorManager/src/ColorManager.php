@@ -85,9 +85,6 @@ final class ColorManager implements ColorManagerContract
      */
     private array $darkColors = self::DARK;
 
-    /**
-     * @param  string  $value
-     */
     public function background(string $value): static
     {
         return $this
@@ -96,36 +93,24 @@ final class ColorManager implements ColorManagerContract
             ->set('body', $value, dark: true);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function tableRow(string $value): static
     {
         return $this
             ->set('dark.600', $value);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function borders(string $value): static
     {
         return $this
             ->set('dark.300', $value);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function dropdowns(string $value): static
     {
         return $this
             ->set('dark.400', $value);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function buttons(string $value): static
     {
         return $this
@@ -134,9 +119,6 @@ final class ColorManager implements ColorManagerContract
             ->dropdowns($value);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function dividers(string $value): static
     {
         return $this
@@ -144,9 +126,6 @@ final class ColorManager implements ColorManagerContract
             ->set('dark.200', $value);
     }
 
-    /**
-     * @param  string  $value
-     */
     public function content(string $value): static
     {
         return $this
@@ -155,7 +134,6 @@ final class ColorManager implements ColorManagerContract
     }
 
     /**
-     * @param  string  $name
      * @param  string|array<string|int, string>  $value
      *
      */
