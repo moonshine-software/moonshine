@@ -23,7 +23,12 @@ export default (url = null, group = null, element = null, events = null, attribu
           formData.append('index', evt.newIndex)
           formData.append('data', this.toArray())
 
-          await axios.post(prepareUrl(url), formData)
+          await MoonShine.request(
+            this,
+            prepareUrl(url),
+            'post',
+            formData
+          )
         }
 
         if (typeof onSort === 'function') {
