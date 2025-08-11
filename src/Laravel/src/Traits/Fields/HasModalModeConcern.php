@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 
 use Closure;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Core\Collections\Components;
+use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Modal;
@@ -39,7 +39,7 @@ trait HasModalModeConcern
     }
 
     public function getModalButton(
-        Components $components,
+        ComponentsContract $components,
         string $label,
         string $fragmentName
     ): ActionButtonContract {

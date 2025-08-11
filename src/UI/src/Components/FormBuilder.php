@@ -518,7 +518,7 @@ final class FormBuilder extends MoonShineComponent implements
             'data-component' => $this->getName(),
         ]);
 
-        if ($this->isPrecognitive()) {
+        if (! $this->isAsync() && $this->isPrecognitive()) {
             $this->customAttributes([
                 'x-on:submit.prevent' => 'precognition()',
             ]);
