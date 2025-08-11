@@ -74,7 +74,9 @@ class DetailPage extends CrudDetailPage
                         DeleteButton::for(
                             $field->getResource(),
                             $field->getRelationName(),
-                            redirectAfterDelete: $this->getUrl(),
+                            redirectAfterDelete: $this->getResource()->getDetailPageUrl(
+                                $this->getResource()->getItemID(),
+                            ),
                             modalName: "has-one-{$field->getRelationName()}",
                         ),
                     ]),
@@ -87,7 +89,9 @@ class DetailPage extends CrudDetailPage
 
                 if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                     $tabs[] = Tab::make($field->getLabel(), [
-                        $field->isToOne() ? $toOneRenderer($field, $this->getUrl()) : $field,
+                        $field->isToOne() ? $toOneRenderer($field, $this->getResource()->getDetailPageUrl(
+                            $this->getResource()->getItemID(),
+                        )) : $field,
                     ]);
 
                     continue;

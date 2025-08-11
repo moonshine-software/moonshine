@@ -332,7 +332,7 @@ abstract class Page implements PageContract
             $router = $resource->getRouter();
         }
 
-        return $router->withResourceItem()->withPage($this);
+        return $router->withPage($this);
     }
 
     protected function resolveAssets(): void
