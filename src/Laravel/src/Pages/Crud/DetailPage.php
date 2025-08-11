@@ -66,9 +66,10 @@ class DetailPage extends CrudDetailPage
                         ->previewMode();
                 }
 
-                $toOneRenderer = fn(ModelRelationField $field, ?string $redirectBack = null) => Box::make($field->getLabel(), array_filter([
+                $toOneRenderer = fn (ModelRelationField $field, ?string $redirectBack = null) => Box::make($field->getLabel(), array_filter([
                     $field instanceof HasOne
-                        ? $field->modifyTable(fn(TableBuilderContract $table): TableBuilderContract => $table->buttons([
+                        ? $field->modifyTable(
+                            fn (TableBuilderContract $table): TableBuilderContract => $table->buttons([
                         $field->getFormModalButton(__('moonshine::ui.edit'), $redirectBack),
 
                         DeleteButton::for(
@@ -80,9 +81,9 @@ class DetailPage extends CrudDetailPage
                             modalName: "has-one-{$field->getRelationName()}",
                         ),
                     ]),
-                    ) : $field,
+                        ) : $field,
 
-                    !$field->toValue() && $field instanceof HasOne
+                    ! $field->toValue() && $field instanceof HasOne
                         ? $field->getFormModalButton(__('moonshine::ui.add'), $redirectBack)
                         : null,
                 ]));
