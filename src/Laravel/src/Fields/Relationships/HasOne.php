@@ -165,13 +165,17 @@ class HasOne extends ModelRelationField implements
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder)
             );
 
-        return $this->isModalMode()
-            ? (string) $this->getModalButton(
-                Components::make([$table]),
-                $this->getLabel(),
-                $this->getRelationName()
-            )
-            : $table->render();
+        if ($this->isModalMode()) {
+            return $this->toValue() === null
+                ? ''
+                : (string)$this->getModalButton(
+                    Components::make([$table]),
+                    $this->getLabel(),
+                    $this->getRelationName(),
+                );
+        }
+
+        return $table->render();
     }
 
     /**
