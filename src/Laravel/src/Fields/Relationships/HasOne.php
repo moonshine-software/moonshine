@@ -362,7 +362,7 @@ class HasOne extends ModelRelationField implements
                     $resource->getDeleteButton(
                         redirectAfterDelete: $this->getDefaultRedirect($parentItem->getKey()),
                         isAsync: false,
-                        modalName: "has-one-{$this->getRelationName()}",
+                        modalName: "has-one-{$this->getResource()->getUriKey()}-{$this->getRelationName()}",
                     )->class('btn-lg'),
                 ]
             )

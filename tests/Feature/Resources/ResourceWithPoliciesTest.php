@@ -55,8 +55,8 @@ it('policy in has many', function () {
     )
         ->assertOk()
         ->assertSee($comment->content)
-        ->assertDontSee('has-many-modal-comments-create')
-        ->assertSee('has-many-modal-mass-delete')
+        ->assertDontSee('has-many-modal-test-comment-resource-comments-create')
+        ->assertSee('has-many-modal-test-comment-resource-comments-mass-delete')
     ;
 
 });

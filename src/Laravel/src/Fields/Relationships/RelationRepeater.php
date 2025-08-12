@@ -29,6 +29,7 @@ use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Contracts\RemovableContract;
+use MoonShine\UI\Contracts\WrapperWithApplyContract;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
@@ -230,7 +231,7 @@ class RelationRepeater extends ModelRelationField implements
             $fields->prepareAttributes();
         }
 
-        return $fields->prepareReindexNames(parent: $this, before: function (self $parent, Field $field): void {
+        $fields->onlyFields()->prepareReindexNames(parent: $this, before: function (self $parent, Field $field): void {
             if ($field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview()) {
                 $field->nowOnResource($this->getResource());
             }
@@ -241,6 +242,8 @@ class RelationRepeater extends ModelRelationField implements
                 ->setRequestKeyPrefix($parent->getRequestKeyPrefix())
             ;
         });
+
+        return $fields;
     }
 
     /**
@@ -439,7 +442,7 @@ class RelationRepeater extends ModelRelationField implements
                     /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
-                    data_get($apply, $field->getColumn())
+                    $field instanceof WrapperWithApplyContract ? $apply : data_get($apply, $field->getColumn()),
                 );
             }
         }

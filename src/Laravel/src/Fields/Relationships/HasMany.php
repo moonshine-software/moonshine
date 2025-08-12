@@ -535,7 +535,7 @@ class HasMany extends ModelRelationField implements
         }
 
         $detailButton = $resource->getDetailButton(
-            modalName:  "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail",
+            modalName:  "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail",
             isSeparateModal: false
         );
 
@@ -543,14 +543,14 @@ class HasMany extends ModelRelationField implements
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
             isAsync: $this->isAsync(),
-            modalName: "has-many-modal-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-delete"
+            modalName: "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-delete"
         );
 
         $massDeleteButton = $resource->getMassDeleteButton(
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
             isAsync: $this->isAsync(),
-            modalName: "has-many-modal-mass-delete"
+            modalName: "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-mass-delete"
         );
 
         if (! \is_null($this->modifyItemButtons)) {
