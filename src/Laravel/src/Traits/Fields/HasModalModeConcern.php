@@ -46,7 +46,7 @@ trait HasModalModeConcern
         $button = ActionButton::make($label)->inModal(
             title: $label,
             content: (string) Fragment::make($components)->name($fragmentName),
-            name: "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}",
+            name: "modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}",
             builder: $this->modifyModalModeModal ?? static fn (Modal $modal): Modal => $modal->wide()
         );
 
