@@ -641,11 +641,17 @@ class Json extends Field implements
 
                 $apply = $callback($field, $values, $data);
 
+                if($field instanceof WrapperWithApplyContract) {
+                    $applyValues[$index] = $apply;
+
+                    continue;
+                }
+
                 data_set(
                     /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
-                    $field instanceof WrapperWithApplyContract ? $apply : data_get($apply, $field->getColumn()),
+                    data_get($apply, $field->getColumn()),
                 );
             }
 

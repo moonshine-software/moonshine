@@ -16,7 +16,9 @@ beforeEach(function () {
         Json::make('Json')->fields([
             Text::make('Text'),
             Json::make('Object')->fields([
-                Text::make('Text'),
+                Fieldset::make('test', [
+                    Text::make('Text'),
+                ]),
                 Json::make('OV')->onlyValue(),
             ])->object(),
         ]),
