@@ -324,7 +324,7 @@ class Json extends Field implements
         $fields
             ->onlyFields()
             ->prepareReindexNames(parent: $this, before: static function (self $parent, FieldContract $field): void {
-                if (!$field->getParent() instanceof WrapperWithApplyContract && ! $parent->isObjectMode()) {
+                if (! $field->getParent() instanceof WrapperWithApplyContract && ! $parent->isObjectMode()) {
                     $field->withoutWrapper();
                 } else {
                     $parent->customWrapperAttributes([
@@ -641,7 +641,7 @@ class Json extends Field implements
 
                 $apply = $callback($field, $values, $data);
 
-                if($field instanceof WrapperWithApplyContract) {
+                if ($field instanceof WrapperWithApplyContract) {
                     $applyValues[$index] = $apply;
 
                     continue;

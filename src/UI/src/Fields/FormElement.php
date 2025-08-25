@@ -686,7 +686,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     protected function onClone(): void
     {
-        if($this instanceof HasFieldsContract) {
+        if ($this instanceof HasFieldsContract) {
             foreach ($this->getFields()->onlyFields() as $field) {
                 $field->flushState();
             }
