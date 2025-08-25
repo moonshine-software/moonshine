@@ -438,7 +438,7 @@ class RelationRepeater extends ModelRelationField implements
                     continue;
                 }
 
-                if($field instanceof WrapperWithApplyContract) {
+                if ($field instanceof WrapperWithApplyContract) {
                     $applyValues[$index] = $apply;
 
                     continue;
