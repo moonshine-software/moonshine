@@ -24,6 +24,7 @@ jobs:
       matrix:
         php: [8.2, 8.3, 8.4]
         laravel: [10, 11, 12]
+        shard: [1, 2, 3, 4]
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -50,4 +51,4 @@ jobs:
       - name: Execute tests via PEST(PHPUnit)
         env:
           DB_PASSWORD: root
-        run: ./vendor/bin/pest --bail
+        run: ./vendor/bin/pest --bail --parallel --shard ${{ matrix.shard }}/5

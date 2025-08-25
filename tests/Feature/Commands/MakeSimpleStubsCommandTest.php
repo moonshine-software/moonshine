@@ -38,7 +38,7 @@ final class MakeSimpleStubsCommandTest extends TestCase
     #[Test]
     #[TestDox('it successful file created')]
     #[DataProvider('commands')]
-    public function successfulCreated(string $command, string $dir, ?string $nameOfFile = null): void
+    public function successfulCreated(string $command, string $dir, ?string $nameOfFile = null, bool $withSub = false): void
     {
         $name = $nameOfFile ?? 'DeleteMe';
         $file = "$name.php";
