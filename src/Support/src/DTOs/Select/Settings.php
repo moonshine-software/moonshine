@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Support\DTOs\Select;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Str;
 use MoonShine\Support\Traits\Makeable;
 
 /**
@@ -19,7 +18,7 @@ final class Settings implements Arrayable
 
     /**
      * @var array<string, mixed>
-    */
+     */
     protected array $values = [
         'delimiter' => null,                // default: ',',
         'splitOn' => null,                  // regexp or string for splitting up values from a paste command
@@ -56,14 +55,16 @@ final class Settings implements Arrayable
     /**
      * @param array<string, mixed> $values
      */
-    public function __construct(array $values = []) {
+    public function __construct(array $values = [])
+    {
         $this->fromArray($values);
     }
 
     /**
      * @param array<string, mixed> $values
      */
-    public function fromArray(array $values): self {
+    public function fromArray(array $values): self
+    {
         foreach ($values as $name => $value) {
             if (array_key_exists($name, $this->values)) {
                 $this->set($name, $value);
@@ -76,124 +77,152 @@ final class Settings implements Arrayable
     /**
      * @return array<string, mixed>
      */
-    public function toArray(): array {
-        return array_filter($this->values);
+    public function toArray(): array
+    {
+        return array_filter($this->values, fn($v) => ! is_null($v));
     }
 
-    public function set(string $name, mixed $value): self {
+    public function set(string $name, mixed $value): self
+    {
         $this->values[$name] = $value;
         return $this;
     }
 
-    public function delimiter(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function delimiter(string $value): self
+    {
+        return $this->set('delimiter', $value);
     }
 
-    public function splitOn(string $value): self {
+    public function splitOn(string $value): self
+    {
         return $this->set(
             __FUNCTION__,
             preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $value, $matches)
                 ? [
-                    'pattern' => $matches[2],
-                    'modifiers' => $matches[3]
-                ]
+                'pattern' => $matches[2],
+                'modifiers' => $matches[3]
+            ]
                 : null
         );
     }
 
-    public function diacritics(bool $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function diacritics(bool $value): self
+    {
+        return $this->set('diacritics', $value);
     }
 
-    public function highlight(bool $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function highlight(bool $value): self
+    {
+        return $this->set('highlight', $value);
     }
 
-    public function openOnFocus(bool $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function openOnFocus(bool $value): self
+    {
+        return $this->set('openOnFocus', $value);
     }
 
-    public function shouldOpen(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function shouldOpen(bool $value = true): self
+    {
+        return $this->set('shouldOpen', $value);
     }
 
-    public function maxOptions(int $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function maxOptions(int $value): self
+    {
+        return $this->set('maxOptions', $value);
     }
 
-    public function maxItems(?int $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function maxItems(?int $value): self
+    {
+        return $this->set('maxItems', $value);
     }
 
-    public function hideSelected(bool $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function hideSelected(bool $value): self
+    {
+        return $this->set('hideSelected', $value);
     }
 
-    public function duplicates(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function duplicates(bool $value = true): self
+    {
+        return $this->set('duplicates', $value);
     }
 
-    public function selectOnTab(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function selectOnTab(bool $value = true): self
+    {
+        return $this->set('selectOnTab', $value);
     }
 
-    public function allowEmptyOption(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function allowEmptyOption(bool $value = true): self
+    {
+        return $this->set('allowEmptyOption', $value);
     }
 
-    public function closeAfterSelect(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function closeAfterSelect(bool $value = true): self
+    {
+        return $this->set('closeAfterSelect', $value);
     }
 
-    public function lockOptgroupOrder(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function lockOptgroupOrder(bool $value = true): self
+    {
+        return $this->set('lockOptgroupOrder', $value);
     }
 
-    public function searchConjunction(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function searchConjunction(string $value): self
+    {
+        return $this->set('searchConjunction', $value);
     }
 
-    public function loadThrottle(int $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function loadThrottle(int $value): self
+    {
+        return $this->set('loadThrottle', $value);
     }
 
-    public function refreshThrottle(int $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function refreshThrottle(int $value): self
+    {
+        return $this->set('refreshThrottle', $value);
     }
 
-    public function dropdownParent(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function dropdownParent(string $value): self
+    {
+        return $this->set('dropdownParent', $value);
     }
 
-    public function copyClassesToDropdown(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value);
+    public function copyClassesToDropdown(bool $value = true): self
+    {
+        return $this->set('copyClassesToDropdown', $value);
     }
 
-    public function wrapperClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function wrapperClass(string $value): self
+    {
+        return $this->set('wrapperClass', $value);
     }
 
-    public function controlClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function controlClass(string $value): self
+    {
+        return $this->set('controlClass', $value);
     }
 
-    public function dropdownClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function dropdownClass(string $value): self
+    {
+        return $this->set('dropdownClass', $value);
     }
 
-    public function dropdownContentClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function dropdownContentClass(string $value): self
+    {
+        return $this->set('dropdownContentClass', $value);
     }
 
-    public function itemClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function itemClass(string $value): self
+    {
+        return $this->set('itemClass', $value);
     }
 
-    public function optionClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function optionClass(string $value): self
+    {
+        return $this->set('optionClass', $value);
     }
 
-    public function loadingClass(string $value): self {
-        return $this->set(__FUNCTION__, $value);
+    public function loadingClass(string $value): self
+    {
+        return $this->set('loadingClass', $value);
     }
 }

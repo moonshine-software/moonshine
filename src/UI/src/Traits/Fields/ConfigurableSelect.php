@@ -37,18 +37,20 @@ trait ConfigurableSelect
     /**
      * @param array<string, mixed>|AsyncSettings $settings
      */
-    public function asyncSettings(array|AsyncSettings $settings): static {
+    public function asyncSettings(array|AsyncSettings $settings): static
+    {
         if (is_array($settings)) {
             $settings = AsyncSettings::make($settings);
         }
 
-        return $this->customAttributes($settings->dataToArray());
+        return $this->customAttributes($settings->toArray());
     }
 
     /**
      * @param array<string, mixed> $settings
      */
-    public function settings(array|Settings $settings): static {
+    public function settings(array|Settings $settings): static
+    {
         if (is_array($settings)) {
             $settings = Settings::make($settings);
         }
@@ -61,15 +63,17 @@ trait ConfigurableSelect
      * @param string|string[] $plugin
      * @param array<string, mixed> $pluginOptions
      */
-    public function addPlugin(array|string $plugin, array $pluginOptions = []): static {
-        foreach ((array) $plugin as $name) {
+    public function addPlugin(array|string $plugin, array $pluginOptions = []): static
+    {
+        foreach ((array)$plugin as $name) {
             $this->plugins[$name] = $pluginOptions;
         }
 
         return $this;
     }
 
-    public function fieldsNames(FieldsNames $names): static {
+    public function fieldsNames(FieldsNames $names): static
+    {
         return $this->settings(array_filter($names->toArray()));
     }
 
@@ -114,5 +118,18 @@ trait ConfigurableSelect
         ]))->addPlugin('max_items', [
             'text' => $text
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getSelectViewData(): array
+    {
+        return [
+            'isNative' => $this->isNative(),
+            'isSearchable' => $this->isSearchable(),
+            'settings' => $this->settings,
+            'plugins' => $this->plugins,
+        ];
     }
 }

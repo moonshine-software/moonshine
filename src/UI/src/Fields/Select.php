@@ -64,8 +64,8 @@ class Select extends Field implements
             return $collection
                 ->when(
                     ! $this->isRawMode(),
-                    fn (Collection $collect): Collection => $collect->map(
-                        fn (int|string $v): string => (string) data_get($this->getValues()->flatten(), "$v.label", ''),
+                    fn(Collection $collect): Collection => $collect->map(
+                        fn(int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
                     ),
                 )
                 ->implode(',');
@@ -75,10 +75,11 @@ class Select extends Field implements
             return '';
         }
 
-        return (string) data_get($this->getValues()->flatten(), "$value.label", '');
+        return (string)data_get($this->getValues()->flatten(), "$value.label", '');
     }
 
-    public function asyncOnInit(bool $whenOpen = true, bool $withLoading = false): static {
+    public function asyncOnInit(bool $whenOpen = true, bool $withLoading = false): static
+    {
         return $this->customAttributes([
             'data-async-on-init' => true,
             'data-async-on-init-dropdown' => $whenOpen,
@@ -97,7 +98,7 @@ class Select extends Field implements
         $result = data_get($value, 'value', $value);
 
         return $this->isMultiple() && \is_array($result)
-            ? array_filter($result, static fn ($value): bool => $value !== null && $value !== false)
+            ? array_filter($result, static fn($value): bool => $value !== null && $value !== false)
             : $result;
     }
 
@@ -115,13 +116,10 @@ class Select extends Field implements
     protected function viewData(): array
     {
         return [
-            'isSearchable' => $this->isSearchable(),
             'asyncUrl' => $this->getAsyncUrl(),
             'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
-            'isNative' => $this->isNative(),
-            'settings' => $this->settings,
-            'plugins' => $this->plugins,
+            ...$this->getSelectViewData(),
         ];
     }
 }

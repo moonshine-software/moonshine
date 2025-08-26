@@ -704,10 +704,8 @@ class BelongsToMany extends ModelRelationField implements
 
             return [
                 ...$viewData,
-                'isSearchable' => $this->isSearchable(),
+                ...$this->getSelectViewData(),
                 'values' => $this->getAvailableValues(),
-                'settings' => $this->settings,
-                'plugins' => $this->plugins,
             ];
         }
 

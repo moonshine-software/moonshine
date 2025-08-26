@@ -19,8 +19,8 @@ final class AsyncSettings implements Arrayable
 
     /**
      * @var array<string, mixed>
-    */
-    protected array $dataValues = [
+     */
+    protected array $values = [
         'queryKey' => null, // default: query
         'selectedValuesKey' => null,
         'resultKey' => null,
@@ -30,14 +30,16 @@ final class AsyncSettings implements Arrayable
     /**
      * @param array<string, mixed> $values
      */
-    public function __construct(array $values = []) {
+    public function __construct(array $values = [])
+    {
         $this->fromArray($values);
     }
 
     /**
      * @param array<string, mixed> $values
      */
-    public function fromArray(array $values): self {
+    public function fromArray(array $values): self
+    {
         foreach ($values as $name => $value) {
             if (method_exists($this, $name)) {
                 $this->$name($value);
@@ -50,18 +52,10 @@ final class AsyncSettings implements Arrayable
     /**
      * @return array<string, mixed>
      */
-    public function toArray(): array {
-        return [
-            ...$this->dataToArray()
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function dataToArray(): array {
+    public function toArray(): array
+    {
         $result = [];
-        foreach ($this->dataValues as $name => $value) {
+        foreach ($this->values as $name => $value) {
             if (is_null($value)) {
                 continue;
             }
@@ -72,27 +66,29 @@ final class AsyncSettings implements Arrayable
         return $result;
     }
 
-    protected function set(string $name, mixed $value, string $type): self {
-        if ($type === 'data') {
-            $this->dataValues[$name] = $value;
-        }
-
+    private function set(string $name, mixed $value): self
+    {
+        $this->values[$name] = $value;
         return $this;
     }
 
-    public function queryKey(string $value): self {
-        return $this->set(__FUNCTION__, $value, 'data');
+    public function queryKey(string $value): self
+    {
+        return $this->set('queryKey', $value);
     }
 
-    public function selectedValuesKey(string $value): self {
-        return $this->set(__FUNCTION__, $value, 'data');
+    public function selectedValuesKey(string $value): self
+    {
+        return $this->set('selectedValuesKey', $value);
     }
 
-    public function resultKey(string $value): self {
-        return $this->set(__FUNCTION__, $value, 'data');
+    public function resultKey(string $value): self
+    {
+        return $this->set('resultKey', $value);
     }
 
-    public function withAllFields(bool $value = true): self {
-        return $this->set(__FUNCTION__, $value, 'data');
+    public function withAllFields(bool $value = true): self
+    {
+        return $this->set('withAllFields', $value);
     }
 }

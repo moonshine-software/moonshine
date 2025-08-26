@@ -163,7 +163,6 @@ class BelongsTo extends ModelRelationField implements
     protected function viewData(): array
     {
         return [
-            'isSearchable' => $this->isSearchable(),
             'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
             'isNullable' => $this->isNullable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
@@ -172,9 +171,7 @@ class BelongsTo extends ModelRelationField implements
             'createButton' => $this->getCreateButton(),
             'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
-            'isNative' => $this->isNative(),
-            'settings' => $this->settings,
-            'plugins' => $this->plugins,
+            ...$this->getSelectViewData(),
         ];
     }
 }
