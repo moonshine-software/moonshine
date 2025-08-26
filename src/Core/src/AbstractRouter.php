@@ -93,6 +93,17 @@ abstract class AbstractRouter implements RouterContract, Stringable
         return $this;
     }
 
+    public function withResourceItem(int|string|null $key = null, ?CrudResourceContract $resource = null): static
+    {
+        if (! \is_null($key = $this->extractResourceItem($key, $resource))) {
+            return $this->withParams([
+                'resourceItem' => $key,
+            ]);
+        }
+
+        return $this;
+    }
+
     /**
      * @param  array<string, mixed>  $params
      * @return array<string, mixed>

@@ -25,6 +25,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\RemovableContract;
+use MoonShine\UI\Contracts\WrapperWithApplyContract;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Traits\Fields\HasVerticalMode;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
@@ -320,9 +321,10 @@ class Json extends Field implements
                 );
         }
 
-        return $fields
+        $fields
+            ->onlyFields()
             ->prepareReindexNames(parent: $this, before: static function (self $parent, FieldContract $field): void {
-                if (! $parent->isObjectMode()) {
+                if (! $field->getParent() instanceof WrapperWithApplyContract && ! $parent->isObjectMode()) {
                     $field->withoutWrapper();
                 } else {
                     $parent->customWrapperAttributes([
@@ -333,6 +335,9 @@ class Json extends Field implements
 
                 $field->setRequestKeyPrefix($parent->getRequestKeyPrefix());
             }, except: fn (FieldContract $parent): bool => $parent instanceof self && $parent->isObjectMode());
+
+
+        return $fields;
     }
 
     protected function resolveRawValue(): mixed
@@ -635,6 +640,12 @@ class Json extends Field implements
                 $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));
 
                 $apply = $callback($field, $values, $data);
+
+                if ($field instanceof WrapperWithApplyContract) {
+                    $applyValues[$index] = $apply;
+
+                    continue;
+                }
 
                 data_set(
                     /** @phpstan-ignore-next-line  */

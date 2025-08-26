@@ -40,8 +40,8 @@
         "larastan/larastan": "^3.4",
         "moonshine/import-export": "^1.0",
         "orchestra/testbench": "^9.9",
-        "pestphp/pest": "^3",
-        "pestphp/pest-plugin-laravel": "^3",
+        "pestphp/pest": "^4",
+        "pestphp/pest-plugin-laravel": "^4",
         "rector/rector": "^2",
         "symplify/monorepo-builder": "^11.2"
     },

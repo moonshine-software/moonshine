@@ -25,17 +25,6 @@ final class MoonShineRouter extends AbstractRouter
         );
     }
 
-    public function withResourceItem(int|string|null $key = null, ?CrudResourceContract $resource = null): self
-    {
-        if (! \is_null($key = $this->extractResourceItem($key, $resource))) {
-            return $this->withParams([
-                'resourceItem' => $key,
-            ]);
-        }
-
-        return $this;
-    }
-
     public function extractPageUri(?PageContract $page = null): ?string
     {
         return $page
