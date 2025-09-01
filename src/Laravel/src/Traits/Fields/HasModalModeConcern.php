@@ -58,7 +58,7 @@ trait HasModalModeConcern
         }
 
         return $button->canSee(function (mixed $item, ?DataWrapperContract $data): bool {
-            if($data?->getKey() === null) {
+            if ($data?->getKey() === null) {
                 return $this->getResource()->hasAction(Action::CREATE)
                        && $this->getResource()->can(Ability::CREATE);
             }
