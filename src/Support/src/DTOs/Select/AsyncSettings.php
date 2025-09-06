@@ -41,7 +41,7 @@ final class AsyncSettings implements Arrayable
     public function fromArray(array $values): self
     {
         foreach ($values as $name => $value) {
-            if (method_exists($this, $name)) {
+            if (array_key_exists($name, $this->values)) {
                 $this->$name($value);
             }
         }

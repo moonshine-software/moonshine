@@ -96,7 +96,7 @@ final class Settings implements Arrayable
     public function splitOn(string $value): self
     {
         return $this->set(
-            __FUNCTION__,
+            'splitOn',
             preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $value, $matches)
                 ? [
                 'pattern' => $matches[2],
