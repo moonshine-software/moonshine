@@ -211,8 +211,11 @@ trait WithAsyncSearch
         );
     }
 
-    public function asyncOnInit(): static
+    public function asyncOnInit(bool $whenOpen = true): static
     {
-        return $this->customAttributes(['data-async-on-init' => true]);
+        return $this->customAttributes([
+            'data-async-on-init' => true,
+            'data-async-on-init-dropdown' => $whenOpen,
+        ]);
     }
 }

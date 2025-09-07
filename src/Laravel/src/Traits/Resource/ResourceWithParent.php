@@ -11,8 +11,6 @@ trait ResourceWithParent
 {
     protected null|string|int $parentId = null;
 
-    abstract public function getItemID(): int|string|null;
-
     abstract protected function getParentResourceClassName(): string;
 
     abstract protected function getParentRelationName(): string;
@@ -34,8 +32,9 @@ trait ResourceWithParent
 
         $relationName = $this->getParentRelationName();
 
+
         if ($this->getCore()->getCrudRequest()->getResourceUri() === $parentResource->getUriKey()) {
-            return $this->parentId = $this->getItemID();
+            return $this->parentId = $this->getCore()->getCrudRequest()->getItemID();
         }
 
         $parentKey = $this->getModel()

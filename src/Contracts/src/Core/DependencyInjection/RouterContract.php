@@ -40,6 +40,8 @@ interface RouterContract extends StatefulContract
 
     public function withResource(?ResourceContract $resource = null): static;
 
+    public function withResourceItem(int|string|null $key = null, ?CrudResourceContract $resource = null): static;
+
     public function getParam(string $key, mixed $default = null): mixed;
 
     public function forgetParam(string $key): static;

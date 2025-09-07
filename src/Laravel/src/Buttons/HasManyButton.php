@@ -73,7 +73,7 @@ final class HasManyButton
                 ->inModal(
                     title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                     content: '',
-                    name: static fn (?Model $data): string => "has-many-modal-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                    name: static fn (?Model $data): string => "has-many-modal-{$field->getResource()->getUriKey()}-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
                     builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
                 );
         }
