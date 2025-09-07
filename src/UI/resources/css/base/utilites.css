@@ -1,0 +1,155 @@
+@utility theme__text_color {
+  @apply text-white dark:text-slate-200;
+
+  &:where(.btn-warning), &:where(.toast-warning) {
+    @apply text-amber-600 dark:text-slate-200;
+
+    .badge {
+      @apply text-slate-600 dark:text-slate-200
+    }
+  }
+
+  &:where([class*="--warning"]), &:where([class*="--yellow"]) {
+    @apply dark:text-dark-200
+  }
+}
+
+@utility theme__rounded {
+  @apply
+  rounded-(--rounded)
+  compact:rounded-(--compact-rounded)
+  minimalistic:rounded-none
+}
+
+/* Buttons */
+@utility theme__btn {
+  .badge {
+    @apply
+    bg-white dark:bg-dark-700
+    text-slate-600 dark:text-inherit
+    border-0 dark:border-dark-200
+  }
+}
+
+/* Base state */
+@utility base__default {
+  @apply
+  text-2xs
+  outline-none
+  transition-colors
+  duration-200
+  border
+  bg-white
+  border-gray-300
+  dark:bg-dark-800
+  dark:border-dark-200
+}
+
+@utility base__focus {
+  @apply
+  ring
+  border-gray-300
+  ring-gray-300/50
+  ring-offset-0
+  dark:border-dark-200
+  dark:ring-dark-100/30
+}
+
+@utility base__read-only {
+  @apply cursor-default opacity-60 focus:ring-0
+}
+
+@utility base__disabled {
+  @apply
+  cursor-not-allowed
+  bg-gray-100 dark:bg-dark-700
+  text-gray-400 dark:text-gray-500
+  opacity-60
+}
+
+@utility base__placeholder {
+  @apply
+  placeholder:text-2xs
+  placeholder:text-gray-400
+  dark:placeholder:text-gray-500
+}
+
+@utility base__error {
+  @apply
+  border-error focus:ring-error/20
+  dark:border-error dark:focus:ring-error/40
+}
+
+@utility theme__border_for_light_bg {
+  @apply
+  border-slate-300 dark:border-slate-600
+  minimalistic:dark:border-slate-600
+}
+
+@utility theme__border_for_dark_bg {
+  @apply
+  border-dark-200
+  minimalistic:border-slate-300 minimalistic:dark:border-slate-600
+}
+
+/* Text utilities */
+@utility text-3xs {
+  font-size: var(--font-3xs);
+}
+
+@utility text-2xs {
+  font-size: var(--font-2xs);
+}
+
+@utility text-xs {
+  font-size: var(--font-xs);
+}
+
+@utility text-sm {
+  font-size: var(--font-sm);
+}
+
+@utility text-md {
+  font-size: var(--font-md);
+}
+
+@utility text-lg {
+  font-size: var(--font-lg);
+}
+
+@utility text-xl {
+  font-size: var(--font-xl);
+}
+
+@utility text-2xl {
+  font-size: var(--font-2xl);
+}
+
+@utility text-3xl {
+  font-size: var(--font-3xl);
+}
+
+/* z-index */
+@utility z-dropdown {
+  @apply z-[100]
+}
+
+@utility z-notifications {
+  @apply z-[100]
+}
+
+@utility z-offcanvas {
+  @apply z-[1050]
+}
+
+@utility z-modal {
+  @apply z-[1070]
+}
+
+@utility z-menu {
+  @apply z-[1300]
+}
+
+@utility z-toast {
+  @apply z-[1500]
+}

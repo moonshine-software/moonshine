@@ -1,36 +1,48 @@
 .box {
-  @apply relative rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+  @apply
+  theme__rounded
+  relative
+  bg-white dark:bg-dark-600
+  shadow-md shadow-gray-200 dark:shadow-black/5
+  p-3 sm:p-4 lg:p-5
+  compact:p-3 compact:sm:p-3
+  minimalistic:p-3 minimalistic:sm:p-3
+  mb-6
+  compact:mb-3
+  minimalistic:mb-2
+  ;
 
-  &.box-dark {
+  &.box-dark, &.dark {
     @apply
-    bg-dark-600
-    text-slate-200
-    shadow-none
-    dark:bg-dark-800
-    dark:text-slate-300
-    dark:shadow-black/5
+    text-slate-200 dark:text-slate-300
+    bg-dark-600 dark:bg-dark-800
+    shadow-none dark:shadow-black/5
   }
 
   &.box-shadow {
     @apply
-    before:opacity-0
-    hover:before:opacity-100
-    before:absolute
-    before:inset-x-0
-    before:top-3
-    before:-z-1
-    before:mx-auto
-    before:h-full
+    before:theme__rounded
     before:w-[85%]
-    before:rounded-lg
-    hover:before:bg-white
-    dark:hover:before:bg-dark-500
+    before:h-full
+    before:absolute
+    before:-z-1
+    before:top-3
+    before:mx-auto
+    before:inset-x-0
+    before:opacity-0
+    hover:before:bg-white dark:hover:before:bg-dark-500
+    hover:before:shadow-gray-200 dark:hover:before:shadow-black/5
+    hover:before:opacity-100
     hover:before:shadow-lg
-    hover:before:shadow-gray-200
-    dark:hover:before:shadow-black/5
   }
 }
 
 .box-title {
-  @apply flex gap-2 border-b border-gray-200 pb-3 text-xs font-semibold dark:border-dark-200;
+  @apply
+  font-semibold
+  text-xs
+  flex
+  gap-2
+  border-b border-gray-200 dark:border-dark-200
+  pb-3
 }

@@ -1,121 +1,97 @@
 /* Dropdown */
 .dropdown {
-  @apply relative;
+  @apply
+  relative
+  z-dropdown
+  ;
 
-  .dropdown-btn {
-    @apply rounded-none border-0 focus:ring-0;
-  }
-
-  .dropdown-body {
+  &-body {
     @apply
+    theme__rounded
     pointer-events-none
     invisible
-    opacity-0
-    left-0
-    absolute
-    px-2
-    py-2
     overflow-hidden
-    rounded-md
-    shadow-lg
-    bg-white
-    dark:bg-dark-500
-    dark:shadow-black/20
-    transition-all
+    opacity-0
+    bg-white dark:bg-dark-500
+    shadow-lg dark:shadow-black/20
+    transition-all duration-100
     ;
 
     &.visible {
-      @apply
-      pointer-events-auto
-      visible
-      opacity-100
+      @apply pointer-events-auto visible opacity-100
+    }
+  }
+
+  &-heading {
+    @apply
+    theme__border_for_light_bg border-b-1
+    bg-white dark:bg-dark-500
+    font-medium
+    p-4
+    compact:p-3
+    minimalistic:p-2
+  }
+
+  &-content {
+    @apply
+    flex flex-col
+    max-w-[280px] xs:max-w-[320px]
+    max-h-64
+    divide-y divide-gray-200 dark:divide-dark-200
+    overflow-y-auto
+    ;
+
+    .dropdown-input-search {
+      @apply mb-0 rounded-none border-0
+    }
+  }
+
+  &-footer {
+    @apply
+    theme__border_for_light_bg border-t-1
+    p-3
+    compact:px-3 compact:py-2
+    minimalistic:px-3 minimalistic:py-2
+    ;
+
+    button {
+      @apply hover:cursor-pointer
+    }
+  }
+
+  /* Dropdown menu */
+
+  &-menu {
+    @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
+
+    &-item {
+      &--active {
+        .dropdown-menu-link,
+        .btn {
+          @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500
+        }
+      }
+    }
+
+    &-link,
+    .btn {
+      @apply flex items-center justify-start gap-x-2
+      px-2 xs:px-4
+      py-6
+      compact:py-3
+      minimalistic:py-2
+      text-3xs lg:text-2xs
+      hover:bg-gray-100 dark:hover:bg-dark-400
+      hover:text-black dark:hover:text-white
       ;
 
-      .dropdown-content {
-        /* Dropdown menu */
-
-        .dropdown-menu {
-          @apply
-          flex
-          flex-col
-          divide-y-2
-          divide-gray-200
-          dark:divide-dark-200
-          ;
-
-          .dropdown-menu-item--active {
-            .dropdown-menu-link,
-            .btn {
-              @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
-            }
-          }
-        }
+      > svg {
+        @apply h-4 w-4
       }
     }
 
-    &[data-show] {
-      @apply block;
-    }
-
-    .dropdown-heading {
-      @apply border-b-1 border-gray-200 bg-white p-2 font-medium dark:border-dark-200 dark:bg-dark-500;
-    }
-
-    .dropdown-content {
-      @apply flex max-h-64 max-w-[280px] flex-col divide-y divide-gray-200 overflow-y-auto dark:divide-dark-200 xs:max-w-[320px];
-
-      .dropdown-input-search {
-        @apply mb-0 rounded-none border-0;
-      }
-    }
-
-    .dropdown-footer {
-      @apply border-t-1 border-gray-200 p-2 dark:border-dark-200;
-
-      [type=submit] {
-        @apply flex gap-2 items-center
-      }
-    }
-
-    /* Dropdown menu */
-
-    .dropdown-menu {
-      @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
-
-      .dropdown-menu-item {
-        .dropdown-menu-item--active {
-          .dropdown-menu-link,
-          .btn {
-            @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
-          }
-        }
-      }
-
-      .dropdown-menu-link,
-      .btn {
-        @apply
-        flex
-        items-center
-        justify-start
-        gap-x-2
-        px-2
-        py-2.5 text-3xs
-        hover:bg-gray-100
-        hover:text-black
-        dark:hover:bg-dark-400
-        dark:hover:text-white
-        xs:px-4
-        lg:text-2xs
-        ;
-
-        > svg {
-          @apply h-4 w-4;
-        }
-      }
-
-      .btn {
-        @apply rounded-none border-0 focus:ring-0;
-      }
+    .btn {
+      @apply rounded-none border-0 focus:ring-0
     }
   }
 }

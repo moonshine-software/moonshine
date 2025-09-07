@@ -1,78 +1,130 @@
 /* Alerts */
 .alert {
-  @apply mb-2.5 flex w-full items-center gap-4 rounded-lg border border-gray-200 bg-slate-100 px-4 py-3 dark:border-dark-200 dark:bg-dark-700;
+  @apply
+  theme__rounded
+  w-full
+  flex items-center
+  gap-4
+  mb-2.5
+  px-4 py-3
+  compact:px-2 compact:py-2
+  minimalistic:px-1 minimalistic:py-1
+  border border-gray-200 dark:border-dark-200
+  bg-slate-100 dark:bg-dark-700
+  ;
 
-  &.alert-primary {
-    @apply border-primary bg-primary text-white dark:border-primary dark:bg-primary/30 dark:text-white;
-  }
+  &.alert {
+    &-primary {
+      @apply
+      theme__text_color
+      bg-primary dark:bg-primary/30
+      border-primary
+    }
 
-  &.alert-secondary {
-    @apply border-secondary bg-secondary text-white dark:border-secondary dark:bg-secondary/30 dark:text-white;
-  }
+    &-secondary {
+      @apply
+      theme__text_color
+      bg-secondary dark:bg-secondary/30
+      border-secondary dark:border-secondary
+    }
 
-  &.alert-success {
-    @apply border-success-bg bg-success-bg text-success-text dark:border-success-bg dark:bg-success-bg/30 dark:text-success-text;
-  }
+    &-success {
+      @apply
+      theme__text_color
+      bg-success dark:bg-success/30
+      border-success dark:border-success
+    }
 
-  &.alert-warning {
-    @apply border-warning-bg bg-warning-bg text-warning-text dark:border-warning-bg dark:bg-warning-bg/30 dark:text-warning-text;
-  }
+    &-warning {
+      @apply
+      theme__text_color
+      bg-warning dark:bg-warning/30
+      border-warning dark:border-warning
+    }
 
-  &.alert-error {
-    @apply border-error-bg bg-error-bg text-error-text dark:border-error-bg dark:bg-error-bg/30 dark:text-error-text;
-  }
+    &-error {
+      @apply
+      theme__text_color
+      bg-error dark:bg-error/30
+      border-error dark:border-error
+    }
 
-  &.alert-info {
-    @apply border-info-bg bg-info-bg text-info-text dark:border-info-bg dark:bg-info-bg/30 dark:text-info-text;
-  }
+    &-info {
+      @apply
+      theme__text_color
+      bg-info dark:bg-info/30
+      border-info dark:border-info
+    }
 
-  &.alert-purple {
-    @apply border-purple-500 bg-purple-500 text-white dark:border-purple-500 dark:bg-purple-500/30 dark:text-white;
-  }
+    &-purple {
+      @apply
+      theme__text_color
+      bg-purple-500 dark:bg-purple-500/30
+      border-purple-500 dark:border-purple-500
+    }
 
-  &.alert-green {
-    @apply border-green-500 bg-green-500 text-white dark:border-green-500 dark:bg-green-500/30 dark:text-white;
-  }
+    &-green {
+      @apply
+      theme__text_color
+      bg-green-500 dark:bg-green-500/30
+      border-green-500 dark:border-green-500
+    }
 
-  &.alert-yellow {
-    @apply border-yellow-500 bg-yellow-500 text-white dark:border-yellow-500 dark:bg-yellow-500/30 dark:text-white;
-  }
+    &-yellow {
+      @apply
+      theme__text_color
+      bg-yellow-500 dark:bg-yellow-500/30
+      border-yellow-500 dark:border-yellow-500
+    }
 
-  &.alert-pink {
-    @apply border-pink-500 bg-pink-500 text-white dark:border-pink-500 dark:bg-pink-500/30 dark:text-white;
-  }
+    &-pink {
+      @apply
+      theme__text_color
+      bg-pink-500 dark:bg-pink-500/30
+      border-pink-500 dark:border-pink-500
+    }
 
-  &.alert-blue {
-    @apply border-blue-500 bg-blue-500 text-white dark:border-blue-500 dark:bg-blue-500/30 dark:text-white;
-  }
+    &-blue {
+      @apply
+      theme__text_color
+      bg-blue-500 dark:bg-blue-500/30
+      border-blue-500 dark:border-blue-500
+    }
 
-  &.alert-red {
-    @apply border-red-500 bg-red-500 text-white dark:border-red-500 dark:bg-red-500/30 dark:text-white;
-  }
+    &-red {
+      @apply
+      theme__text_color
+      bg-red-500 dark:bg-red-500/30
+      border-red-500 dark:border-red-500
+    }
 
-  &.alert-gray {
-    @apply border-gray-500 bg-gray-500 text-white dark:border-gray-500 dark:bg-gray-500/30 dark:text-white;
-  }
-
-  .alert-icon {
-    > svg {
-      @apply h-6 w-6;
+    &-gray {
+      @apply
+      theme__text_color
+      bg-gray-500 dark:bg-gray-500/30
+      border-gray-500 dark:border-gray-500
     }
   }
 
-  .alert-content {
+  &-icon {
+    > svg {
+      @apply h-6 w-6
+    }
+  }
+
+  &-content {
     @apply grow text-2xs font-medium;
 
     & > a {
-      @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:text-inherit hover:opacity-70;
+      @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70
     }
   }
 
-  .alert-remove {
-    @apply text-inherit opacity-70 hover:text-inherit hover:opacity-100;
+  &-remove {
+    @apply text-inherit opacity-70 hover:opacity-100;
 
     & > svg {
-      @apply h-4 w-4;
+      @apply h-4 w-4
     }
   }
 }

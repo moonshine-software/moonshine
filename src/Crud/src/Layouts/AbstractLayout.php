@@ -134,11 +134,6 @@ abstract class AbstractLayout implements LayoutContract
         return Css::make('/vendor/moonshine/assets/main.css')->defer();
     }
 
-    protected function getCompactThemeCss(): Css
-    {
-        return Css::make('/vendor/moonshine/assets/minimalistic.css')->defer();
-    }
-
     /**
      * @return list<MenuElementContract>
      */

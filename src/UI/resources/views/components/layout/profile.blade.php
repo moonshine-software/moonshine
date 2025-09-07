@@ -10,7 +10,7 @@
     'before',
     'after',
 ])
-@if($withBorder) <div {{ $attributes->merge(['class' => 'mt-2 border-t border-dark-200']) }}> @endif
+@if($withBorder) <div {{ $attributes->merge(['class' => 'mt-2 border-t theme__border_for_dark_bg']) }}> @endif
     {{ $before ?? '' }}
 
     @if(isset($slot) && $slot->isNotEmpty())
@@ -78,12 +78,11 @@
                         </div>
                     </x-slot:title>
                     <x-slot:toggler>
-                        <x-moonshine::icon icon="chevron-up-down" color="white" />
+                        <x-moonshine::icon icon="chevron-up-down" color="gray" />
                     </x-slot:toggler>
 
                     @if($logOutRoute)
                         <x-slot:footer>
-
                             <x-moonshine::form :action="$logOutRoute" :raw="true">
                                 <x-moonshine::form.input type="hidden" name="_method" value="delete" />
 
@@ -101,7 +100,7 @@
                     @if(is_iterable($menu))
                         <ul class="dropdown-menu">
                             @foreach($menu as $link)
-                                <li class="dropdown-menu-item p-2">
+                                <li class="dropdown-menu-item">
                                     {!! $link !!}
                                 </li>
                             @endforeach

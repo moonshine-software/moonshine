@@ -1,0 +1,136 @@
+@theme {
+  --color-body: oklch(0.266 0.044 264.943);
+  --color-primary: oklch(0.544 0.233 291.241);
+  --color-secondary: oklch(0.639 0.209 6.961);
+
+  --color-dark: oklch(0.26 0.066 279.517);
+  --color-dark-50: oklch(0.509 0.052 257.609);
+  --color-dark-100: oklch(0.467 0.054 263.268);
+  --color-dark-200: oklch(0.436 0.059 264.202);
+  --color-dark-300: oklch(0.393 0.062 264.473);
+  --color-dark-400: oklch(0.364 0.058 266.668);
+  --color-dark-500: oklch(0.332 0.054 266.369);
+  --color-dark-600: oklch(0.324 0.051 266.679);
+  --color-dark-700: oklch(0.303 0.044 272.77);
+  --color-dark-800: oklch(0.266 0.044 264.943);
+  --color-dark-900: oklch(0.208 0.04 265.755);
+
+  --color-menu-link: oklch(1 0 89.876);
+  --color-menu-hover: var(--menu-hover-color, var(--color-secondary));
+  --color-menu-active-bg: var(--menu-active-bg, var(--color-primary));
+  --color-menu-active-color: var(--menu-active-color, oklch(1 0 89.876));
+  --color-menu-current-bg: var(--menu-current-bg, oklch(0.984 0.003 247.858));
+  --color-menu-current-color: var(--menu-current-color, oklch(0 0 0));
+  --color-menu-dropdown-bg: var(--menu-dropdown-bg, var(--color-dark-600));
+
+  --color-success: oklch(0.639 0.218 142.495);
+  --color-warning: oklch(0.898 0.177 96.726);
+  --color-error: oklch(0.589 0.214 26.855);
+  --color-info: oklch(0.601 0.219 257.63);
+
+  --gradient-start: var(--color-primary);
+  --gradient-end: var(--color-primary);
+
+  --track-size: 1.25rem;
+  --track-from-color: var(--color-primary);
+  --track-to-color: var(--color-primary);
+}
+
+.text {
+  &-purple {
+    @apply text-purple-500
+  }
+
+  &-pink {
+    @apply text-pink-500
+  }
+
+  &-blue {
+    @apply text-blue-500
+  }
+
+  &-green {
+    @apply text-green-500
+  }
+
+  &-yellow {
+    @apply text-yellow-500
+  }
+
+  &-red {
+    @apply text-red-500
+  }
+
+  &-gray {
+    @apply text-gray-500
+  }
+}
+
+/* Background colors */
+.bgc {
+  &-primary {
+    @apply theme__text_color bg-primary
+  }
+
+  &-secondary {
+    @apply theme__text_color bg-secondary
+  }
+
+  &-success {
+    @apply theme__text_color bg-success
+  }
+
+  &-warning {
+    @apply theme__text_color bg-warning
+  }
+
+  &-error {
+    @apply theme__text_color bg-error
+  }
+
+  &-info {
+    @apply theme__text_color bg-info
+  }
+
+  &-purple {
+    @apply
+    text-purple-800 bg-purple-100/50
+    dark:text-purple-300 dark:bg-purple-900/50
+  }
+
+  &-pink {
+    @apply
+    text-pink-800 bg-pink-100/50
+    dark:text-pink-300 dark:bg-pink-900/50
+  }
+
+  &-blue {
+    @apply
+    text-blue-800 bg-blue-100/50
+    dark:text-blue-300 dark:bg-blue-900/50
+  }
+
+  &-green {
+    @apply
+    text-green-800 bg-green-100/50
+    dark:text-green-300 dark:bg-green-900/50
+  }
+
+  &-yellow {
+    @apply
+    text-yellow-800 bg-yellow-100/50
+    dark:text-yellow-300 dark:bg-yellow-900/50
+  }
+
+  &-red {
+    @apply
+    text-red-800 bg-red-100/50
+    dark:text-red-300 dark:bg-red-800/50
+  }
+
+  &-gray {
+    @apply
+    text-gray-800 bg-gray-100
+    dark:text-gray-300 dark:bg-gray-700/50
+  }
+}

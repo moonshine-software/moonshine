@@ -1,38 +1,51 @@
 /* User Profile  */
 .profile {
-  @apply flex items-center gap-x-2 gap-y-4  xl:flex-row;
-}
+  @apply flex items-center gap-x-2 gap-y-4 xl:flex-row;
 
-.profile-main {
-  @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
+  &-main {
+    @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
 
-  &:hover {
-    .profile-info > .name {
-      @apply text-secondary;
+    &:hover {
+      .profile-info > .name {
+        @apply text-secondary;
+      }
     }
   }
-}
 
-.profile-photo {
-  @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
-}
-
-.profile-info {
-  @apply block min-w-0 grow lg:hidden xl:block;
-
-  > .name {
-    @apply block truncate text-2xs font-medium leading-[1.25] text-slate-600 transition-colors dark:text-slate-400;
+  &-photo {
+    @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
   }
 
-  > .email {
-    @apply block truncate text-3xs text-slate-400 dark:text-slate-500;
+  &-info {
+    @apply block min-w-0 grow lg:hidden xl:block;
+
+    > .name {
+      @apply block truncate text-2xs font-medium leading-[1.25] text-slate-600 transition-colors dark:text-slate-400;
+    }
+
+    > .email {
+      @apply block truncate text-3xs text-slate-400 dark:text-slate-500;
+    }
   }
-}
 
-.profile-exit {
-  @apply text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
+  &-exit {
+    @apply
+    text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white
+    hover:cursor-pointer
+    ;
 
-  > svg {
-    @apply h-6 w-6;
+    > svg {
+      @apply h-6 w-6;
+    }
+  }
+
+  > .dropdown {
+    &-body {
+      @apply w-9/10 md:max-w-[320px]
+    }
+
+    button {
+      @apply inline-flex items-center justify-center gap-1
+    }
   }
 }

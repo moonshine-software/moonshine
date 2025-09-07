@@ -11,7 +11,7 @@ export default defineConfig(({mode}) => {
     plugins: [
       moonShineBuildPlugin(),
       laravel({
-        input: ['resources/css/main.css', 'resources/css/minimalistic.css', 'resources/js/app.js'],
+        input: ['resources/css/main.css', 'resources/js/app.js'],
         refresh: true,
         publicDirectory: 'dist'
       }),
@@ -41,6 +41,9 @@ export default defineConfig(({mode}) => {
           },
         },
       },
+    },
+    define: { // Прописать только для DEV версии?
+      'process.env.CHOICES_CAN_USE_DOM': true,
     },
   }
 })

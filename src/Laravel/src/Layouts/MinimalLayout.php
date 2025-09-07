@@ -8,15 +8,10 @@ use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Crud\Components\Fragment;
-use MoonShine\UI\Components\{Layout\Body,
-    Layout\Content,
-    Layout\Div,
-    Layout\Flash,
-    Layout\Html,
-    Layout\Layout,
-    Layout\Wrapper};
+use MoonShine\UI\Components\
+{Layout\Body, Layout\Content, Layout\Div, Layout\Flash, Layout\Html, Layout\Layout, Layout\Wrapper};
 
-class CompactLayout extends AppLayout
+class MinimalLayout extends AppLayout
 {
     /**
      * @return list<AssetElementContract>
@@ -110,7 +105,7 @@ class CompactLayout extends AppLayout
                             ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
                     ]),
-                ])->class('theme-compact'),
+                ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([
                     'lang' => $this->getHeadLang(),

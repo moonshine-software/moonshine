@@ -1,9 +1,21 @@
-/* Cateogory card */
+/* Category card */
 .card-category {
-  @apply relative flex h-full flex-col gap-y-6 rounded-lg bg-white p-3 shadow-md shadow-gray-200 dark:bg-dark-600 dark:shadow-black/5 sm:p-4 lg:p-5;
+  @apply
+  relative h-full
+  flex flex-col
+  theme__rounded
+  bg-white dark:bg-dark-600
+  shadow-md shadow-gray-200 dark:shadow-black/5
+  gap-y-6
+  compact:gap-y-4
+  minimalistic:gap-y-2
+  p-3 sm:p-4 lg:p-5
+  compact:p-3
+  minimalistic:p-2
+  ;
 
   .card-photo {
-    @apply relative h-52 w-full overflow-hidden rounded-lg;
+    @apply relative h-52 w-full overflow-hidden theme__rounded;
 
     &:has(.carousel) {
       @apply h-auto;
@@ -55,6 +67,10 @@
   }
 
   .card-actions {
-    @apply flex flex-wrap justify-end gap-2 border-t border-gray-200 pt-5 dark:border-dark-300;
+    @apply flex flex-wrap justify-end gap-2
+    border-t theme__border_for_light_bg
+    pt-5
+    compact:pt-3
+    minimalistic:pt-2
   }
 }

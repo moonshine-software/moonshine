@@ -1,129 +1,114 @@
 /* Buttons */
 .btn {
   @apply
-  inline-flex
-  items-center
-  justify-center
-  border-1
-  border-gray-200
-  h-10
-  min-h-[42px]
-  cursor-pointer
+  theme__rounded
+  inline-flex items-center justify-center
   gap-x-2
-  whitespace-nowrap
-  rounded-md
-  px-3
-  py-2
-  text-3xs
   font-medium
-  text-slate-600
-  bg-transparent
-  hover:bg-gray-100
-  hover:text-slate-600
-  focus:ring
-  focus:ring-gray-400/20
+  text-3xs
+  text-slate-600 hover:text-slate-600 dark:text-slate-300 dark:hover:text-slate-200
+  bg-transparent hover:bg-gray-100 dark:bg-transparent dark:hover:bg-dark-300
+  border-1 border-gray-200 dark:border-dark-200
+  h-10
+  compact:min-h-fit compact:h-8
+  minimalistic:min-h-fit minimalistic:h-fit
+  whitespace-nowrap
+  cursor-pointer disabled:cursor-not-allowed
+  px-3 py-2
+  compact:px-2.5 compact:py-2
+  minimalistic:px-2 minimalistic:py-2
+  focus:ring focus:ring-gray-400/20 dark:focus:ring-dark-100/30
   focus-visible:outline-none
-  disabled:cursor-not-allowed
   disabled:opacity-70
-  dark:border-dark-200
-  dark:bg-transparent
-  dark:text-slate-300
-  dark:hover:bg-dark-400
-  dark:focus:ring-dark-100/30
   transition-colors
   ;
 
   > svg {
-    @apply h-4 w-4;
+    @apply h-4 w-4
   }
 
   &.btn-lg {
     @apply h-12 px-4;
 
     > svg {
-      @apply h-5 w-5;
+      @apply h-5 w-5
     }
   }
 
   .badge {
-    @apply ml-auto border border-gray-300 bg-gray-100 px-2 py-0 text-center dark:border-dark-200 dark:bg-dark-700;
+    @apply ml-auto border border-gray-300 bg-gray-100
+    px-2 py-0
+    text-center dark:border-dark-200 dark:bg-dark-700;
+
+    &:empty {
+      @apply hidden
+    }
   }
 
-  .badge:empty {
-    @apply hidden;
+  /* Button themes */
+
+  &.btn {
+    &-primary {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-primary hover:bg-primary/80 dark:bg-primary/50
+      border-primary focus:ring-primary/20 dark:focus:ring-primary/40
+    }
+
+    &-secondary {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-secondary hover:bg-secondary/80 dark:bg-secondary/50
+      border-secondary focus:ring-secondary/20 dark:focus:ring-secondary/40
+    }
+
+    &-success {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-success hover:bg-success/80 dark:bg-success/50
+      border-success focus:ring-success/20 dark:focus:ring-success/40
+    }
+
+    &-warning {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-warning hover:bg-warning/80 dark:bg-warning/50
+      border-warning focus:ring-warning/20 dark:focus:ring-warning/40
+    }
+
+    &-error {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-error hover:bg-error/80 dark:bg-error/50
+      border-error focus:ring-error/20 dark:focus:ring-error/40
+    }
+
+    &-info {
+      @apply
+      theme__text_color
+      theme__btn
+      bg-info hover:bg-info/80 dark:bg-info/50
+      border-info focus:ring-info/20 dark:focus:ring-info/40
+    }
   }
-}
 
-/* Button themes */
-.btn.btn-primary {
-  @apply border-primary bg-primary text-white hover:bg-primary/80 hover:text-white
-  focus:ring-primary/20
-  dark:focus:ring-primary/40
-  ;
+  /* Button variants */
 
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
+  &-close {
+    @apply
+    p-0
+    w-10 h-10
+    compact:w-8 compact:h-8
+    minimalistic:w-6 minimalistic:h-6
+    ;
 
-.btn.btn-secondary {
-  @apply border-secondary bg-secondary text-white hover:bg-secondary/80 hover:text-white
-  focus:ring-secondary/20
-  dark:focus:ring-secondary/40
-  ;
-
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
-
-.btn.btn-success {
-  @apply border-success-bg bg-success-bg text-success-text hover:bg-success-bg/80 hover:text-success-text
-  focus:ring-success-bg/20 dark:focus:ring-success-bg/40;
-
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
-
-.btn.btn-warning {
-  @apply border-warning-bg bg-warning-bg text-warning-text hover:bg-warning-bg/80 hover:text-warning-text
-  focus:ring-warning-bg/20
-  dark:focus:ring-warning-bg/40
-  ;
-
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
-
-.btn.btn-error {
-  @apply border-error-bg bg-error-bg text-error-text hover:bg-error-bg/80 hover:text-error-text
-  focus:ring-error-bg/20
-  dark:focus:ring-error-bg/40
-  ;
-
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
-
-.btn.btn-info {
-  @apply border-info-bg bg-info-bg text-info-text hover:bg-info-bg/80 hover:text-info-text
-  focus:ring-info-bg/20
-  dark:focus:ring-info-bg/40
-  ;
-
-  .badge {
-    @apply border-0 bg-white text-slate-600;
-  }
-}
-
-/* Button variants */
-.btn-close {
-  @apply h-10 min-h-[auto] w-10 p-0;
-
-  > svg {
-    @apply h-5 w-5;
+    > svg {
+      @apply h-5 w-5
+    }
   }
 }

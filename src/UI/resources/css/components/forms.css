@@ -1,19 +1,23 @@
 /* Base customizes */
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
-  display: none;
-}
+input {
+  &[type='search'] {
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      display: none;
+    }
+  }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-input[type='number'] {
-  -moz-appearance: textfield;
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
 }
 
 .dark input {
@@ -22,7 +26,7 @@ input[type='number'] {
 
 /* Form Label */
 .form-label {
-  @apply text-3xs font-medium;
+  @apply text-3xs font-medium whitespace-nowrap;
 
   > .required {
     @apply text-error;
@@ -36,7 +40,7 @@ input[type='number'] {
 
 /* Form Error */
 .form-error {
-  @apply col-span-12 !mt-0 text-3xs text-error;
+  @apply col-span-12 mt-0 text-3xs text-error;
 }
 
 
@@ -46,7 +50,13 @@ input[type='number'] {
 .form-select,
 .form-multiselect,
 .form-file-upload {
-  @apply base__default base__placeholder min-h-10 rounded-md block w-full p-2;
+  @apply base__default base__placeholder block w-full
+  theme__rounded
+  min-h-10
+  minimalistic:min-h-6
+  p-2
+  minimalistic:p-1
+  ;
 
   &:focus {
     @apply base__focus;
@@ -68,12 +78,6 @@ input[type='number'] {
   }
 }
 
-.form-input,
-.form-textarea,
-.form-select,
-.form-multiselect {
-}
-
 /* Textarea field */
 .form-textarea {
   @apply min-h-[120px];
@@ -93,7 +97,7 @@ input[type='number'] {
   file:border-solid
   file:border-inherit
   file:bg-slate-100
-  file:p-3
+  file:p-3 file:pl-5
   file:transition
   file:[border-inline-end-width:1px]
   file:[margin-inline-end:0.75rem]
@@ -142,9 +146,8 @@ input[type='number'] {
   cursor-pointer
   w-5
   h-5
-  border-1
-  border-gray-300
-  rounded
+  border-1 theme__border_for_light_bg
+  rounded-md
   flex
   items-center
   justify-center
@@ -216,16 +219,12 @@ input[type='number'] {
   .peer:checked + .form-switcher-toggler {
     @apply
     after:translate-x-full
-    after:border-primary
-    bg-primary
-    dark:bg-primary
-    dark:after:border-dark-200
+    bg-primary dark:bg-primary
+    after:border-primary dark:after:border-dark-200
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
-    @apply
-    bg-slate-100
-    dark:bg-dark-800
+    @apply bg-slate-100 dark:bg-dark-800
   }
 
   .peer:focus:not(:disabled) + .form-switcher-toggler {
@@ -345,8 +344,9 @@ input[type='number'] {
     @apply relative w-full px-[var(--track-size)];
 
     input[type=range].form-range {
-      width: calc(100% - var(--track-size));
-      @apply pointer-events-none absolute z-4 h-[var(--track-size)] appearance-none bg-transparent first-of-type:left-0 last-of-type:right-0;
+      @apply pointer-events-none absolute z-4 h-[var(--track-size)] appearance-none bg-transparent first-of-type:left-0 last-of-type:right-0
+      w-[calc(100%_-_var(--track-size))]
+      ;
 
       &::-webkit-slider-runnable-track {
         @apply bg-transparent;
@@ -357,7 +357,7 @@ input[type='number'] {
       }
 
       &:first-of-type::-webkit-slider-thumb {
-        @apply bg-[var(--track-from-color)];
+        @apply bg-[var(--track-from-color)]
       }
 
       &:not(:first-of-type)::-webkit-slider-thumb {
@@ -445,27 +445,24 @@ input[type='number'] {
 
     .form-range-tracker {
       @apply
-      absolute
-      left-0
-      right-0
-      top-1/2
+      absolute left-0 right-0 top-1/2
       z-3
       -mx-[var(--track-size)]
       h-2
       -translate-y-1/2
-      transform rounded-md
-      bg-slate-100
-      dark:bg-dark-800
+      transform
+      rounded-full
+      bg-slate-100 dark:bg-dark-800
     }
 
     .form-range-connect {
-      @apply absolute top-1/2 z-4 -mx-px h-2 -translate-y-1/2 transform;
+      @apply absolute top-1/2 z-4 -mx-[3px] h-2 -translate-y-1/2 transform;
       background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     }
   }
 
   .form-group-range-fields {
-    @apply mt-4 flex w-full items-center justify-between gap-4;
+    @apply mt-4 flex w-full items-center justify-between gap-2;
 
     & > .form-input {
       @apply max-w-44;
@@ -482,7 +479,11 @@ input[type='number'] {
   @apply relative;
 
   .form-color-thumb {
-    @apply absolute left-1 top-1/2 h-8 w-8 -translate-y-1/2 overflow-hidden rounded-md;
+    @apply absolute
+    left-1
+    minimalistic:left-0
+    theme__rounded
+    top-1/2 h-8 w-8 -translate-y-1/2 overflow-hidden;
 
     input[type='color'] {
       @apply absolute -left-2 -top-2 m-0 h-16 w-16 cursor-pointer p-0;
@@ -499,7 +500,12 @@ input[type='number'] {
   @apply flex w-full flex-col gap-2;
 
   &.form-group-inline {
-    @apply flex-row items-center justify-items-center;
+    @apply flex-row items-center justify-items-center md:flex-nowrap;
+
+    [type='date'] {
+      @apply p-1
+      minimalistic:max-sm:px-[1px]
+    }
 
     & > label + div {
       @apply w-full lg:w-0 lg:grow;
@@ -626,7 +632,7 @@ input[type='number'] {
   /* Show browser errors */
 
   [hidden] {
-    @apply absolute left-0 top-0 z-0 !m-0 !block h-full w-full !p-0 opacity-0;
+    @apply absolute left-0 top-0 z-0 m-0 block h-full w-full p-0 opacity-0;
   }
 }
 

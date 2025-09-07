@@ -5,7 +5,7 @@
     @apply aspect-[4/5];
   }
 
-  .carousel-slide {
+  &-slide {
     @apply absolute left-0 inline-block h-full w-full opacity-0 transition-all;
 
     &.active {
@@ -17,7 +17,7 @@
     }
   }
 
-  .carousel-navigation {
+  &-navigation {
     @apply absolute top-1/2 z-10 w-full;
 
     a {
@@ -38,7 +38,7 @@
     }
   }
 
-  .carousel-slide-count {
+  &-slide-count {
     @apply absolute bottom-0 z-10 w-full bg-white/50 text-center text-[.75rem] dark:bg-dark-600/50;
   }
 }

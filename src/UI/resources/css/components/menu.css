@@ -11,7 +11,7 @@
   }
 
   &._is-minimized {
-    @apply lg:pointer-events-auto lg:!w-[4.75rem];
+    @apply lg:pointer-events-auto lg:w-[4.75rem];
 
     .menu-heading {
       @apply lg:flex-col lg:px-0;
@@ -67,14 +67,43 @@
     @apply flex flex-col;
 
     .menu-inner-item-char {
-      @apply !hidden;
+      @apply hidden;
     }
   }
 
   /* Heading */
 
   .menu-heading {
-    @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10 lg:static lg:z-3 lg:mr-4 lg:flex-col lg:border-dark-200 lg:bg-transparent lg:px-0 lg:py-3 lg:backdrop-blur-none xl:mr-5 xl:flex-row xl:px-4 xl:py-4;
+    @apply
+    pointer-events-auto
+    fixed lg:static
+    left-0 right-0 top-0
+    z-[109] lg:z-3
+    flex items-center justify-between
+    flex-row lg:flex-col xl:flex-row
+    gap-4
+    theme__border_for_dark_bg border-b
+    bg-body/80 lg:bg-transparent
+    lg:mr-4 xl:mr-5
+    px-6 md:px-10 lg:px-0 xl:px-4
+    py-3 lg:py-3 xl:py-4
+    backdrop-blur-sm lg:backdrop-blur-none
+    ;
+
+    @variant compact {
+      @apply
+      lg:mr-2
+      px-2 md:px-5 lg:px-1 xl:px-3
+      py-2
+    }
+
+    @variant minimalistic {
+      @apply
+      lg:mx-0
+      px-2
+      py-1 lg:py-2
+      gap-2
+    }
 
     .menu-heading-logo {
       @apply grow-0 lg:grow;
@@ -85,14 +114,40 @@
     }
 
     .menu-heading-burger {
-      @apply inline-flex items-center text-slate-300 lg:hidden;
+      @apply inline-flex items-center
+      text-slate-300
+      minimalistic:text-slate-500
+      lg:hidden
     }
   }
 
   .menu {
-    @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 gap-y-2 bg-body px-6 pb-8 pt-14 opacity-0 transition-all lg:pointer-events-auto lg:visible lg:static lg:z-1 lg:mt-0 lg:flex lg:translate-y-0 lg:flex-col lg:bg-transparent lg:py-0 lg:pl-0 lg:pr-4 lg:opacity-100 lg:transition-none xl:pr-5;
-    overflow-y: auto;
-    overflow-x: clip;
+    @apply
+    pointer-events-none lg:pointer-events-auto
+    invisible lg:visible
+    fixed lg:static
+    inset-0
+    lg:z-1
+    h-full
+    translate-y-4 lg:translate-y-0
+    gap-y-2
+    bg-body lg:bg-transparent
+    minimalistic:bg-slate-50 minimalistic:dark:bg-dark-700
+    px-6 compact:px-4 minimalistic:px-2
+    pb-8 compact:pb-5 minimalistic:pb-3
+    pt-16 compact:max-sm:pt-12 minimalistic:max-sm:pt-10
+    lg:py-0
+    lg:pl-0
+    lg:pr-4 xl:pr-5
+    minimalistic:lg:px-0
+    opacity-0 lg:opacity-100
+    transition-all lg:transition-none
+    lg:mt-0
+    lg:flex
+    lg:flex-col
+    overflow-y-auto overflow-x-clip
+    ;
+
     scrollbar-width: none;
 
     & > *:first-child {
@@ -113,22 +168,62 @@
         @apply grow;
       }
 
-      .menu-inner-item {
+      &-item {
         &._is-active {
           > .menu-inner-link,
           > .menu-inner-button {
-            @apply rounded-lg bg-slate-50 font-medium text-black opacity-100 dark:bg-dark-300 dark:font-normal dark:text-white lg:text-black lg:hover:text-inherit dark:lg:text-white;
+            @apply
+            theme__rounded
+            bg-slate-50 dark:bg-dark-300
+            font-medium dark:font-normal
+            opacity-100
+            text-black dark:text-white
+            lg:text-black dark:lg:text-white
+            lg:hover:text-inherit
+            ;
+
+            @variant minimalistic {
+              @apply
+              bg-slate-300 dark:bg-slate-500
+            }
           }
         }
       }
 
-      .menu-inner-link,
-      .menu-inner-button {
-        @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+      &-link,
+      &-button {
+        @apply
+        theme__rounded
+        relative
+        flex items-center
+        gap-x-2.5
+        px-4 py-3
+        compact:px-3 compact:py-2
+        minimalistic:px-2 minimalistic:py-1
+        font-normal
+        text-xs
+        outline-none
+        text-menu-link
+        is_active:bg-menu-active-bg
+        is_active:text-menu-active-color
+        ;
+
+        @variant not-minimalistic {
+          @apply
+          hover:text-menu-hover
+          hover:bg-menu-hover/5
+        }
+
+        @variant minimalistic {
+          @apply
+          text-body dark:text-slate-300
+          hover:bg-slate-200
+          dark:hover:bg-slate-600
+          dark:is_active:bg-slate-600
+          is_active:bg-slate-300
+        }
 
         &._is-active {
-          @apply bg-menu-active-bg text-menu-active-color;
-
           .menu-inner-arrow {
             @apply scale-y-[-1];
           }
@@ -140,26 +235,43 @@
         }
       }
 
-      .menu-inner-link {
+      &-link {
         &::after {
           content: '';
           @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
         }
       }
 
-      .menu-inner-button {
+      &-button {
         @apply w-full;
       }
 
-      .menu-inner-text {
+      &-text {
         @apply grow truncate text-left;
       }
 
-      .menu-inner-counter {
-        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:-right-2 lg:top-0.5 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:-right-1 xl:top-0 xl:max-w-[120px] xl:scale-100;
+      &-counter {
+        @apply
+        theme__rounded
+        h-6
+        shrink-0
+        truncate
+        leading-6
+        bg-primary
+        px-1.5
+        text-center
+        text-[12px]
+        font-medium
+        text-white
+        lg:absolute xl:static
+        lg:-right-2 xl:-right-1
+        lg:top-0.5 xl:top-0
+        lg:max-w-[64px] xl:max-w-[120px]
+        lg:scale-90 xl:scale-100
+        lg:z-1
       }
 
-      .menu-inner-arrow {
+      &-arrow {
         @apply transition-transform;
 
         > div,
@@ -168,19 +280,42 @@
         }
       }
 
-      .menu-inner-text,
-      .menu-inner-arrow {
+      &-text,
+      &-arrow {
         @apply block lg:hidden xl:block;
       }
 
       /* Dropdown Menu */
 
-      .menu-inner-dropdown {
-        @apply mt-2 flex flex-col gap-y-2 rounded-lg bg-menu-dropdown-bg p-1;
+      &-dropdown {
+        @apply
+        theme__rounded
+        bg-menu-dropdown-bg
+        flex flex-col
+        gap-y-2
+        mt-2
+        p-1
+        ;
+
+        @variant compact {
+          @apply
+          mt-1
+          p-0
+        }
+
+        @variant minimalistic {
+          @apply
+          bg-transparent
+          theme__border_for_dark_bg border
+          my-1
+          p-0
+        }
 
         .menu-inner-link,
         .menu-inner-button {
-          @apply p-2.5 text-2xs;
+          @apply p-2.5 text-2xs
+          minimalistic:p-1.5
+          ;
 
           > div,
           > svg {
@@ -215,11 +350,18 @@
     /* User Profile */
 
     .profile {
-      @apply px-2 py-4;
+      @apply
+      px-2 py-4
+      compact:py-2
+      minimalistic:px-0 minimalistic:py-2
+      ;
 
       .profile-info {
         > .name {
-          @apply text-white;
+          @apply
+          text-white
+          minimalistic:text-primary
+          minimalistic:dark:text-inherit
         }
       }
     }
@@ -232,14 +374,21 @@
   /* Bottom menu */
 
   .menu-bottom {
-    @apply hidden pr-5 lg:block;
+    @apply hidden lg:block
+    pr-5
+    compact:pr-3
+    minimalistic:px-0
+    ;
 
     > *:first-child {
-      @apply border-t border-dark-200 pt-2;
+      @apply
+      border-t theme__border_for_dark_bg
+      pt-2
     }
 
     .menu-inner-button {
       @apply flex gap-2 text-gray-300
+      minimalistic:text-inherit
     }
   }
 }
@@ -267,25 +416,25 @@
   .menu {
     /* Logotype */
 
-    & -logo {
+    &-logo {
       @apply shrink-0;
     }
 
     /* Main navigation */
 
-    & -navigation {
+    &-navigation {
       @apply block lg:grow;
     }
 
-    & -inner {
+    &-inner {
       @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
 
       &:last-of-type {
         @apply grow;
       }
 
-      & -item {
-        @apply relative rounded-lg text-white transition-all;
+      &-item {
+        @apply relative theme__rounded text-white transition-all;
 
         &._is-active {
           @apply
@@ -302,14 +451,20 @@
           ;
 
           .menu-inner-link {
-            @apply text-menu-current-color hover:text-menu-current-color lg:text-inherit lg:hover:text-inherit;
+            @apply
+            text-menu-current-color
+            lg:text-inherit
+            hover:text-menu-current-color
+            lg:hover:text-inherit
           }
         }
       }
 
-      & -link,
-      & -button {
-        @apply relative flex items-center gap-x-2.5 rounded-lg p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+      &-link,
+      &-button {
+        @apply relative flex items-center gap-x-2.5
+        theme__rounded
+        p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
 
         &._is-active {
           @apply bg-menu-active-bg text-menu-active-color;
@@ -325,19 +480,19 @@
         }
       }
 
-      & -button {
+      &-button {
         @apply w-full;
       }
 
-      & -text {
+      &-text {
         @apply grow truncate text-left;
       }
 
-      & -counter {
+      &-counter {
         @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
       }
 
-      & -arrow {
+      &-arrow {
         @apply transition-transform;
 
         > div,
@@ -346,15 +501,18 @@
         }
       }
 
-      & -text,
-      & -arrow {
+      &-text,
+      &-arrow {
         @apply hidden lg:block;
       }
 
       /* Dropdown Menu */
 
-      & -dropdown {
-        @apply fixed top-[4.85rem] z-5 flex flex-col gap-y-1 rounded-lg border border-dark-300 bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
+      &-dropdown {
+        @apply fixed top-[4.85rem] z-5 flex flex-col gap-y-1
+        theme__rounded
+        border border-dark-300
+        bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
 
         .menu-inner-link,
         .menu-inner-button {
@@ -389,7 +547,7 @@
 
       /* Divider */
 
-      & -divider {
+      &-divider {
         @apply relative mx-1 flex items-center text-slate-400 before:h-[16px] before:min-w-[1px] before:grow before:bg-white/30;
 
         > span {
@@ -400,7 +558,7 @@
 
     /* Actions buttons */
 
-    & -actions {
+    &-actions {
       @apply ml-auto flex shrink-0 items-center justify-end gap-x-2 sm:gap-x-3;
 
       .menu-inner-divider {
@@ -414,26 +572,26 @@
 
     /* Settings button */
 
-    & -settings {
+    &-settings {
       @apply inline-flex items-center;
     }
 
     /* Burger button */
 
-    & -burger {
+    &-burger {
       @apply inline-flex items-center text-white lg:hidden;
     }
   }
 
   @media (max-width: 1023.98px) {
     .menu {
-      & -navigation {
+      &-navigation {
         --top-space: 4.5rem;
         @apply pointer-events-none invisible absolute inset-x-0 top-[--top-space] -translate-y-2 overflow-x-auto bg-body px-3 pb-8 opacity-0 transition-all md:px-7;
         height: calc(100vh - var(--top-space));
       }
 
-      & -inner {
+      &-inner {
         @apply flex-col gap-y-0.5 overflow-x-hidden;
 
         .menu-inner-text,
@@ -454,11 +612,11 @@
         }
 
         .menu-inner-button._is-active ~ .menu-inner-dropdown {
-          @apply !block;
+          @apply block;
         }
 
         .menu-inner-dropdown {
-          @apply !static !mt-2 !hidden !transform-none;
+          @apply static mt-2 hidden transform-none;
         }
       }
     }
@@ -473,14 +631,25 @@
     @apply flex flex-col;
 
     .menu-inner-item-char {
-      @apply !hidden;
+      @apply hidden;
     }
   }
 
   .menu {
-    @apply pointer-events-none invisible fixed inset-0 z-[100] h-full translate-y-4 bg-body px-6 pb-8 pt-14 opacity-0 transition-all;
-    overflow-y: auto;
-    overflow-x: clip;
+    @apply
+    pointer-events-none
+    invisible
+    fixed
+    z-menu
+    inset-0
+    h-full
+    translate-y-4
+    bg-body
+    pt-14 px-6 pb-8
+    opacity-0
+    transition-all
+    overflow-x-clip overflow-y-auto
+    ;
 
     &._is-opened {
       @apply pointer-events-auto visible translate-y-0 opacity-100;
@@ -489,7 +658,20 @@
     /* Heading */
 
     .menu-heading {
-      @apply pointer-events-auto fixed left-0 right-0 top-0 z-[109] flex flex-row items-center justify-between gap-4 border-b border-body bg-body/80 px-6 py-3 backdrop-blur-sm md:px-10;
+      @apply
+      pointer-events-auto
+      fixed
+      top-0 right-0 left-0
+      z-[109]
+      flex flex-row items-center justify-between
+      gap-4
+      theme__border_for_dark_bg border-b
+      bg-body/80
+      px-6
+      py-3
+      backdrop-blur-sm
+      md:px-10
+      ;
 
       .menu-heading-logo {
         @apply grow-0;
@@ -588,7 +770,7 @@
       /* Dropdown Menu */
 
       .menu-inner-dropdown {
-        @apply mt-2 flex flex-col gap-y-2 rounded-lg bg-menu-dropdown-bg p-1;
+        @apply mt-2 flex flex-col gap-y-2 theme__rounded bg-menu-dropdown-bg p-1;
 
         .menu-inner-link,
         .menu-inner-button {

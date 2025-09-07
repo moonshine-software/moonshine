@@ -1,0 +1,42 @@
+/* Report card */
+.report-card {
+  @apply
+  theme__rounded
+  flex flex-col
+  h-full
+  p-3 sm:p-4 lg:p-5
+  compact:p-3 compact:lg:p-4
+  minimalistic:p-2 minimalistic:sm:p-3 minimalistic:lg:p-4
+  bg-white dark:bg-dark-600
+  shadow-md shadow-gray-200 dark:shadow-black/5
+  before:hidden
+  ;
+
+  &-heading {
+    @apply flex items-center justify-between;
+
+    > svg {
+      @apply h-6 w-6 text-secondary
+    }
+  }
+
+  &-indicator {
+    @apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-3xs leading-none text-white;
+
+    > svg {
+      @apply h-3.5 w-3.5
+    }
+  }
+
+  &-body {
+    @apply mt-auto
+  }
+
+  &-value {
+    @apply mt-6 truncate text-xl font-medium leading-none
+  }
+
+  &-title {
+    @apply mt-2 truncate text-2xs text-slate-500
+  }
+}

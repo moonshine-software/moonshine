@@ -1,16 +1,23 @@
 /* Modal */
 .modal {
-  @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-transform;
+  @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-all;
 
-  .modal-template {
+  &-template {
     @apply relative z-modal;
   }
 
-  .modal-dialog {
-    @apply pointer-events-none mx-auto my-8 flex items-center px-4 sm:max-w-[520px] md:max-w-[720px];
-    min-height: calc(100% - 2rem * 2);
+  &-dialog {
+    @apply
+    pointer-events-none
+    flex items-center
+    mx-auto
+    my-8
+    px-4
+    sm:max-w-[520px] md:max-w-[720px]
+    min-h-[calc(100%_-_2rem_*_2)]
+    ;
 
-    .modal-dialog-auto {
+    &-auto {
       @apply max-w-max;
 
       .modal-header,
@@ -19,33 +26,41 @@
       }
     }
 
-    .modal-dialog-xl {
+    &-xl {
       @apply max-w-[1640px];
     }
   }
 
-  .modal-content {
-    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700
-    shadow-lg
-    ;
+  &-content {
+    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700 shadow-lg
   }
 
-  .modal-header {
-    @apply sticky top-0 z-20 flex justify-between gap-x-4 rounded-t-lg border-b
-    border-gray-200 bg-white p-4 dark:border-dark-200 dark:bg-dark-700 lg:p-6;
+  &-header {
+    @apply sticky top-0 z-20
+    flex justify-between gap-x-4
+    rounded-t-lg
+    border-b theme__border_for_light_bg
+    bg-white dark:bg-dark-700
+    p-4 lg:p-6
+    compact:p-4
+    minimalistic:p-3
   }
 
-  .modal-title {
+  &-title {
     @apply self-center text-xs font-semibold xs:text-sm;
   }
 
-  .modal-body {
-    @apply grow p-4 lg:p-6;
+  &-body {
+    @apply grow
+    p-4 lg:p-6
+    compact:p-4
+    minimalistic:p-3
   }
-}
 
-/* Backdrop */
+  /* Backdrop */
 
-.modal-backdrop {
-  @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  &-backdrop {
+    @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  }
+
 }

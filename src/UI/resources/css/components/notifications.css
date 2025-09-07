@@ -1,20 +1,22 @@
 /* Notifications */
 .notifications {
-  @apply relative z-50;
+  @apply relative z-notifications;
 
   .dropdown-content {
     @apply w-full;
   }
 
-  .notifications-icon {
-    @apply relative block text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
+  &-icon {
+    @apply relative block text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white
+    hover:cursor-pointer
   }
 
-  .notifications-item {
-    @apply relative flex gap-x-3 p-3;
+  &-item {
+    @apply relative flex gap-x-3 p-3
+    minimalistic:p-2
   }
 
-  .notifications-remove {
+  &-remove {
     @apply absolute right-3 top-1/2 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
 
     > svg {
@@ -22,7 +24,7 @@
     }
   }
 
-  .notifications-category {
+  &-category {
     @apply inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full;
 
     & > svg {
@@ -30,19 +32,21 @@
     }
   }
 
-  .notifications-content {
-    @apply flex grow flex-col gap-y-0.5 pr-4;
+  &-content {
+    @apply flex grow flex-col gap-y-0.5 pr-4
+    compact:pr-3
+    minimalistic:pr-2
   }
 
-  .notifications-title {
+  &-title {
     @apply text-2xs font-medium;
   }
 
-  .notifications-text {
+  &-text {
     @apply text-3xs text-gray-500 dark:text-gray-400;
   }
 
-  .notifications-more {
+  &-more {
     @apply text-3xs font-medium;
 
     > a {
@@ -50,11 +54,11 @@
     }
   }
 
-  .notifications-time {
+  &-time {
     @apply text-[13px] text-gray-400 dark:text-gray-500;
   }
 
-  .notifications-read {
+  &-read {
     @apply block text-center text-2xs font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
   }
 }

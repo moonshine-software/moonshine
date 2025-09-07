@@ -22,20 +22,20 @@
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-}
 
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
+  &-track {
+    background-color: transparent;
+  }
 
-::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  border: 3px solid transparent;
-  background-clip: padding-box;
-  background-color: var(--scrollbar-color);
+  &-thumb {
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-color);
 
-  &:hover {
-    background-color: var(--scrollbar-hover-color);
+    &:hover {
+      background-color: var(--scrollbar-hover-color);
+    }
   }
 }
 
@@ -45,8 +45,12 @@
 }
 
 body {
-  @apply relative overflow-x-hidden bg-body text-gray-800 dark:text-slate-300;
-  min-width: 320px;
+  @apply
+  relative overflow-x-hidden
+  bg-body
+  minimalistic:bg-slate-50 minimalistic:dark:bg-dark-700
+  text-gray-800 dark:text-slate-300
+  min-w-[320px]
 }
 
 /* Heading */
@@ -60,7 +64,8 @@ body {
   .h1,
   .h2,
   .h3,
-  .h4 {
+  .h4,
+  div {
     @apply mb-6 truncate font-medium;
   }
 
@@ -178,62 +183,27 @@ hr.divider {
   @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
 }
 
-div.divider {
-  @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
-}
+div {
+  &.divider {
+    @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
+  }
 
-div.divider-centered {
-  @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
+  &.divider-centered {
+    @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
+  }
 }
 
 .space-elements > :not([hidden], [type='hidden']) ~ :not([hidden], [type='hidden']) {
   --tw-space-y-reverse: 0;
-  margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
-}
+  --tw-value: 1.25rem;
 
-/* Base state */
-@utility base__default {
   @apply
-  text-2xs
-  outline-none
-  transition-colors
-  duration-200
-  border
-  bg-white
-  border-gray-300
-  dark:bg-dark-800
-  dark:border-dark-200
-}
+  mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse)))]
+  mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))]
 
-@utility base__focus {
-  @apply
-  ring
-  border-gray-300
-  ring-gray-300/50
-  ring-offset-0
-  dark:border-dark-200
-  dark:ring-dark-100/30
-}
+  compact:mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse))_/_1.3)]
+  compact:mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse)_/_1.3)]
 
-@utility base__read-only {
-  @apply cursor-default opacity-60 focus:ring-0;
-}
-
-@utility base__disabled {
-  @apply cursor-not-allowed bg-gray-100 text-gray-400 opacity-60 dark:bg-dark-700;
-  @apply bg-gray-100 text-gray-400;
-  @apply dark:bg-dark-700 dark:text-gray-500;
-}
-
-@utility base__placeholder {
-  @apply
-  placeholder:text-2xs
-  placeholder:text-gray-400
-  dark:placeholder:text-gray-500
-}
-
-@utility base__error {
-  @apply border-error focus:ring-error/20;
-  @apply dark:border-error dark:focus:ring-error/40;
+  minimalistic:mt-2
+  minimalistic:mb-2
 }

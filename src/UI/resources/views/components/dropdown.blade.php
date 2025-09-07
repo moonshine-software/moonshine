@@ -39,7 +39,7 @@
                 <ul class="dropdown-menu">
                     @foreach($items as $key =>$item)
                         <li
-                            class="dropdown-menu-item p-2"
+                            class="dropdown-menu-item"
                             @if($searchable) x-ref="dropdown_{{$key}}" @endif
                         >
                             {!! $item !!}

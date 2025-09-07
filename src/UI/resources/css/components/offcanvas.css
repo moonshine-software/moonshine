@@ -4,33 +4,43 @@
 
   /* Positions */
 
-  &.offcanvas-left {
-    @apply left-0;
+  &.offcanvas {
+    &-left {
+      @apply left-0;
+    }
+
+    &-right {
+      @apply right-0;
+    }
   }
 
-  &.offcanvas-right {
-    @apply right-0;
-  }
-
-  .offcanvas-template {
+  &-template {
     @apply relative z-offcanvas;
   }
 
-  .offcanvas-header {
-    @apply flex justify-between gap-x-4 border-b border-gray-200 p-4 dark:border-dark-200 lg:p-6;
+  &-header {
+    @apply flex justify-between gap-x-4
+    border-b border-gray-200 dark:border-dark-200
+    p-4 lg:p-6
+    compact:p-4
+    minimalistic:p-3
   }
 
-  .offcanvas-title {
+  &-title {
     @apply self-center text-xs font-semibold xs:text-sm;
   }
 
-  .offcanvas-body {
-    @apply grow overflow-y-auto p-4 lg:p-6;
+  &-body {
+    @apply grow overflow-y-auto
+    p-4 lg:p-6
+    compact:p-4
+    minimalistic:p-3
   }
-}
 
-/* Backdrop */
+  /* Backdrop */
 
-.offcanvas-backdrop {
-  @apply fixed inset-0 z-50 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  &-backdrop {
+    @apply fixed inset-0 z-50 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  }
+
 }

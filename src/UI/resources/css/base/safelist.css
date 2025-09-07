@@ -1,25 +1,16 @@
-@source inline("visible,invisible,!hidden,hidden,!block,overflow-{auto,hidden}");
-@source inline('pointer-events-auto');
-@source inline('opacity-{0..100..50}');
-@source inline('grow');
+@source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{relative,fixed,absolute,static,z-[{0..100},dropdown,notifications,offcanvas,modal,menu,toast]}');
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{visible,invisible,!hidden,hidden,!block,overflow-{auto,hidden},pointer-events-{none,auto},grow,opacity-{0..100..10},fit-content}");
 
-@source inline("grid,grid-cols-{1..12}");
-@source inline("{xs:,sm:,md:,lg:,xl:,}col-span-{{1..12},full}");
-@source inline("gap-{1..10}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{grid,grid-{cols,rows}-{1..12}}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}col-{span,start,end}-{{1..12},full}");
 
-@source inline('flex-wrap');
-@source inline("items-{start,end,center,baseline,stretch}");
-@source inline("justify-{start,end,center,baseline,stretch}");
+@source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{{flex,inline-flex,flex-{row,col,wrap,nowrap},{justify,items}-{start,end,center,baseline,stretch}}}');
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{gap-{0..10},space-{x,y}-{0..10}}");
 
-@source inline("w-{auto,{1..9},full,fit}");
-@source inline("h-{auto,{1..9},full,fit}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{min,max,}{w,h}-{auto,full,fit,screen,{0..10}}");
+@source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{m,p}-{0..20}');
 
-@source inline("object-{cover,contain,fill,none,scale-down}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}object-{cover,contain,fill,none,scale-down}");
 
-@source inline("text-{xs,sm,md,lg,xl,{2..4}xl}");
-@source inline("text-{primary,secondary,info,success,warning,error}");
-@source inline('text-{left,center,right}');
-
-@source inline('m-{0..10}');
-@source inline('mt-{0..10}');
-@source inline('mb-{0..10}');
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}text-{xs,sm,md,lg,xl,primary,secondary,info,success,warning,error,left,center,right}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{badge,badge-{primary,secondary,info,success,warning,error}}");

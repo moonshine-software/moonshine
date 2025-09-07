@@ -3,7 +3,8 @@
 @import "./base/fonts.css";
 @import "./base/safelist.css";
 @import "./base/breakpoints.css";
-@import './components/colors.css';
+@import "./base/utilites.css";
+@import './base/colors.css';
 @import './base/common.css';
 @import './base/layout.css';
 
@@ -12,34 +13,35 @@
 @import 'choices.js/public/assets/styles/choices.css';
 
 /* Tailwind Components */
-@import './components/breadcrumbs.css';
-@import './components/box.css';
-@import './components/menu.css';
-@import './components/navigation.css';
-@import './components/dropdowns.css';
-@import './components/dropzone.css';
-@import './components/buttons.css';
-@import './components/social.css';
-@import './components/forms.css';
-@import './components/tables.css';
-@import './components/pagination.css';
-@import './components/badges.css';
-@import './components/modals.css';
-@import './components/offcanvas.css';
-@import './components/tabs.css';
 @import './components/accordions.css';
 @import './components/alerts.css';
+@import './components/badges.css';
+@import './components/box.css';
+@import './components/breadcrumbs.css';
+@import './components/buttons.css';
 @import './components/cards.css';
-@import './components/progressbars.css';
-@import './components/popovers.css';
-@import './components/spinners.css';
-@import './components/toasts.css';
-@import './components/notifications.css';
 @import './components/carousel.css';
-@import './components/theme-switcher.css';
+@import './components/dropdowns.css';
+@import './components/dropzone.css';
+@import './components/forms.css';
 @import './components/languages.css';
-@import './components/search.css';
+@import './components/menu.css';
+@import './components/modals.css';
+@import './components/navigation.css';
+@import './components/notifications.css';
+@import './components/offcanvas.css';
+@import './components/pagination.css';
+@import './components/popovers.css';
 @import './components/profile.css';
+@import './components/progressbars.css';
+@import './components/search.css';
+@import './components/social.css';
+@import './components/spinners.css';
+@import './components/tables.css';
+@import './components/tabs.css';
+@import './components/theme-switcher.css';
+@import './components/toasts.css';
+@import './components/report-card.css';
 
 /* Tailwind Utilities */
 @import './base/animation.css';
@@ -48,15 +50,19 @@
 @import './pages/dashboard.css';
 @import './pages/authentication.css';
 
-
-@source '../../../../../../laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../../../../../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source '../../../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../../../../storage/framework/views/*.php';
+@source '../**/*.{js,blade.php}';
+@source '../../**/*.php';
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant compact (&:where(.theme-compact, .theme-compact *));
+@custom-variant minimalistic (&:where(.theme-minimalistic, .theme-minimalistic *));
+@custom-variant is_active (&:where(&._is-active));
 
 @theme {
+  --radius: theme('borderRadius.lg');
+
   --font-3xs: 0.875rem;
   --font-2xs: 0.9375rem;
   --font-xs: 1rem;
@@ -66,64 +72,8 @@
   --font-xl: 2rem;
   --font-2xl: 3rem;
   --font-3xl: 4rem;
-}
 
-@utility text-3xs {
-  font-size: var(--font-3xs);
+  --rounded: var(--radius);
+  --compact-rounded: calc(var(--radius) * 0.5);
+  --minimal-rounded: 0;
 }
-
-@utility text-2xs {
-  font-size: var(--font-2xs);
-}
-
-@utility text-xs {
-  font-size: var(--font-xs);
-}
-
-@utility text-sm {
-  font-size: var(--font-sm);
-}
-
-@utility text-md {
-  font-size: var(--font-md);
-}
-
-@utility text-lg {
-  font-size: var(--font-lg);
-}
-
-@utility text-xl {
-  font-size: var(--font-xl);
-}
-
-@utility text-2xl {
-  font-size: var(--font-2xl);
-}
-
-@utility text-3xl {
-  font-size: var(--font-3xl);
-}
-
-@variant mobile {
-  @media screen and (max-width: var(--breakpoint-mobile)) {
-    * {
-      max-width: var(--breakpoint-mobile);
-    }
-  }
-}
-
-@utility z-modal {
-  @apply
-  z-[1070]
-}
-
-@utility z-offcanvas {
-  @apply
-  z-[1050]
-}
-
-@utility z-toast {
-  @apply
-  z-[1500]
-}
-
