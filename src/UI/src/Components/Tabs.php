@@ -113,7 +113,7 @@ class Tabs extends AbstractWithComponents
         return [
             'tabs' => $tabs
                 ->filter(fn (Tab $tab): bool => $tab->isSee())
-                ->mapWithKeys(fn (Tab $tab) => [$tab->getId() => $tab->toArray()])
+                ->mapWithKeys(fn (Tab $tab): array => [$tab->getId() => $tab->toArray()])
                 ->toArray(),
             'active' => $this->getActive(),
             'justifyAlign' => $this->getJustifyAlign(),

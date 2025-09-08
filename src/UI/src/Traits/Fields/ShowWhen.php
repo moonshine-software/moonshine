@@ -62,7 +62,7 @@ trait ShowWhen
      */
     public function modifyShowFieldName(string $name): static
     {
-        $this->showWhenCondition = array_map(function (array $item) use ($name) {
+        $this->showWhenCondition = array_map(function (array $item) use ($name): array {
             $item['showField'] = $name;
 
             return $item;
@@ -77,7 +77,7 @@ trait ShowWhen
             return $this;
         }
 
-        $this->showWhenCondition = array_map(function (array $item) {
+        $this->showWhenCondition = array_map(function (array $item): array {
             $item['showField'] = $item['range_type'] === 'from'
                 ? $this->getNameAttribute($this->getFromField())
                 : $this->getNameAttribute($this->getToField());

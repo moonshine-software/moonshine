@@ -79,7 +79,7 @@ final class Settings implements Arrayable
      */
     public function toArray(): array
     {
-        return array_filter($this->values, fn($v) => ! is_null($v));
+        return array_filter($this->values, fn($v): bool => ! is_null($v));
     }
 
     public function set(string $name, mixed $value): self

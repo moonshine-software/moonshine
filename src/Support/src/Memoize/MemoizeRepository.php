@@ -21,7 +21,7 @@ final class MemoizeRepository implements Countable, StatefulContract
 
     public static function getInstance(): static
     {
-        return static::$cache ??= new self();
+        return self::$cache ??= new self();
     }
 
     protected function __construct()
