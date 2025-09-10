@@ -1,19 +1,19 @@
 @theme {
-  --color-body: oklch(0.266 0.044 264.943);
-  --color-primary: oklch(0.544 0.233 291.241);
-  --color-secondary: oklch(0.639 0.209 6.961);
+  --color-body: oklch(var(--body, 0.266 0.044 264.943));
+  --color-primary: oklch(var(--primary, 0.544 0.233 291.241));
+  --color-secondary: oklch(var(--secondary, 0.639 0.209 6.961));
 
-  --color-dark: oklch(0.26 0.066 279.517);
-  --color-dark-50: oklch(0.509 0.052 257.609);
-  --color-dark-100: oklch(0.467 0.054 263.268);
-  --color-dark-200: oklch(0.436 0.059 264.202);
-  --color-dark-300: oklch(0.393 0.062 264.473);
-  --color-dark-400: oklch(0.364 0.058 266.668);
-  --color-dark-500: oklch(0.332 0.054 266.369);
-  --color-dark-600: oklch(0.324 0.051 266.679);
-  --color-dark-700: oklch(0.303 0.044 272.77);
-  --color-dark-800: oklch(0.266 0.044 264.943);
-  --color-dark-900: oklch(0.208 0.04 265.755);
+  --color-dark: oklch(var(--dark-DEFAULT, 0.26 0.066 279.517));
+  --color-dark-50: oklch(var(--dark-50, 0.509 0.052 257.609));
+  --color-dark-100: oklch(var(--dark-100, 0.467 0.054 263.268));
+  --color-dark-200: oklch(var(--dark-200, 0.436 0.059 264.202));
+  --color-dark-300: oklch(var(--dark-300, 0.393 0.062 264.473));
+  --color-dark-400: oklch(var(--dark-400, 0.364 0.058 266.668));
+  --color-dark-500: oklch(var(--dark-500, 0.332 0.054 266.369));
+  --color-dark-600: oklch(var(--dark-600, 0.324 0.051 266.679));
+  --color-dark-700: oklch(var(--dark-700, 0.303 0.044 272.77));
+  --color-dark-800: oklch(var(--dark-800, 0.266 0.044 264.943));
+  --color-dark-900: oklch(var(--dark-900, 0.208 0.04 265.755));
 
   --color-menu-link: oklch(1 0 89.876);
   --color-menu-hover: var(--menu-hover-color, var(--color-secondary));
@@ -23,10 +23,14 @@
   --color-menu-current-color: var(--menu-current-color, oklch(0 0 0));
   --color-menu-dropdown-bg: var(--menu-dropdown-bg, var(--color-dark-600));
 
-  --color-success: oklch(0.639 0.218 142.495);
-  --color-warning: oklch(0.898 0.177 96.726);
-  --color-error: oklch(0.589 0.214 26.855);
-  --color-info: oklch(0.601 0.219 257.63);
+  --color-success: oklch(var(--success-bg, 0.639 0.218 142.495));
+  --color-success-text: oklch(var(--success-text, 1 0 0));
+  --color-warning: oklch(var(--warning-bg, 0.898 0.177 96.726));
+  --color-warning-text: oklch(var(--warning-text, 0.5641 0.115857 95.1424));
+  --color-error: oklch(var(--error-bg, 0.589 0.214 26.855));
+  --color-error-text: oklch(var(--error-text, 1 0 0));
+  --color-info: oklch(var(--info-bg, 0.601 0.219 257.63));
+  --color-info-text: oklch(var(--info-text, 1 0 0));
 
   --gradient-start: var(--color-primary);
   --gradient-end: var(--color-primary);

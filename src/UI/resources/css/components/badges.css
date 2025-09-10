@@ -18,23 +18,26 @@
 }
 
 .badge-success {
-  @apply theme__text_color
+  @apply
+  text-(--color-success-text)
   bg-success dark:bg-success/80
 }
 
 .badge-warning {
-  @apply theme__text_color
-  text-amber-800
+  @apply
+  text-(--color-warning-text)
   bg-warning dark:bg-warning/80
 }
 
 .badge-error {
-  @apply theme__text_color
+  @apply
+  text-(--color-error-text)
   bg-error dark:bg-error
 }
 
 .badge-info {
-  @apply theme__text_color
+  @apply
+  text-(--color-info-text)
   bg-info dark:bg-info/80
 }
 

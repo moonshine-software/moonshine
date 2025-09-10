@@ -136,6 +136,7 @@
     px-6 compact:px-4 minimalistic:px-2
     pb-8 compact:pb-5 minimalistic:pb-3
     pt-16 compact:max-sm:pt-12 minimalistic:max-sm:pt-10
+    compact:pl-2
     lg:py-0
     lg:pl-0
     lg:pr-4 xl:pr-5
@@ -203,24 +204,22 @@
         font-normal
         text-xs
         outline-none
-        text-menu-link
         is_active:bg-menu-active-bg
         is_active:text-menu-active-color
         ;
 
         @variant not-minimalistic {
           @apply
+          text-menu-link
           hover:text-menu-hover
           hover:bg-menu-hover/5
         }
 
         @variant minimalistic {
           @apply
-          text-body dark:text-slate-300
           hover:bg-slate-200
-          dark:hover:bg-slate-600
-          dark:is_active:bg-slate-600
-          is_active:bg-slate-300
+          is_active:bg-primary
+          is_active:hover:bg-primary/80
         }
 
         &._is-active {
@@ -613,7 +612,7 @@
       overflow-x-auto
       bg-body
       px-3 md:px-7
-        pb-8
+      pb-8
       opacity-0
       transition-all
     }

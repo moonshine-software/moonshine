@@ -63,12 +63,10 @@
   .dropdown-menu {
     @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
 
-    .dropdown-menu-item {
-      &--active {
-        .dropdown-menu-link,
-        .btn {
-          @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500
-        }
+    .dropdown-menu-item--active {
+      .dropdown-menu-link,
+      .btn {
+        @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500
       }
     }
 

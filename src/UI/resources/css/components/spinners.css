@@ -17,90 +17,88 @@
     animation: ms-loader-spinner 2s linear infinite;
   }
 
-  &.spinner {
-    /* Fixed position */
+  /* Fixed position */
 
-    .spinner-fixed {
-      @apply fixed inset-0 m-auto;
-    }
+  .spinner-fixed {
+    @apply fixed inset-0 m-auto;
+  }
 
-    /* Absolute position */
+  /* Absolute position */
 
-    .spinner-absolute {
-      @apply absolute inset-0 m-auto;
-    }
+  .spinner-absolute {
+    @apply absolute inset-0 m-auto;
+  }
 
-    /* Sizes */
+  /* Sizes */
 
-    &.spinner-sm {
-      @apply h-6 w-6 before:border-2;
-    }
+  &.spinner-sm {
+    @apply h-6 w-6 before:border-2;
+  }
 
-    &.spinner-md {
-      @apply h-10 w-10;
-    }
+  &.spinner-md {
+    @apply h-10 w-10;
+  }
 
-    &.spinner-lg {
-      @apply h-12 w-12 before:border-4;
-    }
+  &.spinner-lg {
+    @apply h-12 w-12 before:border-4;
+  }
 
-    &.spinner-xl {
-      @apply h-14 w-14 before:border-4;
-    }
+  &.spinner-xl {
+    @apply h-14 w-14 before:border-4;
+  }
 
-    /* Themes */
+  /* Themes */
 
-    &.spinner--primary {
-      @apply before:border-primary
-    }
+  &.spinner--primary {
+    @apply before:border-primary
+  }
 
-    .spinner--secondary {
-      @apply before:border-secondary
-    }
+  .spinner--secondary {
+    @apply before:border-secondary
+  }
 
-    &.spinner--success {
-      @apply before:border-success
-    }
+  &.spinner--success {
+    @apply before:border-success
+  }
 
-    &.spinner--warning {
-      @apply before:border-warning
-    }
+  &.spinner--warning {
+    @apply before:border-warning
+  }
 
-    &.spinner--error {
-      @apply before:border-error
-    }
+  &.spinner--error {
+    @apply before:border-error
+  }
 
-    &.spinner--info {
-      @apply before:border-info
-    }
+  &.spinner--info {
+    @apply before:border-info
+  }
 
-    &.spinner--purple {
-      @apply before:border-purple-500
-    }
+  &.spinner--purple {
+    @apply before:border-purple-500
+  }
 
-    &.spinner--pink {
-      @apply before:border-pink-500
-    }
+  &.spinner--pink {
+    @apply before:border-pink-500
+  }
 
-    &.spinner--blue {
-      @apply before:border-blue-500
-    }
+  &.spinner--blue {
+    @apply before:border-blue-500
+  }
 
-    &.spinner--green {
-      @apply before:border-green-500
-    }
+  &.spinner--green {
+    @apply before:border-green-500
+  }
 
-    &.spinner--yellow {
-      @apply before:border-yellow-500
-    }
+  &.spinner--yellow {
+    @apply before:border-yellow-500
+  }
 
-    &.spinner--red {
-      @apply before:border-red-500
-    }
+  &.spinner--red {
+    @apply before:border-red-500
+  }
 
-    &.spinner--gray {
-      @apply before:border-gray-500
-    }
+  &.spinner--gray {
+    @apply before:border-gray-500
   }
 }
 

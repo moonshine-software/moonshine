@@ -65,15 +65,14 @@
 
   &.btn-success {
     @apply
-    theme__text_color
     theme__btn
+    text-success-text
     bg-success hover:bg-success/80 dark:bg-success/50
     border-success focus:ring-success/20 dark:focus:ring-success/40
   }
 
   &.btn-warning {
     @apply
-    theme__text_color
     theme__btn
     bg-warning hover:bg-warning/80 dark:bg-warning/50
     border-warning focus:ring-warning/20 dark:focus:ring-warning/40
@@ -81,32 +80,32 @@
 
   &.btn-error {
     @apply
-    theme__text_color
     theme__btn
+    text-error-text
     bg-error hover:bg-error/80 dark:bg-error/50
     border-error focus:ring-error/20 dark:focus:ring-error/40
   }
 
   &.btn-info {
     @apply
-    theme__text_color
     theme__btn
+    text-info-text
     bg-info hover:bg-info/80 dark:bg-info/50
     border-info focus:ring-info/20 dark:focus:ring-info/40
   }
+}
 
-  /* Button variants */
+/* Button variants */
 
-  .btn-close {
-    @apply
-    p-0
-    w-10 h-10
-    compact:w-8 compact:h-8
-    minimalistic:w-6 minimalistic:h-6
-    ;
+.btn-close {
+  @apply
+  p-0
+  w-10 h-10
+  compact:w-8 compact:h-8
+  minimalistic:w-6 minimalistic:h-6
+  ;
 
-    > svg {
-      @apply h-5 w-5
-    }
+  > svg {
+    @apply h-5 w-5
   }
 }

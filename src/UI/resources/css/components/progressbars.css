@@ -25,18 +25,22 @@
 
     &.progress-bar--success {
       @apply bg-success dark:bg-success
+      text-(--color-success-text)
     }
 
     &.progress-bar--warning {
       @apply bg-warning  dark:bg-warning
+      text-(--color-warning-text)
     }
 
     &.progress-bar--error {
       @apply bg-error dark:bg-error
+      text-(--color-error-text)
     }
 
     &.progress-bar--info {
       @apply bg-info  dark:bg-info
+      text-(--color-info-text)
     }
 
     &.progress-bar--purple {
@@ -161,19 +165,19 @@
   }
 
   &.radial-progress--success {
-    @apply text-success
+    @apply text-success-text
   }
 
   &.radial-progress--warning {
-    @apply text-warning
+    @apply text-warning-text
   }
 
   &.radial-progress--error {
-    @apply text-error
+    @apply text-error-text
   }
 
   &.radial-progress--info {
-    @apply text-info
+    @apply text-info-text
   }
 
   &.radial-progress--purple {

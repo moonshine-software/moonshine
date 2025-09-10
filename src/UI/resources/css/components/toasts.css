@@ -1,47 +1,46 @@
 /* Toasts (notices) */
-.toast {
-  .toast-container {
-    @apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
-
-    /* Themes */
-
-    .toast-primary {
-      @apply bg-primary
-    }
-
-    .toast-secondary {
-      @apply bg-secondary
-    }
-
-    .toast-info {
-      @apply bg-info
-    }
-
-    .toast-success {
-      @apply bg-success
-    }
-
-    .toast-warning {
-      @apply bg-warning
-    }
-
-    .toast-error {
-      @apply bg-error
-    }
-  }
-
-  .toast-item {
-    @apply
-    theme__text_color
-    flex items-center justify-center
-    pointer-events-auto cursor-pointer
-    w-auto min-w-56 max-sm:w-full
-    mt-2 lg:mt-4
-    mr-2 lg:mr-4
-    p-2 sm:p-3
-    rounded
-    bg-gray-600 dark:bg-dark-50
-    text-center
-    text-2xs
-  }
+.toast-container {
+  @apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
 }
+
+.toast-item {
+  @apply
+  theme__text_color
+  flex items-center justify-center
+  pointer-events-auto cursor-pointer
+  w-auto min-w-56 max-sm:w-full
+  mt-2 lg:mt-4
+  mr-2 lg:mr-4
+  p-2 sm:p-3
+  rounded
+  bg-gray-600 dark:bg-dark-50
+  text-center
+  text-2xs
+}
+
+/* Themes */
+
+.toast-primary {
+  @apply bg-primary
+}
+
+.toast-secondary {
+  @apply bg-secondary
+}
+
+.toast-info {
+  @apply bg-info
+}
+
+.toast-success {
+  @apply bg-success
+}
+
+.toast-warning {
+  @apply bg-warning
+}
+
+.toast-error {
+  @apply bg-error
+}
+

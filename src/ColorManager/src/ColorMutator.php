@@ -69,67 +69,107 @@ final class ColorMutator
 
     public static function toOKLCH(string $value): string
     {
-        $result = static function (float $lightness, float $chroma, float $hue): string {
+        $formatResult = function (float $lightness, float $chroma, float $hue): string {
             $l = number_format($lightness * 100, 2, '.', '');
-            $c = rtrim(rtrim(number_format($chroma, 3, '.', ''), '0'), '.');
-            $h = rtrim(rtrim(number_format($hue, 3, '.', ''), '0'), '.');
-
+            $c = rtrim(rtrim(number_format($chroma, 5, '.', ''), '0'), '.') ?: '0';
+            $h = rtrim(rtrim(number_format($hue, 3, '.', ''), '0'), '.') ?: '0';
             return "oklch({$l}% {$c} {$h})";
         };
 
-        if (str_starts_with($value, 'oklch(')) {
-            if (preg_match('/oklch\(\s*([\d.]+)(%)?\s+([\d.]+)\s+([\d.]+)\)/', $value, $matches)) {
-                $lightness = (float) $matches[1];
+        if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)\s*$/', $value, $matches))
+        {
+            $lightnessRaw = (float) $matches[1];
+            $isPercentL = $matches[2] === '%';
+            $chromaRaw = (float) $matches[3];
+            $isPercentC = $matches[4] === '%';
+            $hueRaw = (float) $matches[5];
 
-                if ($matches[2] === '%') {
-                    $lightness *= 0.01;
-                }
+            if (!$isPercentL && $lightnessRaw <= 1.0)
+            {
+                $lightness = $isPercentL ? $lightnessRaw / 100 : $lightnessRaw;
+                $chroma = $isPercentC ? $chromaRaw / 100 : $chromaRaw;
+                $hue = $hueRaw;
 
-                return $result($lightness, (float) $matches[3], (float) $matches[4]);
+                return $formatResult(
+                    max(0, min(1, $lightness)),
+                    max(0, $chroma),
+                    fmod($hue < 0 ? $hue + 360 : $hue, 360)
+                );
             }
-
-            [$red, $green, $blue] = self::fromOKLCH($value);
-        } elseif (str_starts_with($value, '#')) {
-            $rgb = sscanf($value, '#%02x%02x%02x');
-
-            [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0,0,0];
-        } else {
-            $rgb = self::fromRGB($value);
-
-            [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0,0,0];
         }
 
-        $red /= 255;
-        $green /= 255;
-        $blue /= 255;
+        if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*[\d.%]+)?\s*\)\s*$/i', $value, $matches))
+        {
+            $lightness = (float) $matches[1];
+            if ($matches[2] === '%') $lightness /= 100;
 
-        $red = $red <= 0.04045 ? $red / 12.92 : (($red + 0.055) / 1.055) ** 2.4;
-        $green = $green <= 0.04045 ? $green / 12.92 : (($green + 0.055) / 1.055) ** 2.4;
-        $blue = $blue <= 0.04045 ? $blue / 12.92 : (($blue + 0.055) / 1.055) ** 2.4;
+            $chroma = (float) $matches[3];
+            if ($matches[4] === '%') $chroma /= 100;
 
-        $long = 0.4122214708 * $red + 0.5363325363 * $green + 0.0514459929 * $blue;
-        $medium = 0.2119034982 * $red + 0.6806995451 * $green + 0.1073969566 * $blue;
-        $short = 0.0883024619 * $red + 0.2817188376 * $green + 0.6299787005 * $blue;
+            $hue = (float) $matches[5];
 
-        $longCubeRoot = $long ** (1 / 3);
-        $mediumCubeRoot = $medium ** (1 / 3);
-        $shortCubeRoot = $short ** (1 / 3);
-
-        $lightness = 0.2104542553 * $longCubeRoot + 0.793617785 * $mediumCubeRoot - 0.0040720468 * $shortCubeRoot;
-
-        $colorOpponentA = 1.9779984951 * $longCubeRoot - 2.428592205 * $mediumCubeRoot + 0.4505937099 * $shortCubeRoot;
-        $colorOpponentB = 0.0259040371 * $longCubeRoot + 0.7827717662 * $mediumCubeRoot - 0.808675766 * $shortCubeRoot;
-
-        $chroma = sqrt($colorOpponentA * $colorOpponentA + $colorOpponentB * $colorOpponentB);
-        $hue = atan2($colorOpponentB, $colorOpponentA);
-
-        $hue = rad2deg($hue);
-
-        if ($hue < 0) {
-            $hue += 360;
+            return $formatResult(
+                max(0, min(1, $lightness)),
+                max(0, $chroma),
+                fmod($hue < 0 ? $hue + 360 : $hue, 360)
+            );
         }
 
-        return $result($lightness, $chroma, $hue);
+        if (str_starts_with($value, '#'))
+        {
+            $hex = substr($value, 0, 7);
+            if (strlen($hex) === 4)
+            {
+                $hex = sprintf("#%s%s%s",
+                    substr($hex, 1, 1) . substr($hex, 1, 1),
+                    substr($hex, 2, 1) . substr($hex, 2, 1),
+                    substr($hex, 3, 1) . substr($hex, 3, 1)
+                );
+            }
+            $rgb = sscanf($hex, '#%02x%02x%02x');
+            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0, 0, 0];
+        }
+        elseif (preg_match('/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/i', $value, $matches))
+        {
+            [$red, $green, $blue] = [(int) $matches[1], (int) $matches[2], (int) $matches[3]];
+        }
+        else
+        {
+            [$red, $green, $blue] = [0, 0, 0];
+        }
+
+        $red = ($red / 255.0) <= 0.04045 ? ($red / 255.0) / 12.92 : pow((($red / 255.0) + 0.055) / 1.055, 2.4);
+        $green = ($green / 255.0) <= 0.04045 ? ($green / 255.0) / 12.92 : pow((($green / 255.0) + 0.055) / 1.055, 2.4);
+        $blue = ($blue / 255.0) <= 0.04045 ? ($blue / 255.0) / 12.92 : pow((($blue / 255.0) + 0.055) / 1.055, 2.4);
+
+        $x = $red * 0.4124564 + $green * 0.3575761 + $blue * 0.1804375;
+        $y = $red * 0.2126729 + $green * 0.7151522 + $blue * 0.0721750;
+        $z = $red * 0.0193339 + $green * 0.1191920 + $blue * 0.9503041;
+
+        $x /= 0.95047;
+        $y /= 1.00000;
+        $z /= 1.08883;
+
+        $delta = 6.0 / 29.0;
+        $delta2 = $delta * $delta;
+        $delta3 = $delta2 * $delta;
+
+        $l_val = $x > $delta3 ? pow($x, 1.0 / 3.0) : ($x / (3.0 * $delta2)) + (4.0 / 29.0);
+        $m_val = $y > $delta3 ? pow($y, 1.0 / 3.0) : ($y / (3.0 * $delta2)) + (4.0 / 29.0);
+        $s_val = $z > $delta3 ? pow($z, 1.0 / 3.0) : ($z / (3.0 * $delta2)) + (4.0 / 29.0);
+
+        $L = 0.2104542553 * $l_val + 0.7936177850 * $m_val - 0.0040720468 * $s_val;
+        $a = 1.9779984951 * $l_val - 2.4285922050 * $m_val + 0.4505937099 * $s_val;
+        $b = 0.0259040371 * $l_val + 0.7827717662 * $m_val - 0.8086757660 * $s_val;
+
+        $C = sqrt($a * $a + $b * $b);
+        $H = rad2deg(atan2($b, $a));
+        if ($H < 0) $H += 360;
+
+        $L = max(0.0, min(1.0, $L));
+        $C = max(0.0, $C);
+
+        return $formatResult($L, $C, $H);
     }
 
     /**

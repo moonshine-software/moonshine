@@ -29,28 +29,28 @@
 
 .alert-success {
   @apply
-  theme__text_color
+  text-(--color-success-text)
   bg-success dark:bg-success/30
   border-success dark:border-success
 }
 
 .alert-warning {
   @apply
-  theme__text_color
+  text-(--color-warning-text)
   bg-warning dark:bg-warning/30
   border-warning dark:border-warning
 }
 
 .alert-error {
   @apply
-  theme__text_color
+  text-(--color-error-text)
   bg-error dark:bg-error/30
   border-error dark:border-error
 }
 
 .alert-info {
   @apply
-  theme__text_color
+  text-(--color-error-text)
   bg-info dark:bg-info/30
   border-info dark:border-info
 }

@@ -29,50 +29,48 @@ final class ColorManager implements ColorManagerContract
 {
     use Conditionable;
 
-    public const TEXT = '255, 255, 255';
+    public const TEXT = '1 0 0';
 
-    public const BG = '27, 37, 59';
+    public const BG = '0.266 0.044 264.943';
 
     public const DEFAULT = [
-        'primary' => '120, 67, 233',
-        'secondary' => '236, 65, 118',
+        'primary' => '0.544 0.233 291.241',
+        'secondary' => '0.639 0.209 6.961',
         'body' => self::BG,
         'dark' => [
-            'DEFAULT' => '30, 31, 67',
-            50 => '83, 103, 132', // search, toasts, progress bars
-            100 => '74, 90, 121', // dividers
-            200 => '65, 81, 114', // dividers
-            300 => '53, 69, 103', // borders
-            400 => '48, 61, 93', // dropdowns, buttons, pagination
-            500 => '41, 53, 82', // buttons default bg
-            600 => '40, 51, 78', // table row
-            700 => '39, 45, 69', // background content
+            'DEFAULT' => '0.26 0.066 279.517',
+            50 => '0.509 0.052 257.609', // search, toasts, progress bars
+            100 => '0.467 0.054 263.268', // dividers
+            200 => '0.436 0.059 264.202', // dividers
+            300 => '0.393 0.062 264.473', // borders
+            400 => '0.364 0.058 266.668', // dropdowns, buttons, pagination
+            500 => '0.332 0.054 266.369', // buttons default bg
+            600 => '0.324 0.051 266.679', // table row
+            700 => '0.303 0.044 272.77', // background content
             800 => self::BG, // background sidebar
-            900 => '15, 23, 42', // background
+            900 => '0.208 0.04 265.755', // background
         ],
 
-        'success-bg' => '0, 170, 0',
+        'success-bg' => '0.639 0.218 142.495',
         'success-text' => self::TEXT,
-        'warning-bg' => '255, 220, 42',
-        'warning-text' => '139, 116, 0',
-        'error' => '224, 45, 45',
-        'error-bg' => '224, 45, 45',
+        'warning-bg' => '0.898 0.177 96.726',
+        'warning-text' => '0.5641 0.115857 95.1424',
+        'error-bg' => '0.589 0.214 26.855',
         'error-text' => self::TEXT,
-        'info-bg' => '0, 121, 255',
+        'info-bg' => '0.601 0.219 257.63',
         'info-text' => self::TEXT,
     ];
 
     public const DARK = [
         'body' => self::BG,
-        'success-bg' => '17, 157, 17',
-        'success-text' => '178, 255, 178',
-        'warning-bg' => '225, 169, 0',
-        'warning-text' => '255, 255, 199',
-        'error' => '185, 28, 28',
-        'error-bg' => '190, 10, 10',
-        'error-text' => '255, 197, 197',
-        'info-bg' => '38, 93, 205',
-        'info-text' => '179, 220, 255',
+        'success-bg' => '0.639 0.218 142.495',
+        'success-text' => '0.9308 0.1279 144.46',
+        'warning-bg' => '0.898 0.177 96.726',
+        'warning-text' => '0.9865 0.0716 107.64',
+        'error-bg' => '0.589 0.214 26.855',
+        'error-text' => '0.8751 0.0665 18.51',
+        'info-bg' => '0.601 0.219 257.63',
+        'info-text' => '0.877 0.065 244.38',
     ];
 
     /**
@@ -181,14 +179,14 @@ final class ColorManager implements ColorManagerContract
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
 
-        $formatRgb = static fn (string $rgb): string => str_replace(['rgb(', ')'], ['', ''], $rgb);
+        $formatRgb = static fn (string $rgb): string => str_replace(['rgb(', ')', 'oklch('], ['', ''], $rgb);
 
         foreach ($data as $name => $shades) {
             if (! \is_array($shades)) {
-                $colors[$name] = $formatRgb(ColorMutator::toRGB($shades));
+                $colors[$name] = $formatRgb(ColorMutator::toOKLCH($shades));
             } else {
                 foreach ($shades as $shade => $color) {
-                    $colors["$name-$shade"] = $formatRgb(ColorMutator::toRGB($color));
+                    $colors["$name-$shade"] = $formatRgb(ColorMutator::toOKLCH($color));
                 }
             }
         }
