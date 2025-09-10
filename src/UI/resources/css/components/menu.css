@@ -168,7 +168,7 @@
         @apply grow;
       }
 
-      &-item {
+      .menu-inner-item {
         &._is-active {
           > .menu-inner-link,
           > .menu-inner-button {
@@ -190,8 +190,8 @@
         }
       }
 
-      &-link,
-      &-button {
+      .menu-inner-link,
+      .menu-inner-button {
         @apply
         theme__rounded
         relative
@@ -235,22 +235,22 @@
         }
       }
 
-      &-link {
+      .menu-inner-link {
         &::after {
           content: '';
           @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
         }
       }
 
-      &-button {
+      .menu-inner-button {
         @apply w-full;
       }
 
-      &-text {
+      .menu-inner-text {
         @apply grow truncate text-left;
       }
 
-      &-counter {
+      .menu-inner-counter {
         @apply
         theme__rounded
         h-6
@@ -271,7 +271,7 @@
         lg:z-1
       }
 
-      &-arrow {
+      .menu-inner-arrow {
         @apply transition-transform;
 
         > div,
@@ -280,14 +280,14 @@
         }
       }
 
-      &-text,
-      &-arrow {
+      .menu-inner-text,
+      .menu-inner-arrow {
         @apply block lg:hidden xl:block;
       }
 
       /* Dropdown Menu */
 
-      &-dropdown {
+      .menu-inner-dropdown {
         @apply
         theme__rounded
         bg-menu-dropdown-bg
@@ -395,7 +395,20 @@
 
 /* Aside horizontal navigation */
 .layout-menu-horizontal {
-  @apply sticky inset-x-0 top-0 z-[100] flex h-[4.5rem] items-center gap-x-5 overflow-x-auto overflow-y-hidden bg-body/95 px-6 transition-colors md:px-10 lg:h-24 lg:overflow-y-auto;
+  @apply
+  sticky
+  z-[200]
+  top-0
+  inset-x-0
+  flex items-center
+  gap-x-5
+  h-[4.5rem] lg:h-20
+  compact:lg:h-16
+  minimalistic:lg:h-14
+  bg-body/95
+  px-6 md:px-10
+  transition-colors
+  ;
 
   .menu-inner-item-char {
     @apply hidden;
@@ -413,211 +426,224 @@
     }
   }
 
-  .menu {
-    /* Logotype */
+  /* Logotype */
 
-    &-logo {
-      @apply shrink-0;
+  .menu-logo {
+    @apply shrink-0;
+  }
+
+  /* Main navigation */
+
+  .menu-navigation {
+    @apply flex lg:grow;
+  }
+
+  .menu-inner {
+    @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
+
+    &:last-of-type {
+      @apply grow;
     }
 
-    /* Main navigation */
+    .menu-inner-item {
+      @apply relative theme__rounded text-white transition-all;
 
-    &-navigation {
-      @apply block lg:grow;
-    }
+      &._is-active {
+        @apply
+        bg-menu-current-bg
+        font-medium
+        text-menu-current-color
+        opacity-100
+        transition-none
+        dark:font-normal
+        lg:bg-slate-50
+        lg:text-black
+        dark:lg:text-white
+        dark:lg:bg-dark-700
+        ;
 
-    &-inner {
-      @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
-
-      &:last-of-type {
-        @apply grow;
-      }
-
-      &-item {
-        @apply relative theme__rounded text-white transition-all;
-
-        &._is-active {
+        .menu-inner-link {
           @apply
-          bg-menu-current-bg
-          font-medium
           text-menu-current-color
-          opacity-100
-          transition-none
-          dark:font-normal
-          lg:bg-slate-50
-          lg:text-black
-          dark:lg:text-white
-          dark:lg:bg-dark-700
-          ;
-
-          .menu-inner-link {
-            @apply
-            text-menu-current-color
-            lg:text-inherit
-            hover:text-menu-current-color
-            lg:hover:text-inherit
-          }
-        }
-      }
-
-      &-link,
-      &-button {
-        @apply relative flex items-center gap-x-2.5
-        theme__rounded
-        p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
-
-        &._is-active {
-          @apply bg-menu-active-bg text-menu-active-color;
-
-          .menu-inner-arrow {
-            @apply scale-y-[-1];
-          }
-        }
-
-        > div,
-        > svg {
-          @apply h-6 w-6;
-        }
-      }
-
-      &-button {
-        @apply w-full;
-      }
-
-      &-text {
-        @apply grow truncate text-left;
-      }
-
-      &-counter {
-        @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
-      }
-
-      &-arrow {
-        @apply transition-transform;
-
-        > div,
-        > svg {
-          @apply h-4 w-4;
-        }
-      }
-
-      &-text,
-      &-arrow {
-        @apply hidden lg:block;
-      }
-
-      /* Dropdown Menu */
-
-      &-dropdown {
-        @apply fixed top-[4.85rem] z-5 flex flex-col gap-y-1
-        theme__rounded
-        border border-dark-300
-        bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
-
-        .menu-inner-link,
-        .menu-inner-button {
-          @apply p-2 text-2xs;
-
-          > div,
-          > svg {
-            @apply h-5 w-5;
-          }
-        }
-
-        .menu-inner-text {
-          @apply block;
-        }
-
-        .menu-inner-counter {
-          @apply right-0 top-0.5 h-5 max-w-[48px] bg-secondary text-[11px] leading-5 xl:right-1 xl:max-w-[120px];
-        }
-
-        .menu-inner-divider {
-          @apply my-2 -ml-3.5 pl-4 pr-0.5 before:h-[1px] before:min-w-[16px] before:bg-slate-400;
-
-          > span {
-            @apply block;
-          }
-        }
-
-        .menu-inner-dropdown {
-          @apply static mt-1 max-h-full border-b border-l-0 border-r-0 border-t border-dashed border-slate-500 px-0 shadow-none;
-        }
-      }
-
-      /* Divider */
-
-      &-divider {
-        @apply relative mx-1 flex items-center text-slate-400 before:h-[16px] before:min-w-[1px] before:grow before:bg-white/30;
-
-        > span {
-          @apply relative z-1 hidden w-full truncate pl-2.5;
+          lg:text-inherit
+          hover:text-menu-current-color
+          lg:hover:text-inherit
         }
       }
     }
 
-    /* Actions buttons */
+    .menu-inner-link,
+    .menu-inner-button {
+      @apply relative flex items-center gap-x-2.5
+      theme__rounded
+      p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
 
-    &-actions {
-      @apply ml-auto flex shrink-0 items-center justify-end gap-x-2 sm:gap-x-3;
+      &._is-active {
+        @apply bg-menu-active-bg text-menu-active-color;
+
+        .menu-inner-arrow {
+          @apply scale-y-[-1];
+        }
+      }
+
+      > div,
+      > svg {
+        @apply h-6 w-6;
+      }
+    }
+
+    .menu-inner-button {
+      @apply w-full;
+    }
+
+    .menu-inner-text {
+      @apply grow truncate text-left;
+    }
+
+    .menu-inner-counter {
+      @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
+    }
+
+    .menu-inner-arrow {
+      @apply transition-transform;
+
+      > div,
+      > svg {
+        @apply h-4 w-4;
+      }
+    }
+
+    .menu-inner-text,
+    .menu-inner-arrow {
+      @apply hidden lg:block;
+    }
+
+    /* Dropdown Menu */
+
+    .menu-inner-dropdown {
+      @apply fixed z-5 flex flex-col gap-y-1
+      theme__rounded
+      border border-dark-300
+      top-[4.85rem]
+      compact:top-[3.85rem]
+      minimalistic:top-[2.85rem]
+      bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
+
+      .menu-inner-link,
+      .menu-inner-button {
+        @apply p-2 text-2xs;
+
+        > div,
+        > svg {
+          @apply h-5 w-5;
+        }
+      }
+
+      .menu-inner-text {
+        @apply block;
+      }
+
+      .menu-inner-counter {
+        @apply right-0 top-0.5 h-5 max-w-[48px] bg-secondary text-[11px] leading-5 xl:right-1 xl:max-w-[120px];
+      }
 
       .menu-inner-divider {
-        @apply mx-1;
+        @apply my-2 -ml-3.5 pl-4 pr-0.5 before:h-[1px] before:min-w-[16px] before:bg-slate-400;
+
+        > span {
+          @apply block;
+        }
       }
 
-      .profile-info {
-        @apply hidden sm:block;
+      .menu-inner-dropdown {
+        @apply static mt-1 max-h-full border-b border-l-0 border-r-0 border-t border-dashed border-slate-500 px-0 shadow-none;
       }
     }
 
-    /* Settings button */
+    /* Divider */
 
-    &-settings {
-      @apply inline-flex items-center;
-    }
+    .menu-inner-divider {
+      @apply relative mx-1 flex items-center text-slate-400 before:h-[16px] before:min-w-[1px] before:grow before:bg-white/30;
 
-    /* Burger button */
-
-    &-burger {
-      @apply inline-flex items-center text-white lg:hidden;
+      > span {
+        @apply relative z-1 hidden w-full truncate pl-2.5;
+      }
     }
   }
 
+  /* Actions buttons */
+
+  .menu-actions {
+    @apply ml-auto flex shrink-0 items-center justify-end gap-x-2 sm:gap-x-3;
+
+    .menu-inner-divider {
+      @apply mx-1;
+    }
+
+    .profile-info {
+      @apply hidden sm:block;
+    }
+  }
+
+  /* Settings button */
+
+  .menu-settings {
+    @apply inline-flex items-center;
+  }
+
+  /* Burger button */
+
+  .menu-burger {
+    @apply inline-flex items-center text-white lg:hidden;
+  }
+
   @media (max-width: 1023.98px) {
-    .menu {
-      &-navigation {
-        --top-space: 4.5rem;
-        @apply pointer-events-none invisible absolute inset-x-0 top-[--top-space] -translate-y-2 overflow-x-auto bg-body px-3 pb-8 opacity-0 transition-all md:px-7;
-        height: calc(100vh - var(--top-space));
+    .menu-navigation {
+      --top-space: 4.5rem;
+
+      @apply
+      h-[calc(100vh_-_var(--top-space))]
+      pointer-events-none
+      invisible
+      absolute
+      bottom-0
+      z-[120]
+      inset-x-0
+        /*top-[--top-space]*/
+      overflow-x-auto
+      bg-body
+      px-3 md:px-7
+        pb-8
+      opacity-0
+      transition-all
+    }
+
+    .menu-inner {
+      @apply flex-col gap-y-0.5 overflow-x-hidden;
+
+      .menu-inner-text,
+      .menu-inner-arrow {
+        @apply block;
       }
 
-      &-inner {
-        @apply flex-col gap-y-0.5 overflow-x-hidden;
+      .menu-inner-counter {
+        @apply static max-w-[120px] scale-100;
+      }
 
-        .menu-inner-text,
-        .menu-inner-arrow {
-          @apply block;
-        }
+      .menu-inner-divider {
+        @apply before:h-[1px] before:min-w-[16px];
+      }
 
-        .menu-inner-counter {
-          @apply static max-w-[120px] scale-100;
-        }
+      > .menu-inner-divider {
+        @apply my-1;
+      }
 
-        .menu-inner-divider {
-          @apply before:h-[1px] before:min-w-[16px];
-        }
+      .menu-inner-button._is-active ~ .menu-inner-dropdown {
+        @apply block;
+      }
 
-        > .menu-inner-divider {
-          @apply my-1;
-        }
-
-        .menu-inner-button._is-active ~ .menu-inner-dropdown {
-          @apply block;
-        }
-
-        .menu-inner-dropdown {
-          @apply static mt-2 hidden transform-none;
-        }
+      .menu-inner-dropdown {
+        @apply static mt-2 hidden transform-none;
       }
     }
   }

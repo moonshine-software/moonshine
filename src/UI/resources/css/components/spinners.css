@@ -20,85 +20,85 @@
   &.spinner {
     /* Fixed position */
 
-    &-fixed {
+    .spinner-fixed {
       @apply fixed inset-0 m-auto;
     }
 
     /* Absolute position */
 
-    &-absolute {
+    .spinner-absolute {
       @apply absolute inset-0 m-auto;
     }
 
     /* Sizes */
 
-    &-sm {
+    &.spinner-sm {
       @apply h-6 w-6 before:border-2;
     }
 
-    &-md {
+    &.spinner-md {
       @apply h-10 w-10;
     }
 
-    &-lg {
+    &.spinner-lg {
       @apply h-12 w-12 before:border-4;
     }
 
-    &-xl {
+    &.spinner-xl {
       @apply h-14 w-14 before:border-4;
     }
 
     /* Themes */
 
-    &--primary {
+    &.spinner--primary {
       @apply before:border-primary
     }
 
-    &--secondary {
+    .spinner--secondary {
       @apply before:border-secondary
     }
 
-    &--success {
+    &.spinner--success {
       @apply before:border-success
     }
 
-    &--warning {
+    &.spinner--warning {
       @apply before:border-warning
     }
 
-    &--error {
+    &.spinner--error {
       @apply before:border-error
     }
 
-    &--info {
+    &.spinner--info {
       @apply before:border-info
     }
 
-    &--purple {
+    &.spinner--purple {
       @apply before:border-purple-500
     }
 
-    &--pink {
+    &.spinner--pink {
       @apply before:border-pink-500
     }
 
-    &--blue {
+    &.spinner--blue {
       @apply before:border-blue-500
     }
 
-    &--green {
+    &.spinner--green {
       @apply before:border-green-500
     }
 
-    &--yellow {
+    &.spinner--yellow {
       @apply before:border-yellow-500
     }
 
-    &--red {
+    &.spinner--red {
       @apply before:border-red-500
     }
 
-    &--gray {
+    &.spinner--gray {
       @apply before:border-gray-500
     }
   }

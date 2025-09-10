@@ -1,6 +1,6 @@
 /* Popovers */
 .tippy {
-  &-box {
+  .tippy-box {
     @apply bg-white text-gray-700 shadow-[0_4px_16px_rgba(161,172,184,0.45)] dark:bg-dark-600 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
 
     @variant dark {

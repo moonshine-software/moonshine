@@ -19,7 +19,7 @@
         {{ $toggler }}
     </button>
 
-    <div {{ $attributes->merge(['class' => 'dropdown-body']) }} style="">
+    <div {{ $attributes->merge(['class' => 'dropdown-body']) }}>
         @if($title ?? false)
             <h5 class="dropdown-heading">{{ $title }}</h5>
         @endif

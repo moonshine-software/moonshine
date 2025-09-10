@@ -2,11 +2,11 @@
 .modal {
   @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-all;
 
-  &-template {
+  .modal-template {
     @apply relative z-modal;
   }
 
-  &-dialog {
+  .modal-dialog {
     @apply
     pointer-events-none
     flex items-center
@@ -15,27 +15,26 @@
     px-4
     sm:max-w-[520px] md:max-w-[720px]
     min-h-[calc(100%_-_2rem_*_2)]
-    ;
+  }
 
-    &-auto {
-      @apply max-w-max;
+  .modal-dialog-auto {
+    @apply max-w-max;
 
-      .modal-header,
-      .modal-body {
-        @apply p-4;
-      }
-    }
-
-    &-xl {
-      @apply max-w-[1640px];
+    .modal-header,
+    .modal-body {
+      @apply p-4;
     }
   }
 
-  &-content {
+  .modal-dialog-xl {
+    @apply max-w-[1640px];
+  }
+
+  .modal-content {
     @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700 shadow-lg
   }
 
-  &-header {
+  .modal-header {
     @apply sticky top-0 z-20
     flex justify-between gap-x-4
     rounded-t-lg
@@ -46,21 +45,20 @@
     minimalistic:p-3
   }
 
-  &-title {
+  .modal-title {
     @apply self-center text-xs font-semibold xs:text-sm;
   }
 
-  &-body {
+  .modal-body {
     @apply grow
     p-4 lg:p-6
     compact:p-4
     minimalistic:p-3
   }
+}
 
-  /* Backdrop */
+/* Backdrop */
 
-  &-backdrop {
-    @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
-  }
-
+.modal-backdrop {
+  @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
 }

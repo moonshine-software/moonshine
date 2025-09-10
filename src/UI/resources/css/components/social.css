@@ -1,6 +1,6 @@
 /* Social */
 .social {
-  &-divider {
+  .social-divider {
     @apply
     w-full
     flex items-center
@@ -12,11 +12,11 @@
     before:bg-gray-200 after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200
   }
 
-  &-list {
+  .social-list {
     @apply flex flex-wrap items-center justify-center gap-2 xs:gap-3
   }
 
-  &-item {
+  .social-item {
     @apply
     inline-flex items-center justify-center
     h-8

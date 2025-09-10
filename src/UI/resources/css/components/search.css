@@ -2,10 +2,10 @@
 .search {
   @apply relative flex items-center;
 
-  &-form {
+  .search-form {
     @apply relative h-12 w-full xl:max-w-[16rem];
 
-    &-field {
+    .search-form-field {
       @apply
       h-full
       w-full
@@ -19,8 +19,8 @@
       transition-all
     }
 
-    &-submit,
-    &-clear {
+    .search-form-submit,
+    .search-form-clear {
       @apply absolute inset-y-0 bottom-0 right-1 z-2 px-2 text-slate-600 hover:text-secondary dark:text-slate-500 dark:hover:text-white;
 
       & > svg {
@@ -28,7 +28,7 @@
       }
     }
 
-    &-clear {
+    .search-form-clear {
       @apply right-8
     }
   }

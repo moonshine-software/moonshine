@@ -12,11 +12,11 @@
   minimalistic:p-1
   ;
 
-  &-items {
+  .dropzone-items {
     @apply flex flex-wrap gap-2;
   }
 
-  &-item {
+  .dropzone-item {
     @apply relative h-12 w-12 overflow-hidden md:h-16 md:w-16
     theme__rounded
     ;
@@ -39,7 +39,7 @@
     }
   }
 
-  &-file-icon {
+  .dropzone-file-icon {
     @apply
     text-primary
     dark:text-secondary
@@ -50,11 +50,11 @@
     }
   }
 
-  &-file-name {
+  .dropzone-file-name {
     @apply grow truncate text-2xs;
   }
 
-  &-remove {
+  .dropzone-remove {
     @apply absolute right-1 top-1 z-5 flex shrink-0 items-center justify-center rounded-full border border-error bg-error leading-none text-white hover:bg-white hover:text-error;
 
     & > svg {

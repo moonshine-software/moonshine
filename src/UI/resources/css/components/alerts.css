@@ -11,120 +11,117 @@
   minimalistic:px-1 minimalistic:py-1
   border border-gray-200 dark:border-dark-200
   bg-slate-100 dark:bg-dark-700
-  ;
+}
 
-  &.alert {
-    &-primary {
-      @apply
-      theme__text_color
-      bg-primary dark:bg-primary/30
-      border-primary
-    }
+.alert-primary {
+  @apply
+  theme__text_color
+  bg-primary dark:bg-primary/30
+  border-primary
+}
 
-    &-secondary {
-      @apply
-      theme__text_color
-      bg-secondary dark:bg-secondary/30
-      border-secondary dark:border-secondary
-    }
+.alert-secondary {
+  @apply
+  theme__text_color
+  bg-secondary dark:bg-secondary/30
+  border-secondary dark:border-secondary
+}
 
-    &-success {
-      @apply
-      theme__text_color
-      bg-success dark:bg-success/30
-      border-success dark:border-success
-    }
+.alert-success {
+  @apply
+  theme__text_color
+  bg-success dark:bg-success/30
+  border-success dark:border-success
+}
 
-    &-warning {
-      @apply
-      theme__text_color
-      bg-warning dark:bg-warning/30
-      border-warning dark:border-warning
-    }
+.alert-warning {
+  @apply
+  theme__text_color
+  bg-warning dark:bg-warning/30
+  border-warning dark:border-warning
+}
 
-    &-error {
-      @apply
-      theme__text_color
-      bg-error dark:bg-error/30
-      border-error dark:border-error
-    }
+.alert-error {
+  @apply
+  theme__text_color
+  bg-error dark:bg-error/30
+  border-error dark:border-error
+}
 
-    &-info {
-      @apply
-      theme__text_color
-      bg-info dark:bg-info/30
-      border-info dark:border-info
-    }
+.alert-info {
+  @apply
+  theme__text_color
+  bg-info dark:bg-info/30
+  border-info dark:border-info
+}
 
-    &-purple {
-      @apply
-      theme__text_color
-      bg-purple-500 dark:bg-purple-500/30
-      border-purple-500 dark:border-purple-500
-    }
+.alert-purple {
+  @apply
+  theme__text_color
+  bg-purple-500 dark:bg-purple-500/30
+  border-purple-500 dark:border-purple-500
+}
 
-    &-green {
-      @apply
-      theme__text_color
-      bg-green-500 dark:bg-green-500/30
-      border-green-500 dark:border-green-500
-    }
+.alert-green {
+  @apply
+  theme__text_color
+  bg-green-500 dark:bg-green-500/30
+  border-green-500 dark:border-green-500
+}
 
-    &-yellow {
-      @apply
-      theme__text_color
-      bg-yellow-500 dark:bg-yellow-500/30
-      border-yellow-500 dark:border-yellow-500
-    }
+.alert-yellow {
+  @apply
+  theme__text_color
+  bg-yellow-500 dark:bg-yellow-500/30
+  border-yellow-500 dark:border-yellow-500
+}
 
-    &-pink {
-      @apply
-      theme__text_color
-      bg-pink-500 dark:bg-pink-500/30
-      border-pink-500 dark:border-pink-500
-    }
+.alert-pink {
+  @apply
+  theme__text_color
+  bg-pink-500 dark:bg-pink-500/30
+  border-pink-500 dark:border-pink-500
+}
 
-    &-blue {
-      @apply
-      theme__text_color
-      bg-blue-500 dark:bg-blue-500/30
-      border-blue-500 dark:border-blue-500
-    }
+.alert-blue {
+  @apply
+  theme__text_color
+  bg-blue-500 dark:bg-blue-500/30
+  border-blue-500 dark:border-blue-500
+}
 
-    &-red {
-      @apply
-      theme__text_color
-      bg-red-500 dark:bg-red-500/30
-      border-red-500 dark:border-red-500
-    }
+.alert-red {
+  @apply
+  theme__text_color
+  bg-red-500 dark:bg-red-500/30
+  border-red-500 dark:border-red-500
+}
 
-    &-gray {
-      @apply
-      theme__text_color
-      bg-gray-500 dark:bg-gray-500/30
-      border-gray-500 dark:border-gray-500
-    }
+.alert-gray {
+  @apply
+  theme__text_color
+  bg-gray-500 dark:bg-gray-500/30
+  border-gray-500 dark:border-gray-500
+}
+
+.alert-icon {
+  > svg {
+    @apply h-6 w-6
   }
+}
 
-  &-icon {
-    > svg {
-      @apply h-6 w-6
-    }
+.alert-content {
+  @apply grow text-2xs font-medium;
+
+  & > a {
+    @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70
   }
+}
 
-  &-content {
-    @apply grow text-2xs font-medium;
+.alert-remove {
+  @apply text-inherit opacity-70 hover:opacity-100;
 
-    & > a {
-      @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70
-    }
-  }
-
-  &-remove {
-    @apply text-inherit opacity-70 hover:opacity-100;
-
-    & > svg {
-      @apply h-4 w-4
-    }
+  & > svg {
+    @apply h-4 w-4
   }
 }

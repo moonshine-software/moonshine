@@ -1,6 +1,6 @@
 /* Popper Dropdown */
 
-import {createPopper} from '@popperjs/core'
+import { createPopper } from '@popperjs/core'
 
 export default () => ({
   open: false,
@@ -9,7 +9,7 @@ export default () => ({
   dropdownBody: null,
   dropdownSearch: null,
   dropdownItems: null,
-  visibilityClasses: ['visible'],
+  visibilityClasses: ['_is-active'],
 
   init() {
     this.dropdownBtn = this.$root.querySelector('.dropdown-btn')

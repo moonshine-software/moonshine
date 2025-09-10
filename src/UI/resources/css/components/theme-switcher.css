@@ -2,7 +2,7 @@
 .theme-switcher {
   @apply inline-flex items-center;
 
-  &-btn {
+  .theme-switcher-btn {
     @apply
     overflow-hidden
     w-6 h-6

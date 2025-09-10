@@ -1,38 +1,36 @@
 /* Toasts (notices) */
 .toast {
-  &-container {
+  .toast-container {
     @apply pointer-events-none fixed inset-0 z-toast flex h-screen w-screen flex-col-reverse items-end justify-end;
 
     /* Themes */
 
-    .toast {
-      &-primary {
-        @apply bg-primary
-      }
+    .toast-primary {
+      @apply bg-primary
+    }
 
-      &-secondary {
-        @apply bg-secondary
-      }
+    .toast-secondary {
+      @apply bg-secondary
+    }
 
-      &-info {
-        @apply bg-info
-      }
+    .toast-info {
+      @apply bg-info
+    }
 
-      &-success {
-        @apply bg-success
-      }
+    .toast-success {
+      @apply bg-success
+    }
 
-      &-warning {
-        @apply bg-warning
-      }
+    .toast-warning {
+      @apply bg-warning
+    }
 
-      &-error {
-        @apply bg-error
-      }
+    .toast-error {
+      @apply bg-error
     }
   }
 
-  &-item {
+  .toast-item {
     @apply
     theme__text_color
     flex items-center justify-center

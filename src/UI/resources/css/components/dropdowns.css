@@ -5,8 +5,9 @@
   z-dropdown
   ;
 
-  &-body {
+  .dropdown-body {
     @apply
+    absolute
     theme__rounded
     pointer-events-none
     invisible
@@ -15,14 +16,12 @@
     bg-white dark:bg-dark-500
     shadow-lg dark:shadow-black/20
     transition-all duration-100
-    ;
-
-    &.visible {
-      @apply pointer-events-auto visible opacity-100
-    }
+    is_active:visible
+    is_active:pointer-events-auto
+    is_active:opacity-100
   }
 
-  &-heading {
+  .dropdown-heading {
     @apply
     theme__border_for_light_bg border-b-1
     bg-white dark:bg-dark-500
@@ -32,7 +31,7 @@
     minimalistic:p-2
   }
 
-  &-content {
+  .dropdown-content {
     @apply
     flex flex-col
     max-w-[280px] xs:max-w-[320px]
@@ -46,7 +45,7 @@
     }
   }
 
-  &-footer {
+  .dropdown-footer {
     @apply
     theme__border_for_light_bg border-t-1
     p-3
@@ -61,10 +60,10 @@
 
   /* Dropdown menu */
 
-  &-menu {
+  .dropdown-menu {
     @apply flex flex-col divide-y divide-gray-200 dark:divide-dark-200;
 
-    &-item {
+    .dropdown-menu-item {
       &--active {
         .dropdown-menu-link,
         .btn {
@@ -73,12 +72,12 @@
       }
     }
 
-    &-link,
+    .dropdown-menu-link,
     .btn {
       @apply flex items-center justify-start gap-x-2
       px-2 xs:px-4
-      py-6
-      compact:py-3
+      py-3
+      compact:py-2
       minimalistic:py-2
       text-3xs lg:text-2xs
       hover:bg-gray-100 dark:hover:bg-dark-400

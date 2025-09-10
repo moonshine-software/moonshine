@@ -1,11 +1,11 @@
 /* Custom Scrollbar */
 :root {
-  --scrollbar-color: theme('colors.gray.300');
-  --scrollbar-hover-color: theme('colors.gray.200');
+  --scrollbar-color: var(--color-gray-300);
+  --scrollbar-hover-color: var(--color-gray-200);
 
   @variant dark {
-    --scrollbar-color: theme('colors.dark.100');
-    --scrollbar-hover-color: theme('colors.dark.50');
+    --scrollbar-color: var(--color-dark-100);
+    --scrollbar-hover-color: var(--color-dark-50);
 
     input,
     textarea {
@@ -22,20 +22,20 @@
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
+}
 
-  &-track {
-    background-color: transparent;
-  }
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
-  &-thumb {
-    border-radius: 20px;
-    border: 3px solid transparent;
-    background-clip: padding-box;
-    background-color: var(--scrollbar-color);
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  background-color: var(--scrollbar-color);
 
-    &:hover {
-      background-color: var(--scrollbar-hover-color);
-    }
+  &:hover {
+    background-color: var(--scrollbar-hover-color);
   }
 }
 

@@ -1,55 +1,55 @@
 /* Accordions */
 .accordion {
   @apply -space-y-[1px];
+}
 
-  &-item {
-    &:first-child {
-      .accordion-btn {
-        @apply
-        rounded-t-(--rounded)
-        compact:rounded-t-(--compact-rounded)
-        minimalistic:rounded-none
-      }
-    }
-
-    &:last-child {
-      .accordion-btn:not(._is-active),
-      .accordion-content {
-        @apply
-        rounded-b-(--rounded)
-        compact:rounded-b-(--compact-rounded)
-        minimalistic:rounded-none
-      }
+.accordion-item {
+  &:first-child {
+    .accordion-btn {
+      @apply
+      rounded-t-(--rounded)
+      compact:rounded-t-(--compact-rounded)
+      minimalistic:rounded-none
     }
   }
 
-  &-btn {
-    @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs sm:px-4 sm:py-3;
+  &:last-child {
+    .accordion-btn:not(._is-active),
+    .accordion-content {
+      @apply
+      rounded-b-(--rounded)
+      compact:rounded-b-(--compact-rounded)
+      minimalistic:rounded-none
+    }
+  }
+}
+
+.accordion-btn {
+  @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs sm:px-4 sm:py-3;
+
+  > svg {
+    @apply h-4 w-4;
+  }
+
+  &._is-active {
+    @apply
+    bg-slate-100
+    dark:bg-dark-800
+    dark:hover:bg-dark-800
+    ;
 
     > svg {
-      @apply h-4 w-4;
-    }
-
-    &._is-active {
-      @apply
-      bg-slate-100
-      dark:bg-dark-800
-      dark:hover:bg-dark-800
-      ;
-
-      > svg {
-        @apply scale-y-[-1];
-      }
+      @apply scale-y-[-1];
     }
   }
+}
 
-  &-content {
-    @apply
-    border
-    border-t-0
-    theme__border_for_light_bg
-    p-3 sm:p-4
-    compact:p-2.5
-    minimalistic:p-1
-  }
+.accordion-content {
+  @apply
+  border
+  border-t-0
+  theme__border_for_light_bg
+  p-3 sm:p-4
+  compact:p-2.5
+  minimalistic:p-1
 }

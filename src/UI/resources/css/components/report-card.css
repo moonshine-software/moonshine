@@ -12,7 +12,7 @@
   before:hidden
   ;
 
-  &-heading {
+  .report-card-heading {
     @apply flex items-center justify-between;
 
     > svg {
@@ -20,7 +20,7 @@
     }
   }
 
-  &-indicator {
+  .report-card-indicator {
     @apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-3xs leading-none text-white;
 
     > svg {
@@ -28,15 +28,15 @@
     }
   }
 
-  &-body {
+  .report-card-body {
     @apply mt-auto
   }
 
-  &-value {
+  .report-card-value {
     @apply mt-6 truncate text-xl font-medium leading-none
   }
 
-  &-title {
+  .report-card-title {
     @apply mt-2 truncate text-2xs text-slate-500
   }
 }

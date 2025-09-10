@@ -47,59 +47,57 @@
 
   /* Button themes */
 
-  &.btn {
-    &-primary {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-primary hover:bg-primary/80 dark:bg-primary/50
-      border-primary focus:ring-primary/20 dark:focus:ring-primary/40
-    }
+  &.btn-primary {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-primary hover:bg-primary/80 dark:bg-primary/50
+    border-primary focus:ring-primary/20 dark:focus:ring-primary/40
+  }
 
-    &-secondary {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-secondary hover:bg-secondary/80 dark:bg-secondary/50
-      border-secondary focus:ring-secondary/20 dark:focus:ring-secondary/40
-    }
+  &.btn-secondary {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-secondary hover:bg-secondary/80 dark:bg-secondary/50
+    border-secondary focus:ring-secondary/20 dark:focus:ring-secondary/40
+  }
 
-    &-success {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-success hover:bg-success/80 dark:bg-success/50
-      border-success focus:ring-success/20 dark:focus:ring-success/40
-    }
+  &.btn-success {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-success hover:bg-success/80 dark:bg-success/50
+    border-success focus:ring-success/20 dark:focus:ring-success/40
+  }
 
-    &-warning {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-warning hover:bg-warning/80 dark:bg-warning/50
-      border-warning focus:ring-warning/20 dark:focus:ring-warning/40
-    }
+  &.btn-warning {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-warning hover:bg-warning/80 dark:bg-warning/50
+    border-warning focus:ring-warning/20 dark:focus:ring-warning/40
+  }
 
-    &-error {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-error hover:bg-error/80 dark:bg-error/50
-      border-error focus:ring-error/20 dark:focus:ring-error/40
-    }
+  &.btn-error {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-error hover:bg-error/80 dark:bg-error/50
+    border-error focus:ring-error/20 dark:focus:ring-error/40
+  }
 
-    &-info {
-      @apply
-      theme__text_color
-      theme__btn
-      bg-info hover:bg-info/80 dark:bg-info/50
-      border-info focus:ring-info/20 dark:focus:ring-info/40
-    }
+  &.btn-info {
+    @apply
+    theme__text_color
+    theme__btn
+    bg-info hover:bg-info/80 dark:bg-info/50
+    border-info focus:ring-info/20 dark:focus:ring-info/40
   }
 
   /* Button variants */
 
-  &-close {
+  .btn-close {
     @apply
     p-0
     w-10 h-10

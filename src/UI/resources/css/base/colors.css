@@ -36,101 +36,97 @@
   --track-to-color: var(--color-primary);
 }
 
-.text {
-  &-purple {
-    @apply text-purple-500
-  }
+.text-purple {
+  @apply text-purple-500
+}
 
-  &-pink {
-    @apply text-pink-500
-  }
+.text-pink {
+  @apply text-pink-500
+}
 
-  &-blue {
-    @apply text-blue-500
-  }
+.text-blue {
+  @apply text-blue-500
+}
 
-  &-green {
-    @apply text-green-500
-  }
+.text-green {
+  @apply text-green-500
+}
 
-  &-yellow {
-    @apply text-yellow-500
-  }
+.text-yellow {
+  @apply text-yellow-500
+}
 
-  &-red {
-    @apply text-red-500
-  }
+.text-red {
+  @apply text-red-500
+}
 
-  &-gray {
-    @apply text-gray-500
-  }
+.text-gray {
+  @apply text-gray-500
 }
 
 /* Background colors */
-.bgc {
-  &-primary {
-    @apply theme__text_color bg-primary
-  }
+.bgc-primary {
+  @apply theme__text_color bg-primary
+}
 
-  &-secondary {
-    @apply theme__text_color bg-secondary
-  }
+.bgc-secondary {
+  @apply theme__text_color bg-secondary
+}
 
-  &-success {
-    @apply theme__text_color bg-success
-  }
+.bgc-success {
+  @apply theme__text_color bg-success
+}
 
-  &-warning {
-    @apply theme__text_color bg-warning
-  }
+.bgc-warning {
+  @apply theme__text_color bg-warning
+}
 
-  &-error {
-    @apply theme__text_color bg-error
-  }
+.bgc-error {
+  @apply theme__text_color bg-error
+}
 
-  &-info {
-    @apply theme__text_color bg-info
-  }
+.bgc-info {
+  @apply theme__text_color bg-info
+}
 
-  &-purple {
-    @apply
-    text-purple-800 bg-purple-100/50
-    dark:text-purple-300 dark:bg-purple-900/50
-  }
+.bgc-purple {
+  @apply
+  text-purple-800 bg-purple-100/50
+  dark:text-purple-300 dark:bg-purple-900/50
+}
 
-  &-pink {
-    @apply
-    text-pink-800 bg-pink-100/50
-    dark:text-pink-300 dark:bg-pink-900/50
-  }
+.bgc-pink {
+  @apply
+  text-pink-800 bg-pink-100/50
+  dark:text-pink-300 dark:bg-pink-900/50
+}
 
-  &-blue {
-    @apply
-    text-blue-800 bg-blue-100/50
-    dark:text-blue-300 dark:bg-blue-900/50
-  }
+.bgc-blue {
+  @apply
+  text-blue-800 bg-blue-100/50
+  dark:text-blue-300 dark:bg-blue-900/50
+}
 
-  &-green {
-    @apply
-    text-green-800 bg-green-100/50
-    dark:text-green-300 dark:bg-green-900/50
-  }
+.bgc-green {
+  @apply
+  text-green-800 bg-green-100/50
+  dark:text-green-300 dark:bg-green-900/50
+}
 
-  &-yellow {
-    @apply
-    text-yellow-800 bg-yellow-100/50
-    dark:text-yellow-300 dark:bg-yellow-900/50
-  }
+.bgc-yellow {
+  @apply
+  text-yellow-800 bg-yellow-100/50
+  dark:text-yellow-300 dark:bg-yellow-900/50
+}
 
-  &-red {
-    @apply
-    text-red-800 bg-red-100/50
-    dark:text-red-300 dark:bg-red-800/50
-  }
+.bgc-red {
+  @apply
+  text-red-800 bg-red-100/50
+  dark:text-red-300 dark:bg-red-800/50
+}
 
-  &-gray {
-    @apply
-    text-gray-800 bg-gray-100
-    dark:text-gray-300 dark:bg-gray-700/50
-  }
+.bgc-gray {
+  @apply
+  text-gray-800 bg-gray-100
+  dark:text-gray-300 dark:bg-gray-700/50
 }

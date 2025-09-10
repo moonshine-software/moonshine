@@ -1,42 +1,52 @@
 /* Theme layout */
-.layout {
-  &-wrapper {
-    @apply
-    relative
-    min-h-screen
-    flex flex-col lg:flex-row
-    gap-y-5
-    py-3
-    md:p-5 lg:p-6
-    minimalistic:p-0
-    transition-all
-    ;
+.layout-wrapper {
+  @apply
+  relative
+  min-h-screen
+  flex flex-col lg:flex-row
+  gap-y-5
+  py-3
+  md:p-5 lg:p-6
+  minimalistic:p-0
+  transition-all
+  ;
 
-    & > div {
-      @apply w-full
+  & > div {
+    @apply w-full
+  }
+
+  .layout-menu,
+  .layout-menu-horizontal,
+  .layout-menu-mobile {
+    & > * {
+      @apply text-gray-800 dark:text-slate-300;
     }
+  }
+
+  .layout-menu-horizontal ~ .layout-menu,
+  .layout-menu ~ .layout-menu-horizontal {
+    @apply sm:hidden;
+  }
+
+  /*MOBILEBAR */
+  /* selector :has not supported */
+
+  .layout-menu-mobile {
+    @apply flex lg:hidden;
+  }
+
+  .layout-wrapper--mobilebar {
+    @apply gap-0 sm:pt-16;
 
     .layout-menu,
-    .layout-menu-horizontal,
-    .layout-menu-mobile {
-      & > * {
-        @apply text-gray-800 dark:text-slate-300;
-      }
+    .layout-menu-horizontal {
+      @apply sm:hidden;
     }
+  }
 
-    .layout-menu-horizontal ~ .layout-menu,
-    .layout-menu ~ .layout-menu-horizontal {
-      @apply sm:hidden!;
-    }
-
-    /*MOBILEBAR */
-    /* selector :has not supported */
-
-    .layout-menu-mobile {
-      @apply flex lg:hidden;
-    }
-
-    &--mobilebar {
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu-mobile) {
       @apply gap-0 sm:pt-16;
 
       .layout-menu,
@@ -44,136 +54,128 @@
         @apply sm:hidden;
       }
     }
+  }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu-mobile) {
-        @apply gap-0 sm:pt-16;
+  /* SIDEBAR */
+  /* selector :has not supported */
 
-        .layout-menu,
-        .layout-menu-horizontal {
-          @apply sm:hidden!;
-        }
+  .layout-wrapper--sidebar {
+    @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
+
+    .layout-wrapper--sidebar-short {
+      @apply lg:pl-[6rem];
+    }
+  }
+
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu) {
+      @apply pt-16 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+
+      @variant compact {
+        @apply pt-2
+      }
+
+      @variant minimalistic {
+        @apply pt-0
       }
     }
 
-    /* SIDEBAR */
-    /* selector :has not supported */
-
-    &--sidebar {
-      @apply pt-16 lg:pl-[5.75rem] lg:pt-6 xl:pl-72;
-
-      &-short {
-        @apply lg:pl-[6rem];
-      }
+    .layout-wrapper-short:has(> .layout-menu) {
+      @apply lg:pl-[6rem];
     }
+  }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu) {
-        @apply pt-16 lg:pt-6 lg:pl-[5.75rem] xl:pl-72;
+  /* TOPBAR */
+  /* selector :has not supported */
 
-        @variant compact {
-          @apply pt-2
-        }
+  .layout-wrapper--top-menu {
+    @apply flex-col gap-y-0 pb-6 pt-0 transition-none lg:pt-0;
 
-        @variant minimalistic {
-          @apply pt-0
-        }
-      }
-
-      &-short:has(> .layout-menu) {
-        @apply lg:pl-[6rem];
-      }
+    .layout-menu {
+      @apply invisible lg:visible;
     }
+  }
 
-    /* TOPBAR */
-    /* selector :has not supported */
-
-    &--top-menu {
-      @apply flex-col gap-y-0 pb-6 pt-0 transition-none lg:pt-0;
+  /* selector :has supported */
+  @supports selector(:has(*)) {
+    &:has(> .layout-menu-horizontal) {
+      @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
 
       .layout-menu {
         @apply invisible lg:visible;
       }
     }
 
-    /* selector :has supported */
-    @supports selector(:has(*)) {
-      &:has(> .layout-menu-horizontal) {
-        @apply flex-col gap-y-0 pb-6 pt-0 transition-none;
-
-        .layout-menu {
-          @apply invisible lg:visible;
-        }
-      }
-
-      &:has(.layout-menu ~ .layout-menu-horizontal) {
-        @apply sm:pt-16;
-      }
+    &:has(.layout-menu ~ .layout-menu-horizontal) {
+      @apply sm:pt-16;
     }
   }
+}
 
-  &-menu {
-    @apply
-    fixed
-    inset-y-0
-    left-5
-    minimalistic:left-2
-    z-[101]
-    box-content
-    flex flex-col
-    shrink-0
-    justify-between
-    h-[calc(100vh_-_4rem)]
-    minimalistic:h-[calc(100vh_-_1.5rem)]
-    lg:pt-6
-    minimalistic:lg:pt-0
-    ;
+.layout-menu {
+  @apply
+  fixed
+  inset-y-0
+  left-5
+  minimalistic:left-2
+  z-[101]
+  box-content
+  flex flex-col
+  shrink-0
+  justify-between
+  h-[calc(100vh_-_4rem)]
+  minimalistic:h-[calc(100vh_-_1.5rem)]
+  lg:pt-6
+  minimalistic:lg:pt-0
+  ;
 
-    .search-wrapper .search-form-field {
-      @apply focus:ring-0;
-    }
+  .search-wrapper .search-form-field {
+    @apply focus:ring-0;
   }
+}
 
-  &-page {
-    @apply
-    theme__rounded
-    relative
-    w-full
-    flex flex-col
-    grow
-    bg-slate-50 dark:bg-dark-700
-    p-4 md:p-6
-    compact:p-3 compact:pt-6 compact:md:p-4
-    minimalistic:px-4 minimalistic:pt-6 minimalistic:py-3
-    minimalistic:border-l minimalistic:theme__border_for_light_bg
-  }
+.layout-page {
+  @apply
+  theme__rounded
+  relative
+  z-[90]
+  w-full
+  flex flex-col
+  grow
+  bg-slate-50 dark:bg-dark-700
+  p-4 md:p-6
+  compact:px-3 compact:pt-2 compact:md:p-4
+  minimalistic:px-4
+  minimalistic:pt-0
+  minimalistic:py-3
+  minimalistic:border-l minimalistic:theme__border_for_light_bg
+}
 
-  &-metrics {
-    @apply mb-6 flex flex-col gap-x-6 gap-y-8 sm:grid sm:grid-cols-12 lg:gap-y-10;
-  }
+.layout-metrics {
+  @apply mb-6 flex flex-col gap-x-6 gap-y-8 sm:grid sm:grid-cols-12 lg:gap-y-10;
+}
 
-  &-navigation {
-    @apply
-    relative
-    flex items-center
-    flex-wrap md:flex-nowrap
-    justify-end md:justify-between
-    gap-4
-    compact:gap-3
-    minimalistic:gap-2
-    pb-4
-    compact:pt-8
-    minimalistic:pt-8
-    theme__border_for_light_bg border-b
-  }
+.layout-navigation {
+  @apply
+  relative
+  flex items-center
+  flex-wrap md:flex-nowrap
+  justify-end md:justify-between
+  gap-4
+  compact:gap-3
+  minimalistic:gap-2
+  pb-4
+  compact:pt-8
+  compact:md:pt-0
+  minimalistic:pt-2
+  theme__border_for_light_bg border-b
+}
 
-  &-content {
-    @apply flex-auto py-6 lg:py-8;
-  }
+.layout-content {
+  @apply flex-auto py-6 lg:py-8;
+}
 
-  &-footer {
-    @apply pt-6;
-  }
+.layout-footer {
+  @apply pt-6;
 }

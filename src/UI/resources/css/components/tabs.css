@@ -1,14 +1,14 @@
 /* Tabs */
 .tabs {
-  &-list {
+  .tabs-list {
     @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200
   }
 
-  &-title {
+  .tabs-title {
     @apply mr-2 flex w-full gap-2 text-primary
   }
 
-  &-button {
+  .tabs-button {
     @apply
     whitespace-nowrap
     flex items-center
@@ -35,14 +35,14 @@
     }
   }
 
-  &-content {
+  .tabs-content {
     @apply overflow-x-clip -mx-1 px-1
     mt-6
     compact:mt-4
     minimalistic:mt-2
   }
 
-  &-vertical {
+  .tabs-vertical {
     @apply flex gap-3;
 
     > .tabs-list {

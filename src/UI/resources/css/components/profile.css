@@ -2,7 +2,7 @@
 .profile {
   @apply flex items-center gap-x-2 gap-y-4 xl:flex-row;
 
-  &-main {
+  .profile-main {
     @apply flex min-w-0 grow items-center gap-x-3 text-xs text-inherit;
 
     &:hover {
@@ -12,11 +12,11 @@
     }
   }
 
-  &-photo {
+  .profile-photo {
     @apply h-10 w-10 shrink-0 overflow-hidden rounded-full;
   }
 
-  &-info {
+  .profile-info {
     @apply block min-w-0 grow lg:hidden xl:block;
 
     > .name {
@@ -28,7 +28,7 @@
     }
   }
 
-  &-exit {
+  .profile-exit {
     @apply
     text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white
     hover:cursor-pointer
@@ -39,13 +39,11 @@
     }
   }
 
-  > .dropdown {
-    &-body {
-      @apply w-9/10 md:max-w-[320px]
-    }
+  > .dropdown-body {
+    @apply w-9/10 md:max-w-[320px]
+  }
 
-    button {
-      @apply inline-flex items-center justify-center gap-1
-    }
+  button {
+    @apply inline-flex items-center justify-center gap-1
   }
 }
