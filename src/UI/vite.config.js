@@ -22,9 +22,23 @@ export default defineConfig(({mode}) => {
       hmr: {
         host: env.VITE_SERVER_HMR_HOST,
       },
+      ...env.VITE_SERVER_CORS_ORIGIN ? {
+        cors: {
+          origin: env.VITE_SERVER_CORS_ORIGIN,
+          credentials: true
+        }
+      } : {}
     },
     css: {
       devSourcemap: true,
+      preprocessorOptions: {
+        sass: {
+          quietDeps: true,
+        },
+        scss: {
+          quietDeps: true,
+        },
+      },
     },
     build: {
       emptyOutDir: false,

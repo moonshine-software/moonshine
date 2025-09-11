@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
+use Closure;
+
 trait Searchable
 {
     protected bool $searchable = false;
 
-    public function searchable(): static
+    public function searchable(Closure|bool $condition = true): static
     {
-        $this->searchable = true;
+        $this->searchable = value($condition, $this);
 
         return $this;
     }

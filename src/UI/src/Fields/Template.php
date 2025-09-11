@@ -65,7 +65,7 @@ class Template extends Field implements HasFieldsContract
         return filled($value) ? $value : $this
             ->getPreparedFields()
             ->onlyFields()
-            ->mapWithKeys(fn (FieldContract $field) => [$field->getColumn() => null]);
+            ->mapWithKeys(fn (FieldContract $field): array => [$field->getColumn() => null]);
     }
 
     public function render(): string

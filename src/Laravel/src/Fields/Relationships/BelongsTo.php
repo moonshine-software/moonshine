@@ -15,6 +15,7 @@ use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
@@ -39,12 +40,11 @@ class BelongsTo extends ModelRelationField implements
     use HasPlaceholder;
     use BelongsToOrManyCreatable;
     use WithEscapedValue;
+    use ConfigurableSelect;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to';
 
     protected bool $toOne = true;
-
-    protected bool $native = false;
 
     /**
      * @throws Throwable
@@ -93,18 +93,6 @@ class BelongsTo extends ModelRelationField implements
         }
 
         return (string)$this->toValue()->getKey() === $value;
-    }
-
-    public function native(): static
-    {
-        $this->native = true;
-
-        return $this;
-    }
-
-    protected function isNative(): bool
-    {
-        return $this->native;
     }
 
     protected function resolveOnApply(): ?Closure
@@ -160,13 +148,21 @@ class BelongsTo extends ModelRelationField implements
         return $model;
     }
 
+    protected function prepareBeforeRender(): void {
+        parent::prepareBeforeRender();
+
+        $this->asyncSettings([
+            'selectedValuesKey' => 'value',
+            'withAllFields' => true
+        ]);
+    }
+
     /**
      * @throws Throwable
      */
     protected function viewData(): array
     {
         return [
-            'isSearchable' => $this->isSearchable(),
             'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
             'isNullable' => $this->isNullable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
@@ -175,7 +171,7 @@ class BelongsTo extends ModelRelationField implements
             'createButton' => $this->getCreateButton(),
             'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
-            'isNative' => $this->isNative(),
+            ...$this->getSelectViewData(),
         ];
     }
 }

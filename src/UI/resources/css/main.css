@@ -9,8 +9,7 @@
 @import './base/layout.css';
 
 /* Libs */
-@import 'tippy.js/dist/tippy.css';
-@import 'choices.js/public/assets/styles/choices.css';
+@import 'tippy.js/dist/tippy';
 
 /* Tailwind Components */
 @import './components/accordions.css';

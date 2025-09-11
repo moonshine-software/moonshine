@@ -14,6 +14,7 @@ use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\CanBeMultiple;
+use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
 use MoonShine\UI\Traits\Fields\SelectTrait;
@@ -36,6 +37,7 @@ class Select extends Field implements
     use HasAsync;
     use UpdateOnPreview;
     use HasPlaceholder;
+    use ConfigurableSelect;
 
     protected string $view = 'moonshine::fields.select';
 
@@ -62,8 +64,8 @@ class Select extends Field implements
             return $collection
                 ->when(
                     ! $this->isRawMode(),
-                    fn (Collection $collect): Collection => $collect->map(
-                        fn (int|string $v): string => (string) data_get($this->getValues()->flatten(), "$v.label", ''),
+                    fn(Collection $collect): Collection => $collect->map(
+                        fn(int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
                     ),
                 )
                 ->implode(',');
@@ -73,20 +75,22 @@ class Select extends Field implements
             return '';
         }
 
-        return (string) data_get($this->getValues()->flatten(), "$value.label", '');
+        return (string)data_get($this->getValues()->flatten(), "$value.label", '');
     }
 
-    public function asyncOnInit(bool $whenOpen = true): static
+    public function asyncOnInit(bool $whenOpen = true, bool $withLoading = false): static
     {
         return $this->customAttributes([
             'data-async-on-init' => true,
             'data-async-on-init-dropdown' => $whenOpen,
+            'data-async-on-init-dropdown-with-loading' => $whenOpen && $withLoading,
         ]);
     }
 
     protected function asyncWith(): void
     {
         $this->searchable();
+        $this->asyncSettings([]);
     }
 
     public function prepareReactivityValue(mixed $value, mixed &$casted, array &$except): mixed
@@ -94,7 +98,7 @@ class Select extends Field implements
         $result = data_get($value, 'value', $value);
 
         return $this->isMultiple() && \is_array($result)
-            ? array_filter($result, static fn ($value): bool => $value !== null && $value !== false)
+            ? array_filter($result, static fn($value): bool => $value !== null && $value !== false)
             : $result;
     }
 
@@ -112,11 +116,10 @@ class Select extends Field implements
     protected function viewData(): array
     {
         return [
-            'isSearchable' => $this->isSearchable(),
             'asyncUrl' => $this->getAsyncUrl(),
             'values' => $this->getValues()->toArray(),
             'isNullable' => $this->isNullable(),
-            'isNative' => $this->isNative(),
+            ...$this->getSelectViewData(),
         ];
     }
 }
