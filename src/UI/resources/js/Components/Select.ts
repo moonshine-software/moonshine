@@ -124,6 +124,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 ...commonPlugins,
                 ...plugins
             },
+            mode: this.isMultiple ? 'multi' : 'single',
             allowEmptyOption: ! asyncUrl && ! this.isMultiple,
             // hidePlaceholder: true,
             placeholder: this.placeholder,
@@ -152,7 +153,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 : null,
 
             onDropdownOpen(dropdown_content) {
-                if (! asyncUrl && ! this.items.length) {
+                if (! asyncUrl && ! this.settings.mode === 'single' && ! this.items.length) {
                     let content = this.render('no_results', { input: '', no_options: true })
                     dropdown_content.innerHTML = content.outerHTML
                 }
@@ -237,22 +238,25 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
     asyncOnInit() {
         // Loading immediately after "Initialization"
-        if (asyncUrl && this.$el.dataset.asyncOnInit) {
-            if (this.$el.dataset.asyncOnInitDropdown) {
-                const asyncOnInitFocusCb = () => {
-                    if (! this.isLoadedOptions) {
-                        this.$el.dataset.asyncOnInitDropdownWithLoading
-                            ? this.selectInstance.load('')
-                            : this.asyncSearch()
-                    }
-
-                    this.selectInstance.off('focus', asyncOnInitFocusCb)
-                }
-                this.selectInstance.on('focus', asyncOnInitFocusCb)
-            } else {
-                this.selectInstance.preload()
-            }
+        if (! asyncUrl || ! this.$el.dataset.asyncOnInit) {
+            return
         }
+
+        if (this.$el.dataset.asyncOnInitDropdown) {
+            const asyncOnInitFocusCb = () => {
+                if (! this.isLoadedOptions) {
+                    this.$el.dataset.asyncOnInitDropdownWithLoading
+                        ? this.selectInstance.load('')
+                        : this.asyncSearch()
+                }
+
+                this.selectInstance.off('focus', asyncOnInitFocusCb)
+            }
+            this.selectInstance.on('focus', asyncOnInitFocusCb)
+            return
+        }
+
+        this.selectInstance.preload()
     },
 
     async asyncSearch(query: string | null = null) {
