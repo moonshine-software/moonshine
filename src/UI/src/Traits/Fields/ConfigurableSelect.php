@@ -39,7 +39,7 @@ trait ConfigurableSelect
      */
     public function asyncSettings(array|AsyncSettings $settings): static
     {
-        if (is_array($settings)) {
+        if (\is_array($settings)) {
             $settings = AsyncSettings::make($settings);
         }
 
@@ -51,11 +51,12 @@ trait ConfigurableSelect
      */
     public function settings(array|Settings $settings): static
     {
-        if (is_array($settings)) {
+        if (\is_array($settings)) {
             $settings = Settings::make($settings);
         }
 
         $this->settings = array_merge($this->settings, $settings->toArray());
+
         return $this;
     }
 
@@ -88,7 +89,7 @@ trait ConfigurableSelect
             $filterRegex = preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $filterRegex, $matches)
                 ? [
                     'pattern' => $matches[2],
-                    'modifiers' => $matches[3]
+                    'modifiers' => $matches[3],
                 ]
                 : null;
         }
@@ -116,7 +117,7 @@ trait ConfigurableSelect
         return $this->settings(array_filter([
             'maxItems' => $limit,
         ]))->addPlugin('max_items', [
-            'text' => $text
+            'text' => $text,
         ]);
     }
 

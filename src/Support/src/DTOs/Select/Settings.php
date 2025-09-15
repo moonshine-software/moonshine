@@ -66,7 +66,7 @@ final class Settings implements Arrayable
     public function fromArray(array $values): self
     {
         foreach ($values as $name => $value) {
-            if (array_key_exists($name, $this->values)) {
+            if (\array_key_exists($name, $this->values)) {
                 $this->set($name, $value);
             }
         }
@@ -79,12 +79,13 @@ final class Settings implements Arrayable
      */
     public function toArray(): array
     {
-        return array_filter($this->values, fn($v): bool => ! is_null($v));
+        return array_filter($this->values, fn ($v): bool => ! \is_null($v));
     }
 
     public function set(string $name, mixed $value): self
     {
         $this->values[$name] = $value;
+
         return $this;
     }
 
@@ -100,7 +101,7 @@ final class Settings implements Arrayable
             preg_match('/^(.)(.*)\1([a-zA-Z]*)$/s', $value, $matches)
                 ? [
                 'pattern' => $matches[2],
-                'modifiers' => $matches[3]
+                'modifiers' => $matches[3],
             ]
                 : null
         );

@@ -669,12 +669,13 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getCollectionValue()->pluck($this->getRelatedKeyName());
     }
 
-    protected function prepareBeforeRender(): void {
+    protected function prepareBeforeRender(): void
+    {
         parent::prepareBeforeRender();
 
         $this->asyncSettings([
             'selectedValuesKey' => 'value',
-            'withAllFields' => true
+            'withAllFields' => true,
         ]);
     }
 
@@ -688,6 +689,7 @@ class BelongsToMany extends ModelRelationField implements
             'isTreeMode' => $this->isTree(),
             'isHorizontalMode' => $this->isHorizontalMode(),
             'isSelectMode' => $this->isSelectMode(),
+            'isDeduplicate' => $this->isDeduplicate(),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->isAsyncSearch() ? $this->getAsyncSearchUrl() : '',
             'isCreatable' => $this->isCreatable(),

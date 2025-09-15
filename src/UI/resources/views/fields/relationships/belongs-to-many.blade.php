@@ -4,6 +4,7 @@
     'componentName' => '',
     'buttons' => [],
     'isNullable' => false,
+    'isDeduplicate' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
     'isSelectMode' => false,
@@ -72,7 +73,7 @@
                                             <li class="dropdown-item">
                                                 <a href="#"
                                                    class="dropdown-menu-link flex gap-x-2 items-center"
-                                                   @click.prevent="select(item)"
+                                                   @click.prevent="select(item, {{ $isDeduplicate ? 1 : 0}})"
                                                 >
                                                     <div x-show="item?.properties?.image"
                                                          class="zoom-in h-10 w-10 overflow-hidden rounded-md"

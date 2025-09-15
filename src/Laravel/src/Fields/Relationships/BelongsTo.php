@@ -148,12 +148,13 @@ class BelongsTo extends ModelRelationField implements
         return $model;
     }
 
-    protected function prepareBeforeRender(): void {
+    protected function prepareBeforeRender(): void
+    {
         parent::prepareBeforeRender();
 
         $this->asyncSettings([
             'selectedValuesKey' => 'value',
-            'withAllFields' => true
+            'withAllFields' => true,
         ]);
     }
 

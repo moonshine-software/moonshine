@@ -43,7 +43,7 @@ class Enum extends Select implements CanBeEnum
             return '';
         }
 
-        if (! $value instanceof $this->attached) {
+        if ($this->attached !== null && ! $value instanceof $this->attached) {
             $rescueEnum = static function (Closure $callback): BackedEnum|null {
                 try {
                     return $callback();

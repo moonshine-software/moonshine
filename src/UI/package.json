@@ -36,7 +36,7 @@
         "@alpinejs/persist": "^3.13",
         "@popperjs/core": "^2.11",
         "alpinejs": "^3.14",
-        "axios": "^1.8",
+        "axios": "^1.12",
         "sortablejs": "^1.15",
         "tippy.js": "^6.3",
         "tom-select": "^2.4.3"

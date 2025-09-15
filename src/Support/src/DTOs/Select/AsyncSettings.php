@@ -41,7 +41,7 @@ final class AsyncSettings implements Arrayable
     public function fromArray(array $values): self
     {
         foreach ($values as $name => $value) {
-            if (array_key_exists($name, $this->values)) {
+            if (\array_key_exists($name, $this->values)) {
                 $this->$name($value);
             }
         }
@@ -56,7 +56,7 @@ final class AsyncSettings implements Arrayable
     {
         $result = [];
         foreach ($this->values as $name => $value) {
-            if (is_null($value)) {
+            if (\is_null($value)) {
                 continue;
             }
 
@@ -69,6 +69,7 @@ final class AsyncSettings implements Arrayable
     private function set(string $name, mixed $value): self
     {
         $this->values[$name] = $value;
+
         return $this;
     }
 

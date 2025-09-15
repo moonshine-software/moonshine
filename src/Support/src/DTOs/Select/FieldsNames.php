@@ -31,7 +31,7 @@ final class FieldsNames implements Arrayable
 
         'searchField' => null,        // default: ['label']
         'disabledField' => null,      // default: disabled
-        'sortField' => null           // default: $order
+        'sortField' => null,           // default: $order
     ];
 
     /**
@@ -47,7 +47,7 @@ final class FieldsNames implements Arrayable
      */
     public function toArray(): array
     {
-        if (is_null($this->values['searchField']) && ! is_null($this->values['labelField'])) {
+        if (\is_null($this->values['searchField']) && ! \is_null($this->values['labelField'])) {
             $this->search([$this->values['labelField']]);
         }
 
@@ -64,12 +64,14 @@ final class FieldsNames implements Arrayable
                 $this->$name($value);
             }
         }
+
         return $this;
     }
 
     private function set(string $name, mixed $value): self
     {
         $this->values[$name] = $value;
+
         return $this;
     }
 
