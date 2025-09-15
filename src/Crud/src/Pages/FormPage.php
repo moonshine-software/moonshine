@@ -198,6 +198,7 @@ class FormPage extends CrudPage implements FormPageContract
                 ->cast($this->getResource()->getCaster())
                 ->fill($item)
                 ->fields([
+                    /** @phpstan-ignore argument.templateType */
                     ...$fields
                         ->when(
                             ! \is_null($item),

@@ -290,6 +290,7 @@ final class TableBuilder extends IterableComponent implements
             $casted = $this->castData($data);
             $cells = TableCells::make();
 
+            /** @phpstan-ignore argument.templateType */
             $fields = $this
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
                 ->onlyVisible()
