@@ -13,7 +13,7 @@
     xmlns:x-moonshine="http://www.w3.org/1999/html"
 >
     <x-moonshine::layout.box
-        class="box-shadow zoom-in h-full p-0"
+        class="zoom-in h-full p-0"
     >
         <x-moonshine::metrics.value
             :attributes="$attributes"

@@ -688,6 +688,7 @@ class BelongsToMany extends ModelRelationField implements
             'isTreeMode' => $this->isTree(),
             'isHorizontalMode' => $this->isHorizontalMode(),
             'isSelectMode' => $this->isSelectMode(),
+            'isDeduplicate' => $this->isDeduplicate(),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->isAsyncSearch() ? $this->getAsyncSearchUrl() : '',
             'isCreatable' => $this->isCreatable(),

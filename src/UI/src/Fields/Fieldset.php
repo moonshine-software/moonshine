@@ -44,6 +44,13 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
             ->map(fn (FieldContract $field): FieldContract => $field->setParent($this));
     }
 
+    protected function prepareFields(): FieldsContract
+    {
+        return $this
+            ->getFields()
+            ->fillClonedRecursively($this->getData()?->toArray() ?? [], $this->getData(), $this->getRowIndex());
+    }
+
     /**
      * @param  array<string, mixed>  $raw
      * @throws Throwable
