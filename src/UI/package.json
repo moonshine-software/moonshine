@@ -31,7 +31,6 @@
         "vite": "^7.0.6"
     },
     "dependencies": {
-        "axios": "^1.8",
         "@alpinejs/mask": "^3.13",
         "@alpinejs/persist": "^3.13",
         "@popperjs/core": "^2.11",

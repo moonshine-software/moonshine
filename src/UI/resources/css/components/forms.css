@@ -49,7 +49,8 @@ input {
 .form-textarea,
 .form-select,
 .form-multiselect,
-.form-file-upload {
+.form-file-upload,
+.ts-control {
   @apply base__default base__placeholder block w-full
   theme__rounded
   min-h-10
@@ -664,6 +665,20 @@ fieldset {
     &:before {
       content: '';
       @apply absolute inset-0 -z-1 h-full w-full bg-[inherit] backdrop-blur-sm;
+    }
+  }
+}
+
+.form-select {
+  optgroup {
+    option {
+      &:hover {
+        @apply
+        dark:bg-dark-300
+        dark:hover:bg-dark-200
+        dark:text-slate-400
+        transition-colors
+      }
     }
   }
 }

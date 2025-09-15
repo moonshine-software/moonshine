@@ -9,7 +9,7 @@
 @import './base/layout.css';
 
 /* Libs */
-@import 'tippy.js/dist/tippy';
+@import 'tippy.js/dist/tippy.css';
 
 /* Tailwind Components */
 @import './components/accordions.css';
@@ -34,6 +34,7 @@
 @import './components/profile.css';
 @import './components/progressbars.css';
 @import './components/search.css';
+@import "./components/select.css";
 @import './components/social.css';
 @import './components/spinners.css';
 @import './components/tables.css';
