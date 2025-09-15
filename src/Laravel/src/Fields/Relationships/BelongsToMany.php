@@ -669,12 +669,13 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getCollectionValue()->pluck($this->getRelatedKeyName());
     }
 
-    protected function prepareBeforeRender(): void {
+    protected function prepareBeforeRender(): void
+    {
         parent::prepareBeforeRender();
 
         $this->asyncSettings([
             'selectedValuesKey' => 'value',
-            'withAllFields' => true
+            'withAllFields' => true,
         ]);
     }
 

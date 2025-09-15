@@ -64,8 +64,8 @@ class Select extends Field implements
             return $collection
                 ->when(
                     ! $this->isRawMode(),
-                    fn(Collection $collect): Collection => $collect->map(
-                        fn(int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
+                    fn (Collection $collect): Collection => $collect->map(
+                        fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
                     ),
                 )
                 ->implode(',');
@@ -98,7 +98,7 @@ class Select extends Field implements
         $result = data_get($value, 'value', $value);
 
         return $this->isMultiple() && \is_array($result)
-            ? array_filter($result, static fn($value): bool => $value !== null && $value !== false)
+            ? array_filter($result, static fn ($value): bool => $value !== null && $value !== false)
             : $result;
     }
 
