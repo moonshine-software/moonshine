@@ -65,7 +65,7 @@ final class ColorMutatorTest extends TestCase
 
     #[Test]
     #[DataProvider('toOklchProvider')]
-    public function toOklch(string $value, string $expected = 'oklch(96.42% 0 89.876)'): void
+    public function toOklch(string $value, string $expected = 'oklch(96.42% 0 0)'): void
     {
         $this->assertEquals($expected, ColorMutator::toOKLCH($value));
     }

@@ -94,7 +94,7 @@ final class ColorMutator
 
             $lightness = $isPercentL ? $lightnessRaw / 100 : $lightnessRaw;
             $chroma = $isPercentC ? $chromaRaw / 100 : $chromaRaw;
-            $hue = $hueRaw;
+            $hue = $chroma == 0.0 ? 0.0 : $hueRaw;
 
             if ($lightness >= 0 && $lightness <= 1)
             {
@@ -114,7 +114,7 @@ final class ColorMutator
             $chroma = (float) $matches[3];
             if ($matches[4] === '%') $chroma /= 100;
 
-            $hue = (float) $matches[5];
+            $hue = $chroma == 0.0 ? 0.0 : (float) $matches[5];
 
             return $formatResult(
                 max(0, min(1, $lightness)),
@@ -179,8 +179,17 @@ final class ColorMutator
         $b = 0.0259040371 * $l_val + 0.7827717662 * $m_val - 0.8086757660 * $s_val;
 
         $C = sqrt($a * $a + $b * $b);
-        $H = rad2deg(atan2($b, $a));
-        if ($H < 0) $H += 360;
+
+        if ($C < 1e-4)
+        {
+            $C = 0.0;
+            $H = 0.0;
+        }
+        else
+        {
+            $H = rad2deg(atan2($b, $a));
+            if ($H < 0) $H += 360;
+        }
 
         $L = max(0.0, min(1.0, $L));
         $C = max(0.0, $C);
