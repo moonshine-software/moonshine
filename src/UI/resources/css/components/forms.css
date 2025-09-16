@@ -148,7 +148,7 @@ input {
   w-5
   h-5
   border-1 theme__border_for_light_bg
-  rounded-md
+  rounded-md md:rounded-none
   flex
   items-center
   justify-center
@@ -520,7 +520,7 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply base__default w-full rounded-md;
+  @apply base__default w-full theme__rounded;
 
   &::after {
     @apply transition-all

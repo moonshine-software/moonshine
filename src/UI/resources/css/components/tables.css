@@ -24,14 +24,16 @@ table {
 
     td,
     th {
-      @apply max-w-lg border-b p-2 font-semibold dark:border-dark-300;
+      @apply max-w-lg font-semibold p-2
+      border-b theme__border_for_light_bg
     }
   }
 
   tbody {
     td,
     th {
-      @apply max-w-lg break-words border-b p-2 py-3 dark:border-dark-400;
+      @apply max-w-lg break-words p-2 py-3
+      border-b theme__border_for_light_bg
     }
 
     th {
@@ -65,7 +67,7 @@ table {
 
 .table-divider {
   div.grid {
-    @apply my-0! border-b py-2 dark:border-dark-400;
+    @apply my-0! py-2 border-b theme__border_for_light_bg;
 
     &:last-child {
       @apply border-b-0 pb-0;
@@ -97,7 +99,7 @@ table {
       @apply first:rounded-l-lg last:rounded-r-lg dark:border-dark-300
       px-5 py-3
       compact:p-3
-      minimalistic:p-0
+      minimalistic:p-1.5
     }
   }
 

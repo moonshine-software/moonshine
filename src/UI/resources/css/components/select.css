@@ -26,17 +26,34 @@
   &.dropdown-active:after {
     @apply rotate-180
   }
+
+  &.multi {
+    .ts-control {
+      @apply flex gap-1;
+
+      .item {
+        @apply
+        theme__rounded
+        bg-primary
+        text-white
+        px-2
+        my-0
+        ;
+
+        &.with-image {
+          @apply px-1 py-1
+        }
+      }
+    }
+  }
 }
 
 .full .ts-control {
   @apply base__default
+  flex items-center
 }
 
 .ts-dropdown {
-  .ts-dropdown-content {
-    @apply base__default
-  }
-
   .optgroup-header {
     @apply
     opacity-70
@@ -78,7 +95,7 @@
 .ts-control {
   @apply
   w-full
-  rounded-md
+  theme__rounded
   border theme__border_for_light_bg
   focus:outline-none
 }
@@ -89,16 +106,19 @@
 
 .ts-dropdown {
   @apply
-  rounded-md
-  border theme__border_for_light_bg
+  rounded-b-md
+  -my-0.5
+  border
+  theme__border_for_light_bg
+  shadow-none
 }
 
 .ts-dropdown [data-selectable].option, .ts-dropdown .no-results {
-  @apply py-3;
+  @apply py-2
 }
 
 .ts-dropdown .create:hover, .ts-dropdown .option:hover, .ts-dropdown .active {
-  @apply bg-slate-200 dark:bg-dark-300
+  @apply bg-slate-100 dark:bg-dark-300
 }
 
 .ts-dropdown .spinner {
@@ -119,7 +139,7 @@
   .ts-dropdown,
   .ts-dropdown .optgroup-header {
     @apply
-    bg-slate-100 dark:bg-dark-900/20
+    bg-slate-100 dark:bg-dark-800
     text-slate-600 dark:text-slate-400
   }
 
