@@ -81,7 +81,7 @@
       }
     }
 
-    .layout-wrapper-short:has(> .layout-menu) {
+    &.layout-wrapper-short:has(> .layout-menu) {
       @apply lg:pl-[6rem];
     }
   }
