@@ -137,13 +137,21 @@ final class ColorMutator
             $rgb = sscanf($hex, '#%02x%02x%02x');
             [$red, $green, $blue] = is_array($rgb) ? $rgb : [0, 0, 0];
         }
-        elseif (preg_match('/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/i', $value, $matches))
-        {
-            [$red, $green, $blue] = [(int) $matches[1], (int) $matches[2], (int) $matches[3]];
-        }
         else
         {
-            [$red, $green, $blue] = [0, 0, 0];
+            $rgb = self::fromRGB($value);
+            if ($rgb !== false && count($rgb) >= 3)
+            {
+                [$red, $green, $blue] = [
+                    (int) round($rgb[0]),
+                    (int) round($rgb[1]),
+                    (int) round($rgb[2]),
+                ];
+            }
+            else
+            {
+                [$red, $green, $blue] = [0, 0, 0];
+            }
         }
 
         $red = ($red / 255.0) <= 0.04045 ? ($red / 255.0) / 12.92 : pow((($red / 255.0) + 0.055) / 1.055, 2.4);
