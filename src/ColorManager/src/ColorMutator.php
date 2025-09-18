@@ -109,10 +109,14 @@ final class ColorMutator
         if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*[\d.%]+)?\s*\)\s*$/i', $value, $matches))
         {
             $lightness = (float) $matches[1];
-            if ($matches[2] === '%') $lightness /= 100;
+            if ($matches[2] === '%') {
+                $lightness /= 100;
+            }
 
             $chroma = (float) $matches[3];
-            if ($matches[4] === '%') $chroma /= 100;
+            if ($matches[4] === '%') {
+                $chroma /= 100;
+            }
 
             $hue = $chroma == 0.0 ? 0.0 : (float) $matches[5];
 
@@ -154,9 +158,9 @@ final class ColorMutator
             }
         }
 
-        $red = ($red / 255.0) <= 0.04045 ? ($red / 255.0) / 12.92 : pow((($red / 255.0) + 0.055) / 1.055, 2.4);
-        $green = ($green / 255.0) <= 0.04045 ? ($green / 255.0) / 12.92 : pow((($green / 255.0) + 0.055) / 1.055, 2.4);
-        $blue = ($blue / 255.0) <= 0.04045 ? ($blue / 255.0) / 12.92 : pow((($blue / 255.0) + 0.055) / 1.055, 2.4);
+        $red = ($red / 255.0) <= 0.04045 ? ($red / 255.0) / 12.92 : (($red / 255.0 + 0.055) / 1.055) ** 2.4;
+        $green = ($green / 255.0) <= 0.04045 ? ($green / 255.0) / 12.92 : (($green / 255.0 + 0.055) / 1.055) ** 2.4;
+        $blue = ($blue / 255.0) <= 0.04045 ? ($blue / 255.0) / 12.92 : (($blue / 255.0 + 0.055) / 1.055) ** 2.4;
 
         $x = $red * 0.4124564 + $green * 0.3575761 + $blue * 0.1804375;
         $y = $red * 0.2126729 + $green * 0.7151522 + $blue * 0.0721750;
@@ -170,9 +174,9 @@ final class ColorMutator
         $delta2 = $delta * $delta;
         $delta3 = $delta2 * $delta;
 
-        $l_val = $x > $delta3 ? pow($x, 1.0 / 3.0) : ($x / (3.0 * $delta2)) + (4.0 / 29.0);
-        $m_val = $y > $delta3 ? pow($y, 1.0 / 3.0) : ($y / (3.0 * $delta2)) + (4.0 / 29.0);
-        $s_val = $z > $delta3 ? pow($z, 1.0 / 3.0) : ($z / (3.0 * $delta2)) + (4.0 / 29.0);
+        $l_val = $x > $delta3 ? $x ** (1.0 / 3.0) : ($x / (3.0 * $delta2)) + (4.0 / 29.0);
+        $m_val = $y > $delta3 ? $y ** (1.0 / 3.0) : ($y / (3.0 * $delta2)) + (4.0 / 29.0);
+        $s_val = $z > $delta3 ? $z ** (1.0 / 3.0) : ($z / (3.0 * $delta2)) + (4.0 / 29.0);
 
         $L = 0.2104542553 * $l_val + 0.7936177850 * $m_val - 0.0040720468 * $s_val;
         $a = 1.9779984951 * $l_val - 2.4285922050 * $m_val + 0.4505937099 * $s_val;
@@ -188,7 +192,9 @@ final class ColorMutator
         else
         {
             $H = rad2deg(atan2($b, $a));
-            if ($H < 0) $H += 360;
+            if ($H < 0) {
+                $H += 360;
+            }
         }
 
         $L = max(0.0, min(1.0, $L));

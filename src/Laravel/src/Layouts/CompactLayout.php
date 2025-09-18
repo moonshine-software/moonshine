@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
-use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
-use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\UI\Components\{Layout\Body,
     Layout\Content,
