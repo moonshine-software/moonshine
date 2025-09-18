@@ -2,7 +2,8 @@
   @apply
   theme__rounded
   relative
-  bg-white dark:bg-dark-600
+  bg-white dark:bg-dark-900
+  text-slate-600 dark:text-slate-300
   shadow-md shadow-gray-200 dark:shadow-black/5
   p-3 sm:p-4 lg:p-5
   compact:p-3 compact:sm:p-3
@@ -15,7 +16,7 @@
   &.box-dark, &.dark {
     @apply
     text-slate-200 dark:text-slate-300
-    bg-dark-600 dark:bg-dark-800
+    bg-white dark:bg-dark-900
     shadow-none dark:shadow-black/5
   }
 
@@ -43,6 +44,6 @@
   text-xs
   flex
   gap-2
-  border-b border-gray-200 dark:border-dark-200
+  border-b theme__border_for_light_bg
   pb-3
 }

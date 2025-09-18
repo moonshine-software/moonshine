@@ -5,6 +5,18 @@
   --ts-pr-clear-button: 1em;
 }
 
+.ts-dropdown,
+.ts-control,
+.ts-control input {
+  @apply text-3xs base__default
+  theme__border_for_light_bg
+}
+
+.ts-wrapper.single.input-active .ts-control,
+.ts-wrapper.multi.input-active .ts-control {
+  @apply bg-inherit text-inherit
+}
+
 .ts-wrapper {
   &:after {
     content: "";
@@ -28,6 +40,8 @@
   }
 
   &.multi {
+    @apply h-fit;
+
     .ts-control {
       @apply flex gap-1;
 
@@ -51,6 +65,7 @@
 .full .ts-control {
   @apply base__default
   flex items-center
+  theme__border_for_light_bg
 }
 
 .ts-dropdown {
@@ -59,6 +74,8 @@
     opacity-70
     px-4 py-2
     border-b theme__border_for_light_bg
+    bg-transparent
+    text-inherit dark:text-slate-100
   }
 }
 
@@ -69,20 +86,21 @@
   }
 
   .clear-button {
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: calc(10px - 12px);
-    margin-right: 0 !important;
-    background: transparent !important;
-    transition: opacity 0.3s;
-    cursor: pointer;
+    @apply
+    opacity-0
+    absolute
+    top-[45%]
+    mr-0
+    bg-transparent
+    transition-opacity duration-300
+    cursor-pointer
+    text-md
+    text-gray-500
   }
 
   &.focus.has-items .clear-button,
   &:not(.disabled):hover.has-items .clear-button {
-    opacity: 1;
+    @apply opacity-100
   }
 }
 
@@ -101,12 +119,12 @@
 }
 
 .ts-control input {
-  @apply pr-5 text-sm m-0
+  @apply pr-5 text-3xs m-0
 }
 
 .ts-dropdown {
   @apply
-  rounded-b-md
+  not-minimalistic:rounded-b-md
   -my-0.5
   border
   theme__border_for_light_bg
@@ -114,11 +132,16 @@
 }
 
 .ts-dropdown [data-selectable].option, .ts-dropdown .no-results {
-  @apply py-2
+  @apply
+  py-2
+  dark:text-slate-200
 }
 
 .ts-dropdown .create:hover, .ts-dropdown .option:hover, .ts-dropdown .active {
-  @apply bg-slate-100 dark:bg-dark-300
+  @apply
+  bg-slate-100
+  dark:bg-dark-600
+  text-dark-800 dark:text-slate-300
 }
 
 .ts-dropdown .spinner {
@@ -126,34 +149,15 @@
 }
 
 .ts-dropdown .spinner:after {
-  @apply h-5 w-5 border-2 p-0 my-0 inline-block;
+  @apply h-5 w-5 border-2 theme__border_for_light_bg p-0 my-0 inline-block;
 }
 
-.item.with-image {
-  @apply flex items-center gap-3
-}
+.item {
+  @apply
+  text-slate-600 dark:text-slate-400
+  ;
 
-@variant dark {
-  .ts-control,
-  .ts-wrapper.single.input-active .ts-control,
-  .ts-dropdown,
-  .ts-dropdown .optgroup-header {
-    @apply
-    bg-slate-100 dark:bg-dark-800
-    text-slate-600 dark:text-slate-400
-  }
-
-  .ts-dropdown & > * {
-    @apply base__default
-  }
-
-  .ts-dropdown {
-    .active {
-      @apply
-      bg-dark-300
-      hover:bg-dark-200
-      text-slate-400
-      transition-colors
-    }
+  &.with-image {
+    @apply flex items-center gap-3
   }
 }
