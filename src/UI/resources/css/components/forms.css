@@ -54,7 +54,6 @@ input {
   @apply base__default base__placeholder block w-full
   theme__rounded
   min-h-10
-  minimalistic:min-h-6
   p-2
   minimalistic:p-1
   ;
@@ -148,7 +147,7 @@ input {
   w-5
   h-5
   border-1 theme__border_for_light_bg
-  rounded-md
+  rounded-md md:rounded-none
   flex
   items-center
   justify-center
@@ -174,8 +173,7 @@ input {
   w-5
   h-5
   rounded-full
-  border-1
-  border-gray-300
+  border-1 theme__border_for_light_bg
   flex
   items-center
   justify-center
@@ -209,6 +207,7 @@ input {
     after:w-5
     after:rounded-full
     after:border
+    after:theme__border_for_light_bg
     after:transition-all
     after:bg-white
     after:border-gray-300
@@ -221,7 +220,7 @@ input {
     @apply
     after:translate-x-full
     bg-primary dark:bg-primary
-    after:border-primary dark:after:border-dark-200
+    after:border-primary dark:after:theme__border_for_light_bg
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
@@ -281,7 +280,7 @@ input {
     @apply shrink rounded-r-none;
 
     & ~ .expansion-wrapper {
-      @apply border-l-0;
+      @apply border-l-0 theme__border_for_light_bg;
     }
   }
 
@@ -301,7 +300,7 @@ input {
     ;
 
     .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-2xs;
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
     }
 
     button {
@@ -520,7 +519,7 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply base__default w-full rounded-md;
+  @apply base__default w-full theme__rounded;
 
   &::after {
     @apply transition-all
@@ -550,14 +549,14 @@ input {
   &[data-type*='select-one'] {
     &:not(.is-open) {
       @apply
-      after:border-t-gray-300
-      dark:after:border-t-dark-200
+      after:border-t-slate-300
+      dark:after:border-t-slate-600
     }
 
     &.is-open {
       @apply
-      after:border-b-gray-300
-      dark:after:border-b-dark-200
+      after:border-t-slate-300
+      dark:after:border-t-slate-600
     }
   }
 
@@ -577,7 +576,7 @@ input {
   }
 
   .choices__inner {
-    @apply min-h-0 border-none bg-transparent text-2xs;
+    @apply min-h-0 border-none bg-transparent text-3xs;
     padding: 0.5rem 0.75rem;
 
     .choices__list--single {
@@ -660,7 +659,7 @@ fieldset {
   @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 dark:border-dark-200 sm:p-4;
 
   legend {
-    @apply absolute left-3 top-0 -ms-1 -translate-y-1/2 px-1 text-2xs sm:left-4;
+    @apply absolute left-3 top-0 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
 
     &:before {
       content: '';

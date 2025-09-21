@@ -34,7 +34,7 @@
 /* Base state */
 @utility base__default {
   @apply
-  text-2xs
+  text-3xs
   outline-none
   transition-colors
   duration-200
@@ -56,7 +56,7 @@
 }
 
 @utility base__read-only {
-  @apply cursor-default opacity-60 focus:ring-0
+  @apply cursor-default opacity-85 focus:ring-0
 }
 
 @utility base__disabled {
@@ -83,7 +83,7 @@
 @utility theme__border_for_light_bg {
   @apply
   border-slate-300 dark:border-slate-600
-  minimalistic:dark:border-slate-600
+  /*minimalistic:dark:border-slate-600*/
 }
 
 @utility theme__border_for_dark_bg {

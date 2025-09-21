@@ -10,6 +10,7 @@
       rounded-t-(--rounded)
       compact:rounded-t-(--compact-rounded)
       minimalistic:rounded-none
+      justify-between
     }
   }
 
@@ -36,6 +37,7 @@
     bg-slate-100
     dark:bg-dark-800
     dark:hover:bg-dark-800
+    theme__border_for_light_bg
     ;
 
     > svg {
@@ -52,4 +54,5 @@
   p-3 sm:p-4
   compact:p-2.5
   minimalistic:p-1
+  -mt-1
 }

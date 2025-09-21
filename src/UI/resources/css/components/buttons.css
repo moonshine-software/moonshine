@@ -8,7 +8,7 @@
   text-3xs
   text-slate-600 hover:text-slate-600 dark:text-slate-300 dark:hover:text-slate-200
   bg-transparent hover:bg-gray-100 dark:bg-transparent dark:hover:bg-dark-300
-  border-1 border-gray-200 dark:border-dark-200
+  border-1 theme__border_for_light_bg
   h-10
   compact:min-h-fit compact:h-8
   minimalistic:min-h-fit minimalistic:h-fit
@@ -36,9 +36,11 @@
   }
 
   .badge {
-    @apply ml-auto border border-gray-300 bg-gray-100
+    @apply ml-auto border theme__border_for_light_bg
     px-2 py-0
-    text-center dark:border-dark-200 dark:bg-dark-700;
+    text-center
+    dark:bg-dark-900
+    ;
 
     &:empty {
       @apply hidden
@@ -66,7 +68,7 @@
   &.btn-success {
     @apply
     theme__btn
-    text-success-text
+    text-success-text dark:text-inherit
     bg-success hover:bg-success/80 dark:bg-success/50
     border-success focus:ring-success/20 dark:focus:ring-success/40
   }
@@ -81,7 +83,7 @@
   &.btn-error {
     @apply
     theme__btn
-    text-error-text
+    text-error-text dark:text-inherit
     bg-error hover:bg-error/80 dark:bg-error/50
     border-error focus:ring-error/20 dark:focus:ring-error/40
   }
@@ -89,7 +91,7 @@
   &.btn-info {
     @apply
     theme__btn
-    text-info-text
+    text-info-text dark:text-inherit
     bg-info hover:bg-info/80 dark:bg-info/50
     border-info focus:ring-info/20 dark:focus:ring-info/40
   }
