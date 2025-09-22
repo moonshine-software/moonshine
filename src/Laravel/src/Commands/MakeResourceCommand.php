@@ -6,7 +6,7 @@ namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
-use function Laravel\Prompts\{outro, select, text};
+use function Laravel\Prompts\{confirm, outro, select, text};
 
 use MoonShine\Laravel\Support\StubsPath;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:resource')]
 class MakeResourceCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:resource {className?} {--type=} {--m|model=} {--t|title=} {--test} {--pest} {--p|policy} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:resource {className?} {--type=} {--m|model=} {--t|title=} {--test} {--pest} {--p|policy} {--r|replace} {--base-dir=} {--base-namespace=}';
 
     protected $description = 'Create resource';
 
@@ -57,6 +57,9 @@ class MakeResourceCommand extends MoonShineCommand
             $stub = $keys[$type - 1] ?? $keys[0];
         } else {
             $stub = select('Resource type', $types, 'ModelResourceDefault');
+        }
+        if (file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {
+            return self::SUCCESS;
         }
 
         $properties = '';
