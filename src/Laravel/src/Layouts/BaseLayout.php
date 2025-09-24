@@ -102,7 +102,10 @@ abstract class BaseLayout extends AbstractLayout
                 ])->class('menu-heading-logo'),
 
                 Div::make([
-                    ThemeSwitcher::make(),
+                    When::make(
+                        fn (): bool => $this->hasThemes(),
+                        static fn (): array => [ThemeSwitcher::make()]
+                    ),
                     ...$this->sidebarTopSlot(),
                     Div::make([
                         Burger::make(),
@@ -157,7 +160,10 @@ abstract class BaseLayout extends AbstractLayout
                 ),
 
                 Div::make()->class('menu-inner-divider'),
-                ThemeSwitcher::make(),
+                When::make(
+                    fn (): bool => $this->hasThemes(),
+                    static fn (): array => [ThemeSwitcher::make()]
+                ),
 
                 Div::make([
                     Burger::make(),
