@@ -7,7 +7,6 @@ namespace MoonShine\UI\Fields;
 use BackedEnum;
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
 use Throwable;
 
