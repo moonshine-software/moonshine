@@ -64,6 +64,10 @@ export default async function request(
 
       let htmlData = data.htmlData ?? []
 
+      if (data.html !== undefined) {
+        htmlData = [{html: data.html}]
+      }
+
       if (componentRequestData.selector && typeof data === 'string') {
         htmlData = [{html: data}]
       }
