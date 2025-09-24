@@ -34,7 +34,7 @@ trait ResourceWithFields
             ->findByType(PageType::INDEX)
             ?->getFields();
 
-        if ($fields->isEmpty()) {
+        if (is_null($fields) || $fields->isEmpty()) {
             $fields = Fields::make($this->indexFields());
         }
 
@@ -61,7 +61,7 @@ trait ResourceWithFields
             ->findByType(PageType::FORM)
             ?->getFields();
 
-        if ($fields->isEmpty()) {
+        if (is_null($fields) || $fields->isEmpty()) {
             $fields = Fields::make($this->formFields());
         }
 
@@ -86,7 +86,7 @@ trait ResourceWithFields
             ->findByType(PageType::DETAIL)
             ?->getFields();
 
-        if ($fields->isEmpty()) {
+        if (is_null($fields) || $fields->isEmpty()) {
             $fields = Fields::make($this->detailFields());
         }
 
