@@ -288,4 +288,9 @@ abstract class BaseLayout extends AbstractLayout
     {
         return false;
     }
+
+    protected function hasThemes(): bool
+    {
+        return true;
+    }
 }
