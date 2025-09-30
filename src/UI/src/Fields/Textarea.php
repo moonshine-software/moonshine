@@ -12,9 +12,10 @@ use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithEscapedValue;
 
-class Textarea extends Field implements HasDefaultValueContract, CanBeString
+class Textarea extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract
 {
     use HasPlaceholder;
+    use UpdateOnPreview;
     use WithDefaultValue;
     use WithEscapedValue;
 
