@@ -55,7 +55,8 @@ export function listComponentRequest(component, pushState = false) {
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
 
-  component.loading = true
+  // TODO skeleton loader
+  //component.loading = true
 
   let eventData = component.$event.detail
 
@@ -140,7 +141,9 @@ export function listComponentRequest(component, pushState = false) {
       let tempElement = document.createElement('div')
       tempElement.innerHTML = data
 
-      t.$root.outerHTML = tempElement.firstElementChild.innerHTML
+
+      Alpine.morph(t.$root, tempElement.firstElementChild.innerHTML)
+
       t.loading = false
     })
     .withEvents(events)
