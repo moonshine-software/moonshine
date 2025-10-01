@@ -53,6 +53,13 @@ trait TableStates
 
     protected bool $searchable = false;
 
+    public function withFilters(string $formName): static
+    {
+        return $this->customAttributes([
+            'data-filters-form-name' => $formName,
+        ]);
+    }
+
     public function hasNotFound(): bool
     {
         return $this->withNotFound;

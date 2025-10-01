@@ -1,7 +1,7 @@
 import {dispatchEvents} from '../Support/DispatchEvents.js'
 import request, {prepareUrl, urlWithQuery} from './Core.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
-import {getQueryString} from '../Support/Forms.js'
+import {getQueryString, prepareFormQueryString} from '../Support/Forms.js'
 
 export function listRowRequest(component, key = null, index = null, type = 'change') {
   const body = component.table.querySelector('tbody')
@@ -58,6 +58,13 @@ export function listComponentRequest(component, pushState = false) {
   component.loading = true
 
   let eventData = component.$event.detail
+
+  if(component.$root.dataset.filtersFormName) {
+    const form = document.querySelector(`form[data-component="${component.$root.dataset.filtersFormName}"]`)
+
+    url = prepareListComponentRequestUrl(url)
+    url = urlWithQuery(url, prepareFormQueryString(new FormData(form), '_token,_component_name'))
+  }
 
   if (eventData && eventData.filterQuery) {
     url = prepareListComponentRequestUrl(url)
