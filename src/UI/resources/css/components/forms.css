@@ -51,7 +51,7 @@ input {
 .form-file-upload,
 .ts-control {
   @apply base__default base__placeholder block w-full
-  theme__rounded
+  rounded-md
   min-h-10
   p-2
   minimalistic:p-1
@@ -143,7 +143,7 @@ input {
   cursor-pointer
   w-5
   h-5
-  border-1 theme__border_for_light_bg
+  border-1 theme__border
   rounded-md md:rounded-none
   flex
   items-center
@@ -174,7 +174,7 @@ input {
   items-center
   justify-center
   rounded-full
-  border-1 theme__border_for_light_bg
+  border-1 theme__border
   flex
   items-center
   justify-center
@@ -207,7 +207,7 @@ input {
     after:w-5
     after:rounded-full
     after:border
-    after:theme__border_for_light_bg
+    after:theme__border
     after:transition-all
     after:bg-white
     after:border-gray-300
@@ -221,7 +221,7 @@ input {
     @apply
     after:translate-x-full
     bg-primary dark:bg-primary
-    after:border-primary dark:after:theme__border_for_light_bg
+    after:border-primary dark:after:theme__border
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
@@ -579,7 +579,7 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply base__default w-full theme__rounded;
+  @apply base__default w-full rounded-md;
 
   &::after {
     @apply transition-all;

@@ -34,7 +34,7 @@
     @apply bg-slate-100
     dark:bg-dark-800
     dark:hover:bg-dark-800
-    theme__border_for_light_bg
+    theme__border
     ;
 
     > svg {
