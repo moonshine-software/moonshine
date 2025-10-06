@@ -1,209 +1,229 @@
-/* Custom Scrollbar */
-:root {
-  --scrollbar-color: var(--color-gray-300);
-  --scrollbar-hover-color: var(--color-gray-200);
+@layer base {
+  /* Custom Scrollbar */
+  :root {
+    --scrollbar-color: var(--color-gray-300);
+    --scrollbar-hover-color: var(--color-gray-200);
 
-  @variant dark {
-    --scrollbar-color: var(--color-dark-100);
-    --scrollbar-hover-color: var(--color-dark-50);
+    @variant dark {
+      --scrollbar-color: var(--color-dark-100);
+      --scrollbar-hover-color: var(--color-dark-50);
 
-    input,
-    textarea {
-      color-scheme: dark;
+      input,
+      textarea {
+        color-scheme: dark;
+      }
     }
   }
-}
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-color) transparent;
-}
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  border: 3px solid transparent;
-  background-clip: padding-box;
-  background-color: var(--scrollbar-color);
-
-  &:hover {
-    background-color: var(--scrollbar-hover-color);
+    &:focus-visible {
+      outline: 2px dashed var(--color-primary);
+    }
   }
-}
 
-/* General CSS */
-::selection {
-  @apply bg-primary text-white;
-}
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
 
-body {
-  @apply
-  relative overflow-x-hidden
-  bg-body
-  minimalistic:bg-slate-50 minimalistic:dark:bg-dark-700
-  text-gray-800 dark:text-slate-300
-  min-w-[320px]
-}
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 
-/* Heading */
-.heading {
-  @apply mb-4;
+  ::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-color);
 
-  h1,
-  h2,
-  h3,
-  h4,
-  .h1,
-  .h2,
-  .h3,
-  .h4,
+    &:hover {
+      background-color: var(--scrollbar-hover-color);
+    }
+  }
+
+  /* General CSS */
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-text, var(--color-white));
+  }
+
+  html {
+    font-size: var(--ms-html-font-size, 16px);
+  }
+
+  body {
+    overflow-x: hidden;
+    position: relative;
+    min-width: 320px;
+    background-color: var(--ms-layout-body-bg-color, var(--color-body));
+    font-size: var(--font-2xs);
+    color: var(--color-gray-600);
+
+    @variant dark {
+      color: var(--color-slate-300);
+    }
+  }
+
+  /* Heading */
+  .heading {
+    margin-bottom: --spacing(4);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    div {
+      @apply mb-6 truncate font-medium;
+    }
+
+    h1,
+    .h1 {
+      @apply text-md;
+    }
+
+    h2,
+    .h2 {
+      @apply text-sm;
+    }
+
+    h3,
+    .h3 {
+      @apply text-xs;
+    }
+
+    h4,
+    .h4 {
+      @apply text-2xs;
+    }
+  }
+
+  a {
+    @apply hover:text-primary dark:hover:text-white;
+  }
+
+  .link {
+    @apply font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+  }
+
+  button {
+    cursor: pointer;
+
+    @variant disabled {
+      cursor: default;
+    }
+  }
+
+  p + p {
+    margin-top: --spacing(2);
+  }
+
+  b,
+  strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  svg {
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  pre {
+    overflow: auto;
+    max-width: 100%;
+  }
+
+  .chart {
+    @apply w-full;
+
+    > * {
+      @apply mx-auto;
+    }
+  }
+
+  ul {
+    /* List marker */
+
+    &.list-marker {
+      @apply list-[square] space-y-2 pl-6 marker:text-primary;
+    }
+
+    /* Checkboxes tree */
+
+    &.tree-list {
+      @apply -m-1 space-y-1.5 overflow-x-auto p-1;
+
+      li {
+        @apply space-y-1.5;
+
+        ul {
+          @apply ml-6 space-y-1.5;
+        }
+      }
+    }
+
+    /* Checkboxes horizontal */
+
+    &.horizontal-list {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      @apply grid items-center;
+
+      li {
+        @apply pe-2 pb-2;
+
+        .form-group {
+          @apply flex-nowrap;
+        }
+      }
+    }
+  }
+
+  /* Images in a row */
+  .images-row {
+    @apply flex;
+
+    & > * {
+      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-dark-200;
+
+      &:not(:first-child) {
+        @apply -ml-5;
+      }
+    }
+  }
+
+  /* Divider */
+  hr,
+  hr.divider {
+    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
+  }
+
   div {
-    @apply mb-6 truncate font-medium;
-  }
+    &.divider {
+      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
+    }
 
-  h1,
-  .h1 {
-    @apply text-md;
-  }
-
-  h2,
-  .h2 {
-    @apply text-sm;
-  }
-
-  h3,
-  .h3 {
-    @apply text-xs;
-  }
-
-  h4,
-  .h4 {
-    @apply text-2xs;
-  }
-}
-
-a {
-  @apply transition-all hover:text-primary dark:hover:text-white;
-}
-
-.link {
-  @apply font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
-}
-
-p + p {
-  @apply mt-2;
-}
-
-b,
-strong {
-  @apply font-semibold;
-}
-
-button {
-  @apply transition-all;
-}
-
-svg {
-  @apply flex-shrink-0;
-}
-
-pre {
-  @apply max-w-full overflow-auto;
-}
-
-.chart {
-  @apply w-full;
-
-  > * {
-    @apply mx-auto;
-  }
-}
-
-ul {
-  /* List marker */
-
-  &.list-marker {
-    @apply list-[square] space-y-2 pl-6 marker:text-primary;
-  }
-
-  /* Checkboxes tree */
-
-  &.tree-list {
-    @apply -m-1 space-y-1.5 overflow-x-auto p-1;
-
-    li {
-      @apply space-y-1.5;
-
-      ul {
-        @apply ml-6 space-y-1.5;
-      }
+    &.divider-centered {
+      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
     }
   }
 
-  /* Checkboxes horizontal */
+  .space-elements > :not([hidden], [type='hidden']) ~ :not([hidden], [type='hidden']) {
+    --tw-space-y-reverse: 0;
+    --tw-value: 1.25rem;
 
-  &.horizontal-list {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    @apply grid items-center;
-
-    li {
-      @apply pb-2 pe-2;
-
-      .form-group {
-        @apply flex-nowrap;
-      }
-    }
-  }
-}
-
-/* Images in a row */
-.images-row {
-  @apply flex;
-
-  & > * {
-    @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-dark-200;
-
-    &:not(:first-child) {
-      @apply -ml-5;
-    }
-  }
-}
-
-/* Divider */
-hr,
-hr.divider {
-  @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
-}
-
-div {
-  &.divider {
-    @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
-  }
-
-  &.divider-centered {
-    @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
-  }
-}
-
-.space-elements > :not([hidden], [type='hidden']) ~ :not([hidden], [type='hidden']) {
-  --tw-space-y-reverse: 0;
-  --tw-value: 1.25rem;
-
-  @apply
-  mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse)))]
+    @apply mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse)))]
   mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))]
 
   compact:mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse))_/_1.3)]
   compact:mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse)_/_1.3)]
 
   minimalistic:mt-2
-  minimalistic:mb-2
+  minimalistic:mb-2;
+  }
 }

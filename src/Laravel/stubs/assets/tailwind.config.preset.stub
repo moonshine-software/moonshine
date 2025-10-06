@@ -81,7 +81,7 @@ export default {
             color: 'rgba(var(--menu-current-color, 0, 0, 0), <alpha-value>)',
           },
           dropdown: {
-            bg: 'rgba(var(--menu-dropdown-bg, var(--dark-600)), <alpha-value>)',
+            bg: 'rgba(var(--menu-submenu-bg, var(--dark-600)), <alpha-value>)',
           },
         },
       },

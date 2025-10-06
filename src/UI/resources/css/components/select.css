@@ -41,7 +41,7 @@
     @apply
     opacity-70
     px-4 py-2
-    border-b theme__border_for_light_bg
+    border-b theme__border
   }
 }
 
@@ -79,7 +79,7 @@
   @apply
   w-full
   rounded-md
-  border theme__border_for_light_bg
+  border theme__border
   focus:outline-none
 }
 
@@ -90,7 +90,7 @@
 .ts-dropdown {
   @apply
   rounded-md
-  border theme__border_for_light_bg
+  border theme__border
 }
 
 .ts-dropdown [data-selectable].option, .ts-dropdown .no-results {

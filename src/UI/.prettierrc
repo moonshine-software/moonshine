@@ -1,23 +1,22 @@
 {
-    "printWidth": 100,
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
-    "bracketSpacing": false,
-    "semi": false,
-    "requirePragma": false,
-    "proseWrap": "preserve",
-    "arrowParens": "avoid",
-    "plugins": [
-        "prettier-plugin-tailwindcss"
-    ],
-    "tailwindConfig": "tailwind.config.js",
-    "overrides": [
-        {
-            "files": "*.js",
-            "options": {
-                "parser": "flow"
-            }
-        }
-    ]
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "bracketSpacing": false,
+  "semi": false,
+  "requirePragma": false,
+  "proseWrap": "preserve",
+  "arrowParens": "avoid",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./resources/css/main.css",
+  "tailwindPreserveWhitespace": true,
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "flow"
+      }
+    }
+  ]
 }

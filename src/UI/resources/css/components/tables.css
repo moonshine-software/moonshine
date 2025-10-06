@@ -1,47 +1,120 @@
 /* Tables */
 table {
-  width: calc(100% - 1px);
-  @apply border-collapse text-left;
+  text-indent: 0;
+  width: 100%;
+  border-color: inherit;
+  border-collapse: collapse;
+  text-align: left;
 
   .dropzone-items {
-    @apply max-h-[8rem] max-w-xs gap-1.5 overflow-y-auto;
+    overflow-y: auto;
+    max-width: var(--container-xs);
+    max-height: 8rem;
+    gap: --spacing(1.5);
   }
 
   .dropzone-item-file {
-    @apply gap-1 border-0 p-1;
+    gap: --spacing(1);
+    padding: --spacing(1);
+    border: 0;
   }
 
   .dropzone-file-icon > svg {
-    @apply h-5 w-5;
+    @apply size-5;
   }
 }
 
+.table-container {
+  overflow: hidden;
+  border-radius: var(--ms-table-radius, var(--radius-xl));
+  border: 1px solid var(--ms-table-border-color, var(--theme-border-color));
+}
+
+.table-responsive {
+  overflow-x: auto;
+  position: relative;
+  width: 100%;
+}
+
 .table {
-  @apply text-xs;
+  background-color: var(--ms-table-bg-color, var(--ms-layout-body-bg-color, var(--theme-bg-color)));
 
   thead {
-    @apply text-3xs uppercase;
+    background-color: var(--ms-table-thead-bg-color, --alpha(var(--color-body) / 0.5));
+
+    tr {
+      border-bottom: 1px solid var(--ms-table-border-color, var(--theme-border-color));
+    }
+
+    th,
+    td {
+      padding-block: var(--ms-table-thead-space-y, --spacing(3));
+      padding-inline: var(--ms-table-thead-space-x, --spacing(3));
+      font-weight: var(--ms-table-thead-font-weight, var(--font-weight-semibold));
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--ms-table-border-color, var(--theme-border-color));
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    th,
+    td {
+      padding-block: var(--ms-table-tbody-space-y, --spacing(3));
+      padding-inline: var(--ms-table-tbody-space-x, --spacing(3));
+    }
+  }
+}
+
+/* 
+.table {
+  font-size: var(--font-xs);
+
+  thead {
+    font-size: var(--font-3xs);
+    text-transform: uppercase;
 
     td,
     th {
-      @apply max-w-lg border-b p-2 font-semibold dark:border-dark-300;
+      max-width: var(--container-lg);
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      font-weight: var(--font-weight-semibold);
+
+      @variant dark {
+        border-color: var(--color-dark-300);
+      }
     }
   }
 
   tbody {
     td,
     th {
-      @apply max-w-lg break-words border-b p-2 py-3 dark:border-dark-400;
+      max-width: var(--container-lg);
+      padding-block: --spacing(3);
+      padding-inline: --spacing(2);
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+      overflow-wrap: break-word;
+
+      @variant dark {
+        border-color: var(--color-dark-400);
+      }
     }
 
     th {
-      @apply font-semibold;
+      font-weight: var(--font-weight-semibold);
     }
 
     tr:last-child {
       td,
       th {
-        @apply border-b-0;
+        border-bottom-width: 0;
       }
     }
   }
@@ -49,16 +122,24 @@ table {
   tfoot {
     td,
     th {
-      @apply max-w-lg border-t dark:border-dark-400;
+      max-width: var(--container-lg);
+      border-top-style: solid;
+      border-top-width: 1px;
+
+      @variant dark {
+        border-color: var(--color-dark-400);
+      }
     }
 
     td:not([class$='-bulk-actions']),
     th {
-      @apply break-words p-2 py-3;
+      padding-block: --spacing(3);
+      padding-inline: --spacing(2);
+      overflow-wrap: break-word;
     }
 
     td[class$='-bulk-actions'] {
-      @apply pb-3 pt-3;
+      padding-block: --spacing(3);
     }
   }
 }
@@ -79,11 +160,11 @@ table {
   thead {
     td,
     th {
-      @apply max-w-lg whitespace-nowrap
-      px-5 py-3
-      compact:p-4
-      minimalistic:p-0
-      text-2xs font-semibold first:rounded-l-lg last:rounded-r-lg dark:border-dark-300;
+      @apply max-w-lg px-5
+      py-3 text-2xs
+      font-semibold
+      whitespace-nowrap
+      first:rounded-l-lg last:rounded-r-lg dark:border-dark-300 compact:p-4 minimalistic:p-0;
     }
   }
 
@@ -94,10 +175,10 @@ table {
 
     td,
     th {
-      @apply first:rounded-l-lg last:rounded-r-lg dark:border-dark-300
-      px-5 py-3
+      @apply px-5 py-3 first:rounded-l-lg
+      last:rounded-r-lg dark:border-dark-300
       compact:p-3
-      minimalistic:p-0
+      minimalistic:p-0;
     }
   }
 
@@ -114,7 +195,7 @@ table {
 
   td,
   th {
-    @apply relative max-w-md overflow-hidden whitespace-nowrap bg-inherit;
+    @apply relative max-w-md overflow-hidden bg-inherit whitespace-nowrap;
 
     &.fit-content {
       @apply min-w-fit;
@@ -158,7 +239,8 @@ table {
 }
 
 .table-responsive {
-  @apply w-full overflow-auto;
+  overflow: auto;
+  width: 100%;
 }
 
 .table-zoom-in {
@@ -168,14 +250,13 @@ table {
 }
 
 .table-sticky {
-  max-height: calc(70dvh);
+  max-height: 70dvh;
 
   & > table > thead {
     @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-700;
   }
 }
 
-/* Sticky Columns */
 .table-list {
   thead,
   tbody {
@@ -192,4 +273,4 @@ table {
       }
     }
   }
-}
+} */

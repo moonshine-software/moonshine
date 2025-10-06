@@ -1,4 +1,7 @@
-@source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{relative,fixed,absolute,static,z-[{0..100},dropdown,notifications,offcanvas,modal,menu,toast]}');
+@source inline("{xs:,sm:,md:,lg:,xl:,}{grid,grid-{cols,rows}-{1..12}}");
+@source inline("{xs:,sm:,md:,lg:,xl:,}col-{span,start,end}-{{1..12},full}");
+
+/* @source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{relative,fixed,absolute,static,z-[{0..100},dropdown,notifications,offcanvas,modal,menu,toast]}');
 @source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{visible,invisible,!hidden,hidden,!block,overflow-{auto,hidden},pointer-events-{none,auto},grow,opacity-{0..100..10},fit-content}");
 
 @source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{grid,grid-{cols,rows}-{1..12}}");
@@ -13,4 +16,4 @@
 @source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}object-{cover,contain,fill,none,scale-down}");
 
 @source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}text-{xs,sm,md,lg,xl,primary,secondary,info,success,warning,error,left,center,right}");
-@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{badge,badge-{primary,secondary,info,success,warning,error}}");
+@source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{badge,badge-{primary,secondary,info,success,warning,error}}"); */

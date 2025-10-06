@@ -16,7 +16,7 @@
 
       .title {
         @apply text-sm font-semibold sm:text-md
-        border-b theme__border_for_light_bg
+        border-b theme__border
         mb-3
         compact:mb-2
         minimalistic:mb-1

@@ -23,13 +23,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button"
-                                    class="btn btn-close"
+                                    class="modal-close btn-icon"
                                     @click.stop="open=false"
                                     aria-label="Close"
                             >
                                 <x-moonshine::icon
                                     icon="x-mark"
-                                    size="6"
                                 />
                             </button>
                         </div>

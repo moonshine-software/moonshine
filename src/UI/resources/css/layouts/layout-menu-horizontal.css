@@ -1,0 +1,43 @@
+.layout-menu-horizontal {
+  --_menu-safezone-scroll-height: --spacing(75);
+
+  display: flex;
+  align-items: center;
+  column-gap: var(--ms-layout-menu-horizontal-gap-x, --spacing(3));
+  width: 100%;
+  padding-block: calc(var(--ms-layout-wrapper-spacing) * 0.5);
+  padding-inline: var(--ms-layout-wrapper-spacing);
+
+  @variant lg {
+    padding-inline: calc(var(--ms-layout-wrapper-spacing) * 0.5);
+  }
+
+  // Compensate height of vertical layout menu
+  & + .layout-menu {
+  }
+
+  .menu {
+    @apply scrollbar-hidden;
+
+    margin-bottom: calc(var(--_menu-safezone-scroll-height) * -1);
+    padding-bottom: var(--_menu-safezone-scroll-height);
+
+    @variant max-lg {
+      display: none;
+    }
+
+    .menu-list {
+      > .menu-divider {
+        --ms-menu-divider-min-width: 1px;
+      }
+    }
+  }
+
+  .menu-submenu {
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    z-index: var(--z-dropdown);
+    max-height: calc(var(--_menu-safezone-scroll-height) - --spacing(5));
+  }
+}
