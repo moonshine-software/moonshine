@@ -277,14 +277,41 @@ input {
   @apply flex-row items-stretch gap-0;
 
   .form-input {
-    @apply shrink rounded-r-none;
+    @apply shrink;
+  }
 
-    & ~ .expansion-wrapper {
-      @apply border-l-0 theme__border_for_light_bg;
+  /* Prefix Wrapper - to the left of the input */
+  .expansion-wrapper--prefix {
+    @apply
+    base__default
+    overflow-hidden
+    flex
+    flex-row
+    items-center
+    shrink-0
+    rounded-l-md
+    bg-slate-100
+    text-slate-600
+    dark:bg-dark-900/20
+    dark:text-slate-400
+    ;
+
+    .expansion {
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
+    }
+
+    button {
+      @apply hover:bg-gray-300 dark:hover:bg-dark-200;
+    }
+
+    /* Input after prefix: no left border radius and no left border */
+    & + .form-input {
+      @apply rounded-l-none border-l-0;
     }
   }
 
-  .expansion-wrapper {
+  /* Suffix Wrapper - to the right of the input */
+  .expansion-wrapper:not(.expansion-wrapper--prefix) {
     @apply
     base__default
     overflow-hidden
@@ -308,15 +335,23 @@ input {
     }
   }
 
-  .form-input:read-only ~ .expansion-wrapper {
+  /* Input before suffix: no right border radius */
+  .form-input:has(~ .expansion-wrapper:not(.expansion-wrapper--prefix)) {
+    @apply rounded-r-none border-r-0;
+  }
+
+  /* Prefix: Read-only state */
+  .expansion-wrapper--prefix:has(+ .form-input:read-only) {
     @apply base__read-only;
   }
 
-  .form-input:not(:read-only):focus ~ .expansion-wrapper {
+  /* Prefix: Focus State */
+  .expansion-wrapper--prefix:has(+ .form-input:not(:read-only):focus) {
     @apply base__focus;
   }
 
-  .form-input:disabled ~ .expansion-wrapper {
+  /* Prefix: Disabled State */
+  .expansion-wrapper--prefix:has(+ .form-input:disabled) {
     @apply base__disabled;
 
     * {
@@ -324,11 +359,43 @@ input {
     }
   }
 
-  .form-input.form-invalid ~ .expansion-wrapper {
+  /* Prefix: Invalid State */
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid) {
     @apply base__error;
   }
 
-  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper {
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid:not(:read-only):focus) {
+    @apply
+    base__error
+    ring-error/20
+    dark:ring-error/40
+  }
+
+  /* Suffix: Read-only State */
+  .form-input:read-only ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__read-only;
+  }
+
+  /* Suffix: Focus State */
+  .form-input:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__focus;
+  }
+
+  /* Suffix: Disabled State */
+  .form-input:disabled ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__disabled;
+
+    * {
+      @apply pointer-events-none;
+    }
+  }
+
+  /* Suffix: Invalid State */
+  .form-input.form-invalid ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__error;
+  }
+
+  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
     @apply
     base__error
     ring-error/20
