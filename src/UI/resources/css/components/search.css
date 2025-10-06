@@ -3,7 +3,7 @@
   @apply relative flex items-center;
 
   .search-form {
-    @apply relative h-12 w-full xl:max-w-[16rem];
+    @apply relative w-full xl:max-w-[16rem] h-12 compact:h-fit minimalistic:h-fit;
 
     .search-form-field {
       @apply 

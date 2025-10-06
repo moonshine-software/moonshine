@@ -146,7 +146,7 @@ table {
 
 .table-divider {
   div.grid {
-    @apply my-0! border-b py-2 dark:border-dark-400;
+    @apply my-0! py-2 border-b theme__border_for_light_bg;
 
     &:last-child {
       @apply border-b-0 pb-0;

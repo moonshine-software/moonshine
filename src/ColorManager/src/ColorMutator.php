@@ -94,7 +94,7 @@ final class ColorMutator
 
             $lightness = $isPercentL ? $lightnessRaw / 100 : $lightnessRaw;
             $chroma = $isPercentC ? $chromaRaw / 100 : $chromaRaw;
-            $hue = $chroma == 0.0 ? 0.0 : $hueRaw;
+            $hue = $chroma === 0.0 ? 0.0 : $hueRaw;
 
             if ($lightness >= 0 && $lightness <= 1)
             {
@@ -118,7 +118,7 @@ final class ColorMutator
                 $chroma /= 100;
             }
 
-            $hue = $chroma == 0.0 ? 0.0 : (float) $matches[5];
+            $hue = $chroma === 0.0 ? 0.0 : (float) $matches[5];
 
             return $formatResult(
                 max(0, min(1, $lightness)),

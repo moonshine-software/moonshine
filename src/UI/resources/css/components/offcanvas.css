@@ -1,6 +1,16 @@
 /* Offcanvas */
 .offcanvas {
-  @apply fixed inset-y-0 z-offcanvas flex w-full max-w-[320px] flex-col bg-white bg-clip-padding outline-none transition-transform dark:bg-dark-700 md:max-w-[400px];
+  @apply
+  w-full max-w-[320px] md:max-w-[400px]
+  fixed inset-y-0
+  z-offcanvas
+  flex flex-col
+  bg-white dark:bg-dark-700
+  bg-clip-padding
+  outline-none
+  transition-transform
+  shadow-lg
+  ;
 
   /* Positions */
 
@@ -19,7 +29,7 @@
 
 .offcanvas-header {
   @apply flex justify-between gap-x-4
-  border-b border-gray-200 dark:border-dark-200
+  border-b theme__border_for_light_bg
   p-4 lg:p-6
   compact:p-4
   minimalistic:p-3

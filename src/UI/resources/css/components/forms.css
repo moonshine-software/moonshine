@@ -50,12 +50,12 @@ input {
 .form-multiselect,
 .form-file-upload,
 .ts-control {
-  @apply block min-h-10 w-full
-  base__default
+  @apply base__default base__placeholder block w-full
+  theme__rounded
+  min-h-10
   p-2
-  base__placeholder
-  minimalistic:min-h-6
-  minimalistic:p-1;
+  minimalistic:p-1
+  ;
 
   &:focus {
     @apply base__focus;
@@ -141,7 +141,12 @@ input {
   w-5
   shrink-0
   cursor-pointer
-  appearance-none items-center
+  w-5
+  h-5
+  border-1 theme__border_for_light_bg
+  rounded-md md:rounded-none
+  flex
+  items-center
   justify-center
   rounded-md
   border-1
@@ -169,8 +174,10 @@ input {
   items-center
   justify-center
   rounded-full
-  border-1
-  border-gray-300
+  border-1 theme__border_for_light_bg
+  flex
+  items-center
+  justify-center
   bg-white
   checked:border-primary
   checked:bg-primary
@@ -200,6 +207,9 @@ input {
     after:w-5
     after:rounded-full
     after:border
+    after:theme__border_for_light_bg
+    after:transition-all
+    after:bg-white
     after:border-gray-300
     after:bg-white
     after:transition-all
@@ -208,9 +218,10 @@ input {
   }
 
   .peer:checked + .form-switcher-toggler {
-    @apply bg-primary
-    after:translate-x-full after:border-primary
-    dark:bg-primary dark:after:border-dark-200;
+    @apply
+    after:translate-x-full
+    bg-primary dark:bg-primary
+    after:border-primary dark:after:theme__border_for_light_bg
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
@@ -264,16 +275,45 @@ input {
   @apply flex-row items-stretch gap-0;
 
   .form-input {
-    @apply shrink rounded-r-none;
+    @apply shrink;
+  }
 
-    & ~ .expansion-wrapper {
-      @apply border-l-0;
+  /* Prefix Wrapper - to the left of the input */
+  .expansion-wrapper--prefix {
+    @apply
+    base__default
+    overflow-hidden
+    flex
+    flex-row
+    items-center
+    shrink-0
+    rounded-l-md
+    bg-slate-100
+    text-slate-600
+    dark:bg-dark-900/20
+    dark:text-slate-400
+    ;
+
+    .expansion {
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
+    }
+
+    button {
+      @apply hover:bg-gray-300 dark:hover:bg-dark-200;
+    }
+
+    /* Input after prefix: no left border radius and no left border */
+    & + .form-input {
+      @apply rounded-l-none border-l-0;
     }
   }
 
-  .expansion-wrapper {
-    @apply flex
-    shrink-0
+  /* Suffix Wrapper - to the right of the input */
+  .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply
+    base__default
+    overflow-hidden
+    flex
     flex-row
     items-center
     overflow-hidden
@@ -285,7 +325,7 @@ input {
     dark:text-slate-400;
 
     .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-2xs;
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
     }
 
     button {
@@ -293,15 +333,23 @@ input {
     }
   }
 
-  .form-input:read-only ~ .expansion-wrapper {
+  /* Input before suffix: no right border radius */
+  .form-input:has(~ .expansion-wrapper:not(.expansion-wrapper--prefix)) {
+    @apply rounded-r-none border-r-0;
+  }
+
+  /* Prefix: Read-only state */
+  .expansion-wrapper--prefix:has(+ .form-input:read-only) {
     @apply base__read-only;
   }
 
-  .form-input:not(:read-only):focus ~ .expansion-wrapper {
+  /* Prefix: Focus State */
+  .expansion-wrapper--prefix:has(+ .form-input:not(:read-only):focus) {
     @apply base__focus;
   }
 
-  .form-input:disabled ~ .expansion-wrapper {
+  /* Prefix: Disabled State */
+  .expansion-wrapper--prefix:has(+ .form-input:disabled) {
     @apply base__disabled;
 
     * {
@@ -309,12 +357,45 @@ input {
     }
   }
 
-  .form-input.form-invalid ~ .expansion-wrapper {
+  /* Prefix: Invalid State */
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid) {
     @apply base__error;
   }
 
-  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper {
-    @apply base__error
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid:not(:read-only):focus) {
+    @apply
+    base__error
+    ring-error/20
+    dark:ring-error/40
+  }
+
+  /* Suffix: Read-only State */
+  .form-input:read-only ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__read-only;
+  }
+
+  /* Suffix: Focus State */
+  .form-input:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__focus;
+  }
+
+  /* Suffix: Disabled State */
+  .form-input:disabled ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__disabled;
+
+    * {
+      @apply pointer-events-none;
+    }
+  }
+
+  /* Suffix: Invalid State */
+  .form-input.form-invalid ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__error;
+  }
+
+  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply
+    base__error
     ring-error/20
     dark:ring-error/40;
   }
@@ -498,7 +579,7 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply w-full rounded-md base__default;
+  @apply base__default w-full theme__rounded;
 
   &::after {
     @apply transition-all;
@@ -527,13 +608,15 @@ input {
 
   &[data-type*='select-one'] {
     &:not(.is-open) {
-      @apply after:border-t-gray-300
-      dark:after:border-t-dark-200;
+      @apply
+      after:border-t-slate-300
+      dark:after:border-t-slate-600
     }
 
     &.is-open {
-      @apply after:border-b-gray-300
-      dark:after:border-b-dark-200;
+      @apply
+      after:border-t-slate-300
+      dark:after:border-t-slate-600
     }
   }
 
@@ -551,7 +634,7 @@ input {
   }
 
   .choices__inner {
-    @apply min-h-0 border-none bg-transparent text-2xs;
+    @apply min-h-0 border-none bg-transparent text-3xs;
     padding: 0.5rem 0.75rem;
 
     .choices__list--single {
@@ -631,7 +714,7 @@ fieldset {
   @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-dark-200;
 
   legend {
-    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-2xs sm:left-4;
+    @apply absolute left-3 top-0 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
 
     &:before {
       content: '';
