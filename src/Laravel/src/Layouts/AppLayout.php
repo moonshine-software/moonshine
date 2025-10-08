@@ -40,9 +40,9 @@ class AppLayout extends BaseLayout
                 $this->getHeadComponent(),
                 Body::make([
                     Wrapper::make([
-                        $this->getTopBarComponent(),
+                        // $this->getTopBarComponent(),
                         $this->getSidebarComponent(),
-                        
+
                         Div::make([
                             Fragment::make([
                                 Flash::make(),
