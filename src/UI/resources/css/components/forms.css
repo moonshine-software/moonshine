@@ -50,12 +50,11 @@ input {
 .form-multiselect,
 .form-file-upload,
 .ts-control {
-  @apply base__default base__placeholder block w-full
-  rounded-md
-  min-h-10
+  @apply block min-h-10 w-full rounded-md
+  base__default
   p-2
-  minimalistic:p-1
-  ;
+  base__placeholder
+  minimalistic:p-1;
 
   &:focus {
     @apply base__focus;
@@ -140,21 +139,15 @@ input {
   h-5
   w-5
   shrink-0
-  cursor-pointer
-  w-5
-  h-5
-  border-1 theme__border
-  rounded-md md:rounded-none
-  flex
-  items-center
-  justify-center
-  rounded-md
+  cursor-pointer items-center
+  justify-center rounded-md
   border-1
   theme__border
   bg-white
   checked:border-primary
   checked:bg-primary
   hover:border-primary
+  md:rounded-none
   dark:border-dark-100
   dark:bg-transparent;
 
@@ -174,10 +167,8 @@ input {
   items-center
   justify-center
   rounded-full
-  border-1 theme__border
-  flex
-  items-center
-  justify-center
+  border-1
+  theme__border
   bg-white
   checked:border-primary
   checked:bg-primary
@@ -208,8 +199,6 @@ input {
     after:rounded-full
     after:border
     after:theme__border
-    after:transition-all
-    after:bg-white
     after:border-gray-300
     after:bg-white
     after:transition-all
@@ -218,10 +207,9 @@ input {
   }
 
   .peer:checked + .form-switcher-toggler {
-    @apply
-    after:translate-x-full
-    bg-primary dark:bg-primary
-    after:border-primary dark:after:theme__border
+    @apply bg-primary
+    after:translate-x-full after:border-primary
+    dark:bg-primary dark:after:theme__border;
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
@@ -280,19 +268,17 @@ input {
 
   /* Prefix Wrapper - to the left of the input */
   .expansion-wrapper--prefix {
-    @apply
-    base__default
-    overflow-hidden
-    flex
+    @apply flex
+    shrink-0
     flex-row
     items-center
-    shrink-0
+    overflow-hidden
     rounded-l-md
+    base__default
     bg-slate-100
     text-slate-600
     dark:bg-dark-900/20
-    dark:text-slate-400
-    ;
+    dark:text-slate-400;
 
     .expansion {
       @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
@@ -310,10 +296,7 @@ input {
 
   /* Suffix Wrapper - to the right of the input */
   .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply
-    base__default
-    overflow-hidden
-    flex
+    @apply flex
     flex-row
     items-center
     overflow-hidden
@@ -363,10 +346,9 @@ input {
   }
 
   .expansion-wrapper--prefix:has(+ .form-input.form-invalid:not(:read-only):focus) {
-    @apply
-    base__error
+    @apply base__error
     ring-error/20
-    dark:ring-error/40
+    dark:ring-error/40;
   }
 
   /* Suffix: Read-only State */
@@ -393,9 +375,9 @@ input {
     @apply base__error;
   }
 
-  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply
-    base__error
+  .form-input.form-invalid:not(:read-only):focus
+    ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__error
     ring-error/20
     dark:ring-error/40;
   }
@@ -579,7 +561,7 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply base__default w-full rounded-md;
+  @apply w-full rounded-md base__default;
 
   &::after {
     @apply transition-all;
@@ -608,15 +590,13 @@ input {
 
   &[data-type*='select-one'] {
     &:not(.is-open) {
-      @apply
-      after:border-t-slate-300
-      dark:after:border-t-slate-600
+      @apply after:border-t-slate-300
+      dark:after:border-t-slate-600;
     }
 
     &.is-open {
-      @apply
-      after:border-t-slate-300
-      dark:after:border-t-slate-600
+      @apply after:border-t-slate-300
+      dark:after:border-t-slate-600;
     }
   }
 
@@ -714,7 +694,7 @@ fieldset {
   @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-dark-200;
 
   legend {
-    @apply absolute left-3 top-0 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
+    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
 
     &:before {
       content: '';

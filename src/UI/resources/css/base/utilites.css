@@ -58,7 +58,7 @@
 }
 
 @utility base__read-only {
-  @apply cursor-default opacity-85 focus:ring-0
+  @apply cursor-default opacity-85 focus:ring-0;
 }
 
 @utility base__disabled {

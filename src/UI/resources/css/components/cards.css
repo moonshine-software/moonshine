@@ -1,6 +1,6 @@
 /* Category card */
 .card-category {
-  @apply  relative
+  @apply relative
   flex h-full
   flex-col
   gap-y-6 bg-white
@@ -13,7 +13,7 @@
   minimalistic:p-2;
 
   .card-photo {
-    @apply  relative h-52 w-full overflow-hidden;
+    @apply relative h-52 w-full overflow-hidden;
 
     &:has(.carousel) {
       @apply h-auto;

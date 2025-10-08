@@ -8,17 +8,17 @@
 }
 
 .notifications-icon {
-  @apply relative block text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white
-  hover:cursor-pointer
+  @apply relative block text-slate-600 hover:cursor-pointer hover:text-secondary dark:text-dark-50
+  dark:hover:text-white;
 }
 
 .notifications-item {
   @apply relative flex gap-x-3 p-3
-  minimalistic:p-2
+  minimalistic:p-2;
 }
 
 .notifications-remove {
-  @apply absolute right-3 top-1/2 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
+  @apply absolute top-1/2 right-3 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
 
   > svg {
     @apply h-4 w-4;
@@ -36,7 +36,7 @@
 .notifications-content {
   @apply flex grow flex-col gap-y-0.5 pr-4
   compact:pr-3
-  minimalistic:pr-2
+  minimalistic:pr-2;
 }
 
 .notifications-title {

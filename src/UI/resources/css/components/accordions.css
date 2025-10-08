@@ -6,10 +6,10 @@
 .accordion-item {
   &:first-child {
     .accordion-btn {
-      @apply rounded-t-(--theme-rounded)
+      @apply justify-between
+      rounded-t-(--theme-rounded)
       compact:rounded-t-(--compact-rounded)
-      minimalistic:rounded-none
-      justify-between
+      minimalistic:rounded-none;
     }
   }
 
@@ -31,11 +31,10 @@
   }
 
   &._is-active {
-    @apply bg-slate-100
+    @apply theme__border
+    bg-slate-100
     dark:bg-dark-800
-    dark:hover:bg-dark-800
-    theme__border
-    ;
+    dark:hover:bg-dark-800;
 
     > svg {
       @apply scale-y-[-1];
@@ -44,11 +43,11 @@
 }
 
 .accordion-content {
-  @apply border
+  @apply -mt-1
+  border
   border-t-0
-  theme__border
-  p-3 sm:p-4
+  theme__border p-3
+  sm:p-4
   compact:p-2.5
-  minimalistic:p-1
-  -mt-1
+  minimalistic:p-1;
 }

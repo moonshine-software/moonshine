@@ -1,7 +1,6 @@
 /* Dropzone */
 .dropzone {
-  @apply 
-  relative
+  @apply relative
   w-full
   border-2
   border-dashed
@@ -15,7 +14,7 @@
   }
 
   .dropzone-item {
-    @apply  relative h-12 w-12 overflow-hidden md:h-16
+    @apply relative h-12 w-12 overflow-hidden md:h-16
     md:w-16;
 
     &.dropzone-item-file {

@@ -1,33 +1,30 @@
 /* Social */
 .social {
   .social-divider {
-    @apply
-    w-full
-    flex items-center
+    @apply mb-4
+    flex w-full
+    items-center
     gap-x-2
-    mb-4
-    before:h-[1px] after:h-[1px]
-    before:min-w-[6px] after:min-w-[6px]
-    before:grow after:grow
-    before:bg-gray-200 after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200
+    before:h-[1px] before:min-w-[6px]
+    before:grow before:bg-gray-200
+    after:h-[1px] after:min-w-[6px]
+    after:grow after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200;
   }
 
   .social-list {
-    @apply flex flex-wrap items-center justify-center gap-2 xs:gap-3
+    @apply flex flex-wrap items-center justify-center gap-2 xs:gap-3;
   }
 
   .social-item {
-    @apply
-    inline-flex items-center justify-center
-    h-8
-    w-8
+    @apply inline-flex h-8 w-8
+    items-center
+    justify-center
     rounded-full
-    text-gray-700 hover:text-white
-    bg-gray-200 hover:bg-secondary dark:bg-slate-400 dark:hover:bg-secondary
-    ;
+    bg-gray-200 text-gray-700
+    hover:bg-secondary hover:text-white dark:bg-slate-400 dark:hover:bg-secondary;
 
     > svg {
-      @apply h-3.5 w-3.5 fill-current stroke-current
+      @apply h-3.5 w-3.5 fill-current stroke-current;
     }
   }
 }

@@ -1,7 +1,6 @@
 /* Report card */
 .report-card {
-  @apply 
-  flex h-full
+  @apply flex h-full
   flex-col
   bg-white p-3 shadow-md
   shadow-gray-200 before:hidden

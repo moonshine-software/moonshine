@@ -1,7 +1,6 @@
 /* Alerts */
 .alert {
-  @apply 
-  mb-2.5
+  @apply mb-2.5
   flex w-full
   items-center
   gap-4
