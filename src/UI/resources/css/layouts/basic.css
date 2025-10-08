@@ -1,0 +1,95 @@
+@theme {
+  --ms-layout-main-containered-max-width: 1080px;
+  --ms-layout-wrapper-spacing: --spacing(2);
+  --ms-layout-page-spacing: --spacing(4);
+  --ms-layout-page-radius: --spacing(4);
+}
+
+.layout-wrapper {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  row-gap: var(--ms-layout-wrapper-gap-y, --spacing(3));
+  column-gap: var(--ms-layout-wrapper-gap-x, var(--ms-layout-wrapper-spacing));
+  padding: var(--ms-layout-wrapper-spacing);
+
+  @variant lg {
+    flex-direction: row;
+  }
+}
+
+.layout-main {
+  flex: 1;
+  min-width: 0;
+
+  &:not(.layout-main-containered) {
+    max-width: 100%;
+  }
+
+  &.layout-main-containered {
+    max-width: var(--ms-layout-main-containered-max-width, 1080px);
+    margin-inline: auto;
+  }
+}
+
+.layout-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  padding: var(--ms-layout-page-spacing, --spacing(4));
+  border-radius: var(--ms-layout-page-radius, --spacing(4));
+  border: 1px solid var(--theme-border-color);
+  background-color: var(--ms-layout-page-bg-color, var(--theme-bg-color));
+}
+
+.layout-metrics {
+  display: flex;
+  flex-direction: column;
+  column-gap: --spacing(6);
+  row-gap: --spacing(8);
+  margin-bottom: --spacing(6);
+
+  @variant sm {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+.layout-navigation {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ms-layout-navigation-gap, --spacing(3));
+
+  @variant md {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+
+.layout-content {
+  flex: auto;
+  padding-block: --spacing(6);
+}
+
+.layout-footer {
+  padding-top: --spacing(6);
+}
+
+.layout-overlay {
+  position: fixed;
+  z-index: var(--z-overlay);
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: --alpha(var(--ms-layout-overlay-bg-color, var(--color-black)) / 0.6);
+  backdrop-filter: blur(var(--ms-layout-overlay-blur, 2px));
+
+  @variant lg {
+    display: none;
+  }
+}

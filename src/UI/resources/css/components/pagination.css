@@ -14,7 +14,7 @@
 .pagination-dots,
 .pagination-first,
 .pagination-last {
-  @apply flex h-full w-full items-center justify-center theme__rounded p-1 text-center text-3xs font-medium;
+  @apply flex h-full w-full items-center justify-center rounded-md p-1 text-center text-3xs font-medium;
 }
 
 .pagination-first,

@@ -1,5 +1,8 @@
 @theme {
-  --color-body: oklch(var(--body, 0.266 0.044 264.943));
+  --theme-border-color: --alpha(var(--color-black) / 0.1);
+  --theme-bg-color: oklch(var(--theme-bg, 1 0 0));
+
+  --color-body: oklch(var(--body, 0.999 0.044 264.943));
   --color-primary: oklch(var(--primary, 0.544 0.233 291.241));
   --color-secondary: oklch(var(--secondary, 0.639 0.209 6.961));
 
@@ -14,14 +17,6 @@
   --color-dark-700: oklch(var(--dark-700, 0.303 0.044 272.77));
   --color-dark-800: oklch(var(--dark-800, 0.266 0.044 264.943));
   --color-dark-900: oklch(var(--dark-900, 0.208 0.04 265.755));
-
-  --color-menu-link: oklch(1 0 89.876);
-  --color-menu-hover: var(--menu-hover-color, var(--color-secondary));
-  --color-menu-active-bg: var(--menu-active-bg, var(--color-primary));
-  --color-menu-active-color: var(--menu-active-color, oklch(1 0 89.876));
-  --color-menu-current-bg: var(--menu-current-bg, oklch(0.984 0.003 247.858));
-  --color-menu-current-color: var(--menu-current-color, oklch(0 0 0));
-  --color-menu-dropdown-bg: var(--menu-dropdown-bg, var(--color-dark-600));
 
   --color-success: oklch(var(--success-bg, 0.639 0.218 142.495));
   --color-success-text: oklch(var(--success-text, 1 0 0));
@@ -40,97 +35,94 @@
   --track-to-color: var(--color-primary);
 }
 
+@variant dark {
+  --theme-border-color: --alpha(var(--color-white) / 0.1);
+}
+
 .text-purple {
-  @apply text-purple-500
+  @apply text-purple-500;
 }
 
 .text-pink {
-  @apply text-pink-500
+  @apply text-pink-500;
 }
 
 .text-blue {
-  @apply text-blue-500
+  @apply text-blue-500;
 }
 
 .text-green {
-  @apply text-green-500
+  @apply text-green-500;
 }
 
 .text-yellow {
-  @apply text-yellow-500
+  @apply text-yellow-500;
 }
 
 .text-red {
-  @apply text-red-500
+  @apply text-red-500;
 }
 
 .text-gray {
-  @apply text-gray-500
+  @apply text-gray-500;
 }
 
 /* Background colors */
 .bgc-primary {
-  @apply theme__text_color bg-primary
+  @apply bg-primary theme__text_color;
 }
 
 .bgc-secondary {
-  @apply theme__text_color bg-secondary
+  @apply bg-secondary theme__text_color;
 }
 
 .bgc-success {
-  @apply theme__text_color bg-success
+  @apply bg-success theme__text_color;
 }
 
 .bgc-warning {
-  @apply theme__text_color bg-warning
+  @apply bg-warning theme__text_color;
 }
 
 .bgc-error {
-  @apply theme__text_color bg-error
+  @apply bg-error theme__text_color;
 }
 
 .bgc-info {
-  @apply theme__text_color bg-info
+  @apply bg-info theme__text_color;
 }
 
 .bgc-purple {
-  @apply
-  text-purple-800 bg-purple-100/50
-  dark:text-purple-300 dark:bg-purple-900/50
+  @apply bg-purple-100/50 text-purple-800
+  dark:bg-purple-900/50 dark:text-purple-300;
 }
 
 .bgc-pink {
-  @apply
-  text-pink-800 bg-pink-100/50
-  dark:text-pink-300 dark:bg-pink-900/50
+  @apply bg-pink-100/50 text-pink-800
+  dark:bg-pink-900/50 dark:text-pink-300;
 }
 
 .bgc-blue {
-  @apply
-  text-blue-800 bg-blue-100/50
-  dark:text-blue-300 dark:bg-blue-900/50
+  @apply bg-blue-100/50 text-blue-800
+  dark:bg-blue-900/50 dark:text-blue-300;
 }
 
 .bgc-green {
-  @apply
-  text-green-800 bg-green-100/50
-  dark:text-green-300 dark:bg-green-900/50
+  @apply bg-green-100/50 text-green-800
+  dark:bg-green-900/50 dark:text-green-300;
 }
 
 .bgc-yellow {
-  @apply
-  text-yellow-800 bg-yellow-100/50
-  dark:text-yellow-300 dark:bg-yellow-900/50
+  @apply bg-yellow-100/50 text-yellow-800
+  dark:bg-yellow-900/50 dark:text-yellow-300;
 }
 
 .bgc-red {
-  @apply
-  text-red-800 bg-red-100/50
-  dark:text-red-300 dark:bg-red-800/50
+  @apply bg-red-100/50 text-red-800
+  dark:bg-red-800/50 dark:text-red-300;
 }
 
 .bgc-gray {
-  @apply
-  text-gray-800 bg-gray-100
-  dark:text-gray-300 dark:bg-gray-700/50
+  @apply bg-gray-100 text-gray-800
+  dark:bg-gray-700/50 dark:text-gray-300;
 }

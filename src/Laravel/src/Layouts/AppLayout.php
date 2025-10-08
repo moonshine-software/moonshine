@@ -40,9 +40,9 @@ class AppLayout extends BaseLayout
                 $this->getHeadComponent(),
                 Body::make([
                     Wrapper::make([
-                        // $this->getTopBarComponent(),
+                        $this->getTopBarComponent(),
                         $this->getSidebarComponent(),
-
+                        
                         Div::make([
                             Fragment::make([
                                 Flash::make(),
@@ -53,7 +53,15 @@ class AppLayout extends BaseLayout
 
                                 $this->getFooterComponent(),
                             ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
-                        ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
+                        ])->class('layout-main')->customAttributes(['id' => self::CONTENT_ID]),
+                        Div::make()
+                            ->class('layout-overlay')
+                            ->customAttributes([
+                                'x-cloak'    => '',
+                                'x-show'     => 'asideMenuOpen',
+                                'x-on:click' => 'asideMenuOpen = false',
+                                'x-transition.opacity' => '',
+                            ]),
                     ]),
                 ]),
             ])

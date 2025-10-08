@@ -1,4 +1,4 @@
-@import "tom-select/dist/css/tom-select.css";
+@import 'tom-select/dist/css/tom-select.css';
 
 :root {
   --ts-pr-caret: 32px;
@@ -8,35 +8,34 @@
 .ts-dropdown,
 .ts-control,
 .ts-control input {
-  @apply text-3xs base__default
-  theme__border_for_light_bg
+  @apply base__default theme__border
+  text-3xs;
 }
 
 .ts-wrapper.single.input-active .ts-control,
 .ts-wrapper.multi.input-active .ts-control {
-  @apply bg-inherit text-inherit
+  @apply bg-inherit text-inherit;
 }
 
 .ts-wrapper {
   &:after {
-    content: "";
+    content: '';
     -webkit-print-color-adjust: exact;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 1.5em 1.5em;
 
-    @apply
-    absolute z-[1]
-    top-[calc(50%_-_8px)]
+    @apply absolute top-[calc(50%_-_8px)]
     right-2
-    w-[16px] h-[8px]
+    z-[1]
+    h-[8px] w-[16px]
     translate-y-1/2
-    transition-transform
+    transition-transform;
   }
 
   &.dropdown-active:after {
-    @apply rotate-180
+    @apply rotate-180;
   }
 
   &.multi {
@@ -46,16 +45,14 @@
       @apply flex gap-1;
 
       .item {
-        @apply
-        theme__rounded
+        @apply my-0
+        rounded-md
         bg-primary
-        text-white
         px-2
-        my-0
-        ;
+        text-white;
 
         &.with-image {
-          @apply px-1 py-1
+          @apply px-1 py-1;
         }
       }
     }
@@ -63,44 +60,42 @@
 }
 
 .full .ts-control {
-  @apply base__default
-  flex items-center
-  theme__border_for_light_bg
+  @apply flex
+  items-center base__default
+  theme__border;
 }
 
 .ts-dropdown {
   .optgroup-header {
-    @apply
-    opacity-70
+    @apply border-b
+    theme__border bg-transparent
     px-4 py-2
-    border-b theme__border_for_light_bg
-    bg-transparent
-    text-inherit dark:text-slate-100
+    text-inherit
+    opacity-70 dark:text-slate-100;
   }
 }
 
 .plugin-clear_button {
   .selected-empty-value .clear-button {
     @apply hidden
-    hover:hidden
+    hover:hidden;
   }
 
   .clear-button {
-    @apply
-    opacity-0
-    absolute
+    @apply absolute
     top-[45%]
     mr-0
-    bg-transparent
-    transition-opacity duration-300
     cursor-pointer
-    text-md
-    text-gray-500
+    bg-transparent
+    text-md text-gray-500
+    opacity-0
+    transition-opacity
+    duration-300;
   }
 
   &.focus.has-items .clear-button,
   &:not(.disabled):hover.has-items .clear-button {
-    @apply opacity-100
+    @apply opacity-100;
   }
 }
 
@@ -111,37 +106,36 @@
 }
 
 .ts-control {
-  @apply
-  w-full
-  theme__rounded
-  border theme__border_for_light_bg
-  focus:outline-none
+  @apply w-full
+  rounded-md
+  border theme__border
+  focus:outline-none;
 }
 
 .ts-control input {
-  @apply pr-5 text-3xs m-0
+  @apply m-0 pr-5 text-3xs;
 }
 
 .ts-dropdown {
-  @apply
-  not-minimalistic:rounded-b-md
-  -my-0.5
+  @apply -my-0.5
   border
-  theme__border_for_light_bg
+  theme__border
   shadow-none
+  not-minimalistic:rounded-b-md;
 }
 
-.ts-dropdown [data-selectable].option, .ts-dropdown .no-results {
-  @apply
-  py-2
-  dark:text-slate-200
+.ts-dropdown [data-selectable].option,
+.ts-dropdown .no-results {
+  @apply py-2
+  dark:text-slate-200;
 }
 
-.ts-dropdown .create:hover, .ts-dropdown .option:hover, .ts-dropdown .active {
-  @apply
-  bg-slate-100
-  dark:bg-dark-600
-  text-dark-800 dark:text-slate-300
+.ts-dropdown .create:hover,
+.ts-dropdown .option:hover,
+.ts-dropdown .active {
+  @apply bg-slate-100
+  text-dark-800
+  dark:bg-dark-600 dark:text-slate-300;
 }
 
 .ts-dropdown .spinner {
@@ -149,15 +143,13 @@
 }
 
 .ts-dropdown .spinner:after {
-  @apply h-5 w-5 border-2 theme__border_for_light_bg p-0 my-0 inline-block;
+  @apply my-0 inline-block h-5 w-5 border-2 theme__border p-0;
 }
 
 .item {
-  @apply
-  text-slate-600 dark:text-slate-400
-  ;
+  @apply text-slate-600 dark:text-slate-400;
 
   &.with-image {
-    @apply flex items-center gap-3
+    @apply flex items-center gap-3;
   }
 }

@@ -38,7 +38,7 @@
     @apply sticky top-0 z-20
     flex justify-between gap-x-4
     rounded-t-lg
-    border-b theme__border_for_light_bg
+    border-b theme__border
     bg-white dark:bg-dark-700
     p-4 lg:p-6
     compact:p-4

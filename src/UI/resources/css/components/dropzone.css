@@ -1,25 +1,22 @@
 /* Dropzone */
 .dropzone {
-  @apply
+  @apply 
   relative
   w-full
-  theme__rounded
   border-2
   border-dashed
-  theme__border_for_light_bg
+  theme__border
   p-3
   compact:p-2
-  minimalistic:p-1
-  ;
+  minimalistic:p-1;
 
   .dropzone-items {
     @apply flex flex-wrap gap-2;
   }
 
   .dropzone-item {
-    @apply relative h-12 w-12 overflow-hidden md:h-16 md:w-16
-    theme__rounded
-    ;
+    @apply  relative h-12 w-12 overflow-hidden md:h-16
+    md:w-16;
 
     &.dropzone-item-file {
       @apply base__default;
@@ -40,10 +37,8 @@
   }
 
   .dropzone-file-icon {
-    @apply
-    text-primary
-    dark:text-secondary
-    ;
+    @apply text-primary
+    dark:text-secondary;
 
     & > svg {
       @apply h-5 w-5;
@@ -55,7 +50,7 @@
   }
 
   .dropzone-remove {
-    @apply absolute right-1 top-1 z-5 flex shrink-0 items-center justify-center rounded-full border border-error bg-error leading-none text-white hover:bg-white hover:text-error;
+    @apply absolute top-1 right-1 z-5 flex shrink-0 items-center justify-center rounded-full border border-error bg-error leading-none text-white hover:bg-white hover:text-error;
 
     & > svg {
       @apply h-3 w-3;

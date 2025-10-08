@@ -1,17 +1,15 @@
 /* Theme switcher */
+
 .theme-switcher {
-  @apply inline-flex items-center;
+  line-height: 0;
+}
 
-  .theme-switcher-btn {
-    @apply
-    overflow-hidden
-    w-6 h-6
-    text-slate-500 hover:text-secondary dark:text-dark-50 dark:hover:text-white
-    minimalistic:dark:hover:text-secondary
-    ;
+.theme-switcher-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    > svg {
-      @apply w-6 h-6
-    }
-  }
+.theme-switcher-icon {
+  position: absolute;
 }

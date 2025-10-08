@@ -6,7 +6,7 @@
     'isActive' => false,
     'top' => false,
 ])
-<li {{ $attributes->class(['menu-inner-item']) }}
+<li {{ $attributes->class(['menu-item']) }}
     @if($top)
         x-data="{ dropdown: false }"
         @click.outside="dropdown = false"
@@ -14,6 +14,7 @@
     @else
         x-data="{ dropdown: {{ $isActive ? 'true' : 'false' }} }"
     @endif
+    :class="dropdown && 'menu-item--opened'"
     x-ref="dropdownMenu"
 >
     <button
@@ -22,23 +23,24 @@
             @mouseenter="toggleTooltip()"
         @endif
         @click.prevent="dropdown = ! dropdown; $nextTick(() => { if (dropdown && $refs.dropdownMenu) $refs.dropdownMenu.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); })"
-        class="menu-inner-button"
+        class="menu-button"
         :class="dropdown && '_is-active'"
         type="button"
     >
         @if($icon)
-            {!! $icon !!}
-        @elseif(!$top)
-            <span class="menu-inner-item-char">
+            <div class="menu-icon">
+                {!! $icon !!}
+            </div>
+        @else
+            <span class="menu-char">
                 {{ $previewLabel }}
             </span>
         @endif
 
-        <span class="menu-inner-text">{{ $label }}</span>
-        <span class="menu-inner-arrow">
+        <span class="menu-text">{{ $label }}</span>
+        <span class="menu-arrow">
             <x-moonshine::icon
                 icon="chevron-down"
-                size="6"
             />
         </span>
     </button>
