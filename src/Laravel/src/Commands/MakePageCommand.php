@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 use function Laravel\Prompts\{select, text};
@@ -94,7 +95,7 @@ class MakePageCommand extends MoonShineCommand
 
     /**
      * @throws FileNotFoundException
-     * @throws \JsonException
+     * @throws JsonException
      */
     private function makePage(
         StubsPath $stubsPath,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 
@@ -21,7 +22,7 @@ class MakeResourceCommand extends MoonShineCommand
 
     /**
      * @throws FileNotFoundException
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function handle(): int
     {
