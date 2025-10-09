@@ -8,7 +8,7 @@ use {index-page-namespace};
 use {form-page-namespace};
 use {detail-page-namespace};
 
-use MoonShine\Laravel\Resources\CrudResource;
+use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use Illuminate\Support\Collection;
