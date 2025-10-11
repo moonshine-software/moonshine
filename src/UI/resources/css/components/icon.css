@@ -1,4 +1,5 @@
 .icon-wrapper {
+  flex-shrink: 0;
   width: var(--ms-icon-size, --spacing(5));
   height: var(--ms-icon-size, --spacing(5));
   line-height: 0;
