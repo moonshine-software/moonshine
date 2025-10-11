@@ -148,7 +148,7 @@ input {
   checked:bg-primary
   hover:border-primary
   md:rounded-none
-  dark:border-dark-100
+  dark:border-theme-100
   dark:bg-transparent;
 
   &:checked {
@@ -173,7 +173,7 @@ input {
   checked:border-primary
   checked:bg-primary
   hover:border-primary
-  dark:border-dark-100
+  dark:border-theme-100
   dark:bg-transparent;
 
   &:checked {
@@ -203,7 +203,7 @@ input {
     after:bg-white
     after:transition-all
     dark:peer-checked:bg-primary
-    dark:after:border-dark-200;
+    dark:after:border-theme-200;
   }
 
   .peer:checked + .form-switcher-toggler {
@@ -213,7 +213,7 @@ input {
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
-    @apply bg-slate-100 dark:bg-dark-800;
+    @apply bg-slate-100 dark:bg-theme-800;
   }
 
   .peer:focus:not(:disabled) + .form-switcher-toggler {
@@ -277,7 +277,7 @@ input {
     base__default
     bg-slate-100
     text-slate-600
-    dark:bg-dark-900/20
+    dark:bg-theme-900/20
     dark:text-slate-400;
 
     .expansion {
@@ -285,7 +285,7 @@ input {
     }
 
     button {
-      @apply hover:bg-gray-300 dark:hover:bg-dark-200;
+      @apply hover:bg-gray-300 dark:hover:bg-theme-200;
     }
 
     /* Input after prefix: no left border radius and no left border */
@@ -304,7 +304,7 @@ input {
     base__default
     bg-slate-100
     text-slate-600
-    dark:bg-dark-900/20
+    dark:bg-theme-900/20
     dark:text-slate-400;
 
     .expansion {
@@ -312,7 +312,7 @@ input {
     }
 
     button {
-      @apply hover:bg-gray-300 dark:hover:bg-dark-200;
+      @apply hover:bg-gray-300 dark:hover:bg-theme-200;
     }
   }
 
@@ -495,7 +495,7 @@ input {
       -translate-y-1/2
       transform
       rounded-full
-      bg-slate-100 dark:bg-dark-800;
+      bg-slate-100 dark:bg-theme-800;
     }
 
     .form-range-connect {
@@ -633,7 +633,7 @@ input {
     .choices__item.is-highlighted {
       @apply bg-slate-100
       text-slate-600
-      dark:bg-dark-900/20
+      dark:bg-theme-900/20
       dark:text-slate-400;
     }
   }
@@ -661,7 +661,7 @@ input {
   .choices__heading {
     @apply border-gray-300
     text-gray-400
-    dark:border-dark-200
+    dark:border-theme-200
     dark:text-gray-500;
   }
 
@@ -685,13 +685,13 @@ input {
       h-px
       w-4
       bg-gray-300
-      dark:bg-dark-200;
+      dark:bg-theme-200;
     }
   }
 }
 
 fieldset {
-  @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-dark-200;
+  @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-theme-200;
 
   legend {
     @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
@@ -708,9 +708,9 @@ fieldset {
     option {
       &:hover {
         @apply transition-colors
-        dark:bg-dark-300
+        dark:bg-theme-300
         dark:text-slate-400
-        dark:hover:bg-dark-200;
+        dark:hover:bg-theme-200;
       }
     }
   }

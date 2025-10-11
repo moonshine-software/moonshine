@@ -4,7 +4,7 @@
   flex-col
   bg-white p-3 shadow-md
   shadow-gray-200 before:hidden
-  sm:p-4 lg:p-5 dark:bg-dark-600
+  sm:p-4 lg:p-5 dark:bg-theme-600
   dark:shadow-black/5 compact:p-3
   compact:lg:p-4 minimalistic:p-2 minimalistic:sm:p-3
   minimalistic:lg:p-4;

@@ -1,7 +1,7 @@
 /* Tabs */
 .tabs {
   .tabs-list {
-    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200;
+    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-theme-200;
   }
 
   .tabs-title {

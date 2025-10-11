@@ -6,7 +6,7 @@
 @if($value)
     <div class="flex">
         <div
-            {{ $value['attributes']?->class(['zoom-in h-10 w-10 overflow-hidden rounded-md bg-white dark:bg-dark-700 cursor-pointer']) }}
+            {{ $value['attributes']?->class(['zoom-in h-10 w-10 overflow-hidden rounded-md bg-white dark:bg-theme-700 cursor-pointer']) }}
         >
             <img class="h-full w-full object-cover"
                  src="{{ $value['full_path'] }}"
@@ -25,7 +25,7 @@
     <div class="images-row">
         @foreach($values as $index => $value)
             <div
-                {{ $value['attributes']?->class(['zoom-in images-row-item bg-white dark:bg-dark-700 cursor-pointer']) }}
+                {{ $value['attributes']?->class(['zoom-in images-row-item bg-white dark:bg-theme-700 cursor-pointer']) }}
             >
                 <img
                     class="h-full w-full object-cover"

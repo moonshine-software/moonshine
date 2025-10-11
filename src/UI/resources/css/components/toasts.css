@@ -14,7 +14,7 @@
   max-sm:w-full
   sm:p-3 lg:mt-4
   lg:mr-4
-  dark:bg-dark-50;
+  dark:bg-theme-50;
 }
 
 /* Themes */

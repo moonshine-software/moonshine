@@ -1,6 +1,6 @@
 /* Progress bars */
 .progress {
-  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-dark-300;
+  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-theme-300;
 
   .progress-bar {
     @apply flex
@@ -84,7 +84,7 @@
   }
 
   @variant dark {
-    box-shadow: inset 0 0 0 var(--thickness) var(--color-dark-200);
+    box-shadow: inset 0 0 0 var(--thickness) var(--color-theme-200);
   }
 
   @apply relative box-content

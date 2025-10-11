@@ -8,7 +8,7 @@
     before:h-[1px] before:min-w-[6px]
     before:grow before:bg-gray-200
     after:h-[1px] after:min-w-[6px]
-    after:grow after:bg-gray-200 dark:before:bg-dark-200 dark:after:bg-dark-200;
+    after:grow after:bg-gray-200 dark:before:bg-theme-200 dark:after:bg-theme-200;
   }
 
   .social-list {

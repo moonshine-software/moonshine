@@ -35,7 +35,7 @@
 .pagination-first,
 .pagination-last,
 .pagination-page {
-  @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200/70 dark:hover:bg-dark-400 dark:focus:ring-dark-200;
+  @apply hover:bg-gray-100 hover:text-gray-800 focus:ring focus:ring-gray-200/70 dark:hover:bg-theme-400 dark:focus:ring-theme-200;
 }
 
 /* Pagination results */

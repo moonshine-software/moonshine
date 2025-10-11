@@ -4,12 +4,12 @@
   padding: --spacing(3);
   border-radius: --spacing(3);
   border: 1px solid var(--theme-border-color);
-  background-color: var(--ms-box-bg-color, var(--theme-bg-color));
+  background-color: var(--ms-box-bg-color, var(--color-theme));
 
   &.box-dark,
   &.dark {
-    @apply bg-dark-600 text-slate-200
-    shadow-none dark:bg-dark-800
+    @apply bg-theme-600 text-slate-200
+    shadow-none dark:bg-theme-800
     dark:text-slate-300 dark:shadow-black/5;
   }
 
@@ -25,7 +25,7 @@
     before:opacity-0
     hover:before:bg-white hover:before:opacity-100
     hover:before:shadow-lg hover:before:shadow-gray-200
-    dark:hover:before:bg-dark-500
+    dark:hover:before:bg-theme-500
     dark:hover:before:shadow-black/5;
   }
 }

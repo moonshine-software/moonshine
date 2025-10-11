@@ -21,13 +21,13 @@
 }
 
 @variant dark {
-  --ms-btn-border-color: theme('colors.white/0.2');
-  --ms-btn-bg-color: theme('colors.white/0.1');
-  --ms-btn-color: theme('colors.white');
+  --ms-btn-border-color: --alpha(var(--color-white) / 0.2);
+  --ms-btn-bg-color: --alpha(var(--color-white) / 0.1);
+  --ms-btn-color: var(--color-white);
 
-  --ms-btn-hover-border-color: theme('colors.white/0.3');
-  --ms-btn-hover-bg-color: theme('colors.white/0.2');
-  --ms-btn-hover-color: theme('colors.white');
+  --ms-btn-hover-border-color: --alpha(var(--color-white) / 0.2);
+  --ms-btn-hover-bg-color: --alpha(var(--color-white) / 0.15);
+  --ms-btn-hover-color: var(--color-white);
 }
 
 /* Buttons */
@@ -102,113 +102,112 @@
 /* Button themes */
 
 .btn-primary {
-  --ms-btn-border-color: theme('colors.primary/0.4');
-  --ms-btn-bg-color: theme('colors.primary/0.3');
-  --ms-btn-color: theme('colors.black');
+  --ms-btn-border-color: --alpha(var(--color-primary) / 0.4);
+  --ms-btn-bg-color: --alpha(var(--color-primary) / 0.3);
+  --ms-btn-color: var(--color-black);
 
-  --ms-btn-hover-border-color: theme('colors.primary/0.3');
-  --ms-btn-hover-bg-color: theme('colors.primary/0.2');
+  --ms-btn-hover-border-color: --alpha(var(--color-primary) / 0.5);
+  --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.4);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.primary/0.8');
-    --ms-btn-bg-color: theme('colors.primary/0.4');
-    --ms-btn-color: theme('colors.white');
+    --ms-btn-border-color: --alpha(var(--color-primary) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-primary) / 0.3);
+    --ms-btn-color: var(--color-white);
 
-    --ms-btn-hover-border-color: theme('colors.primary');
-    --ms-btn-hover-bg-color: theme('colors.primary/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-border-color: --alpha(var(--color-primary) / 0.5);
+    --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.4);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 
 .btn-secondary {
-  --ms-btn-border-color: theme('colors.secondary/0.4');
-  --ms-btn-bg-color: theme('colors.secondary/0.3');
-  --ms-btn-color: theme('colors.black');
+  --ms-btn-border-color: --alpha(var(--color-secondary) / 0.4);
+  --ms-btn-bg-color: --alpha(var(--color-secondary) / 0.3);
+  --ms-btn-color: var(--color-black);
 
-  --ms-btn-hover-border-color: theme('colors.secondary/0.3');
-  --ms-btn-hover-bg-color: theme('colors.secondary/0.2');
+  --ms-btn-hover-border-color: --alpha(var(--color-secondary) / 0.5);
+  --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.4);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.secondary/0.8');
-    --ms-btn-bg-color: theme('colors.secondary/0.4');
-    --ms-btn-color: theme('colors.white');
+    --ms-btn-border-color: --alpha(var(--color-secondary) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-secondary) / 0.3);
+    --ms-btn-color: var(--color-white);
 
-    --ms-btn-hover-border-color: theme('colors.secondary');
-    --ms-btn-hover-bg-color: theme('colors.secondary/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-border-color: --alpha(var(--color-secondary) / 0.5);
+    --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.4);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 
 .btn-success {
-  --ms-btn-border-color: theme('colors.success.DEFAULT/0.2');
-  --ms-btn-bg-color: theme('colors.success.DEFAULT/0.15');
-  --ms-btn-color: theme('colors.success.text');
+  --ms-btn-border-color: --alpha(var(--color-success) / 0.2);
+  --ms-btn-bg-color: --alpha(var(--color-success) / 0.15);
+  --ms-btn-color: var(--color-success-text);
 
-  --ms-btn-hover-border-color: theme('colors.success.DEFAULT/0.3');
-  --ms-btn-hover-bg-color: theme('colors.success.DEFAULT/0.2');
-  --ms-btn-hover-color: theme('colors.success.text');
+  --ms-btn-hover-border-color: --alpha(var(--color-success) / 0.3);
+  --ms-btn-hover-bg-color: --alpha(var(--color-success) / 0.2);
+  --ms-btn-hover-color: var(--color-success-text);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.success.DEFAULT/0.4');
-    --ms-btn-bg-color: theme('colors.success.DEFAULT/0.3');
+    --ms-btn-border-color: --alpha(var(--color-success) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-success) / 0.3);
 
-    --ms-btn-hover-bg-color: theme('colors.success.DEFAULT/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-bg-color: --alpha(var(--color-success) / 0.5);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 
 .btn-warning {
-  --ms-btn-border-color: theme('colors.warning.DEFAULT/0.2');
-  --ms-btn-bg-color: theme('colors.warning.DEFAULT/0.15');
-  --ms-btn-color: theme('colors.warning.text');
+  --ms-btn-border-color: --alpha(var(--color-warning) / 0.2);
+  --ms-btn-bg-color: --alpha(var(--color-warning) / 0.15);
+  --ms-btn-color: var(--color-warning-text);
 
-  --ms-btn-hover-border-color: theme('colors.warning.DEFAULT/0.3');
-  --ms-btn-hover-bg-color: theme('colors.warning.DEFAULT/0.2');
-  --ms-btn-hover-color: theme('colors.warning.text');
-  --ms-btn-hover-color: theme('colors.warning.text');
+  --ms-btn-hover-border-color: --alpha(var(--color-warning) / 0.3);
+  --ms-btn-hover-bg-color: --alpha(var(--color-warning) / 0.2);
+  --ms-btn-hover-color: var(--color-warning-text);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.warning.DEFAULT/0.4');
-    --ms-btn-bg-color: theme('colors.warning.DEFAULT/0.3');
+    --ms-btn-border-color: --alpha(var(--color-warning) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-warning) / 0.3);
 
-    --ms-btn-hover-bg-color: theme('colors.warning.DEFAULT/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-bg-color: --alpha(var(--color-warning) / 0.5);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 
 .btn-error {
-  --ms-btn-border-color: theme('colors.error.DEFAULT/0.2');
-  --ms-btn-bg-color: theme('colors.error.DEFAULT/0.15');
-  --ms-btn-color: theme('colors.error.text');
+  --ms-btn-border-color: --alpha(var(--color-error) / 0.2);
+  --ms-btn-bg-color: --alpha(var(--color-error) / 0.15);
+  --ms-btn-color: var(--color-error-text);
 
-  --ms-btn-hover-border-color: theme('colors.error.DEFAULT/0.3');
-  --ms-btn-hover-bg-color: theme('colors.error.DEFAULT/0.2');
-  --ms-btn-hover-color: theme('colors.error.text');
+  --ms-btn-hover-border-color: --alpha(var(--color-error) / 0.3);
+  --ms-btn-hover-bg-color: --alpha(var(--color-error) / 0.2);
+  --ms-btn-hover-color: var(--color-error-text);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.error.DEFAULT/0.4');
-    --ms-btn-bg-color: theme('colors.error.DEFAULT/0.3');
+    --ms-btn-border-color: --alpha(var(--color-error) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-error) / 0.3);
 
-    --ms-btn-hover-bg-color: theme('colors.error.DEFAULT/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-bg-color: --alpha(var(--color-error) / 0.5);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 
 .btn-info {
-  --ms-btn-border-color: theme('colors.info.DEFAULT/0.2');
-  --ms-btn-bg-color: theme('colors.info.DEFAULT/0.15');
-  --ms-btn-color: theme('colors.info.text');
+  --ms-btn-border-color: --alpha(var(--color-info) / 0.2);
+  --ms-btn-bg-color: --alpha(var(--color-info) / 0.15);
+  --ms-btn-color: var(--color-info-text);
 
-  --ms-btn-hover-border-color: theme('colors.info.DEFAULT/0.3');
-  --ms-btn-hover-bg-color: theme('colors.info.DEFAULT/0.2');
-  --ms-btn-hover-color: theme('colors.info.text');
+  --ms-btn-hover-border-color: --alpha(var(--color-info) / 0.3);
+  --ms-btn-hover-bg-color: --alpha(var(--color-info) / 0.2);
+  --ms-btn-hover-color: var(--color-info-text);
 
   @variant dark {
-    --ms-btn-border-color: theme('colors.info.DEFAULT/0.4');
-    --ms-btn-bg-color: theme('colors.info.DEFAULT/0.3');
+    --ms-btn-border-color: --alpha(var(--color-info) / 0.6);
+    --ms-btn-bg-color: --alpha(var(--color-info) / 0.3);
 
-    --ms-btn-hover-bg-color: theme('colors.info.DEFAULT/0.5');
-    --ms-btn-hover-color: theme('colors.white');
+    --ms-btn-hover-bg-color: --alpha(var(--color-info) / 0.5);
+    --ms-btn-hover-color: var(--color-white);
   }
 }
 

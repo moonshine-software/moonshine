@@ -12,7 +12,7 @@
 
   --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.1);
 
-  --ms-menu-item-active-bg-color: var(--theme-bg-color);
+  --ms-menu-item-active-bg-color: var(--color-theme);
   --ms-menu-item-active-color: var(--color-black);
   --ms-menu-item-active-icon-color: var(--color-primary);
 

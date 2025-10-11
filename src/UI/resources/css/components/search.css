@@ -13,8 +13,8 @@
       placeholder:text-3xs
       placeholder:font-normal
       placeholder:text-slate-600 focus:border-gray-300
-      focus:bg-white dark:bg-dark-600 dark:placeholder:text-slate-500
-      focus:dark:border-dark-200;
+      focus:bg-white dark:bg-theme-600 dark:placeholder:text-slate-500
+      focus:dark:border-theme-200;
     }
 
     .search-form-submit,
