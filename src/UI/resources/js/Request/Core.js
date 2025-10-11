@@ -144,7 +144,7 @@ export default async function request(
       componentRequestData.errorCallback(data, t)
     }
 
-    if(t.$el?.dataset?.withoutErrorToast === undefined) {
+    if (t.$el?.dataset?.withoutErrorToast === undefined) {
       MoonShine.ui.toast(data.message ?? data, 'error')
     }
   }
