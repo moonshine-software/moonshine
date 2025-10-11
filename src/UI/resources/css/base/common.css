@@ -1,26 +1,19 @@
 @layer base {
   /* Custom Scrollbar */
   :root {
-    --scrollbar-color: var(--color-gray-300);
-    --scrollbar-hover-color: var(--color-gray-200);
+    --ms-scrollbar-color: var(--color-gray-300);
+    --ms-scrollbar-hover-color: var(--color-gray-200);
 
     @variant dark {
-      --scrollbar-color: var(--color-dark-100);
-      --scrollbar-hover-color: var(--color-dark-50);
-
-      input,
-      textarea {
-        color-scheme: dark;
-      }
+      --ms-scrollbar-color: var(--color-dark-300);
+      --ms-scrollbar-hover-color: var(--color-dark-200);
     }
   }
 
   * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-color) transparent;
-
-    &:focus-visible {
-      outline: 2px dashed var(--color-primary);
+    @-moz-document url-prefix() {
+      scrollbar-width: thin;
+      scrollbar-color: var(--ms-scrollbar-color) transparent;
     }
   }
 
@@ -37,14 +30,18 @@
     border-radius: 20px;
     border: 3px solid transparent;
     background-clip: padding-box;
-    background-color: var(--scrollbar-color);
+    background-color: var(--ms-scrollbar-color);
+  }
 
-    &:hover {
-      background-color: var(--scrollbar-hover-color);
-    }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ms-scrollbar-hover-color);
   }
 
   /* General CSS */
+  *:focus-visible {
+    outline: 2px dashed var(--color-primary);
+  }
+
   ::selection {
     background-color: var(--color-primary);
     color: var(--color-primary-text, var(--color-white));
