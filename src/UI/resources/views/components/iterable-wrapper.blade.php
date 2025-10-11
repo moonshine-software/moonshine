@@ -1,8 +1,10 @@
 @props([
     'searchable' => false,
+    'loader' => true,
     'searchUrl' => '',
     'searchValue' => '',
     'searchPlaceholder' => '',
+    'skeleton' => null,
     'topLeft' => null,
     'topRight' => null,
 ])
@@ -30,7 +32,14 @@
     {!! $topRight ?? '' !!}
 </x-moonshine::layout.flex>
 
+@if($skeleton ?? false)
+    <x-moonshine::skeleton x-show="loading">
+        {!! $skeleton !!}
+    </x-moonshine::skeleton>
+@elseif($loader)
 <x-moonshine::loader x-show="loading" />
-<div x-show="!loading">
+@endif
+
+<div @if(($skeleton ?? false) || $loader) x-show="!loading" @endif>
     {{ $slot }}
 </div>
