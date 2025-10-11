@@ -3,7 +3,6 @@
     'rows' => [],
     'headRows' => [],
     'footRows' => [],
-    'columns' => [],
     'headAttributes',
     'bodyAttributes',
     'footAttributes',
@@ -17,7 +16,6 @@
     'searchable' => false,
     'sticky' => false,
     'lazy' => false,
-    'columnSelection' => false,
     'searchValue' => '',
     'translates' => [],
     'topLeft' => null,
@@ -62,6 +60,7 @@
                                     {!! $row !!}
                                 @endforeach
                             </x-slot:thead>
+                            <x-slot:tbody></x-slot:tbody>
                        @endif
                     </x-moonshine::table>
                 </x-slot:skeleton>
