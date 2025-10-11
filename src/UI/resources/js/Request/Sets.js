@@ -140,7 +140,6 @@ export function listComponentRequest(component, pushState = false) {
       let tempElement = document.createElement('div')
       tempElement.innerHTML = data
 
-
       Alpine.morph(t.$root, tempElement.firstElementChild.innerHTML)
 
       t.loading = false
