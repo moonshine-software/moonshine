@@ -169,7 +169,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
           errors = errors + '<div class="mt-2 text-secondary">' + errorsData[error] + '</div>'
         }
 
-        if (data?.message) {
+        if (form.dataset?.withoutErrorToast === undefined && data?.message) {
           MoonShine.ui.toast(data.message, 'error')
         }
 
