@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use JsonException;
 
 use function Laravel\Prompts\{select, text};
 

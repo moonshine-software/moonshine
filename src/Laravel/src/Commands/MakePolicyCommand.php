@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use JsonException;
 
 use function Laravel\Prompts\{suggest};
 

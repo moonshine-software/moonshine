@@ -9,11 +9,11 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\InputExtensions\InputCopy;
-use MoonShine\UI\InputExtensions\InputPrefix;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 use MoonShine\UI\InputExtensions\InputLock;
+use MoonShine\UI\InputExtensions\InputPrefix;
 
 trait WithInputExtensions
 {

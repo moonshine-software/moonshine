@@ -7,7 +7,6 @@ namespace MoonShine\UI\Fields;
 use BackedEnum;
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
 use Throwable;
 
@@ -62,7 +61,7 @@ class Enum extends Select implements CanBeEnum
             $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             return $this->getMultiplePreview($value);
         }
 

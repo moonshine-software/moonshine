@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
+use JsonException;
 
-use function Laravel\Prompts\{outro, confirm, select, text};
+use function Laravel\Prompts\{confirm, select, text};
 
 use MoonShine\Laravel\Support\StubsPath;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -63,7 +63,7 @@ class MakeResourceCommand extends MoonShineCommand
             $stub = select('Type', $types, 'ModelResourceDefault');
         }
 
-        if (!$force && file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {
+        if (! $force && file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {
             return self::SUCCESS;
         }
 

@@ -8,12 +8,13 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use JsonException;
+
+use function Laravel\Prompts\{outro, text};
+
 use Leeto\PackageCommand\Command;
 use MoonShine\Laravel\Support\StubsPath;
 use MoonShine\MenuManager\MenuItem;
 use ReflectionClass;
-
-use function Laravel\Prompts\{outro, text};
 
 abstract class MoonShineCommand extends Command
 {
@@ -47,7 +48,7 @@ abstract class MoonShineCommand extends Command
         self::addResourceOrPageTo(
             class: "$namespace\\$class",
             to: app_path('Providers/MoonShineServiceProvider.php'),
-            between: static fn(Stringable $content): Stringable => $content->betweenFirst("->$method([", ']'),
+            between: static fn (Stringable $content): Stringable => $content->betweenFirst("->$method([", ']'),
             replace: static function (Stringable $content, Closure $tab) use ($class): Stringable {
                 $prefixTab = 1;
 
@@ -70,7 +71,7 @@ abstract class MoonShineCommand extends Command
         self::addResourceOrPageTo(
             class: "$namespace\\$class",
             to: $reflector->getFileName(),
-            between: static fn(Stringable $content): Stringable => $content->betweenFirst(
+            between: static fn (Stringable $content): Stringable => $content->betweenFirst(
                 "protected function menu(): array",
                 '}',
             ),
@@ -81,9 +82,9 @@ abstract class MoonShineCommand extends Command
                     foreach ($lines as $index => $line) {
                         $line = rtrim($line);
                         if ((preg_match('/\)]$/', $line) || preg_match('/\)$/', $line)) && ! str_ends_with(
-                                $line,
-                                ',',
-                            )) {
+                            $line,
+                            ',',
+                        )) {
                             $lines[$index] = $line . ',';
                         }
                     }
@@ -125,7 +126,7 @@ abstract class MoonShineCommand extends Command
             return;
         }
 
-        $tab = static fn(int $times = 1): string => str_repeat(' ', $times * 4);
+        $tab = static fn (int $times = 1): string => str_repeat(' ', $times * 4);
 
         $headSection = $content->before('class ');
         $replaceContent = $between($content);
@@ -177,7 +178,7 @@ abstract class MoonShineCommand extends Command
                 $path . '.' . Str::of($dir)
                     ->replace('/', '.')
                     ->lower()
-                    ->whenNotEmpty(fn(Stringable $str) => $str->append('.')),
+                    ->whenNotEmpty(fn (Stringable $str) => $str->append('.')),
             )
             ->value();
 
@@ -229,13 +230,13 @@ abstract class MoonShineCommand extends Command
         $baseDir = $this->hasOption('base-dir') ? $this->option('base-dir') : null;
         $baseNamespace = $this->hasOption('base-namespace') ? $this->option('base-namespace') : null;
 
-        $toNamespace = static fn(string $str): string
+        $toNamespace = static fn (string $str): string
             => Str::of($str)
             ->trim('\\')
             ->trim('/')
             ->replace('/', '\\')
             ->explode('\\')
-            ->map(static fn(string $segment): string => ucfirst($segment))
+            ->map(static fn (string $segment): string => ucfirst($segment))
             ->implode('\\');
 
         if ($baseDir !== null && $baseNamespace === null) {

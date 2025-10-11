@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace MoonShine\ColorManager;
 
@@ -10,22 +10,19 @@ final class ColorMutator
 {
     public static function toHEX(string $value): string
     {
-        if (str_contains($value, 'oklch'))
-        {
+        if (str_contains($value, 'oklch')) {
             $rgb = self::fromOKLCH($value);
 
             return \sprintf('#%02x%02x%02x', ...$rgb);
         }
 
-        if (str_contains($value, '#'))
-        {
+        if (str_contains($value, '#')) {
             return $value;
         }
 
         $rgb = self::fromRgb($value);
 
-        if ($rgb === false)
-        {
+        if ($rgb === false) {
             return '#000000';
         }
 
@@ -34,19 +31,16 @@ final class ColorMutator
 
     public static function toRGB(string $value): string
     {
-        if (str_contains($value, 'oklch'))
-        {
+        if (str_contains($value, 'oklch')) {
             $rgb = self::fromOKLCH($value);
 
             return \sprintf('rgb(%d,%d,%d)', ...$rgb);
         }
 
-        if (str_contains($value, '#'))
-        {
+        if (str_contains($value, '#')) {
             $hex = ltrim($value, '#');
 
-            if (\strlen($hex) === 3)
-            {
+            if (\strlen($hex) === 3) {
                 $hex = preg_replace('/(.)/', '$1$1', $hex);
             }
 
@@ -62,13 +56,11 @@ final class ColorMutator
 
         $rgb = self::fromRGB($value);
 
-        if ($rgb === false)
-        {
+        if ($rgb === false) {
             return 'rgb(0,0,0)';
         }
 
-        if (isset($rgb[3]))
-        {
+        if (isset($rgb[3])) {
             return \sprintf('rgba(%d,%d,%d,%.2f)', $rgb[0], $rgb[1], $rgb[2], (float) $rgb[3]);
         }
 
@@ -81,11 +73,11 @@ final class ColorMutator
             $l = number_format($lightness * 100, 2, '.', '');
             $c = rtrim(rtrim(number_format($chroma, 5, '.', ''), '0'), '.') ?: '0';
             $h = rtrim(rtrim(number_format($hue, 3, '.', ''), '0'), '.') ?: '0';
+
             return "oklch({$l}% {$c} {$h})";
         };
 
-        if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)\s*$/', $value, $matches))
-        {
+        if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)\s*$/', $value, $matches)) {
             $lightnessRaw = (float) $matches[1];
             $isPercentL = $matches[2] === '%';
             $chromaRaw = (float) $matches[3];
@@ -96,8 +88,7 @@ final class ColorMutator
             $chroma = $isPercentC ? $chromaRaw / 100 : $chromaRaw;
             $hue = $chroma === 0.0 ? 0.0 : $hueRaw;
 
-            if ($lightness >= 0 && $lightness <= 1)
-            {
+            if ($lightness >= 0 && $lightness <= 1) {
                 return $formatResult(
                     max(0, min(1, $lightness)),
                     max(0, $chroma),
@@ -106,8 +97,7 @@ final class ColorMutator
             }
         }
 
-        if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*[\d.%]+)?\s*\)\s*$/i', $value, $matches))
-        {
+        if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*[\d.%]+)?\s*\)\s*$/i', $value, $matches)) {
             $lightness = (float) $matches[1];
             if ($matches[2] === '%') {
                 $lightness /= 100;
@@ -127,33 +117,27 @@ final class ColorMutator
             );
         }
 
-        if (str_starts_with($value, '#'))
-        {
+        if (str_starts_with($value, '#')) {
             $hex = substr($value, 0, 7);
-            if (strlen($hex) === 4)
-            {
-                $hex = sprintf("#%s%s%s",
+            if (\strlen($hex) === 4) {
+                $hex = \sprintf(
+                    "#%s%s%s",
                     substr($hex, 1, 1) . substr($hex, 1, 1),
                     substr($hex, 2, 1) . substr($hex, 2, 1),
                     substr($hex, 3, 1) . substr($hex, 3, 1)
                 );
             }
             $rgb = sscanf($hex, '#%02x%02x%02x');
-            [$red, $green, $blue] = is_array($rgb) ? $rgb : [0, 0, 0];
-        }
-        else
-        {
+            [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0, 0, 0];
+        } else {
             $rgb = self::fromRGB($value);
-            if ($rgb !== false && count($rgb) >= 3)
-            {
+            if ($rgb !== false && \count($rgb) >= 3) {
                 [$red, $green, $blue] = [
                     (int) round($rgb[0]),
                     (int) round($rgb[1]),
                     (int) round($rgb[2]),
                 ];
-            }
-            else
-            {
+            } else {
                 [$red, $green, $blue] = [0, 0, 0];
             }
         }
@@ -184,13 +168,10 @@ final class ColorMutator
 
         $C = sqrt($a * $a + $b * $b);
 
-        if ($C < 1e-4)
-        {
+        if ($C < 1e-4) {
             $C = 0.0;
             $H = 0.0;
-        }
-        else
-        {
+        } else {
             $H = rad2deg(atan2($b, $a));
             if ($H < 0) {
                 $H += 360;
@@ -208,20 +189,17 @@ final class ColorMutator
      */
     public static function fromRGB(string $value): array|false
     {
-        if (preg_match('/rgba?\s*\(([^)]+)\)/i', $value, $matches))
-        {
+        if (preg_match('/rgba?\s*\(([^)]+)\)/i', $value, $matches)) {
             $channels = preg_split('/\s*,\s*/', trim($matches[1]));
 
-            if (\is_array($channels) && \count($channels) >= 3)
-            {
+            if (\is_array($channels) && \count($channels) >= 3) {
                 return array_map('floatval', $channels);
             }
         }
 
         $channels = preg_split('/[\s,]+/', trim($value));
 
-        if (\is_array($channels) && \count($channels) >= 3)
-        {
+        if (\is_array($channels) && \count($channels) >= 3) {
             return array_map('floatval', $channels);
         }
 
@@ -236,8 +214,7 @@ final class ColorMutator
         preg_match('/oklch\\((.*?)\\)/', $value, $matches);
         $parts = preg_split('/\s+/', trim($matches[1]));
 
-        if ($parts === false || \count($parts) < 3)
-        {
+        if ($parts === false || \count($parts) < 3) {
             throw new InvalidArgumentException("Invalid OKLCH format: $value");
         }
 
