@@ -55,8 +55,7 @@ export function listComponentRequest(component, pushState = false) {
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
 
-  // TODO skeleton loader
-  //component.loading = true
+  component.loading = true
 
   let eventData = component.$event.detail
 
