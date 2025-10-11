@@ -57,8 +57,8 @@ class AppLayout extends BaseLayout
                         Div::make()
                             ->class('layout-overlay')
                             ->customAttributes([
-                                'x-cloak'    => '',
-                                'x-show'     => 'asideMenuOpen',
+                                'x-cloak' => '',
+                                'x-show' => 'asideMenuOpen',
                                 'x-on:click' => 'asideMenuOpen = false',
                                 'x-transition.opacity' => '',
                             ]),

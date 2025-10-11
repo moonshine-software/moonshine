@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use JsonException;
 use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
@@ -53,7 +51,7 @@ class Select extends Field implements
     {
         $value = $this->toValue();
 
-        if($this->isMultiple()) {
+        if ($this->isMultiple()) {
             return $this->getMultiplePreview($value);
         }
 
