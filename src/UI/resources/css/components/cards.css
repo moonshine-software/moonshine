@@ -1,32 +1,30 @@
 /* Category card */
 .card-category {
-  @apply
-  relative h-full
-  flex flex-col
-  theme__rounded
-  bg-white dark:bg-dark-600
-  shadow-md shadow-gray-200 dark:shadow-black/5
-  gap-y-6
-  compact:gap-y-4
+  @apply relative
+  flex h-full
+  flex-col
+  gap-y-6 bg-white
+  p-3 shadow-md shadow-gray-200
+  sm:p-4
+  lg:p-5
+  dark:bg-dark-600
+  dark:shadow-black/5 compact:gap-y-4 compact:p-3
   minimalistic:gap-y-2
-  p-3 sm:p-4 lg:p-5
-  compact:p-3
-  minimalistic:p-2
-  ;
+  minimalistic:p-2;
 
   .card-photo {
-    @apply relative h-52 w-full overflow-hidden theme__rounded;
+    @apply relative h-52 w-full overflow-hidden;
 
     &:has(.carousel) {
       @apply h-auto;
     }
 
     img {
-      @apply h-full w-full select-none object-cover;
+      @apply h-full w-full object-cover select-none;
     }
 
     .badge {
-      @apply absolute left-4 top-4 z-2;
+      @apply absolute top-4 left-4 z-2;
     }
 
     .card-photo-content {
@@ -68,9 +66,9 @@
 
   .card-actions {
     @apply flex flex-wrap justify-end gap-2
-    border-t theme__border_for_light_bg
+    border-t theme__border
     pt-5
     compact:pt-3
-    minimalistic:pt-2
+    minimalistic:pt-2;
   }
 }

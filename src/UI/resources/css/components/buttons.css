@@ -1,113 +1,240 @@
-/* Buttons */
-.btn {
-  @apply
-  theme__rounded
-  inline-flex items-center justify-center
-  gap-x-2
-  font-medium
-  text-3xs
-  text-slate-600 hover:text-slate-600 dark:text-slate-300 dark:hover:text-slate-200
-  bg-transparent hover:bg-gray-100 dark:bg-transparent dark:hover:bg-dark-300
-  border-1 theme__border_for_light_bg
-  h-10
-  compact:min-h-fit compact:h-8
-  minimalistic:min-h-fit minimalistic:h-fit
-  whitespace-nowrap
-  cursor-pointer disabled:cursor-not-allowed
-  px-3 py-2
-  compact:px-2.5 compact:py-2
-  minimalistic:px-2 minimalistic:py-2
-  focus:ring focus:ring-gray-400/20 dark:focus:ring-dark-100/30
-  focus-visible:outline-none
-  disabled:opacity-70
-  transition-colors
-  ;
+@theme {
+  --ms-btn-padding-x: --spacing(3);
+  --ms-btn-padding-y: --spacing(2);
+  --ms-btn-gap-x: --spacing(2);
+  --ms-btn-border-radius: --spacing(2);
+  --ms-btn-border-color: var(--theme-border-color);
+  --ms-btn-bg-color: var(--color-gray-50);
+  --ms-btn-color: var(--color-black);
+  --ms-btn-font-size: var(--font-3xs);
+  --ms-btn-font-weight: var(--font-weight-medium);
 
-  > svg {
-    @apply h-4 w-4
+  --ms-btn-hover-border-color: var(--color-gray-300);
+  --ms-btn-hover-bg-color: var(--color-white);
+  --ms-btn-hover-color: var(--color-black);
+
+  --ms-btn-disabled-opacity: 0.6;
+
+  --ms-btn-badge-padding-x: --spacing(1.5);
+  --ms-btn-badge-padding-y: 0;
+  --ms-btn-badge-font-size: 0.925em;
+}
+
+@variant dark {
+  --ms-btn-border-color: theme('colors.white/0.2');
+  --ms-btn-bg-color: theme('colors.white/0.1');
+  --ms-btn-color: theme('colors.white');
+
+  --ms-btn-hover-border-color: theme('colors.white/0.3');
+  --ms-btn-hover-bg-color: theme('colors.white/0.2');
+  --ms-btn-hover-color: theme('colors.white');
+}
+
+/* Buttons */
+
+.btn {
+  vertical-align: top;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--ms-btn-gap-x);
+  min-height: var(--ms-btn-min-height, auto);
+  padding: var(--ms-btn-padding-y) var(--ms-btn-padding-x);
+  border-radius: var(--ms-btn-border-radius);
+  border: var(--ms-btn-border-width, 1px) solid var(--ms-btn-border-color);
+  background-color: var(--ms-btn-bg-color);
+  color: var(--ms-btn-color);
+  font-size: var(--ms-btn-font-size);
+  font-weight: var(--ms-btn-font-weight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, box-shadow, opacity, fill, stroke;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--ms-btn-hover-border-color);
+      background-color: var(--ms-btn-hover-bg-color);
+      color: var(--ms-btn-hover-color);
+    }
   }
 
-  &.btn-lg {
-    @apply h-12 px-4;
+  &:focus {
+    box-shadow: 0 0 0 var(--ms-btn-focus-ring-size, 1.5px) var(--ms-btn-hover-bg-color);
+  }
 
-    > svg {
-      @apply h-5 w-5
-    }
+  &:disabled {
+    border-color: var(--ms-btn-border-color);
+    background-color: var(--ms-btn-bg-color);
+    color: var(--ms-btn-color);
+    opacity: var(--ms-btn-disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  .icon-wrapper {
+    @apply size-(--ms-btn-icon-size);
   }
 
   .badge {
-    @apply ml-auto border theme__border_for_light_bg
-    px-2 py-0
-    text-center
-    dark:bg-dark-900
-    ;
+    margin-left: auto;
+    padding-block: var(--ms-btn-badge-padding-y);
+    padding-inline: var(--ms-btn-badge-padding-x);
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    background-color: inherit;
+    text-align: center;
+    font-size: 1em;
 
     &:empty {
-      @apply hidden
+      display: none;
     }
   }
 
-  /* Button themes */
-
-  &.btn-primary {
-    @apply
-    theme__text_color
-    theme__btn
-    bg-primary hover:bg-primary/80 dark:bg-primary/50
-    border-primary focus:ring-primary/20 dark:focus:ring-primary/40
+  &.btn-lg {
+    --ms-btn-padding-x: --spacing(6);
+    --ms-btn-padding-y: --spacing(3);
   }
+}
 
-  &.btn-secondary {
-    @apply
-    theme__text_color
-    theme__btn
-    bg-secondary hover:bg-secondary/80 dark:bg-secondary/50
-    border-secondary focus:ring-secondary/20 dark:focus:ring-secondary/40
+/* Button themes */
+
+.btn-primary {
+  --ms-btn-border-color: theme('colors.primary/0.4');
+  --ms-btn-bg-color: theme('colors.primary/0.3');
+  --ms-btn-color: theme('colors.black');
+
+  --ms-btn-hover-border-color: theme('colors.primary/0.3');
+  --ms-btn-hover-bg-color: theme('colors.primary/0.2');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.primary/0.8');
+    --ms-btn-bg-color: theme('colors.primary/0.4');
+    --ms-btn-color: theme('colors.white');
+
+    --ms-btn-hover-border-color: theme('colors.primary');
+    --ms-btn-hover-bg-color: theme('colors.primary/0.5');
+    --ms-btn-hover-color: theme('colors.white');
   }
+}
 
-  &.btn-success {
-    @apply
-    theme__btn
-    text-success-text dark:text-inherit
-    bg-success hover:bg-success/80 dark:bg-success/50
-    border-success focus:ring-success/20 dark:focus:ring-success/40
+.btn-secondary {
+  --ms-btn-border-color: theme('colors.secondary/0.4');
+  --ms-btn-bg-color: theme('colors.secondary/0.3');
+  --ms-btn-color: theme('colors.black');
+
+  --ms-btn-hover-border-color: theme('colors.secondary/0.3');
+  --ms-btn-hover-bg-color: theme('colors.secondary/0.2');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.secondary/0.8');
+    --ms-btn-bg-color: theme('colors.secondary/0.4');
+    --ms-btn-color: theme('colors.white');
+
+    --ms-btn-hover-border-color: theme('colors.secondary');
+    --ms-btn-hover-bg-color: theme('colors.secondary/0.5');
+    --ms-btn-hover-color: theme('colors.white');
   }
+}
 
-  &.btn-warning {
-    @apply
-    theme__btn
-    bg-warning hover:bg-warning/80 dark:bg-warning/50
-    border-warning focus:ring-warning/20 dark:focus:ring-warning/40
+.btn-success {
+  --ms-btn-border-color: theme('colors.success.DEFAULT/0.2');
+  --ms-btn-bg-color: theme('colors.success.DEFAULT/0.15');
+  --ms-btn-color: theme('colors.success.text');
+
+  --ms-btn-hover-border-color: theme('colors.success.DEFAULT/0.3');
+  --ms-btn-hover-bg-color: theme('colors.success.DEFAULT/0.2');
+  --ms-btn-hover-color: theme('colors.success.text');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.success.DEFAULT/0.4');
+    --ms-btn-bg-color: theme('colors.success.DEFAULT/0.3');
+
+    --ms-btn-hover-bg-color: theme('colors.success.DEFAULT/0.5');
+    --ms-btn-hover-color: theme('colors.white');
   }
+}
 
-  &.btn-error {
-    @apply
-    theme__btn
-    text-error-text dark:text-inherit
-    bg-error hover:bg-error/80 dark:bg-error/50
-    border-error focus:ring-error/20 dark:focus:ring-error/40
+.btn-warning {
+  --ms-btn-border-color: theme('colors.warning.DEFAULT/0.2');
+  --ms-btn-bg-color: theme('colors.warning.DEFAULT/0.15');
+  --ms-btn-color: theme('colors.warning.text');
+
+  --ms-btn-hover-border-color: theme('colors.warning.DEFAULT/0.3');
+  --ms-btn-hover-bg-color: theme('colors.warning.DEFAULT/0.2');
+  --ms-btn-hover-color: theme('colors.warning.text');
+  --ms-btn-hover-color: theme('colors.warning.text');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.warning.DEFAULT/0.4');
+    --ms-btn-bg-color: theme('colors.warning.DEFAULT/0.3');
+
+    --ms-btn-hover-bg-color: theme('colors.warning.DEFAULT/0.5');
+    --ms-btn-hover-color: theme('colors.white');
   }
+}
 
-  &.btn-info {
-    @apply
-    theme__btn
-    text-info-text dark:text-inherit
-    bg-info hover:bg-info/80 dark:bg-info/50
-    border-info focus:ring-info/20 dark:focus:ring-info/40
+.btn-error {
+  --ms-btn-border-color: theme('colors.error.DEFAULT/0.2');
+  --ms-btn-bg-color: theme('colors.error.DEFAULT/0.15');
+  --ms-btn-color: theme('colors.error.text');
+
+  --ms-btn-hover-border-color: theme('colors.error.DEFAULT/0.3');
+  --ms-btn-hover-bg-color: theme('colors.error.DEFAULT/0.2');
+  --ms-btn-hover-color: theme('colors.error.text');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.error.DEFAULT/0.4');
+    --ms-btn-bg-color: theme('colors.error.DEFAULT/0.3');
+
+    --ms-btn-hover-bg-color: theme('colors.error.DEFAULT/0.5');
+    --ms-btn-hover-color: theme('colors.white');
+  }
+}
+
+.btn-info {
+  --ms-btn-border-color: theme('colors.info.DEFAULT/0.2');
+  --ms-btn-bg-color: theme('colors.info.DEFAULT/0.15');
+  --ms-btn-color: theme('colors.info.text');
+
+  --ms-btn-hover-border-color: theme('colors.info.DEFAULT/0.3');
+  --ms-btn-hover-bg-color: theme('colors.info.DEFAULT/0.2');
+  --ms-btn-hover-color: theme('colors.info.text');
+
+  @variant dark {
+    --ms-btn-border-color: theme('colors.info.DEFAULT/0.4');
+    --ms-btn-bg-color: theme('colors.info.DEFAULT/0.3');
+
+    --ms-btn-hover-bg-color: theme('colors.info.DEFAULT/0.5');
+    --ms-btn-hover-color: theme('colors.white');
   }
 }
 
 /* Button variants */
 
-.btn-close {
-  @apply
-  p-0
-  w-10 h-10
-  compact:w-8 compact:h-8
-  minimalistic:w-6 minimalistic:h-6
-  ;
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-btn-icon-size, --spacing(6));
+  height: var(--ms-btn-icon-size, --spacing(6));
+  padding: 0;
+  font-size: var(--ms-btn-icon-font-size, --spacing(5));
 
-  > svg {
-    @apply h-5 w-5
+  .icon-wrapper,
+  svg {
+    width: 1em;
+    height: 1em;
   }
+
+  @variant hover {
+    color: var(--color-primary);
+  }
+}
+
+.btn-burger {
+  --ms-btn-icon-size: var(--ms-menu-burger-size, --spacing(6));
+  --ms-btn-icon-font-size: var(--ms-menu-burger-icon-size, --spacing(6));
 }

@@ -43,7 +43,6 @@ input {
   @apply col-span-12 mt-0 text-3xs text-error;
 }
 
-
 /* Default field */
 .form-input,
 .form-textarea,
@@ -51,12 +50,11 @@ input {
 .form-multiselect,
 .form-file-upload,
 .ts-control {
-  @apply base__default base__placeholder block w-full
-  theme__rounded
-  min-h-10
+  @apply block min-h-10 w-full rounded-md
+  base__default
   p-2
-  minimalistic:p-1
-  ;
+  base__placeholder
+  minimalistic:p-1;
 
   &:focus {
     @apply base__focus;
@@ -85,26 +83,24 @@ input {
 
 /* File upload */
 .form-file-upload {
-  @apply
-  cursor-pointer
+  @apply cursor-pointer
   overflow-hidden
   bg-clip-padding
   file:-m-3
+  file:[margin-inline-end:0.75rem]
   file:cursor-pointer
   file:overflow-hidden
   file:rounded-none
   file:border-0
-  file:border-solid
-  file:border-inherit
-  file:bg-slate-100
-  file:p-3 file:pl-5
-  file:transition
   file:[border-inline-end-width:1px]
-  file:[margin-inline-end:0.75rem]
+  file:border-solid
+  file:border-inherit file:bg-slate-100
+  file:p-3
+  file:pl-5
+  file:transition
   file:disabled:cursor-not-allowed
   dark:file:bg-primary
-  dark:file:text-white
-  ;
+  dark:file:text-white;
 
   &:not(:disabled) {
     @apply hover:file:bg-neutral-200 dark:file:text-white dark:file:hover:bg-secondary;
@@ -114,7 +110,7 @@ input {
 /* Radio */
 .form-checkbox,
 .form-radio {
-  @apply base__default shrink-0 cursor-pointer accent-primary checked:accent-primary hover:accent-primary;
+  @apply shrink-0 cursor-pointer base__default accent-primary checked:accent-primary hover:accent-primary;
 
   &:focus {
     @apply base__focus checked:bg-primary;
@@ -128,36 +124,32 @@ input {
 
   .form-invalid &,
   &.form-invalid {
-    @apply
-    base__error
+    @apply base__error
     text-error
     checked:bg-error
     dark:text-error
-    dark:checked:bg-error
+    dark:checked:bg-error;
   }
 }
 
 /* Checkbox */
 .form-checkbox {
-  @apply
+  @apply flex
   size-4
-  appearance-none
-  shrink-0
-  cursor-pointer
-  w-5
   h-5
-  border-1 theme__border_for_light_bg
-  rounded-md md:rounded-none
-  flex
-  items-center
-  justify-center
+  w-5
+  shrink-0
+  cursor-pointer items-center
+  justify-center rounded-md
+  border-1
+  theme__border
   bg-white
-  hover:border-primary
-  checked:bg-primary
   checked:border-primary
-  dark:bg-transparent
+  checked:bg-primary
+  hover:border-primary
+  md:rounded-none
   dark:border-dark-100
-  ;
+  dark:bg-transparent;
 
   &:checked {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
@@ -165,28 +157,27 @@ input {
 }
 
 .form-radio {
-  @apply
+  @apply flex
   size-4
-  appearance-none
+  h-5
+  w-5
   shrink-0
   cursor-pointer
-  w-5
-  h-5
-  rounded-full
-  border-1 theme__border_for_light_bg
-  flex
+  appearance-none
   items-center
   justify-center
+  rounded-full
+  border-1
+  theme__border
   bg-white
-  hover:border-primary
-  checked:bg-primary
   checked:border-primary
-  dark:bg-transparent
+  checked:bg-primary
+  hover:border-primary
   dark:border-dark-100
-  ;
+  dark:bg-transparent;
 
   &:checked {
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E");
+    background-image: url('data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E');
   }
 }
 
@@ -195,36 +186,34 @@ input {
   @apply relative flex cursor-pointer items-center;
 
   .form-switcher-toggler {
-    @apply
-    base__default
-    h-6
+    @apply h-6
     w-11
     rounded-full
+    base__default
+    peer-checked:bg-primary
     after:absolute
-    after:left-0.5
     after:top-0.5
+    after:left-0.5
     after:h-5
     after:w-5
     after:rounded-full
     after:border
-    after:theme__border_for_light_bg
-    after:transition-all
-    after:bg-white
+    after:theme__border
     after:border-gray-300
-    peer-checked:bg-primary
-    dark:after:border-dark-200
+    after:bg-white
+    after:transition-all
     dark:peer-checked:bg-primary
+    dark:after:border-dark-200;
   }
 
   .peer:checked + .form-switcher-toggler {
-    @apply
-    after:translate-x-full
-    bg-primary dark:bg-primary
-    after:border-primary dark:after:theme__border_for_light_bg
+    @apply bg-primary
+    after:translate-x-full after:border-primary
+    dark:bg-primary dark:after:theme__border;
   }
 
   .peer:not(:checked) + .form-switcher-toggler {
-    @apply bg-slate-100 dark:bg-dark-800
+    @apply bg-slate-100 dark:bg-dark-800;
   }
 
   .peer:focus:not(:disabled) + .form-switcher-toggler {
@@ -236,7 +225,7 @@ input {
   }
 
   .peer:checked:disabled + .form-switcher-toggler {
-    @apply bg-primary
+    @apply bg-primary;
   }
 
   /* Invalid field */
@@ -249,24 +238,21 @@ input {
     }
 
     .peer:focus ~ .form-switcher-toggler {
-      @apply
-      base__error
+      @apply base__error
       ring-error/20
-      dark:ring-error/40
+      dark:ring-error/40;
     }
 
     .peer:not(:disabled) {
       &:checked ~ .form-switcher-toggler {
-        @apply
-        bg-error
+        @apply bg-error
         after:border-error
-        dark:bg-error
+        dark:bg-error;
       }
 
       &:not(:checked) ~ .form-switcher-toggler {
-        @apply
-        after:bg-error
-        dark:after:bg-error
+        @apply after:bg-error
+        dark:after:bg-error;
       }
     }
   }
@@ -277,27 +263,49 @@ input {
   @apply flex-row items-stretch gap-0;
 
   .form-input {
-    @apply shrink rounded-r-none;
-
-    & ~ .expansion-wrapper {
-      @apply border-l-0 theme__border_for_light_bg;
-    }
+    @apply shrink;
   }
 
-  .expansion-wrapper {
-    @apply
-    base__default
-    overflow-hidden
-    flex
+  /* Prefix Wrapper - to the left of the input */
+  .expansion-wrapper--prefix {
+    @apply flex
+    shrink-0
     flex-row
     items-center
-    shrink-0
-    rounded-r-md
+    overflow-hidden
+    rounded-l-md
+    base__default
     bg-slate-100
     text-slate-600
     dark:bg-dark-900/20
-    dark:text-slate-400
-    ;
+    dark:text-slate-400;
+
+    .expansion {
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
+    }
+
+    button {
+      @apply hover:bg-gray-300 dark:hover:bg-dark-200;
+    }
+
+    /* Input after prefix: no left border radius and no left border */
+    & + .form-input {
+      @apply rounded-l-none border-l-0;
+    }
+  }
+
+  /* Suffix Wrapper - to the right of the input */
+  .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply flex
+    flex-row
+    items-center
+    overflow-hidden
+    rounded-r-md
+    base__default
+    bg-slate-100
+    text-slate-600
+    dark:bg-dark-900/20
+    dark:text-slate-400;
 
     .expansion {
       @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
@@ -308,15 +316,23 @@ input {
     }
   }
 
-  .form-input:read-only ~ .expansion-wrapper {
+  /* Input before suffix: no right border radius */
+  .form-input:has(~ .expansion-wrapper:not(.expansion-wrapper--prefix)) {
+    @apply rounded-r-none border-r-0;
+  }
+
+  /* Prefix: Read-only state */
+  .expansion-wrapper--prefix:has(+ .form-input:read-only) {
     @apply base__read-only;
   }
 
-  .form-input:not(:read-only):focus ~ .expansion-wrapper {
+  /* Prefix: Focus State */
+  .expansion-wrapper--prefix:has(+ .form-input:not(:read-only):focus) {
     @apply base__focus;
   }
 
-  .form-input:disabled ~ .expansion-wrapper {
+  /* Prefix: Disabled State */
+  .expansion-wrapper--prefix:has(+ .form-input:disabled) {
     @apply base__disabled;
 
     * {
@@ -324,15 +340,46 @@ input {
     }
   }
 
-  .form-input.form-invalid ~ .expansion-wrapper {
+  /* Prefix: Invalid State */
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid) {
     @apply base__error;
   }
 
-  .form-input.form-invalid:not(:read-only):focus ~ .expansion-wrapper {
-    @apply
-    base__error
+  .expansion-wrapper--prefix:has(+ .form-input.form-invalid:not(:read-only):focus) {
+    @apply base__error
     ring-error/20
-    dark:ring-error/40
+    dark:ring-error/40;
+  }
+
+  /* Suffix: Read-only State */
+  .form-input:read-only ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__read-only;
+  }
+
+  /* Suffix: Focus State */
+  .form-input:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__focus;
+  }
+
+  /* Suffix: Disabled State */
+  .form-input:disabled ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__disabled;
+
+    * {
+      @apply pointer-events-none;
+    }
+  }
+
+  /* Suffix: Invalid State */
+  .form-input.form-invalid ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__error;
+  }
+
+  .form-input.form-invalid:not(:read-only):focus
+    ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
+    @apply base__error
+    ring-error/20
+    dark:ring-error/40;
   }
 }
 
@@ -343,10 +390,9 @@ input {
   .form-group-range-wrapper {
     @apply relative w-full px-[var(--track-size)];
 
-    input[type=range].form-range {
-      @apply pointer-events-none absolute z-4 h-[var(--track-size)] appearance-none bg-transparent first-of-type:left-0 last-of-type:right-0
-      w-[calc(100%_-_var(--track-size))]
-      ;
+    input[type='range'].form-range {
+      @apply pointer-events-none absolute z-4 h-[var(--track-size)] w-[calc(100%_-_var(--track-size))] appearance-none bg-transparent first-of-type:left-0
+      last-of-type:right-0;
 
       &::-webkit-slider-runnable-track {
         @apply bg-transparent;
@@ -357,7 +403,7 @@ input {
       }
 
       &:first-of-type::-webkit-slider-thumb {
-        @apply bg-[var(--track-from-color)]
+        @apply bg-[var(--track-from-color)];
       }
 
       &:not(:first-of-type)::-webkit-slider-thumb {
@@ -436,23 +482,20 @@ input {
         }
       }
     }
-
-
   }
 
   .form-range-slider {
     @apply relative z-0 h-[var(--track-size)];
 
     .form-range-tracker {
-      @apply
-      absolute left-0 right-0 top-1/2
+      @apply absolute top-1/2 right-0 left-0
       z-3
       -mx-[var(--track-size)]
       h-2
       -translate-y-1/2
       transform
       rounded-full
-      bg-slate-100 dark:bg-dark-800
+      bg-slate-100 dark:bg-dark-800;
     }
 
     .form-range-connect {
@@ -480,13 +523,12 @@ input {
 
   .form-color-thumb {
     @apply absolute
+    top-1/2
     left-1
-    minimalistic:left-0
-    theme__rounded
-    top-1/2 h-8 w-8 -translate-y-1/2 overflow-hidden;
+    h-8 w-8 -translate-y-1/2 overflow-hidden minimalistic:left-0;
 
     input[type='color'] {
-      @apply absolute -left-2 -top-2 m-0 h-16 w-16 cursor-pointer p-0;
+      @apply absolute -top-2 -left-2 m-0 h-16 w-16 cursor-pointer p-0;
     }
   }
 
@@ -504,7 +546,7 @@ input {
 
     [type='date'] {
       @apply p-1
-      minimalistic:max-sm:px-[1px]
+      minimalistic:max-sm:px-[1px];
     }
 
     & > label + div {
@@ -519,10 +561,10 @@ input {
 
 /* Choices (Single/Multiple Select) */
 .choices {
-  @apply base__default w-full theme__rounded;
+  @apply w-full rounded-md base__default;
 
   &::after {
-    @apply transition-all
+    @apply transition-all;
   }
 
   &.is-focused {
@@ -548,15 +590,13 @@ input {
 
   &[data-type*='select-one'] {
     &:not(.is-open) {
-      @apply
-      after:border-t-slate-300
-      dark:after:border-t-slate-600
+      @apply after:border-t-slate-300
+      dark:after:border-t-slate-600;
     }
 
     &.is-open {
-      @apply
-      after:border-t-slate-300
-      dark:after:border-t-slate-600
+      @apply after:border-t-slate-300
+      dark:after:border-t-slate-600;
     }
   }
 
@@ -565,12 +605,10 @@ input {
   }
 
   .choices__input {
-    @apply
-    base__placeholder
-    m-0
+    @apply m-0
     bg-transparent
     p-0
-    ;
+    base__placeholder;
 
     box-shadow: none;
   }
@@ -586,18 +624,17 @@ input {
 
   .choices__list--dropdown,
   .choices__list[aria-expanded] {
-    @apply base__default z-10 rounded-b-md;
+    @apply z-10 rounded-b-md base__default;
 
     .choices__input {
       @apply base__default base__placeholder;
     }
 
     .choices__item.is-highlighted {
-      @apply
-      bg-slate-100
+      @apply bg-slate-100
       text-slate-600
       dark:bg-dark-900/20
-      dark:text-slate-400
+      dark:text-slate-400;
     }
   }
 
@@ -622,17 +659,16 @@ input {
   }
 
   .choices__heading {
-    @apply
-    border-gray-300
+    @apply border-gray-300
     text-gray-400
     dark:border-dark-200
-    dark:text-gray-500
+    dark:text-gray-500;
   }
 
   /* Show browser errors */
 
   [hidden] {
-    @apply absolute left-0 top-0 z-0 m-0 block h-full w-full p-0 opacity-0;
+    @apply absolute top-0 left-0 z-0 m-0 block h-full w-full p-0 opacity-0;
   }
 }
 
@@ -643,23 +679,22 @@ input {
 
     &:before {
       content: '';
-      @apply
-      absolute
-      left-0
+      @apply absolute
       top-2.5
+      left-0
       h-px
       w-4
       bg-gray-300
-      dark:bg-dark-200
+      dark:bg-dark-200;
     }
   }
 }
 
 fieldset {
-  @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 dark:border-dark-200 sm:p-4;
+  @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-dark-200;
 
   legend {
-    @apply absolute left-3 top-0 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
+    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
 
     &:before {
       content: '';
@@ -672,11 +707,10 @@ fieldset {
   optgroup {
     option {
       &:hover {
-        @apply
+        @apply transition-colors
         dark:bg-dark-300
-        dark:hover:bg-dark-200
         dark:text-slate-400
-        transition-colors
+        dark:hover:bg-dark-200;
       }
     }
   }

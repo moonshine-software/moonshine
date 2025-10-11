@@ -1,71 +1,65 @@
 /* Tabs */
 .tabs {
   .tabs-list {
-    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200
+    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-dark-200;
   }
 
   .tabs-title {
-    @apply mr-2 flex w-full gap-2 text-primary
+    @apply mr-2 flex w-full gap-2 text-primary;
   }
 
   .tabs-button {
-    @apply
-    whitespace-nowrap
-    flex items-center
+    @apply flex
+    h-10 items-center
     gap-1.5
-    font-medium
-    text-3xs sm:text-2xs
-    text-gray-400 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300
-    border-b border-b-transparent hover:border-gray-300 dark:hover:border-gray-500
-    px-2
-    h-10 sm:h-12
+    border-b
+    border-b-transparent px-2
+    text-3xs font-medium whitespace-nowrap text-gray-400
+    hover:border-gray-300 hover:text-gray-700 sm:h-12 sm:text-2xs
+    dark:text-slate-400
+    dark:hover:border-gray-500 dark:hover:text-slate-300
     compact:h-10
-    minimalistic:h-8
-    ;
+    minimalistic:h-8;
 
     &._is-active {
-      @apply
-      pointer-events-none
-      text-primary dark:text-secondary
-      border-primary dark:border-secondary
+      @apply pointer-events-none
+      border-primary text-primary
+      dark:border-secondary dark:text-secondary;
     }
 
     > svg {
-      @apply h-4 w-4 sm:h-5 sm:w-5
+      @apply h-4 w-4 sm:h-5 sm:w-5;
     }
   }
 
   .tabs-content {
-    @apply overflow-x-clip -mx-1 px-1
-    mt-6
+    @apply -mx-1 mt-6 overflow-x-clip
+    px-1
     compact:mt-4
-    minimalistic:mt-2
+    minimalistic:mt-2;
   }
 
   .tabs-vertical {
     @apply flex gap-3;
 
     > .tabs-list {
-      @apply flex min-h-max min-w-max flex-col border-b-0 border-r;
+      @apply flex min-h-max min-w-max flex-col border-r border-b-0;
 
       .tabs-button {
-        @apply
-        w-full
-        text-gray-400 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-300
-        border-b-0 border-r border-r-transparent hover:border-gray-300 dark:hover:border-gray-500
-        ;
+        @apply w-full
+        border-r border-b-0 border-r-transparent text-gray-400
+        hover:border-gray-300 hover:text-gray-700 dark:text-slate-400 dark:hover:border-gray-500 dark:hover:text-slate-300;
 
         &._is-active {
-          @apply
-          pointer-events-none
-          text-primary dark:text-secondary
-          border-primary dark:border-secondary
+          @apply pointer-events-none
+          border-primary text-primary
+          dark:border-secondary dark:text-secondary;
         }
       }
     }
 
     > .tabs-content {
-      @apply mt-0 grow
+      @apply mt-0 grow;
     }
   }
 }

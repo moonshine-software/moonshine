@@ -4,7 +4,7 @@
 ])
 
 @if($items !== [])
-    <ul {{ $attributes->class(['menu-inner' => !$dropdown, 'menu-inner-dropdown' => $dropdown]) }}>
+    <ul {{ $attributes->class(['menu-list' => !$dropdown, 'menu-submenu' => $dropdown]) }}>
         @foreach($items as $item)
             {!! $item !!}
         @endforeach

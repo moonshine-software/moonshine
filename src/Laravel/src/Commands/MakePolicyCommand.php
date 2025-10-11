@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -18,12 +19,13 @@ use Symfony\Component\Finder\Finder;
 #[AsCommand(name: 'moonshine:policy')]
 class MakePolicyCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:policy {className?}';
+    protected $signature = 'moonshine:policy {className?} {--json} {--without-output}';
 
     protected $description = 'Create policy for Model';
 
     /**
      * @throws FileNotFoundException
+     * @throws JsonException
      */
     public function handle(): int
     {
@@ -65,6 +67,8 @@ class MakePolicyCommand extends MoonShineCommand
         ]);
 
         $this->wasCreatedInfo($stubsPath);
+
+        $this->formatOutput();
 
         return self::SUCCESS;
     }

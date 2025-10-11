@@ -1,60 +1,50 @@
 /* Dropdown */
 .dropdown {
-  @apply
-  relative
-  z-dropdown
-  ;
+  @apply relative
+  z-dropdown;
 
   .dropdown-body {
-    @apply
-    absolute
-    theme__rounded
-    pointer-events-none
+    @apply pointer-events-none
     invisible
+    absolute
     overflow-hidden
-    opacity-0
-    bg-white dark:bg-dark-500
-    shadow-lg dark:shadow-black/20
-    transition-all duration-100
-    is_active:visible
+    bg-white
+    opacity-0 shadow-lg
+    dark:bg-dark-500 dark:shadow-black/20
     is_active:pointer-events-auto
-    is_active:opacity-100
+    is_active:visible
+    is_active:opacity-100;
   }
 
   .dropdown-heading {
-    @apply
-    theme__border_for_light_bg border-b-1
-    bg-white dark:bg-dark-500
+    @apply border-b-1 theme__border
+    bg-white p-4
     font-medium
-    p-4
+    dark:bg-dark-500
     compact:p-3
-    minimalistic:p-2
+    minimalistic:p-2;
   }
 
   .dropdown-content {
-    @apply
-    flex flex-col
-    max-w-[280px] xs:max-w-[320px]
-    max-h-64
-    divide-y divide-gray-200 dark:divide-dark-200
-    overflow-y-auto
-    ;
+    @apply flex max-h-64
+    max-w-[280px] flex-col
+    divide-y
+    divide-gray-200 overflow-y-auto xs:max-w-[320px]
+    dark:divide-dark-200;
 
     .dropdown-input-search {
-      @apply mb-0 rounded-none border-0
+      @apply mb-0 rounded-none border-0;
     }
   }
 
   .dropdown-footer {
-    @apply
-    theme__border_for_light_bg border-t-1
+    @apply border-t-1 theme__border
     p-3
     compact:px-3 compact:py-2
-    minimalistic:px-3 minimalistic:py-2
-    ;
+    minimalistic:px-3 minimalistic:py-2;
 
     button {
-      @apply hover:cursor-pointer
+      @apply hover:cursor-pointer;
     }
   }
 
@@ -66,29 +56,28 @@
     .dropdown-menu-item--active {
       .dropdown-menu-link,
       .btn {
-        @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500
+        @apply pointer-events-none bg-gray-50 text-gray-400 dark:bg-dark-600 dark:text-slate-500;
       }
     }
 
     .dropdown-menu-link,
     .btn {
       @apply flex items-center justify-start gap-x-2
-      px-2 xs:px-4
-      py-3
-      compact:py-2
-      minimalistic:py-2
-      text-3xs lg:text-2xs
-      hover:bg-gray-100 dark:hover:bg-dark-400
-      hover:text-black dark:hover:text-white
-      ;
+      px-2 py-3
+      text-3xs
+      hover:bg-gray-100
+      hover:text-black
+      xs:px-4 lg:text-2xs
+      dark:hover:bg-dark-400 dark:hover:text-white
+      compact:py-2 minimalistic:py-2;
 
       > svg {
-        @apply h-4 w-4
+        @apply h-4 w-4;
       }
     }
 
     .btn {
-      @apply rounded-none border-0 focus:ring-0
+      @apply rounded-none border-0 focus:ring-0;
     }
   }
 }

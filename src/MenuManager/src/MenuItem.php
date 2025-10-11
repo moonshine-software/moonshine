@@ -258,7 +258,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
                 'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
                 'previewLabel' => Str::of($this->getLabel())->limit(2),
-                'icon' => $this->getIcon(6),
+                'icon' => $this->getIcon(),
                 'top' => $this->isTopMode(),
             ]);
 

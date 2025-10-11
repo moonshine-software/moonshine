@@ -18,7 +18,7 @@
                             @if($data['icon'])
                                 <x-moonshine::icon
                                     :icon="$data['icon']"
-                                    size="6"
+                                    size="5"
                                 />
                             @endif
 

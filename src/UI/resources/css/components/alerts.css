@@ -1,112 +1,97 @@
 /* Alerts */
 .alert {
-  @apply
-  theme__rounded
-  w-full
-  flex items-center
+  @apply mb-2.5
+  flex w-full
+  items-center
   gap-4
-  mb-2.5
-  px-4 py-3
-  compact:px-2 compact:py-2
-  minimalistic:px-1 minimalistic:py-1
-  border border-gray-200 dark:border-dark-200
-  bg-slate-100 dark:bg-dark-700
+  border border-gray-200
+  bg-slate-100 px-4
+  py-3 dark:border-dark-200
+  dark:bg-dark-700 compact:px-2 compact:py-2
+  minimalistic:px-1 minimalistic:py-1;
 }
 
 .alert-primary {
-  @apply
-  theme__text_color
-  bg-primary dark:bg-primary/30
-  border-primary
+  @apply border-primary
+  bg-primary theme__text_color
+  dark:bg-primary/30;
 }
 
 .alert-secondary {
-  @apply
-  theme__text_color
-  bg-secondary dark:bg-secondary/30
-  border-secondary dark:border-secondary
+  @apply border-secondary
+  bg-secondary theme__text_color
+  dark:border-secondary dark:bg-secondary/30;
 }
 
 .alert-success {
-  @apply
-  text-(--color-success-text)
-  bg-success dark:bg-success/30
-  border-success dark:border-success
+  @apply border-success
+  bg-success text-(--color-success-text)
+  dark:border-success dark:bg-success/30;
 }
 
 .alert-warning {
-  @apply
-  text-(--color-warning-text)
-  bg-warning dark:bg-warning/30
-  border-warning dark:border-warning
+  @apply border-warning
+  bg-warning text-(--color-warning-text)
+  dark:border-warning dark:bg-warning/30;
 }
 
 .alert-error {
-  @apply
-  text-(--color-error-text)
-  bg-error dark:bg-error/30
-  border-error dark:border-error
+  @apply border-error
+  bg-error text-(--color-error-text)
+  dark:border-error dark:bg-error/30;
 }
 
 .alert-info {
-  @apply
-  text-(--color-error-text)
-  bg-info dark:bg-info/30
-  border-info dark:border-info
+  @apply border-info
+  bg-info text-(--color-error-text)
+  dark:border-info dark:bg-info/30;
 }
 
 .alert-purple {
-  @apply
-  theme__text_color
-  bg-purple-500 dark:bg-purple-500/30
-  border-purple-500 dark:border-purple-500
+  @apply border-purple-500
+  bg-purple-500 theme__text_color
+  dark:border-purple-500 dark:bg-purple-500/30;
 }
 
 .alert-green {
-  @apply
-  theme__text_color
-  bg-green-500 dark:bg-green-500/30
-  border-green-500 dark:border-green-500
+  @apply border-green-500
+  bg-green-500 theme__text_color
+  dark:border-green-500 dark:bg-green-500/30;
 }
 
 .alert-yellow {
-  @apply
-  theme__text_color
-  bg-yellow-500 dark:bg-yellow-500/30
-  border-yellow-500 dark:border-yellow-500
+  @apply border-yellow-500
+  bg-yellow-500 theme__text_color
+  dark:border-yellow-500 dark:bg-yellow-500/30;
 }
 
 .alert-pink {
-  @apply
-  theme__text_color
-  bg-pink-500 dark:bg-pink-500/30
-  border-pink-500 dark:border-pink-500
+  @apply border-pink-500
+  bg-pink-500 theme__text_color
+  dark:border-pink-500 dark:bg-pink-500/30;
 }
 
 .alert-blue {
-  @apply
-  theme__text_color
-  bg-blue-500 dark:bg-blue-500/30
-  border-blue-500 dark:border-blue-500
+  @apply border-blue-500
+  bg-blue-500 theme__text_color
+  dark:border-blue-500 dark:bg-blue-500/30;
 }
 
 .alert-red {
-  @apply
-  theme__text_color
-  bg-red-500 dark:bg-red-500/30
-  border-red-500 dark:border-red-500
+  @apply border-red-500
+  bg-red-500 theme__text_color
+  dark:border-red-500 dark:bg-red-500/30;
 }
 
 .alert-gray {
-  @apply
-  theme__text_color
-  bg-gray-500 dark:bg-gray-500/30
-  border-gray-500 dark:border-gray-500
+  @apply border-gray-500
+  bg-gray-500 theme__text_color
+  dark:border-gray-500 dark:bg-gray-500/30;
 }
 
 .alert-icon {
   > svg {
-    @apply h-6 w-6
+    @apply h-6 w-6;
   }
 }
 
@@ -114,7 +99,7 @@
   @apply grow text-2xs font-medium;
 
   & > a {
-    @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70
+    @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70;
   }
 }
 
@@ -122,6 +107,6 @@
   @apply text-inherit opacity-70 hover:opacity-100;
 
   & > svg {
-    @apply h-4 w-4
+    @apply h-4 w-4;
   }
 }

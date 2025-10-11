@@ -35,7 +35,7 @@ trait WithIcon
      * @return string
      */
     public function getIcon(
-        int $size = 8,
+        ?int $size = null,
         Color|string $color = '',
         array $attributes = []
     ): string {

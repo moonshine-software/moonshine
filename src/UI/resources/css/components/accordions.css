@@ -6,39 +6,35 @@
 .accordion-item {
   &:first-child {
     .accordion-btn {
-      @apply
-      rounded-t-(--rounded)
+      @apply justify-between
+      rounded-t-(--theme-rounded)
       compact:rounded-t-(--compact-rounded)
-      minimalistic:rounded-none
-      justify-between
+      minimalistic:rounded-none;
     }
   }
 
   &:last-child {
     .accordion-btn:not(._is-active),
     .accordion-content {
-      @apply
-      rounded-b-(--rounded)
+      @apply rounded-b-(--theme-rounded)
       compact:rounded-b-(--compact-rounded)
-      minimalistic:rounded-none
+      minimalistic:rounded-none;
     }
   }
 }
 
 .accordion-btn {
-  @apply h-auto w-full grow justify-between whitespace-normal rounded-none p-3 text-left text-2xs sm:px-4 sm:py-3;
+  @apply h-auto w-full grow justify-between rounded-none p-3 text-left text-2xs whitespace-normal sm:px-4 sm:py-3;
 
   > svg {
     @apply h-4 w-4;
   }
 
   &._is-active {
-    @apply
+    @apply theme__border
     bg-slate-100
     dark:bg-dark-800
-    dark:hover:bg-dark-800
-    theme__border_for_light_bg
-    ;
+    dark:hover:bg-dark-800;
 
     > svg {
       @apply scale-y-[-1];
@@ -47,12 +43,11 @@
 }
 
 .accordion-content {
-  @apply
+  @apply -mt-1
   border
   border-t-0
-  theme__border_for_light_bg
-  p-3 sm:p-4
+  theme__border p-3
+  sm:p-4
   compact:p-2.5
-  minimalistic:p-1
-  -mt-1
+  minimalistic:p-1;
 }

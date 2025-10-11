@@ -1,0 +1,54 @@
+/* Base Skeleton Styles */
+.skeleton {
+  display: block;
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 20%, #f0f0f0 40%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* Skeleton Animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Custom Size Examples */
+.skeleton-text {
+  width: 100px;
+  height: 16px;
+}
+
+.skeleton-title {
+  width: 100px;
+  height: 24px;
+}
+
+.skeleton-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.skeleton-card {
+  width: 300px;
+  height: 200px;
+}
+
+/* Inline Custom Sizing */
+/* Use these with style attribute: style="--w: 200px; --h: 30px" */
+.skeleton-custom {
+  width: var(--w, 100%);
+  height: var(--h, 20px);
+}
+
+/* Dark Mode Variant */
+.skeleton-dark {
+  background: linear-gradient(90deg, #2a2a2a 0%, #3a3a3a 20%, #2a2a2a 40%, #2a2a2a 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}

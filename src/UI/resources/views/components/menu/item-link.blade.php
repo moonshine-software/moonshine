@@ -10,20 +10,22 @@
 ])
 <a
     href="{{ $url }}"
-    {{ $attributes?->merge(['class' => 'menu-inner-link']) }}
+    {{ $attributes?->merge(['class' => 'menu-link']) }}
 >
     @if($icon)
-        {!! $icon!!}
-    @elseif(!$top)
-        <span class="menu-inner-item-char">
+        <div class="menu-icon">
+            {!! $icon !!}
+        </div>
+    @else
+        <span class="menu-char">
             {{ $previewLabel }}
         </span>
     @endif
 
-    <span class="menu-inner-text">{{ $label }}</span>
+    <span class="menu-text">{{ $label }}</span>
 
     @if($badge !== false)
-        <span class="menu-inner-counter">{{ $badge }}</span>
+        <span class="menu-badge">{{ $badge }}</span>
     @endif
 </a>
 

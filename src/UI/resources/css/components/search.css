@@ -3,33 +3,31 @@
   @apply relative flex items-center;
 
   .search-form {
-    @apply relative w-full xl:max-w-[16rem] h-12 compact:h-fit minimalistic:h-fit;
+    @apply relative h-12 w-full xl:max-w-[16rem] compact:h-fit minimalistic:h-fit;
 
     .search-form-field {
-      @apply
-      h-full
+      @apply h-full
       w-full
-      theme__rounded
-      pl-3 pr-20
-      bg-gray-200 dark:bg-dark-600 focus:bg-white
+      border-transparent bg-gray-200
+      pr-20 pl-3 transition-all
       placeholder:text-3xs
       placeholder:font-normal
-      placeholder:text-slate-600 dark:placeholder:text-slate-500
-      border-transparent focus:border-gray-300 focus:dark:border-dark-200
-      transition-all
+      placeholder:text-slate-600 focus:border-gray-300
+      focus:bg-white dark:bg-dark-600 dark:placeholder:text-slate-500
+      focus:dark:border-dark-200;
     }
 
     .search-form-submit,
     .search-form-clear {
-      @apply absolute inset-y-0 bottom-0 right-1 z-2 px-2 text-slate-600 hover:text-secondary dark:text-slate-500 dark:hover:text-white;
+      @apply absolute inset-y-0 right-1 bottom-0 z-2 px-2 text-slate-600 hover:text-secondary dark:text-slate-500 dark:hover:text-white;
 
       & > svg {
-        @apply h-6 w-6
+        @apply h-6 w-6;
       }
     }
 
     .search-form-clear {
-      @apply right-8
+      @apply right-8;
     }
   }
 }

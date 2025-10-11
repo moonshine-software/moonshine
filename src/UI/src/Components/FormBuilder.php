@@ -263,6 +263,15 @@ final class FormBuilder extends MoonShineComponent implements
         return $this;
     }
 
+    public function withoutErrorToast(): self
+    {
+        $this->customAttributes([
+            'data-without-error-toast' => true,
+        ]);
+
+        return $this;
+    }
+
     public function dispatchEvent(array|string $events, array $exclude = [], bool $withoutPayload = false): self
     {
         $excludes = $withoutPayload ? '*' : implode(',', [

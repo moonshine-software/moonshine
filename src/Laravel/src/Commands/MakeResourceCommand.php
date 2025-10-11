@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use JsonException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 
-use function Laravel\Prompts\{outro, select, text};
+use function Laravel\Prompts\{outro, confirm, select, text};
 
 use MoonShine\Laravel\Support\StubsPath;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -15,12 +16,13 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:resource')]
 class MakeResourceCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:resource {className?} {--type=} {--m|model=} {--t|title=} {--test} {--pest} {--p|policy} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:resource {className?} {--type=} {--m|model=} {--t|title=} {--test} {--pest} {--force} {--p|policy} {--base-dir=} {--base-namespace=} {--json}';
 
     protected $description = 'Create resource';
 
     /**
      * @throws FileNotFoundException
+     * @throws JsonException
      */
     public function handle(): int
     {
@@ -37,6 +39,7 @@ class MakeResourceCommand extends MoonShineCommand
 
         $model = $this->qualifyModel($this->option('model') ?? $className);
         $title = $this->option('title') ?? Str::of($className)->singular()->plural()->value();
+        $force = $this->option('force') ?? false;
 
         $stubsPath = new StubsPath("{$className}Resource", 'php');
         $name = Str::of($stubsPath->name)
@@ -58,6 +61,10 @@ class MakeResourceCommand extends MoonShineCommand
             $stub = $keys[$type - 1] ?? $keys[0];
         } else {
             $stub = select('Type', $types, 'ModelResourceDefault');
+        }
+
+        if (!$force && file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {
+            return self::SUCCESS;
         }
 
         $properties = '';
@@ -82,7 +89,7 @@ class MakeResourceCommand extends MoonShineCommand
 
             $this->copyStub($testStub, $testPath, $replace);
 
-            outro('Test was created: ' . $this->getRelativePath($testPath));
+            $this->wasCreatedInfo($testPath);
         }
 
         if ($stub !== 'Resource') {
@@ -90,7 +97,10 @@ class MakeResourceCommand extends MoonShineCommand
                 'className' => $name,
                 '--resource' => str_replace('::class', '', $stubsPath->getClassString()),
                 '--crud' => true,
+                '--force' => $force,
+                '--json' => $this->option('json'),
                 '--without-register' => true,
+                '--without-output' => true,
             ]);
 
             $pageNamespace = $this->getNamespace("\Resources\\$name\Pages\\$name");
@@ -123,8 +133,12 @@ class MakeResourceCommand extends MoonShineCommand
         if ($this->option('policy')) {
             $this->call(MakePolicyCommand::class, [
                 'className' => class_basename($model),
+                '--json' => $this->option('json'),
+                '--without-output' => true,
             ]);
         }
+
+        $this->formatOutput();
 
         return self::SUCCESS;
     }

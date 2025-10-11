@@ -62,7 +62,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
             'attributes' => $this->getAttributes(),
             'label' => $this->getLabel(),
             'previewLabel' => Str::of($this->getLabel())->limit(2),
-            'icon' => $this->getIcon(6),
+            'icon' => $this->getIcon(),
             'isActive' => $this->isActive(),
             'top' => $this->isTopMode(),
         ];

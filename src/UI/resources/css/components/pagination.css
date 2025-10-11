@@ -1,20 +1,20 @@
 /* Pagination */
 .pagination {
-  @apply mt-5
+  @apply mt-5;
 }
 
 .pagination-item {
   @apply h-7 min-w-[theme('spacing[7]')]
-  is_active:bg-primary
-  is_active:text-white
   is_active:pointer-events-none
+  is_active:bg-primary
+  is_active:text-white;
 }
 
 .pagination-page,
 .pagination-dots,
 .pagination-first,
 .pagination-last {
-  @apply flex h-full w-full items-center justify-center theme__rounded p-1 text-center text-3xs font-medium;
+  @apply flex h-full w-full items-center justify-center rounded-md p-1 text-center text-3xs font-medium;
 }
 
 .pagination-first,
@@ -27,10 +27,9 @@
 }
 
 .pagination-page {
-  @apply
-  is_active:pointer-events-none
+  @apply is_active:pointer-events-none
   is_active:bg-primary
-  is_active:text-white
+  is_active:text-white;
 }
 
 .pagination-first,

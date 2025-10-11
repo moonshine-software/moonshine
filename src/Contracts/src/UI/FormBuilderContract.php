@@ -91,6 +91,8 @@ interface FormBuilderContract extends
 
     public function withoutRedirect(): self;
 
+    public function withoutErrorToast(): self;
+
     public function precognitive(): self;
 
     public function isPrecognitive(): bool;
