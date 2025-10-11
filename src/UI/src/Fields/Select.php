@@ -53,22 +53,8 @@ class Select extends Field implements
     {
         $value = $this->toValue();
 
-        if ($this->isMultiple()) {
-            $value = \is_string($value) && Str::of($value)->isJson() ?
-                json_decode($value, true, 512, JSON_THROW_ON_ERROR)
-                : $value;
-
-            /** @var Collection<array-key, int|string> $collection */
-            $collection = new Collection($value);
-
-            return $collection
-                ->when(
-                    ! $this->isRawMode(),
-                    fn (Collection $collect): Collection => $collect->map(
-                        fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
-                    ),
-                )
-                ->implode(',');
+        if($this->isMultiple()) {
+            return $this->getMultiplePreview($value);
         }
 
         if (\is_null($value)) {
