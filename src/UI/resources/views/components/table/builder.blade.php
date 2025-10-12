@@ -3,7 +3,6 @@
     'rows' => [],
     'headRows' => [],
     'footRows' => [],
-    'columns' => [],
     'headAttributes',
     'bodyAttributes',
     'footAttributes',
@@ -17,11 +16,12 @@
     'searchable' => false,
     'sticky' => false,
     'lazy' => false,
-    'columnSelection' => false,
     'searchValue' => '',
     'translates' => [],
     'topLeft' => null,
     'topRight' => null,
+    'skeleton' => false,
+    'loader' => true,
 ])
 <div
     class="js-table-builder-container"
@@ -45,7 +45,27 @@
             :search-placeholder="$translates['search']"
             :search-value="$searchValue"
             :search-url="$asyncUrl"
+            :loader="$loader"
         >
+            @if($skeleton)
+                <x-slot:skeleton>
+                    <x-moonshine::table
+                        :simple="$simple"
+                        :notfound="false"
+                        :translates="$translates"
+                    >
+                        @if($headRows->isNotEmpty())
+                            <x-slot:thead>
+                                @foreach($headRows as $row)
+                                    {!! $row !!}
+                                @endforeach
+                            </x-slot:thead>
+                            <x-slot:tbody></x-slot:tbody>
+                       @endif
+                    </x-moonshine::table>
+                </x-slot:skeleton>
+            @endif
+
             <x-slot:topLeft>
                 {!! $topLeft ?? '' !!}
             </x-slot:topLeft>

@@ -123,6 +123,8 @@ interface TableBuilderContract extends
 
     public function isCreatable(): bool;
 
+    public function withFilters(string $formName): static;
+
     public function hasNotFound(): bool;
 
     public function withNotFound(): static;
@@ -185,6 +187,14 @@ interface TableBuilderContract extends
 
     public function isLazy(): bool;
 
+    public function skeleton(Closure|bool|null $condition = null): static;
+
+    public function hasSkeleton(): bool;
+
+    public function loader(Closure|bool|null $condition = null): static;
+
+    public function hasLoader(): bool;
+
     /**
      * @return array{
      *     preview: bool,
@@ -198,6 +208,8 @@ interface TableBuilderContract extends
      *     searchable: bool,
      *     searchValue: string,
      *     columnSelection: bool,
+     *     skeleton: bool,
+     *     loader: bool,
      * }
      */
     public function statesToArray(): array;

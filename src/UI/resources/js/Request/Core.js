@@ -64,9 +64,6 @@ export default async function request(
 
       let htmlData = data.htmlData ?? []
 
-      /**
-       * TODO(4.0) remove legacy
-       */
       if (data.html !== undefined) {
         htmlData = [{html: data.html}]
       }
@@ -147,7 +144,9 @@ export default async function request(
       componentRequestData.errorCallback(data, t)
     }
 
-    MoonShine.ui.toast(data.message ?? data, 'error')
+    if (t.$el?.dataset?.withoutErrorToast === undefined) {
+      MoonShine.ui.toast(data.message ?? data, 'error')
+    }
   }
 
   async function getResponseData(response, expectedType) {

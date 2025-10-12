@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use JsonException;
 
 use function Laravel\Prompts\{select, text};
 
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:page')]
 class MakePageCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:page {className?} {--force} {--without-register} {--skip-menu} {--crud} {--dir=} {--extends=} {--base-dir=} {--base-namespace=} {--resource=}';
+    protected $signature = 'moonshine:page {className?} {--force} {--without-register} {--skip-menu} {--crud} {--json} {--without-output} {--dir=} {--extends=} {--base-dir=} {--base-namespace=} {--resource=}';
 
     protected $description = 'Create page';
 
@@ -94,6 +95,7 @@ class MakePageCommand extends MoonShineCommand
 
     /**
      * @throws FileNotFoundException
+     * @throws JsonException
      */
     private function makePage(
         StubsPath $stubsPath,
@@ -130,5 +132,7 @@ class MakePageCommand extends MoonShineCommand
                 namespace: $stubsPath->namespace
             );
         }
+
+        $this->formatOutput();
     }
 }

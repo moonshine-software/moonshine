@@ -1,74 +1,72 @@
 /* Progress bars */
 .progress {
-  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-dark-300;
+  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-theme-300;
 
   .progress-bar {
-    @apply
-    theme__text_color
-    flex items-center justify-center
-    overflow-hidden
+    @apply flex
+    items-center justify-center overflow-hidden
     rounded-lg
-    text-3xs font-medium
-    leading-none
-    bg-slate-500 dark:bg-gray-400
-    ;
+    bg-slate-500
+    text-3xs leading-none
+    font-medium
+    theme__text_color dark:bg-gray-400;
 
     /* Themes */
 
     &.progress-bar--primary {
-      @apply bg-primary  dark:bg-primary
+      @apply bg-primary  dark:bg-primary;
     }
 
     &.progress-bar--secondary {
-      @apply bg-secondary  dark:bg-secondary
+      @apply bg-secondary  dark:bg-secondary;
     }
 
     &.progress-bar--success {
-      @apply bg-success dark:bg-success
-      text-(--color-success-text)
+      @apply bg-success text-(--color-success-text)
+      dark:bg-success;
     }
 
     &.progress-bar--warning {
-      @apply bg-warning  dark:bg-warning
-      text-(--color-warning-text)
+      @apply bg-warning  text-(--color-warning-text)
+      dark:bg-warning;
     }
 
     &.progress-bar--error {
-      @apply bg-error dark:bg-error
-      text-(--color-error-text)
+      @apply bg-error text-(--color-error-text)
+      dark:bg-error;
     }
 
     &.progress-bar--info {
-      @apply bg-info  dark:bg-info
-      text-(--color-info-text)
+      @apply bg-info  text-(--color-info-text)
+      dark:bg-info;
     }
 
     &.progress-bar--purple {
-      @apply bg-purple-500 dark:bg-purple-500
+      @apply bg-purple-500 dark:bg-purple-500;
     }
 
     &.progress-bar--pink {
-      @apply bg-pink-500 dark:bg-pink-500
+      @apply bg-pink-500 dark:bg-pink-500;
     }
 
     &.progress-bar--blue {
-      @apply bg-blue-500 dark:bg-blue-500
+      @apply bg-blue-500 dark:bg-blue-500;
     }
 
     &.progress-bar--green {
-      @apply bg-green-500 dark:bg-green-500
+      @apply bg-green-500 dark:bg-green-500;
     }
 
     &.progress-bar--yellow {
-      @apply bg-yellow-500 dark:bg-yellow-500
+      @apply bg-yellow-500 dark:bg-yellow-500;
     }
 
     &.progress-bar--red {
-      @apply bg-red-500 dark:bg-red-500
+      @apply bg-red-500 dark:bg-red-500;
     }
 
     &.progress-bar--gray {
-      @apply bg-gray-500 dark:bg-gray-500
+      @apply bg-gray-500 dark:bg-gray-500;
     }
   }
 }
@@ -86,27 +84,32 @@
   }
 
   @variant dark {
-    box-shadow: inset 0 0 0 var(--thickness) var(--color-dark-200);
+    box-shadow: inset 0 0 0 var(--thickness) var(--color-theme-200);
   }
 
-  @apply
-  relative box-content
-  flex items-center justify-center
+  @apply relative box-content
+  flex h-(--size) w-(--size)
+  items-center justify-center
   rounded-full bg-transparent
   text-center text-slate-500
-  before:pointer-events-none after:pointer-events-none
-  before:absolute after:absolute
+  before:pointer-events-none before:absolute
   before:inset-0
-  before:rounded-full after:rounded-full
-  w-(--size)
-  h-(--size)
-  ;
+  before:rounded-full after:pointer-events-none
+  after:absolute
+  after:rounded-full;
 
   /* Progress circle */
 
   &::before {
-    background: radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness) var(--thickness) no-repeat, conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
-    mask: radial-gradient(farthest-side, rgba(0, 0, 0, 0) calc(99% - var(--thickness)), #000 calc(100% - var(--thickness)));
+    background:
+      radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness)
+        var(--thickness) no-repeat,
+      conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
+    mask: radial-gradient(
+      farthest-side,
+      rgba(0, 0, 0, 0) calc(99% - var(--thickness)),
+      #000 calc(100% - var(--thickness))
+    );
   }
 
   &::after {
@@ -157,54 +160,54 @@
   /* Themes */
 
   &.radial-progress--primary {
-    @apply text-primary
+    @apply text-primary;
   }
 
   &.radial-progress--secondary {
-    @apply text-secondary
+    @apply text-secondary;
   }
 
   &.radial-progress--success {
-    @apply text-success-text
+    @apply text-success-text;
   }
 
   &.radial-progress--warning {
-    @apply text-warning-text
+    @apply text-warning-text;
   }
 
   &.radial-progress--error {
-    @apply text-error-text
+    @apply text-error-text;
   }
 
   &.radial-progress--info {
-    @apply text-info-text
+    @apply text-info-text;
   }
 
   &.radial-progress--purple {
-    @apply text-purple-500
+    @apply text-purple-500;
   }
 
   &.radial-progress--pink {
-    @apply text-pink-500
+    @apply text-pink-500;
   }
 
   &.radial-progress--blue {
-    @apply text-blue-500
+    @apply text-blue-500;
   }
 
   &.radial-progress--green {
-    @apply text-green-500
+    @apply text-green-500;
   }
 
   &.radial-progress--yellow {
-    @apply text-yellow-500
+    @apply text-yellow-500;
   }
 
   &.radial-progress--red {
-    @apply text-red-500
+    @apply text-red-500;
   }
 
   &.radial-progress--gray {
-    @apply text-gray-500
+    @apply text-gray-500;
   }
 }

@@ -59,8 +59,8 @@
             >
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title">{{ $title }}</h5>
-                    <button type="button" class="btn btn-close" @click.prevent="toggleCanvas" aria-label="Close">
-                        <x-moonshine::icon icon="x-mark" size="6" />
+                    <button type="button" class="offcanvas-close btn-icon" @click.prevent="toggleCanvas" aria-label="Close">
+                        <x-moonshine::icon icon="x-mark" />
                     </button>
                 </div>
                 <div class="offcanvas-body">

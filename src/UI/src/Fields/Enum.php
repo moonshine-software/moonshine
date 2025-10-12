@@ -35,6 +35,11 @@ class Enum extends Select implements CanBeEnum
         return $this;
     }
 
+    protected function resolveRawValue(): mixed
+    {
+        return $this->resolvePreview();
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
@@ -54,6 +59,10 @@ class Enum extends Select implements CanBeEnum
             };
 
             $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
+        }
+
+        if ($this->isMultiple()) {
+            return $this->getMultiplePreview($value);
         }
 
         if (\is_scalar($value)) {

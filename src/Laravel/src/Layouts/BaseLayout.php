@@ -74,7 +74,7 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function getProfileComponent(bool $sidebar = false): Profile
     {
-        return Profile::make(withBorder: $sidebar);
+        return Profile::make();
     }
 
     /**
@@ -99,19 +99,18 @@ abstract class BaseLayout extends AbstractLayout
             Fragment::make([
                 Div::make([
                     $this->getLogoComponent()->minimized(),
-                ])->class('menu-heading-logo'),
-
+                ])->class('menu-logo'),
                 Div::make([
                     When::make(
                         fn (): bool => $this->hasThemes(),
                         static fn (): array => [ThemeSwitcher::make()]
                     ),
                     ...$this->sidebarTopSlot(),
-                    Div::make([
-                        Burger::make(),
-                    ])->class('menu-heading-burger'),
-                ])->class('menu-heading-actions'),
-            ])->class('menu-heading')->name('sidebar-top'),
+                ])->class('menu-actions'),
+                Div::make([
+                    Burger::make(),
+                ])->class('menu-burger'),
+            ])->class('menu-header')->name('sidebar-top'),
 
             Fragment::make([
                 ...$this->sidebarSlot(),
@@ -124,8 +123,7 @@ abstract class BaseLayout extends AbstractLayout
                     ],
                 ),
             ])->customAttributes([
-                'class' => 'menu',
-                ':class' => "asideMenuOpen && '_is-opened'",
+                'class' => 'menu menu--vertical',
             ])->name('sidebar-content'),
         ])->collapsed();
     }
@@ -147,7 +145,7 @@ abstract class BaseLayout extends AbstractLayout
 
             Fragment::make([
                 Menu::make()->top(),
-            ])->class('menu-navigation')->name('topbar-menu'),
+            ])->class('menu menu--horizontal')->name('topbar-menu'),
 
             Fragment::make([
                 ...$this->topBarSlot(),
@@ -159,12 +157,11 @@ abstract class BaseLayout extends AbstractLayout
                     ],
                 ),
 
-                Div::make()->class('menu-inner-divider'),
+                Div::make()->class('menu-divider menu-divider--vertical'),
                 When::make(
                     fn (): bool => $this->hasThemes(),
                     static fn (): array => [ThemeSwitcher::make()]
                 ),
-
                 Div::make([
                     Burger::make(),
                 ])->class('menu-burger'),
@@ -177,13 +174,23 @@ abstract class BaseLayout extends AbstractLayout
     protected function getHeaderComponent(): Header
     {
         return Header::make([
-            Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), icon: 'home'),
+            Div::make([
+                Burger::make(),
+            ])->class('menu-burger'),
+            Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), label: 'Home'),
             $this->getSearchComponent(),
             When::make(
                 fn (): bool => $this->isUseNotifications(),
                 static fn (): array => [Notifications::make()],
             ),
             Locales::make(),
+            When::make(
+                fn (): bool => $this->isProfileEnabled(),
+                fn (): array
+                    => [
+                    $this->getProfileComponent(sidebar: true),
+                ],
+            ),
         ]);
     }
 
@@ -205,7 +212,7 @@ abstract class BaseLayout extends AbstractLayout
             <<<'HTML'
                 &copy; 2021-%d Made with ❤️ by
                 <a href="https://cutcode.dev"
-                    class="font-semibold text-primary hover:text-secondary"
+                    class="font-semibold text-primary"
                     target="_blank"
                 >
                     CutCode

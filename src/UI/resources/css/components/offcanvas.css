@@ -1,25 +1,23 @@
 /* Offcanvas */
 .offcanvas {
-  @apply
-  w-full max-w-[320px] md:max-w-[400px]
-  fixed inset-y-0
-  z-offcanvas
-  flex flex-col
-  bg-white dark:bg-dark-700
-  bg-clip-padding
-  outline-none
+  @apply fixed inset-y-0 z-offcanvas
+  flex w-full
+  max-w-[320px]
+  flex-col bg-white
+  bg-clip-padding shadow-lg
   transition-transform
-  shadow-lg
-  ;
+  outline-none
+  md:max-w-[400px]
+  dark:bg-theme-700;
 
   /* Positions */
 
   &.offcanvas-left {
-    @apply left-0
+    @apply left-0;
   }
 
   &.offcanvas-right {
-    @apply right-0
+    @apply right-0;
   }
 }
 
@@ -29,10 +27,10 @@
 
 .offcanvas-header {
   @apply flex justify-between gap-x-4
-  border-b theme__border_for_light_bg
+  border-b theme__border
   p-4 lg:p-6
   compact:p-4
-  minimalistic:p-3
+  minimalistic:p-3;
 }
 
 .offcanvas-title {
@@ -43,11 +41,11 @@
   @apply grow overflow-y-auto
   p-4 lg:p-6
   compact:p-4
-  minimalistic:p-3
+  minimalistic:p-3;
 }
 
 /* Backdrop */
 
 .offcanvas-backdrop {
-  @apply fixed inset-0 z-50 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  @apply fixed inset-0 z-50 h-screen w-screen bg-theme-800/80 backdrop-blur-xs;
 }

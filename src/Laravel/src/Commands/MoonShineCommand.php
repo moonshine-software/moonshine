@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Commands;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
+use JsonException;
 
 use function Laravel\Prompts\{outro, text};
 
@@ -18,6 +19,8 @@ use ReflectionClass;
 abstract class MoonShineCommand extends Command
 {
     protected string $stubsDir = __DIR__ . '/../../stubs';
+
+    protected static array $jsonOutput = [];
 
     protected function getDirectory(string $path = '', ?string $base = null): string
     {
@@ -34,8 +37,11 @@ abstract class MoonShineCommand extends Command
         return str_replace(base_path(), '', $path);
     }
 
-    public static function addResourceOrPageToProviderFile(string $class, bool $page = false, string $namespace = ''): void
-    {
+    public static function addResourceOrPageToProviderFile(
+        string $class,
+        bool $page = false,
+        string $namespace = '',
+    ): void {
         $method = $page ? 'pages' : 'resources';
         $namespace = rtrim($namespace, '\\');
 
@@ -65,14 +71,20 @@ abstract class MoonShineCommand extends Command
         self::addResourceOrPageTo(
             class: "$namespace\\$class",
             to: $reflector->getFileName(),
-            between: static fn (Stringable $content): Stringable => $content->betweenFirst("protected function menu(): array", '}'),
+            between: static fn (Stringable $content): Stringable => $content->betweenFirst(
+                "protected function menu(): array",
+                '}',
+            ),
             replace: static function (Stringable $content, Closure $tab) use ($title, $class): Stringable {
                 if (! $content->rtrim()->squish()->remove(' ')->endsWith('),];')) {
                     $lines = explode("\n", $content->value());
 
                     foreach ($lines as $index => $line) {
                         $line = rtrim($line);
-                        if ((preg_match('/\)]$/', $line) || preg_match('/\)$/', $line)) && ! str_ends_with($line, ',')) {
+                        if ((preg_match('/\)]$/', $line) || preg_match('/\)$/', $line)) && ! str_ends_with(
+                            $line,
+                            ',',
+                        )) {
                             $lines[$index] = $line . ',';
                         }
                     }
@@ -82,7 +94,7 @@ abstract class MoonShineCommand extends Command
 
                 return $content->replace("];", "{$tab()}MenuItem::make($class::class, '$title'),\n{$tab(2)}];");
             },
-            use: MenuItem::class
+            use: MenuItem::class,
         );
     }
 
@@ -90,8 +102,13 @@ abstract class MoonShineCommand extends Command
      * @param  Closure(Stringable $content): Stringable  $between
      * @param  Closure(Stringable $content, Closure $tab): Stringable  $replace
      */
-    private static function addResourceOrPageTo(string $class, string $to, Closure $between, Closure $replace, string $use = ''): void
-    {
+    private static function addResourceOrPageTo(
+        string $class,
+        string $to,
+        Closure $between,
+        Closure $replace,
+        string $use = '',
+    ): void {
         if (! file_exists($to)) {
             return;
         }
@@ -213,7 +230,8 @@ abstract class MoonShineCommand extends Command
         $baseDir = $this->hasOption('base-dir') ? $this->option('base-dir') : null;
         $baseNamespace = $this->hasOption('base-namespace') ? $this->option('base-namespace') : null;
 
-        $toNamespace = static fn (string $str): string => Str::of($str)
+        $toNamespace = static fn (string $str): string
+            => Str::of($str)
             ->trim('\\')
             ->trim('/')
             ->replace('/', '\\')
@@ -239,12 +257,43 @@ abstract class MoonShineCommand extends Command
         );
     }
 
-    protected function wasCreatedInfo(StubsPath $stubsPath): void
+    protected function wasCreatedInfo(StubsPath|string $stubsPath): void
     {
-        $path = $this->getRelativePath($stubsPath->getPath());
-
-        outro(
-            "$stubsPath->name was created: $path",
+        $path = $this->getRelativePath(
+            $stubsPath instanceof StubsPath ? $stubsPath->getPath() : $stubsPath,
         );
+
+        $name = $stubsPath instanceof StubsPath ? $stubsPath->name : class_basename($stubsPath);
+
+        if ($this->hasOption('json') && $this->option('json')) {
+            static::$jsonOutput[] = [
+                'name' => $name,
+                'path' => $path,
+                'status' => 'created',
+            ];
+        } else {
+            outro("$name was created: $path");
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function formatOutput(): void
+    {
+        if ($this->hasOption('without-output') && $this->option('without-output')) {
+            return;
+        }
+
+        if ($this->hasOption('json') && $this->option('json')) {
+            $this->line(
+                json_encode(
+                    static::$jsonOutput,
+                    JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
+                ),
+            );
+
+            static::$jsonOutput = [];
+        }
     }
 }

@@ -53,6 +53,41 @@ trait TableStates
 
     protected bool $searchable = false;
 
+    protected bool $withLoader = false;
+
+    protected bool $withSkeleton = true;
+
+    public function withFilters(string $formName): static
+    {
+        return $this->customAttributes([
+            'data-filters-form-name' => $formName,
+        ]);
+    }
+
+    public function hasLoader(): bool
+    {
+        return $this->withLoader;
+    }
+
+    public function loader(Closure|bool|null $condition = null): static
+    {
+        $this->withLoader = value($condition, $this) ?? true;
+
+        return $this;
+    }
+
+    public function hasSkeleton(): bool
+    {
+        return $this->withSkeleton;
+    }
+
+    public function skeleton(Closure|bool|null $condition = null): static
+    {
+        $this->withSkeleton = value($condition, $this) ?? true;
+
+        return $this;
+    }
+
     public function hasNotFound(): bool
     {
         return $this->withNotFound;
@@ -305,6 +340,8 @@ trait TableStates
      *     searchable: bool,
      *     searchValue: string,
      *     columnSelection: bool,
+     *     skeleton: bool,
+     *     loader: bool,
      * }
      */
     public function statesToArray(): array
@@ -322,6 +359,8 @@ trait TableStates
             'columnSelection' => $this->isColumnSelection(),
             'searchable' => $this->isSearchable(),
             'searchValue' => $this->getCore()->getRequest()->getScalar('search', ''),
+            'skeleton' => true,
+            'loader' => true,
         ];
     }
 }
