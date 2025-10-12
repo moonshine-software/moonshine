@@ -71,7 +71,7 @@ class AppLayout extends BaseLayout
                 ->withAlpineJs()
                 ->when(
                     $this->hasThemes(),
-                    fn(Html $html) => $html->withThemes($this->isAlwaysDark())
+                    fn(Html $html): Html => $html->withThemes($this->isAlwaysDark())
                 ),
         ]);
     }
