@@ -215,6 +215,6 @@
     --tw-value: 1.25rem;
 
     @apply mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse)))]
-    mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))]
+    mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))];
   }
 }
