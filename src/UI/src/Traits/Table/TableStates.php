@@ -57,6 +57,13 @@ trait TableStates
 
     protected bool $withSkeleton = true;
 
+    public function withFilters(string $formName): static
+    {
+        return $this->customAttributes([
+            'data-filters-form-name' => $formName,
+        ]);
+    }
+
     public function hasLoader(): bool
     {
         return $this->withLoader;
