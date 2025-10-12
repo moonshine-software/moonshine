@@ -53,6 +53,7 @@
                         :simple="$simple"
                         :notfound="false"
                         :translates="$translates"
+                        :data-skeleton="true"
                     >
                         @if($headRows->isNotEmpty())
                             <x-slot:thead>

@@ -50,7 +50,7 @@ export function listRowRequest(component, key = null, index = null, type = 'chan
     .catch(error => {})
 }
 
-export function listComponentRequest(component, pushState = false) {
+export function listComponentRequest(component, pushState = false, after = null) {
   component.$event.preventDefault()
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
@@ -156,7 +156,11 @@ export function listComponentRequest(component, pushState = false) {
     .withEvents(events)
     .withErrorCallback(stopLoading)
 
-  request(component, url, 'get', {}, {}, componentRequestData)
+  request(component, url, 'get', {}, {}, componentRequestData).then(() => {
+      if(typeof after === 'function') {
+        after()
+      }
+  })
 
   function prepareListComponentRequestUrl(url) {
     const resultUrl = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
