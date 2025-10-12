@@ -6,7 +6,7 @@
   --ms-menu-item-gap: --spacing(2);
   --ms-menu-item-padding-x: --spacing(2.5);
   --ms-menu-item-padding-y: --spacing(1.5);
-  --ms-menu-item-border-radius: --spacing(2);
+  --ms-menu-item-radius: --spacing(2);
   --ms-menu-item-font-size: var(--font-2xs);
   --ms-menu-item-color: var(--color-black);
 
@@ -216,7 +216,7 @@
   align-items: center;
   width: 100%;
   gap: var(--ms-menu-item-gap);
-  border-radius: var(--ms-menu-item-border-radius);
+  border-radius: var(--ms-menu-item-radius);
   padding-inline: var(--ms-menu-item-padding-x);
   padding-block: var(--ms-menu-item-padding-y);
   color: var(--ms-menu-item-color);
@@ -290,7 +290,7 @@
   margin-block: --spacing(1);
   padding-inline: var(--ms-menu-submenu-space-y, --spacing(1));
   padding-block: var(--ms-menu-submenu-space-y, --spacing(1));
-  border-radius: var(--ms-menu-item-border-radius);
+  border-radius: var(--ms-menu-item-radius);
   border: 1px solid var(--theme-border-color);
   background-color: var(--ms-layout-body-bg-color, var(--color-body));
 

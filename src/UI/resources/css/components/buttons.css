@@ -2,7 +2,7 @@
   --ms-btn-padding-x: --spacing(3);
   --ms-btn-padding-y: --spacing(2);
   --ms-btn-gap-x: --spacing(2);
-  --ms-btn-border-radius: --spacing(2);
+  --ms-btn-radius: --spacing(2);
   --ms-btn-border-color: var(--theme-border-color);
   --ms-btn-bg-color: var(--color-gray-50);
   --ms-btn-color: var(--color-black);
@@ -40,7 +40,7 @@
   column-gap: var(--ms-btn-gap-x);
   min-height: var(--ms-btn-min-height, auto);
   padding: var(--ms-btn-padding-y) var(--ms-btn-padding-x);
-  border-radius: var(--ms-btn-border-radius);
+  border-radius: var(--ms-btn-radius);
   border: var(--ms-btn-border-width, 1px) solid var(--ms-btn-border-color);
   background-color: var(--ms-btn-bg-color);
   color: var(--ms-btn-color);

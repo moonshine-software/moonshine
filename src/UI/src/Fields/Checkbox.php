@@ -61,7 +61,7 @@ class Checkbox extends Field implements
 
         $this->beforeLabel();
         $this->customWrapperAttributes([
-            'class' => 'form-group-inline flex-wrap',
+            'class' => 'form-group-inline',
         ]);
 
         if ($this->isSimpleMode()) {
