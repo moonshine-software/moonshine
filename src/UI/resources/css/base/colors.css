@@ -15,7 +15,7 @@
   --color-theme-400: oklch(var(--theme-400, 0.81 0 0));
   --color-theme-500: oklch(var(--theme-500, 0.74 0 0));
   --color-theme-600: oklch(var(--theme-600, 0.67 0 0));
-  --color-theme-700: oklch(var(--theme-700, 0.60 0 0));
+  --color-theme-700: oklch(var(--theme-700, 0.6 0 0));
   --color-theme-800: oklch(var(--theme-800, 0.53 0 0));
   --color-theme-900: oklch(var(--theme-900, 0.46 0 0));
 
@@ -50,8 +50,8 @@
   --color-theme-100: oklch(var(--theme-100, 0.28 0.017 274.32));
   --color-theme-200: oklch(var(--theme-200, 0.32 0.018 274.32));
   --color-theme-300: oklch(var(--theme-300, 0.37 0.019 274.32));
-  --color-theme-400: oklch(var(--theme-400, 0.43 0.020 274.32));
-  --color-theme-500: oklch(var(--theme-500, 0.50 0.021 274.32));
+  --color-theme-400: oklch(var(--theme-400, 0.43 0.02 274.32));
+  --color-theme-500: oklch(var(--theme-500, 0.5 0.021 274.32));
   --color-theme-600: oklch(var(--theme-600, 0.57 0.022 274.32));
   --color-theme-700: oklch(var(--theme-700, 0.64 0.023 274.32));
   --color-theme-800: oklch(var(--theme-800, 0.71 0.024 274.32));
@@ -97,32 +97,40 @@
 
 /* Background colors */
 .bgc-primary {
-  background-color: var(--color-primary);
-  color: var(--color-primary-text);
+  background-color: --alpha(var(--color-primary) / 0.2);
+  color: var(--color-black);
+
+  @variant dark {
+    color: var(--color-white);
+  }
 }
 
 .bgc-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-secondary-text);
+  background-color: --alpha(var(--color-secondary) / 0.2);
+  color: var(--color-black);
+
+  @variant dark {
+    color: var(--color-white);
+  }
 }
 
 .bgc-success {
-  background-color: var(--color-success);
+  background-color: --alpha(var(--color-success) / 0.2);
   color: var(--color-success-text);
 }
 
 .bgc-warning {
-  background-color: var(--color-warning);
+  background-color: --alpha(var(--color-warning) / 0.2);
   color: var(--color-warning-text);
 }
 
 .bgc-error {
-  background-color: var(--color-error);
+  background-color: --alpha(var(--color-error) / 0.2);
   color: var(--color-error-text);
 }
 
 .bgc-info {
-  background-color: var(--color-info);
+  background-color: --alpha(var(--color-info) / 0.2);
   color: var(--color-info-text);
 }
 

@@ -126,7 +126,7 @@ table {
   }
 
   thead {
-    background-color: var(--ms-table-thead-bg-color, var(--color-body));
+    background-color: var(--ms-table-thead-bg-color, var(--color-theme-100));
   }
 
   .text-ellipsis {
@@ -148,7 +148,7 @@ table {
       }
 
       &:hover {
-        background-color: var(--ms-table-list-hover-bg-color, var(--color-body));
+        background-color: var(--ms-table-list-hover-bg-color, var(--color-theme-100));
         cursor: pointer;
       }
     }
@@ -184,6 +184,7 @@ table {
       th,
       td {
         &.sticky-col {
+          vertical-align: middle;
           position: sticky;
           right: 0;
         }
@@ -194,7 +195,7 @@ table {
       th,
       td {
         &.sticky-col {
-          background-color: --alpha(var(--ms-table-thead-bg-color, var(--color-body)) / 0.95);
+          backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-thead-blur, 4px)));
         }
       }
     }
@@ -203,7 +204,11 @@ table {
       th,
       td {
         &.sticky-col {
-          background-color: --alpha(var(--ms-table-bg-color, var(--color-theme)) / 0.95);
+          backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-tbody-blur, 4px)));
+
+          &:not([class*='bgc-']) {
+            backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-tbody-blur, 4px)));
+          }
 
           &:has(.dropdown-body.visible) {
             z-index: 1;
