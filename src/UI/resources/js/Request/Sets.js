@@ -157,9 +157,9 @@ export function listComponentRequest(component, pushState = false, after = null)
     .withErrorCallback(stopLoading)
 
   request(component, url, 'get', {}, {}, componentRequestData).then(() => {
-      if(typeof after === 'function') {
-        after()
-      }
+    if (typeof after === 'function') {
+      after()
+    }
   })
 
   function prepareListComponentRequestUrl(url) {

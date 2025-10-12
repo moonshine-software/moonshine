@@ -194,10 +194,12 @@ export default (
       e.hidden = !el.checked
     })
 
-    if(this.skeleton) {
-      this.skeleton.querySelectorAll(`[data-column-selection="${el.dataset.column}"]`).forEach(e => {
-        e.hidden = !el.checked
-      })
+    if (this.skeleton) {
+      this.skeleton
+        .querySelectorAll(`[data-column-selection="${el.dataset.column}"]`)
+        .forEach(e => {
+          e.hidden = !el.checked
+        })
     }
   },
   asyncFormRequest() {
@@ -209,13 +211,9 @@ export default (
     this.asyncRequest()
   },
   asyncRequest() {
-    listComponentRequest(
-      this,
-      this.$root?.dataset?.pushState,
-      () => {
-        this.init()
-      }
-    )
+    listComponentRequest(this, this.$root?.dataset?.pushState, () => {
+      this.init()
+    })
   },
   asyncRowRequest(key = null, index = null) {
     let eventData = this.$event.detail
