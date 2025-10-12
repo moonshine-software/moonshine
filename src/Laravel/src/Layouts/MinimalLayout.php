@@ -111,7 +111,10 @@ class MinimalLayout extends AppLayout
                     'lang' => $this->getHeadLang(),
                 ])
                 ->withAlpineJs()
-                ->withThemes($this->isAlwaysDark()),
+                ->when(
+                    $this->hasThemes(),
+                    fn(Html $html) => $html->withThemes($this->isAlwaysDark())
+                ),
         ]);
     }
 }

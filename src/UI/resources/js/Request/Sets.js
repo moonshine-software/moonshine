@@ -59,8 +59,10 @@ export function listComponentRequest(component, pushState = false) {
 
   let eventData = component.$event.detail
 
-  if(component?.$root?.dataset?.filtersFormName) {
-    const form = document.querySelector(`form[data-component="${component.$root.dataset.filtersFormName}"]`)
+  if (component?.$root?.dataset?.filtersFormName) {
+    const form = document.querySelector(
+      `form[data-component="${component.$root.dataset.filtersFormName}"]`,
+    )
 
     url = prepareListComponentRequestUrl(url)
     url = urlWithQuery(url, prepareFormQueryString(new FormData(form), '_token,_component_name'))

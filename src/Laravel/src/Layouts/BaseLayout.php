@@ -101,7 +101,10 @@ abstract class BaseLayout extends AbstractLayout
                     $this->getLogoComponent()->minimized(),
                 ])->class('menu-logo'),
                 Div::make([
-                    ThemeSwitcher::make(),
+                    When::make(
+                        fn (): bool => $this->hasThemes(),
+                        static fn (): array => [ThemeSwitcher::make()]
+                    ),
                     ...$this->sidebarTopSlot(),
                 ])->class('menu-actions'),
                 Div::make([
@@ -155,7 +158,10 @@ abstract class BaseLayout extends AbstractLayout
                 ),
 
                 Div::make()->class('menu-divider menu-divider--vertical'),
-                ThemeSwitcher::make(),
+                When::make(
+                    fn (): bool => $this->hasThemes(),
+                    static fn (): array => [ThemeSwitcher::make()]
+                ),
                 Div::make([
                     Burger::make(),
                 ])->class('menu-burger'),
@@ -294,5 +300,10 @@ abstract class BaseLayout extends AbstractLayout
     protected function isAlwaysDark(): bool
     {
         return false;
+    }
+
+    protected function hasThemes(): bool
+    {
+        return true;
     }
 }
