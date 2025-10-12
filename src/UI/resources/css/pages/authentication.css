@@ -6,7 +6,7 @@
     @apply w-full
     max-w-[420px]
     bg-white p-5
-    lg:p-8 dark:bg-dark-600;
+    lg:p-8 dark:bg-theme-600;
   }
 
   .authentication-header {

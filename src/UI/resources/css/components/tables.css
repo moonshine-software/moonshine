@@ -38,7 +38,7 @@ table {
 }
 
 .table {
-  background-color: var(--ms-table-bg-color, var(--theme-bg-color));
+  background-color: var(--ms-table-bg-color, var(--color-theme));
   font-size: var(--ms-table-font-size, var(--font-2xs));
 
   th,
@@ -86,6 +86,21 @@ table {
     td {
       padding-block: var(--ms-table-space-y, var(--ms-table-tfoot-space-y, --spacing(3)));
       padding-inline: var(--ms-table-space-x, var(--ms-table-tfoot-space-x, --spacing(3)));
+    }
+  }
+
+  &:not(.table-list) {
+    thead > tr:first-child {
+      th,
+      td {
+        &:first-child {
+          border-top-left-radius: var(--ms-table-thead-radius, var(--radius-lg));
+        }
+
+        &:last-child {
+          border-top-right-radius: var(--ms-table-thead-radius, var(--radius-lg));
+        }
+      }
     }
   }
 }
@@ -184,7 +199,7 @@ table {
       th,
       td {
         &.sticky-col {
-          background-color: --alpha(var(--ms-table-bg-color, var(--theme-bg-color)) / 0.95);
+          background-color: --alpha(var(--ms-table-bg-color, var(--color-theme)) / 0.95);
 
           &:has(.dropdown-body.visible) {
             z-index: 1;

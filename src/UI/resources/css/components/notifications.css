@@ -8,7 +8,7 @@
 }
 
 .notifications-icon {
-  @apply relative block text-slate-600 hover:cursor-pointer hover:text-secondary dark:text-dark-50
+  @apply relative block text-slate-600 hover:cursor-pointer hover:text-secondary dark:text-theme-50
   dark:hover:text-white;
 }
 

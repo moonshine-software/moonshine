@@ -107,13 +107,13 @@
     --ms-layout-body-bg-color: var(--color-rose-50);
     --ms-layout-page-bg-color: var(--color-rose-100);
     --ms-box-bg-color: var(--color-rose-50);
-    --theme-bg-color: var(--color-rose-100);
+    --color-theme: var(--color-rose-100);
 
     --ms-menu-item-active-glow-color: var(--color-blue-400);
   }
 
   &.dark {
     --ms-layout-body-bg-color: var(--color-zinc-800);
-    --primary: 0.95 0.5 264.05;
+    --primary: 0.9 0.5 264.05;
   }
 } */

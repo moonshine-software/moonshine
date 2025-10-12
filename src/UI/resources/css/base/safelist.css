@@ -1,6 +1,8 @@
 @source inline("{xs:,sm:,md:,lg:,xl:,}{grid,grid-{cols,rows}-{1..12}}");
 @source inline("{xs:,sm:,md:,lg:,xl:,}col-{span,start,end}-{{1..12},full}");
 
+@source inline("bg-theme-{50,100,200,300,400,500,600,700,800,900}");
+
 /* @source inline('{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{relative,fixed,absolute,static,z-[{0..100},dropdown,notifications,offcanvas,modal,menu,toast]}');
 @source inline("{dark:,xs:,sm:,md:,lg:,xl:,compact:,minimalistic:,}{visible,invisible,!hidden,hidden,!block,overflow-{auto,hidden},pointer-events-{none,auto},grow,opacity-{0..100..10},fit-content,antialiased}");
 

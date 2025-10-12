@@ -5,8 +5,8 @@
     --ms-scrollbar-hover-color: var(--color-gray-200);
 
     @variant dark {
-      --ms-scrollbar-color: var(--color-dark-300);
-      --ms-scrollbar-hover-color: var(--color-dark-200);
+      --ms-scrollbar-color: var(--color-theme-300);
+      --ms-scrollbar-hover-color: var(--color-theme-200);
     }
   }
 
@@ -186,7 +186,7 @@
     @apply flex;
 
     & > * {
-      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-dark-200;
+      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-theme-200;
 
       &:not(:first-child) {
         @apply -ml-5;
@@ -197,16 +197,16 @@
   /* Divider */
   hr,
   hr.divider {
-    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-dark-100;
+    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-theme-100;
   }
 
   div {
     &.divider {
-      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-dark-100;
+      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-theme-100;
     }
 
     &.divider-centered {
-      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-dark-100;
+      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-theme-100;
     }
   }
 
@@ -215,12 +215,6 @@
     --tw-value: 1.25rem;
 
     @apply mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse)))]
-  mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))]
-
-  compact:mt-[calc(var(--tw-value)_*_(1_-_var(--tw-space-y-reverse))_/_1.3)]
-  compact:mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse)_/_1.3)]
-
-  minimalistic:mt-2
-  minimalistic:mb-2;
+    mb-[calc(var(--tw-value)_*_var(--tw-space-y-reverse))]
   }
 }

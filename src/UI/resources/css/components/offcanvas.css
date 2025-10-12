@@ -8,7 +8,7 @@
   transition-transform
   outline-none
   md:max-w-[400px]
-  dark:bg-dark-700;
+  dark:bg-theme-700;
 
   /* Positions */
 
@@ -47,5 +47,5 @@
 /* Backdrop */
 
 .offcanvas-backdrop {
-  @apply fixed inset-0 z-50 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  @apply fixed inset-0 z-50 h-screen w-screen bg-theme-800/80 backdrop-blur-xs;
 }

@@ -1,31 +1,32 @@
-@theme {
+@theme inline {
   --theme-border-color: --alpha(var(--color-black) / 0.1);
-  --theme-bg-color: oklch(var(--theme-bg, 1 0 0));
+  --color-body: oklch(var(--body, 0.96 0 0));
 
-  --color-body: oklch(var(--body, 0.999 0.044 264.943));
-  --color-primary: oklch(var(--primary, 0.544 0.233 291.241));
-  --color-secondary: oklch(var(--secondary, 0.639 0.209 6.961));
+  --color-primary: oklch(var(--primary, 0.5118 0.2486 274.32));
+  --color-primary-text: oklch(var(--primary-text, 1 0 0));
+  --color-secondary: oklch(var(--secondary, 0.5118 0.1944 307.06));
+  --color-secondary-text: oklch(var(--secondary-text, 1 0 0));
 
-  --color-dark: oklch(var(--dark-DEFAULT, 0.26 0.066 279.517));
-  --color-dark-50: oklch(var(--dark-50, 0.509 0.052 257.609));
-  --color-dark-100: oklch(var(--dark-100, 0.467 0.054 263.268));
-  --color-dark-200: oklch(var(--dark-200, 0.436 0.059 264.202));
-  --color-dark-300: oklch(var(--dark-300, 0.393 0.062 264.473));
-  --color-dark-400: oklch(var(--dark-400, 0.364 0.058 266.668));
-  --color-dark-500: oklch(var(--dark-500, 0.332 0.054 266.369));
-  --color-dark-600: oklch(var(--dark-600, 0.324 0.051 266.679));
-  --color-dark-700: oklch(var(--dark-700, 0.303 0.044 272.77));
-  --color-dark-800: oklch(var(--dark-800, 0.266 0.044 264.943));
-  --color-dark-900: oklch(var(--dark-900, 0.208 0.04 265.755));
+  --color-theme: oklch(var(--theme-default, 1 0 0));
+  --color-theme-50: oklch(var(--theme-50, 0.98 0.002 274.32));
+  --color-theme-100: oklch(var(--theme-100, 0.96 0.004 274.32));
+  --color-theme-200: oklch(var(--theme-200, 0.92 0.006 274.32));
+  --color-theme-300: oklch(var(--theme-300, 0.86 0.008 274.32));
+  --color-theme-400: oklch(var(--theme-400, 0.75 0.01 274.32));
+  --color-theme-500: oklch(var(--theme-500, 0.62 0.012 274.32));
+  --color-theme-600: oklch(var(--theme-600, 0.5 0.014 274.32));
+  --color-theme-700: oklch(var(--theme-700, 0.4 0.016 274.32));
+  --color-theme-800: oklch(var(--theme-800, 0.3 0.018 274.32));
+  --color-theme-900: oklch(var(--theme-900, 0.2 0.02 274.32));
 
   --color-success: oklch(var(--success-bg, 0.639 0.218 142.495));
-  --color-success-text: oklch(var(--success-text, 1 0 0));
-  --color-warning: oklch(var(--warning-bg, 0.898 0.177 96.726));
-  --color-warning-text: oklch(var(--warning-text, 0.5641 0.115857 95.1424));
+  --color-success-text: oklch(var(--success-text, 0.4676 0.1549 142.495));
+  --color-warning: oklch(var(--warning-bg, 0.8088 0.170358 75.3501));
+  --color-warning-text: oklch(var(--warning-text, 0.5 0.1031 76.1));
   --color-error: oklch(var(--error-bg, 0.589 0.214 26.855));
-  --color-error-text: oklch(var(--error-text, 1 0 0));
+  --color-error-text: oklch(var(--error-text, 0.3706 0.145 26.855));
   --color-info: oklch(var(--info-bg, 0.601 0.219 257.63));
-  --color-info-text: oklch(var(--info-text, 1 0 0));
+  --color-info-text: oklch(var(--info-text, 0.3471 0.1204 257.63));
 
   --gradient-start: var(--color-primary);
   --gradient-end: var(--color-primary);
@@ -37,92 +38,160 @@
 
 @variant dark {
   --theme-border-color: --alpha(var(--color-white) / 0.1);
+  --color-body: oklch(var(--body, 0.2 0.0168 274.32));
+
+  --color-primary: oklch(var(--primary, 0.9 0.5 264.05));
+  --color-primary-text: oklch(var(--primary-text, 1 0 0));
+  --color-secondary: oklch(var(--secondary, 0.5118 0.1944 307.06));
+  --color-secondary-text: oklch(var(--secondary-text, 1 0 0));
+
+  --color-theme: oklch(var(--theme-default, 0.2463 0.0168 274.32));
+  --color-theme-50: oklch(var(--theme-50, 0.45 0.025 274.32));
+  --color-theme-100: oklch(var(--theme-100, 0.42 0.023 274.32));
+  --color-theme-200: oklch(var(--theme-200, 0.39 0.021 274.32));
+  --color-theme-300: oklch(var(--theme-300, 0.36 0.019 274.32));
+  --color-theme-400: oklch(var(--theme-400, 0.33 0.018 274.32));
+  --color-theme-500: oklch(var(--theme-500, 0.3 0.017 274.32));
+  --color-theme-600: oklch(var(--theme-600, 0.27 0.016 274.32));
+  --color-theme-700: oklch(var(--theme-700, 0.2463 0.0168 274.32));
+  --color-theme-800: oklch(var(--theme-800, 0.22 0.015 274.32));
+  --color-theme-900: oklch(var(--theme-900, 0.2 0.0168 274.32));
+
+  --color-success: oklch(var(--success-bg, 0.639 0.218 142.495));
+  --color-success-text: oklch(var(--success-text, 0.9308 0.1279 144.46));
+  --color-warning: oklch(var(--warning-bg, 0.898 0.177 96.726));
+  --color-warning-text: oklch(var(--warning-text, 0.9865 0.0716 107.64));
+  --color-error: oklch(var(--error-bg, 0.589 0.214 26.855));
+  --color-error-text: oklch(var(--error-text, 0.8751 0.0665 18.51));
+  --color-info: oklch(var(--info-bg, 0.601 0.219 257.63));
+  --color-info-text: oklch(var(--info-text, 0.877 0.065 244.38));
 }
 
 .text-purple {
-  @apply text-purple-500;
+  color: var(--color-purple-500);
 }
 
 .text-pink {
-  @apply text-pink-500;
+  color: var(--color-pink-500);
 }
 
 .text-blue {
-  @apply text-blue-500;
+  color: var(--color-blue-500);
 }
 
 .text-green {
-  @apply text-green-500;
+  color: var(--color-green-500);
 }
 
 .text-yellow {
-  @apply text-yellow-500;
+  color: var(--color-yellow-500);
 }
 
 .text-red {
-  @apply text-red-500;
+  color: var(--color-red-500);
 }
 
 .text-gray {
-  @apply text-gray-500;
+  color: var(--color-gray-500);
 }
 
 /* Background colors */
 .bgc-primary {
-  @apply bg-primary theme__text_color;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
 }
 
 .bgc-secondary {
-  @apply bg-secondary theme__text_color;
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-text);
 }
 
 .bgc-success {
-  @apply bg-success theme__text_color;
+  background-color: var(--color-success);
+  color: var(--color-success-text);
 }
 
 .bgc-warning {
-  @apply bg-warning theme__text_color;
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
 }
 
 .bgc-error {
-  @apply bg-error theme__text_color;
+  background-color: var(--color-error);
+  color: var(--color-error-text);
 }
 
 .bgc-info {
-  @apply bg-info theme__text_color;
+  background-color: var(--color-info);
+  color: var(--color-info-text);
 }
 
 .bgc-purple {
-  @apply bg-purple-100/50 text-purple-800
-  dark:bg-purple-900/50 dark:text-purple-300;
+  background-color: var(--color-purple-100);
+  color: var(--color-purple-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-purple-900) / 0.3);
+    color: var(--color-purple-300);
+  }
 }
 
 .bgc-pink {
-  @apply bg-pink-100/50 text-pink-800
-  dark:bg-pink-900/50 dark:text-pink-300;
+  background-color: var(--color-pink-100);
+  color: var(--color-pink-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-pink-900) / 0.3);
+    color: var(--color-pink-300);
+  }
 }
 
 .bgc-blue {
-  @apply bg-blue-100/50 text-blue-800
-  dark:bg-blue-900/50 dark:text-blue-300;
+  background-color: var(--color-blue-100);
+  color: var(--color-blue-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-blue-900) / 0.3);
+    color: var(--color-blue-300);
+  }
 }
 
 .bgc-green {
-  @apply bg-green-100/50 text-green-800
-  dark:bg-green-900/50 dark:text-green-300;
+  background-color: var(--color-green-100);
+  color: var(--color-green-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-green-900) / 0.3);
+    color: var(--color-green-300);
+  }
 }
 
 .bgc-yellow {
-  @apply bg-yellow-100/50 text-yellow-800
-  dark:bg-yellow-900/50 dark:text-yellow-300;
+  background-color: var(--color-yellow-100);
+  color: var(--color-yellow-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-yellow-900) / 0.3);
+    color: var(--color-yellow-300);
+  }
 }
 
 .bgc-red {
-  @apply bg-red-100/50 text-red-800
-  dark:bg-red-800/50 dark:text-red-300;
+  background-color: var(--color-red-100);
+  color: var(--color-red-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-red-900) / 0.3);
+    color: var(--color-red-300);
+  }
 }
 
 .bgc-gray {
-  @apply bg-gray-100 text-gray-800
-  dark:bg-gray-700/50 dark:text-gray-300;
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-800);
+
+  @variant dark {
+    background-color: --alpha(var(--color-gray-900) / 0.3);
+    color: var(--color-gray-300);
+  }
 }
