@@ -27,13 +27,15 @@
     class="js-table-builder-container"
     @if($async && $lazy) data-lazy="{{ "table_updated:$name" }}" @endif
 >
-    <div x-data="tableBuilder(
-    {{ (int) $creatable }},
-    {{ (int) $reorderable }},
-    {{ (int) $reindex }},
-    {{ (int) $async }},
-    '{{ $asyncUrl }}'
-)"
+    <div
+        class="js-table-builder-wrapper"
+        x-data="tableBuilder(
+            {{ (int) $creatable }},
+            {{ (int) $reorderable }},
+            {{ (int) $reindex }},
+            {{ (int) $async }},
+            '{{ $asyncUrl }}'
+        )"
         @defineEvent('table_empty_row_added', $name, 'add(true)')
         @defineEvent('table_reindex', $name, 'resolveReindex')
         @defineEventWhen($async, 'table_updated', $name, 'asyncRequest')
@@ -61,8 +63,42 @@
                                     {!! $row !!}
                                 @endforeach
                             </x-slot:thead>
-                            <x-slot:tbody></x-slot:tbody>
-                       @endif
+                        @endif
+                        <x-slot:tbody>
+                            @if ($rows->count() > 0)
+                                @for($i = 0; $i < $rows->count(); $i++)
+                                    <tr>
+                                        @foreach($row->getCells() as $column)
+                                            <td>
+                                                <div class="skeleton"></div>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endfor
+                            @else
+                                <tr>
+                                    @foreach($row->getCells() as $column)
+                                        <td>
+                                            <div class="skeleton"></div>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    @foreach($row->getCells() as $column)
+                                        <td>
+                                            <div class="skeleton"></div>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    @foreach($row->getCells() as $column)
+                                        <td>
+                                            <div class="skeleton"></div>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endif
+                        </x-slot:tbody>
                     </x-moonshine::table>
                 </x-slot:skeleton>
             @endif
