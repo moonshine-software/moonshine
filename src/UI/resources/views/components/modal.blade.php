@@ -42,13 +42,12 @@
                         <div class="modal-header">
                             <h5 class="modal-title">{{ $title ?? '' }}</h5>
                             <button type="button"
-                                    class="btn btn-close"
+                                    class="modal-close btn-icon"
                                     @click.stop="toggleModal"
                                     aria-label="Close"
                             >
                                 <x-moonshine::icon
                                     icon="x-mark"
-                                    size="6"
                                 />
                             </button>
                         </div>

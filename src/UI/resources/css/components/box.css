@@ -1,49 +1,38 @@
 .box {
-  @apply
-  theme__rounded
-  relative
-  bg-white dark:bg-dark-900
-  text-slate-600 dark:text-slate-300
-  shadow-md shadow-gray-200 dark:shadow-black/5
-  p-3 sm:p-4 lg:p-5
-  compact:p-3 compact:sm:p-3
-  minimalistic:p-3 minimalistic:sm:p-3
-  mb-6
-  compact:mb-3
-  minimalistic:mb-2
-  ;
+  position: relative;
+  margin-bottom: --spacing(6);
+  padding: --spacing(3);
+  border-radius: --spacing(3);
+  border: 1px solid var(--theme-border-color);
+  background-color: var(--ms-box-bg-color, var(--color-theme));
 
-  &.box-dark, &.dark {
-    @apply
-    text-slate-200 dark:text-slate-300
-    bg-white dark:bg-dark-900
-    shadow-none dark:shadow-black/5
+  &.box-dark,
+  &.dark {
+    @apply bg-theme-600 text-slate-200
+    shadow-none dark:bg-theme-800
+    dark:text-slate-300 dark:shadow-black/5;
   }
 
   &.box-shadow {
-    @apply
-    before:theme__rounded
-    before:w-[85%]
-    before:h-full
-    before:absolute
-    before:-z-1
-    before:top-3
-    before:mx-auto
+    @apply before:absolute
     before:inset-x-0
+    before:top-3
+    before:-z-1
+    before:mx-auto
+    before:h-full
+    before:w-[85%]
+    before:rounded-[inherit]
     before:opacity-0
-    hover:before:bg-white dark:hover:before:bg-dark-500
-    hover:before:shadow-gray-200 dark:hover:before:shadow-black/5
-    hover:before:opacity-100
-    hover:before:shadow-lg
+    hover:before:bg-white hover:before:opacity-100
+    hover:before:shadow-lg hover:before:shadow-gray-200
+    dark:hover:before:bg-theme-500
+    dark:hover:before:shadow-black/5;
   }
 }
 
 .box-title {
-  @apply
-  font-semibold
-  text-xs
-  flex
+  @apply flex
   gap-2
-  border-b theme__border_for_light_bg
-  pb-3
+  border-b theme__border
+  pb-3 text-xs font-semibold;
 }

@@ -14,7 +14,7 @@ use MoonShine\Contracts\ColorManager\ColorManagerContract;
  * @method self primary(string $value, ?int $shade = null, bool $dark = false)
  * @method self secondary(string $value, ?int $shade = null, bool $dark = false)
  * @method self body(string $value, ?int $shade = null, bool $dark = false)
- * @method self dark(string $value, int|string|null $shade = null, bool $dark = false)
+ * @method self theme(string $value, int|string|null $shade = null, bool $dark = false)
  * @method self successBg(string $value, ?int $shade = null, bool $dark = false)
  * @method self successText(string $value, ?int $shade = null, bool $dark = false)
  * @method self warningBg(string $value, ?int $shade = null, bool $dark = false)
@@ -29,48 +29,62 @@ final class ColorManager implements ColorManagerContract
 {
     use Conditionable;
 
-    public const TEXT = '1 0 0';
-
-    public const BG = '0.266 0.044 264.943';
-
     public const DEFAULT = [
-        'primary' => '0.544 0.233 291.241',
-        'secondary' => '0.639 0.209 6.961',
-        'body' => self::BG,
-        'dark' => [
-            'DEFAULT' => '0.26 0.066 279.517',
-            50 => '0.509 0.052 257.609', // search, toasts, progress bars
-            100 => '0.467 0.054 263.268', // dividers
-            200 => '0.436 0.059 264.202', // dividers
-            300 => '0.393 0.062 264.473', // borders
-            400 => '0.364 0.058 266.668', // dropdowns, buttons, pagination
-            500 => '0.332 0.054 266.369', // buttons default bg
-            600 => '0.324 0.051 266.679', // table row
-            700 => '0.303 0.044 272.77', // background content
-            800 => self::BG, // background sidebar
-            900 => '0.208 0.04 265.755', // background
+        'primary'        => '0.627 0.265 303.9',
+        'primary-text'   => '1 0 0',
+        'secondary'      => '0.746 0.16 232.661',
+        'secondary-text' => '1 0 0',
+        'body'           => '0.96 0 0',
+        'theme'          => [
+            'default' => '1 0 0',
+            50        => '0.98 0.002 274.32',
+            100       => '0.96 0.004 274.32',
+            200       => '0.92 0.006 274.32',
+            300       => '0.86 0.008 274.32',
+            400       => '0.75 0.01 274.32',
+            500       => '0.62 0.012 274.32',
+            600       => '0.50 0.014 274.32',
+            700       => '0.40 0.016 274.32',
+            800       => '0.30 0.018 274.32',
+            900       => '0.20 0.02 274.32',
         ],
-
-        'success-bg' => '0.639 0.218 142.495',
-        'success-text' => self::TEXT,
-        'warning-bg' => '0.898 0.177 96.726',
-        'warning-text' => '0.5641 0.115857 95.1424',
-        'error-bg' => '0.589 0.214 26.855',
-        'error-text' => self::TEXT,
-        'info-bg' => '0.601 0.219 257.63',
-        'info-text' => self::TEXT,
+        'success-bg'     => '0.639 0.218 142.495',
+        'success-text'   => '0.4676 0.1549 142.495',
+        'warning-bg'     => '0.8088 0.170358 75.3501',
+        'warning-text'   => '0.5 0.1031 76.1',
+        'error-bg'       => '0.589 0.214 26.855',
+        'error-text'     => '0.3706 0.145 26.855',
+        'info-bg'        => '0.601 0.219 257.63',
+        'info-text'      => '0.3471 0.1204 257.63',
     ];
 
     public const DARK = [
-        'body' => self::BG,
-        'success-bg' => '0.639 0.218 142.495',
-        'success-text' => '0.9308 0.1279 144.46',
-        'warning-bg' => '0.898 0.177 96.726',
-        'warning-text' => '0.9865 0.0716 107.64',
-        'error-bg' => '0.589 0.214 26.855',
-        'error-text' => '0.8751 0.0665 18.51',
-        'info-bg' => '0.601 0.219 257.63',
-        'info-text' => '0.877 0.065 244.38',
+        'primary'        => '0.606 0.25 292.717',
+        'primary-text'   => '1 0 0',
+        'secondary'      => '0.746 0.16 232.661',
+        'secondary-text' => '1 0 0',
+        'body'           => '0.2 0.0168 274.32',
+        'theme'          => [
+            'default' => '0.2463 0.0168 274.32',
+            50        => '0.45 0.025 274.32',
+            100       => '0.42 0.023 274.32',
+            200       => '0.39 0.021 274.32',
+            300       => '0.36 0.019 274.32',
+            400       => '0.33 0.018 274.32',
+            500       => '0.30 0.017 274.32',
+            600       => '0.27 0.016 274.32',
+            700       => '0.2463 0.0168 274.32',
+            800       => '0.22 0.015 274.32',
+            900       => '0.2 0.0168 274.32',
+        ],
+        'success-bg'     => '0.639 0.218 142.495',
+        'success-text'   => '0.9308 0.1279 144.46',
+        'warning-bg'     => '0.898 0.177 96.726',
+        'warning-text'   => '0.9865 0.0716 107.64',
+        'error-bg'       => '0.589 0.214 26.855',
+        'error-text'     => '0.8751 0.0665 18.51',
+        'info-bg'        => '0.601 0.219 257.63',
+        'info-text'      => '0.877 0.065 244.38',
     ];
 
     /**
@@ -87,48 +101,48 @@ final class ColorManager implements ColorManagerContract
     {
         return $this
             ->set('body', $value)
-            ->set('dark.800', $value)
+            ->set('theme.800', $value)
             ->set('body', $value, dark: true);
     }
 
     public function tableRow(string $value): static
     {
         return $this
-            ->set('dark.600', $value);
+            ->set('theme.600', $value);
     }
 
     public function borders(string $value): static
     {
         return $this
-            ->set('dark.300', $value);
+            ->set('theme.300', $value);
     }
 
     public function dropdowns(string $value): static
     {
         return $this
-            ->set('dark.400', $value);
+            ->set('theme.400', $value);
     }
 
     public function buttons(string $value): static
     {
         return $this
-            ->set('dark.50', $value)
-            ->set('dark.500', $value)
+            ->set('theme.50', $value)
+            ->set('theme.500', $value)
             ->dropdowns($value);
     }
 
     public function dividers(string $value): static
     {
         return $this
-            ->set('dark.100', $value)
-            ->set('dark.200', $value);
+            ->set('theme.100', $value)
+            ->set('theme.200', $value);
     }
 
     public function content(string $value): static
     {
         return $this
-            ->set('dark.700', $value)
-            ->set('dark.900', $value);
+            ->set('theme.700', $value)
+            ->set('theme.900', $value);
     }
 
     /**

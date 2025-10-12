@@ -14,7 +14,7 @@ interface HasIconContract
      * @param  array<string, mixed>  $attributes
      */
     public function getIcon(
-        int $size = 8,
+        ?int $size = null,
         Color|string $color = '',
         array $attributes = []
     ): string;

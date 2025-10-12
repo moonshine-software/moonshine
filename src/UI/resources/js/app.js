@@ -5,6 +5,7 @@ import AlpineMS from 'alpinejs'
 import {MoonShine} from './moonshine.js'
 import persist from '@alpinejs/persist'
 import mask from '@alpinejs/mask'
+import morph from '@alpinejs/morph'
 
 // Alpine components
 import global from './Components/Global'
@@ -80,6 +81,7 @@ document.addEventListener('alpine:init', () => {
 if (window.Livewire === undefined) {
   Alpine.plugin(persist)
   Alpine.plugin(mask)
+  Alpine.plugin(morph)
 }
 
 if (!alpineExists) {

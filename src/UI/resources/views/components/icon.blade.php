@@ -1,15 +1,14 @@
 @props([
     'path' => '',
     'icon' => '',
-    'size' => 5,
+    'size' => '',
     'color' => '',
 ])
-<div {{ $attributes->class([
-    'w-' . ($size ?? 5),
-    'h-' . ($size ?? 5),
-    'text-current' => empty($color),
-    "text-$color" => !empty($color),
-]) }}>
+<div {{ $attributes->class(array_filter([
+    'icon-wrapper',
+    $size ? "size-$size" : null,
+    empty($color) ? 'text-current' : "text-$color",
+])) }}>
     @if($slot?->isNotEmpty())
         {!! $slot !!}
     @else

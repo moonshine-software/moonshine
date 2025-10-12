@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use JsonException;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionGroup;
 use MoonShine\Support\DTOs\Select\OptionProperty;
@@ -61,5 +64,27 @@ trait SelectTrait
             $this->getValue(),
             $this->optionProperties
         );
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function getMultiplePreview(mixed $value): string
+    {
+        $value = \is_string($value) && Str::of($value)->isJson() ?
+            json_decode($value, true, 512, JSON_THROW_ON_ERROR)
+            : $value;
+
+        /** @var Collection<array-key, int|string> $collection */
+        $collection = new Collection($value);
+
+        return $collection
+            ->when(
+                ! $this->isRawMode(),
+                fn (Collection $collect): Collection => $collect->map(
+                    fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
+                ),
+            )
+            ->implode(',');
     }
 }

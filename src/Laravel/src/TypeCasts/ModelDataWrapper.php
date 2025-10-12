@@ -43,7 +43,7 @@ final readonly class ModelDataWrapper implements DataWrapperContract
         return $this->model->{$name}($arguments);
     }
 
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $this->model->{$name} = $value;
     }

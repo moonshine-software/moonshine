@@ -187,6 +187,14 @@ interface TableBuilderContract extends
 
     public function isLazy(): bool;
 
+    public function skeleton(Closure|bool|null $condition = null): static;
+
+    public function hasSkeleton(): bool;
+
+    public function loader(Closure|bool|null $condition = null): static;
+
+    public function hasLoader(): bool;
+
     /**
      * @return array{
      *     preview: bool,
@@ -200,6 +208,8 @@ interface TableBuilderContract extends
      *     searchable: bool,
      *     searchValue: string,
      *     columnSelection: bool,
+     *     skeleton: bool,
+     *     loader: bool,
      * }
      */
     public function statesToArray(): array;

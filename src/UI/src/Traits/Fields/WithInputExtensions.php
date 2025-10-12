@@ -13,6 +13,7 @@ use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 use MoonShine\UI\InputExtensions\InputLock;
+use MoonShine\UI\InputExtensions\InputPrefix;
 
 trait WithInputExtensions
 {
@@ -78,6 +79,13 @@ trait WithInputExtensions
     public function locked(): static
     {
         $this->extension(new InputLock());
+
+        return $this;
+    }
+
+    public function prefix(string $ext): static
+    {
+        $this->extension(new InputPrefix($ext));
 
         return $this;
     }

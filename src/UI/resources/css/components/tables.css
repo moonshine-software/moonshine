@@ -1,134 +1,136 @@
-/* Tables */
+/* Table basic */
 table {
-  width: calc(100% - 1px);
-  @apply border-collapse text-left;
+  text-indent: 0;
+  width: 100%;
+  border-color: inherit;
+  border-collapse: collapse;
+  text-align: left;
 
   .dropzone-items {
-    @apply max-h-[8rem] max-w-xs gap-1.5 overflow-y-auto;
+    overflow-y: auto;
+    max-width: var(--container-xs);
+    max-height: 8rem;
+    gap: --spacing(1.5);
   }
 
   .dropzone-item-file {
-    @apply gap-1 border-0 p-1;
+    gap: --spacing(1);
+    padding: --spacing(1);
+    border: 0;
   }
 
   .dropzone-file-icon > svg {
-    @apply h-5 w-5;
+    @apply size-5;
   }
+}
+
+.table-container {
+  overflow: hidden;
+  border-radius: var(--ms-table-radius, var(--radius-xl));
+  border: var(--ms-table-border-width, 1px) solid
+    var(--ms-table-border-color, var(--theme-border-color));
+}
+
+.table-responsive {
+  overflow-x: auto;
+  position: relative;
+  width: 100%;
 }
 
 .table {
-  @apply text-xs;
+  background-color: var(--ms-table-bg-color, var(--color-theme));
+  font-size: var(--ms-table-font-size, var(--font-2xs));
+
+  th,
+  td {
+    max-width: var(--ms-table-col-max-width, 64ch);
+  }
 
   thead {
-    @apply text-3xs uppercase;
-
-    td,
-    th {
-      @apply max-w-lg font-semibold p-2
-      border-b theme__border_for_light_bg
-    }
-  }
-
-  tbody {
-    td,
-    th {
-      @apply max-w-lg break-words p-2 py-3
-      border-b theme__border_for_light_bg
+    tr {
+      border-bottom: var(--ms-table-thead-border-width, 1px) solid
+        var(--ms-table-thead-border-color, var(--theme-border-color));
     }
 
-    th {
-      @apply font-semibold;
-    }
-
-    tr:last-child {
-      td,
-      th {
-        @apply border-b-0;
-      }
-    }
-  }
-
-  tfoot {
-    td,
-    th {
-      @apply max-w-lg border-t dark:border-dark-400;
-    }
-
-    td:not([class$='-bulk-actions']),
-    th {
-      @apply break-words p-2 py-3;
-    }
-
-    td[class$='-bulk-actions'] {
-      @apply pb-3 pt-3;
-    }
-  }
-}
-
-.table-divider {
-  div.grid {
-    @apply my-0! py-2 border-b theme__border_for_light_bg;
-
-    &:last-child {
-      @apply border-b-0 pb-0;
-    }
-  }
-}
-
-.table-list {
-  @apply border-separate border-spacing-y-2.5;
-
-  thead {
-    td,
-    th {
-      @apply max-w-lg whitespace-nowrap
-      px-5 py-3
-      compact:p-4
-      minimalistic:p-0
-      text-2xs font-semibold first:rounded-l-lg last:rounded-r-lg dark:border-dark-300;
+    th,
+    td {
+      padding-block: var(--ms-table-space-y, var(--ms-table-thead-space-y, --spacing(3)));
+      padding-inline: var(--ms-table-space-x, var(--ms-table-thead-space-x, --spacing(3)));
+      font-weight: var(--ms-table-thead-font-weight, var(--font-weight-semibold));
     }
   }
 
   tbody {
     tr {
-      @apply bg-white dark:bg-dark-600;
+      &:not(:first-child) {
+        border-top: var(--ms-table-tbody-border-width, 1px) solid
+          var(--ms-table-tbody-border-color, var(--theme-border-color));
+      }
     }
 
-    td,
-    th {
-      @apply first:rounded-l-lg last:rounded-r-lg dark:border-dark-300
-      px-5 py-3
-      compact:p-3
-      minimalistic:p-1.5
+    th,
+    td {
+      padding-block: var(--ms-table-space-y, var(--ms-table-tbody-space-y, --spacing(2)));
+      padding-inline: var(--ms-table-space-x, var(--ms-table-tbody-space-x, --spacing(3)));
+      overflow-wrap: break-word;
     }
   }
 
   tfoot {
-    tr:not(:has(td[class$='-bulk-actions'])) {
-      @apply bg-white dark:bg-dark-600;
+    tr {
+      border-top: var(--ms-table-tfoot-border-width, 1px) solid
+        var(--ms-table-tfoot-border-color, var(--theme-border-color));
     }
 
-    td:not([class$='-bulk-actions']),
-    th {
-      @apply px-5 py-3 first:rounded-l-lg last:rounded-r-lg dark:border-dark-300;
+    th,
+    td {
+      padding-block: var(--ms-table-space-y, var(--ms-table-tfoot-space-y, --spacing(3)));
+      padding-inline: var(--ms-table-space-x, var(--ms-table-tfoot-space-x, --spacing(3)));
     }
   }
 
-  td,
-  th {
-    @apply relative max-w-md overflow-hidden whitespace-nowrap bg-inherit;
+  &:not(.table-list) {
+    thead > tr:first-child {
+      th,
+      td {
+        &:first-child {
+          border-top-left-radius: var(--ms-table-thead-radius, var(--radius-lg));
+        }
+
+        &:last-child {
+          border-top-right-radius: var(--ms-table-thead-radius, var(--radius-lg));
+        }
+      }
+    }
+  }
+}
+
+/* Table list */
+
+.table-list {
+  th,
+  td {
+    overflow: hidden;
+    position: relative;
+    max-width: var(--ms-table-list-col-max-width, 48ch);
+    white-space: nowrap;
 
     &.fit-content {
-      @apply min-w-fit;
+      min-width: fit-content;
     }
 
     &.min-content {
-      @apply min-w-96 whitespace-normal;
+      min-width: var(--ms-table-list-col-min-width, --spacing(96));
     }
   }
 
+  thead {
+    background-color: var(--ms-table-thead-bg-color, var(--color-body));
+  }
+
   .text-ellipsis {
-    @apply overflow-hidden whitespace-nowrap;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .text-clamp {
@@ -136,62 +138,99 @@ table {
   }
 
   &[data-click-action] {
-    tbody {
-      tr {
-        td {
-          @apply relative;
-        }
+    tbody > tr {
+      td {
+        position: relative;
+      }
 
-        &:hover {
-          @apply cursor-pointer shadow-sm;
-
-          td::before {
-            @apply pointer-events-none absolute inset-0 bg-zinc-800 opacity-5 dark:bg-zinc-400;
-            content: '';
-          }
-        }
+      &:hover {
+        background-color: var(--ms-table-list-hover-bg-color, var(--color-body));
+        cursor: pointer;
       }
     }
   }
 
   td.table-grid {
-    @apply min-w-96 overflow-auto;
+    overflow: auto;
+    min-width: var(--ms-table-list-table-grid-min-width, --spacing(54));
   }
 }
 
-.table-responsive {
-  @apply w-full overflow-auto;
+/* Sticky table & columns */
+
+.table-sticky {
+  max-height: var(--ms-table-sticky-max-height, 70dvh);
+
+  & > table > thead {
+    position: sticky;
+    top: 0;
+    z-index: var(--ms-table-sticky-z-index, 1);
+
+    tr {
+      box-shadow: inset 0 calc(var(--ms-table-thead-border-width, 1px) * -1) 0
+        var(--ms-table-thead-border-color, var(--theme-border-color));
+    }
+  }
+}
+
+.table {
+  @variant md {
+    & > thead,
+    & > tbody {
+      th,
+      td {
+        &.sticky-col {
+          position: sticky;
+          right: 0;
+        }
+      }
+    }
+
+    & > thead {
+      th,
+      td {
+        &.sticky-col {
+          background-color: --alpha(var(--ms-table-thead-bg-color, var(--color-body)) / 0.95);
+        }
+      }
+    }
+
+    & > tbody {
+      th,
+      td {
+        &.sticky-col {
+          background-color: --alpha(var(--ms-table-bg-color, var(--color-theme)) / 0.95);
+
+          &:has(.dropdown-body.visible) {
+            z-index: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Table helper classes */
+
+/* TODO: Remove dependency on this class used in detail record page
+ * This class is currently applied to tables on the record detail/preview page.
+ * Need to refactor the detail record page to work without table.
+ */
+.table-divider {
+  div.grid {
+    margin-block: 0 !important;
+    padding-block: --spacing(2);
+    border-bottom: 1px solid var(--theme-border-color);
+
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
 }
 
 .table-zoom-in {
   tbody > tr {
     @apply transition-all will-change-transform hover:scale-[1.015] hover:shadow-md hover:shadow-gray-200;
-  }
-}
-
-.table-sticky {
-  max-height: calc(70dvh);
-
-  & > table > thead {
-    @apply sticky -top-1 z-1 bg-slate-50 dark:bg-dark-700;
-  }
-}
-
-/* Sticky Columns */
-.table-list {
-  thead,
-  tbody {
-    tr {
-      th,
-      td {
-        &.sticky-col {
-          @apply md:sticky md:backdrop-blur;
-
-          &:has(.dropdown-body.visible) {
-            @apply z-1;
-          }
-        }
-      }
-    }
   }
 }

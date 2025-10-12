@@ -1,20 +1,19 @@
 /* Modal */
 .modal {
-  @apply fixed left-0 top-0 z-modal h-full w-full overflow-y-auto overflow-x-hidden bg-clip-padding outline-none transition-all;
+  @apply fixed top-0 left-0 z-modal h-full w-full overflow-x-hidden overflow-y-auto bg-clip-padding transition-all outline-none;
 
   .modal-template {
     @apply relative z-modal;
   }
 
   .modal-dialog {
-    @apply
-    pointer-events-none
-    flex items-center
-    mx-auto
-    my-8
-    px-4
-    sm:max-w-[520px] md:max-w-[720px]
+    @apply pointer-events-none
+    mx-auto my-8
+    flex
     min-h-[calc(100%_-_2rem_*_2)]
+    items-center
+    px-4 sm:max-w-[520px]
+    md:max-w-[720px];
   }
 
   .modal-dialog-auto {
@@ -31,18 +30,18 @@
   }
 
   .modal-content {
-    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white dark:bg-dark-700 shadow-lg
+    @apply pointer-events-auto relative flex w-full flex-col rounded-lg bg-white shadow-lg dark:bg-theme-700;
   }
 
   .modal-header {
     @apply sticky top-0 z-20
     flex justify-between gap-x-4
     rounded-t-lg
-    border-b theme__border_for_light_bg
-    bg-white dark:bg-dark-700
-    p-4 lg:p-6
+    border-b theme__border
+    bg-white p-4
+    lg:p-6 dark:bg-theme-700
     compact:p-4
-    minimalistic:p-3
+    minimalistic:p-3;
   }
 
   .modal-title {
@@ -53,12 +52,12 @@
     @apply grow
     p-4 lg:p-6
     compact:p-4
-    minimalistic:p-3
+    minimalistic:p-3;
   }
 }
 
 /* Backdrop */
 
 .modal-backdrop {
-  @apply fixed inset-0 z-1000 h-screen w-screen bg-dark/80 dark:bg-dark-900/80;
+  @apply fixed inset-0 z-1000 h-screen w-screen bg-theme-800/85 backdrop-blur-xs;
 }

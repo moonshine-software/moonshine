@@ -1,834 +1,315 @@
-/* Aside navigation */
-.layout-menu {
-  @apply pointer-events-none w-full transition-all lg:pointer-events-auto lg:w-[4.5rem] xl:w-[16.75rem];
+@theme {
+  --ms-menu-space-y: --spacing(1);
+  --ms-menu-space-x: --spacing(1.5);
+  --ms-menu-icon-size: --spacing(5);
+  --ms-menu-arrow-size: --spacing(3);
+  --ms-menu-item-gap: --spacing(2);
+  --ms-menu-item-padding-x: --spacing(2.5);
+  --ms-menu-item-padding-y: --spacing(1.5);
+  --ms-menu-item-border-radius: --spacing(2);
+  --ms-menu-item-font-size: var(--font-2xs);
+  --ms-menu-item-color: var(--color-black);
 
-  ::-webkit-scrollbar {
-    @apply lg:hidden;
+  --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.1);
+
+  --ms-menu-item-active-bg-color: var(--color-theme);
+  --ms-menu-item-active-color: var(--color-black);
+  --ms-menu-item-active-icon-color: var(--color-primary);
+
+  --ms-menu-submenu-space-y: --spacing(1);
+}
+
+@variant dark {
+  --ms-menu-item-color: var(--color-slate-300);
+  --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.15);
+  --ms-menu-item-active-color: var(--color-white);
+}
+
+/* Menu base */
+
+.menu {
+  flex: 1;
+  display: flex;
+  gap: --spacing(3);
+}
+
+.menu--vertical {
+  overflow-y: auto;
+  flex-direction: column;
+
+  .menu-list {
+    flex-direction: column;
   }
 
-  .menu-inner-item-char {
-    @apply xl:hidden;
-  }
-
-  &._is-minimized {
-    @apply lg:pointer-events-auto lg:w-[4.75rem];
-
-    .menu-heading {
-      @apply lg:flex-col lg:px-0;
-    }
-
-    .menu-heading-actions {
-      @apply lg:flex-col lg:gap-y-2;
-    }
-
-    .menu-inner-link,
-    .menu-inner-button {
-      @apply justify-center;
-    }
-
-    .menu-inner-item-char {
-      @apply block;
-    }
-
-    .menu-inner-text,
-    .menu-inner-arrow,
-    .menu-inner-counter {
-      @apply lg:pointer-events-none lg:absolute lg:opacity-0;
-    }
-
-    .menu-inner-counter {
-      @apply lg:absolute lg:-right-2 lg:top-0.5 lg:max-w-[64px] lg:scale-90;
-    }
-
-    .menu-inner-dropdown {
-      @apply mb-2 p-[1px];
-
-      .menu-inner-counter {
-        @apply lg:right-0 lg:top-0.5 lg:max-w-[48px];
-      }
-    }
-
-    .menu-inner-divider {
-      > span {
-        @apply hidden;
-      }
-    }
-
-    .profile {
-      @apply lg:flex-col;
-
-      .profile-info {
-        @apply lg:hidden;
-      }
-    }
-  }
-
-  ._is-opened {
-    @apply flex flex-col;
-
-    .menu-inner-item-char {
-      @apply hidden;
-    }
-  }
-
-  /* Heading */
-
-  .menu-heading {
-    @apply
-    pointer-events-auto
-    fixed lg:static
-    left-0 right-0 top-0
-    z-[109] lg:z-3
-    flex items-center justify-between
-    flex-row lg:flex-col xl:flex-row
-    gap-4
-    theme__border_for_dark_bg border-b
-    bg-body/80 lg:bg-transparent
-    lg:mr-4 xl:mr-5
-    px-6 md:px-10 lg:px-0 xl:px-4
-    py-3 lg:py-3 xl:py-4
-    backdrop-blur-sm lg:backdrop-blur-none
-    ;
-
-    @variant compact {
-      @apply
-      lg:mr-2
-      px-2 md:px-5 lg:px-1 xl:px-3
-      py-2
-    }
-
-    @variant minimalistic {
-      @apply
-      lg:mx-0
-      px-2
-      py-1 lg:py-2
-      gap-2
-    }
-
-    .menu-heading-logo {
-      @apply grow-0 lg:grow;
-    }
-
-    .menu-heading-actions {
-      @apply flex items-center justify-end gap-x-3;
-    }
-
-    .menu-heading-burger {
-      @apply inline-flex items-center
-      text-slate-300
-      minimalistic:text-slate-500
-      lg:hidden
-    }
-  }
-
-  .menu {
-    @apply
-    pointer-events-none lg:pointer-events-auto
-    invisible lg:visible
-    fixed lg:static
-    inset-0
-    lg:z-1
-    h-full
-    translate-y-4 lg:translate-y-0
-    gap-y-2
-    bg-body lg:bg-transparent
-    minimalistic:bg-slate-50 minimalistic:dark:bg-dark-700
-    px-6 compact:px-4 minimalistic:px-2
-    pb-8 compact:pb-5 minimalistic:pb-3
-    pt-16 compact:max-sm:pt-12 minimalistic:max-sm:pt-10
-    compact:pl-2
-    lg:py-0
-    lg:pl-0
-    lg:pr-4 xl:pr-5
-    minimalistic:lg:px-0
-    opacity-0 lg:opacity-100
-    transition-all lg:transition-none
-    lg:mt-0
-    lg:flex
-    lg:flex-col
-    overflow-y-auto overflow-x-clip
-    ;
-
-    scrollbar-width: none;
-
-    & > *:first-child {
-      @apply mt-2;
-    }
-
-    &._is-opened {
-      @apply pointer-events-auto visible translate-y-0 opacity-100;
-    }
-
-
-    /* Main navigation */
-
-    .menu-inner {
-      @apply flex flex-col gap-y-2;
-
-      &:last-of-type {
-        @apply grow;
-      }
-
-      .menu-inner-item {
-        &._is-active {
-          > .menu-inner-link,
-          > .menu-inner-button {
-            @apply
-            theme__rounded
-            bg-slate-50 dark:bg-dark-300
-            font-medium dark:font-normal
-            opacity-100
-            text-black dark:text-white
-            lg:text-black dark:lg:text-white
-            lg:hover:text-inherit
-            ;
-
-            @variant minimalistic {
-              @apply
-              bg-slate-300 dark:bg-slate-500
-            }
-          }
-        }
-      }
-
-      .menu-inner-link,
-      .menu-inner-button {
-        @apply
-        theme__rounded
-        relative
-        flex items-center
-        gap-x-2.5
-        px-4 py-3
-        compact:px-3 compact:py-2
-        minimalistic:px-2 minimalistic:py-1
-        font-normal
-        text-xs
-        outline-none
-        is_active:bg-menu-active-bg
-        is_active:text-menu-active-color
-        ;
-
-        @variant not-minimalistic {
-          @apply
-          text-menu-link
-          hover:text-menu-hover
-          hover:bg-menu-hover/5
-        }
-
-        @variant minimalistic {
-          @apply
-          hover:bg-slate-200
-          is_active:bg-primary
-          is_active:hover:bg-primary/80
-        }
-
-        &._is-active {
-          .menu-inner-arrow {
-            @apply scale-y-[-1];
-          }
-        }
-
-        > div,
-        > svg {
-          @apply h-6 w-6;
-        }
-      }
-
-      .menu-inner-link {
-        &::after {
-          content: '';
-          @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
-        }
-      }
-
-      .menu-inner-button {
-        @apply w-full;
-      }
-
-      .menu-inner-text {
-        @apply grow truncate text-left;
-      }
-
-      .menu-inner-counter {
-        @apply
-        theme__rounded
-        h-6
-        shrink-0
-        truncate
-        leading-6
-        bg-primary
-        px-1.5
-        text-center
-        text-[12px]
-        font-medium
-        text-white
-        lg:absolute xl:static
-        lg:-right-2 xl:-right-1
-        lg:top-0.5 xl:top-0
-        lg:max-w-[64px] xl:max-w-[120px]
-        lg:scale-90 xl:scale-100
-        lg:z-1
-      }
-
-      .menu-inner-arrow {
-        @apply transition-transform;
-
-        > div,
-        > svg {
-          @apply h-4 w-4;
-        }
-      }
-
-      .menu-inner-text,
-      .menu-inner-arrow {
-        @apply block lg:hidden xl:block;
-      }
-
-      /* Dropdown Menu */
-
-      .menu-inner-dropdown {
-        @apply
-        theme__rounded
-        bg-menu-dropdown-bg
-        flex flex-col
-        gap-y-2
-        mt-2
-        p-1
-        ;
-
-        @variant compact {
-          @apply
-          mt-1
-          p-0
-        }
-
-        @variant minimalistic {
-          @apply
-          bg-transparent
-          theme__border_for_dark_bg border
-          my-1
-          p-0
-        }
-
-        .menu-inner-link,
-        .menu-inner-button {
-          @apply p-2.5 text-2xs
-          minimalistic:p-1.5
-          ;
-
-          > div,
-          > svg {
-            @apply h-5 w-5;
-          }
-        }
-
-        .menu-inner-counter {
-          @apply h-5 bg-secondary text-[11px] leading-5 lg:right-0 lg:top-0.5 lg:max-w-[48px] xl:right-1 xl:max-w-[120px];
-        }
-
-        .menu-inner-divider {
-          @apply -ml-3.5;
-        }
-
-        .menu-inner-dropdown {
-          @apply mb-2 border-b border-t border-dashed border-slate-500 px-0;
-        }
-      }
-
-      /* Divider */
-
-      .menu-inner-divider {
-        @apply relative my-2 -ml-4 flex items-center pl-4 pr-0.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:grow before:bg-slate-500;
-
-        > span {
-          @apply relative z-1 block w-full truncate pl-2.5 lg:hidden xl:block;
-        }
-      }
-    }
-
-    /* User Profile */
-
-    .profile {
-      @apply
-      px-2 py-4
-      compact:py-2
-      minimalistic:px-0 minimalistic:py-2
-      ;
-
-      .profile-info {
-        > .name {
-          @apply
-          text-white
-          minimalistic:text-primary
-          minimalistic:dark:text-inherit
-        }
-      }
-    }
-  }
-
-  .profile {
-    @apply flex-row lg:flex-col xl:flex-row;
-  }
-
-  /* Bottom menu */
-
-  .menu-bottom {
-    @apply hidden lg:block
-    pr-5
-    compact:pr-3
-    minimalistic:px-0
-    ;
-
-    > *:first-child {
-      @apply
-      border-t theme__border_for_dark_bg
-      pt-2
-    }
-
-    .menu-inner-button {
-      @apply flex gap-2 text-gray-300
-      minimalistic:text-inherit
-    }
+  .menu-divider {
+    margin-block: var(--ms-menu-divider-space-y, --spacing(1));
   }
 }
 
-/* Aside horizontal navigation */
-.layout-menu-horizontal {
-  @apply
-  sticky
-  z-[200]
-  top-0
-  inset-x-0
-  flex items-center
-  gap-x-5
-  h-[4.5rem] lg:h-20
-  compact:lg:h-16
-  minimalistic:lg:h-14
-  bg-body/95
-  px-6 md:px-10
-  transition-colors
-  ;
+.menu--horizontal {
+  flex: 1;
+  overflow-x: auto;
 
-  .menu-inner-item-char {
-    @apply hidden;
-  }
+  .menu-list {
+    flex-direction: row;
 
-  /* Opened menu state */
+    > .menu-divider {
+      align-self: center;
+      margin-inline: var(--ms-menu-horizontal-divider-space-x, --spacing(1));
 
-  &._is-opened {
-    @apply bg-body;
-
-    @media (max-width: 1023px) {
-      .menu-navigation {
-        @apply pointer-events-auto visible fixed translate-y-0 opacity-100;
-      }
-    }
-  }
-
-  /* Logotype */
-
-  .menu-logo {
-    @apply shrink-0;
-  }
-
-  /* Main navigation */
-
-  .menu-navigation {
-    @apply flex lg:grow;
-  }
-
-  .menu-inner {
-    @apply flex gap-x-0.5 overflow-x-auto lg:gap-x-1.5;
-
-    &:last-of-type {
-      @apply grow;
-    }
-
-    .menu-inner-item {
-      @apply relative theme__rounded text-white transition-all;
-
-      &._is-active {
-        @apply
-        bg-menu-current-bg
-        font-medium
-        text-menu-current-color
-        opacity-100
-        transition-none
-        dark:font-normal
-        lg:bg-slate-50
-        lg:text-black
-        dark:lg:text-white
-        dark:lg:bg-dark-700
-        ;
-
-        .menu-inner-link {
-          @apply
-          text-menu-current-color
-          lg:text-inherit
-          hover:text-menu-current-color
-          lg:hover:text-inherit
-        }
-      }
-    }
-
-    .menu-inner-link,
-    .menu-inner-button {
-      @apply relative flex items-center gap-x-2.5
-      theme__rounded
-      p-2.5 text-2xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
-
-      &._is-active {
-        @apply bg-menu-active-bg text-menu-active-color;
-
-        .menu-inner-arrow {
-          @apply scale-y-[-1];
-        }
+      &::after {
+        width: var(--ms-menu-horizontal-divider-width, 1px);
+        height: var(--ms-menu-horizontal-divider-height, --spacing(4));
       }
 
-      > div,
-      > svg {
-        @apply h-6 w-6;
-      }
-    }
-
-    .menu-inner-button {
-      @apply w-full;
-    }
-
-    .menu-inner-text {
-      @apply grow truncate text-left;
-    }
-
-    .menu-inner-counter {
-      @apply absolute -right-1 top-0.5 z-1 h-6 max-w-[64px] shrink-0 scale-90 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:static lg:max-w-[120px] lg:scale-100;
-    }
-
-    .menu-inner-arrow {
-      @apply transition-transform;
-
-      > div,
-      > svg {
-        @apply h-4 w-4;
-      }
-    }
-
-    .menu-inner-text,
-    .menu-inner-arrow {
-      @apply hidden lg:block;
-    }
-
-    /* Dropdown Menu */
-
-    .menu-inner-dropdown {
-      @apply fixed z-5 flex flex-col gap-y-1
-      theme__rounded
-      border border-dark-300
-      top-[4.85rem]
-      compact:top-[3.85rem]
-      minimalistic:top-[2.85rem]
-      bg-menu-dropdown-bg px-1 py-1.5 shadow-lg md:min-w-[190px] lg:max-h-72 lg:min-w-[240px] lg:overflow-y-auto;
-
-      .menu-inner-link,
-      .menu-inner-button {
-        @apply p-2 text-2xs;
-
-        > div,
-        > svg {
-          @apply h-5 w-5;
-        }
-      }
-
-      .menu-inner-text {
-        @apply block;
-      }
-
-      .menu-inner-counter {
-        @apply right-0 top-0.5 h-5 max-w-[48px] bg-secondary text-[11px] leading-5 xl:right-1 xl:max-w-[120px];
-      }
-
-      .menu-inner-divider {
-        @apply my-2 -ml-3.5 pl-4 pr-0.5 before:h-[1px] before:min-w-[16px] before:bg-slate-400;
-
-        > span {
-          @apply block;
-        }
-      }
-
-      .menu-inner-dropdown {
-        @apply static mt-1 max-h-full border-b border-l-0 border-r-0 border-t border-dashed border-slate-500 px-0 shadow-none;
-      }
-    }
-
-    /* Divider */
-
-    .menu-inner-divider {
-      @apply relative mx-1 flex items-center text-slate-400 before:h-[16px] before:min-w-[1px] before:grow before:bg-white/30;
-
-      > span {
-        @apply relative z-1 hidden w-full truncate pl-2.5;
-      }
-    }
-  }
-
-  /* Actions buttons */
-
-  .menu-actions {
-    @apply ml-auto flex shrink-0 items-center justify-end gap-x-2 sm:gap-x-3;
-
-    .menu-inner-divider {
-      @apply mx-1;
-    }
-
-    .profile-info {
-      @apply hidden sm:block;
-    }
-  }
-
-  /* Settings button */
-
-  .menu-settings {
-    @apply inline-flex items-center;
-  }
-
-  /* Burger button */
-
-  .menu-burger {
-    @apply inline-flex items-center text-white lg:hidden;
-  }
-
-  @media (max-width: 1023.98px) {
-    .menu-navigation {
-      --top-space: 4.5rem;
-
-      @apply
-      h-[calc(100vh_-_var(--top-space))]
-      pointer-events-none
-      invisible
-      absolute
-      bottom-0
-      z-[120]
-      inset-x-0
-        /*top-[--top-space]*/
-      overflow-x-auto
-      bg-body
-      px-3 md:px-7
-      pb-8
-      opacity-0
-      transition-all
-    }
-
-    .menu-inner {
-      @apply flex-col gap-y-0.5 overflow-x-hidden;
-
-      .menu-inner-text,
-      .menu-inner-arrow {
-        @apply block;
-      }
-
-      .menu-inner-counter {
-        @apply static max-w-[120px] scale-100;
-      }
-
-      .menu-inner-divider {
-        @apply before:h-[1px] before:min-w-[16px];
-      }
-
-      > .menu-inner-divider {
-        @apply my-1;
-      }
-
-      .menu-inner-button._is-active ~ .menu-inner-dropdown {
-        @apply block;
-      }
-
-      .menu-inner-dropdown {
-        @apply static mt-2 hidden transform-none;
+      span {
+        display: none;
       }
     }
   }
 }
 
-/* Aside navigation mobile */
-.layout-menu-mobile {
-  @apply pointer-events-none w-full transition-all;
+.menu-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: --spacing(2);
+  padding-bottom: --spacing(3);
+  border-bottom: 1px solid var(--theme-border-color);
+}
 
-  ._is-opened {
-    @apply flex flex-col;
+.menu-footer {
+  display: none;
 
-    .menu-inner-item-char {
-      @apply hidden;
+  @variant lg {
+    display: flex;
+    flex-direction: column;
+    row-gap: --spacing(3);
+    padding-top: --spacing(3);
+    border-top: 1px solid var(--theme-border-color);
+  }
+}
+
+.menu-logo {
+  flex-shrink: 0;
+
+  img,
+  svg {
+    max-height: --spacing(10);
+    max-width: --spacing(20);
+
+    @variant md {
+      max-width: --spacing(30);
+    }
+
+    @variant xl {
+      max-width: --spacing(40);
+    }
+  }
+}
+
+.menu-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: --spacing(2);
+  margin-left: auto;
+}
+
+.menu-burger {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+
+  @variant lg {
+    display: none;
+  }
+}
+
+.menu-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--ms-menu-divider-gap, --spacing(2));
+
+  &::after {
+    content: '';
+    flex: 1;
+    background-color: var(--ms-menu-divider-bg-color, var(--theme-border-color));
+  }
+
+  &:not(.menu-divider--vertical) {
+    &::after {
+      width: 100%;
+      min-width: var(--ms-menu-divider-min-width, --spacing(2));
+      height: var(--ms-menu-divider-size, 1px);
     }
   }
 
-  .menu {
-    @apply
-    pointer-events-none
-    invisible
-    fixed
-    z-menu
-    inset-0
-    h-full
-    translate-y-4
-    bg-body
-    pt-14 px-6 pb-8
-    opacity-0
-    transition-all
-    overflow-x-clip overflow-y-auto
-    ;
+  &.menu-divider--vertical {
+    margin-inline: var(--ms-menu-divider-vertical-space-x, --spacing(1));
 
-    &._is-opened {
-      @apply pointer-events-auto visible translate-y-0 opacity-100;
+    &::after {
+      width: var(--ms-menu-divider-vertical-width, 1px);
+      height: var(--ms-menu-divider-vertical-height, --spacing(4));
     }
+  }
 
-    /* Heading */
+  span {
+    @apply truncate;
 
-    .menu-heading {
-      @apply
-      pointer-events-auto
-      fixed
-      top-0 right-0 left-0
-      z-[109]
-      flex flex-row items-center justify-between
-      gap-4
-      theme__border_for_dark_bg border-b
-      bg-body/80
-      px-6
-      py-3
-      backdrop-blur-sm
-      md:px-10
-      ;
+    padding-left: var(--ms-menu-divider-label-space-left, --spacing(2.5));
+    font-size: var(--ms-menu-divider-font-size, var(--font-4xs));
+    opacity: var(--ms-menu-divider-opacity, 0.75);
+  }
+}
 
-      .menu-heading-logo {
-        @apply grow-0;
-      }
+/* Menu navigation */
 
-      .menu-heading-actions {
-        @apply flex items-center justify-end gap-x-3;
-      }
+.menu-list {
+  display: flex;
+  row-gap: var(--ms-menu-space-y, --spacing(1));
+  column-gap: var(--ms-menu-space-x, --spacing(1));
+  width: 100%;
+}
 
-      .menu-heading-mode {
-        @apply inline-flex items-center justify-center;
+.menu-item {
+  position: relative;
 
-        .menu-heading-mode-btn {
-          @apply h-6 w-6 overflow-hidden text-white/30 hover:text-white;
-
-          > svg {
-            @apply h-6 w-6;
-          }
-        }
-      }
-
-      .menu-heading-burger {
-        @apply inline-flex items-center text-white;
+  &.menu-item--opened,
+  &._is-active {
+    > .menu-link,
+    > .menu-button {
+      .menu-icon {
+        color: var(--ms-menu-item-active-icon-color);
       }
     }
+  }
 
-    /* Main navigation */
+  @variant is_active {
+    .menu-link {
+      background-color: var(--ms-menu-item-active-bg-color);
 
-    .menu-inner {
-      @apply flex flex-col gap-y-2;
-
-      &:last-of-type {
-        @apply grow;
+      /* Glow effect */
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        height: 50%;
+        width: --spacing(1);
+        margin-block: auto;
+        border-radius: --spacing(1) 0 0 --spacing(1);
+        background-color: var(--ms-menu-item-active-glow-color, var(--color-primary));
+        box-shadow: 0 0 64px 64px
+          --alpha(var(--ms-menu-item-active-glow-color, var(--color-primary)) / 0.15);
       }
+    }
+  }
+}
 
-      .menu-inner-item {
-        &._is-active {
-          > .menu-inner-link,
-          > .menu-inner-button {
-            @apply rounded-lg bg-slate-50 font-medium text-black opacity-100 dark:bg-dark-300 dark:font-normal dark:text-white lg:text-black lg:hover:text-inherit dark:lg:text-white;
-          }
-        }
-      }
+.menu-link,
+.menu-button {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: var(--ms-menu-item-gap);
+  border-radius: var(--ms-menu-item-border-radius);
+  padding-inline: var(--ms-menu-item-padding-x);
+  padding-block: var(--ms-menu-item-padding-y);
+  color: var(--ms-menu-item-color);
+  font-size: var(--ms-menu-item-font-size);
+  font-weight: var(--ms-menu-item-font-weight);
 
-      .menu-inner-link,
-      .menu-inner-button {
-        @apply relative flex items-center gap-x-2.5 rounded-lg px-4 py-3 text-xs font-normal text-menu-link outline-none hover:bg-menu-hover/5 hover:text-menu-hover;
+  @variant hover {
+    background-color: var(--ms-menu-item-hover-bg-color);
+  }
+}
 
-        &._is-active {
-          @apply bg-menu-active-bg text-menu-active-color;
+.menu-button {
+  @variant is_active {
+    background-color: var(--ms-menu-item-active-bg-color);
+    color: var(--ms-menu-item-active-color);
 
-          .menu-inner-arrow {
-            @apply scale-y-[-1];
-          }
-        }
+    .menu-arrow {
+      scale: -100%;
+    }
+  }
+}
 
-        > div,
-        > svg {
-          @apply h-6 w-6;
-        }
-      }
+.menu-icon {
+  .icon-wrapper {
+    @apply size-(--ms-menu-icon-size);
+  }
+}
 
-      .menu-inner-link {
-        &::after {
-          content: '';
-          @apply absolute inset-y-0 -right-5 hidden w-5 bg-slate-50 dark:bg-dark-700;
-        }
-      }
+.menu-char {
+  display: none;
+}
 
-      .menu-inner-button {
-        @apply w-full;
-      }
+.menu-text {
+  @apply truncate;
 
-      .menu-inner-text {
-        @apply grow truncate text-left;
-      }
+  flex: 1;
+  max-width: 28ch;
+  margin-right: auto;
+  text-align: left;
+}
 
-      .menu-inner-counter {
-        @apply h-6 shrink-0 truncate rounded-md bg-primary px-1.5 text-center text-[12px] font-medium leading-6 text-white lg:absolute lg:-right-2 lg:top-0.5 lg:z-1 lg:max-w-[64px] lg:scale-90 xl:static xl:-right-1 xl:top-0 xl:max-w-[120px] xl:scale-100;
-      }
+.menu-badge {
+  @apply truncate;
 
-      .menu-inner-arrow {
-        @apply transition-transform;
+  display: inline-block;
+  max-width: 12ch;
+  padding-block: 0.2em;
+  padding-inline: 0.4em;
+  border-radius: var(--ms-menu-badge-radius, var(--radius-sm));
+  border: 1px solid --alpha(var(--ms-menu-badge-border-color, var(--color-primary)) / 0.4);
+  background-color: --alpha(var(--ms-menu-badge-bg-color, var(--color-primary)) / 0.2);
+  color: var(--ms-menu-badge-color, var(--color-black));
+  font-size: var(--ms-menu-badge-font-size, var(--font-4xs));
+  line-height: 1.2;
 
-        > div,
-        > svg {
-          @apply h-4 w-4;
-        }
-      }
+  @variant dark {
+    border-color: --alpha(var(--ms-menu-badge-border-color, var(--color-primary)) / 0.4);
+    background-color: --alpha(var(--ms-menu-badge-bg-color, var(--color-primary)) / 0.2);
+    color: var(--ms-menu-badge-color, var(--color-white));
+  }
+}
 
-      .menu-inner-text,
-      .menu-inner-arrow {
-        @apply block lg:hidden xl:block;
-      }
+.menu-arrow {
+  --ms-icon-size: var(--ms-menu-arrow-size);
+}
 
-      /* Dropdown Menu */
+.menu-submenu {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ms-menu-submenu-space-y);
+  margin-block: --spacing(1);
+  padding-inline: var(--ms-menu-submenu-space-y, --spacing(1));
+  padding-block: var(--ms-menu-submenu-space-y, --spacing(1));
+  border-radius: var(--ms-menu-item-border-radius);
+  border: 1px solid var(--theme-border-color);
+  background-color: var(--ms-layout-body-bg-color, var(--color-body));
 
-      .menu-inner-dropdown {
-        @apply mt-2 flex flex-col gap-y-2 theme__rounded bg-menu-dropdown-bg p-1;
+  .menu-item {
+    @apply shadow-none;
 
-        .menu-inner-link,
-        .menu-inner-button {
-          @apply p-2.5 text-2xs;
+    @variant is_active {
+      .menu-link,
+      .menu-button {
+        color: var(--ms-menu-item-active-color)
 
-          > div,
-          > svg {
-            @apply h-5 w-5;
-          }
-        }
-
-        .menu-inner-counter {
-          @apply h-5 bg-secondary text-[11px] leading-5 lg:right-0 lg:top-0.5 lg:max-w-[48px] xl:right-1 xl:max-w-[120px];
-        }
-
-        .menu-inner-divider {
-          @apply -ml-3.5;
-        }
-
-        .menu-inner-dropdown {
-          @apply mb-2 border-b border-t border-dashed border-slate-500 px-0;
-        }
-      }
-
-      /* Divider */
-
-      .menu-inner-divider {
-        @apply relative my-2 -ml-4 flex items-center pl-4 pr-0.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:grow before:bg-slate-500;
-
-        > span {
-          @apply relative z-1 block w-full truncate pl-2.5 lg:hidden xl:block;
+        .menu-icon {
+          color: var(--ms-menu-item-active-icon-color);
         }
       }
     }
+  }
+
+  .menu-divider {
+    margin-block: var(--ms-menu-divider-space-y, --spacing(1));
   }
 }

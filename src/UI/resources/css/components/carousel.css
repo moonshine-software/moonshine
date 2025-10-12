@@ -13,7 +13,7 @@
     }
 
     img {
-      @apply absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2;
+      @apply absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2;
     }
   }
 
@@ -21,11 +21,11 @@
     @apply absolute top-1/2 z-10 w-full;
 
     a {
-      @apply absolute -translate-y-1/2 rounded-full bg-white/50 p-1 transition-all dark:bg-dark-600/50;
+      @apply absolute -translate-y-1/2 rounded-full bg-white/50 p-1 transition-all dark:bg-theme-600/50;
 
       &:hover,
       &:focus {
-        @apply bg-white/80 dark:bg-dark-600/80;
+        @apply bg-white/80 dark:bg-theme-600/80;
       }
     }
 
@@ -39,6 +39,6 @@
   }
 
   .carousel-slide-count {
-    @apply absolute bottom-0 z-10 w-full bg-white/50 text-center text-[.75rem] dark:bg-dark-600/50;
+    @apply absolute bottom-0 z-10 w-full bg-white/50 text-center text-[.75rem] dark:bg-theme-600/50;
   }
 }

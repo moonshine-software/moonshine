@@ -8,7 +8,7 @@
     'button',
 ])
 <li
-    {{ $attributes->class(['menu-inner-item', '_is-active' => $isActive]) }}
+    {{ $attributes->class(['menu-item', '_is-active' => $isActive]) }}
 >
     {!! $button !!}
 </li>

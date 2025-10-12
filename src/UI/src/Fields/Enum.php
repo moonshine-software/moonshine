@@ -61,6 +61,10 @@ class Enum extends Select implements CanBeEnum
             $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
+        if ($this->isMultiple()) {
+            return $this->getMultiplePreview($value);
+        }
+
         if (\is_scalar($value)) {
             return data_get(
                 $this->getValues(),

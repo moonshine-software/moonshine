@@ -1,18 +1,18 @@
 /* Languages switcher */
 .languages {
   .languages-icon {
-    @apply block overflow-hidden pr-3 text-slate-600 hover:text-secondary dark:text-dark-50 dark:hover:text-white;
+    @apply block overflow-hidden pr-3 text-slate-600 hover:text-secondary dark:text-theme-50 dark:hover:text-white;
 
     > svg {
-      @apply h-6 w-6
+      @apply h-6 w-6;
     }
 
     > svg:last-child {
-      @apply absolute inset-y-0 right-0 my-auto h-3 w-3
+      @apply absolute inset-y-0 right-0 my-auto h-3 w-3;
     }
   }
 
   .languages-body {
-    @apply min-w-[10rem]
+    @apply min-w-[10rem];
   }
 }

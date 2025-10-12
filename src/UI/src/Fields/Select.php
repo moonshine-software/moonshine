@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use JsonException;
 use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
@@ -54,21 +52,7 @@ class Select extends Field implements
         $value = $this->toValue();
 
         if ($this->isMultiple()) {
-            $value = \is_string($value) && Str::of($value)->isJson() ?
-                json_decode($value, true, 512, JSON_THROW_ON_ERROR)
-                : $value;
-
-            /** @var Collection<array-key, int|string> $collection */
-            $collection = new Collection($value);
-
-            return $collection
-                ->when(
-                    ! $this->isRawMode(),
-                    fn (Collection $collect): Collection => $collect->map(
-                        fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
-                    ),
-                )
-                ->implode(',');
+            return $this->getMultiplePreview($value);
         }
 
         if (\is_null($value)) {
