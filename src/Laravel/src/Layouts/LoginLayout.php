@@ -80,7 +80,7 @@ final class LoginLayout extends BaseLayout
                 ])
                 ->withAlpineJs()
                 ->when(
-                    $this->hasThemes(),
+                    $this->hasThemes() || $this->isAlwaysDark(),
                     fn(Html $html): Html => $html->withThemes($this->isAlwaysDark())
                 ),
         ]);
