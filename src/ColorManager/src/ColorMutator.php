@@ -144,7 +144,8 @@ final class ColorMutator
 
             // Extract alpha if present
             $alpha = null;
-            if (isset($matches[6]) && $matches[6] !== '') {
+
+            if (isset($matches[6])) {
                 $alphaStr = $matches[6];
                 if (str_ends_with($alphaStr, '%')) {
                     $alpha = ((float) rtrim($alphaStr, '%')) / 100;
