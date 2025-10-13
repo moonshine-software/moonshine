@@ -6,9 +6,7 @@
   --color-secondary: oklch(var(--secondary, 0.746 0.16 232.661));
   --color-secondary-text: oklch(var(--secondary-text, 1 0 0));
 
-  /* TODO: oklch Color Manager doesn't apply alpha-channel of color */
-  /* --color-theme-stroke: oklch(var(--theme-stroke, 1 0 0 / 10%)); */
-  --color-theme-stroke: oklch(0 0 0 / 10%);
+  --color-theme-stroke: oklch(var(--theme-stroke, 1 0 0 / 10%));
   --color-theme-body: oklch(var(--theme-body, 0 0 0));
 
   --color-theme: oklch(var(--theme-default, 1 0 0));
@@ -48,9 +46,7 @@
   --color-secondary: oklch(var(--secondary, 0.746 0.16 232.661));
   --color-secondary-text: oklch(var(--secondary-text, 1 0 0));
 
-  /* TODO: oklch Color Manager doesn't apply alpha-channel of color */
-  /* --color-theme-stroke: oklch(var(--theme-stroke, 0 0 0 / 10%)); */
-  --color-theme-stroke: oklch(1 0 0 / 10%);
+  --color-theme-stroke: oklch(var(--theme-stroke, 0 0 0 / 10%));
   --color-theme-body: oklch(var(--theme-body, 1 0 0));
 
   --color-theme: oklch(var(--theme-default, 0.24 0.0168 274.32));
