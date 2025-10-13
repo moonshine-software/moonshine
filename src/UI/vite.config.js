@@ -56,7 +56,7 @@ export default defineConfig(({mode}) => {
         },
       },
     },
-    define: { // Прописать только для DEV версии?
+    define: {
       'process.env.CHOICES_CAN_USE_DOM': true,
     },
   }
