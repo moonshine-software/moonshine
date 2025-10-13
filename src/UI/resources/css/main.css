@@ -53,10 +53,9 @@
 /* Pages */
 @import './pages/authentication.css';
 
-@source '../../../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../../../../storage/framework/views/*.php';
-@source '../**/*.{js,blade.php}';
-@source '../../**/*.php';
+@source '@moonshine-resources/../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '@moonshine-resources/**/*.{js,blade.php}';
+@source '@moonshine-resources/../**/*.php';
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant compact (&:where(.theme-compact, .theme-compact *));

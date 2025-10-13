@@ -4,7 +4,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../../fonts/Gilroy-Regular.woff2') format('woff2');
+  src: url('@moonshine-resources/fonts/Gilroy-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('../../fonts/Gilroy-Medium.woff2') format('woff2');
+  src: url('@moonshine-resources/fonts/Gilroy-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -20,7 +20,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('../../fonts/Gilroy-SemiBold.woff2') format('woff2');
+  src: url('@moonshine-resources/fonts/Gilroy-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -28,7 +28,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('../../fonts/Gilroy-Bold.woff2') format('woff2');
+  src: url('@moonshine-resources/fonts/Gilroy-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -36,5 +36,5 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url('../../fonts/Gilroy-Black.woff2') format('woff2');
+  src: url('@moonshine-resources/fonts/Gilroy-Black.woff2') format('woff2');
 }

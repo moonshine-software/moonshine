@@ -69,11 +69,16 @@ class PublishCommand extends MoonShineCommand
         );
 
         $this->copyStub(
+            'assets/vite.config',
+            base_path('vite.config.js'),
+        );
+
+        $this->copyStub(
             'assets/postcss.config.preset',
             base_path('postcss.config.js'),
         );
 
-        if (confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
+        if (confirm('Install modules automatically? (tailwindcss, @tailwindcss/postcss, @tailwindcss/vite)')) {
             $this->flushNodeModules();
 
             self::updateNodePackages(static fn ($packages): array => [
@@ -87,7 +92,7 @@ class PublishCommand extends MoonShineCommand
             info('Node packages installed');
         }
 
-        info('app.css, postcss.config.js published');
+        info('app.css, vite.config.js, postcss.config.js published');
 
         $this->line('Use in blade');
         info(<<<HTML
