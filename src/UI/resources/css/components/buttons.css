@@ -3,7 +3,7 @@
   --ms-btn-padding-y: --spacing(2);
   --ms-btn-gap-x: --spacing(2);
   --ms-btn-radius: --spacing(2);
-  --ms-btn-border-color: var(--theme-border-color);
+  --ms-btn-border-color: var(--color-theme-stroke);
   --ms-btn-bg-color: var(--color-gray-50);
   --ms-btn-color: var(--color-black);
   --ms-btn-font-size: var(--font-3xs);

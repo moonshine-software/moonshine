@@ -3,10 +3,16 @@
   @apply flex min-h-screen flex-col items-center justify-center gap-y-6 px-4 py-8;
 
   .authentication-content {
-    @apply w-full
-    max-w-[420px]
-    bg-white p-5
-    lg:p-8 dark:bg-theme-600;
+    width: 100%;
+    max-width: 420px;
+    background-color: var(--color-theme);
+    border: 1px solid var(--color-theme-stroke);
+    border-radius: var(--radius-xl);
+    padding: --spacing(6) --spacing(4);
+
+    @variant lg {
+      padding: --spacing(8);
+    }
   }
 
   .authentication-header {

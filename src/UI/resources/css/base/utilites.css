@@ -42,9 +42,8 @@
 @utility base__default {
   @apply border
   theme__border
+  bg-theme
   text-2xs
-  transition-colors
-  duration-200
   outline-none;
 }
 

@@ -3,14 +3,12 @@
   margin-bottom: --spacing(6);
   padding: --spacing(3);
   border-radius: --spacing(3);
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--color-theme-stroke);
   background-color: var(--ms-box-bg-color, var(--color-theme));
 
   &.box-dark,
   &.dark {
-    @apply bg-theme-600 text-slate-200
-    shadow-none dark:bg-theme-800
-    dark:text-slate-300 dark:shadow-black/5;
+    @apply bg-zinc-700 text-white;
   }
 
   &.box-shadow {

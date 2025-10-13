@@ -130,12 +130,15 @@
   dark:text-slate-200;
 }
 
+.ts-dropdown .option {
+  @apply bg-theme;
+}
 .ts-dropdown .create:hover,
 .ts-dropdown .option:hover,
-.ts-dropdown .active {
-  @apply bg-slate-100
-  text-theme-800
-  dark:bg-theme-600 dark:text-slate-300;
+.ts-dropdown .active,
+.ts-dropdown .selected {
+  @apply bg-theme-400
+  text-theme-body;
 }
 
 .ts-dropdown .spinner {

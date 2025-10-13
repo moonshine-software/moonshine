@@ -4,11 +4,10 @@
   flex w-full
   items-center
   gap-4
-  border border-gray-200
-  bg-slate-100 px-4
-  py-3 dark:border-theme-200
-  dark:bg-theme-700 compact:px-2 compact:py-2
-  minimalistic:px-1 minimalistic:py-1;
+  rounded-lg
+  border theme__border
+  bg-theme-200 px-4
+  py-3;
 }
 
 .alert-primary {

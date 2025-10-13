@@ -3,14 +3,13 @@
   @apply relative
   flex h-full
   flex-col
-  gap-y-6 bg-white
-  p-3 shadow-md shadow-gray-200
+  gap-y-6
+  rounded-lg
+  border
+  theme__border bg-theme
+  p-3
   sm:p-4
-  lg:p-5
-  dark:bg-theme-600
-  dark:shadow-black/5 compact:gap-y-4 compact:p-3
-  minimalistic:gap-y-2
-  minimalistic:p-2;
+  lg:p-5;
 
   .card-photo {
     @apply relative h-52 w-full overflow-hidden;

@@ -26,9 +26,9 @@ table {
 
 .table-container {
   overflow: hidden;
-  border-radius: var(--ms-table-radius, var(--radius-xl));
+  border-radius: var(--ms-table-radius, var(--radius-lg));
   border: var(--ms-table-border-width, 1px) solid
-    var(--ms-table-border-color, var(--theme-border-color));
+    var(--ms-table-border-color, var(--color-theme-stroke));
 }
 
 .table-responsive {
@@ -49,7 +49,7 @@ table {
   thead {
     tr {
       border-bottom: var(--ms-table-thead-border-width, 1px) solid
-        var(--ms-table-thead-border-color, var(--theme-border-color));
+        var(--ms-table-thead-border-color, var(--color-theme-stroke));
     }
 
     th,
@@ -64,13 +64,12 @@ table {
     tr {
       &:not(:first-child) {
         border-top: var(--ms-table-tbody-border-width, 1px) solid
-          var(--ms-table-tbody-border-color, var(--theme-border-color));
+          var(--ms-table-tbody-border-color, var(--color-theme-stroke));
       }
     }
 
     th,
     td {
-      vertical-align: top;
       padding-block: var(--ms-table-space-y, var(--ms-table-tbody-space-y, --spacing(2)));
       padding-inline: var(--ms-table-space-x, var(--ms-table-tbody-space-x, --spacing(3)));
       overflow-wrap: break-word;
@@ -80,7 +79,7 @@ table {
   tfoot {
     tr {
       border-top: var(--ms-table-tfoot-border-width, 1px) solid
-        var(--ms-table-tfoot-border-color, var(--theme-border-color));
+        var(--ms-table-tfoot-border-color, var(--color-theme-stroke));
     }
 
     th,
@@ -172,7 +171,7 @@ table {
 
     tr {
       box-shadow: inset 0 calc(var(--ms-table-thead-border-width, 1px) * -1) 0
-        var(--ms-table-thead-border-color, var(--theme-border-color));
+        var(--ms-table-thead-border-color, var(--color-theme-stroke));
     }
   }
 }
@@ -233,7 +232,7 @@ table {
   div.grid {
     margin-block: 0 !important;
     padding-block: --spacing(2);
-    border-bottom: 1px solid var(--theme-border-color);
+    border-bottom: 1px solid var(--color-theme-stroke);
 
     &:last-child {
       padding-bottom: 0;
