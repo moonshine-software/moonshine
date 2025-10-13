@@ -1,53 +1,70 @@
-/* Accordions */
-.accordion {
-  @apply -space-y-[1px];
+/* Accordion basic */
+.accordion + .accordion {
+  margin-top: var(--ms-accordion-space-y, --spacing(2));
 }
 
 .accordion-item {
-  &:first-child {
-    .accordion-btn {
-      @apply justify-between
-      rounded-t-(--theme-rounded)
-      compact:rounded-t-(--compact-rounded)
-      minimalistic:rounded-none;
-    }
-  }
+  overflow: hidden;
+  border-radius: var(--ms-accordion-item-radius, var(--radius-lg));
+  border: var(--ms-accordion-item-border-width, 1px) solid
+    var(--ms-accordion-item-border-color, var(--color-theme-stroke));
+  background-color: var(--ms-accordion-item-bg-color, var(--color-theme));
 
-  &:last-child {
-    .accordion-btn:not(._is-active),
-    .accordion-content {
-      @apply rounded-b-(--theme-rounded)
-      compact:rounded-b-(--compact-rounded)
-      minimalistic:rounded-none;
-    }
+  &._is-opened {
+    background-color: var(--ms-accordion-item-opened-bg-color, var(--color-theme));
   }
 }
+
+/* Accordion button */
 
 .accordion-btn {
-  @apply h-auto w-full grow justify-between rounded-none p-3 text-left text-sm whitespace-normal sm:px-4 sm:py-3;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-accordion-btn-gap, --spacing(3));
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  padding-block: var(
+    --ms-accordion-btn-padding-y,
+    var(--ms-accordion-item-padding-y, --spacing(3))
+  );
+  padding-inline: var(
+    --ms-accordion-btn-padding-x,
+    var(--ms-accordion-item-padding-x, --spacing(3))
+  );
+  border: 0;
+  background-color: transparent;
+  color: var(--ms-accordion-btn-color, var(--color-theme-body));
+  font-size: var(--ms-accordion-btn-font-size, var(--text-base));
+  font-weight: var(--ms-accordion-btn-font-weight, var(--font-weight-semibold));
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
 
-  > svg {
-    @apply h-4 w-4;
+  & > svg {
+    flex-shrink: 0;
+    height: var(--ms-accordion-btn-arrow-size, --spacing(3));
+    width: var(--ms-accordion-btn-arrow-size, --spacing(3));
   }
 
-  &._is-active {
-    @apply theme__border
-    bg-slate-100
-    dark:bg-theme-800
-    dark:hover:bg-theme-800;
+  @variant is_active {
+    color: var(--ms-accordion-btn-active-color, var(--color-theme-body));
 
-    > svg {
-      @apply scale-y-[-1];
+    & > svg {
+      transform: scaleY(-1);
     }
   }
 }
 
+/* Accordion content */
+
 .accordion-content {
-  @apply -mt-1
-  border
-  border-t-0
-  theme__border p-3
-  sm:p-4
-  compact:p-2.5
-  minimalistic:p-1;
+  padding-block-end: var(
+    --ms-accordion-content-padding-y,
+    var(--ms-accordion-item-padding-y, --spacing(3))
+  );
+  padding-inline: var(
+    --ms-accordion-content-padding-x,
+    var(--ms-accordion-item-padding-x, --spacing(3))
+  );
 }

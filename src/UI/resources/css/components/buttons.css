@@ -8,6 +8,7 @@
   --ms-btn-color: var(--color-black);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
+  --ms-btn-icon-size: --spacing(5);
 
   --ms-btn-hover-border-color: var(--color-gray-300);
   --ms-btn-hover-bg-color: var(--color-white);
@@ -35,8 +36,8 @@
 .btn {
   vertical-align: top;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  align-items: var(--ms-btn-align-items, center);
+  justify-content: var(--ms-btn-justify-content, center);
   column-gap: var(--ms-btn-gap-x);
   min-height: var(--ms-btn-min-height, auto);
   padding: var(--ms-btn-padding-y) var(--ms-btn-padding-x);
@@ -74,7 +75,8 @@
   }
 
   .icon-wrapper {
-    @apply size-(--ms-btn-icon-size);
+    width: var(--ms-btn-icon-size, --spacing(5));
+    height: var(--ms-btn-icon-size, --spacing(5));
   }
 
   .badge {
