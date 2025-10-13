@@ -56,9 +56,9 @@ final class ColorMutator
             }
 
             // Support for #RRGGBBAA format
-            if (\strlen($hex) === 8) {
-                $dec = hexdec(substr($hex, 0, 6));
-                $alpha = hexdec(substr($hex, 6, 2)) / 255;
+            if (\strlen((string) $hex) === 8) {
+                $dec = hexdec(substr((string) $hex, 0, 6));
+                $alpha = hexdec(substr((string) $hex, 6, 2)) / 255;
 
                 return \sprintf(
                     'rgba(%d,%d,%d,%.2f)',
@@ -146,11 +146,7 @@ final class ColorMutator
             $alpha = null;
             if (isset($matches[6]) && $matches[6] !== '') {
                 $alphaStr = $matches[6];
-                if (str_ends_with($alphaStr, '%')) {
-                    $alpha = ((float) rtrim($alphaStr, '%')) / 100;
-                } else {
-                    $alpha = (float) $alphaStr;
-                }
+                $alpha = str_ends_with($alphaStr, '%') ? ((float) rtrim($alphaStr, '%')) / 100 : (float) $alphaStr;
             }
 
             return $formatResult(
@@ -271,11 +267,7 @@ final class ColorMutator
             $content = $colorPart;
 
             // Parse alpha: can be "10%" or "0.1"
-            if (str_ends_with($alphaPart, '%')) {
-                $alpha = ((float) rtrim($alphaPart, '%')) / 100;
-            } else {
-                $alpha = (float) $alphaPart;
-            }
+            $alpha = str_ends_with($alphaPart, '%') ? ((float) rtrim($alphaPart, '%')) / 100 : (float) $alphaPart;
         }
 
         $parts = preg_split('/\s+/', $content);
