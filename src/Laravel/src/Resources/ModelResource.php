@@ -281,9 +281,9 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
         $initial = clone $item;
         $data = Field::silentApply(static function () use ($item, $fields, $resource): array {
-            $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($item));
-            $fields->each(static fn (FieldContract $field): mixed => $field->apply($resource->fieldApply($field), $item));
-            $fields->each(static fn (FieldContract $field): mixed => $field->afterApply($item));
+            $fields->each(static fn (FieldContract $field): mixed => $field->beforeApply($item->getOriginal()));
+            $fields->each(static fn (FieldContract $field): mixed => $field->apply($resource->fieldApply($field), $item->getOriginal()));
+            $fields->each(static fn (FieldContract $field): mixed => $field->afterApply($item->getOriginal()));
 
             return $item->toArray();
         });
