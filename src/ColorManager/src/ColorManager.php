@@ -34,7 +34,7 @@ final class ColorManager implements ColorManagerContract
         'primary-text' => '1 0 0',
         'secondary' => '0.746 0.16 232.661',
         'secondary-text' => '1 0 0',
-        'body' => '0.96 0 0',
+        'body' => '0.98 0.0035 67.78',
         'theme' => [
             'body' => '0 0 0', // Default body text
             'stroke' => '0 0 0 / 10%', // Default border

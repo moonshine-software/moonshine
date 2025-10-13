@@ -11,19 +11,13 @@
     @endif
 >
     <div class="alert-icon">
-        <x-moonshine::icon
-            :icon="$icon"
-            size="6"
-        />
+        <x-moonshine::icon :icon="$icon" />
     </div>
     <p class="alert-content">{{ $slot ?? '' }}</p>
 
     @if($removable)
         <a href="#" @click.prevent="$refs.alert.remove()" class="alert-remove">
-            <x-moonshine::icon
-                icon="x-mark"
-                size="6"
-            />
+            <x-moonshine::icon icon="x-mark" />
         </a>
     @endif
 </div>
