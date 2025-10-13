@@ -64,10 +64,10 @@
     .btn {
       @apply flex items-center justify-start gap-x-2
       px-2 py-3
-      text-3xs
+      text-xs
       hover:bg-gray-100
       hover:text-black
-      xs:px-4 lg:text-2xs
+      xs:px-4 lg:text-sm
       dark:hover:bg-theme-400 dark:hover:text-white
       compact:py-2 minimalistic:py-2;
 

@@ -77,16 +77,20 @@
   --default-font-size: 15px;
   --default-line-height: 18px;
 
-  --font-4xs: 0.75rem;
-  --font-3xs: 0.875rem;
-  --font-2xs: 0.9375rem;
-  --font-xs: 1rem;
-  --font-sm: 1.125rem;
-  --font-md: 1.25rem;
-  --font-lg: 1.625rem;
-  --font-xl: 2rem;
-  --font-2xl: 3rem;
-  --font-3xl: 4rem;
+  --text-2xs: 0.75rem;
+  --text-xs: 0.875rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+  --text-7xl: 6rem;
+  --text-8xl: 8rem;
 
   --z-dropdown: 150;
   --z-notifications: 300;

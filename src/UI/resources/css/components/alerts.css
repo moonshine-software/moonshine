@@ -4,11 +4,10 @@
   flex w-full
   items-center
   gap-4
-  border border-gray-200
-  bg-slate-100 px-4
-  py-3 dark:border-theme-200
-  dark:bg-theme-700 compact:px-2 compact:py-2
-  minimalistic:px-1 minimalistic:py-1;
+  rounded-lg
+  border theme__border
+  bg-theme-200 px-4
+  py-3;
 }
 
 .alert-primary {
@@ -96,7 +95,7 @@
 }
 
 .alert-content {
-  @apply grow text-2xs font-medium;
+  @apply grow text-sm font-medium;
 
   & > a {
     @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70;

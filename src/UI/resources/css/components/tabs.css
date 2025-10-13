@@ -14,8 +14,8 @@
     gap-1.5
     border-b
     border-b-transparent px-2
-    text-3xs font-medium whitespace-nowrap text-gray-400
-    hover:border-gray-300 hover:text-gray-700 sm:h-12 sm:text-2xs
+    text-xs font-medium whitespace-nowrap text-gray-400
+    hover:border-gray-300 hover:text-gray-700 sm:h-12 sm:text-sm
     dark:text-slate-400
     dark:hover:border-gray-500 dark:hover:text-slate-300
     compact:h-10

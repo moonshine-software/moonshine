@@ -8,13 +8,12 @@
     .search-form-field {
       @apply h-full
       w-full
-      border-transparent bg-gray-200
+      border-transparent bg-theme-200
       pr-20 pl-3 transition-all
-      placeholder:text-3xs
+      placeholder:text-xs
       placeholder:font-normal
-      placeholder:text-slate-600 focus:border-gray-300
-      focus:bg-white dark:bg-theme-600 dark:placeholder:text-slate-500
-      focus:dark:border-theme-200;
+      placeholder:text-slate-600
+      focus:bg-theme-300 dark:placeholder:text-slate-500;
     }
 
     .search-form-submit,

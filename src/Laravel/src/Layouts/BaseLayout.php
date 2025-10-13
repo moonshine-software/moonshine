@@ -115,13 +115,6 @@ abstract class BaseLayout extends AbstractLayout
             Fragment::make([
                 ...$this->sidebarSlot(),
                 Menu::make(),
-                When::make(
-                    fn (): bool => $this->isProfileEnabled(),
-                    fn (): array
-                        => [
-                        $this->getProfileComponent(sidebar: true),
-                    ],
-                ),
             ])->customAttributes([
                 'class' => 'menu menu--vertical',
             ])->name('sidebar-content'),

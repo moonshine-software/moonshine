@@ -7,7 +7,7 @@
     items-center justify-center overflow-hidden
     rounded-lg
     bg-slate-500
-    text-3xs leading-none
+    text-xs leading-none
     font-medium
     theme__text_color dark:bg-gray-400;
 

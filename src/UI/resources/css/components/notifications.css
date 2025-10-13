@@ -40,15 +40,15 @@
 }
 
 .notifications-title {
-  @apply text-2xs font-medium;
+  @apply text-sm font-medium;
 }
 
 .notifications-text {
-  @apply text-3xs text-gray-500 dark:text-gray-400;
+  @apply text-xs text-gray-500 dark:text-gray-400;
 }
 
 .notifications-more {
-  @apply text-3xs font-medium;
+  @apply text-xs font-medium;
 
   > a {
     @apply text-secondary hover:text-primary dark:hover:text-slate-200;
@@ -60,5 +60,5 @@
 }
 
 .notifications-read {
-  @apply block text-center text-2xs font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+  @apply block text-center text-sm font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
 }

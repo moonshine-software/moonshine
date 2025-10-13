@@ -33,7 +33,7 @@
 }
 
 .offcanvas-title {
-  @apply self-center text-xs font-semibold xs:text-sm;
+  @apply self-center text-base font-semibold xs:text-sm;
 }
 
 .offcanvas-body {

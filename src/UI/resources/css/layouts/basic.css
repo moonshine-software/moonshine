@@ -41,7 +41,7 @@
   width: 100%;
   padding: var(--ms-layout-page-spacing, --spacing(4));
   border-radius: var(--ms-layout-page-radius, --spacing(4));
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--color-theme-stroke);
   background-color: var(--ms-layout-page-bg-color, var(--color-theme));
 }
 

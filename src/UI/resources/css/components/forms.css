@@ -26,7 +26,7 @@ input {
 
 /* Form Label */
 .form-label {
-  @apply text-3xs font-medium whitespace-nowrap;
+  @apply text-xs font-medium whitespace-nowrap;
 
   > .required {
     @apply text-error;
@@ -35,12 +35,12 @@ input {
 
 /* Form Hint */
 .form-hint {
-  @apply text-3xs text-slate-500 dark:text-slate-400;
+  @apply text-xs text-slate-500 dark:text-slate-400;
 }
 
 /* Form Error */
 .form-error {
-  @apply col-span-12 mt-0 text-3xs text-error;
+  @apply col-span-12 mt-0 text-xs text-error;
 }
 
 /* Default field */
@@ -281,7 +281,7 @@ input {
     dark:text-slate-400;
 
     .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-xs;
     }
 
     button {
@@ -308,7 +308,7 @@ input {
     dark:text-slate-400;
 
     .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-3xs;
+      @apply flex h-full min-w-8 items-center justify-center px-2 text-xs;
     }
 
     button {
@@ -614,7 +614,7 @@ input {
   }
 
   .choices__inner {
-    @apply min-h-0 border-none bg-transparent text-3xs;
+    @apply min-h-0 border-none bg-transparent text-xs;
     padding: 0.5rem 0.75rem;
 
     .choices__list--single {
@@ -645,7 +645,7 @@ input {
   }
 
   .choices__list--multiple .choices__item {
-    @apply border-0 py-0 text-3xs;
+    @apply border-0 py-0 text-xs;
   }
 
   .choices__list--multiple {
@@ -694,7 +694,7 @@ fieldset {
   @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-theme-200;
 
   legend {
-    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-3xs sm:left-4;
+    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-xs sm:left-4;
 
     &:before {
       content: '';

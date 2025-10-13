@@ -24,7 +24,7 @@
 }
 
 .accordion-btn {
-  @apply h-auto w-full grow justify-between rounded-none p-3 text-left text-2xs whitespace-normal sm:px-4 sm:py-3;
+  @apply h-auto w-full grow justify-between rounded-none p-3 text-left text-sm whitespace-normal sm:px-4 sm:py-3;
 
   > svg {
     @apply h-4 w-4;
