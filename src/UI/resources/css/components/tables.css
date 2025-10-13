@@ -39,7 +39,7 @@ table {
 
 .table {
   background-color: var(--ms-table-bg-color, var(--color-theme));
-  font-size: var(--ms-table-font-size, var(--font-2xs));
+  font-size: var(--ms-table-font-size, var(--text-xs));
 
   th,
   td {

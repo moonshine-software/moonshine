@@ -95,7 +95,7 @@
 }
 
 .alert-content {
-  @apply grow text-2xs font-medium;
+  @apply grow text-sm font-medium;
 
   & > a {
     @apply font-medium text-inherit underline underline-offset-2 opacity-100 hover:opacity-70;

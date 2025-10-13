@@ -32,5 +32,5 @@
   @apply flex
   gap-2
   border-b theme__border
-  pb-3 text-xs font-semibold;
+  pb-3 text-base font-semibold;
 }

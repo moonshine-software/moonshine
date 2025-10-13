@@ -6,7 +6,7 @@
   --ms-btn-border-color: var(--color-theme-stroke);
   --ms-btn-bg-color: var(--color-gray-50);
   --ms-btn-color: var(--color-black);
-  --ms-btn-font-size: var(--font-3xs);
+  --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
 
   --ms-btn-hover-border-color: var(--color-gray-300);

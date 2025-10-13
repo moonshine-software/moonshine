@@ -9,7 +9,7 @@
 .ts-control,
 .ts-control input {
   @apply base__default theme__border
-  text-3xs;
+  text-xs;
 }
 
 .ts-wrapper.single.input-active .ts-control,
@@ -113,7 +113,7 @@
 }
 
 .ts-control input {
-  @apply m-0 pr-5 text-3xs;
+  @apply m-0 pr-5 text-xs;
 }
 
 .ts-dropdown {

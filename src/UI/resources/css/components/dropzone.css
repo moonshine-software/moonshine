@@ -45,7 +45,7 @@
   }
 
   .dropzone-file-name {
-    @apply grow truncate text-2xs;
+    @apply grow truncate text-sm;
   }
 
   .dropzone-remove {

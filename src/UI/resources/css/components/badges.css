@@ -1,7 +1,7 @@
 /* Badges */
 .badge,
 a.badge {
-  @apply inline-block rounded-md px-2.5 py-0.5 text-3xs;
+  @apply inline-block rounded-md px-2.5 py-0.5 text-xs;
 
   a {
     @apply text-inherit hover:underline;

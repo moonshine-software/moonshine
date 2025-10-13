@@ -18,7 +18,7 @@
   }
 
   .report-card-indicator {
-    @apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-3xs leading-none text-white;
+    @apply flex items-center gap-x-1 rounded-full px-2 py-1.5 text-xs leading-none text-white;
 
     > svg {
       @apply h-3.5 w-3.5;
@@ -34,6 +34,6 @@
   }
 
   .report-card-title {
-    @apply mt-2 truncate text-2xs text-slate-500;
+    @apply mt-2 truncate text-sm text-slate-500;
   }
 }

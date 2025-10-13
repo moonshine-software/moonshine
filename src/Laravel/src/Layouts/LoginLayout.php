@@ -60,7 +60,7 @@ final class LoginLayout extends BaseLayout
                             Div::make([
                                 Heading::make(
                                     $this->getTitle(),
-                                ),
+                                )->h(1, false),
                                 Div::make([
                                     FlexibleRender::make(
                                         $this->getDescription(),

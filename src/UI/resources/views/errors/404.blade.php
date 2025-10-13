@@ -15,7 +15,7 @@
             <h2 class="text-md font-semibold text-white md:text-lg lg:text-xl">
                 Oops.
             </h2>
-            <p class="text-2xs text-white md:text-xs">{{ $message }}</p>
+            <p class="text-sm text-white md:text-base">{{ $message }}</p>
         </div>
 
         <div class="mt-8">

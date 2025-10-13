@@ -14,7 +14,7 @@
 .pagination-dots,
 .pagination-first,
 .pagination-last {
-  @apply flex h-full w-full items-center justify-center rounded-md p-1 text-center text-3xs font-medium;
+  @apply flex h-full w-full items-center justify-center rounded-md p-1 text-center text-xs font-medium;
 }
 
 .pagination-first,
@@ -41,7 +41,7 @@
 /* Pagination results */
 
 .pagination-results {
-  @apply mt-5 text-center text-3xs text-gray-400 dark:text-slate-500;
+  @apply mt-5 text-center text-xs text-gray-400 dark:text-slate-500;
 }
 
 .pagination-list {

@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: var(--ms-breadcrumbs-gap, --spacing(2));
-  font-size: var(--ms-breadcrumbs-font-size, var(--font-3xs));
+  font-size: var(--ms-breadcrumbs-font-size, var(--text-xs));
   white-space: nowrap;
 
   &:not(:last-child) {

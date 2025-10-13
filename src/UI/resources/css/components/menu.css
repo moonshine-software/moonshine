@@ -7,7 +7,7 @@
   --ms-menu-item-padding-x: --spacing(2.5);
   --ms-menu-item-padding-y: --spacing(1.5);
   --ms-menu-item-radius: --spacing(2);
-  --ms-menu-item-font-size: var(--font-2xs);
+  --ms-menu-item-font-size: var(--text-sm);
   --ms-menu-item-color: var(--color-black);
 
   --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.1);
@@ -158,7 +158,7 @@
     @apply truncate;
 
     padding-left: var(--ms-menu-divider-label-space-left, --spacing(2.5));
-    font-size: var(--ms-menu-divider-font-size, var(--font-4xs));
+    font-size: var(--ms-menu-divider-font-size, var(--text-2xs));
     opacity: var(--ms-menu-divider-opacity, 0.75);
   }
 }
@@ -219,9 +219,9 @@
   border-radius: var(--ms-menu-item-radius);
   padding-inline: var(--ms-menu-item-padding-x);
   padding-block: var(--ms-menu-item-padding-y);
-  color: var(--ms-menu-item-color);
-  font-size: var(--ms-menu-item-font-size);
-  font-weight: var(--ms-menu-item-font-weight);
+  color: var(--ms-menu-item-color, var(--color-theme-body));
+  font-size: var(--ms-menu-item-font-size, var(--text-base));
+  font-weight: var(--ms-menu-item-font-weight, var(--font-weight-normal));
 
   @variant hover {
     background-color: var(--ms-menu-item-hover-bg-color);
@@ -269,7 +269,7 @@
   border: 1px solid --alpha(var(--ms-menu-badge-border-color, var(--color-primary)) / 0.4);
   background-color: --alpha(var(--ms-menu-badge-bg-color, var(--color-primary)) / 0.2);
   color: var(--ms-menu-badge-color, var(--color-black));
-  font-size: var(--ms-menu-badge-font-size, var(--font-4xs));
+  font-size: var(--ms-menu-badge-font-size, var(--text-2xs));
   line-height: 1.2;
 
   @variant dark {

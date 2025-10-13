@@ -34,7 +34,7 @@
       }
 
       .subcategory {
-        @apply text-2xs text-slate-300;
+        @apply text-sm text-slate-300;
       }
 
       a {

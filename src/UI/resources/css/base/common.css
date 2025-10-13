@@ -56,7 +56,7 @@
     position: relative;
     min-width: 320px;
     background-color: var(--ms-layout-body-bg-color, var(--color-body));
-    font-size: var(--font-2xs);
+    font-size: var(--text-base);
     color: var(--color-gray-600);
 
     @variant dark {
@@ -64,7 +64,33 @@
     }
   }
 
-  /* Heading */
+  h1,
+  .h1 {
+    font-size: var(--text-2xl);
+  }
+
+  h2,
+  .h2 {
+    font-size: var(--text-xl);
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--text-lg);
+  }
+
+  h4,
+  .h4 {
+    font-size: var(--text-md);
+  }
+
+  h5,
+  h6,
+  .h5,
+  .h6 {
+    font-size: var(--text-base);
+  }
+
   .heading {
     margin-bottom: --spacing(4);
 
@@ -77,27 +103,7 @@
     .h3,
     .h4,
     div {
-      @apply mb-6 truncate font-medium;
-    }
-
-    h1,
-    .h1 {
-      @apply text-md;
-    }
-
-    h2,
-    .h2 {
-      @apply text-sm;
-    }
-
-    h3,
-    .h3 {
-      @apply text-xs;
-    }
-
-    h4,
-    .h4 {
-      @apply text-2xs;
+      @apply truncate font-medium;
     }
   }
 

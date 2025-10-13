@@ -10,7 +10,7 @@
       w-full
       border-transparent bg-theme-200
       pr-20 pl-3 transition-all
-      placeholder:text-3xs
+      placeholder:text-xs
       placeholder:font-normal
       placeholder:text-slate-600
       focus:bg-theme-300 dark:placeholder:text-slate-500;
