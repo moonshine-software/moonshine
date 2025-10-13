@@ -65,7 +65,7 @@ class CompactLayout extends AppLayout
                 ->withAlpineJs()
                 ->when(
                     $this->hasThemes() || $this->isAlwaysDark(),
-                    fn(Html $html): Html => $html->withThemes($this->isAlwaysDark())
+                    fn (Html $html): Html => $html->withThemes($this->isAlwaysDark())
                 ),
         ]);
     }
