@@ -16,6 +16,7 @@ final class ColorMutator
             // Check for alpha channel
             if (isset($rgb[3])) {
                 $alpha = (int) round($rgb[3] * 255);
+
                 return \sprintf('#%02x%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2], $alpha);
             }
 
