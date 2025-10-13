@@ -18,13 +18,13 @@
   &:not(:last-child) {
     &::after {
       content: '/';
-      opacity: var(var(--ms-breadcrumbs-opacity), 0.5);
+      opacity: var(--ms-breadcrumbs-opacity, 0.5);
     }
   }
 
   a {
     @variant not-hover {
-      opacity: var(var(--ms-breadcrumbs-opacity), 0.5);
+      opacity: var(--ms-breadcrumbs-opacity, 0.5);
     }
   }
 }

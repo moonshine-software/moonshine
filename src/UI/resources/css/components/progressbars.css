@@ -78,7 +78,7 @@
   --thickness: 6px;
   box-shadow: inset 0 0 0 var(--thickness) var(--color-slate-100);
 
-  @media (min-width: var(--breakpoint-lg)) {
+  @variant lg {
     --size: 9rem;
     --thickness: 8px;
   }
@@ -141,7 +141,7 @@
     --size: 7.5rem;
     --thickness: 6px;
 
-    @media (min-width: var(--breakpoint-lg)) {
+    @variant lg {
       --size: 9rem;
       --thickness: 8px;
     }
@@ -151,7 +151,7 @@
     --size: 9rem;
     --thickness: 6px;
 
-    @media (min-width: var(--breakpoint-lg)) {
+    @variant lg {
       --size: 12rem;
       --thickness: 10px;
     }
