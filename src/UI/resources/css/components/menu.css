@@ -300,7 +300,7 @@
     @variant is_active {
       .menu-link,
       .menu-button {
-        color: var(--ms-menu-item-active-color)
+        color: var(--ms-menu-item-active-color);
 
         .menu-icon {
           color: var(--ms-menu-item-active-icon-color);
