@@ -73,30 +73,39 @@ class PublishCommand extends MoonShineCommand
             base_path('postcss.config.js'),
         );
 
-        $this->copyStub(
-            'assets/tailwind.config.preset',
-            base_path('tailwind.config.js'),
-        );
-
         if (confirm('Install modules automatically? (tailwindcss, autoprefixer, postcss)')) {
             $this->flushNodeModules();
 
             self::updateNodePackages(static fn ($packages): array => [
-                                                                 '@tailwindcss/typography' => '^0.5',
-                                                                 '@tailwindcss/line-clamp' => '^0.4',
-                                                                 '@tailwindcss/aspect-ratio' => '^0.4',
-                                                                 'tailwindcss' => '^3',
-                                                                 'autoprefixer' => '^10',
-                                                                 'postcss' => '^8',
-                                                             ] + $packages);
+                 'tailwindcss' => '^4',
+                 '@tailwindcss/postcss' => '^4',
+                 '@tailwindcss/vite' => '^4',
+             ] + $packages);
 
             $this->installNodePackages();
 
             info('Node packages installed');
         }
 
-        info('app.css, postcss/tailwind.config published');
-        info("Don't forget to add styles to the Layout (Css::make(`Vite::asset('resources/css/app.css')`))");
+        info('app.css, postcss.config.js published');
+
+        $this->line('Use in blade');
+        info(<<<HTML
+            @vite(['resources/js/app.js'], 'vendor/moonshine')
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        HTML);
+
+        $this->line('Use in MoonShineLayout');
+        info(<<<PHP
+            protected function assets(): array
+            {
+                return [
+                    \$this->getMainThemeJs(),
+                    Css::make(Vite::asset('resources/css/app.css')),
+                    Js::make(Vite::asset('resources/js/app.js')),
+                ];
+            }
+        PHP);
     }
 
     private function publishResources(): void

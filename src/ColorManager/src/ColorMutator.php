@@ -8,9 +8,16 @@ use InvalidArgumentException;
 
 final class ColorMutator
 {
+    private static function isOKLCHFormat(string $value): bool
+    {
+        // Check for oklch() format or short format (l c h / alpha)
+        return str_contains($value, 'oklch') ||
+            preg_match('/^\s*[\d.]+%?\s+[\d.]+%?\s+[\d.]+(?:\s*\/\s*[\d.]+%?)?\s*$/', $value) === 1;
+    }
+
     public static function toHEX(string $value): string
     {
-        if (str_contains($value, 'oklch')) {
+        if (self::isOKLCHFormat($value)) {
             $rgb = self::fromOKLCH($value);
 
             // Check for alpha channel
@@ -38,7 +45,7 @@ final class ColorMutator
 
     public static function toRGB(string $value): string
     {
-        if (str_contains($value, 'oklch')) {
+        if (self::isOKLCHFormat($value)) {
             $rgb = self::fromOKLCH($value);
 
             // Check for alpha channel
@@ -110,7 +117,7 @@ final class ColorMutator
             return $result . ')';
         };
 
-        if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)\s*$/', $value, $matches)) {
+        if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*([\d.]+%?))?\s*$/', $value, $matches)) {
             $lightnessRaw = (float) $matches[1];
             $isPercentL = $matches[2] === '%';
             $chromaRaw = (float) $matches[3];
@@ -121,11 +128,19 @@ final class ColorMutator
             $chroma = $isPercentC ? $chromaRaw / 100 : $chromaRaw;
             $hue = $chroma === 0.0 ? 0.0 : $hueRaw;
 
+            // Extract alpha if present
+            $alpha = null;
+            if (isset($matches[6]) && $matches[6] !== '') {
+                $alphaStr = $matches[6];
+                $alpha = str_ends_with($alphaStr, '%') ? ((float) rtrim($alphaStr, '%')) / 100 : (float) $alphaStr;
+            }
+
             if ($lightness >= 0 && $lightness <= 1) {
                 return $formatResult(
                     max(0, min(1, $lightness)),
                     max(0, $chroma),
-                    fmod($hue < 0 ? $hue + 360 : $hue, 360)
+                    fmod($hue < 0 ? $hue + 360 : $hue, 360),
+                    $alpha
                 );
             }
         }
@@ -259,8 +274,13 @@ final class ColorMutator
      */
     public static function fromOKLCH(string $value): array
     {
-        preg_match('/oklch\\((.*?)\\)/', $value, $matches);
-        $content = trim($matches[1] ?? '');
+        // Support both oklch() format and short format (l c h / alpha)
+        if (str_contains($value, 'oklch(')) {
+            preg_match('/oklch\\((.*?)\\)/', $value, $matches);
+            $content = trim($matches[1] ?? '');
+        } else {
+            $content = trim($value);
+        }
 
         // Check for alpha channel (format: "l c h / alpha")
         $alpha = null;

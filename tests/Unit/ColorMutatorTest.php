@@ -84,6 +84,7 @@ final class ColorMutatorTest extends TestCase
             ['oklch(96.42% 0.000 89.876)'],
             ['oklch(0.96423 0 89.876)'],
             ['oklch(1 0 0 / 10%)', 'oklch(100.00% 0 0 / 10%)'],
+            ['0 0 0 / 10%', 'oklch(0.00% 0 0 / 10%)'],
         ];
     }
 }
