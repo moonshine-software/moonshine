@@ -13,7 +13,14 @@ final class ColorMutator
         if (str_contains($value, 'oklch')) {
             $rgb = self::fromOKLCH($value);
 
-            return \sprintf('#%02x%02x%02x', ...$rgb);
+            // Check for alpha channel
+            if (isset($rgb[3])) {
+                $alpha = (int) round($rgb[3] * 255);
+
+                return \sprintf('#%02x%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2], $alpha);
+            }
+
+            return \sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
         }
 
         if (str_contains($value, '#')) {
@@ -26,7 +33,7 @@ final class ColorMutator
             return '#000000';
         }
 
-        return \sprintf('#%02x%02x%02x', ...$rgb);
+        return \sprintf('#%02x%02x%02x', (int) $rgb[0], (int) $rgb[1], (int) $rgb[2]);
     }
 
     public static function toRGB(string $value): string
@@ -34,7 +41,12 @@ final class ColorMutator
         if (str_contains($value, 'oklch')) {
             $rgb = self::fromOKLCH($value);
 
-            return \sprintf('rgb(%d,%d,%d)', ...$rgb);
+            // Check for alpha channel
+            if (isset($rgb[3])) {
+                return \sprintf('rgba(%d,%d,%d,%.2f)', $rgb[0], $rgb[1], $rgb[2], (float) $rgb[3]);
+            }
+
+            return \sprintf('rgb(%d,%d,%d)', $rgb[0], $rgb[1], $rgb[2]);
         }
 
         if (str_contains($value, '#')) {
@@ -42,6 +54,20 @@ final class ColorMutator
 
             if (\strlen($hex) === 3) {
                 $hex = preg_replace('/(.)/', '$1$1', $hex);
+            }
+
+            // Support for #RRGGBBAA format
+            if (\strlen((string) $hex) === 8) {
+                $dec = hexdec(substr((string) $hex, 0, 6));
+                $alpha = hexdec(substr((string) $hex, 6, 2)) / 255;
+
+                return \sprintf(
+                    'rgba(%d,%d,%d,%.2f)',
+                    0xFF & ($dec >> 0x10),
+                    0xFF & ($dec >> 0x8),
+                    0xFF & $dec,
+                    $alpha
+                );
             }
 
             $dec = hexdec((string) $hex);
@@ -69,12 +95,19 @@ final class ColorMutator
 
     public static function toOKLCH(string $value): string
     {
-        $formatResult = function (float $lightness, float $chroma, float $hue): string {
+        $formatResult = function (float $lightness, float $chroma, float $hue, ?float $alpha = null): string {
             $l = number_format($lightness * 100, 2, '.', '');
             $c = rtrim(rtrim(number_format($chroma, 5, '.', ''), '0'), '.') ?: '0';
             $h = rtrim(rtrim(number_format($hue, 3, '.', ''), '0'), '.') ?: '0';
 
-            return "oklch({$l}% {$c} {$h})";
+            $result = "oklch({$l}% {$c} {$h}";
+
+            if ($alpha !== null) {
+                $alphaPercent = number_format($alpha * 100, 0, '.', '');
+                $result .= " / {$alphaPercent}%";
+            }
+
+            return $result . ')';
         };
 
         if (preg_match('/^\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)\s*$/', $value, $matches)) {
@@ -97,7 +130,7 @@ final class ColorMutator
             }
         }
 
-        if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*[\d.%]+)?\s*\)\s*$/i', $value, $matches)) {
+        if (preg_match('/^\s*oklch\(\s*([\d.]+)(%?)\s+([\d.]+)(%?)\s+([\d.]+)(?:\s*\/\s*([\d.]+%?))?\s*\)\s*$/i', $value, $matches)) {
             $lightness = (float) $matches[1];
             if ($matches[2] === '%') {
                 $lightness /= 100;
@@ -110,23 +143,38 @@ final class ColorMutator
 
             $hue = $chroma === 0.0 ? 0.0 : (float) $matches[5];
 
+            // Extract alpha if present
+            $alpha = null;
+
+            if (isset($matches[6])) {
+                $alphaStr = $matches[6];
+                $alpha = str_ends_with($alphaStr, '%') ? ((float) rtrim($alphaStr, '%')) / 100 : (float) $alphaStr;
+            }
+
             return $formatResult(
                 max(0, min(1, $lightness)),
                 max(0, $chroma),
-                fmod($hue < 0 ? $hue + 360 : $hue, 360)
+                fmod($hue < 0 ? $hue + 360 : $hue, 360),
+                $alpha
             );
         }
 
         if (str_starts_with($value, '#')) {
-            $hex = substr($value, 0, 7);
+            $hex = ltrim($value, '#');
+
             if (\strlen($hex) === 4) {
                 $hex = \sprintf(
                     "#%s%s%s",
+                    substr($hex, 0, 1) . substr($hex, 0, 1),
                     substr($hex, 1, 1) . substr($hex, 1, 1),
-                    substr($hex, 2, 1) . substr($hex, 2, 1),
-                    substr($hex, 3, 1) . substr($hex, 3, 1)
+                    substr($hex, 2, 1) . substr($hex, 2, 1)
                 );
+            } else {
+                $hex = '#' . $hex;
             }
+
+            // Only take first 6 chars (RGB), ignore alpha
+            $hex = substr($hex, 0, 7);
             $rgb = sscanf($hex, '#%02x%02x%02x');
             [$red, $green, $blue] = \is_array($rgb) ? $rgb : [0, 0, 0];
         } else {
@@ -185,7 +233,7 @@ final class ColorMutator
     }
 
     /**
-     * @return list<int|float>|false
+     * @return array<int|float>|false
      */
     public static function fromRGB(string $value): array|false
     {
@@ -207,12 +255,24 @@ final class ColorMutator
     }
 
     /**
-     * @return int[]
+     * @return array<int|float>
      */
     public static function fromOKLCH(string $value): array
     {
         preg_match('/oklch\\((.*?)\\)/', $value, $matches);
-        $parts = preg_split('/\s+/', trim($matches[1]));
+        $content = trim($matches[1] ?? '');
+
+        // Check for alpha channel (format: "l c h / alpha")
+        $alpha = null;
+        if (str_contains($content, '/')) {
+            [$colorPart, $alphaPart] = array_map('trim', explode('/', $content, 2));
+            $content = $colorPart;
+
+            // Parse alpha: can be "10%" or "0.1"
+            $alpha = str_ends_with($alphaPart, '%') ? ((float) rtrim($alphaPart, '%')) / 100 : (float) $alphaPart;
+        }
+
+        $parts = preg_split('/\s+/', $content);
 
         if ($parts === false || \count($parts) < 3) {
             throw new InvalidArgumentException("Invalid OKLCH format: $value");
@@ -247,10 +307,17 @@ final class ColorMutator
             ? 12.92 * $v
             : 1.055 * ($v ** (1 / 2.4)) - 0.055;
 
-        return [
+        $result = [
             (int) round(max(0, min(1, $toSrgb($r))) * 255),
             (int) round(max(0, min(1, $toSrgb($g))) * 255),
             (int) round(max(0, min(1, $toSrgb($b))) * 255),
         ];
+
+        // Add alpha channel if present
+        if ($alpha !== null) {
+            $result[] = $alpha;
+        }
+
+        return $result;
     }
 }

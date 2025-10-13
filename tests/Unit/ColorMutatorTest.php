@@ -35,6 +35,7 @@ final class ColorMutatorTest extends TestCase
             ['243, 243, 243, 0.5'],
             ['oklch(96.42% 0.000 0)'],
             ['oklch(0.9642 0 0)'],
+            ['oklch(1 0 0 / 10%)', '#ffffff1a'],
             ['bad string', '#000000'],
         ];
     }
@@ -59,6 +60,7 @@ final class ColorMutatorTest extends TestCase
             ['243, 243, 243, 0.5', 'rgba(243,243,243,0.50)'],
             ['oklch(96.42% 0.000 0)'],
             ['oklch(0.9642 0 0)'],
+            ['oklch(1 0 0 / 10%)', 'rgba(255,255,255,0.10)'],
         ];
     }
 
@@ -81,6 +83,7 @@ final class ColorMutatorTest extends TestCase
             ['243, 243, 243, 0.5'],
             ['oklch(96.42% 0.000 89.876)'],
             ['oklch(0.96423 0 89.876)'],
+            ['oklch(1 0 0 / 10%)', 'oklch(100.00% 0 0 / 10%)'],
         ];
     }
 }

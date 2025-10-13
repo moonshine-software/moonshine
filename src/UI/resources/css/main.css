@@ -51,7 +51,6 @@
 @import './components/skeleton.css' layer(components);
 
 /* Pages */
-@import './pages/dashboard.css';
 @import './pages/authentication.css';
 
 @source '../../../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
