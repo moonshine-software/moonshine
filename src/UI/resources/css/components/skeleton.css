@@ -12,7 +12,7 @@
     var(--ms-skeleton-default-color, var(--color-theme-200)) 100%
   );
   background-size: 200% 100%;
-  animation-name: skeleton-loading;
+  animation-name: ms-skeleton-loading;
   animation-duration: var(--ms-skeleton-default-duration, 1500ms);
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -37,7 +37,7 @@
 
 /* Skeleton animation */
 
-@keyframes skeleton-loading {
+@keyframes ms-skeleton-loading {
   0% {
     background-position: 200% 0;
   }

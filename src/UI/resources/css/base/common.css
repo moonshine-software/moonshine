@@ -57,11 +57,7 @@
     min-width: 320px;
     background-color: var(--ms-layout-body-bg-color, var(--color-body));
     font-size: var(--text-base);
-    color: var(--color-gray-600);
-
-    @variant dark {
-      color: var(--color-slate-300);
-    }
+    color: var(--color-theme-body);
   }
 
   h1,
