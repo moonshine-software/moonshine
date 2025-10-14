@@ -54,8 +54,8 @@
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);
 
-  @media (hover: hover) {
-    &:hover {
+  @variant hover {
+    &:not(:disabled) {
       border-color: var(--ms-btn-hover-border-color);
       background-color: var(--ms-btn-hover-bg-color);
       color: var(--ms-btn-hover-color);
@@ -67,10 +67,9 @@
   }
 
   &:disabled {
-    border-color: var(--ms-btn-border-color);
-    background-color: var(--ms-btn-bg-color);
-    color: var(--ms-btn-color);
-    opacity: var(--ms-btn-disabled-opacity);
+    border-color: var(--ms-btn-disabled-border-color, var(--color-theme-200));
+    background-color: var(--ms-btn-disabled-bg-color, var(--color-theme-200));
+    color: var(--ms-btn-disabled-color, var(--color-theme-body));
     cursor: not-allowed;
   }
 
@@ -95,10 +94,16 @@
     }
   }
 
-  &.btn-lg {
-    --ms-btn-padding-x: --spacing(6);
-    --ms-btn-padding-y: --spacing(3);
+  .spinner {
+    --ms-spinner-border-color: currentColor;
   }
+}
+
+/* Button sizes */
+
+.btn-lg {
+  --ms-btn-padding-x: --spacing(4);
+  --ms-btn-padding-y: --spacing(3);
 }
 
 /* Button themes */
