@@ -6,7 +6,7 @@
     'searchable' => false,
     'searchPlaceholder' => '',
     'footer' => null,
-    'strategy' => 'absolute',
+    'strategy' => 'fixed',
 ])
 <div x-data="dropdown"
      @click.outside="closeDropdown"
@@ -21,11 +21,15 @@
 
     <div {{ $attributes->merge(['class' => 'dropdown-body']) }}>
         @if($title ?? false)
-            <h5 class="dropdown-heading">{{ $title }}</h5>
+            <div class="dropdown-heading">{{ $title }}</div>
         @endif
 
         <div class="dropdown-content">
-            {{ $slot ?? '' }}
+            @if($slot->isNotEmpty())
+                <div class="dropdown-content-inner">
+                    {{ $slot }}
+                </div>
+            @endif
 
             @if(!empty($items))
                 @if($searchable)

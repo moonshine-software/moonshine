@@ -380,7 +380,7 @@ final class TableBuilder extends IterableComponent implements
                         ActionGroup::make($buttons->toArray())
                             ->when(
                                 $this->isStickyButtons(),
-                                fn (ActionGroup $actionGroup): ActionGroup => $actionGroup->customAttributes(['strategy' => 'absolute'])
+                                fn (ActionGroup $actionGroup): ActionGroup => $actionGroup->customAttributes(['strategy' => 'fixed'])
                             ),
                     ])->justifyAlign('end'),
                     index: $fields->count() + ($hasBulk ? 1 : 0),

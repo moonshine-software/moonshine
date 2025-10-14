@@ -66,7 +66,7 @@
                         @endif
 
                         <div class="profile-info">
-                            <h5 class="text-purple">{{ $nameOfUser }}</h5>
+                            <h5 class="name">{{ $nameOfUser }}</h5>
                             <div class="email">{{ $username }}</div>
                         </div>
                     </div>
@@ -82,6 +82,7 @@
 
                             <x-moonshine::form.button
                                 :raw="true"
+                                class="btn-link"
                                 type="submit"
                             >
                                 <x-moonshine::icon icon="power" />

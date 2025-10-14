@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: space-between;
   gap: --spacing(3) --spacing(2);
+  width: fit-content;
 
   @variant xl {
     flex-direction: row;
@@ -22,7 +23,7 @@
   flex-grow: 1;
   display: flex;
   align-items: center;
-  column-gap: --spacing(2);
+  column-gap: --spacing(2.5);
   min-width: 0;
 }
 
@@ -58,8 +59,9 @@
     @apply truncate;
 
     display: block;
-    color: var(--color-slate-400);
+    color: --alpha(var(--color-theme-body) / 0.5);
     font-size: 0.9375em;
+    font-weight: var(--font-weight-normal);
   }
 }
 
