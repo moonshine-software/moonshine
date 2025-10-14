@@ -1,73 +1,193 @@
 /* Category card */
+
 .card-category {
-  @apply relative
-  flex h-full
-  flex-col
-  gap-y-6
-  rounded-lg
-  border
-  theme__border bg-theme
-  p-3
-  sm:p-4
-  lg:p-5;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ms-card-gap, --spacing(6));
+  padding-block: var(--ms-card-padding-y, --spacing(4));
+  padding-inline: var(--ms-card-padding-x, --spacing(4));
+  border-radius: var(--ms-card-radius, var(--radius-lg));
+  border: var(--ms-card-border-width, 1px) solid
+    var(--ms-card-border-color, var(--color-theme-stroke));
+  background-color: var(--ms-card-bg-color, var(--color-theme));
+
+  /* Card photo */
 
   .card-photo {
-    @apply relative h-52 w-full overflow-hidden;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: var(--ms-card-photo-height, --spacing(52));
+    border-radius: var(--ms-card-photo-radius, var(--radius-md));
 
     &:has(.carousel) {
-      @apply h-auto;
+      height: auto;
     }
 
     img {
-      @apply h-full w-full object-cover select-none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
     }
 
     .badge {
-      @apply absolute top-4 left-4 z-2;
-    }
-
-    .card-photo-content {
-      @apply absolute inset-0 z-2 flex flex-col justify-end gap-y-1 p-4 before:absolute before:inset-x-0 before:bottom-0 before:-z-1 before:h-1/2 before:bg-gradient-to-t before:from-black before:to-transparent;
-
-      .title {
-        @apply text-sm font-semibold text-white md:text-md;
-      }
-
-      .subcategory {
-        @apply text-sm text-slate-300;
-      }
-
-      a {
-        @apply hover:text-white;
-      }
+      position: absolute;
+      top: --spacing(4);
+      left: --spacing(4);
+      z-index: 2;
     }
   }
 
-  .card-body {
-    @apply grow overflow-hidden;
+  .card-photo-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    row-gap: var(--ms-card-photo-content-gap, --spacing(1));
+    padding-block: var(--ms-card-photo-content-padding-y, --spacing(4));
+    padding-inline: var(--ms-card-photo-content-padding-x, --spacing(4));
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      z-index: -1;
+      height: var(--ms-card-photo-overlay-height, 50%);
+      background: linear-gradient(
+        to top,
+        --alpha(var(--ms-card-photo-overlay-color, var(--color-black)) / 1),
+        --alpha(var(--ms-card-photo-overlay-color, var(--color-black)) / 0)
+      );
+      opacity: var(--ms-card-photo-overlay-opacity, 0.9);
+    }
 
     .title {
-      @apply text-sm font-bold md:text-md;
+      color: var(--ms-card-photo-content-title-color, var(--color-white));
+      font-size: var(--ms-card-photo-content-title-font-size, var(--text-base));
+      font-weight: var(--ms-card-photo-content-title-font-weight, var(--font-weight-semibold));
+    }
 
-      ~ table {
-        @apply mt-2;
-      }
+    .subcategory {
+      color: var(--ms-card-photo-content-subcategory-color, var(--color-white));
+      font-size: var(--ms-card-photo-content-subcategory-font-size, var(--text-xs));
+      opacity: var(--ms-card-photo-content-subcategory-opacity, 0.75);
+    }
+  }
+
+  /* Card body */
+
+  .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--ms-card-body-gap-y, --spacing(2));
+
+    .title {
+      font-size: var(--text-md);
+      font-weight: var(--font-weight-semibold);
     }
 
     table {
-      @apply text-gray-600 dark:text-slate-400;
+      color: var(--color-theme-body);
+      font-size: var(--text-sm);
+
+      @variant dark {
+        color: var(--color-theme-body);
+      }
 
       th {
-        @apply pr-2 font-semibold;
+        padding-right: --spacing(2);
+        font-weight: var(--font-weight-medium);
       }
     }
   }
 
+  /* Card actions */
+
   .card-actions {
-    @apply flex flex-wrap justify-end gap-2
-    border-t theme__border
-    pt-5
-    compact:pt-3
-    minimalistic:pt-2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--ms-card-actions-gap, --spacing(2));
+    padding-top: var(--ms-card-actions-padding-top, --spacing(5));
+    border-top: var(--ms-card-actions-border-width, 1px) solid
+      var(--ms-card-actions-border-color, var(--color-theme-stroke));
+  }
+}
+
+/* Report card */
+
+.report-card {
+  --_card-gap-y: var(--ms-report-card-gap-y, --spacing(4));
+
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--_card-gap-y);
+  height: 100%;
+  padding-block: var(--ms-report-card-padding-y, --spacing(3));
+  padding-inline: var(--ms-report-card-padding-x, --spacing(3));
+  background-color: var(--ms-report-card-bg-color, var(--color-theme));
+
+  &::before {
+    display: none;
+  }
+
+  /* Report card elements */
+
+  .report-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      width: var(--ms-report-card-heading-icon-size, --spacing(6));
+      height: var(--ms-report-card-heading-icon-size, --spacing(6));
+      color: var(--ms-report-card-heading-icon-color, var(--color-theme-body));
+    }
+  }
+
+  .report-card-indicator {
+    display: flex;
+    align-items: center;
+    column-gap: var(--ms-report-card-indicator-gap, --spacing(1));
+    padding-block: var(--ms-report-card-indicator-padding-y, --spacing(1.5));
+    padding-inline: var(--ms-report-card-indicator-padding-x, --spacing(2));
+    border-radius: var(--ms-report-card-indicator-radius, 9999px);
+    background-color: var(--ms-report-card-indicator-bg-color, transparent);
+    color: var(--ms-report-card-indicator-color, var(--color-white));
+    font-size: var(--ms-report-card-indicator-font-size, var(--text-xs));
+    line-height: 1;
+
+    > svg {
+      width: var(--ms-report-card-indicator-icon-size, --spacing(3.5));
+      height: var(--ms-report-card-indicator-icon-size, --spacing(3.5));
+    }
+  }
+
+  .report-card-body {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: calc(var(--_card-gap-y) / 2);
+  }
+
+  .report-card-value {
+    @apply truncate;
+
+    font-size: var(--ms-report-card-value-font-size, var(--text-xl));
+    font-weight: var(--ms-report-card-value-font-weight, var(--font-weight-medium));
+    line-height: 1;
+  }
+
+  .report-card-title {
+    color: var(--ms-report-card-title-color, var(--color-theme-body));
+    font-size: var(--ms-report-card-title-font-size, var(--text-sm));
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

@@ -6,9 +6,11 @@
     'simpleValue' => '',
 ])
 <div {{ $attributes->merge(['class' => 'report-card']) }}>
-    <div class="report-card-heading">
-        {!! $icon !!}
-    </div>
+    @if($icon)
+        <div class="report-card-heading">
+            {!! $icon !!}
+        </div>
+    @endif
 
     @if($progress)
         <x-moonshine::progress-bar
