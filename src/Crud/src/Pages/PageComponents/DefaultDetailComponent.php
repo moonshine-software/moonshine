@@ -8,9 +8,10 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Crud\Contracts\Page\DetailPageContract;
+use MoonShine\Crud\Contracts\PageComponents\DefaultDetailComponentContract;
 use MoonShine\UI\Components\Table\TableBuilder;
 
-final class DefaultDetailComponent
+final class DefaultDetailComponent implements DefaultDetailComponentContract
 {
     public function __invoke(
         DetailPageContract $page,
