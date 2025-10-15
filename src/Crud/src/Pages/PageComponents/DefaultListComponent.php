@@ -6,21 +6,12 @@ namespace MoonShine\Crud\Pages\PageComponents;
 
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Traits\WithCore;
-use MoonShine\Crud\Collections\Fields;
-use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
-use MoonShine\Crud\Contracts\PageComponents\DefaultFormContract;
 use MoonShine\Crud\Contracts\PageComponents\DefaultListComponentContract;
-use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Enums\JsEvent;
-use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
-use MoonShine\UI\Fields\Hidden;
 
 final class DefaultListComponent implements DefaultListComponentContract
 {

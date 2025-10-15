@@ -25,7 +25,6 @@ use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use Throwable;
 

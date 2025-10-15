@@ -19,16 +19,12 @@ use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Contracts\PageComponents\DefaultFormContract;
 use MoonShine\Crud\Pages\PageComponents\DefaultForm;
 use MoonShine\Crud\Resources\CrudResource;
-use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
-use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionGroup;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Fields\Hidden;
 use Throwable;
 
 /**

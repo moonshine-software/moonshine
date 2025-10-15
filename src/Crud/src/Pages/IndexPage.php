@@ -10,7 +10,6 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Concerns\Page\HasFilters;
@@ -30,7 +29,6 @@ use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\LineBreak;
-use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
 use Throwable;
 
