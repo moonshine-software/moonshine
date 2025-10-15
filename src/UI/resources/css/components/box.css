@@ -1,36 +1,41 @@
+/* Box basic */
+
 .box {
+  --_box-margin-bottom: var(--ms-box-margin-bottom, --spacing(4));
+  --_box-padding-y: var(--ms-box-padding-y, --spacing(4));
+  --_box-padding-x: var(--ms-box-padding-x, --spacing(4));
+
+  overflow: hidden;
   position: relative;
-  margin-bottom: --spacing(6);
-  padding: --spacing(3);
-  border-radius: --spacing(3);
-  border: 1px solid var(--color-theme-stroke);
+  display: block;
+  margin-bottom: var(--_box-margin-bottom);
+  padding-block: var(--_box-padding-y);
+  padding-inline: var(--_box-padding-x);
+  border-radius: var(--ms-box-radius, --spacing(3));
+  border: var(--ms-box-border-width, 1px) solid
+    var(--ms-box-border-color, var(--color-theme-stroke));
   background-color: var(--ms-box-bg-color, var(--color-theme));
-
-  &.box-dark,
-  &.dark {
-    @apply bg-zinc-700 text-white;
-  }
-
-  &.box-shadow {
-    @apply before:absolute
-    before:inset-x-0
-    before:top-3
-    before:-z-1
-    before:mx-auto
-    before:h-full
-    before:w-[85%]
-    before:rounded-[inherit]
-    before:opacity-0
-    hover:before:bg-white hover:before:opacity-100
-    hover:before:shadow-lg hover:before:shadow-gray-200
-    dark:hover:before:bg-theme-500
-    dark:hover:before:shadow-black/5;
-  }
 }
 
+/* Box variants */
+
+.box.box-dark,
+.box.dark {
+  --ms-box-bg-color: var(--color-zinc-700);
+  --ms-box-color: var(--color-white);
+
+  color: var(--ms-box-color);
+}
+
+/* Box elements */
+
 .box-title {
-  @apply flex
-  gap-2
-  border-b theme__border
-  pb-3 text-base font-semibold;
+  display: flex;
+  column-gap: var(--ms-box-title-gap, --spacing(2));
+  padding-bottom: var(--ms-box-title-padding-bottom, --spacing(3));
+  margin-bottom: var(--_box-padding-y);
+  border-bottom: var(--ms-box-title-border-width, 1px) solid
+    var(--ms-box-title-border-color, var(--color-theme-stroke));
+  font-size: var(--ms-box-title-font-size, var(--text-base));
+  font-weight: var(--ms-box-title-font-weight, var(--font-weight-semibold));
 }

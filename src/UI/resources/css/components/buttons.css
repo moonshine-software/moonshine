@@ -86,6 +86,7 @@
     border-style: solid;
     border-color: inherit;
     background-color: inherit;
+    color: inherit;
     text-align: center;
     font-size: 1em;
 
@@ -104,6 +105,23 @@
 .btn-lg {
   --ms-btn-padding-x: --spacing(4);
   --ms-btn-padding-y: --spacing(3);
+}
+
+/* Button variants */
+
+.btn-link {
+  --ms-icon-size: var(--ms-btn-link-icon-size, --spacing(4));
+
+  display: inline-flex;
+  align-items: center;
+  column-gap: var(--ms-btn-link-gap, --spacing(2));
+  color: var(--ms-btn-link-color, var(--color-theme-body));
+  font-size: var(--ms-btn-link-font-size, var(--text-xs));
+  font-weight: var(--ms-btn-link-font-weight, var(--font-weight-medium));
+
+  @variant hover {
+    color: var(--ms-btn-link-hover-color, var(--color-primary));
+  }
 }
 
 /* Button themes */

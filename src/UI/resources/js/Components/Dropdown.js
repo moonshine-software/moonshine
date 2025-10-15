@@ -25,7 +25,7 @@ export default () => ({
 
     this.popperInstance = createPopper(this.dropdownBtn, this.dropdownBody, {
       placement: dropdownPlacement ? dropdownPlacement : 'auto',
-      strategy: dropdownStrategy ? dropdownStrategy : 'absolute',
+      strategy: dropdownStrategy ? dropdownStrategy : 'fixed',
       modifiers: [
         {
           name: 'offset',

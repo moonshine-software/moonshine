@@ -47,7 +47,6 @@
 @import './components/tabs.css' layer(components);
 @import './components/theme-switcher.css' layer(components);
 @import './components/toasts.css' layer(components);
-@import './components/report-card.css' layer(components);
 @import './components/skeleton.css' layer(components);
 
 /* Pages */
