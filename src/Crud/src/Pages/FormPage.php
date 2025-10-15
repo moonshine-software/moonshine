@@ -16,6 +16,8 @@ use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Concerns\Page\HasFormValidation;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
+use MoonShine\Crud\Contracts\PageComponents\DefaultFormContract;
+use MoonShine\Crud\Pages\PageComponents\DefaultForm;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Ability;
@@ -44,6 +46,11 @@ class FormPage extends CrudPage implements FormPageContract
     use HasFormValidation;
 
     protected ?PageType $pageType = PageType::FORM;
+
+    /**
+     * @var class-string<DefaultFormContract>
+     */
+    protected string $form = DefaultForm::class;
 
     public function getTitle(): string
     {
@@ -191,57 +198,16 @@ class FormPage extends CrudPage implements FormPageContract
         FieldsContract $fields,
         bool $isAsync = true,
     ): FormBuilderContract {
-        $resource = $this->getResource();
+        $form = $this->getCore()->getContainer($this->form);
 
         return $this->modifyFormComponent(
-            FormBuilder::make($action)
-                ->cast($this->getResource()->getCaster())
-                ->fill($item)
-                ->fields([
-                    /** @phpstan-ignore argument.templateType */
-                    ...$fields
-                        ->when(
-                            ! \is_null($item),
-                            static fn (Fields $fields): Fields
-                                => $fields->push(
-                                    Hidden::make('_method')->setValue('PUT'),
-                                ),
-                        )
-                        ->toArray(),
-                ])
-                ->when(
-                    ! $this->hasErrorsAbove(),
-                    fn (FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($this->hasErrorsAbove()),
-                )
-                ->when(
-                    $isAsync,
-                    fn (FormBuilderContract $formBuilder): FormBuilderContract
-                        => $formBuilder
-                        ->async(
-                            events: array_filter([
-                                $resource->getListEventName(
-                                    $this->getCore()->getRequest()->getScalar('_component_name', 'default'),
-                                    $isAsync && $resource->isItemExists() ? array_filter([
-                                        'page' => $this->getCore()->getRequest()->getScalar('page'),
-                                        'sort' => $this->getCore()->getRequest()->getScalar('sort'),
-                                    ]) : [],
-                                ),
-                                ! $resource->isItemExists() && $resource->isCreateInModal()
-                                    ? AlpineJs::event(JsEvent::FORM_RESET, $resource->getUriKey())
-                                    : null,
-                            ]),
-                        ),
-                )
-                ->when(
-                    $this->isPrecognitive() || ($this->getCore()->getCrudRequest()->isFragmentLoad('crud-form') && ! $isAsync),
-                    static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive(),
-                )
-                ->name($resource->getUriKey())
-                ->submit(
-                    $this->getCore()->getTranslator()->get('moonshine::ui.save'),
-                    ['class' => 'btn-primary btn-lg'],
-                )
-                ->buttons($this->getFormButtons()),
+            $form(
+                $this,
+                $action,
+                $item,
+                $fields,
+                $isAsync
+            )
         );
     }
 

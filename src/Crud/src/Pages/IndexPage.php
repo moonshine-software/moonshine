@@ -19,6 +19,8 @@ use MoonShine\Crud\Concerns\Page\HasListComponent;
 use MoonShine\Crud\Concerns\Page\HasMetrics;
 use MoonShine\Crud\Concerns\Page\HasQueryTags;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
+use MoonShine\Crud\Contracts\PageComponents\DefaultListComponentContract;
+use MoonShine\Crud\Pages\PageComponents\DefaultListComponent;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\PageType;
@@ -50,6 +52,11 @@ class IndexPage extends CrudPage implements IndexPageContract
     use HasMetrics;
 
     protected ?PageType $pageType = PageType::INDEX;
+
+    /**
+     * @var class-string<DefaultListComponentContract>
+     */
+    protected string $component = DefaultListComponent::class;
 
     protected bool $isLazy = false;
 
@@ -169,38 +176,10 @@ class IndexPage extends CrudPage implements IndexPageContract
      */
     protected function getItemsComponent(iterable $items, FieldsContract $fields): ComponentContract
     {
+        $component = $this->getCore()->getContainer($this->component);
+
         return $this->modifyListComponent(
-            TableBuilder::make(items: $items)
-                ->name($this->getListComponentName())
-                ->fields($fields)
-                ->cast($this->getResource()->getCaster())
-                ->withNotFound()
-                ->buttons($this->getButtons())
-                ->when($this->isAsync(), function (TableBuilderContract $table): void {
-                    $table->async(
-                        url: fn (): string
-                            => $this->getRouter()->getEndpoints()->component(
-                                name: $table->getName(),
-                                additionally: $this->getCore()->getRequest()->getRequest()->getQueryParams(),
-                            ),
-                    )->pushState();
-                })
-                ->when($this->isLazy(), function (TableBuilderContract $table): void {
-                    $table->lazy()->whenAsync(
-                        fn (TableBuilderContract $t): TableBuilderContract
-                            => $t->items(
-                                $this->getResource()->getItems(),
-                            ),
-                    );
-                })
-                ->when(
-                    ! \is_null($this->getResource()->getItemsResolver()),
-                    function (TableBuilderContract $table): void {
-                        $table->itemsResolver(
-                            $this->getResource()->getItemsResolver(),
-                        );
-                    },
-                ),
+            $component($this, $items, $fields)
         );
     }
 
