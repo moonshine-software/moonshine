@@ -32,7 +32,6 @@
 @import './components/languages.css' layer(components);
 @import './components/menu.css' layer(components);
 @import './components/modals.css' layer(components);
-@import './components/navigation.css' layer(components);
 @import './components/notifications.css' layer(components);
 @import './components/offcanvas.css' layer(components);
 @import './components/pagination.css' layer(components);
@@ -69,7 +68,7 @@
 }
 
 @theme {
-  --radius: theme('borderRadius.lg');
+  --radius: var(--radius-lg);
 
   --font-sans: 'Gilroy', 'Roboto', sans-serif;
   --default-font-size: 15px;
