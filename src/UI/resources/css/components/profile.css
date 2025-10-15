@@ -9,14 +9,6 @@
   @variant xl {
     flex-direction: row;
   }
-
-  .dropdown-body {
-    width: 90%;
-
-    @variant md {
-      max-width: 320px;
-    }
-  }
 }
 
 .profile-main {

@@ -63,21 +63,25 @@
   h1,
   .h1 {
     font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
   }
 
   h2,
   .h2 {
     font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
   }
 
   h3,
   .h3 {
     font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
   }
 
   h4,
   .h4 {
     font-size: var(--text-md);
+    font-weight: var(--font-weight-medium);
   }
 
   h5,
@@ -85,6 +89,7 @@
   .h5,
   .h6 {
     font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
   }
 
   .heading {
@@ -99,7 +104,7 @@
     .h3,
     .h4,
     div {
-      @apply truncate font-medium;
+      @apply truncate;
     }
   }
 

@@ -80,16 +80,6 @@
   }
 }
 
-.dropdown-content-inner {
-  padding-block: var(--_dropdown-content-padding-y);
-  padding-inline: var(--_dropdown-content-padding-x);
-
-  .dropdown-menu {
-    margin-block: calc(var(--_dropdown-content-padding-y) * -1);
-    margin-inline: calc(var(--_dropdown-content-padding-x) * -1);
-  }
-}
-
 /* Dropdown footer */
 
 .dropdown-footer {
