@@ -6,7 +6,6 @@ namespace MoonShine\Crud\Layouts;
 
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
-use MoonShine\ColorManager\Palettes\DefaultPalette;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
@@ -29,9 +28,9 @@ abstract class AbstractLayout implements LayoutContract
     protected PageContract $page;
 
     /**
-     * @var class-string<PaletteContract>
+     * @var null|class-string<PaletteContract>
      */
-    protected string $palette = DefaultPalette::class;
+    protected ?string $palette = null;
 
     /**
      * @param  TCore  $core
@@ -113,7 +112,9 @@ abstract class AbstractLayout implements LayoutContract
 
     protected function colors(ColorManagerContract $colorManager): void
     {
-        $colorManager->palette(new $this->palette);
+        if($this->palette !== null) {
+            $colorManager->palette(new $this->palette);
+        }
     }
 
     /**
