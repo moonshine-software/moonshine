@@ -8,6 +8,8 @@ use Illuminate\Contracts\Support\Htmlable;
 
 interface ColorManagerContract extends Htmlable
 {
+    public function palette(PaletteContract $palette): self;
+
     public function get(string $name, ?int $shade = null, bool $dark = false, bool $hex = true): string;
 
     /**
