@@ -1,18 +1,30 @@
 /* Languages switcher */
-.languages {
-  .languages-icon {
-    @apply block overflow-hidden pr-3 text-slate-600 hover:text-secondary dark:text-theme-50 dark:hover:text-white;
 
-    > svg {
-      @apply h-6 w-6;
-    }
+.languages-icon {
+  --ms-icon-size: var(--ms-languages-icon-size, --spacing(5));
 
-    > svg:last-child {
-      @apply absolute inset-y-0 right-0 my-auto h-3 w-3;
-    }
+  overflow: hidden;
+  display: block;
+  padding-right: var(--ms-languages-padding-right, --spacing(3));
+  color: var(--ms-languages-color, var(--color-theme-body));
+  transition-property: color;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @variant hover {
+    color: var(--ms-languages-hover-color, var(--color-primary));
   }
 
-  .languages-body {
-    @apply min-w-[10rem];
+  > svg:last-child {
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    width: var(--ms-languages-arrow-size, --spacing(3));
+    height: var(--ms-languages-arrow-size, --spacing(3));
+    margin-block: auto;
   }
+}
+
+.languages-body {
+  min-width: var(--ms-languages-body-min-width, 10rem);
 }
