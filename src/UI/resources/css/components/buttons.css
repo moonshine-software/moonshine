@@ -5,14 +5,14 @@
   --ms-btn-radius: --spacing(2);
   --ms-btn-border-width: 0px;
   --ms-btn-border-color: var(--color-theme-stroke);
-  --ms-btn-bg-color: var(--color-theme-300);
+  --ms-btn-bg-color: var(--color-theme-200);
   --ms-btn-color: var(--color-theme-body);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
   --ms-btn-icon-size: --spacing(5);
 
   --ms-btn-hover-border-color: var(--color-theme-stroke);
-  --ms-btn-hover-bg-color: var(--color-theme-400);
+  --ms-btn-hover-bg-color: var(--color-theme-300);
   --ms-btn-hover-color: var(--color-theme-body);
 
   --ms-btn-disabled-opacity: 0.6;
