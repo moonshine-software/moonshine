@@ -14,6 +14,8 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Contracts\Page\DetailPageContract;
+use MoonShine\Crud\Contracts\PageComponents\DefaultDetailComponentContract;
+use MoonShine\Crud\Pages\PageComponents\DefaultDetailComponent;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
@@ -38,6 +40,11 @@ use Throwable;
 class DetailPage extends CrudPage implements DetailPageContract
 {
     protected ?PageType $pageType = PageType::DETAIL;
+
+    /**
+     * @var class-string<DefaultDetailComponentContract>
+     */
+    protected string $component = DefaultDetailComponent::class;
 
     public function getTitle(): string
     {
@@ -132,20 +139,13 @@ class DetailPage extends CrudPage implements DetailPageContract
     public function getDetailComponent(bool $withoutFragment = false): ComponentContract
     {
         $resource = $this->getResource();
-        $item = $resource->getCastedData();
-        $fields = $this->getResource()->getDetailFields();
+
+        $detailComponent = $this->getCore()->getContainer(
+            $this->component
+        );
 
         $component = $this->modifyDetailComponent(
-            TableBuilder::make($fields)
-                ->cast($this->getResource()->getCaster())
-                ->items([$item])
-                ->vertical(
-                    title: $this->getResource()->isDetailInModal() ? 3 : 2,
-                    value: $this->getResource()->isDetailInModal() ? 9 : 10,
-                )
-                ->simple()
-                ->preview()
-                ->class('table-divider'),
+            $detailComponent($this, $resource->getCastedData(), $resource->getDetailFields())
         );
 
         if ($withoutFragment) {
