@@ -5,12 +5,10 @@
 ])
 <span
     {{ $attributes }}
+    class="popover-trigger"
     title="{{ $title }}"
     x-data="popover({placement: '{{ $placement }}'})"
 >
     {!! $trigger !!}
-
-    <div class="hidden popover-content">
-        {!! $slot !!}
-    </div>
+    <div class="hidden popover-body-content">{!! $slot !!}</div>
 </span>

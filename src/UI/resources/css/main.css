@@ -8,9 +8,6 @@
 @import './base/common.css';
 @import './base/animation.css';
 
-/* Libs */
-@import 'tippy.js/dist/tippy.css';
-
 /* Layouts */
 @import './layouts/basic.css';
 @import './layouts/layout-menu.css';

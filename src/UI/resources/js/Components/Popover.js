@@ -4,15 +4,31 @@ import typedDataset from '../Support/TypedDataset.js'
 export default (config = {}) => ({
   popoverInstance: null,
   config: {
-    theme: 'ms-light',
+    theme: 'moonshine',
     appendTo: document.body,
     allowHTML: true,
     interactive: true,
     content: reference => {
       const tooltipTitle = reference.getAttribute('title')
-      return `<div class="popover-body">${
-        tooltipTitle ? `<h5 class="title">${tooltipTitle}</h5>` : ''
-      } ${reference.querySelector('.popover-content').innerHTML}</div>`
+      const popoverContent = reference.querySelector('.popover-body-content')
+      const clonedContent = popoverContent ? popoverContent.cloneNode(true) : null
+
+      const wrapper = document.createElement('div')
+      wrapper.classList.add('popover-body')
+
+      if (tooltipTitle) {
+        const titleEl = document.createElement('h5')
+        titleEl.classList.add('popover-body-title')
+        titleEl.textContent = tooltipTitle
+        wrapper.appendChild(titleEl)
+      }
+
+      if (clonedContent) {
+        clonedContent.classList.remove('hidden')
+        wrapper.appendChild(clonedContent)
+      }
+
+      return wrapper
     },
     ...config,
   },
@@ -21,6 +37,7 @@ export default (config = {}) => ({
       ...this.config,
       ...typedDataset(this.$el.dataset),
     })
+    this.$el.setAttribute('title', '')
   },
   toggle() {
     if (this.popoverInstance.state.isShown) {
