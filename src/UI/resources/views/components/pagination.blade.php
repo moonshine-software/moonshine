@@ -56,20 +56,17 @@
                 <li class="pagination-item">
                     <a href="{{ $prev_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
-                       class="pagination-first"
+                       class="pagination-link pagination-link--first"
                        title="{!! $translates['previous']  !!}"
                     >
-                        <x-moonshine::icon
-                            icon="chevron-double-left"
-                            size="6"
-                        />
+                        <x-moonshine::icon icon="chevron-double-left" />
                     </a>
                 </li>
             @endif
 
             @foreach ($links as $link)
                 {{-- "Three Dots" Separator --}}
-                @if (is_string($link))
+                @if(is_string($link))
                     <li class="pagination-item">
                         <span class="pagination-dots">{{ $link }}</span>
                     </li>
@@ -79,8 +76,7 @@
                 <li class="pagination-item">
                     <a href="{{ $link['url'] }}"
                        @if($async) @click.prevent="asyncRequest" @endif
-                       class="pagination-page
-                       @if ($link['active']) _is-active @endif"
+                       class="pagination-link @if($link['active']) _is-active @endif"
                     >
                         {!! $link['label'] !!}
                     </a>
@@ -92,13 +88,10 @@
                 <li class="pagination-item">
                     <a href="{{ $next_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
-                       class="pagination-last"
+                       class="pagination-link pagination-link--last"
                        title="{!! $translates['next']  !!}"
                     >
-                        <x-moonshine::icon
-                            icon="chevron-double-right"
-                            size="6"
-                        />
+                        <x-moonshine::icon icon="chevron-double-right" />
                     </a>
                 </li>
             @endif

@@ -111,7 +111,7 @@
 
 .notifications-read {
   display: block;
-  font-size: var(--ms-notifications-read-font-size, var(--text-sm));
+  font-size: var(--ms-notifications-read-font-size, var(--text-xs));
   font-weight: var(--ms-notifications-read-font-weight, var(--font-weight-medium));
   text-align: center;
 }
