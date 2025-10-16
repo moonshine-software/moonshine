@@ -1,39 +1,127 @@
-/* Popovers */
-.tippy {
-  .tippy-box {
-    @apply bg-white text-gray-700 shadow-[0_4px_16px_rgba(161,172,184,0.45)] dark:bg-theme-600 dark:text-slate-200 dark:shadow-[0_4px_24px_rgba(0,0,0,0.15)];
+/* Tooltip (Tippy.js) basic */
 
-    @variant dark {
-      @apply bg-theme-800 text-slate-200 shadow-[0_4px_24px_rgba(0,0,0,0.15)];
-    }
+.tippy-box[data-animation='fade'][data-state='hidden'] {
+  opacity: 0;
+}
 
-    .popover-body {
-      @apply p-1.5 sm:p-2.5
-      compact:p-1.5
-      minimalistic:p-1;
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
 
-      .title {
-        @apply mb-3 border-b theme__border
-        pb-3 text-sm
-        font-semibold
-        sm:text-md
-        compact:mb-2
-        compact:pb-2
-        minimalistic:mb-1
-        minimalistic:pb-1;
+.tippy-box {
+  --_tippy-bg-color: var(--ms-popover-bg-color, var(--color-black));
 
-        @variant dark {
-          @apply border-theme-200;
-        }
-      }
-    }
+  position: relative;
+  border-radius: var(--ms-popover-radius, var(--radius-md));
+  background-color: var(--_tippy-bg-color);
+  color: var(--ms-popover-color, var(--color-white));
+  font-size: var(--ms-popover-font-size, var(--text-xs));
+  line-height: var(--ms-popover-line-height, 1.4);
+  white-space: normal;
+  transition-property: transform, visibility, opacity;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+  outline: 0;
 
-    .tippy-arrow {
-      @apply text-white;
-
-      @variant dark {
-        @apply text-theme-800;
-      }
-    }
+  @variant dark {
   }
+  --_tippy-bg-color: var(--ms-popover-bg-color, var(--color-zinc-700));
+}
+
+.tippy-content {
+  position: relative;
+  padding-block: var(--ms-popover-content-padding-y, --spacing(1.25));
+  padding-inline: var(--ms-popover-content-padding-x, --spacing(2));
+  z-index: 1;
+}
+
+/* Tooltip arrow */
+
+.tippy-box[data-placement^='top'] > .tippy-arrow {
+  bottom: 0;
+}
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  bottom: -7px;
+  left: 0;
+  border-width: 8px 8px 0;
+  border-top-color: initial;
+  transform-origin: center top;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow {
+  top: 0;
+}
+.tippy-box[data-placement^='bottom'] > .tippy-arrow::before {
+  top: -7px;
+  left: 0;
+  border-width: 0 8px 8px;
+  border-bottom-color: initial;
+  transform-origin: center bottom;
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow {
+  right: 0;
+}
+.tippy-box[data-placement^='left'] > .tippy-arrow::before {
+  border-width: 8px 0 8px 8px;
+  border-left-color: initial;
+  right: -7px;
+  transform-origin: center left;
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow {
+  left: 0;
+}
+.tippy-box[data-placement^='right'] > .tippy-arrow::before {
+  left: -7px;
+  border-width: 8px 8px 8px 0;
+  border-right-color: initial;
+  transform-origin: center right;
+}
+.tippy-box[data-inertia][data-state='visible'] {
+  transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
+}
+.tippy-arrow {
+  width: 16px;
+  height: 16px;
+  color: var(--_tippy-bg-color);
+}
+.tippy-arrow::before {
+  content: '';
+  position: absolute;
+  border-color: transparent;
+  border-style: solid;
+}
+
+/* Popover basic */
+
+.popover-trigger {
+  text-decoration: underline dashed transparent;
+  text-underline-offset: 0.25em;
+  transition-property: color, text-decoration-color;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @variant hover {
+    text-decoration-color: var(
+      --ms-popover-trigger-decoration-color,
+      --alpha(var(--color-primary) / 0.15)
+    );
+    cursor: help;
+  }
+}
+
+.popover-body {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--ms-popover-body-gap-y, --spacing(2.5));
+  padding: var(--ms-popover-body-padding, --spacing(1));
+}
+
+.popover-body-title {
+  font-size: var(--ms-popover-title-font-size, var(--text-base));
+  font-weight: var(--ms-popover-title-font-weight, var(--font-weight-semibold));
+}
+
+.popover-body-title ~ .popover-body-content {
+  padding-top: var(--ms-popover-title-padding-top, --spacing(2.5));
+  border-top: var(--ms-popover-title-border-width, 1px) solid
+    --alpha(var(--ms-popover-title-border-color, var(--color-white)) / 0.25);
 }
