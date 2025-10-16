@@ -17,7 +17,8 @@ final class DefaultListComponent implements DefaultListComponentContract
 {
     use WithCore;
 
-    public function __construct(CoreContract $core) {
+    public function __construct(CoreContract $core)
+    {
         $this->setCore($core);
     }
 
@@ -28,8 +29,7 @@ final class DefaultListComponent implements DefaultListComponentContract
         IndexPageContract $page,
         iterable $items,
         FieldsContract $fields
-    ): ComponentContract
-    {
+    ): ComponentContract {
         $resource = $page->getResource();
 
         return TableBuilder::make(items: $items)
@@ -38,26 +38,26 @@ final class DefaultListComponent implements DefaultListComponentContract
             ->cast($resource->getCaster())
             ->withNotFound()
             ->buttons($page->getButtons())
-            ->when($page->isAsync(), function (TableBuilderContract $table) use($page): void {
+            ->when($page->isAsync(), function (TableBuilderContract $table) use ($page): void {
                 $table->async(
                     url: fn (): string
                         => $page->getRouter()->getEndpoints()->component(
-                        name: $table->getName(),
-                        additionally: $this->getCore()->getRequest()->getRequest()->getQueryParams(),
-                    ),
+                            name: $table->getName(),
+                            additionally: $this->getCore()->getRequest()->getRequest()->getQueryParams(),
+                        ),
                 )->pushState();
             })
-            ->when($page->isLazy(), function (TableBuilderContract $table) use($resource): void {
+            ->when($page->isLazy(), function (TableBuilderContract $table) use ($resource): void {
                 $table->lazy()->whenAsync(
                     fn (TableBuilderContract $t): TableBuilderContract
                         => $t->items(
-                        $resource->getItems(),
-                    ),
+                            $resource->getItems(),
+                        ),
                 );
             })
             ->when(
                 ! \is_null($resource->getItemsResolver()),
-                function (TableBuilderContract $table) use($resource): void {
+                function (TableBuilderContract $table) use ($resource): void {
                     $table->itemsResolver(
                         $resource->getItemsResolver(),
                     );

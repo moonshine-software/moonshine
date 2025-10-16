@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Contracts\PageComponents;
 
-
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;

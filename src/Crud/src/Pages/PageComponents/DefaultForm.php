@@ -21,7 +21,8 @@ final class DefaultForm implements DefaultFormContract
 {
     use WithCore;
 
-    public function __construct(CoreContract $core) {
+    public function __construct(CoreContract $core)
+    {
         $this->setCore($core);
     }
 
@@ -31,8 +32,7 @@ final class DefaultForm implements DefaultFormContract
         ?DataWrapperContract $item,
         FieldsContract $fields,
         bool $isAsync = true,
-    ): FormBuilderContract
-    {
+    ): FormBuilderContract {
         $resource = $page->getResource();
 
         return FormBuilder::make($action)
@@ -45,8 +45,8 @@ final class DefaultForm implements DefaultFormContract
                         ! \is_null($item),
                         static fn (Fields $fields): Fields
                             => $fields->push(
-                            Hidden::make('_method')->setValue('PUT'),
-                        ),
+                                Hidden::make('_method')->setValue('PUT'),
+                            ),
                     )
                     ->toArray(),
             ])
