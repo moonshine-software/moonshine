@@ -109,7 +109,19 @@
   }
 
   a {
-    @apply hover:text-primary dark:hover:text-white;
+    --ms-link-color: var(--ms-defaults-link-color, var(--color-theme-body));
+    --ms-link-hover-color: var(--ms-defaults-link-color, var(--color-primary));
+
+    color: var(--ms-link-color);
+    transition-property:
+      background-color, border-color, color, text-decoration-color, box-shadow, opacity, fill,
+      stroke;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+
+    @variant hover {
+      color: var(--ms-link-hover-color);
+    }
   }
 
   .link {
@@ -125,7 +137,7 @@
   }
 
   p + p {
-    margin-top: --spacing(2);
+    margin-top: var(--ms-defaults-paragraph-space-y, --spacing(2));
   }
 
   b,

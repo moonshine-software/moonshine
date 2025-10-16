@@ -11,13 +11,9 @@
             :title="$translates['title']"
             class="w-[264px] xs:w-80"
         >
-            <x-slot:toggler class="notifications-icon">
-                <span class="absolute top-0 right-1 h-2 w-2 rounded-full bg-red-500"></span>
-                <x-moonshine::icon
-                    icon="bell"
-                    color="gray"
-                    size="6"
-                />
+            <x-slot:toggler class="notifications-trigger">
+                <span class="notifications-trigger-dot"></span>
+                <x-moonshine::icon icon="bell" />
             </x-slot:toggler>
 
             @foreach($notifications as $notification)
@@ -29,12 +25,11 @@
                         <x-moonshine::icon icon="x-mark" />
                     </a>
 
-                    <div class="notifications-category badge-{{ $notification->getColor() }}">
+                    <div class="notifications-category text-{{ $notification->getColor() }}">
                         <x-moonshine::icon :icon="$notification->getIcon()" />
                     </div>
 
                     <div class="notifications-content">
-                        <h5 class="notifications-title"></h5>
                         <p class="notifications-text">{{ $notification->getMessage() }}</p>
 
                         @if(!is_null($notification->getButton()))
