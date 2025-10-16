@@ -1,5 +1,0 @@
-.layout-navigation {
-  .search-wrapper {
-    @apply flex-shrink-0 grow md:grow-0;
-  }
-}

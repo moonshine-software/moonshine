@@ -26,9 +26,7 @@
 
         <div class="dropdown-content">
             @if($slot->isNotEmpty())
-                <div class="dropdown-content-inner">
-                    {{ $slot }}
-                </div>
+                {{ $slot }}
             @endif
 
             @if(!empty($items))

@@ -63,21 +63,25 @@
   h1,
   .h1 {
     font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
   }
 
   h2,
   .h2 {
     font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
   }
 
   h3,
   .h3 {
     font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
   }
 
   h4,
   .h4 {
     font-size: var(--text-md);
+    font-weight: var(--font-weight-medium);
   }
 
   h5,
@@ -85,6 +89,7 @@
   .h5,
   .h6 {
     font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
   }
 
   .heading {
@@ -99,12 +104,24 @@
     .h3,
     .h4,
     div {
-      @apply truncate font-medium;
+      @apply truncate;
     }
   }
 
   a {
-    @apply hover:text-primary dark:hover:text-white;
+    --ms-link-color: var(--ms-defaults-link-color, var(--color-theme-body));
+    --ms-link-hover-color: var(--ms-defaults-link-color, var(--color-primary));
+
+    color: var(--ms-link-color);
+    transition-property:
+      background-color, border-color, color, text-decoration-color, box-shadow, opacity, fill,
+      stroke;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+
+    @variant hover {
+      color: var(--ms-link-hover-color);
+    }
   }
 
   .link {
@@ -120,7 +137,7 @@
   }
 
   p + p {
-    margin-top: --spacing(2);
+    margin-top: var(--ms-defaults-paragraph-space-y, --spacing(2));
   }
 
   b,

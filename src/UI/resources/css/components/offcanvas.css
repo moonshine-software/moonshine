@@ -1,50 +1,73 @@
 /* Offcanvas */
+
 .offcanvas {
-  @apply fixed inset-y-0 z-offcanvas
-  flex w-full
-  max-w-[320px]
-  flex-col bg-theme
-  bg-clip-padding shadow-lg
-  transition-transform
-  outline-none
-  md:max-w-[400px];
+  position: fixed;
+  inset-block: 0;
+  z-index: var(--z-offcanvas);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: min(100%, var(--ms-offcanvas-max-width, 400px));
+  background-color: var(--ms-offcanvas-bg-color, var(--color-theme));
+  background-clip: padding-box;
+  outline: none;
+}
 
-  /* Positions */
+/* Offcanvas positions */
 
-  &.offcanvas-left {
-    @apply left-0;
-  }
+.offcanvas-left {
+  left: 0;
+  border-right: var(--ms-offcanvas-border-width, 1px) solid
+    var(--ms-offcanvas-border-color, var(--color-theme-stroke));
+}
 
-  &.offcanvas-right {
-    @apply right-0;
-  }
+.offcanvas-right {
+  right: 0;
+  border-left: var(--ms-offcanvas-border-width, 1px) solid
+    var(--ms-offcanvas-border-color, var(--color-theme-stroke));
 }
 
 .offcanvas-template {
-  @apply relative z-offcanvas;
+  position: relative;
+  z-index: var(--z-offcanvas);
 }
 
+/* Offcanvas header */
+
 .offcanvas-header {
-  @apply flex justify-between gap-x-4
-  border-b theme__border
-  p-4 lg:p-6
-  compact:p-4
-  minimalistic:p-3;
+  display: flex;
+  justify-content: space-between;
+  column-gap: var(--ms-offcanvas-header-gap, --spacing(4));
+  padding-block: var(--ms-offcanvas-header-padding-y, --spacing(4));
+  padding-inline: var(--ms-offcanvas-header-padding-x, --spacing(4));
+  border-bottom: var(--ms-offcanvas-header-border-width, 1px) solid
+    var(--ms-offcanvas-header-border-color, var(--color-theme-stroke));
 }
 
 .offcanvas-title {
-  @apply self-center text-base font-semibold xs:text-sm;
+  align-self: center;
+  font-size: var(--ms-offcanvas-title-font-size, var(--text-md));
+  font-weight: var(--ms-offcanvas-title-font-weight, var(--font-weight-semibold));
+  word-break: break-word;
 }
+
+/* Offcanvas body */
 
 .offcanvas-body {
-  @apply grow overflow-y-auto
-  p-4 lg:p-6
-  compact:p-4
-  minimalistic:p-3;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-block: var(--ms-offcanvas-body-padding-y, --spacing(5));
+  padding-inline: var(--ms-offcanvas-body-padding-x, --spacing(4));
 }
 
-/* Backdrop */
+/* Offcanvas backdrop (overlay) */
 
 .offcanvas-backdrop {
-  @apply fixed inset-0 z-50 h-screen w-screen bg-black/80 backdrop-blur-xs;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background-color: --alpha(var(--ms-offcanvas-backdrop-bg-color, var(--color-black)) / 0.5);
+  backdrop-filter: blur(var(--ms-offcanvas-backdrop-blur, 4px));
 }

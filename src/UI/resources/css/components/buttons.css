@@ -1,34 +1,25 @@
 @theme {
-  --ms-btn-padding-x: --spacing(3);
-  --ms-btn-padding-y: --spacing(2);
+  --ms-btn-padding-x: --spacing(3.5);
+  --ms-btn-padding-y: --spacing(2.5);
   --ms-btn-gap-x: --spacing(2);
   --ms-btn-radius: --spacing(2);
+  --ms-btn-border-width: 0px;
   --ms-btn-border-color: var(--color-theme-stroke);
-  --ms-btn-bg-color: var(--color-gray-50);
-  --ms-btn-color: var(--color-black);
+  --ms-btn-bg-color: var(--color-theme-200);
+  --ms-btn-color: var(--color-theme-body);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
   --ms-btn-icon-size: --spacing(5);
 
-  --ms-btn-hover-border-color: var(--color-gray-300);
-  --ms-btn-hover-bg-color: var(--color-white);
-  --ms-btn-hover-color: var(--color-black);
+  --ms-btn-hover-border-color: var(--color-theme-stroke);
+  --ms-btn-hover-bg-color: var(--color-theme-300);
+  --ms-btn-hover-color: var(--color-theme-body);
 
   --ms-btn-disabled-opacity: 0.6;
 
   --ms-btn-badge-padding-x: --spacing(1.5);
-  --ms-btn-badge-padding-y: 0;
+  --ms-btn-badge-padding-y: 0px;
   --ms-btn-badge-font-size: 0.925em;
-}
-
-@variant dark {
-  --ms-btn-border-color: --alpha(var(--color-white) / 0.2);
-  --ms-btn-bg-color: --alpha(var(--color-white) / 0.1);
-  --ms-btn-color: var(--color-white);
-
-  --ms-btn-hover-border-color: --alpha(var(--color-white) / 0.2);
-  --ms-btn-hover-bg-color: --alpha(var(--color-white) / 0.15);
-  --ms-btn-hover-color: var(--color-white);
 }
 
 /* Buttons */
@@ -42,15 +33,15 @@
   min-height: var(--ms-btn-min-height, auto);
   padding: var(--ms-btn-padding-y) var(--ms-btn-padding-x);
   border-radius: var(--ms-btn-radius);
-  border: var(--ms-btn-border-width, 1px) solid var(--ms-btn-border-color);
+  border: var(--ms-btn-border-width) solid var(--ms-btn-border-color);
   background-color: var(--ms-btn-bg-color);
   color: var(--ms-btn-color);
   font-size: var(--ms-btn-font-size);
   font-weight: var(--ms-btn-font-weight);
-  white-space: nowrap;
   cursor: pointer;
   transition-property:
-    color, background-color, border-color, text-decoration-color, box-shadow, opacity, fill, stroke;
+    color, background-color, border-color, text-decoration-color, box-shadow, opacity, fill, stroke,
+    translate;
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);
 
@@ -62,8 +53,12 @@
     }
   }
 
-  &:focus {
-    box-shadow: 0 0 0 var(--ms-btn-focus-ring-size, 1.5px) var(--ms-btn-hover-bg-color);
+  /* &:focus {
+    box-shadow: 0 0 0 var(--ms-btn-focus-ring-size, 2px) --alpha(var(--ms-btn-hover-bg-color) / 0.5);
+  } */
+
+  &:active {
+    translate: 0 var(--ms-btn-active-translateY, 1px);
   }
 
   &:disabled {
@@ -82,10 +77,7 @@
     margin-left: auto;
     padding-block: var(--ms-btn-badge-padding-y);
     padding-inline: var(--ms-btn-badge-padding-x);
-    border-width: 1px;
-    border-style: solid;
-    border-color: inherit;
-    background-color: inherit;
+    background-color: var(--ms-btn-badge-bg-color, inherit);
     color: inherit;
     text-align: center;
     font-size: 1em;
@@ -127,41 +119,25 @@
 /* Button themes */
 
 .btn-primary {
-  --ms-btn-border-color: --alpha(var(--color-primary) / 0.4);
-  --ms-btn-bg-color: --alpha(var(--color-primary) / 0.3);
-  --ms-btn-color: var(--color-black);
+  --ms-btn-border-color: var(--color-primary);
+  --ms-btn-bg-color: var(--color-primary);
+  --ms-btn-color: var(--color-primary-text);
+  --ms-btn-badge-bg-color: --alpha(var(--color-black) / 0.1);
 
-  --ms-btn-hover-border-color: --alpha(var(--color-primary) / 0.5);
-  --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.4);
-
-  @variant dark {
-    --ms-btn-border-color: --alpha(var(--color-primary) / 0.6);
-    --ms-btn-bg-color: --alpha(var(--color-primary) / 0.3);
-    --ms-btn-color: var(--color-white);
-
-    --ms-btn-hover-border-color: --alpha(var(--color-primary) / 0.5);
-    --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.4);
-    --ms-btn-hover-color: var(--color-white);
-  }
+  --ms-btn-hover-border-color: var(--color-primary);
+  --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.9);
+  --ms-btn-hover-color: var(--color-primary-text);
 }
 
 .btn-secondary {
-  --ms-btn-border-color: --alpha(var(--color-secondary) / 0.4);
-  --ms-btn-bg-color: --alpha(var(--color-secondary) / 0.3);
-  --ms-btn-color: var(--color-black);
+  --ms-btn-border-color: var(--color-secondary);
+  --ms-btn-bg-color: var(--color-secondary);
+  --ms-btn-color: var(--color-secondary-text);
+  --ms-btn-badge-bg-color: --alpha(var(--color-black) / 0.1);
 
-  --ms-btn-hover-border-color: --alpha(var(--color-secondary) / 0.5);
-  --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.4);
-
-  @variant dark {
-    --ms-btn-border-color: --alpha(var(--color-secondary) / 0.6);
-    --ms-btn-bg-color: --alpha(var(--color-secondary) / 0.3);
-    --ms-btn-color: var(--color-white);
-
-    --ms-btn-hover-border-color: --alpha(var(--color-secondary) / 0.5);
-    --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.4);
-    --ms-btn-hover-color: var(--color-white);
-  }
+  --ms-btn-hover-border-color: var(--color-secondary);
+  --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.9);
+  --ms-btn-hover-color: var(--color-secondary-text);
 }
 
 .btn-success {

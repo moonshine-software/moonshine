@@ -1,64 +1,117 @@
-/* Notifications */
+/* Notifications basic */
+
 .notifications {
-  @apply relative z-notifications;
+  position: relative;
+  z-index: var(--z-notifications);
 
   .dropdown-content {
-    @apply w-full;
+    width: 100%;
   }
 }
 
-.notifications-icon {
-  @apply relative block text-slate-600 hover:cursor-pointer hover:text-secondary dark:text-theme-50
-  dark:hover:text-white;
+/* Notifications icon */
+
+.notifications-trigger {
+  --ms-icon-size: var(--ms-notifications-trigger-icon-size, --spacing(5));
+
+  position: relative;
+  display: block;
+  color: var(--ms-notifications-trigger-icon-color, var(--color-theme-body));
+  cursor: pointer;
+
+  @variant hover {
+    color: var(--ms-notifications-trigger-icon-hover-color, var(--color-primary));
+  }
 }
+
+.notifications-trigger-dot {
+  position: absolute;
+  top: 0;
+  right: --spacing(0.75);
+  z-index: 2;
+  display: inline-block;
+  width: --spacing(1.75);
+  height: --spacing(1.75);
+  border-radius: 50%;
+  background-color: var(--ms-notifications-trigger-dot-color, var(--color-red-500));
+}
+
+/* Notifications item */
 
 .notifications-item {
-  @apply relative flex gap-x-3 p-3
-  minimalistic:p-2;
+  position: relative;
+  display: flex;
+  column-gap: var(--ms-notifications-item-gap, --spacing(2));
+  padding: var(--ms-notifications-item-padding, --spacing(3));
 }
+
+/* Notifications remove button */
 
 .notifications-remove {
-  @apply absolute top-1/2 right-3 z-5 -mt-1.5 flex h-3 w-3 items-center justify-center text-gray-400 hover:text-red-600;
+  --ms-icon-size: var(--ms-notifications-remove-icon-size, --spacing(4));
 
-  > svg {
-    @apply h-4 w-4;
+  order: 9999;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-notifications-remove-size, --spacing(3));
+  height: var(--ms-notifications-remove-size, --spacing(3));
+  color: --alpha(var(--ms-notifications-remove-color, var(--color-theme-body)) / 0.5);
+
+  @variant hover {
+    color: var(--ms-notifications-remove-hover-color, var(--color-red-600));
   }
 }
+
+/* Notifications category */
 
 .notifications-category {
-  @apply inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full;
+  --ms-icon-size: var(--ms-notifications-category-icon-size, --spacing(5));
 
-  & > svg {
-    @apply h-5 w-5;
-  }
+  flex-shrink: 0;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-notifications-category-size, --spacing(5));
+  height: var(--ms-notifications-category-size, --spacing(5));
+  border-radius: 50%;
 }
+
+/* Notifications content */
 
 .notifications-content {
-  @apply flex grow flex-col gap-y-0.5 pr-4
-  compact:pr-3
-  minimalistic:pr-2;
-}
-
-.notifications-title {
-  @apply text-sm font-medium;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  row-gap: var(--ms-notifications-content-gap, --spacing(0.5));
 }
 
 .notifications-text {
-  @apply text-xs text-gray-500 dark:text-gray-400;
+  color: var(--ms-notifications-text-color, var(--color-theme-body));
+  font-size: var(--ms-notifications-text-font-size, var(--text-xs));
 }
+
+/* Notifications more link */
 
 .notifications-more {
-  @apply text-xs font-medium;
-
-  > a {
-    @apply text-secondary hover:text-primary dark:hover:text-slate-200;
-  }
+  font-size: var(--ms-notifications-more-font-size, var(--text-xs));
+  font-weight: var(--ms-notifications-more-font-weight, var(--font-weight-medium));
 }
+
+/* Notifications time */
 
 .notifications-time {
-  @apply text-[13px] text-gray-400 dark:text-gray-500;
+  color: --alpha(var(--ms-notifications-time-color, var(--color-theme-body)) / 0.5);
+  font-size: var(--ms-notifications-time-font-size, var(--text-2xs));
 }
 
+/* Notifications read button */
+
 .notifications-read {
-  @apply block text-center text-sm font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+  display: block;
+  font-size: var(--ms-notifications-read-font-size, var(--text-sm));
+  font-weight: var(--ms-notifications-read-font-weight, var(--font-weight-medium));
+  text-align: center;
 }

@@ -8,8 +8,6 @@
   padding-block: var(--ms-alert-padding-y, --spacing(2.5));
   padding-inline: var(--ms-alert-padding-x, --spacing(3));
   border-radius: var(--ms-alert-radius, var(--radius-lg));
-  border: var(--ms-alert-border-width, 1px) solid
-    var(--ms-alert-border-color, var(--color-theme-stroke));
   background-color: var(--ms-alert-bg-color, var(--color-theme-100));
   color: var(--ms-alert-color, var(--color-theme-body));
 
@@ -57,152 +55,116 @@
 /* Alert themes */
 
 .alert-primary {
-  --ms-alert-border-color: --alpha(var(--color-primary) / 0.4);
-  --ms-alert-bg-color: --alpha(var(--color-primary) / 0.3);
-  --ms-alert-color: var(--color-black);
-
-  @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-primary) / 0.6);
-    --ms-alert-bg-color: --alpha(var(--color-primary) / 0.3);
-    --ms-alert-color: var(--color-white);
-  }
+  --ms-alert-bg-color: var(--color-primary);
+  --ms-alert-color: var(--color-primary-text);
 }
 
 .alert-secondary {
-  --ms-alert-border-color: --alpha(var(--color-secondary) / 0.4);
-  --ms-alert-bg-color: --alpha(var(--color-secondary) / 0.3);
-  --ms-alert-color: var(--color-black);
-
-  @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-secondary) / 0.6);
-    --ms-alert-bg-color: --alpha(var(--color-secondary) / 0.3);
-    --ms-alert-color: var(--color-white);
-  }
+  --ms-alert-bg-color: var(--color-secondary);
+  --ms-alert-color: var(--color-secondary-text);
 }
 
 .alert-success {
-  --ms-alert-border-color: --alpha(var(--color-success) / 0.2);
   --ms-alert-bg-color: --alpha(var(--color-success) / 0.2);
   --ms-alert-color: var(--color-success-text);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-success) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-success) / 0.3);
   }
 }
 
 .alert-warning {
-  --ms-alert-border-color: --alpha(var(--color-warning) / 0.2);
   --ms-alert-bg-color: --alpha(var(--color-warning) / 0.2);
   --ms-alert-color: var(--color-warning-text);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-warning) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-warning) / 0.3);
   }
 }
 
 .alert-error {
-  --ms-alert-border-color: --alpha(var(--color-error) / 0.2);
   --ms-alert-bg-color: --alpha(var(--color-error) / 0.2);
   --ms-alert-color: var(--color-error-text);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-error) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-error) / 0.3);
   }
 }
 
 .alert-info {
-  --ms-alert-border-color: --alpha(var(--color-info) / 0.2);
   --ms-alert-bg-color: --alpha(var(--color-info) / 0.2);
   --ms-alert-color: var(--color-info-text);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-info) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-info) / 0.3);
   }
 }
 
 .alert-purple {
-  --ms-alert-border-color: var(--color-purple-200);
   --ms-alert-bg-color: var(--color-purple-100);
   --ms-alert-color: var(--color-purple-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-purple-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-purple-900) / 0.3);
     --ms-alert-color: var(--color-purple-300);
   }
 }
 
 .alert-green {
-  --ms-alert-border-color: var(--color-green-200);
   --ms-alert-bg-color: var(--color-green-100);
   --ms-alert-color: var(--color-green-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-green-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-green-900) / 0.3);
     --ms-alert-color: var(--color-green-300);
   }
 }
 
 .alert-yellow {
-  --ms-alert-border-color: var(--color-yellow-200);
   --ms-alert-bg-color: var(--color-yellow-100);
   --ms-alert-color: var(--color-yellow-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-yellow-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-yellow-900) / 0.3);
     --ms-alert-color: var(--color-yellow-300);
   }
 }
 
 .alert-pink {
-  --ms-alert-border-color: var(--color-pink-200);
   --ms-alert-bg-color: var(--color-pink-100);
   --ms-alert-color: var(--color-pink-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-pink-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-pink-900) / 0.3);
     --ms-alert-color: var(--color-pink-300);
   }
 }
 
 .alert-blue {
-  --ms-alert-border-color: var(--color-blue-200);
   --ms-alert-bg-color: var(--color-blue-100);
   --ms-alert-color: var(--color-blue-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-blue-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-blue-900) / 0.3);
     --ms-alert-color: var(--color-blue-300);
   }
 }
 
 .alert-red {
-  --ms-alert-border-color: var(--color-red-200);
   --ms-alert-bg-color: var(--color-red-100);
   --ms-alert-color: var(--color-red-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-red-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-red-900) / 0.3);
     --ms-alert-color: var(--color-red-300);
   }
 }
 
 .alert-gray {
-  --ms-alert-border-color: var(--color-gray-200);
   --ms-alert-bg-color: var(--color-gray-100);
   --ms-alert-color: var(--color-gray-800);
 
   @variant dark {
-    --ms-alert-border-color: --alpha(var(--color-gray-500) / 0.6);
     --ms-alert-bg-color: --alpha(var(--color-gray-900) / 0.3);
     --ms-alert-color: var(--color-gray-300);
   }

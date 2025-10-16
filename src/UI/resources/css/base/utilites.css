@@ -82,60 +82,6 @@
   @apply border-black/10 dark:border-white/10;
 }
 
-/* Text utilities */
-
-@utility text-xs {
-  font-size: var(--text-xs);
-}
-
-@utility text-sm {
-  font-size: var(--text-sm);
-}
-
-@utility text-base {
-  font-size: var(--text-base);
-}
-
-@utility text-md {
-  font-size: var(--text-md);
-}
-
-@utility text-lg {
-  font-size: var(--text-lg);
-}
-
-@utility text-xl {
-  font-size: var(--text-xl);
-}
-
-@utility text-2xl {
-  font-size: var(--text-2xl);
-}
-
-@utility text-3xl {
-  font-size: var(--text-3xl);
-}
-
-@utility text-4xl {
-  font-size: var(--text-4xl);
-}
-
-@utility text-5xl {
-  font-size: var(--text-5xl);
-}
-
-@utility text-6xl {
-  font-size: var(--text-6xl);
-}
-
-@utility text-7xl {
-  font-size: var(--text-7xl);
-}
-
-@utility text-8xl {
-  font-size: var(--text-8xl);
-}
-
 /* z-index */
 @utility z-dropdown {
   z-index: var(--z-dropdown);

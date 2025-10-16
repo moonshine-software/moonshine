@@ -41,7 +41,7 @@
 /* Spinner sizes */
 
 .spinner-sm {
-  --ms-spinner-size: --spacing(5);
+  --ms-spinner-size: --spacing(4.5);
   --ms-spinner-border-width: 2px;
 }
 
