@@ -1,44 +1,93 @@
+/* Carousel basic */
+
 .carousel {
-  @apply relative flex aspect-[16/9] items-center justify-center overflow-hidden;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: var(--ms-carousel-aspect-ratio, 16 / 9);
+}
 
-  &.portrait {
-    @apply aspect-[4/5];
+/* Carousel variants */
+
+.carousel.portrait {
+  --ms-carousel-aspect-ratio: 4 / 5;
+}
+
+/* Carousel slide */
+
+.carousel-slide {
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition-property: all;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @variant is_active {
+    opacity: 1;
   }
+}
 
-  .carousel-slide {
-    @apply absolute left-0 inline-block h-full w-full opacity-0 transition-all;
+.carousel-slide img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
 
-    &.active {
-      @apply opacity-100;
-    }
+/* Carousel navigation */
 
-    img {
-      @apply absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2;
-    }
+.carousel-navigation {
+  position: absolute;
+  top: 50%;
+  z-index: var(--ms-carousel-nav-z-index, 10);
+  width: 100%;
+}
+
+.carousel-navigation a {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-carousel-nav-size, --spacing(8));
+  height: var(--ms-carousel-nav-size, --spacing(8));
+  border-radius: var(--ms-carousel-nav-radius, var(--radius-full));
+  background-color: var(--ms-carousel-nav-bg-color, --alpha(var(--color-theme) / 0.75));
+  color: var(--ms-carousel-nav-color, var(--color-theme-body));
+  text-align: center;
+  transform: translateY(-50%);
+
+  @variant hover {
+    background-color: var(--ms-carousel-nav-bg-color-hover, var(--color-theme-100));
   }
+}
 
-  .carousel-navigation {
-    @apply absolute top-1/2 z-10 w-full;
+.carousel-navigation-next {
+  left: var(--ms-carousel-nav-offset, --spacing(2));
+}
 
-    a {
-      @apply absolute -translate-y-1/2 rounded-full bg-white/50 p-1 transition-all dark:bg-theme-600/50;
+.carousel-navigation-prev {
+  right: var(--ms-carousel-nav-offset, --spacing(2));
+}
 
-      &:hover,
-      &:focus {
-        @apply bg-white/80 dark:bg-theme-600/80;
-      }
-    }
+/* Carousel slide count */
 
-    .carousel-navigation-next {
-      @apply left-2;
-    }
+.carousel-slide-count {
+  position: absolute;
+  bottom: 0;
+  z-index: var(--ms-carousel-slide-count-z-index, 10);
+  width: 100%;
+  background-color: var(--ms-carousel-count-bg-color, --alpha(var(--color-white) / 0.5));
+  font-size: var(--ms-carousel-count-font-size, var(--text-2xs));
+  text-align: center;
 
-    .carousel-navigation-prev {
-      @apply right-2;
-    }
-  }
-
-  .carousel-slide-count {
-    @apply absolute bottom-0 z-10 w-full bg-white/50 text-center text-[.75rem] dark:bg-theme-600/50;
+  @variant dark {
+    --ms-carousel-count-bg-color: --alpha(var(--color-theme-600) / 0.5);
   }
 }
