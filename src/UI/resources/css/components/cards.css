@@ -131,6 +131,7 @@
   height: 100%;
   padding-block: var(--ms-report-card-padding-y, --spacing(3));
   padding-inline: var(--ms-report-card-padding-x, --spacing(3));
+  border-radius: var(--ms-report-card-radius, inherit);
   background-color: var(--ms-report-card-bg-color, var(--color-theme));
 
   &::before {

@@ -4,10 +4,7 @@
     'download' => false
 ])
 <span class="dropzone-file-icon">
-    <x-moonshine::icon
-        icon="document"
-        size="6"
-    />
+    <x-moonshine::icon icon="document" />
 </span>
 <h5 class="dropzone-file-name">
     <a

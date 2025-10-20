@@ -5,7 +5,6 @@
   --_box-padding-y: var(--ms-box-padding-y, --spacing(4));
   --_box-padding-x: var(--ms-box-padding-x, --spacing(4));
 
-  overflow: hidden;
   position: relative;
   display: block;
   margin-bottom: var(--_box-margin-bottom);
