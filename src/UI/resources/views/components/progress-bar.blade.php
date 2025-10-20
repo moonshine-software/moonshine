@@ -8,17 +8,13 @@
     <div {{ $attributes->class(['radial-progress', "radial-progress--$color" => $color, "radial-progress-$size" => $size]) }}
          style="--value: {{ $value }}"
     >
-    <span>
-        {{ $slot ?? $value . '%' }}
-    </span>
+        <span class="radial-progress-label">{{ $slot ?? $value . '%' }}</span>
     </div>
 @else
     <div {{ $attributes->class(['progress']) }}>
         <div class="progress-bar {{ $color ? "progress-bar--$color" : '' }}"
              role="progressbar"
              style="width: {{ $value }}%"
-        >
-            {{ $slot ?? $value . '%' }}
-        </div>
+        >{{ $slot ?? $value . '%' }}</div>
     </div>
 @endif

@@ -1,213 +1,223 @@
 /* Progress bars */
+
 .progress {
-  @apply flex h-4 rounded-lg bg-slate-100 dark:bg-theme-300;
+  display: flex;
+  height: var(--ms-progress-height, --spacing(4));
+  border-radius: var(--ms-progress-radius, --spacing(4));
+  background-color: var(--ms-progress-bg-color, var(--color-theme-100));
+}
 
-  .progress-bar {
-    @apply flex
-    items-center justify-center overflow-hidden
-    rounded-lg
-    bg-slate-500
-    text-xs leading-none
-    font-medium
-    theme__text_color dark:bg-gray-400;
+/* Progress bar */
 
-    /* Themes */
+.progress-bar {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ms-progress-bar-radius, inherit);
+  background-color: var(--ms-progress-bar-bg-color, var(--color-theme-300));
+  color: var(--ms-progress-bar-color, var(--color-theme-body));
+  font-size: var(--ms-progress-bar-font-size, var(--text-xs));
+  font-weight: var(--ms-progress-bar-font-weight, var(--font-weight-medium));
+  line-height: 1;
+}
 
-    &.progress-bar--primary {
-      @apply bg-primary  dark:bg-primary;
-    }
+/* Progress bar color variants */
 
-    &.progress-bar--secondary {
-      @apply bg-secondary  dark:bg-secondary;
-    }
+.progress-bar--primary {
+  --ms-progress-bar-bg-color: var(--color-primary);
+  --ms-progress-bar-color: var(--color-primary-text);
+}
 
-    &.progress-bar--success {
-      @apply bg-success text-(--color-success-text)
-      dark:bg-success;
-    }
+.progress-bar--secondary {
+  --ms-progress-bar-bg-color: var(--color-secondary);
+  --ms-progress-bar-color: var(--color-secondary-text);
+}
 
-    &.progress-bar--warning {
-      @apply bg-warning  text-(--color-warning-text)
-      dark:bg-warning;
-    }
+.progress-bar--success {
+  --ms-progress-bar-bg-color: --alpha(var(--color-success) / 0.4);
+  --ms-progress-bar-color: var(--color-success-text);
+}
 
-    &.progress-bar--error {
-      @apply bg-error text-(--color-error-text)
-      dark:bg-error;
-    }
+.progress-bar--warning {
+  --ms-progress-bar-bg-color: --alpha(var(--color-warning) / 0.4);
+  --ms-progress-bar-color: var(--color-warning-text);
+}
 
-    &.progress-bar--info {
-      @apply bg-info  text-(--color-info-text)
-      dark:bg-info;
-    }
+.progress-bar--error {
+  --ms-progress-bar-bg-color: --alpha(var(--color-error) / 0.4);
+  --ms-progress-bar-color: var(--color-error-text);
+}
 
-    &.progress-bar--purple {
-      @apply bg-purple-500 dark:bg-purple-500;
-    }
+.progress-bar--info {
+  --ms-progress-bar-bg-color: --alpha(var(--color-info) / 0.4);
+  --ms-progress-bar-color: var(--color-info-text);
+}
 
-    &.progress-bar--pink {
-      @apply bg-pink-500 dark:bg-pink-500;
-    }
+.progress-bar--purple {
+  --ms-progress-bar-bg-color: var(--color-purple-500);
+  --ms-progress-bar-color: var(--color-white);
+}
 
-    &.progress-bar--blue {
-      @apply bg-blue-500 dark:bg-blue-500;
-    }
+.progress-bar--pink {
+  --ms-progress-bar-bg-color: var(--color-pink-500);
+  --ms-progress-bar-color: var(--color-white);
+}
 
-    &.progress-bar--green {
-      @apply bg-green-500 dark:bg-green-500;
-    }
+.progress-bar--blue {
+  --ms-progress-bar-bg-color: var(--color-blue-500);
+  --ms-progress-bar-color: var(--color-white);
+}
 
-    &.progress-bar--yellow {
-      @apply bg-yellow-500 dark:bg-yellow-500;
-    }
+.progress-bar--green {
+  --ms-progress-bar-bg-color: var(--color-green-500);
+  --ms-progress-bar-color: var(--color-white);
+}
 
-    &.progress-bar--red {
-      @apply bg-red-500 dark:bg-red-500;
-    }
+.progress-bar--yellow {
+  --ms-progress-bar-bg-color: var(--color-yellow-500);
+  --ms-progress-bar-color: var(--color-white);
+}
 
-    &.progress-bar--gray {
-      @apply bg-gray-500 dark:bg-gray-500;
-    }
-  }
+.progress-bar--red {
+  --ms-progress-bar-bg-color: var(--color-red-500);
+  --ms-progress-bar-color: var(--color-white);
+}
+
+.progress-bar--gray {
+  --ms-progress-bar-bg-color: var(--color-gray-500);
+  --ms-progress-bar-color: var(--color-white);
 }
 
 /* Radial Progress bars */
+
 .radial-progress {
   --value: 0;
-  --size: 6rem;
-  --thickness: 6px;
-  box-shadow: inset 0 0 0 var(--thickness) var(--color-slate-100);
+  --size: var(--ms-radial-progress-size, --spacing(12));
+  --thickness: var(--ms-radial-progress-thickness, --spacing(1));
 
-  @variant lg {
-    --size: 9rem;
-    --thickness: 8px;
-  }
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 var(--thickness)
+    var(--ms-radial-progress-track-color, var(--color-theme-100));
+  color: var(--ms-radial-progress-color, var(--color-theme-500));
+  text-align: center;
+}
 
-  @variant dark {
-    box-shadow: inset 0 0 0 var(--thickness) var(--color-theme-200);
-  }
+/* Progress circle */
 
-  @apply relative box-content
-  flex h-(--size) w-(--size)
-  items-center justify-center
-  rounded-full bg-transparent
-  text-center text-slate-500
-  before:pointer-events-none before:absolute
-  before:inset-0
-  before:rounded-full after:pointer-events-none
-  after:absolute
-  after:rounded-full;
+.radial-progress::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness)
+      var(--thickness) no-repeat,
+    conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
+  mask: radial-gradient(
+    farthest-side,
+    rgba(0, 0, 0, 0) calc(99% - var(--thickness)),
+    #000 calc(100% - var(--thickness))
+  );
+}
 
-  /* Progress circle */
+.radial-progress::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: calc(50% - var(--thickness) / 2);
+  border-radius: 50%;
+  background-color: currentColor;
+  transform: rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--size) / 2 - 50%));
+}
 
-  &::before {
-    background:
-      radial-gradient(farthest-side, currentColor 98%, rgba(0, 0, 0, 0)) top/var(--thickness)
-        var(--thickness) no-repeat,
-      conic-gradient(currentColor calc(var(--value) * 1%), rgba(0, 0, 0, 0) 0);
-    mask: radial-gradient(
-      farthest-side,
-      rgba(0, 0, 0, 0) calc(99% - var(--thickness)),
-      #000 calc(100% - var(--thickness))
-    );
-  }
+/* Progress circle label */
 
-  &::after {
-    inset: calc(50% - var(--thickness) / 2);
-    background-color: currentColor;
-    transform: rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--size) / 2 - 50%));
-  }
+.radial-progress-label {
+  font-size: clamp(--spacing(4), calc(var(--size) / 4), calc(var(--size) / 2));
+  font-weight: var(--ms-radial-progress-label-weight, var(--font-weight-bold));
+}
 
-  /* Label */
+/* Progress circle sizes */
 
-  > span {
-    @apply font-bold;
-    font-size: clamp(0.875rem, calc(var(--size) / 4), calc(var(--size) / 2));
-  }
+.radial-progress-sm {
+  --ms-radial-progress-size: --spacing(12);
+  --ms-radial-progress-thickness: --spacing(1);
+}
 
-  /* Sizes */
+.radial-progress-md {
+  --ms-radial-progress-size: --spacing(20);
+  --ms-radial-progress-thickness: --spacing(1.25);
+}
 
-  &.radial-progress-sm {
-    --size: 3rem;
-    --thickness: 4px;
-  }
+.radial-progress-lg {
+  --ms-radial-progress-size: --spacing(28);
+  --ms-radial-progress-thickness: --spacing(1.5);
+}
 
-  &.radial-progress-md {
-    --size: 6rem;
-    --thickness: 6px;
-  }
+.radial-progress-xl {
+  --ms-radial-progress-size: --spacing(36);
+  --ms-radial-progress-thickness: --spacing(2);
+}
 
-  &.radial-progress-lg {
-    --size: 7.5rem;
-    --thickness: 6px;
+/* Progress circle themes */
 
-    @variant lg {
-      --size: 9rem;
-      --thickness: 8px;
-    }
-  }
+.radial-progress--primary {
+  --ms-radial-progress-color: var(--color-primary);
+}
 
-  &.radial-progress-xl {
-    --size: 9rem;
-    --thickness: 6px;
+.radial-progress--secondary {
+  --ms-radial-progress-color: var(--color-secondary);
+}
 
-    @variant lg {
-      --size: 12rem;
-      --thickness: 10px;
-    }
-  }
+.radial-progress--success {
+  --ms-radial-progress-color: var(--color-success-text);
+}
 
-  /* Themes */
+.radial-progress--warning {
+  --ms-radial-progress-color: var(--color-warning-text);
+}
 
-  &.radial-progress--primary {
-    @apply text-primary;
-  }
+.radial-progress--error {
+  --ms-radial-progress-color: var(--color-error-text);
+}
 
-  &.radial-progress--secondary {
-    @apply text-secondary;
-  }
+.radial-progress--info {
+  --ms-radial-progress-color: var(--color-info-text);
+}
 
-  &.radial-progress--success {
-    @apply text-success-text;
-  }
+.radial-progress--purple {
+  --ms-radial-progress-color: var(--color-purple-500);
+}
 
-  &.radial-progress--warning {
-    @apply text-warning-text;
-  }
+.radial-progress--pink {
+  --ms-radial-progress-color: var(--color-pink-500);
+}
 
-  &.radial-progress--error {
-    @apply text-error-text;
-  }
+.radial-progress--blue {
+  --ms-radial-progress-color: var(--color-blue-500);
+}
 
-  &.radial-progress--info {
-    @apply text-info-text;
-  }
+.radial-progress--green {
+  --ms-radial-progress-color: var(--color-green-500);
+}
 
-  &.radial-progress--purple {
-    @apply text-purple-500;
-  }
+.radial-progress--yellow {
+  --ms-radial-progress-color: var(--color-yellow-500);
+}
 
-  &.radial-progress--pink {
-    @apply text-pink-500;
-  }
+.radial-progress--red {
+  --ms-radial-progress-color: var(--color-red-500);
+}
 
-  &.radial-progress--blue {
-    @apply text-blue-500;
-  }
-
-  &.radial-progress--green {
-    @apply text-green-500;
-  }
-
-  &.radial-progress--yellow {
-    @apply text-yellow-500;
-  }
-
-  &.radial-progress--red {
-    @apply text-red-500;
-  }
-
-  &.radial-progress--gray {
-    @apply text-gray-500;
-  }
+.radial-progress--gray {
+  --ms-radial-progress-color: var(--color-gray-500);
 }
