@@ -14,7 +14,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:layout')]
 class MakeLayoutCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:layout {className?} {--compact} {--full} {--default} {--dir=} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:layout {className?} {--default} {--dir=} {--base-dir=} {--base-namespace=}';
 
     protected $description = 'Create layout';
 
@@ -36,9 +36,7 @@ class MakeLayoutCommand extends MoonShineCommand
 
         $this->makeDir($stubsPath->dir);
 
-        $compact = ! $this->option('full') && ($this->option('compact') || confirm('Want to use a minimalist theme?', false));
-
-        $extendClassName = $compact ? 'CompactLayout' : 'AppLayout';
+        $extendClassName = 'AppLayout';
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
 
         $this->copyStub('Layout', $stubsPath->getPath(), [
