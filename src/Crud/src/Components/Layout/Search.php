@@ -123,6 +123,14 @@ final class Search extends MoonShineComponent
 
                     ActionButton::make('')
                         ->rawMode()
+                        ->customAttributes([
+                            'type' => 'submit',
+                        ])
+                        ->class('search-form-submit')
+                        ->icon('magnifying-glass'),
+
+                    ActionButton::make('')
+                        ->rawMode()
                         ->onClick(fn (): string => 'searchValue = ""; $refs.searchInput.value = ""; $refs.searchForm.submit()')
                         ->class('search-form-clear')
                         ->xShow('searchValue', '!=', '')
@@ -130,17 +138,26 @@ final class Search extends MoonShineComponent
                             'type' => 'button',
                         ])
                         ->icon('x-mark'),
-
-                    ActionButton::make('')
-                        ->rawMode()
+                    
+                    Div::make(['
+                            <kbd :class="{ \'search-button-key--pressed\': isCtrlPressed }" class="search-button-key">^</kbd>
+                            <kbd :class="{ \'search-button-key--pressed\': isKPressed }" class="search-button-key">K</kbd>
+                        '])
+                        ->class('search-button-keys')
+                        ->xShow('searchValue', '==', '')
                         ->customAttributes([
-                            'type' => 'submit',
-                        ])
-                        ->class('search-form-submit')
-                        ->icon('magnifying-glass'),
+                            '@keydown.ctrl.window' => 'isCtrlPressed = true',
+                            '@keyup.ctrl.window' => 'isCtrlPressed = false',
+                            '@keydown.k.window' => 'isKPressed = true; if (isCtrlPressed) { $refs.searchInput.focus(); $event.preventDefault() }',
+                            '@keyup.k.window' => 'isKPressed = false',
+                        ]),
                 ])
                     ->style('display: inline')
-                    ->xData(['searchValue' => $value]),
+                    ->xData([
+                        'searchValue' => $value,
+                        'isCtrlPressed' => false,
+                        'isKPressed' => false,
+                    ]),
             ])
             ->hideSubmit();
 

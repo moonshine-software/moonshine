@@ -130,6 +130,11 @@
 
   button {
     cursor: pointer;
+    transition-property:
+      background-color, border-color, color, text-decoration-color, box-shadow, opacity, fill,
+      stroke;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
 
     @variant disabled {
       cursor: default;
