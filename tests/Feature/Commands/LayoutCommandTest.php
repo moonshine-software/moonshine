@@ -31,7 +31,6 @@ final class LayoutCommandTest extends TestCase
         $this->artisan(MakeLayoutCommand::class, [
             'className' => $name,
         ])
-            ->expectsQuestion('Want to use a minimalist theme?', 'no')
             ->expectsQuestion('Use the default template in the system?', 'yes')
             ->expectsOutputToContain(
                 "$name was created"
@@ -60,7 +59,6 @@ final class LayoutCommandTest extends TestCase
         $this->artisan(MakeLayoutCommand::class, [
             'className' => "$dir/$name",
         ])
-            ->expectsQuestion('Want to use a minimalist theme?', 'no')
             ->expectsQuestion('Use the default template in the system?', 'yes')
             ->expectsOutputToContain(
                 "$name was created"
