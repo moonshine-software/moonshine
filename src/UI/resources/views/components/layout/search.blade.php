@@ -27,10 +27,7 @@
         <x-moonshine::popover x-show="isPopover" title="" placement="auto">
             <x-slot:trigger>
                 <button class="flex justify-center w-full search-form-show">
-                    <x-moonshine::icon
-                        icon="magnifying-glass"
-                        size="6"
-                    />
+                    <x-moonshine::icon icon="magnifying-glass" />
                 </button>
             </x-slot:trigger>
 
