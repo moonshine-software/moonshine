@@ -1,65 +1,98 @@
 /* Tabs */
+
 .tabs {
   .tabs-list {
-    @apply flex gap-2 overflow-x-auto border-b border-gray-200 dark:border-theme-200;
+    overflow-x: auto;
+    display: flex;
+    border-bottom: var(--ms-tabs-border-width, 1px) solid
+      var(--ms-tabs-border-color, var(--color-theme-stroke));
   }
 
   .tabs-title {
-    @apply mr-2 flex w-full gap-2 text-primary;
+    display: flex;
+    width: 100%;
+    gap: var(--ms-tabs-gap, --spacing(2));
+    margin-right: var(--ms-tabs-gap, --spacing(2));
+    color: var(--color-primary);
   }
 
   .tabs-button {
-    @apply flex
-    h-10 items-center
-    gap-1.5
-    border-b
-    border-b-transparent px-2
-    text-xs font-medium whitespace-nowrap text-gray-400
-    hover:border-gray-300 hover:text-gray-700 sm:h-12 sm:text-sm
-    dark:text-slate-400
-    dark:hover:border-gray-500 dark:hover:text-slate-300
-    compact:h-10
-    minimalistic:h-8;
+    --ms-icon-size: var(--ms-tabs-button-icon-size, --spacing(5));
 
-    &._is-active {
-      @apply pointer-events-none
-      border-primary text-primary
-      dark:border-secondary dark:text-secondary;
+    display: inline-flex;
+    align-items: center;
+    column-gap: var(--ms-tabs-button-gap, --spacing(1.5));
+    height: var(--ms-tabs-button-height, --spacing(12));
+    padding-inline: var(--ms-tabs-button-padding-x, --spacing(2));
+    border-bottom: var(--ms-tabs-button-border-width, 1px) solid
+      var(--ms-tabs-button-border-color, transparent);
+    color: var(--ms-tabs-button-color, --alpha(var(--color-theme-body) / 0.5));
+    font-size: var(--ms-tabs-button-font-size, var(--text-sm));
+    font-weight: var(--ms-tabs-button-font-weight, var(--font-weight-medium));
+    white-space: nowrap;
+    cursor: pointer;
+
+    @variant hover {
+      &:not(._is-active) {
+        border-color: var(--ms-tabs-button-hover-border-color, var(--color-theme-stroke));
+        color: var(--ms-tabs-button-hover-color, var(--color-theme-body));
+      }
     }
 
-    > svg {
-      @apply h-4 w-4 sm:h-5 sm:w-5;
+    @variant is_active {
+      pointer-events: none;
+      border-color: var(--ms-tabs-button-active-border-color, var(--color-primary));
+      color: var(--ms-tabs-button-active-color, var(--color-primary));
     }
   }
 
   .tabs-content {
-    @apply -mx-1 mt-6 overflow-x-clip
-    px-1
-    compact:mt-4
-    minimalistic:mt-2;
+    margin-top: var(--ms-tabs-content-margin-top, --spacing(6));
+    margin-inline: calc(var(--ms-tabs-gap, --spacing(2)) * -0.5);
+    padding-inline: calc(var(--ms-tabs-gap, --spacing(2)) * 0.5);
+    overflow-x: clip;
   }
+}
 
-  .tabs-vertical {
-    @apply flex gap-3;
+/* Vertical tabs */
 
-    > .tabs-list {
-      @apply flex min-h-max min-w-max flex-col border-r border-b-0;
+.tabs-vertical {
+  display: flex;
+  gap: calc(var(--ms-tabs-gap, --spacing(2)) * 1.5);
 
-      .tabs-button {
-        @apply w-full
-        border-r border-b-0 border-r-transparent text-gray-400
-        hover:border-gray-300 hover:text-gray-700 dark:text-slate-400 dark:hover:border-gray-500 dark:hover:text-slate-300;
+  > .tabs-list {
+    display: flex;
+    flex-direction: column;
+    min-height: max-content;
+    min-width: max-content;
+    border-right: var(--ms-tabs-border-width, 1px) solid
+      var(--ms-tabs-border-color, var(--color-theme-stroke));
+    border-bottom: 0;
 
-        &._is-active {
-          @apply pointer-events-none
-          border-primary text-primary
-          dark:border-secondary dark:text-secondary;
+    .tabs-button {
+      width: 100%;
+      padding-left: 0;
+      padding-right: var(--ms-tabs-button-padding-right, --spacing(4));
+      border-right: var(--ms-tabs-button-border-width, 1px) solid
+        var(--ms-tabs-button-border-color, transparent);
+      border-bottom: 0;
+
+      @variant hover {
+        &:not(._is-active) {
+          border-color: var(--ms-tabs-button-hover-border-color, var(--color-theme-stroke));
+          color: var(--ms-tabs-button-hover-color, var(--color-theme-body));
         }
       }
-    }
 
-    > .tabs-content {
-      @apply mt-0 grow;
+      @variant is_active {
+        border-color: var(--ms-tabs-button-active-border-color, var(--color-primary));
+        color: var(--ms-tabs-button-active-color, var(--color-primary));
+      }
     }
+  }
+
+  > .tabs-content {
+    margin-top: 0;
+    flex-grow: 1;
   }
 }
