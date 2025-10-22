@@ -5,154 +5,221 @@
   --ts-pr-clear-button: 1em;
 }
 
+/* Tom Select base styles */
+
 .ts-dropdown,
 .ts-control,
 .ts-control input {
-  @apply base__default theme__border
-  text-xs;
+  /* padding: var(--ms-base-padding-y, --spacing(2.5)) var(--ms-base-padding-x, --spacing(3.5)); */
+  border-radius: var(--ms-base-radius, --spacing(2));
+  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  background-color: var(--ms-base-bg-color, var(--color-theme));
+  color: var(--ms-base-color, var(--color-theme-body));
+  font-size: var(--text-xs);
 }
 
 .ts-wrapper.single.input-active .ts-control,
 .ts-wrapper.multi.input-active .ts-control {
-  @apply bg-inherit text-inherit;
+  background-color: inherit;
+  color: inherit;
+
+  .clear-button {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0;
+    padding-block: 0;
+    padding-inline: --spacing(1);
+    color: var(--ms-clear-button-color, var(--color-theme-body));
+    font-size: var(--text-md);
+  }
 }
 
+/* Select wrapper */
+
 .ts-wrapper {
-  &:after {
+  &::after {
     content: '';
-    -webkit-print-color-adjust: exact;
+    position: absolute;
+    top: 50%;
+    right: var(--ms-select-caret-right, --spacing(2));
+    z-index: 1;
+    width: --spacing(4);
+    height: --spacing(4);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-
-    @apply absolute top-[calc(50%_-_8px)]
-    right-2
-    z-[1]
-    h-[8px] w-[16px]
-    translate-y-1/2
-    transition-transform;
+    background-size: 1.25em 1.25em;
+    transform: translateY(-50%);
+    transition-property: transform;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+    -webkit-print-color-adjust: exact;
   }
 
-  &.dropdown-active:after {
-    @apply rotate-180;
+  &.dropdown-active::after {
+    transform: translateY(-50%) scaleY(-1);
   }
 
   &.multi {
-    @apply h-fit;
+    height: fit-content;
 
     .ts-control {
-      @apply flex gap-1;
+      display: flex;
+      gap: var(--ms-select-multi-gap, --spacing(1));
 
       .item {
-        @apply my-0
-        rounded-md
-        bg-primary
-        px-2
-        text-white;
+        margin-block: 0;
+        padding-inline: var(--ms-select-item-padding-x, --spacing(2));
+        border-radius: var(--ms-select-item-radius, --spacing(1.5));
+        background-color: var(--ms-select-item-bg-color, var(--color-primary));
+        color: var(--ms-select-item-color, var(--color-white));
 
         &.with-image {
-          @apply px-1 py-1;
+          padding: var(--ms-select-item-image-padding, --spacing(1));
         }
       }
     }
   }
 }
 
+/* Full width select */
+
 .full .ts-control {
-  @apply flex
-  items-center base__default
-  theme__border;
+  display: flex;
+  align-items: center;
+  padding: var(--ms-base-padding-y, --spacing(2.5)) var(--ms-base-padding-x, --spacing(3.5));
+  border-radius: var(--ms-base-radius, --spacing(2));
+  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
 }
 
+/* Dropdown */
+
 .ts-dropdown {
+  margin-block: var(--ms-dropdown-margin-y, calc(--spacing(0.5) * -1));
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  border-radius: 0 0 var(--ms-base-radius, --spacing(2)) var(--ms-base-radius, --spacing(2));
+  box-shadow: none;
+
   .optgroup-header {
-    @apply border-b
-    theme__border bg-transparent
-    px-4 py-2
-    text-inherit
-    opacity-70 dark:text-slate-100;
+    padding: var(--ms-optgroup-padding-y, --spacing(2)) var(--ms-optgroup-padding-x, --spacing(4));
+    border-bottom: 1px solid var(--ms-theme-border-color, var(--color-theme-stroke));
+    background-color: transparent;
+    color: inherit;
+    opacity: 0.7;
+
+    @variant dark {
+      color: var(--color-slate-100);
+    }
   }
 }
+
+/* Control */
+
+.ts-control {
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  border-radius: var(--ms-base-radius, --spacing(2));
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.ts-control input {
+  margin: 0;
+  padding-right: var(--ms-control-input-padding-right, --spacing(5));
+  font-size: var(--text-xs);
+}
+
+/* Dropdown options */
+
+.ts-dropdown [data-selectable].option,
+.ts-dropdown .no-results {
+  padding-block: var(--ms-dropdown-option-padding-y, --spacing(2));
+
+  @variant dark {
+    color: var(--color-slate-200);
+  }
+}
+
+.ts-dropdown .option {
+  background-color: var(--ms-dropdown-option-bg-color, var(--color-theme));
+}
+
+.ts-dropdown .create:hover,
+.ts-dropdown .option:hover,
+.ts-dropdown .active,
+.ts-dropdown .selected {
+  background-color: var(--ms-dropdown-option-hover-bg-color, var(--color-theme-200));
+  color: var(--ms-dropdown-option-hover-color, var(--color-theme-body));
+}
+
+.ts-dropdown .spinner {
+  width: auto;
+  height: auto;
+}
+
+.ts-dropdown .spinner::after {
+  display: inline-block;
+  width: var(--ms-spinner-size, --spacing(5));
+  height: var(--ms-spinner-size, --spacing(5));
+  margin: 0;
+  padding: 0;
+  border: var(--ms-theme-border-width, 2px) solid
+    var(--ms-theme-border-color, var(--color-theme-stroke));
+}
+
+/* Items */
+
+.item {
+  color: var(--ms-item-color, var(--color-slate-600));
+
+  @variant dark {
+    color: var(--ms-item-color, var(--color-slate-400));
+  }
+
+  &.with-image {
+    display: flex;
+    align-items: center;
+    gap: var(--ms-item-image-gap, --spacing(3));
+  }
+}
+
+/* Clear button plugin */
 
 .plugin-clear_button {
   .selected-empty-value .clear-button {
-    @apply hidden
-    hover:hidden;
+    display: none;
+
+    @variant hover {
+      display: none;
+    }
   }
 
   .clear-button {
-    @apply absolute
-    top-[45%]
-    mr-0
-    cursor-pointer
-    bg-transparent
-    text-md text-gray-500
-    opacity-0
-    transition-opacity
-    duration-300;
+    position: absolute;
+    top: 50%;
+    margin-right: 0;
+    background-color: transparent;
+    opacity: 0;
+    cursor: pointer;
+    transition-property: opacity;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
   }
 
   &.focus.has-items .clear-button,
   &:not(.disabled):hover.has-items .clear-button {
-    @apply opacity-100;
+    opacity: 1;
   }
 }
 
 .multi.plugin-clear_button {
   .clear-button {
     right: 25px;
-  }
-}
-
-.ts-control {
-  @apply w-full
-  rounded-md
-  border theme__border
-  focus:outline-none;
-}
-
-.ts-control input {
-  @apply m-0 pr-5 text-xs;
-}
-
-.ts-dropdown {
-  @apply -my-0.5
-  border
-  theme__border
-  shadow-none
-  rounded-b-md;
-}
-
-.ts-dropdown [data-selectable].option,
-.ts-dropdown .no-results {
-  @apply py-2
-  dark:text-slate-200;
-}
-
-.ts-dropdown .option {
-  @apply bg-theme;
-}
-.ts-dropdown .create:hover,
-.ts-dropdown .option:hover,
-.ts-dropdown .active,
-.ts-dropdown .selected {
-  @apply bg-theme-400
-  text-theme-body;
-}
-
-.ts-dropdown .spinner {
-  @apply h-auto w-auto;
-}
-
-.ts-dropdown .spinner:after {
-  @apply my-0 inline-block h-5 w-5 border-2 theme__border p-0;
-}
-
-.item {
-  @apply text-slate-600 dark:text-slate-400;
-
-  &.with-image {
-    @apply flex items-center gap-3;
   }
 }
