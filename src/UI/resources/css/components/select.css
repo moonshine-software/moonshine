@@ -72,7 +72,7 @@
         padding-inline: var(--ms-select-item-padding-x, --spacing(2));
         border-radius: var(--ms-select-item-radius, --spacing(1.5));
         background-color: var(--ms-select-item-bg-color, var(--color-primary));
-        color: var(--ms-select-item-color, var(--color-white));
+        color: var(--ms-select-item-color, var(--color-primary-text));
 
         &.with-image {
           padding: var(--ms-select-item-image-padding, --spacing(1));
@@ -87,9 +87,10 @@
 .full .ts-control {
   display: flex;
   align-items: center;
-  padding: var(--ms-base-padding-y, --spacing(2.5)) var(--ms-base-padding-x, --spacing(3.5));
-  border-radius: var(--ms-base-radius, --spacing(2));
-  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  padding: --spacing(2.5) --spacing(3.5);
+  border-radius: --spacing(2);
+  border-color: var(--color-theme-stroke);
+  background-color: var(--color-theme);
 }
 
 /* Dropdown */
