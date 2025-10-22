@@ -121,7 +121,7 @@
   border
   theme__border
   shadow-none
-  not-minimalistic:rounded-b-md;
+  rounded-b-md;
 }
 
 .ts-dropdown [data-selectable].option,

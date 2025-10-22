@@ -53,8 +53,7 @@ input {
   @apply block min-h-10 w-full rounded-md
   base__default
   p-2
-  base__placeholder
-  minimalistic:p-1;
+  base__placeholder;
 
   &:focus {
     @apply base__focus;
@@ -525,7 +524,7 @@ input {
     @apply absolute
     top-1/2
     left-1
-    h-8 w-8 -translate-y-1/2 overflow-hidden minimalistic:left-0;
+    h-8 w-8 -translate-y-1/2 overflow-hidden;
 
     input[type='color'] {
       @apply absolute -top-2 -left-2 m-0 h-16 w-16 cursor-pointer p-0;
@@ -545,8 +544,7 @@ input {
     @apply flex-row items-center justify-items-center md:flex-nowrap;
 
     [type='date'] {
-      @apply p-1
-      minimalistic:max-sm:px-[1px];
+      @apply p-1;
     }
 
     & > label + div {
