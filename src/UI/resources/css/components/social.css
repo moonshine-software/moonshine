@@ -1,30 +1,58 @@
 /* Social */
-.social {
-  .social-divider {
-    @apply mb-4
-    flex w-full
-    items-center
-    gap-x-2
-    before:h-[1px] before:min-w-[6px]
-    before:grow before:bg-gray-200
-    after:h-[1px] after:min-w-[6px]
-    after:grow after:bg-gray-200 dark:before:bg-theme-200 dark:after:bg-theme-200;
-  }
 
-  .social-list {
-    @apply flex flex-wrap items-center justify-center gap-2 xs:gap-3;
-  }
+/* Social divider */
 
-  .social-item {
-    @apply inline-flex h-8 w-8
-    items-center
-    justify-center
-    rounded-full
-    bg-gray-200 text-gray-700
-    hover:bg-secondary hover:text-white dark:bg-slate-400 dark:hover:bg-secondary;
+.social-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--ms-social-divider-margin, --spacing(4));
+  gap: var(--ms-social-divider-gap, --spacing(2));
 
-    > svg {
-      @apply h-3.5 w-3.5 fill-current stroke-current;
-    }
+  &::before,
+  &::after {
+    content: '';
+    flex-grow: 1;
+    min-width: 6px;
+    height: 1px;
+    background-color: var(--ms-social-divider-line-color, var(--color-theme-stroke));
   }
+}
+
+/* Social list */
+
+.social-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ms-social-list-gap, --spacing(2));
+}
+
+/* Social item */
+
+.social-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-social-item-size, --spacing(8));
+  height: var(--ms-social-item-size, --spacing(8));
+  border-radius: var(--ms-social-item-radius, 50%);
+  background-color: var(--ms-social-item-bg-color, var(--color-theme));
+  color: var(--ms-social-item-color, var(--color-theme-body));
+  transition-property: color, background-color;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @variant hover {
+    background-color: var(--ms-social-item-bg-color-hover, var(--color-primary));
+    color: var(--ms-social-item-color-hover, var(--color-primary-text));
+  }
+}
+
+.social-item > svg {
+  width: var(--ms-social-item-icon-size, --spacing(4));
+  height: var(--ms-social-item-icon-size, --spacing(4));
+  fill: currentColor;
+  stroke: currentColor;
 }
