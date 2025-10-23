@@ -21,7 +21,26 @@
                     'toast-warning': toast.type === 'warning',
                     'toast-error': toast.type === 'error',
                 }"
-            x-text="toast.text"
-        ></div>
+        >
+            <template x-if="toast.type === 'success'">
+                <x-moonshine::icon icon="check-circle" />
+            </template>
+            <template x-if="toast.type === 'error'">
+                <x-moonshine::icon icon="x-circle" />
+            </template>
+            <template x-if="toast.type === 'warning'">
+                <x-moonshine::icon icon="exclamation-triangle" />
+            </template>
+            <template x-if="toast.type === 'info'">
+                <x-moonshine::icon icon="information-circle" />
+            </template>
+            <template x-if="toast.type === 'primary'">
+                <x-moonshine::icon icon="bell" />
+            </template>
+            <template x-if="toast.type === 'secondary'">
+                <x-moonshine::icon icon="bell" />
+            </template>
+            <p x-text="toast.text"></p>
+        </div>
     </template>
 </div>

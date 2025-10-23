@@ -53,8 +53,6 @@
 @source '@moonshine-resources/../**/*.php';
 
 @custom-variant dark (&:where(.dark, .dark *));
-@custom-variant compact (&:where(.theme-compact, .theme-compact *));
-@custom-variant minimalistic (&:where(.theme-minimalistic, .theme-minimalistic *));
 @custom-variant is_active (&:where(&._is-active));
 @custom-variant hover {
   @media (hover: hover) {
