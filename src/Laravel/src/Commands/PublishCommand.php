@@ -153,7 +153,7 @@ class PublishCommand extends MoonShineCommand
             self::addResourceOrPageToProviderFile($name, namespace: $targetNamespace);
         }
 
-        $replaceResources = function ($fullClassPath): void {
+        $replaceResources = function (string $fullClassPath): void {
             $this->replaceInFile(
                 MoonShineUserResource::class,
                 "App\MoonShine\Resources\MoonShineUser\MoonShineUserResource",

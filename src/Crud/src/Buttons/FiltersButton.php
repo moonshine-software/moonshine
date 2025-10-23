@@ -48,7 +48,7 @@ final class FiltersButton
         if (is_iterable($value) && filled($value)) {
             /** @var iterable<array-key, mixed> $value */
             return Collection::make($value)
-                ->filter(fn (mixed $v): bool => $this->withoutEmptyFilter($v))
+                ->filter($this->withoutEmptyFilter(...))
                 ->isNotEmpty();
         }
 

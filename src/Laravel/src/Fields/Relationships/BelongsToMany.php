@@ -415,7 +415,7 @@ class BelongsToMany extends ModelRelationField implements
         $oldPivot = $this->getCore()->getRequest()->getOld($this->getPivotName());
 
         return Collection::make($old)
-            ->map(fn ($key): ?Model => clone $this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()))
+            ->map(fn (int|string|null $key): ?Model => clone $this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()))
             ->values();
     }
 
@@ -424,7 +424,7 @@ class BelongsToMany extends ModelRelationField implements
         if (\is_array($this->toValue())) {
             $this->setValue(
                 Collection::make($this->toValue())
-                    ->map(fn ($key): ?Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
+                    ->map(fn (int|string|null $key): ?Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
                     ->values()
             );
         }
@@ -651,7 +651,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $casted = $this->getRelatedModel();
         $value = Collection::make($value)
-            ->map(fn ($key): ?Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
+            ->map(fn (int|string|null $key): ?Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
             ->values();
 
         $casted?->setRelation($this->getRelationName(), $value);

@@ -494,7 +494,7 @@ final class FormBuilder extends MoonShineComponent implements
         $fields = $this->getPreparedFields();
 
         if ($this->hasAdditionalFields()) {
-            $this->getAdditionalFields()->each(static fn ($field) => $fields->push($field));
+            $this->getAdditionalFields()->each($fields->push(...));
         }
 
         $onlyFields = $fields->onlyFields();

@@ -63,7 +63,7 @@ trait WithIcon
             return '';
         };
 
-        return (string) $rescueIcon(static fn () => $icon->render());
+        return (string) $rescueIcon($icon->render(...));
     }
 
     public function isCustomIcon(): bool
