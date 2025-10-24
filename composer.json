@@ -42,7 +42,7 @@
         "orchestra/testbench": "^9.9",
         "pestphp/pest": "^3",
         "pestphp/pest-plugin-laravel": "^3",
-        "rector/rector": "~2.1",
+        "rector/rector": "~2.1.0",
         "symplify/monorepo-builder": "^11.2"
     },
     "replace": {

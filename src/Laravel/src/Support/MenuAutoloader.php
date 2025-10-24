@@ -51,9 +51,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
     /**
      * @param  MoonShine  $core
      */
-    public function __construct(private CoreContract $core)
-    {
-    }
+    public function __construct(private CoreContract $core) {}
 
     /**
      * @return PSMenu
@@ -94,7 +92,13 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
 
                 $items[$label] = [
                     'position' => $position,
-                    'group' => ['class' => $namespace, 'label' => $label, 'icon' => $icon, 'canSee' => $canSee?->method, 'translatable' => $group?->translatable],
+                    'group' => [
+                        'class' => $namespace,
+                        'label' => $label,
+                        'icon' => $icon,
+                        'canSee' => $canSee?->method,
+                        'translatable' => $group?->translatable,
+                    ],
                     'items' => $existingItems->all(),
                 ];
 
@@ -108,23 +112,26 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
             $resolveItems($item, $items);
         }
 
-        $excludePages = static fn (PageContract $page): bool => ! $page instanceof CrudPageContract;
+        $excludePages = static fn(PageContract $page): bool => ! $page instanceof CrudPageContract;
 
         foreach ($this->core->getPages()->filter($excludePages)->toArray() as $item) {
             $resolveItems($item, $items);
         }
 
-        $sort = static fn ($items) => (new Collection($items))->values()
-            ->sortBy(fn ($item): mixed => $item['position'] ?? INF)
+        $sort = static fn($items)
+            => (new Collection($items))
+            ->values()
+            ->sortBy(fn($item): mixed => $item['position'] ?? INF)
             ->values();
 
-        $result = $sort($items)->map(function (array $item) use ($sort): array {
+        $result = $sort($items)->map(function ($item) use ($sort) {
             if (isset($item['group'])) {
                 $item['items'] = $sort($item['items'])->all();
             }
 
             return $item;
-        });
+        },
+        );
 
         return $result->all();
     }
@@ -155,7 +162,10 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
                     $group['translatable'] ? __($group['label']) : $group['label'],
                     $this->generateMenu($item['items']),
                     $group['icon'],
-                )->when($group['canSee'], fn (MenuGroup $ctx): MenuGroup => $ctx->canSee($this->canSee($group['class'], $group['canSee'])));
+                )->when(
+                    $group['canSee'],
+                    fn(MenuGroup $ctx): MenuGroup => $ctx->canSee($this->canSee($group['class'], $group['canSee'])),
+                );
 
                 continue;
             }
@@ -175,7 +185,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
         $label = $resolved->getTitle();
 
         return MenuItem::make($label, $filler)
-            ->when($canSee, fn (MenuItem $item): MenuItem => $item->canSee($this->canSee($resolved, $canSee)));
+            ->when($canSee, fn(MenuItem $item): MenuItem => $item->canSee($this->canSee($resolved, $canSee)));
     }
 
     /**
@@ -187,6 +197,6 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
             $filler = app($filler);
         }
 
-        return static fn () => $filler->{$method}();
+        return static fn() => $filler->{$method}();
     }
 }
