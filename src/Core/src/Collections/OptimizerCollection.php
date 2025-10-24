@@ -115,7 +115,7 @@ final class OptimizerCollection implements OptimizerCollectionContract
                         && $this->isNotAbstract($class))
             )
             ->collapse()
-            ->groupBy(fn (string $class): string => $this->getGroupName($class))
+            ->groupBy($this->getGroupName(...))
             ->toArray();
     }
 

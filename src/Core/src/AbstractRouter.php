@@ -89,7 +89,7 @@ abstract class AbstractRouter implements RouterContract, Stringable
                 $this->params,
                 $params
             ),
-            static fn ($value) => filled($value)
+            filled(...)
         );
     }
 

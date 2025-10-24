@@ -74,7 +74,7 @@ class MenuItem extends MenuElement
 
     protected function resolveFiller(MenuFillerContract $filler): void
     {
-        $this->setUrl(static fn (): string => $filler->getUrl());
+        $this->setUrl($filler->getUrl(...));
 
         $icon = $this->getCore()->getAttributes()->get(
             default: fn (): ?string => Attributes::for($filler, Icon::class)->first('icon'),
@@ -84,7 +84,7 @@ class MenuItem extends MenuElement
         );
 
         if (method_exists($filler, 'getBadge')) {
-            $this->badge(static fn () => $filler->getBadge());
+            $this->badge($filler->getBadge(...));
         }
 
         if (! \is_null($icon) && $this->getIconValue() === '') {

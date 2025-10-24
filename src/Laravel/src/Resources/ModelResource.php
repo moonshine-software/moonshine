@@ -154,7 +154,7 @@ abstract class ModelResource extends CrudResource implements
             ! $field->isToOne() ?: $relationItems = collect([$relationItems]);
 
             $relationItems->each(
-                static fn (mixed $relationItem): mixed => $field->afterDestroy($relationItem)
+                $field->afterDestroy(...)
             );
         };
 

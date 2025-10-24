@@ -59,7 +59,7 @@ trait ResourceCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
-            ], static fn ($value) => filled($value)),
+            ], filled(...)),
             fragment: $fragment
         );
     }
@@ -74,7 +74,7 @@ trait ResourceCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
-            ], static fn ($value) => filled($value)),
+            ], filled(...)),
             fragment: $fragment
         );
     }
@@ -97,7 +97,7 @@ trait ResourceCrudRouter
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
-            ], static fn ($value) => filled($value)),
+            ], filled(...)),
             fragment: $fragment
         );
     }

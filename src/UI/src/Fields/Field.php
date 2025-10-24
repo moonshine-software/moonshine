@@ -226,7 +226,7 @@ abstract class Field extends FormElement implements FieldContract
             params: array_filter([
                 'resourceItem' => $data?->getKey(),
                 ...value($params, $data?->getOriginal()),
-            ], static fn ($value) => filled($value)),
+            ], filled(...)),
             page: $page,
             resource: $resource,
         );

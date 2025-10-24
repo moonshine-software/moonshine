@@ -278,7 +278,7 @@ class ActionButton extends MoonShineComponent implements
             params: array_filter([
                 'resourceItem' => $casted?->getKey(),
                 ...value($params, $casted?->getOriginal()),
-            ], static fn ($value) => filled($value)),
+            ], filled(...)),
             page: $page,
             resource: $resource,
         );
@@ -395,7 +395,7 @@ class ActionButton extends MoonShineComponent implements
 
     public function purgeAsyncTap(): bool
     {
-        return tap($this->isAsync(), fn () => $this->purgeAsync());
+        return tap($this->isAsync(), $this->purgeAsync(...));
     }
 
     /*
