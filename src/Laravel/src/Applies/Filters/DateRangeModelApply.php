@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
-use DateTimeInterface;
-use Carbon\WeekDay;
 use Carbon\Month;
+use Carbon\WeekDay;
 use Closure;
+use DateTimeInterface;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use MoonShine\Contracts\UI\ApplyContract;
