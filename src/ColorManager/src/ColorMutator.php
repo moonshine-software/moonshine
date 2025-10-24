@@ -257,14 +257,14 @@ final class ColorMutator
             $channels = preg_split('/\s*,\s*/', trim($matches[1]));
 
             if (\is_array($channels) && \count($channels) >= 3) {
-                return array_map('floatval', $channels);
+                return array_map(floatval(...), $channels);
             }
         }
 
         $channels = preg_split('/[\s,]+/', trim($value));
 
         if (\is_array($channels) && \count($channels) >= 3) {
-            return array_map('floatval', $channels);
+            return array_map(floatval(...), $channels);
         }
 
         return false;
@@ -286,7 +286,7 @@ final class ColorMutator
         // Check for alpha channel (format: "l c h / alpha")
         $alpha = null;
         if (str_contains($content, '/')) {
-            [$colorPart, $alphaPart] = array_map('trim', explode('/', $content, 2));
+            [$colorPart, $alphaPart] = array_map(trim(...), explode('/', $content, 2));
             $content = $colorPart;
 
             // Parse alpha: can be "10%" or "0.1"
