@@ -30,7 +30,7 @@ use MoonShine\UI\Traits\WithLabel;
  * @template TData of mixed = mixed
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
- * @method static static make(Closure|string $label = '', Closure|string $url = '#', ?DataWrapperContract $data = null)
+ * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null)
  *
  * @implements ActionButtonContract<TData, TWrapper, Modal, OffCanvas>
  */
@@ -79,7 +79,7 @@ class ActionButton extends MoonShineComponent implements
 
     public function __construct(
         Closure|string $label = '',
-        protected Closure|string $url = '#',
+        protected Closure|string $url = 'javascript:void(0);',
         /** @param null|TWrapper $data */
         protected ?DataWrapperContract $data = null,
     ) {

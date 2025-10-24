@@ -71,7 +71,7 @@
                                     <ul class="dropdown-menu">
                                         <template x-for="(item, key) in match">
                                             <li class="dropdown-item">
-                                                <a href="#"
+                                                <a href="javascript:void(0);"
                                                    class="dropdown-menu-link flex gap-x-2 items-center"
                                                    @click.prevent="select(item, {{ $isDeduplicate ? 1 : 0}})"
                                                 >

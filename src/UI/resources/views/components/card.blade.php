@@ -1,5 +1,5 @@
 @props([
-    'url' => '#',
+    'url' => 'javascript:void(0);',
     'title' => '',
     'subtitle' => '',
     'thumbnail' => '',

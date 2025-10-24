@@ -204,7 +204,7 @@ class RelationRepeater extends ModelRelationField implements
         $buttons = [];
 
         if ($this->isRemovable()) {
-            $button = ActionButton::make('', '#')
+            $button = ActionButton::make()
                 ->icon('trash')
                 ->onClick(static fn ($action): string => 'remove', 'prevent')
                 ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])

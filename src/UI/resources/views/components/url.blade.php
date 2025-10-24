@@ -1,5 +1,5 @@
 @props([
-    'href' => '#',
+    'href' => 'javascript:void(0);',
     'value' => null,
     'blank' => false,
     'withoutIcon' => false,

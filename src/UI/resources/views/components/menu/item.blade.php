@@ -1,7 +1,7 @@
 @props([
     'label' => '',
     'icon' => '',
-    'url' => '#',
+    'url' => 'javascript:void(0);',
     'items' => [],
     'isActive' => false,
     'top' => false,

@@ -16,7 +16,7 @@
     <p class="alert-content">{{ $slot ?? '' }}</p>
 
     @if($removable)
-        <a href="#" @click.prevent="$refs.alert.remove()" class="alert-remove">
+        <a href="javascript:void(0);" @click.prevent="$refs.alert.remove()" class="alert-remove">
             <x-moonshine::icon icon="x-mark" />
         </a>
     @endif

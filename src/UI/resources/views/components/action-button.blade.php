@@ -1,7 +1,7 @@
 @props([
     'inDropdown' => false,
     'hasComponent' => false,
-    'url' => '#',
+    'url' => 'javascript:void(0);',
     'icon' => '',
     'label' => '',
     'component' => null,

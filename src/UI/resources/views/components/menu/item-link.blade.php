@@ -1,7 +1,7 @@
 @props([
     'label' => '',
     'previewLabel' => '',
-    'url' => '#',
+    'url' => 'javascript:void(0);',
     'icon' => '',
     'badge' => false,
     'top' => false,

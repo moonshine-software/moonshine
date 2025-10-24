@@ -154,7 +154,7 @@ trait TableStates
         $this->isReindex = $reindex;
 
         $this->creatableButton = $button
-            ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->get('moonshine::ui.add'), '#')
+            ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->get('moonshine::ui.add'))
                 ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
                     array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
