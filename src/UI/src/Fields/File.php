@@ -75,7 +75,7 @@ class File extends Field implements FileableContract, RemovableContract
         }
 
         collect($this->isMultiple() ? $this->toValue() : [$this->toValue()])
-            ->each(fn ($file): bool => $this->deleteFile($file));
+            ->each(fn (string $file): bool => $this->deleteFile($file));
 
         $this->deleteDir();
 
