@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
+use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
+use Rector\CodingStyle\Rector\FunctionLike\FunctionLikeToFirstClassCallableRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
@@ -27,6 +29,8 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/src/Laravel/stubs',
         ExplicitBoolCompareRector::class,
         FirstClassCallableRector::class,
+        FunctionFirstClassCallableRector::class,
+        FunctionLikeToFirstClassCallableRector::class,
         RemoveUselessReturnTagRector::class,
         RemoveUselessVarTagRector::class,
         RemoveUselessParamTagRector::class,

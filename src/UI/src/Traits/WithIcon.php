@@ -45,7 +45,7 @@ trait WithIcon
         }
 
         return (string) rescue(
-            $icon->render(...),
+            static fn () => $icon->render(),
             rescue: static fn (): string => '',
             report: false
         );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Collections;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
@@ -101,7 +102,7 @@ class Fields extends BaseCollection implements FieldsContract
 
                 if ($isUnwrapped) {
                     $element->getFields()->onlyFields()->each(
-                        $modified->push(...)
+                        static fn ($inner): Collection => $modified->push($inner)
                     );
                 } else {
                     $modified->push($element);

@@ -547,7 +547,7 @@ class Json extends Field implements
                     : [$data['key'] => $data['value']],
             ),
         )
-            ->filter($this->filterEmpty(...))
+            ->filter(fn ($value): bool => $this->filterEmpty($value))
             ->when(
                 $this->isReorderable() && ! $this->isObjectMode() && ! $this->isKeyValue(),
                 static fn (Collection $data) => $data->sortKeys()
@@ -575,7 +575,7 @@ class Json extends Field implements
 
         if (is_iterable($value) && filled($value)) {
             return collect($value)
-                ->filter($this->filterEmpty(...))
+                ->filter(fn ($v): bool => $this->filterEmpty($v))
                 ->isNotEmpty();
         }
 

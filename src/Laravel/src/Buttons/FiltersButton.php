@@ -42,7 +42,7 @@ final class FiltersButton
     {
         if (is_iterable($value) && filled($value)) {
             return collect($value)
-                ->filter($this->withoutEmptyFilter(...))
+                ->filter(fn ($v): bool => $this->withoutEmptyFilter($v))
                 ->isNotEmpty();
         }
 
