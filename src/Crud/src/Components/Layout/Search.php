@@ -138,7 +138,7 @@ final class Search extends MoonShineComponent
                             'type' => 'button',
                         ])
                         ->icon('x-mark'),
-                    
+
                     Div::make(['
                             <kbd :class="{ \'search-button-key--pressed\': isCtrlPressed }" class="search-button-key">^</kbd>
                             <kbd :class="{ \'search-button-key--pressed\': isKPressed }" class="search-button-key">K</kbd>
