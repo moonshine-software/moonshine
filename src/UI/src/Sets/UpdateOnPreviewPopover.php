@@ -33,7 +33,7 @@ final readonly class UpdateOnPreviewPopover
         return Popover::make(
             '',
             (string) Link::make(
-                '#',
+                'javascript:void(0);',
                 (string) $this->field->toFormattedValue()
             )->icon('pencil')
         )
