@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
-use DateTimeInterface;
-use Carbon\WeekDay;
-use Carbon\Month;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -29,14 +26,14 @@ class DateRangeModelApply implements ApplyContract
 
             $query->when(
                 $values['from'] ?? null,
-                static fn ($query, DateTimeInterface|WeekDay|Month|string|int|float|null $from) => $query->{$condition}(
+                static fn (Builder $query, string|int $from): Builder => $query->{$condition}(
                     $field->getColumn(),
                     '>=',
                     Carbon::parse($from)
                 )
             )->when(
                 $values['to'] ?? null,
-                static fn ($query, DateTimeInterface|WeekDay|Month|string|int|float|null $to) => $query->$condition(
+                static fn (Builder $query, string|int $to): Builder => $query->$condition(
                     $field->getColumn(),
                     '<=',
                     Carbon::parse($to)

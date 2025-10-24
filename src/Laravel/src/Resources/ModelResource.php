@@ -196,7 +196,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
             ! $field->isToOne() ?: $relationItems = new Collection([$relationItems]);
 
             $relationItems->each(
-                $field->afterDestroy(...),
+                static fn (mixed $relationItem): mixed => $field->afterDestroy($relationItem),
             );
         };
 

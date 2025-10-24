@@ -94,7 +94,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
 
     protected function resolveFiller(MenuFillerContract $filler): void
     {
-        $this->setUrl($filler->getUrl(...));
+        $this->setUrl(static fn (): string => $filler->getUrl());
 
         if (! $this->hasLabel()) {
             $this->setLabel($filler->getTitle());

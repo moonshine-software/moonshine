@@ -36,13 +36,13 @@
         "symfony/psr-http-message-bridge": "^7.1|^7.2|^7.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.68",
+        "friendsofphp/php-cs-fixer": "^3.89",
         "larastan/larastan": "^3.4",
         "moonshine/import-export": "^1.0",
         "orchestra/testbench": "^9.9",
         "pestphp/pest": "^4",
         "pestphp/pest-plugin-laravel": "^4",
-        "rector/rector": "^2",
+        "rector/rector": "~2.2",
         "symplify/monorepo-builder": "^11.2"
     },
     "replace": {

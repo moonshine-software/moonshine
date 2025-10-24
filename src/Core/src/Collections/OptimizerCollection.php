@@ -137,7 +137,10 @@ final class OptimizerCollection implements OptimizerCollectionContract
                     })
             )
             ->collapse()
-            ->groupBy($this->getGroupName(...))
+            ->groupBy(function (string $class): string {
+                /** @var class-string $class */
+                return $this->getGroupName($class);
+            })
             ->toArray();
     }
 

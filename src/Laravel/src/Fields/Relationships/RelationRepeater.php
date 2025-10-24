@@ -497,7 +497,7 @@ class RelationRepeater extends ModelRelationField implements
                 static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
                 $values
             ),
-            response: $this->saveRelation(...),
+            response: fn (array $values, mixed $data): Model => $this->saveRelation($values, $data),
             fill: true,
         );
     }

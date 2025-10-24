@@ -128,7 +128,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
             ->name("query-tag-{$this->getUri()}-button")
             ->showInLine()
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())
-            ->canSee($this->isSee(...))
+            ->canSee(fn (mixed $data): bool => $this->isSee())
             ->class('js-query-tag-button')
             ->xDataMethod('queryTag', 'btn-primary', $page->getListEventName())
             ->when(

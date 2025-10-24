@@ -119,7 +119,7 @@ final class HasManyController extends MoonShineController
                         ...$relation instanceof MorphOneOrMany
                             ? [$relation->getMorphType() => $parent?->getMorphClass()]
                             : [],
-                    ], filled(...)),
+                    ], static fn ($value) => filled($value)),
                     $resource->getCaster()
                 )
             )
