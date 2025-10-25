@@ -96,6 +96,7 @@
 /* Dropdown */
 
 .ts-dropdown {
+  z-index: calc(var(--z-dropdown) + 9);
   margin-block: var(--ms-dropdown-margin-y, calc(--spacing(0.5) * -1));
   border-width: 1px;
   border-style: solid;

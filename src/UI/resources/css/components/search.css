@@ -6,6 +6,12 @@
   align-items: center;
 }
 
+.search-wrapper {
+  @variant max-sm {
+    flex-grow: 1;
+  }
+}
+
 .search-form {
   position: relative;
   width: 100%;

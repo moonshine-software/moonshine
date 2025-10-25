@@ -221,7 +221,12 @@
   /* Divider */
   hr,
   hr.divider {
-    @apply my-4 block h-[1px] w-full border-0 bg-slate-200 dark:bg-theme-100;
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-block: var(--ms-hr-divider-spacing-y, --spacing(4));
+    border: none;
+    background-color: var(--ms-hr-divider-bg-color, var(--color-theme-stroke));
   }
 
   div {

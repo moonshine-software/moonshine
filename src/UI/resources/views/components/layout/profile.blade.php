@@ -16,15 +16,14 @@
 @else
     <div {{ $attributes->merge(['class' => 'profile']) }}>
         @if($route)
-        <a href="{{ $route }}"
-            class="profile-main"
-        >
+        <a href="{{ $route }}" class="profile-main">
         @endif
             @if($avatar)
                 <div class="profile-photo">
-                    <img class="h-full w-full object-cover"
-                            src="{{ $avatar }}"
-                            alt="{{ $nameOfUser }}"
+                    <img 
+                        class="h-full w-full object-cover"
+                        src="{{ $avatar }}"
+                        alt="{{ $nameOfUser }}"
                     />
                 </div>
             @endif
@@ -48,7 +47,7 @@
                         title="Logout"
                         type="submit"
                     >
-                        <x-moonshine::icon icon="power" />
+                        <x-moonshine::icon icon="arrow-right-start-on-rectangle" />
                     </x-moonshine::form.button>
                 </x-moonshine::form>
             @endif
@@ -58,9 +57,10 @@
                     <div class="profile-main">
                         @if($avatar)
                             <div class="profile-photo">
-                                <img class="h-full w-full object-cover"
-                                        src="{{ $avatar }}"
-                                        alt="{{ $nameOfUser }}"
+                                <img 
+                                    class="h-full w-full object-cover"
+                                    src="{{ $avatar }}"
+                                    alt="{{ $nameOfUser }}"
                                 />
                             </div>
                         @endif
@@ -79,13 +79,12 @@
                     <x-slot:footer>
                         <x-moonshine::form :action="$logOutRoute" :raw="true">
                             <x-moonshine::form.input type="hidden" name="_method" value="delete" />
-
                             <x-moonshine::form.button
                                 :raw="true"
                                 class="btn-link"
                                 type="submit"
                             >
-                                <x-moonshine::icon icon="power" />
+                                <x-moonshine::icon icon="arrow-right-start-on-rectangle" />
                                 {{ $translates['logout'] ?? 'Log out' }}
                             </x-moonshine::form.button>
                         </x-moonshine::form>

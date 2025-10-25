@@ -6,7 +6,6 @@
 
   position: relative;
   z-index: var(--z-dropdown);
-  width: min-content;
 }
 
 /* Dropdown body */

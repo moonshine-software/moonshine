@@ -66,7 +66,7 @@
                                 @input.debounce="search('{{ $asyncSearchUrl }}')"
                                 :placeholder="$translates['search']"
                             />
-                            <div class="dropdown-body pointer-events-auto visible opacity-100">
+                            <div class="dropdown-body mt-1" :class="{ 'pointer-events-auto visible opacity-100': query.length && match.length }">
                                 <div class="dropdown-content">
                                     <ul class="dropdown-menu">
                                         <template x-for="(item, key) in match">
