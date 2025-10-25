@@ -60,6 +60,7 @@ final class DeleteButton
             )
             ->error()
             ->icon('trash')
+            ->class('btn-square')
             ->showInLine();
     }
 }

@@ -43,7 +43,7 @@
 
                     <x-moonshine::form.button
                         :raw="true"
-                        class="profile-exit"
+                        class="profile-exit btn-fit"
                         title="Logout"
                         type="submit"
                     >

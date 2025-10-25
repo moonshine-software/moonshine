@@ -1,7 +1,7 @@
 <button 
     type="button" 
     {{ $attributes->merge([
-        'class'          => 'btn-burger btn-icon',
+        'class'          => 'btn-burger btn-fit',
         '@click.prevent' => 'asideMenuOpen = ! asideMenuOpen',
     ]) }} 
 >

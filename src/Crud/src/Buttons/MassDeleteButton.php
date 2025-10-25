@@ -56,6 +56,7 @@ final class MassDeleteButton
             )
             ->error()
             ->icon('trash')
+            ->class('btn-square')
             ->showInLine();
     }
 }
