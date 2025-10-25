@@ -78,6 +78,14 @@
     flex-wrap: nowrap;
     justify-content: space-between;
   }
+
+  .search-wrapper {
+    @variant max-md {
+      order: 999;
+      flex-grow: 1;
+      width: 100%;
+    }
+  }
 }
 
 .layout-content {

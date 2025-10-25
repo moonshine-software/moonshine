@@ -36,10 +36,8 @@
             </div>
         </x-moonshine::popover>
 
-        <div x-show="!isPopover">
-            <div {{ $attributes->class(['search']) }}>
-                {!! $form ?? $slot !!}
-            </div>
+        <div {{ $attributes->class(['search']) }} x-show="!isPopover">
+            {!! $form ?? $slot !!}
         </div>
     </div>
 @endif
