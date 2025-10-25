@@ -140,14 +140,22 @@ final class Search extends MoonShineComponent
                         ->icon('x-mark'),
 
                     Div::make(['
-                            <kbd :class="{ \'search-button-key--pressed\': isCtrlPressed }" class="search-button-key">^</kbd>
-                            <kbd :class="{ \'search-button-key--pressed\': isKPressed }" class="search-button-key">K</kbd>
+                            <kbd 
+                                class="search-button-key" 
+                                :class="{ \'search-button-key--pressed\': isCtrlPressed }" 
+                                x-text="`${(navigator.platform.startsWith(\'Mac\') || navigator.platform === \'iPhone\') ? \'⌘\' : \'^\'}`">^</kbd>
+                            <kbd 
+                                class="search-button-key"
+                                :class="{ \'search-button-key--pressed\': isKPressed }" 
+                            >K</kbd>
                         '])
                         ->class('search-button-keys')
                         ->xShow('searchValue', '==', '')
                         ->customAttributes([
-                            '@keydown.ctrl.window' => 'isCtrlPressed = true',
-                            '@keyup.ctrl.window' => 'isCtrlPressed = false',
+                            '@keydown.meta.window' => 'isCtrlPressed = true',
+                            '@keyup.meta.window' => 'isCtrlPressed = false',
+                            '@keydown.control.window' => 'isCtrlPressed = true',
+                            '@keyup.control.window' => 'isCtrlPressed = false',
                             '@keydown.k.window' => 'isKPressed = true; if (isCtrlPressed) { $refs.searchInput.focus(); $event.preventDefault() }',
                             '@keyup.k.window' => 'isKPressed = false',
                         ]),
