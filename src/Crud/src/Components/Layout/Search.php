@@ -42,7 +42,7 @@ final class Search extends MoonShineComponent
         if ($this->placeholder === '') {
             $placeholder = $this->getCore()->getTranslator()->get('moonshine::ui.search');
 
-            $this->placeholder = \is_string($placeholder) ? ($placeholder . ' (Ctrl+K)') : '';
+            $this->placeholder = \is_string($placeholder) ? $placeholder : '';
         }
     }
 
@@ -140,13 +140,13 @@ final class Search extends MoonShineComponent
                         ->icon('x-mark'),
 
                     Div::make(['
-                            <kbd 
-                                class="search-button-key" 
-                                :class="{ \'search-button-key--pressed\': isCtrlPressed }" 
-                                x-text="`${(navigator.platform.startsWith(\'Mac\') || navigator.platform === \'iPhone\') ? \'⌘\' : \'^\'}`">^</kbd>
-                            <kbd 
+                            <kbd
                                 class="search-button-key"
-                                :class="{ \'search-button-key--pressed\': isKPressed }" 
+                                :class="{ \'search-button-key--pressed\': isCtrlPressed }"
+                                x-text="`${(navigator.platform.startsWith(\'Mac\') || navigator.platform === \'iPhone\') ? \'⌘\' : \'^\'}`">^</kbd>
+                            <kbd
+                                class="search-button-key"
+                                :class="{ \'search-button-key--pressed\': isKPressed }"
                             >K</kbd>
                         '])
                         ->class('search-button-keys')
