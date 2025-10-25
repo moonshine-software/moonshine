@@ -26,8 +26,9 @@
     @endif
 
     <template x-teleport="body">
-        <div class="offcanvas-template"
-             @defineEvent('off_canvas_toggled', $name, 'toggleCanvas')
+        <div 
+            class="offcanvas-template"
+            @defineEvent('off_canvas_toggled', $name, 'toggleCanvas')
         >
             <div
                 x-show="open"
@@ -59,7 +60,12 @@
             >
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title">{{ $title }}</h5>
-                    <button type="button" class="offcanvas-close btn-icon" @click.prevent="toggleCanvas" aria-label="Close">
+                    <button 
+                        type="button" 
+                        class="offcanvas-close btn-fit" 
+                        @click.prevent="toggleCanvas" 
+                        aria-label="Close"
+                    >
                         <x-moonshine::icon icon="x-mark" />
                     </button>
                 </div>

@@ -10,6 +10,6 @@
   justify-content: center;
 }
 
-.theme-switcher-icon {
+.theme-switcher-icon > svg:first-child {
   position: absolute;
 }

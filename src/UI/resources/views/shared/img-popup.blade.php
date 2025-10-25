@@ -17,27 +17,28 @@
                 role="dialog"
                 @click.self="open=false"
             >
-                <div class="modal-dialog"
+                <div 
+                    class="modal-dialog"
                     :class="{'modal-dialog-auto': auto, 'modal-dialog-xl': wide}"
                 >
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button"
-                                    class="modal-close btn-icon"
-                                    @click.stop="open=false"
-                                    aria-label="Close"
+                            <button 
+                                type="button"
+                                class="modal-close btn-square"
+                                @click.stop="open=false"
+                                aria-label="Close"
                             >
-                                <x-moonshine::icon
-                                    icon="x-mark"
-                                />
+                                <x-moonshine::icon icon="x-mark" />
                             </button>
                         </div>
                         <div class="modal-body">
-                            <img @click.outside="open = false"
-                                 src=""
-                                 :src="src"
-                                 :style="styles"
-                                 alt=""
+                            <img 
+                                @click.outside="open = false"
+                                src=""
+                                :src="src"
+                                :style="styles"
+                                alt=""
                             />
                         </div>
                     </div>

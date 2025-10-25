@@ -93,6 +93,12 @@
   --z-toast: 1300;
 }
 
+@variant max-sm {
+  html {
+    font-size: var(--ms-html-mobile-font-size, 14px);
+  }
+}
+
 /* :root {
   --primary: 0.67 0.27 26.88;
   --secondary: 0.95 0.35 264.05;

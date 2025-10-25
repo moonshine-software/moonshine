@@ -70,7 +70,7 @@ final class EditButton
                         && $resource->hasAction(Action::UPDATE)
                         && $resource->setItem($item)->can(Ability::UPDATE)
                 )
-                ->class('js-edit-button')
+                ->class('btn-square js-edit-button')
                 ->showInLine();
     }
 }

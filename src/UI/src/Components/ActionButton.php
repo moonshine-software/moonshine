@@ -558,7 +558,7 @@ class ActionButton extends MoonShineComponent implements
             'component' => $this->hasComponent() ? $this->getComponent() : '',
             'label' => $this->getLabel(),
             'url' => $this->getUrl(),
-            'icon' => $this->getIcon(4),
+            'icon' => $this->getIcon(),
             'badge' => $this->hasBadge() ? $this->getBadge() : false,
             'raw' => $this->isRaw(),
             'slot' => $this->getSlot(),

@@ -18,8 +18,9 @@
     {{ $attributes }}
 >
     <template x-teleport="body">
-        <div class="modal-template"
-             @defineEvent('modal_toggled', $name, 'toggleModal')
+        <div 
+            class="modal-template"
+            @defineEvent('modal_toggled', $name, 'toggleModal')
         >
             <div
                 x-show="open"
@@ -34,21 +35,21 @@
                 {{ $attributes->merge(['class' => 'modal']) }}
                 @if($closeOutside) @click.self="toggleModal" @endif
             >
-                <div class="modal-dialog
-                @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"
-                     x-bind="dismissModal"
+                <div 
+                    class="modal-dialog
+                    @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"
+                    x-bind="dismissModal"
                 >
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">{{ $title ?? '' }}</h5>
-                            <button type="button"
-                                    class="modal-close btn-icon"
-                                    @click.stop="toggleModal"
-                                    aria-label="Close"
+                            <button 
+                                type="button"
+                                class="modal-close btn-fit"
+                                @click.stop="toggleModal"
+                                aria-label="Close"
                             >
-                                <x-moonshine::icon
-                                    icon="x-mark"
-                                />
+                                <x-moonshine::icon icon="x-mark" />
                             </button>
                         </div>
                         <div class="modal-body">

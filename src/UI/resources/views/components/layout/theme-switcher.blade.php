@@ -1,6 +1,6 @@
 <div class="theme-switcher">
     <button @click.prevent="$dispatch('darkMode:toggle')"
-            class="theme-switcher-btn btn-icon"
+            class="theme-switcher-btn btn-fit"
             type="button"
             :title="$store.darkMode.on ? 'Toggle light mode' : 'Toggle dark mode'"
     >

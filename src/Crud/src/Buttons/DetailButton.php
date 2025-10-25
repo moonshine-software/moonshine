@@ -66,7 +66,7 @@ final class DetailButton
                     && $resource->setItem($item)->can(Ability::VIEW)
             )
             ->icon('eye')
-            ->class('js-detail-button')
+            ->class('btn-square js-detail-button')
             ->showInLine();
     }
 }

@@ -3,13 +3,13 @@
   --ms-btn-padding-y: --spacing(2.5);
   --ms-btn-gap-x: --spacing(2);
   --ms-btn-radius: --spacing(2);
-  --ms-btn-border-width: 0px;
+  --ms-btn-border-width: 1px;
   --ms-btn-border-color: var(--color-theme-stroke);
-  --ms-btn-bg-color: var(--color-theme-200);
+  --ms-btn-bg-color: var(--color-theme);
   --ms-btn-color: var(--color-theme-body);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
-  --ms-btn-icon-size: --spacing(5);
+  --ms-btn-icon-size: --spacing(4.5);
 
   --ms-btn-hover-border-color: var(--color-theme-stroke);
   --ms-btn-hover-bg-color: var(--color-theme-300);
@@ -112,14 +112,13 @@
   }
 }
 
-.btn-square {
+.btn-square,
+.btn-fit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ms-btn-square-size, --spacing(10));
-  height: var(--ms-btn-square-size, --spacing(10));
   padding: 0;
-  font-size: var(--ms-btn-square-font-size, --spacing(5));
+  line-height: 0;
 
   .icon-wrapper,
   svg {
@@ -132,9 +131,14 @@
   }
 }
 
-.btn-burger {
-  --ms-btn-icon-size: var(--ms-menu-burger-size, --spacing(6));
-  --ms-btn-icon-font-size: var(--ms-menu-burger-icon-size, --spacing(6));
+.btn-square {
+  width: var(--ms-btn-square-size, --spacing(10));
+  height: var(--ms-btn-square-size, --spacing(10));
+  font-size: var(--ms-btn-square-font-size, var(--ms-btn-icon-size, --spacing(4.5)));
+}
+
+.btn-fit {
+  font-size: var(--ms-btn-fit-font-size, var(--ms-btn-icon-size, --spacing(4.5)));
 }
 
 /* Button themes */
