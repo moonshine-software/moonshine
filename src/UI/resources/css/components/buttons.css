@@ -31,7 +31,8 @@
   justify-content: var(--ms-btn-justify-content, center);
   column-gap: var(--ms-btn-gap-x);
   min-height: var(--ms-btn-min-height, auto);
-  padding: var(--ms-btn-padding-y) var(--ms-btn-padding-x);
+  padding-block: var(--ms-btn-padding-y);
+  padding-inline: var(--ms-btn-padding-x);
   border-radius: var(--ms-btn-radius);
   border: var(--ms-btn-border-width) solid var(--ms-btn-border-color);
   background-color: var(--ms-btn-bg-color);
@@ -53,10 +54,6 @@
     }
   }
 
-  /* &:focus {
-    box-shadow: 0 0 0 var(--ms-btn-focus-ring-size, 2px) --alpha(var(--ms-btn-hover-bg-color) / 0.5);
-  } */
-
   &:active {
     translate: 0 var(--ms-btn-active-translateY, 1px);
   }
@@ -69,8 +66,7 @@
   }
 
   .icon-wrapper {
-    width: var(--ms-btn-icon-size, --spacing(5));
-    height: var(--ms-btn-icon-size, --spacing(5));
+    --ms-icon-size: var(--ms-btn-icon-size, --spacing(5));
   }
 
   .badge {
@@ -114,6 +110,31 @@
   @variant hover {
     color: var(--ms-btn-link-hover-color, var(--color-primary));
   }
+}
+
+.btn-square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ms-btn-square-size, --spacing(10));
+  height: var(--ms-btn-square-size, --spacing(10));
+  padding: 0;
+  font-size: var(--ms-btn-square-font-size, --spacing(5));
+
+  .icon-wrapper,
+  svg {
+    width: 1em !important;
+    height: 1em !important;
+  }
+
+  @variant hover {
+    color: var(--color-primary);
+  }
+}
+
+.btn-burger {
+  --ms-btn-icon-size: var(--ms-menu-burger-size, --spacing(6));
+  --ms-btn-icon-font-size: var(--ms-menu-burger-icon-size, --spacing(6));
 }
 
 /* Button themes */
@@ -210,31 +231,4 @@
     --ms-btn-hover-bg-color: --alpha(var(--color-info) / 0.5);
     --ms-btn-hover-color: var(--color-white);
   }
-}
-
-/* Button variants */
-
-.btn-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--ms-btn-icon-size, --spacing(6));
-  height: var(--ms-btn-icon-size, --spacing(6));
-  padding: 0;
-  font-size: var(--ms-btn-icon-font-size, --spacing(5));
-
-  .icon-wrapper,
-  svg {
-    width: 1em;
-    height: 1em;
-  }
-
-  @variant hover {
-    color: var(--color-primary);
-  }
-}
-
-.btn-burger {
-  --ms-btn-icon-size: var(--ms-menu-burger-size, --spacing(6));
-  --ms-btn-icon-font-size: var(--ms-menu-burger-icon-size, --spacing(6));
 }
