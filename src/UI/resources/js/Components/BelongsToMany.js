@@ -30,7 +30,7 @@ export default () => ({
 
       this.$dispatch('table_empty_row_added:' + tableName)
 
-      const tr = pivot.querySelector('table > tbody > tr:last-child')
+      const tr = pivot.querySelector('table:not([data-skeleton]) > tbody > tr:last-child')
       tr.querySelector('.js-pivot-title').innerHTML = item.label
 
       if (tr.dataset.rowKey || deduplicate) {
