@@ -25,7 +25,7 @@
                         <div class="modal-header">
                             <button 
                                 type="button"
-                                class="modal-close btn-square"
+                                class="modal-close btn-fit"
                                 @click.stop="open=false"
                                 aria-label="Close"
                             >
