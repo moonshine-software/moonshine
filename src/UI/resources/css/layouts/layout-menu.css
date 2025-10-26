@@ -1,6 +1,6 @@
 @theme {
   --ms-layout-vertical-menu-width: 264px;
-  --ms-layout-vertical-menu-minimized-width: 50px;
+  --ms-layout-vertical-menu-minimized-width: 68px;
 }
 
 .layout-menu {
@@ -52,7 +52,7 @@
       --ms-menu-item-padding-x: --spacing(1.5);
       --ms-menu-item-padding-y: --spacing(1.5);
 
-      width: var(--ms-layout-vertical-menu-minimized-width, 50px);
+      width: var(--ms-layout-vertical-menu-minimized-width, 68px);
 
       .menu-header {
         flex-direction: column;
@@ -69,12 +69,17 @@
         flex-direction: column;
       }
 
-      .menu-char {
-        display: block;
+      .menu-text {
+        text-align: center;
+        max-width: 100%;
+        margin-right: 0;
+        font-size: 0.875em;
       }
 
-      .menu-text {
-        display: none;
+      .menu-submenu {
+        .menu-submenu .menu-icon ~ .menu-text {
+          display: none;
+        }
       }
 
       .menu-divider {
