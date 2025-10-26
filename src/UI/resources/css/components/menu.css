@@ -3,7 +3,8 @@
   --ms-menu-space-x: --spacing(1.5);
   --ms-menu-icon-size: --spacing(5);
   --ms-menu-arrow-size: --spacing(3);
-  --ms-menu-item-gap: --spacing(2);
+  --ms-menu-item-gap-y: --spacing(1);
+  --ms-menu-item-gap-x: --spacing(2);
   --ms-menu-item-padding-x: --spacing(2.5);
   --ms-menu-item-padding-y: --spacing(1.5);
   --ms-menu-item-radius: --spacing(2);
@@ -202,7 +203,7 @@
         border-radius: --spacing(1) 0 0 --spacing(1);
         background-color: var(--ms-menu-item-active-glow-color, var(--color-primary));
         box-shadow: 0 0 64px 64px
-          --alpha(var(--ms-menu-item-active-glow-color, var(--color-primary)) / 0.15);
+          --alpha(var(--ms-menu-item-active-glow-color, var(--color-primary)) / 0.1);
       }
     }
   }
@@ -215,7 +216,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  gap: var(--ms-menu-item-gap);
+  gap: var(--ms-menu-item-gap-y) var(--ms-menu-item-gap-x);
   border-radius: var(--ms-menu-item-radius);
   padding-inline: var(--ms-menu-item-padding-x);
   padding-block: var(--ms-menu-item-padding-y);
@@ -286,8 +287,8 @@
 .menu-submenu {
   display: flex;
   flex-direction: column;
-  row-gap: var(--ms-menu-submenu-space-y);
-  margin-block: --spacing(1);
+  row-gap: var(--ms-menu-submenu-space-y, --spacing(1));
+  margin-block: var(--ms-submenu-space-y, --spacing(1));
   padding-inline: var(--ms-menu-submenu-space-y, --spacing(1));
   padding-block: var(--ms-menu-submenu-space-y, --spacing(1));
   border-radius: var(--ms-menu-item-radius);
@@ -295,8 +296,6 @@
   background-color: var(--ms-layout-body-bg-color, var(--color-body));
 
   .menu-item {
-    @apply shadow-none;
-
     @variant is_active {
       .menu-link,
       .menu-button {

@@ -32,9 +32,10 @@
                 {!! $icon !!}
             </div>
         @else
-            <span class="menu-char">
-                {{ $previewLabel }}
-            </span>
+            <div class="menu-icon">
+                <x-moonshine::icon icon="folder" x-show="!dropdown" />
+                <x-moonshine::icon icon="folder-open" x-show="dropdown" />
+            </div>
         @endif
 
         <span class="menu-text">{{ $label }}</span>
