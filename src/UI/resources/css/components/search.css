@@ -27,7 +27,7 @@
 .search-form-field {
   width: 100%;
   height: 100%;
-  padding-left: var(--ms-search-field-padding-right, --spacing(9));
+  padding-left: var(--ms-search-field-padding-right, --spacing(10));
   padding-right: var(--ms-search-field-padding-left, --spacing(8));
   border-radius: var(--ms-search-field-radius, --spacing(12));
   border-color: var(--ms-search-field-bg-color, var(--color-theme-stroke));
@@ -45,7 +45,7 @@
 
 .search-form-submit,
 .search-form-clear {
-  --ms-icon-size: var(--ms-search-button-icon-size, --spacing(3));
+  --ms-icon-size: var(--ms-search-button-icon-size, --spacing(4.5));
 
   position: absolute;
   inset-block: 0;
