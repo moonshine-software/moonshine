@@ -1,4 +1,5 @@
 /* Table basic */
+
 table {
   text-indent: 0;
   width: 100%;
@@ -194,7 +195,7 @@ table {
       th,
       td {
         &.sticky-col {
-          backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-thead-blur, 4px)));
+          background-color: --alpha(var(--ms-table-thead-bg-color, var(--color-theme-100)) / 0.95);
         }
       }
     }
@@ -203,10 +204,8 @@ table {
       th,
       td {
         &.sticky-col {
-          backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-tbody-blur, 4px)));
-
           &:not([class*='bgc-']) {
-            backdrop-filter: blur(var(--ms-table-blur, var(--ms-table-tbody-blur, 4px)));
+            background-color: --alpha(var(--ms-table-bg-color, var(--color-theme)) / 0.95);
           }
 
           &:has(.dropdown-body.visible) {
