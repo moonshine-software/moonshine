@@ -55,8 +55,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant is_active (&:where(&._is-active));
 @custom-variant hover {
-  @media (hover: hover) {
-    &:hover {
+  &:hover {
+    @media (hover: hover) {
       @slot;
     }
   }

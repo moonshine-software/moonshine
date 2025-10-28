@@ -11,9 +11,14 @@
 
 @if($prefixes->isNotEmpty() || $others->isNotEmpty())
     <div {{ $attributes
-            ->merge(['class' => 'form-group form-group-expansion'])
+            ->class(['form-group-expansion--has-prefix' => $prefixes->isNotEmpty()])
+            ->class(['form-group-expansion--has-suffix' => $others->isNotEmpty()])
+            ->merge(['class' => 'form-group-expansion'])
             ->merge($extensionsAttributes?->toArray() ?? [])
         }}>
+
+        {{ $slot ?? '' }}
+
         {{-- Prefix (left) --}}
         @if($prefixes->isNotEmpty())
             <div class="expansion-wrapper expansion-wrapper--prefix">
@@ -23,11 +28,9 @@
             </div>
         @endif
 
-        {{ $slot ?? '' }}
-
         {{-- Suffix/Others (right) --}}
         @if($others->isNotEmpty())
-            <div class="expansion-wrapper">
+            <div class="expansion-wrapper expansion-wrapper--suffix">
                 @foreach($others as $extension)
                     {!! $extension !!}
                 @endforeach

@@ -48,7 +48,7 @@
   }
 
   html {
-    font-size: var(--ms-html-font-size, 16px);
+    font-size: var(--ms-html-font-size, var(--text-base, 16px));
   }
 
   body {
