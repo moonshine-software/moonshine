@@ -32,10 +32,6 @@
 
   --gradient-start: var(--color-primary);
   --gradient-end: var(--color-primary);
-
-  --track-size: 1.25rem;
-  --track-from-color: var(--color-primary);
-  --track-to-color: var(--color-primary);
 }
 
 @variant dark {

@@ -11,7 +11,7 @@
     />
 
     <x-moonshine::form.input
-        :attributes="$attributes->merge(['class' => 'peer sr-only'])"
+        :attributes="$attributes->merge(['class' => 'form-switcher-control peer sr-only'])"
         type="checkbox"
     />
 

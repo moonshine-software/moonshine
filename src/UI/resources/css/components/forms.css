@@ -1,4 +1,5 @@
-/* Base customizes */
+/* Form basic */
+
 input {
   &[type='search'] {
     &::-webkit-search-decoration,
@@ -20,696 +21,922 @@ input {
   }
 }
 
+fieldset {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: var(--ms-fieldset-padding, --spacing(3));
+  border-width: var(--ms-fieldset-border-width, 1px);
+  border-style: solid;
+  border-color: var(--ms-fieldset-border-color, var(--color-theme-stroke));
+  border-radius: var(--ms-fieldset-radius, var(--radius-lg));
+
+  legend {
+    position: absolute;
+    top: 0;
+    left: var(--ms-legend-left, --spacing(3));
+    margin-inline-start: calc(var(--ms-legend-margin, --spacing(1)) * -1);
+    padding-inline: var(--ms-legend-padding-x, --spacing(1));
+    font-size: var(--text-xs);
+    transform: translateY(-50%);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+      backdrop-filter: blur(4px);
+    }
+  }
+}
+
 .dark input {
   color-scheme: dark;
 }
 
-/* Form Label */
+[draggable='true'] {
+  background-color: var(--ms-draggable-bg-color, var(--color-theme-50));
+  box-shadow: inset 0 0 0 var(--ms-draggable-ring-width, 1px)
+    var(--ms-draggable-ring-color, var(--color-theme-stroke));
+  transition-properties: background-color, box-shadow;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+}
+
 .form-label {
-  @apply text-xs font-medium whitespace-nowrap;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  word-break: break-word;
 
   > .required {
-    @apply text-error;
+    color: var(--ms-form-error-color);
+  }
+
+  &[for] {
+    cursor: pointer;
   }
 }
 
-/* Form Hint */
 .form-hint {
-  @apply text-xs text-slate-500 dark:text-slate-400;
+  margin-top: var(--ms-form-hint-margin-top, --spacing(1));
+  font-size: var(--ms-form-hint-font-size, var(--text-xs));
+  color: var(--ms-form-hint-color, var(--color-neutral-400));
 }
 
-/* Form Error */
 .form-error {
-  @apply col-span-12 mt-0 text-xs text-error;
+  grid-column: span 12 / span 12;
+  margin-top: var(--ms-form-error-margin-top, 0px);
+  color: var(--ms-form-error-color);
+  font-size: var(--ms-form-error-font-size, var(--text-xs));
 }
 
 /* Default field */
+
+@theme {
+  --ms-form-default-placeholder-color: var(--color-neutral-400);
+  --ms-form-default-min-height: --spacing(10);
+  --ms-form-default-padding-y: --spacing(2);
+  --ms-form-default-padding-x: --spacing(2);
+  --ms-form-default-radius: var(--radius-lg);
+  --ms-form-default-border-width: 1px;
+  --ms-form-default-border-color: var(--color-theme-stroke);
+  --ms-form-default-bg-color: var(--color-theme);
+  --ms-form-default-color: var(--color-theme-body);
+  --ms-form-default-font-size: var(--text-sm);
+  --ms-form-default-font-weight: var(--font-weight-normal);
+
+  --ms-form-focus-border-color: var(--color-primary);
+  --ms-form-focus-ring-width: --spacing(0.875);
+  --ms-form-focus-ring-color: --alpha(var(--color-primary) / 0.1);
+
+  --ms-form-readonly-border-color: var(--color-theme-stroke);
+  --ms-form-readonly-bg-color: var(--color-theme-100);
+  --ms-form-readonly-color: var(--color-neutral-400);
+
+  --ms-form-disabled-border-color: var(--color-theme-stroke);
+  --ms-form-disabled-bg-color: var(--color-theme-200);
+  --ms-form-disabled-color: var(--color-neutral-500);
+
+  --ms-form-error-border-color: var(--color-error);
+  --ms-form-error-bg-color: var(--color-error);
+  --ms-form-error-color: var(--color-error);
+  --ms-form-error-ring-color: --alpha(var(--color-error) / 0.1);
+
+  --ms-form-control-size: --spacing(5);
+}
+
 .form-input,
 .form-textarea,
 .form-select,
 .form-multiselect,
 .form-file-upload,
 .ts-control {
-  @apply block min-h-10 w-full rounded-md
-  base__default
-  p-2
-  base__placeholder;
+  display: block;
+  width: 100%;
+  min-height: var(--ms-form-default-min-height);
+  padding-block: var(--ms-form-default-padding-y);
+  padding-inline: var(--ms-form-default-padding-x);
+  border-radius: var(--ms-form-default-radius);
+  border: var(--ms-form-default-border-width) solid var(--ms-form-default-border-color);
+  background-color: var(--ms-form-default-bg-color);
+  color: var(--ms-form-default-color);
+  font-size: var(--ms-form-default-font-size);
+  font-weight: var(--ms-form-default-font-weight);
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  &::placeholder {
+    color: var(--ms-form-default-placeholder-color);
+    font-size: 0.9375em;
+  }
 
   &:focus {
-    @apply base__focus;
+    outline: none;
+    border-color: var(--ms-form-focus-border-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
   }
 
   &[readonly] {
-    @apply base__read-only;
+    background-color: var(--ms-form-readonly-bg-color);
+    cursor: default;
+    pointer-events: none;
   }
 
   &:disabled {
-    @apply base__disabled;
+    border-color: var(--ms-form-disabled-border-color);
+    background-color: var(--ms-form-disabled-bg-color);
+    color: var(--ms-form-disabled-color);
+    cursor: default;
   }
 
   /* Invalid field */
-
   .form-invalid &,
   &.form-invalid {
-    @apply base__error;
+    border-color: var(--ms-form-error-border-color);
+
+    &:focus {
+      box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-error-ring-color);
+    }
   }
 }
 
 /* Textarea field */
+
 .form-textarea {
-  @apply min-h-[120px];
+  min-height: var(--ms-form-textarea-min-height, 120px);
 }
 
 /* File upload */
+
 .form-file-upload {
-  @apply cursor-pointer
-  overflow-hidden
-  bg-clip-padding
-  file:-m-3
-  file:[margin-inline-end:0.75rem]
-  file:cursor-pointer
-  file:overflow-hidden
-  file:rounded-none
-  file:border-0
-  file:[border-inline-end-width:1px]
-  file:border-solid
-  file:border-inherit file:bg-slate-100
-  file:p-3
-  file:pl-5
-  file:transition
-  file:disabled:cursor-not-allowed
-  dark:file:bg-primary
-  dark:file:text-white;
+  overflow: hidden;
+  background-clip: padding-box;
+  cursor: pointer;
+
+  &::file-selector-button {
+    margin: calc(var(--ms-form-field-padding, --spacing(2)) * -1.5);
+    margin-inline-end: var(--ms-form-field-padding, --spacing(2));
+    padding: calc(var(--ms-form-field-padding, --spacing(2)) * 1.5);
+    padding-left: calc(var(--ms-form-field-padding, --spacing(2)) * 2.5);
+    border: 0;
+    border-inline-end-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    border-radius: 0;
+    background-color: var(--ms-file-upload-button-bg, var(--color-theme-200));
+    color: inherit;
+    overflow: hidden;
+    cursor: pointer;
+    transition-property: background-color, color;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    @variant dark {
+      background-color: var(--ms-file-upload-button-bg, var(--color-primary));
+      color: var(--color-white);
+    }
+  }
 
   &:not(:disabled) {
-    @apply hover:file:bg-neutral-200 dark:file:text-white dark:file:hover:bg-secondary;
+    &::file-selector-button:hover {
+      background-color: var(--ms-file-upload-button-hover-bg, var(--color-neutral-200));
+
+      @variant dark {
+        background-color: var(--ms-file-upload-button-hover-bg, var(--color-secondary));
+        color: var(--color-white);
+      }
+    }
   }
 }
 
-/* Radio */
+/* Checkbox and Radio base styles */
+
 .form-checkbox,
 .form-radio {
-  @apply shrink-0 cursor-pointer base__default accent-primary checked:accent-primary hover:accent-primary;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: var(--ms-form-control-border-width, var(--ms-form-default-border-width));
+  border-style: solid;
+  border-color: var(--ms-form-control-border-color, var(--ms-form-default-border-color));
+  border-radius: var(--ms-form-control-radius, var(--ms-form-default-radius));
+  background-color: var(--ms-form-control-bg-color, var(--ms-form-default-bg-color));
+  color: var(--ms-form-control-color, var(--ms-form-default-color));
+  cursor: pointer;
 
   &:focus {
-    @apply base__focus checked:bg-primary;
+    outline: none;
+    border-color: var(--ms-form-focus-border-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
   }
 
   &:disabled {
-    @apply base__disabled checked:bg-primary;
-  }
-
-  /* Invalid field */
-
-  .form-invalid &,
-  &.form-invalid {
-    @apply base__error
-    text-error
-    checked:bg-error
-    dark:text-error
-    dark:checked:bg-error;
+    cursor: default;
   }
 }
 
-/* Checkbox */
+/* Form Checkbox */
+
 .form-checkbox {
-  @apply flex
-  size-4
-  h-5
-  w-5
-  shrink-0
-  cursor-pointer items-center
-  justify-center rounded-md
-  border-1
-  theme__border
-  bg-white
-  checked:border-primary
-  checked:bg-primary
-  hover:border-primary
-  md:rounded-none
-  dark:border-theme-100
-  dark:bg-transparent;
-
-  &:checked {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-  }
+  width: var(--ms-form-checkbox-size, var(--ms-form-control-size, --spacing(5)));
+  height: var(--ms-form-checkbox-size, var(--ms-form-control-size, --spacing(5)));
 }
+
+/* Form Radio */
 
 .form-radio {
-  @apply flex
-  size-4
-  h-5
-  w-5
-  shrink-0
-  cursor-pointer
-  appearance-none
-  items-center
-  justify-center
-  rounded-full
-  border-1
-  theme__border
-  bg-white
-  checked:border-primary
-  checked:bg-primary
-  hover:border-primary
-  dark:border-theme-100
-  dark:bg-transparent;
+  width: var(--ms-form-radio-size, var(--ms-form-control-size, --spacing(5)));
+  height: var(--ms-form-radio-size, var(--ms-form-control-size, --spacing(5)));
+  border-radius: 50%;
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
 
   &:checked {
-    background-image: url('data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22white%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%228%22%20cy%3D%228%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E');
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
   }
 }
 
 /* Form Switcher */
+
 .form-switcher {
-  @apply relative flex cursor-pointer items-center;
-
-  .form-switcher-toggler {
-    @apply h-6
-    w-11
-    rounded-full
-    base__default
-    peer-checked:bg-primary
-    after:absolute
-    after:top-0.5
-    after:left-0.5
-    after:h-5
-    after:w-5
-    after:rounded-full
-    after:border
-    after:theme__border
-    after:border-gray-300
-    after:bg-white
-    after:transition-all
-    dark:peer-checked:bg-primary
-    dark:after:border-theme-200;
-  }
-
-  .peer:checked + .form-switcher-toggler {
-    @apply bg-primary
-    after:translate-x-full after:border-primary
-    dark:bg-primary dark:after:theme__border;
-  }
-
-  .peer:not(:checked) + .form-switcher-toggler {
-    @apply bg-slate-100 dark:bg-theme-800;
-  }
-
-  .peer:focus:not(:disabled) + .form-switcher-toggler {
-    @apply base__focus;
-  }
-
-  .peer:disabled + .form-switcher-toggler {
-    @apply base__disabled;
-  }
-
-  .peer:checked:disabled + .form-switcher-toggler {
-    @apply bg-primary;
-  }
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
   /* Invalid field */
-
-  .form-invalid &,
-  &:has(.form-invalid),
-  &.form-invalid {
-    .form-switcher-toggler {
-      @apply base__error;
+  .form-invalid {
+    & ~ .form-switcher-toggler {
+      --ms-form-switcher-border-color: var(--ms-form-error-border-color);
     }
 
-    .peer:focus ~ .form-switcher-toggler {
-      @apply base__error
-      ring-error/20
-      dark:ring-error/40;
+    & ~ .form-switcher-control:focus ~ .form-switcher-toggler {
+      border-color: var(--ms-form-error-border-color);
+      box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-error-ring-color);
     }
 
-    .peer:not(:disabled) {
+    & ~ .form-switcher-control {
       &:checked ~ .form-switcher-toggler {
-        @apply bg-error
-        after:border-error
-        dark:bg-error;
+        --ms-form-switcher-bg-color: var(--ms-form-error-color);
       }
 
       &:not(:checked) ~ .form-switcher-toggler {
-        @apply after:bg-error
-        dark:after:bg-error;
+        --ms-form-switcher-thumb-bg-color: var(--ms-form-error-color);
       }
     }
   }
 }
 
-/* Expansion field */
-.form-group.form-group-expansion {
-  @apply flex-row items-stretch gap-0;
+.form-switcher-toggler {
+  width: var(--ms-form-switcher-width, --spacing(10.5));
+  height: var(--ms-form-switcher-height, --spacing(6));
+  border-width: var(--ms-form-switcher-border-width, var(--ms-form-default-border-width));
+  border-style: solid;
+  border-color: var(--ms-form-switcher-border-color, var(--ms-form-default-border-color));
+  border-radius: 9999px;
+  background-color: var(--ms-form-switcher-bg-color, var(--ms-form-default-bg-color));
+  transition-property: background-color;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
 
-  .form-input {
-    @apply shrink;
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--ms-form-switcher-thumb-offset, --spacing(0.75)));
+    left: calc(var(--ms-form-switcher-thumb-offset, --spacing(0.75)));
+    width: var(--ms-form-switcher-thumb-size, --spacing(4.5));
+    height: var(--ms-form-switcher-thumb-size, --spacing(4.5));
+    border-radius: 50%;
+    background-color: var(--ms-form-switcher-thumb-bg-color, var(--color-primary));
+    transition-property: transform, border-color;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+  }
+}
+
+.form-switcher-control {
+  &:checked + .form-switcher-toggler {
+    --ms-form-switcher-bg-color: var(--color-primary);
+    --ms-form-switcher-thumb-bg-color: var(--color-primary-text);
+
+    &::after {
+      transform: translateX(100%);
+    }
   }
 
-  /* Prefix Wrapper - to the left of the input */
-  .expansion-wrapper--prefix {
-    @apply flex
-    shrink-0
-    flex-row
-    items-center
-    overflow-hidden
-    rounded-l-md
-    base__default
-    bg-slate-100
-    text-slate-600
-    dark:bg-theme-900/20
-    dark:text-slate-400;
+  &:focus + .form-switcher-toggler {
+    outline: none;
+    border-color: var(--ms-form-focus-border-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
+  }
+
+  &:disabled + .form-switcher-toggler {
+    --ms-form-switcher-bg-color: var(--ms-form-disabled-bg-color);
+    --ms-form-switcher-thumb-bg-color: var(--ms-form-disabled-color);
+
+    cursor: default;
+  }
+
+  &:checked:disabled + .form-switcher-toggler {
+    --ms-form-switcher-bg-color: var(--ms-form-disabled-color);
+    --ms-form-switcher-thumb-bg-color: var(--ms-form-disabled-bg-color);
+  }
+}
+
+/* Form Expansion fields */
+
+.form-group-expansion {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  .form-input {
+    flex-shrink: 1;
+  }
+
+  .expansion-wrapper {
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-width: var(--ms-form-control-border-width, var(--ms-form-default-border-width));
+    border-style: solid;
+    border-color: var(--ms-form-control-border-color, var(--ms-form-default-border-color));
+    background-color: var(--ms-form-expansion-bg-color, var(--color-theme-100));
+    color: var(--ms-form-expansion-color, var(--color-theme-body));
 
     .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-xs;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: var(--ms-form-expansion-min-width, --spacing(8));
+      height: 100%;
+      padding-inline: var(--ms-form-expansion-padding-x, --spacing(2));
+      font-size: var(--ms-form-expansion-font-size, var(--text-xs));
     }
 
-    button {
-      @apply hover:bg-gray-300 dark:hover:bg-theme-200;
+    button.expansion {
+      &:not(:last-child) {
+        border-right: 1px solid var(--ms-form-default-border-color);
+      }
+
+      @variant hover {
+        background-color: var(--ms-form-expansion-button-hover-bg, var(--color-theme-400));
+      }
     }
 
     /* Input after prefix: no left border radius and no left border */
     & + .form-input {
-      @apply rounded-l-none border-l-0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left-width: 0;
     }
+  }
+
+  /* Prefix Wrapper - to the left of the input */
+  .expansion-wrapper--prefix {
+    order: -1;
+    border-top-left-radius: var(--ms-form-default-radius);
+    border-bottom-left-radius: var(--ms-form-default-radius);
   }
 
   /* Suffix Wrapper - to the right of the input */
-  .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply flex
-    flex-row
-    items-center
-    overflow-hidden
-    rounded-r-md
-    base__default
-    bg-slate-100
-    text-slate-600
-    dark:bg-theme-900/20
-    dark:text-slate-400;
-
-    .expansion {
-      @apply flex h-full min-w-8 items-center justify-center px-2 text-xs;
-    }
-
-    button {
-      @apply hover:bg-gray-300 dark:hover:bg-theme-200;
-    }
+  .expansion-wrapper--suffix {
+    border-top-right-radius: var(--ms-form-default-radius);
+    border-bottom-right-radius: var(--ms-form-default-radius);
   }
 
   /* Input before suffix: no right border radius */
-  .form-input:has(~ .expansion-wrapper:not(.expansion-wrapper--prefix)) {
-    @apply rounded-r-none border-r-0;
+  &.form-group-expansion--has-prefix {
+    .form-input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left-width: 0;
+    }
   }
-
-  /* Prefix: Read-only state */
-  .expansion-wrapper--prefix:has(+ .form-input:read-only) {
-    @apply base__read-only;
-  }
-
-  /* Prefix: Focus State */
-  .expansion-wrapper--prefix:has(+ .form-input:not(:read-only):focus) {
-    @apply base__focus;
-  }
-
-  /* Prefix: Disabled State */
-  .expansion-wrapper--prefix:has(+ .form-input:disabled) {
-    @apply base__disabled;
-
-    * {
-      @apply pointer-events-none;
+  &.form-group-expansion--has-suffix {
+    .form-input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right-width: 0;
     }
   }
 
-  /* Prefix: Invalid State */
-  .expansion-wrapper--prefix:has(+ .form-input.form-invalid) {
-    @apply base__error;
-  }
+  /* Disabled State */
+  .form-input:disabled ~ .expansion-wrapper {
+    --ms-form-expansion-bg-color: var(--ms-form-disabled-bg-color);
 
-  .expansion-wrapper--prefix:has(+ .form-input.form-invalid:not(:read-only):focus) {
-    @apply base__error
-    ring-error/20
-    dark:ring-error/40;
-  }
-
-  /* Suffix: Read-only State */
-  .form-input:read-only ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply base__read-only;
-  }
-
-  /* Suffix: Focus State */
-  .form-input:not(:read-only):focus ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply base__focus;
-  }
-
-  /* Suffix: Disabled State */
-  .form-input:disabled ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply base__disabled;
-
-    * {
-      @apply pointer-events-none;
+    button {
+      pointer-events: none;
     }
-  }
-
-  /* Suffix: Invalid State */
-  .form-input.form-invalid ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply base__error;
-  }
-
-  .form-input.form-invalid:not(:read-only):focus
-    ~ .expansion-wrapper:not(.expansion-wrapper--prefix) {
-    @apply base__error
-    ring-error/20
-    dark:ring-error/40;
   }
 }
 
 /* Form Range */
+
 .form-group-range {
-  @apply gap-4;
+  --_track-size: var(--ms-form-range-track-size, --spacing(4));
+  --_track-from-color: var(--ms-form-range-track-from-color, var(--color-primary));
+  --_track-to-color: var(--ms-form-range-track-to-color, var(--color-primary));
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ms-form-group-range-gap, --spacing(4));
 
   .form-group-range-wrapper {
-    @apply relative w-full px-[var(--track-size)];
+    position: relative;
+    width: 100%;
+    padding-inline: var(--_track-size);
 
     input[type='range'].form-range {
-      @apply pointer-events-none absolute z-4 h-[var(--track-size)] w-[calc(100%_-_var(--track-size))] appearance-none bg-transparent first-of-type:left-0
-      last-of-type:right-0;
+      position: absolute;
+      z-index: 4;
+      width: calc(100% - var(--_track-size));
+      height: var(--_track-size);
+      appearance: none;
+      background-color: transparent;
+      pointer-events: none;
+
+      &:first-of-type {
+        left: 0;
+      }
+
+      &:last-of-type {
+        right: 0;
+      }
 
       &::-webkit-slider-runnable-track {
-        @apply bg-transparent;
+        background-color: transparent;
       }
 
       &::-webkit-slider-thumb {
-        @apply pointer-events-auto h-[var(--track-size)] w-[var(--track-size)] appearance-none rounded-full border-none;
+        width: var(--_track-size);
+        height: var(--_track-size);
+        appearance: none;
+        border: none;
+        border-radius: 50%;
+        pointer-events: auto;
       }
 
       &:first-of-type::-webkit-slider-thumb {
-        @apply bg-[var(--track-from-color)];
+        background-color: var(--_track-from-color);
       }
 
       &:not(:first-of-type)::-webkit-slider-thumb {
-        @apply bg-[var(--track-to-color)];
+        background-color: var(--_track-to-color);
       }
 
       &:not([readonly], [disabled])::-webkit-slider-thumb {
-        @apply cursor-pointer;
+        cursor: pointer;
       }
 
-      input[type='range']::-moz-range-track {
-        @apply bg-transparent;
+      &::-moz-range-track {
+        background-color: transparent;
       }
 
       &::-moz-range-thumb {
-        @apply pointer-events-auto h-[var(--track-size)] w-[var(--track-size)] appearance-none rounded-full border-none;
+        width: var(--_track-size);
+        height: var(--_track-size);
+        appearance: none;
+        border: none;
+        border-radius: 50%;
+        pointer-events: auto;
       }
 
       &:first-of-type::-moz-range-thumb {
-        @apply bg-[var(--track-from-color)];
+        background-color: var(--_track-from-color);
       }
 
       &:not(:first-of-type)::-moz-range-thumb {
-        @apply bg-[var(--track-to-color)];
+        background-color: var(--_track-to-color);
       }
 
       &:not([readonly], [disabled])::-moz-range-thumb {
-        @apply cursor-pointer;
+        cursor: pointer;
       }
 
       &::-ms-thumb {
-        @apply pointer-events-auto h-[var(--track-size)] w-[var(--track-size)] appearance-none rounded-full border-none;
+        width: var(--_track-size);
+        height: var(--_track-size);
+        appearance: none;
+        border: none;
+        border-radius: 50%;
+        pointer-events: auto;
       }
 
       &:first-of-type::-ms-thumb {
-        @apply bg-[var(--track-from-color)];
+        background-color: var(--_track-from-color);
       }
 
       &:not(:first-of-type)::-ms-thumb {
-        @apply bg-[var(--track-to-color)];
+        background-color: var(--_track-to-color);
       }
 
       &:not([readonly], [disabled])::-ms-thumb {
-        @apply cursor-pointer;
+        cursor: pointer;
       }
 
       &:disabled {
-        @apply base__read-only cursor-not-allowed bg-transparent;
+        --_track-from-color: var(--ms-form-disabled-color);
+        --_track-to-color: var(--ms-form-disabled-color);
+
+        cursor: not-allowed;
 
         & + .form-range-slider {
-          @apply base__read-only;
+          --ms-form-range-track-bg-color: var(--ms-form-disabled-bg-color);
+          --ms-form-range-connect-gradient-start: var(--ms-form-disabled-color);
+          --ms-form-range-connect-gradient-end: var(--ms-form-disabled-color);
+
+          cursor: default;
+          pointer-events: none;
         }
       }
 
       &[readonly] {
-        @apply base__read-only cursor-default;
+        --_track-from-color: var(--ms-form-readonly-color);
+        --_track-to-color: var(--ms-form-readonly-color);
+
+        cursor: default;
 
         & + .form-range-slider {
-          @apply base__read-only;
+          --ms-form-range-track-bg-color: var(--ms-form-readonly-bg-color);
+          --ms-form-range-connect-gradient-start: var(--ms-form-readonly-color);
+          --ms-form-range-connect-gradient-end: var(--ms-form-readonly-color);
+
+          cursor: default;
+          pointer-events: none;
         }
       }
 
       &.form-invalid:first-of-type {
-        --track-from-color: var(--color-error);
+        --_track-from-color: var(--ms-form-error-bg-color);
 
         & ~ .form-range-slider > .form-range-connect {
-          --gradient-start: var(--color-error);
+          --gradient-start: var(--ms-form-error-bg-color);
         }
       }
 
       &.form-invalid:not(:first-of-type) {
-        --track-to-color: var(--color-error);
+        --_track-to-color: var(--ms-form-error-bg-color);
 
         & ~ .form-range-slider > .form-range-connect {
-          --gradient-end: var(--color-error);
+          --gradient-end: var(--ms-form-error-bg-color);
         }
       }
     }
   }
 
   .form-range-slider {
-    @apply relative z-0 h-[var(--track-size)];
+    position: relative;
+    z-index: 0;
+    height: var(--_track-size);
+  }
 
-    .form-range-tracker {
-      @apply absolute top-1/2 right-0 left-0
-      z-3
-      -mx-[var(--track-size)]
-      h-2
-      -translate-y-1/2
-      transform
-      rounded-full
-      bg-slate-100 dark:bg-theme-800;
-    }
+  .form-range-tracker {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 3;
+    height: var(--ms-form-range-track-height, --spacing(1));
+    margin-inline: calc(var(--_track-size) * -1);
+    border-radius: 9999px;
+    background-color: var(--ms-form-range-track-bg-color, var(--color-theme-200));
+    transform: translateY(-50%);
+  }
 
-    .form-range-connect {
-      @apply absolute top-1/2 z-4 -mx-[3px] h-2 -translate-y-1/2 transform;
-      background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
-    }
+  .form-range-connect {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    height: var(--ms-form-range-track-height, --spacing(1));
+    margin-inline: -3px;
+    background: linear-gradient(
+      to right,
+      var(--ms-form-range-connect-gradient-start, var(--gradient-start)),
+      var(--ms-form-range-connect-gradient-end, var(--gradient-end))
+    );
+    transform: translateY(-50%);
   }
 
   .form-group-range-fields {
-    @apply mt-4 flex w-full items-center justify-between gap-2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: var(--ms-form-range-fields-margin-top, --spacing(4));
+    gap: var(--ms-form-range-fields-gap, --spacing(2));
 
     & > .form-input {
-      @apply max-w-44;
+      max-width: var(--ms-form-range-field-max-width, --spacing(44));
 
       &:last-child {
-        @apply text-right;
+        text-align: right;
       }
     }
   }
 }
 
-/* Checkbox */
+/* Form Color */
+
 .form-color {
-  @apply relative;
+  position: relative;
 
   .form-color-thumb {
-    @apply absolute
-    top-1/2
-    left-1
-    h-8 w-8 -translate-y-1/2 overflow-hidden;
+    --_color-thumb-size: var(--ms-form-color-thumb-size, --spacing(6));
+
+    position: absolute;
+    top: 50%;
+    left: var(--ms-form-color-thumb-left, --spacing(2));
+    width: var(--_color-thumb-size);
+    height: var(--_color-thumb-size);
+    border-radius: var(--ms-form-color-thumb-radius, var(--radius-sm));
+    overflow: hidden;
+    transform: translateY(-50%);
 
     input[type='color'] {
-      @apply absolute -top-2 -left-2 m-0 h-16 w-16 cursor-pointer p-0;
+      position: absolute;
+      top: calc(var(--_color-thumb-size) * -0.25);
+      left: calc(var(--_color-thumb-size) * -0.25);
+      width: calc(var(--_color-thumb-size) * 1.5);
+      height: calc(var(--_color-thumb-size) * 1.5);
+      margin: 0;
+      padding: 0;
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
     }
   }
 
   input {
-    @apply pl-10;
+    padding-left: var(--ms-color-input-padding-left, --spacing(10));
   }
 }
 
 /* Form Group */
+
 .form-group {
-  @apply flex w-full flex-col gap-2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--ms-form-group-gap, --spacing(2));
 
   &.form-group-inline {
-    @apply flex-row items-center justify-items-center md:flex-nowrap;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-items: center;
 
-    [type='date'] {
-      @apply p-1;
-    }
-
-    & > label + div {
-      @apply w-full lg:w-0 lg:grow;
+    @variant md {
+      flex-wrap: nowrap;
     }
 
     & > label:first-child:not(.form-switcher) {
-      @apply lg:w-1/5;
+      @variant lg {
+        width: 20%;
+      }
+    }
+
+    & + .form-error {
+      --ms-form-error-margin-top: --spacing(2);
     }
   }
 }
 
 /* Choices (Single/Multiple Select) */
+
 .choices {
-  @apply w-full rounded-md base__default;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
+  border-radius: var(--ms-form-default-radius, --spacing(2));
+  background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
 
   &::after {
-    @apply transition-all;
+    transition-property: all;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
   }
 
   &.is-focused {
-    @apply base__focus;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-color: var(--ms-form-focus-border-color, var(--color-primary));
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
   }
 
   &.is-disabled {
-    @apply base__disabled;
+    background-color: var(--ms-form-disabled-bg-color, var(--color-theme-100));
+    cursor: not-allowed;
 
     .choices__inner {
-      @apply bg-transparent;
+      background-color: transparent;
     }
 
     .choices__button {
-      @apply hidden;
+      display: none;
     }
   }
 
   .form-invalid &,
   &:has(.form-invalid) {
-    @apply base__error;
+    border-color: var(--ms-form-error-border-color);
+    box-shadow: 0 0 0 var(--ms-form-error-ring-width) var(--ms-form-error-ring-color);
   }
 
   &[data-type*='select-one'] {
     &:not(.is-open) {
-      @apply after:border-t-slate-300
-      dark:after:border-t-slate-600;
+      &::after {
+        border-top-color: var(--ms-choices-arrow-color, var(--color-theme-300));
+
+        @variant dark {
+          border-top-color: var(--ms-choices-arrow-color, var(--color-theme-600));
+        }
+      }
     }
 
     &.is-open {
-      @apply after:border-t-slate-300
-      dark:after:border-t-slate-600;
+      &::after {
+        border-top-color: var(--ms-choices-arrow-color, var(--color-theme-300));
+
+        @variant dark {
+          border-top-color: var(--ms-choices-arrow-color, var(--color-theme-600));
+        }
+      }
     }
   }
 
   &.is-open {
-    @apply rounded-b-none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   .choices__input {
-    @apply m-0
-    bg-transparent
-    p-0
-    base__placeholder;
-
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
     box-shadow: none;
+
+    &::placeholder {
+      color: var(--ms-form-default-placeholder-color, var(--color-theme-400));
+      opacity: 1;
+    }
   }
 
   .choices__inner {
-    @apply min-h-0 border-none bg-transparent text-xs;
-    padding: 0.5rem 0.75rem;
+    min-height: 0;
+    padding: calc(var(--ms-form-field-padding, --spacing(2)) * 0.25)
+      calc(var(--ms-form-field-padding, --spacing(2)) * 0.375);
+    border: none;
+    background-color: transparent;
+    font-size: var(--text-xs);
 
     .choices__list--single {
-      @apply p-0;
+      padding: 0;
     }
   }
 
   .choices__list--dropdown,
   .choices__list[aria-expanded] {
-    @apply z-10 rounded-b-md base__default;
+    z-index: 10;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
+    border-radius: 0 0 var(--ms-form-default-radius, --spacing(2))
+      var(--ms-form-default-radius, --spacing(2));
+    background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
 
     .choices__input {
-      @apply base__default base__placeholder;
+      border-width: 1px;
+      border-style: solid;
+      border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
+      background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
+      color: var(--ms-form-default-color, var(--color-theme-body));
+
+      &::placeholder {
+        color: var(--ms-form-default-placeholder-color, var(--color-theme-400));
+        opacity: 1;
+      }
     }
 
     .choices__item.is-highlighted {
-      @apply bg-slate-100
-      text-slate-600
-      dark:bg-theme-900/20
-      dark:text-slate-400;
+      background-color: var(--ms-choices-highlight-bg, var(--color-theme-100));
+      color: var(--ms-choices-highlight-color, var(--color-theme-600));
+
+      @variant dark {
+        background-color: var(--ms-choices-highlight-bg, --alpha(var(--color-theme-900) / 0.2));
+        color: var(--ms-choices-highlight-color, var(--color-theme-400));
+      }
     }
   }
 
   .choices__list--single {
     .choices__button {
-      @apply dark:invert;
+      @variant dark {
+        filter: invert(1);
+      }
     }
   }
 
   .choices__list--multiple .choices__item {
-    @apply border-0 py-0 text-xs;
+    padding-block: 0;
+    border: 0;
+    font-size: var(--text-xs);
   }
 
   .choices__list--multiple {
     .choices__item {
-      @apply my-0.5 rounded-md border-primary bg-primary px-1 py-0;
+      margin-block: calc(var(--ms-form-field-padding, --spacing(2)) * 0.25);
+      padding-inline: var(--ms-choices-item-padding-x, --spacing(1));
+      padding-block: 0;
+      border-radius: var(--ms-choices-item-radius, --spacing(1.5));
+      border-color: var(--color-primary);
+      background-color: var(--color-primary);
 
       .choices__button {
-        @apply m-0 border-l-white/50;
+        margin: 0;
+        border-left-color: --alpha(var(--color-white) / 0.5);
       }
     }
   }
 
   .choices__heading {
-    @apply border-gray-300
-    text-gray-400
-    dark:border-theme-200
-    dark:text-gray-500;
+    border-color: var(--ms-choices-heading-border-color, var(--color-neutral-300));
+    color: var(--ms-choices-heading-color, var(--color-neutral-400));
+
+    @variant dark {
+      border-color: var(--ms-choices-heading-border-color, var(--color-theme-200));
+      color: var(--ms-choices-heading-color, var(--color-neutral-500));
+    }
   }
 
   /* Show browser errors */
-
   [hidden] {
-    @apply absolute top-0 left-0 z-0 m-0 block h-full w-full p-0 opacity-0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
   }
 }
 
 /* Json */
+
 .inner-json-object-mode {
   .inner-json-object-mode {
-    @apply relative pl-6;
+    position: relative;
+    padding-left: var(--ms-json-indent, --spacing(6));
 
-    &:before {
+    &::before {
       content: '';
-      @apply absolute
-      top-2.5
-      left-0
-      h-px
-      w-4
-      bg-gray-300
-      dark:bg-theme-200;
-    }
-  }
-}
-
-fieldset {
-  @apply relative w-full min-w-0 rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-theme-200;
-
-  legend {
-    @apply absolute top-0 left-3 -ms-1 -translate-y-1/2 px-1 text-xs sm:left-4;
-
-    &:before {
-      content: '';
-      @apply absolute inset-0 -z-1 h-full w-full bg-[inherit] backdrop-blur-sm;
-    }
-  }
-}
-
-.form-select {
-  optgroup {
-    option {
-      &:hover {
-        @apply transition-colors
-        dark:bg-theme-300
-        dark:text-slate-400
-        dark:hover:bg-theme-200;
-      }
+      position: absolute;
+      top: calc(var(--ms-json-line-top, --spacing(2.5)));
+      left: 0;
+      width: var(--ms-json-line-width, --spacing(4));
+      height: 1px;
+      background-color: var(--ms-json-line-color, var(--color-theme-stroke));
     }
   }
 }
