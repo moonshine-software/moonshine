@@ -12,7 +12,8 @@
   gap: var(--ms-toast-container-gap, --spacing(2.5));
   width: 100vw;
   height: 100vh;
-  padding: var(--ms-toast-container-spacing, --spacing(4));
+  padding-block: var(--ms-toast-container-spacing, --spacing(4));
+  padding-inline: calc(var(--ms-toast-container-spacing, --spacing(4)) + --spacing(2));
 }
 
 .toast-item {
@@ -26,6 +27,7 @@
   padding-block: var(--ms-toast-padding-y, --spacing(2.5));
   padding-inline: var(--ms-toast-padding-x, --spacing(2.5));
   border-radius: var(--ms-toast-radius, var(--radius-sm));
+  border: 1px solid var(--ms-toast-border-color, var(--color-base-stroke));
   border-left: var(--ms-toast-border-width, --spacing(0.875)) solid
     var(--ms-toast-border-color, var(--color-base-stroke));
   background-color: var(--ms-toast-bg-color, var(--color-base));
