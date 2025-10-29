@@ -1,36 +1,43 @@
 @import 'tom-select/dist/css/tom-select.css';
 
-:root {
+@inline {
   --ts-pr-caret: 32px;
   --ts-pr-clear-button: 1em;
 }
 
-/* Tom Select base styles */
+/* Tom Select basic */
 
 .ts-dropdown,
 .ts-control,
 .ts-control input {
-  /* padding: var(--ms-base-padding-y, --spacing(2.5)) var(--ms-base-padding-x, --spacing(3.5)); */
-  border-radius: var(--ms-base-radius, --spacing(2));
-  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
-  background-color: var(--ms-base-bg-color, var(--color-base));
-  color: var(--ms-base-color, var(--color-base-text));
-  font-size: var(--text-xs);
+  border-color: var(--ms-ts-base-border-color, var(--ms-form-default-border-color));
+  background-color: var(--ms-ts-base-bg-color, var(--ms-form-default-bg-color));
+  color: var(--ms-ts-base-color, var(--color-base-text));
+  font-size: var(--ms-ts-base-font-size, var(--text-xs));
+}
+
+.ts-dropdown,
+.ts-control {
+  border-radius: var(--ms-ts-base-radius, var(--ms-form-default-radius));
 }
 
 .ts-wrapper.single.input-active .ts-control,
 .ts-wrapper.multi.input-active .ts-control {
   background-color: inherit;
   color: inherit;
+}
 
+.ts-wrapper.single .ts-control,
+.ts-wrapper.multi .ts-control {
   .clear-button {
+    right: var(--ms-ts-clear-button-space-right, --spacing(6));
     display: inline-flex;
     align-items: center;
     margin-bottom: 0;
     padding-block: 0;
     padding-inline: --spacing(1);
     color: var(--ms-clear-button-color, var(--color-base-text));
-    font-size: var(--text-md);
+    font-size: var(--ms-ts-base-font-size, var(--text-xs));
   }
 }
 
@@ -41,7 +48,7 @@
     content: '';
     position: absolute;
     top: 50%;
-    right: var(--ms-select-caret-right, --spacing(2));
+    right: var(--ms-ts-caret-right, --spacing(2));
     z-index: 1;
     width: --spacing(4);
     height: --spacing(4);
@@ -65,18 +72,29 @@
 
     .ts-control {
       display: flex;
-      gap: var(--ms-select-multi-gap, --spacing(1));
+      gap: var(--ms-ts-multi-gap, --spacing(1));
 
       .item {
-        margin-block: 0;
-        padding-inline: var(--ms-select-item-padding-x, --spacing(2));
-        border-radius: var(--ms-select-item-radius, --spacing(1.5));
-        background-color: var(--ms-select-item-bg-color, var(--color-primary));
-        color: var(--ms-select-item-color, var(--color-primary-text));
+        margin: 0;
+        padding-inline: var(--ms-ts-item-padding-x, --spacing(1.5));
+        border-radius: var(--ms-ts-item-radius, --spacing(1));
+        background-color: var(--ms-ts-item-bg-color, var(--color-primary));
+        color: var(--ms-ts-item-color, var(--color-primary-text));
+        font-size: var(--ms-ts-item-font-size, 0.9375em);
 
         &.with-image {
-          padding: var(--ms-select-item-image-padding, --spacing(1));
+          padding: var(--ms-ts-item-image-padding, --spacing(1));
         }
+
+        .remove {
+          border-color: var(--ms-ts-item-remove-border-color, var(--ms-form-default-bg-color));
+        }
+      }
+    }
+
+    &.has-items {
+      .ts-control {
+        padding-right: var(--ms-ts-multi-padding-right, --spacing(13)) !important;
       }
     }
   }
@@ -87,33 +105,32 @@
 .full .ts-control {
   display: flex;
   align-items: center;
-  padding: --spacing(2.5) --spacing(3.5);
-  border-radius: --spacing(2);
-  border-color: var(--color-base-stroke);
-  background-color: var(--color-base);
+  padding-block: var(--ms-ts-control-padding-y, --spacing(2.5));
+  padding-inline: var(--ms-ts-control-padding-x, --spacing(3.5));
+  border-radius: var(--ms-ts-control-radius, --spacing(2));
+  border-color: var(--ms-ts-control-border-color, var(--ms-form-default-border-color));
+  background-color: var(--ms-ts-control-bg-color, var(--ms-form-default-bg-color));
 }
 
 /* Dropdown */
 
 .ts-dropdown {
+  overflow: hidden;
   z-index: calc(var(--z-dropdown) + 9);
-  margin-block: var(--ms-dropdown-margin-y, calc(--spacing(0.5) * -1));
-  border-width: 1px;
+  border-width: var(--ms-ts-dropdown-border-width, 1px);
   border-style: solid;
-  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
-  border-radius: 0 0 var(--ms-base-radius, --spacing(2)) var(--ms-base-radius, --spacing(2));
+  border-color: var(--ms-ts-dropdown-border-color, var(--ms-form-default-border-color));
+  border-radius: var(--ms-ts-dropdown-radius, --spacing(2));
   box-shadow: none;
 
   .optgroup-header {
-    padding: var(--ms-optgroup-padding-y, --spacing(2)) var(--ms-optgroup-padding-x, --spacing(4));
-    border-bottom: 1px solid var(--ms-theme-border-color, var(--color-base-stroke));
+    padding-block: var(--ms-ts-optgroup-padding-y, --spacing(3));
+    border-bottom: var(--ms-ts-optgroup-border-width, 1px);
+    border-style: solid;
+    border-color: var(--ms-ts-optgroup-border-color, var(--ms-form-default-border-color));
     background-color: transparent;
     color: inherit;
-    opacity: 0.7;
-
-    @variant dark {
-      color: var(--color-slate-100);
-    }
+    opacity: var(--ms-ts-optgroup-opacity, 0.5);
   }
 }
 
@@ -121,43 +138,57 @@
 
 .ts-control {
   width: 100%;
-  border-width: 1px;
+  border-width: var(--ms-ts-control-border-color, 1px);
   border-style: solid;
-  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
-  border-radius: var(--ms-base-radius, --spacing(2));
+  border-color: var(--ms-ts-control-border-color, var(--ms-form-default-border-color));
+  border-radius: var(--ms-ts-control-radius, --spacing(2));
 
   &:focus {
-    outline: none;
+    /* outline: none; */
   }
 }
 
 .ts-control input {
   margin: 0;
-  padding-right: var(--ms-control-input-padding-right, --spacing(5));
-  font-size: var(--text-xs);
+  padding-right: var(--ms-ts-control-input-padding-right, --spacing(5));
+  font-size: var(--ms-ts-control-input-font-size, var(--text-xs));
 }
 
-/* Dropdown options */
+.ts-control .item {
+  color: var(--ms-ts-item-color, var(--ms-form-default-color));
 
-.ts-dropdown [data-selectable].option,
-.ts-dropdown .no-results {
-  padding-block: var(--ms-dropdown-option-padding-y, --spacing(2));
-
-  @variant dark {
-    color: var(--color-slate-200);
+  &.with-image {
+    display: flex;
+    align-items: center;
+    gap: var(--ms-ts-item-image-gap, --spacing(2));
   }
 }
 
+/* Dropdown options */
+.ts-dropdown [data-selectable].option,
+.ts-dropdown .no-results {
+  padding-block: var(--ms-ts-dropdown-option-padding-y, --spacing(2));
+}
+
 .ts-dropdown .option {
-  background-color: var(--ms-dropdown-option-bg-color, var(--color-base));
+  background-color: var(--ms-ts-dropdown-option-bg-color, var(--ms-form-default-bg-color));
+}
+
+.ts-dropdown .active,
+.ts-dropdown .selected {
+  background-color: var(--ms-ts-dropdown-option-default-bg-color, var(--color-base-300));
+  color: var(--ms-ts-dropdown-option-default-color, var(--color-base-text));
 }
 
 .ts-dropdown .create:hover,
-.ts-dropdown .option:hover,
-.ts-dropdown .active,
-.ts-dropdown .selected {
-  background-color: var(--ms-dropdown-option-hover-bg-color, var(--color-base-200));
-  color: var(--ms-dropdown-option-hover-color, var(--color-base-text));
+.ts-dropdown .option:hover {
+  background-color: var(--ms-ts-dropdown-option-hover-bg-color, var(--color-base-100));
+  color: var(--ms-ts-dropdown-option-hover-color, var(--color-base-text));
+}
+
+.ts-dropdown [data-selectable] .highlight {
+  background-color: var(--ms-ts-dropdown-hightlight-bg-color, var(--color-secondary));
+  color: var(--ms-ts-dropdown-hightlight-color, var(--color-secondary-text));
 }
 
 .ts-dropdown .spinner {
@@ -167,28 +198,13 @@
 
 .ts-dropdown .spinner::after {
   display: inline-block;
-  width: var(--ms-spinner-size, --spacing(5));
-  height: var(--ms-spinner-size, --spacing(5));
+  width: var(--ms-ts-dropdown-spinner-size, --spacing(4));
+  height: var(--ms-ts-dropdown-spinner-size, --spacing(4));
   margin: 0;
   padding: 0;
-  border: var(--ms-theme-border-width, 2px) solid
-    var(--ms-theme-border-color, var(--color-base-stroke));
-}
-
-/* Items */
-
-.item {
-  color: var(--ms-item-color, var(--color-slate-600));
-
-  @variant dark {
-    color: var(--ms-item-color, var(--color-slate-400));
-  }
-
-  &.with-image {
-    display: flex;
-    align-items: center;
-    gap: var(--ms-item-image-gap, --spacing(3));
-  }
+  border-width: var(--ms-ts-dropdown-spinner-border-width, 2px);
+  border-style: solid;
+  border-color: var(--ms-ts-dropdown-spinner-border-color, var(--ms-form-default-border-color));
 }
 
 /* Clear button plugin */
@@ -212,16 +228,5 @@
     transition-property: opacity;
     transition-duration: var(--default-transition-duration);
     transition-timing-function: var(--default-transition-timing-function);
-  }
-
-  &.focus.has-items .clear-button,
-  &:not(.disabled):hover.has-items .clear-button {
-    opacity: 1;
-  }
-}
-
-.multi.plugin-clear_button {
-  .clear-button {
-    right: 25px;
   }
 }
