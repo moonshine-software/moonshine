@@ -40,6 +40,7 @@
   /* General CSS */
   *:focus-visible {
     outline: 2px dashed var(--color-primary);
+    outline-offset: --spacing(0.875);
   }
 
   ::selection {
