@@ -8,7 +8,7 @@
   padding-block: var(--ms-alert-padding-y, --spacing(2.5));
   padding-inline: var(--ms-alert-padding-x, --spacing(3));
   border-radius: var(--ms-alert-radius, var(--radius-lg));
-  background-color: var(--ms-alert-bg-color, var(--color-base-100));
+  background-color: var(--ms-alert-bg-color, var(--color-base-200));
   color: var(--ms-alert-color, var(--color-base-text));
 
   & + .alert {
