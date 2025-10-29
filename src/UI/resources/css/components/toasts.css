@@ -49,13 +49,13 @@
 
 .toast-primary {
   --ms-toast-border-color: var(--color-primary);
-  --ms-toast-bg-color: --alpha(var(--color-primary) / 0.6);
+  --ms-toast-bg-color: --alpha(var(--color-primary) / 0.9);
   --ms-toast-color: var(--color-primary-text);
 }
 
 .toast-secondary {
   --ms-toast-border-color: var(--color-secondary);
-  --ms-toast-bg-color: --alpha(var(--color-secondary) / 0.6);
+  --ms-toast-bg-color: --alpha(var(--color-secondary) / 0.9);
   --ms-toast-color: var(--color-secondary-text);
 }
 
