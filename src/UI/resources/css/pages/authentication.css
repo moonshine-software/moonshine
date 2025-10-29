@@ -5,8 +5,8 @@
   .authentication-content {
     width: 100%;
     max-width: 420px;
-    background-color: var(--color-theme);
-    border: 1px solid var(--color-theme-stroke);
+    background-color: var(--color-base);
+    border: 1px solid var(--color-base-stroke);
     border-radius: var(--radius-xl);
     padding: --spacing(6) --spacing(4);
 

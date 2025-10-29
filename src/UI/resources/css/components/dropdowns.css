@@ -15,9 +15,9 @@
   position: absolute;
   box-shadow: 0 4px 10px -5px rgb(0 0 0 / 0.1);
   border: var(--ms-dropdown-border-width, 1px) solid
-    var(--ms-dropdown-border-color, var(--color-theme-stroke));
+    var(--ms-dropdown-border-color, var(--color-base-stroke));
   border-radius: var(--ms-dropdown-bg-color, var(--radius-lg));
-  background-color: var(--ms-dropdown-bg-color, var(--color-theme));
+  background-color: var(--ms-dropdown-bg-color, var(--color-base));
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
@@ -38,8 +38,8 @@
   padding-block: var(--ms-dropdown-heading-padding-y, var(--_dropdown-padding-y));
   padding-inline: var(--ms-dropdown-heading-padding-x, var(--_dropdown-padding-x));
   border-bottom: var(--ms-dropdown-heading-border-width, 1px) solid
-    var(--ms-dropdown-heading-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-dropdown-heading-bg-color, var(--color-theme));
+    var(--ms-dropdown-heading-border-color, var(--color-base-stroke));
+  background-color: var(--ms-dropdown-heading-bg-color, var(--color-base));
   font-size: var(--ms-dropdown-heading-font-size, var(--text-sm));
   font-weight: var(--ms-dropdown-heading-font-weight, var(--font-weight-medium));
 }
@@ -60,7 +60,7 @@
 
   > * + * {
     border-top: var(--ms-dropdown-content-divider-width, 1px) solid
-      var(--ms-dropdown-content-divider-color, var(--color-theme-stroke));
+      var(--ms-dropdown-content-divider-color, var(--color-base-stroke));
   }
 
   @variant sm {
@@ -88,8 +88,8 @@
   padding-block: var(--_dropdown-footer-padding-y);
   padding-inline: var(--_dropdown-footer-padding-x);
   border-top: var(--ms-dropdown-footer-border-width, 1px) solid
-    var(--ms-dropdown-footer-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-dropdown-footer-bg-color, var(--color-theme-100));
+    var(--ms-dropdown-footer-border-color, var(--color-base-stroke));
+  background-color: var(--ms-dropdown-footer-bg-color, var(--color-base-100));
 }
 
 /* Dropdown menu */
@@ -100,7 +100,7 @@
 
   > * + * {
     border-top: var(--ms-dropdown-menu-divider-width, 1px) solid
-      var(--ms-dropdown-menu-divider-color, var(--color-theme-stroke));
+      var(--ms-dropdown-menu-divider-color, var(--color-base-stroke));
   }
 }
 
@@ -108,8 +108,8 @@
   .dropdown-menu-link,
   .btn {
     pointer-events: none;
-    background-color: var(--color-theme-200);
-    color: var(--color-theme-body);
+    background-color: var(--color-base-200);
+    color: var(--color-base-text);
   }
 }
 
@@ -130,8 +130,8 @@
   }
 
   @variant hover {
-    background-color: var(--color-theme-100);
-    color: var(--color-theme-body);
+    background-color: var(--color-base-100);
+    color: var(--color-base-text);
   }
 }
 

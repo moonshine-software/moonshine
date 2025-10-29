@@ -5,7 +5,7 @@
     overflow-x: auto;
     display: flex;
     border-bottom: var(--ms-tabs-border-width, 1px) solid
-      var(--ms-tabs-border-color, var(--color-theme-stroke));
+      var(--ms-tabs-border-color, var(--color-base-stroke));
   }
 
   .tabs-title {
@@ -26,7 +26,7 @@
     padding-inline: var(--ms-tabs-button-padding-x, --spacing(2));
     border-bottom: var(--ms-tabs-button-border-width, 1px) solid
       var(--ms-tabs-button-border-color, transparent);
-    color: var(--ms-tabs-button-color, --alpha(var(--color-theme-body) / 0.5));
+    color: var(--ms-tabs-button-color, --alpha(var(--color-base-text) / 0.5));
     font-size: var(--ms-tabs-button-font-size, var(--text-sm));
     font-weight: var(--ms-tabs-button-font-weight, var(--font-weight-medium));
     white-space: nowrap;
@@ -34,8 +34,8 @@
 
     @variant hover {
       &:not(._is-active) {
-        border-color: var(--ms-tabs-button-hover-border-color, var(--color-theme-stroke));
-        color: var(--ms-tabs-button-hover-color, var(--color-theme-body));
+        border-color: var(--ms-tabs-button-hover-border-color, var(--color-base-stroke));
+        color: var(--ms-tabs-button-hover-color, var(--color-base-text));
       }
     }
 
@@ -66,7 +66,7 @@
     min-height: max-content;
     min-width: max-content;
     border-right: var(--ms-tabs-border-width, 1px) solid
-      var(--ms-tabs-border-color, var(--color-theme-stroke));
+      var(--ms-tabs-border-color, var(--color-base-stroke));
     border-bottom: 0;
 
     .tabs-button {
@@ -79,8 +79,8 @@
 
       @variant hover {
         &:not(._is-active) {
-          border-color: var(--ms-tabs-button-hover-border-color, var(--color-theme-stroke));
-          color: var(--ms-tabs-button-hover-color, var(--color-theme-body));
+          border-color: var(--ms-tabs-button-hover-border-color, var(--color-base-stroke));
+          color: var(--ms-tabs-button-hover-color, var(--color-base-text));
         }
       }
 

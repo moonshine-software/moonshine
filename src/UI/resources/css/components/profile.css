@@ -50,7 +50,7 @@
     @apply truncate;
 
     display: block;
-    color: --alpha(var(--color-theme-body) / 0.5);
+    color: --alpha(var(--color-base-text) / 0.5);
     font-size: 0.9375em;
     font-weight: var(--font-weight-normal);
   }

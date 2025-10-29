@@ -9,8 +9,8 @@
   padding-inline: var(--ms-card-padding-x, --spacing(4));
   border-radius: var(--ms-card-radius, var(--radius-lg));
   border: var(--ms-card-border-width, 1px) solid
-    var(--ms-card-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-card-bg-color, var(--color-theme));
+    var(--ms-card-border-color, var(--color-base-stroke));
+  background-color: var(--ms-card-bg-color, var(--color-base));
 
   /* Card photo */
 
@@ -93,11 +93,11 @@
     }
 
     table {
-      color: var(--color-theme-body);
+      color: var(--color-base-text);
       font-size: var(--text-sm);
 
       @variant dark {
-        color: var(--color-theme-body);
+        color: var(--color-base-text);
       }
 
       th {
@@ -116,7 +116,7 @@
     gap: var(--ms-card-actions-gap, --spacing(2));
     padding-top: var(--ms-card-actions-padding-top, --spacing(5));
     border-top: var(--ms-card-actions-border-width, 1px) solid
-      var(--ms-card-actions-border-color, var(--color-theme-stroke));
+      var(--ms-card-actions-border-color, var(--color-base-stroke));
   }
 }
 
@@ -132,7 +132,7 @@
   padding-block: var(--ms-report-card-padding-y, --spacing(3));
   padding-inline: var(--ms-report-card-padding-x, --spacing(3));
   border-radius: var(--ms-report-card-radius, inherit);
-  background-color: var(--ms-report-card-bg-color, var(--color-theme));
+  background-color: var(--ms-report-card-bg-color, var(--color-base));
 
   &::before {
     display: none;
@@ -148,7 +148,7 @@
     svg {
       width: var(--ms-report-card-heading-icon-size, --spacing(6));
       height: var(--ms-report-card-heading-icon-size, --spacing(6));
-      color: var(--ms-report-card-heading-icon-color, var(--color-theme-body));
+      color: var(--ms-report-card-heading-icon-color, var(--color-base-text));
     }
   }
 
@@ -186,7 +186,7 @@
   }
 
   .report-card-title {
-    color: var(--ms-report-card-title-color, var(--color-theme-body));
+    color: var(--ms-report-card-title-color, var(--color-base-text));
     font-size: var(--ms-report-card-title-font-size, var(--text-sm));
     text-overflow: ellipsis;
     white-space: nowrap;

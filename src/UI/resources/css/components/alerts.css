@@ -8,8 +8,8 @@
   padding-block: var(--ms-alert-padding-y, --spacing(2.5));
   padding-inline: var(--ms-alert-padding-x, --spacing(3));
   border-radius: var(--ms-alert-radius, var(--radius-lg));
-  background-color: var(--ms-alert-bg-color, var(--color-theme-100));
-  color: var(--ms-alert-color, var(--color-theme-body));
+  background-color: var(--ms-alert-bg-color, var(--color-base-100));
+  color: var(--ms-alert-color, var(--color-base-text));
 
   & + .alert {
     margin-top: var(--ms-alert-spacing-y, --spacing(2));

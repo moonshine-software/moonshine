@@ -12,9 +12,9 @@
 .ts-control input {
   /* padding: var(--ms-base-padding-y, --spacing(2.5)) var(--ms-base-padding-x, --spacing(3.5)); */
   border-radius: var(--ms-base-radius, --spacing(2));
-  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-base-bg-color, var(--color-theme));
-  color: var(--ms-base-color, var(--color-theme-body));
+  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
+  background-color: var(--ms-base-bg-color, var(--color-base));
+  color: var(--ms-base-color, var(--color-base-text));
   font-size: var(--text-xs);
 }
 
@@ -29,7 +29,7 @@
     margin-bottom: 0;
     padding-block: 0;
     padding-inline: --spacing(1);
-    color: var(--ms-clear-button-color, var(--color-theme-body));
+    color: var(--ms-clear-button-color, var(--color-base-text));
     font-size: var(--text-md);
   }
 }
@@ -89,8 +89,8 @@
   align-items: center;
   padding: --spacing(2.5) --spacing(3.5);
   border-radius: --spacing(2);
-  border-color: var(--color-theme-stroke);
-  background-color: var(--color-theme);
+  border-color: var(--color-base-stroke);
+  background-color: var(--color-base);
 }
 
 /* Dropdown */
@@ -100,13 +100,13 @@
   margin-block: var(--ms-dropdown-margin-y, calc(--spacing(0.5) * -1));
   border-width: 1px;
   border-style: solid;
-  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
   border-radius: 0 0 var(--ms-base-radius, --spacing(2)) var(--ms-base-radius, --spacing(2));
   box-shadow: none;
 
   .optgroup-header {
     padding: var(--ms-optgroup-padding-y, --spacing(2)) var(--ms-optgroup-padding-x, --spacing(4));
-    border-bottom: 1px solid var(--ms-theme-border-color, var(--color-theme-stroke));
+    border-bottom: 1px solid var(--ms-theme-border-color, var(--color-base-stroke));
     background-color: transparent;
     color: inherit;
     opacity: 0.7;
@@ -123,7 +123,7 @@
   width: 100%;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--ms-theme-border-color, var(--color-theme-stroke));
+  border-color: var(--ms-theme-border-color, var(--color-base-stroke));
   border-radius: var(--ms-base-radius, --spacing(2));
 
   &:focus {
@@ -149,15 +149,15 @@
 }
 
 .ts-dropdown .option {
-  background-color: var(--ms-dropdown-option-bg-color, var(--color-theme));
+  background-color: var(--ms-dropdown-option-bg-color, var(--color-base));
 }
 
 .ts-dropdown .create:hover,
 .ts-dropdown .option:hover,
 .ts-dropdown .active,
 .ts-dropdown .selected {
-  background-color: var(--ms-dropdown-option-hover-bg-color, var(--color-theme-200));
-  color: var(--ms-dropdown-option-hover-color, var(--color-theme-body));
+  background-color: var(--ms-dropdown-option-hover-bg-color, var(--color-base-200));
+  color: var(--ms-dropdown-option-hover-color, var(--color-base-text));
 }
 
 .ts-dropdown .spinner {
@@ -172,7 +172,7 @@
   margin: 0;
   padding: 0;
   border: var(--ms-theme-border-width, 2px) solid
-    var(--ms-theme-border-color, var(--color-theme-stroke));
+    var(--ms-theme-border-color, var(--color-base-stroke));
 }
 
 /* Items */

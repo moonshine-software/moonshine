@@ -6,20 +6,20 @@
   --color-secondary: oklch(var(--secondary, 0.92 0 0));
   --color-secondary-text: oklch(var(--secondary-text, 0 0 0));
 
-  --color-theme-stroke: oklch(var(--theme-stroke, 0 0 0 / 10%));
-  --color-theme-body: oklch(var(--theme-body, 0.21 0.006 285.885));
+  --color-base-stroke: oklch(var(--base-stroke, 0 0 0 / 10%));
+  --color-base-text: oklch(var(--base-text, 0.21 0.006 285.885));
 
-  --color-theme: oklch(var(--theme-default, 1 0 0));
-  --color-theme-50: oklch(var(--theme-50, 0.985 0 0));
-  --color-theme-100: oklch(var(--theme-100, 0.97 0 0));
-  --color-theme-200: oklch(var(--theme-200, 0.955 0 0));
-  --color-theme-300: oklch(var(--theme-300, 0.94 0 0));
-  --color-theme-400: oklch(var(--theme-400, 0.925 0 0));
-  --color-theme-500: oklch(var(--theme-500, 0.91 0 0));
-  --color-theme-600: oklch(var(--theme-600, 0.895 0 0));
-  --color-theme-700: oklch(var(--theme-700, 0.88 0 0));
-  --color-theme-800: oklch(var(--theme-800, 0.865 0 0));
-  --color-theme-900: oklch(var(--theme-900, 0.85 0 0));
+  --color-base: oklch(var(--base-default, 1 0 0));
+  --color-base-50: oklch(var(--base-50, 0.985 0 0));
+  --color-base-100: oklch(var(--base-100, 0.97 0 0));
+  --color-base-200: oklch(var(--base-200, 0.955 0 0));
+  --color-base-300: oklch(var(--base-300, 0.94 0 0));
+  --color-base-400: oklch(var(--base-400, 0.925 0 0));
+  --color-base-500: oklch(var(--base-500, 0.91 0 0));
+  --color-base-600: oklch(var(--base-600, 0.895 0 0));
+  --color-base-700: oklch(var(--base-700, 0.88 0 0));
+  --color-base-800: oklch(var(--base-800, 0.865 0 0));
+  --color-base-900: oklch(var(--base-900, 0.85 0 0));
 
   --color-success: oklch(var(--success-bg, 0.64 0.22 142.49));
   --color-success-text: oklch(var(--success-text, 0.46 0.16 142.49));
@@ -42,27 +42,27 @@
   --color-secondary: oklch(var(--secondary, 0.8 0 0));
   --color-secondary-text: oklch(var(--secondary-text, 0 0 0));
 
-  --color-theme-stroke: oklch(var(--theme-stroke, 1 0 0 / 10%));
-  --color-theme-body: oklch(var(--theme-body, 0.87 0.01 258.34));
+  --color-base-stroke: oklch(var(--base-stroke, 1 0 0 / 10%));
+  --color-base-text: oklch(var(--base-text, 0.87 0.01 258.34));
 
-  --color-theme: oklch(var(--theme-default, 0.24 0.0168 274.32));
-  --color-theme-50: oklch(var(--theme-50, 0.255 0.017 274.32));
-  --color-theme-100: oklch(var(--theme-100, 0.27 0.017 274.32));
-  --color-theme-200: oklch(var(--theme-200, 0.285 0.018 274.32));
-  --color-theme-300: oklch(var(--theme-300, 0.3 0.019 274.32));
-  --color-theme-400: oklch(var(--theme-400, 0.315 0.02 274.32));
-  --color-theme-500: oklch(var(--theme-500, 0.33 0.021 274.32));
-  --color-theme-600: oklch(var(--theme-600, 0.345 0.022 274.32));
-  --color-theme-700: oklch(var(--theme-700, 0.36 0.023 274.32));
-  --color-theme-800: oklch(var(--theme-800, 0.375 0.024 274.32));
-  --color-theme-900: oklch(var(--theme-900, 0.39 0.025 274.32));
+  --color-base: oklch(var(--base-default, 0.24 0.0168 274.32));
+  --color-base-50: oklch(var(--base-50, 0.255 0.017 274.32));
+  --color-base-100: oklch(var(--base-100, 0.27 0.017 274.32));
+  --color-base-200: oklch(var(--base-200, 0.285 0.018 274.32));
+  --color-base-300: oklch(var(--base-300, 0.3 0.019 274.32));
+  --color-base-400: oklch(var(--base-400, 0.315 0.02 274.32));
+  --color-base-500: oklch(var(--base-500, 0.33 0.021 274.32));
+  --color-base-600: oklch(var(--base-600, 0.345 0.022 274.32));
+  --color-base-700: oklch(var(--base-700, 0.36 0.023 274.32));
+  --color-base-800: oklch(var(--base-800, 0.375 0.024 274.32));
+  --color-base-900: oklch(var(--base-900, 0.39 0.025 274.32));
 
   --color-success: oklch(var(--success-bg, 0.64 0.22 142.495));
   --color-success-text: oklch(var(--success-text, 0.93 0.12 144.46));
   --color-warning: oklch(var(--warning-bg, 0.9 0.22 92.72));
   --color-warning-text: oklch(var(--warning-text, 0.99 0.072 107.64));
   --color-error: oklch(var(--error-bg, 0.589 0.214 26.855));
-  --color-error-text: oklch(var(--error-text, 0.87 0.07 18.51));
+  --color-error-text: oklch(var(--error-text, 0.71 0.24 25.96));
   --color-info: oklch(var(--info-bg, 0.6 0.22 257.63));
   --color-info-text: oklch(var(--info-text, 0.88 0.065 244.38));
 }

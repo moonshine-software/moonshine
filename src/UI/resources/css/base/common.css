@@ -5,8 +5,8 @@
     --ms-scrollbar-hover-color: var(--color-gray-200);
 
     @variant dark {
-      --ms-scrollbar-color: var(--color-theme-300);
-      --ms-scrollbar-hover-color: var(--color-theme-200);
+      --ms-scrollbar-color: var(--color-base-300);
+      --ms-scrollbar-hover-color: var(--color-base-200);
     }
   }
 
@@ -57,7 +57,7 @@
     min-width: 320px;
     background-color: var(--ms-layout-body-bg-color, var(--color-body));
     font-size: var(--text-base);
-    color: var(--color-theme-body);
+    color: var(--color-base-text);
   }
 
   h1,
@@ -109,7 +109,7 @@
   }
 
   a {
-    --ms-link-color: var(--ms-defaults-link-color, var(--color-theme-body));
+    --ms-link-color: var(--ms-defaults-link-color, var(--color-base-text));
     --ms-link-hover-color: var(--ms-defaults-link-color, var(--color-primary));
 
     color: var(--ms-link-color);
@@ -210,7 +210,7 @@
     @apply flex;
 
     & > * {
-      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-theme-200;
+      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-base-200;
 
       &:not(:first-child) {
         @apply -ml-5;
@@ -226,16 +226,16 @@
     height: 1px;
     margin-block: var(--ms-hr-divider-spacing-y, --spacing(4));
     border: none;
-    background-color: var(--ms-hr-divider-bg-color, var(--color-theme-stroke));
+    background-color: var(--ms-hr-divider-bg-color, var(--color-base-stroke));
   }
 
   div {
     &.divider {
-      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-theme-100;
+      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-base-100;
     }
 
     &.divider-centered {
-      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-theme-100;
+      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-base-100;
     }
   }
 

@@ -6,10 +6,10 @@
   border-radius: var(--ms-skeleton-default-radius, var(--radius-2xl));
   background: linear-gradient(
     90deg,
-    var(--ms-skeleton-default-color, var(--color-theme-200)) 0%,
-    var(--ms-skeleton-default-blink-color, var(--color-theme-100)) 20%,
-    var(--ms-skeleton-default-color, var(--color-theme-200)) 40%,
-    var(--ms-skeleton-default-color, var(--color-theme-200)) 100%
+    var(--ms-skeleton-default-color, var(--color-base-200)) 0%,
+    var(--ms-skeleton-default-blink-color, var(--color-base-100)) 20%,
+    var(--ms-skeleton-default-color, var(--color-base-200)) 40%,
+    var(--ms-skeleton-default-color, var(--color-base-200)) 100%
   );
   background-size: 200% 100%;
   animation-name: ms-skeleton-loading;
