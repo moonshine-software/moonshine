@@ -4,16 +4,16 @@
   --ms-btn-gap-x: --spacing(2);
   --ms-btn-radius: --spacing(2);
   --ms-btn-border-width: 1px;
-  --ms-btn-border-color: var(--color-theme-stroke);
-  --ms-btn-bg-color: var(--color-theme);
-  --ms-btn-color: var(--color-theme-body);
+  --ms-btn-border-color: var(--color-base-stroke);
+  --ms-btn-bg-color: var(--color-base);
+  --ms-btn-color: var(--color-base-text);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
   --ms-btn-icon-size: --spacing(4.5);
 
-  --ms-btn-hover-border-color: var(--color-theme-stroke);
-  --ms-btn-hover-bg-color: var(--color-theme-300);
-  --ms-btn-hover-color: var(--color-theme-body);
+  --ms-btn-hover-border-color: var(--color-base-stroke);
+  --ms-btn-hover-bg-color: var(--color-base-300);
+  --ms-btn-hover-color: var(--color-base-text);
 
   --ms-btn-disabled-opacity: 0.6;
 
@@ -59,9 +59,9 @@
   }
 
   &:disabled {
-    border-color: var(--ms-btn-disabled-border-color, var(--color-theme-200));
-    background-color: var(--ms-btn-disabled-bg-color, var(--color-theme-200));
-    color: var(--ms-btn-disabled-color, var(--color-theme-body));
+    border-color: var(--ms-btn-disabled-border-color, var(--color-base-200));
+    background-color: var(--ms-btn-disabled-bg-color, var(--color-base-200));
+    color: var(--ms-btn-disabled-color, var(--color-base-text));
     cursor: not-allowed;
   }
 
@@ -103,7 +103,7 @@
   display: inline-flex;
   align-items: center;
   column-gap: var(--ms-btn-link-gap, --spacing(2));
-  color: var(--ms-btn-link-color, var(--color-theme-body));
+  color: var(--ms-btn-link-color, var(--color-base-text));
   font-size: var(--ms-btn-link-font-size, var(--text-xs));
   font-weight: var(--ms-btn-link-font-weight, var(--font-weight-medium));
 

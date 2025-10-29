@@ -16,7 +16,7 @@
 
   position: relative;
   display: block;
-  color: var(--ms-notifications-trigger-icon-color, var(--color-theme-body));
+  color: var(--ms-notifications-trigger-icon-color, var(--color-base-text));
   cursor: pointer;
 
   @variant hover {
@@ -57,7 +57,7 @@
   justify-content: center;
   width: var(--ms-notifications-remove-size, --spacing(3));
   height: var(--ms-notifications-remove-size, --spacing(3));
-  color: --alpha(var(--ms-notifications-remove-color, var(--color-theme-body)) / 0.5);
+  color: --alpha(var(--ms-notifications-remove-color, var(--color-base-text)) / 0.5);
 
   @variant hover {
     color: var(--ms-notifications-remove-hover-color, var(--color-red-600));
@@ -89,7 +89,7 @@
 }
 
 .notifications-text {
-  color: var(--ms-notifications-text-color, var(--color-theme-body));
+  color: var(--ms-notifications-text-color, var(--color-base-text));
   font-size: var(--ms-notifications-text-font-size, var(--text-xs));
 }
 
@@ -103,7 +103,7 @@
 /* Notifications time */
 
 .notifications-time {
-  color: --alpha(var(--ms-notifications-time-color, var(--color-theme-body)) / 0.5);
+  color: --alpha(var(--ms-notifications-time-color, var(--color-base-text)) / 0.5);
   font-size: var(--ms-notifications-time-font-size, var(--text-2xs));
 }
 

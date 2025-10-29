@@ -6,8 +6,8 @@ a.badge {
   padding-block: var(--ms-badge-padding-y, --spacing(0.5));
   padding-inline: var(--ms-badge-padding-x, --spacing(2.5));
   border-radius: var(--ms-badge-radius, --spacing(1.5));
-  background-color: var(--ms-badge-bg-color, var(--color-theme-300));
-  color: var(--ms-badge-color, var(--color-theme-body));
+  background-color: var(--ms-badge-bg-color, var(--color-base-300));
+  color: var(--ms-badge-color, var(--color-base-text));
   font-size: var(--ms-badge-font-size, var(--text-xs));
   transition-property: background-color, color;
   transition-duration: var(--default-transition-duration);
@@ -26,7 +26,7 @@ a.badge {
 
 .badge-primary {
   --ms-badge-bg-color: --alpha(var(--color-primary) / 0.3);
-  --ms-badge-color: var(--color-theme-body);
+  --ms-badge-color: var(--color-base-text);
 
   @variant dark {
     --ms-badge-bg-color: --alpha(var(--color-primary) / 0.5);
@@ -35,7 +35,7 @@ a.badge {
 
 .badge-secondary {
   --ms-badge-bg-color: --alpha(var(--color-secondary) / 0.3);
-  --ms-badge-color: var(--color-theme-body);
+  --ms-badge-color: var(--color-base-text);
 
   @variant dark {
     --ms-badge-bg-color: --alpha(var(--color-secondary) / 0.5);

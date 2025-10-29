@@ -6,7 +6,7 @@
   padding-block: var(--ms-dropzone-padding-y, --spacing(3));
   padding-inline: var(--ms-dropzone-padding-x, --spacing(3));
   border: var(--ms-dropzone-border-width, 2px) dashed
-    var(--ms-dropzone-border-color, var(--color-theme-stroke));
+    var(--ms-dropzone-border-color, var(--color-base-stroke));
 }
 
 /* Dropzone items */
@@ -34,7 +34,7 @@
   gap: var(--ms-dropzone-file-gap, --spacing(2));
   padding-block: var(--ms-dropzone-file-padding-y, --spacing(2));
   padding-inline: var(--ms-dropzone-file-padding-x, --spacing(2));
-  background-color: var(--ms-dropzone-file-bg-color, var(--color-theme));
+  background-color: var(--ms-dropzone-file-bg-color, var(--color-base));
 }
 
 .dropzone-item.dropzone-item-file .dropzone-remove {
@@ -90,7 +90,7 @@
   line-height: 1;
 
   @variant hover {
-    background-color: var(--ms-dropzone-remove-bg-color-hover, var(--color-theme));
+    background-color: var(--ms-dropzone-remove-bg-color-hover, var(--color-base));
     color: var(--ms-dropzone-remove-color-hover, var(--color-error));
   }
 }

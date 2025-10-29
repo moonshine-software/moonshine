@@ -13,7 +13,7 @@
 
   --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.1);
 
-  --ms-menu-item-active-bg-color: var(--color-theme-50);
+  --ms-menu-item-active-bg-color: var(--color-base-50);
   --ms-menu-item-active-color: var(--color-black);
   --ms-menu-item-active-icon-color: var(--color-primary);
 
@@ -76,7 +76,7 @@
   align-items: center;
   gap: --spacing(2);
   padding-bottom: --spacing(3);
-  border-bottom: 1px solid var(--color-theme-stroke);
+  border-bottom: 1px solid var(--color-base-stroke);
 }
 
 .menu-footer {
@@ -87,7 +87,7 @@
     flex-direction: column;
     row-gap: --spacing(3);
     padding-top: --spacing(3);
-    border-top: 1px solid var(--color-theme-stroke);
+    border-top: 1px solid var(--color-base-stroke);
   }
 }
 
@@ -135,7 +135,7 @@
   &::after {
     content: '';
     flex: 1;
-    background-color: var(--ms-menu-divider-bg-color, var(--color-theme-stroke));
+    background-color: var(--ms-menu-divider-bg-color, var(--color-base-stroke));
   }
 
   &:not(.menu-divider--vertical) {
@@ -220,7 +220,7 @@
   border-radius: var(--ms-menu-item-radius);
   padding-inline: var(--ms-menu-item-padding-x);
   padding-block: var(--ms-menu-item-padding-y);
-  color: var(--ms-menu-item-color, var(--color-theme-body));
+  color: var(--ms-menu-item-color, var(--color-base-text));
   font-size: var(--ms-menu-item-font-size, var(--text-base));
   font-weight: var(--ms-menu-item-font-weight, var(--font-weight-normal));
 
@@ -292,7 +292,7 @@
   padding-inline: var(--ms-menu-submenu-space-y, --spacing(1));
   padding-block: var(--ms-menu-submenu-space-y, --spacing(1));
   border-radius: var(--ms-menu-item-radius);
-  border: 1px solid var(--color-theme-stroke);
+  border: 1px solid var(--color-base-stroke);
   background-color: var(--ms-layout-body-bg-color, var(--color-body));
 
   .menu-item {

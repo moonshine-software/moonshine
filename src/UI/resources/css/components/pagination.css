@@ -37,12 +37,12 @@
 .pagination-link {
   border-radius: var(--ms-pagination-element-radius, var(--radius-md));
   border: var(--ms-pagination-element-border-width, 1px) solid
-    var(--ms-pagination-element-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-pagination-element-bg-color, var(--color-theme));
-  color: var(--ms-pagination-element-color, var(--color-theme-body));
+    var(--ms-pagination-element-border-color, var(--color-base-stroke));
+  background-color: var(--ms-pagination-element-bg-color, var(--color-base));
+  color: var(--ms-pagination-element-color, var(--color-base-text));
 
   @variant hover {
-    background-color: var(--ms-pagination-element-hover-bg-color, var(--color-theme-50));
+    background-color: var(--ms-pagination-element-hover-bg-color, var(--color-base-50));
   }
 
   @variant is_active {
@@ -59,14 +59,14 @@
 }
 
 .pagination-dots {
-  color: --alpha(var(--color-theme-body) / 0.5);
+  color: --alpha(var(--color-base-text) / 0.5);
 }
 
 /* Pagination results */
 
 .pagination-results {
   margin-top: var(--ms-pagination-results-margin-top, --spacing(4));
-  color: var(--ms-pagination-results-color, var(--color-theme-body));
+  color: var(--ms-pagination-results-color, var(--color-base-text));
   font-size: var(--ms-pagination-results-font-size, var(--text-xs));
   text-align: center;
 }

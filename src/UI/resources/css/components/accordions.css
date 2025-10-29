@@ -7,11 +7,11 @@
   overflow: hidden;
   border-radius: var(--ms-accordion-item-radius, var(--radius-lg));
   border: var(--ms-accordion-item-border-width, 1px) solid
-    var(--ms-accordion-item-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-accordion-item-bg-color, var(--color-theme));
+    var(--ms-accordion-item-border-color, var(--color-base-stroke));
+  background-color: var(--ms-accordion-item-bg-color, var(--color-base));
 
   &._is-opened {
-    background-color: var(--ms-accordion-item-opened-bg-color, var(--color-theme));
+    background-color: var(--ms-accordion-item-opened-bg-color, var(--color-base));
   }
 }
 
@@ -34,7 +34,7 @@
   );
   border: 0;
   background-color: transparent;
-  color: var(--ms-accordion-btn-color, var(--color-theme-body));
+  color: var(--ms-accordion-btn-color, var(--color-base-text));
   font-size: var(--ms-accordion-btn-font-size, var(--text-base));
   font-weight: var(--ms-accordion-btn-font-weight, var(--font-weight-semibold));
   text-align: left;
@@ -48,7 +48,7 @@
   }
 
   @variant is_active {
-    color: var(--ms-accordion-btn-active-color, var(--color-theme-body));
+    color: var(--ms-accordion-btn-active-color, var(--color-base-text));
 
     & > svg {
       transform: scaleY(-1);

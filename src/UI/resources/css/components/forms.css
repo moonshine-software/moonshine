@@ -28,7 +28,7 @@ fieldset {
   padding: var(--ms-fieldset-padding, --spacing(3));
   border-width: var(--ms-fieldset-border-width, 1px);
   border-style: solid;
-  border-color: var(--ms-fieldset-border-color, var(--color-theme-stroke));
+  border-color: var(--ms-fieldset-border-color, var(--color-base-stroke));
   border-radius: var(--ms-fieldset-radius, var(--radius-lg));
 
   legend {
@@ -58,9 +58,9 @@ fieldset {
 }
 
 [draggable='true'] {
-  background-color: var(--ms-draggable-bg-color, var(--color-theme-50));
+  background-color: var(--ms-draggable-bg-color, var(--color-base-50));
   box-shadow: inset 0 0 0 var(--ms-draggable-ring-width, 1px)
-    var(--ms-draggable-ring-color, var(--color-theme-stroke));
+    var(--ms-draggable-ring-color, var(--color-base-stroke));
   transition-properties: background-color, box-shadow;
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);
@@ -102,9 +102,9 @@ fieldset {
   --ms-form-default-padding-x: --spacing(2);
   --ms-form-default-radius: var(--radius-lg);
   --ms-form-default-border-width: 1px;
-  --ms-form-default-border-color: var(--color-theme-stroke);
-  --ms-form-default-bg-color: var(--color-theme);
-  --ms-form-default-color: var(--color-theme-body);
+  --ms-form-default-border-color: var(--color-base-stroke);
+  --ms-form-default-bg-color: var(--color-base);
+  --ms-form-default-color: var(--color-base-text);
   --ms-form-default-font-size: var(--text-sm);
   --ms-form-default-font-weight: var(--font-weight-normal);
 
@@ -112,12 +112,12 @@ fieldset {
   --ms-form-focus-ring-width: --spacing(0.875);
   --ms-form-focus-ring-color: --alpha(var(--color-primary) / 0.1);
 
-  --ms-form-readonly-border-color: var(--color-theme-stroke);
-  --ms-form-readonly-bg-color: var(--color-theme-100);
+  --ms-form-readonly-border-color: var(--color-base-stroke);
+  --ms-form-readonly-bg-color: var(--color-base-100);
   --ms-form-readonly-color: var(--color-neutral-400);
 
-  --ms-form-disabled-border-color: var(--color-theme-stroke);
-  --ms-form-disabled-bg-color: var(--color-theme-200);
+  --ms-form-disabled-border-color: var(--color-base-stroke);
+  --ms-form-disabled-bg-color: var(--color-base-200);
   --ms-form-disabled-color: var(--color-neutral-500);
 
   --ms-form-error-border-color: var(--color-error);
@@ -207,7 +207,7 @@ fieldset {
     border-style: solid;
     border-color: inherit;
     border-radius: 0;
-    background-color: var(--ms-file-upload-button-bg, var(--color-theme-200));
+    background-color: var(--ms-file-upload-button-bg, var(--color-base-200));
     color: inherit;
     overflow: hidden;
     cursor: pointer;
@@ -397,8 +397,8 @@ fieldset {
     border-width: var(--ms-form-control-border-width, var(--ms-form-default-border-width));
     border-style: solid;
     border-color: var(--ms-form-control-border-color, var(--ms-form-default-border-color));
-    background-color: var(--ms-form-expansion-bg-color, var(--color-theme-100));
-    color: var(--ms-form-expansion-color, var(--color-theme-body));
+    background-color: var(--ms-form-expansion-bg-color, var(--color-base-100));
+    color: var(--ms-form-expansion-color, var(--color-base-text));
 
     .expansion {
       display: flex;
@@ -416,7 +416,7 @@ fieldset {
       }
 
       @variant hover {
-        background-color: var(--ms-form-expansion-button-hover-bg, var(--color-theme-400));
+        background-color: var(--ms-form-expansion-button-hover-bg, var(--color-base-400));
       }
     }
 
@@ -636,7 +636,7 @@ fieldset {
     height: var(--ms-form-range-track-height, --spacing(1));
     margin-inline: calc(var(--_track-size) * -1);
     border-radius: 9999px;
-    background-color: var(--ms-form-range-track-bg-color, var(--color-theme-200));
+    background-color: var(--ms-form-range-track-bg-color, var(--color-base-200));
     transform: translateY(-50%);
   }
 
@@ -745,9 +745,9 @@ fieldset {
   width: 100%;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
+  border-color: var(--ms-form-default-border-color, var(--color-base-stroke));
   border-radius: var(--ms-form-default-radius, --spacing(2));
-  background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
+  background-color: var(--ms-form-default-bg-color, var(--color-base-200));
 
   &::after {
     transition-property: all;
@@ -763,7 +763,7 @@ fieldset {
   }
 
   &.is-disabled {
-    background-color: var(--ms-form-disabled-bg-color, var(--color-theme-100));
+    background-color: var(--ms-form-disabled-bg-color, var(--color-base-100));
     cursor: not-allowed;
 
     .choices__inner {
@@ -784,20 +784,20 @@ fieldset {
   &[data-type*='select-one'] {
     &:not(.is-open) {
       &::after {
-        border-top-color: var(--ms-choices-arrow-color, var(--color-theme-300));
+        border-top-color: var(--ms-choices-arrow-color, var(--color-base-300));
 
         @variant dark {
-          border-top-color: var(--ms-choices-arrow-color, var(--color-theme-600));
+          border-top-color: var(--ms-choices-arrow-color, var(--color-base-600));
         }
       }
     }
 
     &.is-open {
       &::after {
-        border-top-color: var(--ms-choices-arrow-color, var(--color-theme-300));
+        border-top-color: var(--ms-choices-arrow-color, var(--color-base-300));
 
         @variant dark {
-          border-top-color: var(--ms-choices-arrow-color, var(--color-theme-600));
+          border-top-color: var(--ms-choices-arrow-color, var(--color-base-600));
         }
       }
     }
@@ -815,7 +815,7 @@ fieldset {
     box-shadow: none;
 
     &::placeholder {
-      color: var(--ms-form-default-placeholder-color, var(--color-theme-400));
+      color: var(--ms-form-default-placeholder-color, var(--color-base-400));
       opacity: 1;
     }
   }
@@ -838,31 +838,31 @@ fieldset {
     z-index: 10;
     border-width: 1px;
     border-style: solid;
-    border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
+    border-color: var(--ms-form-default-border-color, var(--color-base-stroke));
     border-radius: 0 0 var(--ms-form-default-radius, --spacing(2))
       var(--ms-form-default-radius, --spacing(2));
-    background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
+    background-color: var(--ms-form-default-bg-color, var(--color-base-200));
 
     .choices__input {
       border-width: 1px;
       border-style: solid;
-      border-color: var(--ms-form-default-border-color, var(--color-theme-stroke));
-      background-color: var(--ms-form-default-bg-color, var(--color-theme-200));
-      color: var(--ms-form-default-color, var(--color-theme-body));
+      border-color: var(--ms-form-default-border-color, var(--color-base-stroke));
+      background-color: var(--ms-form-default-bg-color, var(--color-base-200));
+      color: var(--ms-form-default-color, var(--color-base-text));
 
       &::placeholder {
-        color: var(--ms-form-default-placeholder-color, var(--color-theme-400));
+        color: var(--ms-form-default-placeholder-color, var(--color-base-400));
         opacity: 1;
       }
     }
 
     .choices__item.is-highlighted {
-      background-color: var(--ms-choices-highlight-bg, var(--color-theme-100));
-      color: var(--ms-choices-highlight-color, var(--color-theme-600));
+      background-color: var(--ms-choices-highlight-bg, var(--color-base-100));
+      color: var(--ms-choices-highlight-color, var(--color-base-600));
 
       @variant dark {
-        background-color: var(--ms-choices-highlight-bg, --alpha(var(--color-theme-900) / 0.2));
-        color: var(--ms-choices-highlight-color, var(--color-theme-400));
+        background-color: var(--ms-choices-highlight-bg, --alpha(var(--color-base-900) / 0.2));
+        color: var(--ms-choices-highlight-color, var(--color-base-400));
       }
     }
   }
@@ -902,7 +902,7 @@ fieldset {
     color: var(--ms-choices-heading-color, var(--color-neutral-400));
 
     @variant dark {
-      border-color: var(--ms-choices-heading-border-color, var(--color-theme-200));
+      border-color: var(--ms-choices-heading-border-color, var(--color-base-200));
       color: var(--ms-choices-heading-color, var(--color-neutral-500));
     }
   }
@@ -936,7 +936,7 @@ fieldset {
       left: 0;
       width: var(--ms-json-line-width, --spacing(4));
       height: 1px;
-      background-color: var(--ms-json-line-color, var(--color-theme-stroke));
+      background-color: var(--ms-json-line-color, var(--color-base-stroke));
     }
   }
 }

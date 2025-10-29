@@ -29,7 +29,7 @@ table {
   overflow: hidden;
   border-radius: var(--ms-table-radius, var(--radius-lg));
   border: var(--ms-table-border-width, 1px) solid
-    var(--ms-table-border-color, var(--color-theme-stroke));
+    var(--ms-table-border-color, var(--color-base-stroke));
 }
 
 .table-responsive {
@@ -39,7 +39,7 @@ table {
 }
 
 .table {
-  background-color: var(--ms-table-bg-color, var(--color-theme));
+  background-color: var(--ms-table-bg-color, var(--color-base));
   font-size: var(--ms-table-font-size, var(--text-xs));
 
   th,
@@ -50,7 +50,7 @@ table {
   thead {
     tr {
       border-bottom: var(--ms-table-thead-border-width, 1px) solid
-        var(--ms-table-thead-border-color, var(--color-theme-stroke));
+        var(--ms-table-thead-border-color, var(--color-base-stroke));
     }
 
     th,
@@ -65,7 +65,7 @@ table {
     tr {
       &:not(:first-child) {
         border-top: var(--ms-table-tbody-border-width, 1px) solid
-          var(--ms-table-tbody-border-color, var(--color-theme-stroke));
+          var(--ms-table-tbody-border-color, var(--color-base-stroke));
       }
     }
 
@@ -80,7 +80,7 @@ table {
   tfoot {
     tr {
       border-top: var(--ms-table-tfoot-border-width, 1px) solid
-        var(--ms-table-tfoot-border-color, var(--color-theme-stroke));
+        var(--ms-table-tfoot-border-color, var(--color-base-stroke));
     }
 
     th,
@@ -126,7 +126,7 @@ table {
   }
 
   thead {
-    background-color: var(--ms-table-thead-bg-color, var(--color-theme-100));
+    background-color: var(--ms-table-thead-bg-color, var(--color-base-100));
   }
 
   .text-ellipsis {
@@ -148,7 +148,7 @@ table {
       }
 
       &:hover {
-        background-color: var(--ms-table-list-hover-bg-color, var(--color-theme-100));
+        background-color: var(--ms-table-list-hover-bg-color, var(--color-base-100));
         cursor: pointer;
       }
     }
@@ -172,7 +172,7 @@ table {
 
     tr {
       box-shadow: inset 0 calc(var(--ms-table-thead-border-width, 1px) * -1) 0
-        var(--ms-table-thead-border-color, var(--color-theme-stroke));
+        var(--ms-table-thead-border-color, var(--color-base-stroke));
     }
   }
 }
@@ -195,7 +195,7 @@ table {
       th,
       td {
         &.sticky-col {
-          background-color: --alpha(var(--ms-table-thead-bg-color, var(--color-theme-100)) / 0.95);
+          background-color: --alpha(var(--ms-table-thead-bg-color, var(--color-base-100)) / 0.95);
         }
       }
     }
@@ -205,7 +205,7 @@ table {
       td {
         &.sticky-col {
           &:not([class*='bgc-']) {
-            background-color: --alpha(var(--ms-table-bg-color, var(--color-theme)) / 0.95);
+            background-color: --alpha(var(--ms-table-bg-color, var(--color-base)) / 0.95);
           }
 
           &:has(.dropdown-body.visible) {
@@ -231,7 +231,7 @@ table {
   div.grid {
     margin-block: 0 !important;
     padding-block: --spacing(2);
-    border-bottom: 1px solid var(--color-theme-stroke);
+    border-bottom: 1px solid var(--color-base-stroke);
 
     &:last-child {
       padding-bottom: 0;

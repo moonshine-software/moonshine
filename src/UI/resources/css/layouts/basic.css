@@ -2,7 +2,7 @@
   --ms-layout-main-containered-max-width: 1080px;
   --ms-layout-wrapper-spacing: --spacing(2);
   --ms-layout-page-spacing: --spacing(4);
-  --ms-layout-page-bg-color: var(--color-theme-50);
+  --ms-layout-page-bg-color: var(--color-base-50);
 }
 
 .layout-wrapper {
@@ -46,8 +46,8 @@
   padding: var(--ms-layout-page-spacing, --spacing(4));
   border-radius: var(--ms-layout-page-radius, var(--radius-xl));
   border: var(--ms-layout-page-border-width, 1px) solid
-    var(--ms-layout-page-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-layout-page-bg-color, var(--color-theme));
+    var(--ms-layout-page-border-color, var(--color-base-stroke));
+  background-color: var(--ms-layout-page-bg-color, var(--color-base));
 
   @variant max-sm {
     border-radius: 0;

@@ -11,9 +11,8 @@
   padding-block: var(--_box-padding-y);
   padding-inline: var(--_box-padding-x);
   border-radius: var(--ms-box-radius, --spacing(3));
-  border: var(--ms-box-border-width, 1px) solid
-    var(--ms-box-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-box-bg-color, var(--color-theme));
+  border: var(--ms-box-border-width, 1px) solid var(--ms-box-border-color, var(--color-base-stroke));
+  background-color: var(--ms-box-bg-color, var(--color-base));
 }
 
 /* Box variants */
@@ -34,7 +33,7 @@
   padding-bottom: var(--ms-box-title-padding-bottom, --spacing(3));
   margin-bottom: var(--_box-padding-y);
   border-bottom: var(--ms-box-title-border-width, 1px) solid
-    var(--ms-box-title-border-color, var(--color-theme-stroke));
+    var(--ms-box-title-border-color, var(--color-base-stroke));
   font-size: var(--ms-box-title-font-size, var(--text-base));
   font-weight: var(--ms-box-title-font-weight, var(--font-weight-semibold));
 }

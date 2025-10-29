@@ -6,7 +6,7 @@
   overflow: hidden;
   display: block;
   padding-right: var(--ms-languages-padding-right, --spacing(3));
-  color: var(--ms-languages-color, var(--color-theme-body));
+  color: var(--ms-languages-color, var(--color-base-text));
   transition-property: color;
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);

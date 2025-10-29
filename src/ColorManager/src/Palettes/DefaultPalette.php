@@ -16,8 +16,8 @@ final class DefaultPalette implements PaletteContract
             'secondary' => '0.92 0 0',
             'secondary-text' => '0 0 0',
             'body' => '1 0 0',
-            'theme' => [
-                'body' => '0.21 0.006 285.885',
+            'base' => [
+                'text' => '0.21 0.006 285.885',
                 'stroke' => '0 0 0 / 10%',
                 'default' => '1 0 0',
                 50 => '0.985 0 0',
@@ -50,8 +50,8 @@ final class DefaultPalette implements PaletteContract
             'secondary' => '0.8 0 0',
             'secondary-text' => '0 0 0',
             'body' => '0.2 0.0168 274.32',
-            'theme' => [
-                'body' => '0.87 0.01 258.34',
+            'base' => [
+                'text' => '0.87 0.01 258.34',
                 'stroke' => '1 0 0 / 10%',
                 'default' => '0.24 0.0168 274.32',
                 50 => '0.255 0.017 274.32',

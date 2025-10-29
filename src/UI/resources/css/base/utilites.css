@@ -21,7 +21,7 @@
 
   &:where([class*='--warning']),
   &:where([class*='--yellow']) {
-    @apply dark:text-theme-200;
+    @apply dark:text-base-200;
   }
 }
 
@@ -33,8 +33,8 @@
 @utility theme__btn {
   .badge {
     @apply border-0 bg-white
-    text-slate-600 dark:border-theme-200
-    dark:bg-theme-700 dark:text-inherit;
+    text-slate-600 dark:border-base-200
+    dark:bg-base-700 dark:text-inherit;
   }
 }
 
@@ -42,7 +42,7 @@
 @utility base__default {
   @apply border
   theme__border
-  bg-theme
+  bg-base
   text-sm
   outline-none;
 }
@@ -52,8 +52,8 @@
   ring
   ring-gray-300/50
   ring-offset-0
-  dark:border-theme-200
-  dark:ring-theme-100/30;
+  dark:border-base-200
+  dark:ring-base-100/30;
 }
 
 @utility base__read-only {
@@ -63,7 +63,7 @@
 @utility base__disabled {
   @apply cursor-not-allowed
   bg-gray-100 text-gray-400
-  opacity-60 dark:bg-theme-700
+  opacity-60 dark:bg-base-700
   dark:text-gray-500;
 }
 

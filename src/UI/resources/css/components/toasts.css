@@ -27,10 +27,10 @@
   padding-inline: var(--ms-toast-padding-x, --spacing(2.5));
   border-radius: var(--ms-toast-radius, var(--radius-sm));
   border-left: var(--ms-toast-border-width, --spacing(0.875)) solid
-    var(--ms-toast-border-color, var(--color-theme-stroke));
-  background-color: var(--ms-toast-bg-color, var(--color-theme));
+    var(--ms-toast-border-color, var(--color-base-stroke));
+  background-color: var(--ms-toast-bg-color, var(--color-base));
   box-shadow: -4px 0px 8px 0px --alpha(var(--ms-toast-border-color) / 0.1);
-  color: var(--ms-toast-color, var(--color-theme-body));
+  color: var(--ms-toast-color, var(--color-base-text));
   font-size: var(--ms-toast-font-size, var(--text-xs));
   cursor: pointer;
 
@@ -39,7 +39,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-color: var(--ms-toast-before-bg-color, var(--color-theme));
+    background-color: var(--ms-toast-before-bg-color, var(--color-base));
   }
 }
 

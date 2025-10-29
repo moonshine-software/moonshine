@@ -58,13 +58,13 @@
   width: var(--ms-carousel-nav-size, --spacing(8));
   height: var(--ms-carousel-nav-size, --spacing(8));
   border-radius: var(--ms-carousel-nav-radius, var(--radius-full));
-  background-color: var(--ms-carousel-nav-bg-color, --alpha(var(--color-theme) / 0.75));
-  color: var(--ms-carousel-nav-color, var(--color-theme-body));
+  background-color: var(--ms-carousel-nav-bg-color, --alpha(var(--color-base) / 0.75));
+  color: var(--ms-carousel-nav-color, var(--color-base-text));
   text-align: center;
   transform: translateY(-50%);
 
   @variant hover {
-    background-color: var(--ms-carousel-nav-bg-color-hover, var(--color-theme-100));
+    background-color: var(--ms-carousel-nav-bg-color-hover, var(--color-base-100));
   }
 }
 
@@ -88,6 +88,6 @@
   text-align: center;
 
   @variant dark {
-    --ms-carousel-count-bg-color: --alpha(var(--color-theme-600) / 0.5);
+    --ms-carousel-count-bg-color: --alpha(var(--color-base-600) / 0.5);
   }
 }
