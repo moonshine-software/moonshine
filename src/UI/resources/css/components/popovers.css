@@ -9,12 +9,12 @@
 }
 
 .tippy-box {
-  --_tippy-bg-color: var(--ms-popover-bg-color, var(--color-black));
+  --_tippy-bg-color: var(--ms-popover-bg-color, var(--color-base-text));
 
   position: relative;
   border-radius: var(--ms-popover-radius, var(--radius-md));
   background-color: var(--_tippy-bg-color);
-  color: var(--ms-popover-color, var(--color-white));
+  color: var(--ms-popover-color, var(--color-base));
   font-size: var(--ms-popover-font-size, var(--text-xs));
   line-height: var(--ms-popover-line-height, 1.4);
   white-space: normal;
@@ -22,10 +22,6 @@
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);
   outline: 0;
-
-  @variant dark {
-  }
-  --_tippy-bg-color: var(--ms-popover-bg-color, var(--color-zinc-700));
 }
 
 .tippy-content {
@@ -123,5 +119,5 @@
 .popover-body-title ~ .popover-body-content {
   padding-top: var(--ms-popover-title-padding-top, --spacing(2.5));
   border-top: var(--ms-popover-title-border-width, 1px) solid
-    --alpha(var(--ms-popover-title-border-color, var(--color-white)) / 0.25);
+    --alpha(var(--ms-popover-title-border-color, var(--color-base)) / 0.25);
 }
