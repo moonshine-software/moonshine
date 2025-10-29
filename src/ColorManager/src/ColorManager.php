@@ -16,7 +16,7 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
  * @method self primary(string $value, ?int $shade = null, bool $dark = false)
  * @method self secondary(string $value, ?int $shade = null, bool $dark = false)
  * @method self body(string $value, ?int $shade = null, bool $dark = false)
- * @method self theme(string $value, int|string|null $shade = null, bool $dark = false)
+ * @method self base(string $value, int|string|null $shade = null, bool $dark = false)
  * @method self successBg(string $value, ?int $shade = null, bool $dark = false)
  * @method self successText(string $value, ?int $shade = null, bool $dark = false)
  * @method self warningBg(string $value, ?int $shade = null, bool $dark = false)
@@ -61,48 +61,48 @@ final class ColorManager implements ColorManagerContract
     {
         return $this
             ->set('body', $value)
-            ->set('theme.800', $value)
+            ->set('base.800', $value)
             ->set('body', $value, dark: true);
     }
 
     public function tableRow(string $value): static
     {
         return $this
-            ->set('theme.600', $value);
+            ->set('base.600', $value);
     }
 
     public function borders(string $value): static
     {
         return $this
-            ->set('theme.300', $value);
+            ->set('base.300', $value);
     }
 
     public function dropdowns(string $value): static
     {
         return $this
-            ->set('theme.400', $value);
+            ->set('base.400', $value);
     }
 
     public function buttons(string $value): static
     {
         return $this
-            ->set('theme.50', $value)
-            ->set('theme.500', $value)
+            ->set('base.50', $value)
+            ->set('base.500', $value)
             ->dropdowns($value);
     }
 
     public function dividers(string $value): static
     {
         return $this
-            ->set('theme.100', $value)
-            ->set('theme.200', $value);
+            ->set('base.100', $value)
+            ->set('base.200', $value);
     }
 
     public function content(string $value): static
     {
         return $this
-            ->set('theme.700', $value)
-            ->set('theme.900', $value);
+            ->set('base.700', $value)
+            ->set('base.900', $value);
     }
 
     /**

@@ -62,7 +62,7 @@
   --color-warning: oklch(var(--warning-bg, 0.9 0.22 92.72));
   --color-warning-text: oklch(var(--warning-text, 0.99 0.072 107.64));
   --color-error: oklch(var(--error-bg, 0.589 0.214 26.855));
-  --color-error-text: oklch(var(--error-text, 0.87 0.07 18.51));
+  --color-error-text: oklch(var(--error-text, 0.71 0.24 25.96));
   --color-info: oklch(var(--info-bg, 0.6 0.22 257.63));
   --color-info-text: oklch(var(--info-text, 0.88 0.065 244.38));
 }
