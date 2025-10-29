@@ -226,7 +226,8 @@
     height: 1px;
     margin-block: var(--ms-hr-divider-spacing-y, --spacing(4));
     border: none;
-    background-color: var(--ms-hr-divider-bg-color, var(--color-base-stroke));
+    border-top: 1px solid var(--ms-hr-divider-bg-color, var(--color-base-stroke));
+    background: none;
   }
 
   div {
