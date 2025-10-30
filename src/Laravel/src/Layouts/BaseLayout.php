@@ -12,6 +12,8 @@ use MoonShine\Crud\Components\Layout\Search;
 use MoonShine\Crud\Layouts\AbstractLayout;
 use MoonShine\Laravel\Components\Layout\Profile;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\Heading;
@@ -72,9 +74,16 @@ abstract class BaseLayout extends AbstractLayout
         );
     }
 
-    protected function getProfileComponent(bool $sidebar = false): Profile
+    protected function getProfileComponent(): Profile
     {
-        return Profile::make();
+        return Profile::make()->menu([
+            ActionButton::make(
+                label: $this->getCore()->getTranslator()->get('moonshine::ui.profile'),
+                url: $this->getCore()->getRouter()->getEndpoints()->toPage(
+                    $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
+                )
+            )->icon('user')
+        ]);
     }
 
     /**
@@ -101,6 +110,10 @@ abstract class BaseLayout extends AbstractLayout
                     $this->getLogoComponent()->minimized(),
                 ])->class('menu-logo'),
                 Div::make([
+                    When::make(
+                        fn (): bool => $this->isUseNotifications(),
+                        static fn (): array => [Notifications::make()],
+                    ),
                     When::make(
                         fn (): bool => $this->hasThemes() && ! $this->isAlwaysDark(),
                         static fn (): array => [ThemeSwitcher::make()]
@@ -171,17 +184,14 @@ abstract class BaseLayout extends AbstractLayout
                 Burger::make(),
             ])->class('menu-burger'),
             Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), label: 'Home'),
-            $this->getSearchComponent(),
-            When::make(
-                fn (): bool => $this->isUseNotifications(),
-                static fn (): array => [Notifications::make()],
-            ),
             Locales::make(),
+            $this->getSearchComponent(),
+
             When::make(
                 fn (): bool => $this->isProfileEnabled(),
                 fn (): array
                     => [
-                    $this->getProfileComponent(sidebar: true),
+                    $this->getProfileComponent(),
                 ],
             ),
         ]);

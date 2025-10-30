@@ -18,9 +18,9 @@
         @if($route)
         <a href="{{ $route }}" class="profile-main">
         @endif
-            @if($avatar)
+            @if($avatar && $menu === null)
                 <div class="profile-photo">
-                    <img 
+                    <img
                         class="h-full w-full object-cover"
                         src="{{ $avatar }}"
                         alt="{{ $nameOfUser }}"
@@ -28,10 +28,12 @@
                 </div>
             @endif
 
-            <div class="profile-info">
-                <h5 class="name">{{ $nameOfUser }}</h5>
-                <div class="email">{{ $username }}</div>
-            </div>
+            @if($menu === null)
+                <div class="profile-info">
+                    <h5 class="name">{{ $nameOfUser }}</h5>
+                    <div class="email">{{ $username }}</div>
+                </div>
+            @endif
         @if($route)
         </a>
         @endif
@@ -57,7 +59,7 @@
                     <div class="profile-main">
                         @if($avatar)
                             <div class="profile-photo">
-                                <img 
+                                <img
                                     class="h-full w-full object-cover"
                                     src="{{ $avatar }}"
                                     alt="{{ $nameOfUser }}"
@@ -71,8 +73,15 @@
                         </div>
                     </div>
                 </x-slot:title>
+
                 <x-slot:toggler>
-                    <x-moonshine::icon icon="chevron-up-down" />
+                    <div class="profile-photo">
+                        <img
+                            class="h-full w-full object-cover"
+                            src="{{ $avatar }}"
+                            alt="{{ $nameOfUser }}"
+                        />
+                    </div>
                 </x-slot:toggler>
 
                 @if($logOutRoute)
