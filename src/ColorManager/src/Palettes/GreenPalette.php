@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class GreenPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Natural green';
+    }
+
     public function getColors(): array
     {
         return [

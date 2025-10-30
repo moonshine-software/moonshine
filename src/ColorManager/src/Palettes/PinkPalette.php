@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class PinkPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Hot pink tones';
+    }
+
     public function getColors(): array
     {
         return [

@@ -6,6 +6,8 @@ namespace MoonShine\Contracts\ColorManager;
 
 interface PaletteContract
 {
+    public function getDescription(): string;
+
     /**
      * @return array<string, string|array<string|int, string>>
      */

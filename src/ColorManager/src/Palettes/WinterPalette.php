@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class WinterPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Cool icy blue tones';
+    }
+
     public function getColors(): array
     {
         return [

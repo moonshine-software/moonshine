@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class HalloweenPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Orange-purple spooky theme';
+    }
+
     public function getColors(): array
     {
         return [

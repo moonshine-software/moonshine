@@ -10,6 +10,7 @@ use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
+use MoonShine\ColorManager\Palettes\DefaultPalette;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
@@ -87,7 +88,7 @@ class InstallCommand extends MoonShineCommand
 
             $this->components->bulletList([
                 'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
-                'MoonShine Documentation: https://moonshine-laravel.com',
+                'MoonShine Documentation: https://getmoonshine.app',
                 'CutCode: https://cutcode.dev',
             ]);
         }
@@ -297,10 +298,11 @@ class InstallCommand extends MoonShineCommand
 
     protected function initLayout(): void
     {
-        $this->call(MakeLayoutCommand::class, [
+        $this->call(MakeLayoutCommand::class, array_filter([
             'className' => 'MoonShineLayout',
             '--default' => true,
-        ]);
+            '--palette' => $this->quickMode || $this->testsMode ? DefaultPalette::class : null,
+        ]));
 
         $this->components->task('Layout published');
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\Core\DependencyInjection;
 
 use ArrayAccess;
+use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
@@ -25,6 +26,11 @@ interface ConfiguratorContract extends ArrayAccess
      * @return class-string<LayoutContract>
      */
     public function getLayout(): string;
+
+    /**
+     * @return class-string<PaletteContract>
+     */
+    public function getPalette(): string;
 
     /**
      * @template T of FormContract

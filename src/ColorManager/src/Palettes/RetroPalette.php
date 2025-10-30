@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class RetroPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Vintage yellowish-green';
+    }
+
     public function getColors(): array
     {
         return [

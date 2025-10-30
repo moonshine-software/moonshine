@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class SkyPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Sky blue with purple undertone';
+    }
+
     public function getColors(): array
     {
         return [

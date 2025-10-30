@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class TealPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Pure cyan/teal';
+    }
+
     public function getColors(): array
     {
         return [
