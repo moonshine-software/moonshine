@@ -82,7 +82,7 @@ abstract class BaseLayout extends AbstractLayout
                 url: $this->getCore()->getRouter()->getEndpoints()->toPage(
                     $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
                 )
-            )->icon('user')
+            )->icon('user'),
         ]);
     }
 
