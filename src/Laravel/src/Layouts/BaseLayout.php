@@ -118,7 +118,7 @@ abstract class BaseLayout extends AbstractLayout
             ])->customAttributes([
                 'class' => 'menu menu--vertical',
             ])->name('sidebar-content'),
-        ])->collapsed();
+        ]);
     }
 
     /**
