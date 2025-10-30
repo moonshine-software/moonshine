@@ -185,6 +185,7 @@ fieldset {
 }
 
 /* Select field */
+
 .form-select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -267,18 +268,34 @@ fieldset {
 
 .form-checkbox,
 .form-radio {
-  accent-color: var(--color-primary);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: 0;
   border-width: var(--ms-form-control-border-width, var(--ms-form-default-border-width));
   border-style: solid;
   border-color: var(--ms-form-control-border-color, var(--ms-form-default-border-color));
-  border-radius: var(--ms-form-control-radius, var(--ms-form-default-radius));
+  border-radius: var(--ms-form-control-radius, var(--radius-sm));
+  background-origin: border-box;
   background-color: var(--ms-form-control-bg-color, var(--ms-form-default-bg-color));
-  color: var(--ms-form-control-color, var(--ms-form-default-color));
+  color: var(--ms-form-control-color, var(--color-primary));
   cursor: pointer;
+  transition-property: border-color, box-shadow;
+  transition-duration: 0.125s;
+  transition-timing-function: ease-in-out;
+
+  &:hover {
+    --ms-form-control-border-color: var(--color-primary);
+  }
 
   &:focus {
     outline: none;
@@ -287,7 +304,41 @@ fieldset {
   }
 
   &:disabled {
-    cursor: default;
+    --ms-form-control-border-color: var(--ms-form-disabled-border-color);
+    --ms-form-control-bg-color: var(--ms-form-disabled-bg-color);
+    cursor: not-allowed;
+  }
+
+  &:disabled + span {
+    color: var(--ms-form-disabled-color);
+  }
+
+  &::before {
+    will-change: transform;
+    transform: scale(0);
+    transition-property: transform, color;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--default-transition-timing-function);
+  }
+
+  &:checked {
+    border-color: var(--ms-form-control-checked-border-color, var(--color-primary));
+
+    &::before {
+      transform: scale(1);
+    }
+  }
+
+  /* Invalid field */
+  .form-invalid &,
+  &.form-invalid {
+    --ms-form-control-border-color: var(--ms-form-error-border-color);
+    --ms-form-control-color: var(--ms-form-error-color);
+
+    &:checked {
+      --ms-form-control-checked-border-color: var(--ms-form-error-border-color);
+      --ms-form-control-checked-bg-color: var(--ms-form-error-bg-color);
+    }
   }
 }
 
@@ -296,6 +347,27 @@ fieldset {
 .form-checkbox {
   width: var(--ms-form-checkbox-size, var(--ms-form-control-size, --spacing(5)));
   height: var(--ms-form-checkbox-size, var(--ms-form-control-size, --spacing(5)));
+
+  &::before {
+    content: '';
+    width: 0.65em;
+    height: 0.35em;
+    border: 0.125em solid currentColor;
+    border-top: none;
+    border-right: none;
+    transform: scale(0) rotate(-45deg);
+    transform-origin: center;
+  }
+
+  &:checked {
+    border-color: var(--ms-form-control-checked-border-color, var(--color-primary));
+    background-color: var(--ms-form-control-checked-bg-color, var(--color-primary));
+    color: var(--ms-form-control-checked-color, var(--color-primary-text));
+
+    &::before {
+      transform: scale(1) rotate(-45deg);
+    }
+  }
 }
 
 /* Form Radio */
@@ -305,13 +377,15 @@ fieldset {
   height: var(--ms-form-radio-size, var(--ms-form-control-size, --spacing(5)));
   border-radius: 50%;
 
-  &:hover {
-    border-color: var(--color-primary);
-  }
+  &::before {
+    --_radio-size: calc(var(--ms-form-radio-size, var(--ms-form-control-size, --spacing(5))) * 0.6);
 
-  &:checked {
-    border-color: var(--color-primary);
-    background-color: var(--color-primary);
+    content: '';
+    width: var(--_radio-size);
+    height: var(--_radio-size);
+    border-radius: 50%;
+    box-shadow: inset var(--_radio-size) var(--_radio-size)
+      var(--ms-form-control-checked-bg-color, var(--color-primary));
   }
 }
 
