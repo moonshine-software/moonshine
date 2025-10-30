@@ -10,9 +10,9 @@ use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
-use MoonShine\ColorManager\Palettes\DefaultPalette;
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
+use MoonShine\ColorManager\Palettes\DefaultPalette;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;

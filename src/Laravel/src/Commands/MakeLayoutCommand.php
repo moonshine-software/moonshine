@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+
+use function Laravel\Prompts\{confirm, select, text};
+
 use MoonShine\ColorManager\Palettes\DefaultPalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
-use SplFileInfo;
-use function Laravel\Prompts\{confirm, text, select};
-
 use MoonShine\Laravel\Support\StubsPath;
+use SplFileInfo;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'moonshine:layout')]
@@ -74,7 +74,7 @@ class MakeLayoutCommand extends MoonShineCommand
 
     private function findPalettes(): array
     {
-        $paletteInstance = static fn(string $name): PaletteContract => new ('MoonShine\ColorManager\Palettes\\' . $name);
+        $paletteInstance = static fn (string $name): PaletteContract => new ('MoonShine\ColorManager\Palettes\\' . $name);
 
         return Collection::make(File::files(__DIR__ . '/../../../ColorManager/src/Palettes/'))
             ->mapWithKeys(
