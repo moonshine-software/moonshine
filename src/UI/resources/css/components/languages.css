@@ -1,30 +1,21 @@
 /* Languages switcher */
 
-.languages-icon {
-  --ms-icon-size: var(--ms-languages-icon-size, --spacing(5));
+.languages-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-languages-btn-gap, --spacing(1));
 
-  overflow: hidden;
-  display: block;
-  padding-right: var(--ms-languages-padding-right, --spacing(3));
-  color: var(--ms-languages-color, var(--color-base-text));
-  transition-property: color;
-  transition-duration: var(--default-transition-duration);
-  transition-timing-function: var(--default-transition-timing-function);
-
-  @variant hover {
-    color: var(--ms-languages-hover-color, var(--color-primary));
+  .languages-btn-icon {
+    --ms-icon-size: var(--ms-languages-btn-icon-size, --spacing(4.5));
   }
 
-  > svg:last-child {
-    position: absolute;
-    inset-block: 0;
-    right: 0;
-    width: var(--ms-languages-arrow-size, --spacing(3));
-    height: var(--ms-languages-arrow-size, --spacing(3));
-    margin-block: auto;
+  .languages-btn-arrow {
+    --ms-icon-size: var(--ms-languages-arrow-icon-size, --spacing(3));
   }
-}
 
-.languages-body {
-  min-width: var(--ms-languages-body-min-width, 10rem);
+  &._is-opened {
+    .languages-btn-arrow {
+      transform: scaleY(-1);
+    }
+  }
 }
