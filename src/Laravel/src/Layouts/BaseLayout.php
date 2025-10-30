@@ -191,7 +191,9 @@ abstract class BaseLayout extends AbstractLayout
                 fn (): bool => $this->isProfileEnabled(),
                 fn (): array
                     => [
-                    $this->getProfileComponent(),
+                    Fragment::make([
+                        $this->getProfileComponent(),
+                    ])->name('profile'),
                 ],
             ),
         ]);

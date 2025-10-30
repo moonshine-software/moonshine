@@ -36,7 +36,7 @@ class ProfileController extends MoonShineController
                 ->events([
                     AlpineJs::event(
                         JsEvent::FRAGMENT_UPDATED,
-                        'sidebar-content',
+                        'profile',
                     ),
                     AlpineJs::event(
                         JsEvent::FRAGMENT_UPDATED,
