@@ -5,34 +5,18 @@ declare(strict_types=1);
 namespace {namespace};
 
 use {extend};
+use {palette};
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
-use MoonShine\UI\Components\{Breadcrumbs,
-    Components,
-    Layout\Flash,
-    Layout\Div,
-    Layout\Body,
-    Layout\Burger,
-    Layout\Content,
-    Layout\Footer,
-    Layout\Head,
-    Layout\Favicon,
-    Layout\Assets,
-    Layout\Meta,
-    Layout\Header,
-    Layout\Html,
-    Layout\Layout,
-    Layout\Logo,
-    Layout\Menu,
-    Layout\Sidebar,
-    Layout\ThemeSwitcher,
-    Layout\TopBar,
-    Layout\Wrapper,
-    When};
+use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class DummyClass extends {extendShort}
 {
+    /**
+     * @var null|class-string<PaletteContract>
+     */
+    protected ?string $palette = {paletteShort}::class;
+
     protected function assets(): array
     {
         return [
@@ -55,10 +39,5 @@ final class DummyClass extends {extendShort}
         parent::colors($colorManager);
 
         // $colorManager->primary('#00000');
-    }
-
-    public function build(): Layout
-    {
-        return parent::build();
     }
 }

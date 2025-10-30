@@ -6,7 +6,12 @@ namespace MoonShine\Laravel\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
-use function Laravel\Prompts\{confirm, text};
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\Contracts\ColorManager\PaletteContract;
+use SplFileInfo;
+use function Laravel\Prompts\{confirm, text, select};
 
 use MoonShine\Laravel\Support\StubsPath;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -14,7 +19,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:layout')]
 class MakeLayoutCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:layout {className?} {--default} {--dir=} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:layout {className?} {--default} {--palette=} {--dir=} {--base-dir=} {--base-namespace=}';
 
     protected $description = 'Create layout';
 
@@ -39,10 +44,14 @@ class MakeLayoutCommand extends MoonShineCommand
         $extendClassName = 'AppLayout';
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
 
+        $palette = $this->option('palette') ?: select('Select a palette', $this->findPalettes(), DefaultPalette::class);
+
         $this->copyStub('Layout', $stubsPath->getPath(), [
             '{namespace}' => $stubsPath->namespace,
             '{extend}' => $extends,
             '{extendShort}' => class_basename($extends),
+            '{palette}' => $palette,
+            '{paletteShort}' => class_basename($palette),
             'DummyClass' => $stubsPath->name,
         ]);
 
@@ -53,8 +62,30 @@ class MakeLayoutCommand extends MoonShineCommand
                 'layout',
                 $stubsPath->getClassString()
             );
+
+            $this->replaceInConfig(
+                'palette',
+                "$palette::class"
+            );
         }
 
         return self::SUCCESS;
+    }
+
+    private function findPalettes(): array
+    {
+        $paletteInstance = static fn(string $name): PaletteContract => new ('MoonShine\ColorManager\Palettes\\' . $name);
+
+        return Collection::make(File::files(__DIR__ . '/../../../ColorManager/src/Palettes/'))
+            ->mapWithKeys(
+                static fn (SplFileInfo $file): array => [
+                    $file->getFilenameWithoutExtension() => str_replace('Palette', '', $file->getFilenameWithoutExtension())
+                        . " ({$paletteInstance($file->getFilenameWithoutExtension())->getDescription()})",
+                ],
+            )
+            ->except(['Default'])
+            ->mapWithKeys(static fn (string $description, string $title): array => [('MoonShine\ColorManager\Palettes\\' . $title) => $description])
+            ->prepend('Default (Black/White)', DefaultPalette::class)
+            ->toArray();
     }
 }

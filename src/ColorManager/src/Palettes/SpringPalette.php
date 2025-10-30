@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class SpringPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Fresh pastel mint-green';
+    }
+
     public function getColors(): array
     {
         return [

@@ -7,6 +7,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use MoonShine\ColorManager\Palettes\DefaultPalette;
 use MoonShine\Crud\Forms\FiltersForm;
 use MoonShine\Crud\Forms\LoginForm;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
@@ -78,8 +79,9 @@ return [
         'avatar' => 'avatar',
     ],
 
-    // Layout, pages, forms
+    // Layout, palette, pages, forms
     'layout' => AppLayout::class,
+    'palette' => DefaultPalette::class,
 
     'forms' => [
         'login' => LoginForm::class,

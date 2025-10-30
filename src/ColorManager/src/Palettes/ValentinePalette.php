@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class ValentinePalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Romantic red-pink dual-tone';
+    }
+
     public function getColors(): array
     {
         return [

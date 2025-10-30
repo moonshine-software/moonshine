@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class OrangePalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Classic orange';
+    }
+
     public function getColors(): array
     {
         return [

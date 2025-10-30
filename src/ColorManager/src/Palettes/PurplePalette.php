@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class PurplePalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Classic purple/magenta';
+    }
+
     public function getColors(): array
     {
         return [

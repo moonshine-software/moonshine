@@ -113,8 +113,12 @@ abstract class AbstractLayout implements LayoutContract
     protected function colors(ColorManagerContract $colorManager): void
     {
         if ($this->palette !== null) {
-            $colorManager->palette(new $this->palette());
+            $palette = new $this->palette();
+        } else {
+            $palette = new ($this->getCore()->getConfig()->getPalette());
         }
+
+        $colorManager->palette($palette);
     }
 
     /**

@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class DefaultPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Black/White';
+    }
+
     public function getColors(): array
     {
         return [

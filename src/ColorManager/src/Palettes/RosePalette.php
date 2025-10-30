@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class RosePalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Warm peachy-rose tones';
+    }
+
     public function getColors(): array
     {
         return [

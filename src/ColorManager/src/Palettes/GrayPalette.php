@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class GrayPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Cool neutral gray';
+    }
+
     public function getColors(): array
     {
         return [

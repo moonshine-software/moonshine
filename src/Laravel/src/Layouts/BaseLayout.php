@@ -195,7 +195,7 @@ abstract class BaseLayout extends AbstractLayout
     protected function getFooterMenu(): array
     {
         return [
-            'https://moonshine-laravel.com/docs' => 'Documentation',
+            'https://getmoonshine.app/docs' => 'Documentation',
         ];
     }
 

@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class CyanPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'True cyan blue-green';
+    }
+
     public function getColors(): array
     {
         return [

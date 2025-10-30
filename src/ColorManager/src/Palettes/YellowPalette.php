@@ -8,6 +8,11 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 
 final class YellowPalette implements PaletteContract
 {
+    public function getDescription(): string
+    {
+        return 'Greenish-yellow';
+    }
+
     public function getColors(): array
     {
         return [
