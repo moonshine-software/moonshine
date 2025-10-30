@@ -5,12 +5,12 @@
     <template x-for="toast of toasts" :key="toast.id">
         <div
             x-show="visible.includes(toast)"
-            x-transition:enter="transition ease-in duration-200"
-            x-transition:enter-start="transform opacity-0 translate-y-2"
+            x-transition:enter="transition ease-in duration-300"
+            x-transition:enter-start="transform opacity-0"
             x-transition:enter-end="transform opacity-100"
-            x-transition:leave="transition ease-out duration-500"
-            x-transition:leave-start="transform translate-x-0 opacity-100"
-            x-transition:leave-end="transform translate-x-full opacity-0"
+            x-transition:leave="transition ease duration-300"
+            x-transition:leave-start="transform scale-100 opacity-100"
+            x-transition:leave-end="transform scale-90 opacity-0"
             @click="remove(toast.id)"
             class="toast-item"
             :class="{

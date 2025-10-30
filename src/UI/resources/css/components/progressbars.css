@@ -106,7 +106,7 @@
   background-color: transparent;
   box-shadow: inset 0 0 0 var(--thickness)
     var(--ms-radial-progress-track-color, var(--color-base-100));
-  color: var(--ms-radial-progress-color, var(--color-base-500));
+  color: var(--ms-radial-progress-color, var(--color-base-700));
   text-align: center;
 }
 

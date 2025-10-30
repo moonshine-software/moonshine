@@ -169,11 +169,6 @@ table {
     position: sticky;
     top: 0;
     z-index: var(--ms-table-sticky-z-index, 1);
-
-    tr {
-      box-shadow: inset 0 calc(var(--ms-table-thead-border-width, 1px) * -1) 0
-        var(--ms-table-thead-border-color, var(--color-base-stroke));
-    }
   }
 }
 

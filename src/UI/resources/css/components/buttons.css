@@ -1,6 +1,6 @@
 @theme {
   --ms-btn-padding-x: --spacing(3.5);
-  --ms-btn-padding-y: --spacing(2.5);
+  --ms-btn-padding-y: --spacing(2);
   --ms-btn-gap-x: --spacing(2);
   --ms-btn-radius: --spacing(2);
   --ms-btn-border-width: 1px;
@@ -9,7 +9,7 @@
   --ms-btn-color: var(--color-base-text);
   --ms-btn-font-size: var(--text-xs);
   --ms-btn-font-weight: var(--font-weight-medium);
-  --ms-btn-icon-size: --spacing(4.5);
+  --ms-btn-icon-size: 1.125em;
 
   --ms-btn-hover-border-color: var(--color-base-stroke);
   --ms-btn-hover-bg-color: var(--color-base-300);
@@ -84,6 +84,7 @@
   }
 
   .spinner {
+    --ms-spinner-size: var(--ms-btn-icon-size);
     --ms-spinner-border-color: currentColor;
   }
 }
@@ -91,8 +92,9 @@
 /* Button sizes */
 
 .btn-lg {
-  --ms-btn-padding-x: --spacing(4);
-  --ms-btn-padding-y: --spacing(3);
+  --ms-btn-padding-x: var(--ms-btn-lg-padding-x, --spacing(5));
+  --ms-btn-padding-y: var(--ms-btn-lg-padding-y, --spacing(3));
+  --ms-btn-font-size: var(--ms-btn-lg-font-size, var(--text-sm));
 }
 
 /* Button variants */
@@ -132,8 +134,8 @@
 }
 
 .btn-square {
-  width: var(--ms-btn-square-size, --spacing(10));
-  height: var(--ms-btn-square-size, --spacing(10));
+  width: var(--ms-btn-square-size, --spacing(8.5));
+  height: var(--ms-btn-square-size, --spacing(8.5));
   font-size: var(--ms-btn-square-font-size, var(--ms-btn-icon-size, --spacing(4.5)));
 }
 

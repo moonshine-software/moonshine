@@ -28,7 +28,8 @@
   justify-content: center;
   height: var(--ms-pagination-element-size, --spacing(8));
   min-width: var(--ms-pagination-element-size, --spacing(8));
-  padding: var(--ms-pagination-element-padding, --spacing(1));
+  padding-block: var(--ms-pagination-element-padding-y, --spacing(1));
+  padding-inline: var(--ms-pagination-element-padding-x, --spacing(1));
   font-size: var(--ms-pagination-element-font-size, var(--text-xs));
   font-weight: var(--ms-pagination-element-font-weight, var(--font-weight-medium));
   text-align: center;
@@ -51,10 +52,17 @@
     background-color: var(--ms-pagination-element-active-bg-color, var(--color-primary));
     color: var(--ms-pagination-element-active-color, var(--color-primary-text));
   }
+
+  &._is-disabled {
+    pointer-events: none;
+    border-color: var(--ms-pagination-element-disabled-border-color, var(--color-base-stroke));
+    opacity: var(--ms-pagination-element-disabled-opacity, 0.6);
+  }
 }
 
 .pagination-link--first,
 .pagination-link--last {
+  --ms-pagination-element-padding-x: var(--ms-pagination-element-fl-padding-x, --spacing(2));
   --ms-icon-size: var(--ms-pagination-nav-icon-size, --spacing(3.5));
 }
 

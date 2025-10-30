@@ -40,6 +40,7 @@
   /* General CSS */
   *:focus-visible {
     outline: 2px dashed var(--color-primary);
+    outline-offset: --spacing(0.875);
   }
 
   ::selection {
@@ -125,7 +126,8 @@
   }
 
   .link {
-    @apply font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
   }
 
   button {
@@ -161,10 +163,10 @@
   }
 
   .chart {
-    @apply w-full;
+    width: 100%;
 
     > * {
-      @apply mx-auto;
+      margin-inline: auto;
     }
   }
 
@@ -192,14 +194,16 @@
     /* Checkboxes horizontal */
 
     &.horizontal-list {
+      display: grid;
+      align-items: center;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      @apply grid items-center;
 
       li {
-        @apply pe-2 pb-2;
+        padding-right: --spacing(2);
+        padding-bottom: --spacing(2);
 
         .form-group {
-          @apply flex-nowrap;
+          flex-wrap: nowrap;
         }
       }
     }
@@ -207,7 +211,7 @@
 
   /* Images in a row */
   .images-row {
-    @apply flex;
+    display: flex;
 
     & > * {
       @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-base-200;
@@ -226,7 +230,8 @@
     height: 1px;
     margin-block: var(--ms-hr-divider-spacing-y, --spacing(4));
     border: none;
-    background-color: var(--ms-hr-divider-bg-color, var(--color-base-stroke));
+    border-top: 1px solid var(--ms-hr-divider-bg-color, var(--color-base-stroke));
+    background: none;
   }
 
   div {

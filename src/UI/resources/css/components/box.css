@@ -19,7 +19,7 @@
 
 .box.box-dark,
 .box.dark {
-  --ms-box-bg-color: var(--color-zinc-700);
+  --ms-box-bg-color: var(--color-neutral-900);
   --ms-box-color: var(--color-white);
 
   color: var(--ms-box-color);

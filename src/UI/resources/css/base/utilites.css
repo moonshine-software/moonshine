@@ -7,82 +7,11 @@
   }
 }
 
-@utility theme__text_color {
-  @apply text-white dark:text-slate-200;
-
-  &:where(.btn-warning),
-  &:where(.toast-warning) {
-    @apply text-amber-600 dark:text-slate-200;
-
-    .badge {
-      @apply text-slate-600 dark:text-slate-200;
-    }
-  }
-
-  &:where([class*='--warning']),
-  &:where([class*='--yellow']) {
-    @apply dark:text-base-200;
-  }
-}
-
-@utility theme__shadow {
-  @apply shadow-sm shadow-black/5;
-}
-
-/* Buttons */
-@utility theme__btn {
-  .badge {
-    @apply border-0 bg-white
-    text-slate-600 dark:border-base-200
-    dark:bg-base-700 dark:text-inherit;
-  }
-}
-
-/* Base state */
-@utility base__default {
-  @apply border
-  theme__border
-  bg-base
-  text-sm
-  outline-none;
-}
-
-@utility base__focus {
-  @apply border-gray-300
-  ring
-  ring-gray-300/50
-  ring-offset-0
-  dark:border-base-200
-  dark:ring-base-100/30;
-}
-
-@utility base__read-only {
-  @apply cursor-default opacity-85 focus:ring-0;
-}
-
-@utility base__disabled {
-  @apply cursor-not-allowed
-  bg-gray-100 text-gray-400
-  opacity-60 dark:bg-base-700
-  dark:text-gray-500;
-}
-
-@utility base__placeholder {
-  @apply placeholder:text-sm
-  placeholder:text-gray-400
-  dark:placeholder:text-gray-500;
-}
-
-@utility base__error {
-  @apply border-error focus:ring-error/20
-  dark:border-error dark:focus:ring-error/40;
-}
-
-@utility theme__border {
-  @apply border-black/10 dark:border-white/10;
-}
-
 /* z-index */
+@utility z-aside {
+  z-index: var(--z-aside);
+}
+
 @utility z-dropdown {
   z-index: var(--z-dropdown);
 }
