@@ -14,40 +14,49 @@
     'links' => [],
     'translates' => [],
 ])
-@if($simple)
-    <ul class="pagination-list simple">
-        {{-- Previous Page Link --}}
-        <li>
-            @if ($prev_page_url)
-                <a href="{{ $prev_page_url }}"
-                   @if($async) @click.prevent="asyncRequest" @endif
-                   class="pagination-simple"
-                >
-                    {!! $translates['previous'] !!}
-                </a>
-            @else
-                <span class="pagination-simple disabled">
-                    {!! $translates['previous'] !!}
-                </span>
-            @endif
-        </li>
 
-        {{-- Next Page Link --}}
-        <li>
-            @if ($next_page_url)
-                <a href="{{ $next_page_url }}"
-                   @if($async) @click.prevent="asyncRequest" @endif
-                   class="pagination-simple"
-                >
-                    {!! $translates['next'] !!}
-                </a>
-            @else
-                <span class="pagination-simple disabled">
-                    {!! $translates['next'] !!}
-                </span>
-            @endif
-        </li>
-    </ul>
+@if($simple)
+    <!-- Pagination -->
+    <div class="pagination">
+        <ul class="pagination-list simple">
+            {{-- Previous Page Link --}}
+            <li>
+                @if ($prev_page_url)
+                    <a 
+                        href="{{ $prev_page_url }}"
+                        @if($async) @click.prevent="asyncRequest" @endif
+                        class="pagination-link pagination-link--first"
+                        title="{!! $translates['previous']  !!}"
+                    >
+                        {!! $translates['previous'] !!}
+                    </a>
+                @else
+                    <span class="pagination-link _is-disabled">
+                        {!! $translates['previous'] !!}
+                    </span>
+                @endif
+            </li>
+
+            {{-- Next Page Link --}}
+            <li>
+                @if ($next_page_url)
+                    <a
+                        href="{{ $next_page_url }}"
+                        @if($async) @click.prevent="asyncRequest" @endif
+                        class="pagination-link pagination-link--last"
+                        title="{!! $translates['next']  !!}"
+                    >
+                        {!! $translates['next'] !!}
+                    </a>
+                @else
+                    <span class="pagination-link _is-disabled">
+                        {!! $translates['next'] !!}
+                    </span>
+                @endif
+            </li>
+        </ul>
+    </div>
+    <!-- END: Pagination -->
 @elseif ($has_pages)
     <!-- Pagination -->
     <div class="pagination">
@@ -112,4 +121,3 @@
     </div>
     <!-- END: Pagination -->
 @endif
-
