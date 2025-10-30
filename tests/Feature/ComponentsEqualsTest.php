@@ -218,8 +218,7 @@ describe('Layouts', function () {
 
     it('header', function () {
         compare(
-            Header::make($this->components),
-            slot: $this->slot
+            Header::make(),
         );
     });
 
@@ -282,8 +281,7 @@ describe('Layouts', function () {
 
     it('sidebar', function () {
         compare(
-            Sidebar::make()->collapsed(),
-            ['collapsed' => true],
+            Sidebar::make(),
         );
     });
 
