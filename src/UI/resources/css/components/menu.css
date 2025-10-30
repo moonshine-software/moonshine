@@ -74,7 +74,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: --spacing(2);
+  gap: --spacing(3) --spacing(2);
   padding-bottom: --spacing(3);
   border-bottom: 1px solid var(--color-base-stroke);
 }
@@ -113,7 +113,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: --spacing(2);
+  gap: --spacing(3) --spacing(2);
   margin-left: auto;
 }
 

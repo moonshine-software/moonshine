@@ -126,7 +126,8 @@
   }
 
   .link {
-    @apply font-medium text-primary hover:text-secondary dark:text-secondary dark:hover:text-slate-200;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
   }
 
   button {
@@ -162,10 +163,10 @@
   }
 
   .chart {
-    @apply w-full;
+    width: 100%;
 
     > * {
-      @apply mx-auto;
+      margin-inline: auto;
     }
   }
 
@@ -193,14 +194,16 @@
     /* Checkboxes horizontal */
 
     &.horizontal-list {
+      display: grid;
+      align-items: center;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      @apply grid items-center;
 
       li {
-        @apply pe-2 pb-2;
+        padding-right: --spacing(2);
+        padding-bottom: --spacing(2);
 
         .form-group {
-          @apply flex-nowrap;
+          flex-wrap: nowrap;
         }
       }
     }
@@ -208,7 +211,7 @@
 
   /* Images in a row */
   .images-row {
-    @apply flex;
+    display: flex;
 
     & > * {
       @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-base-200;

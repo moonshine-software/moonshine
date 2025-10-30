@@ -84,6 +84,7 @@
   --text-7xl: 6rem;
   --text-8xl: 8rem;
 
+  --z-aside: 50;
   --z-dropdown: 150;
   --z-notifications: 300;
   --z-overlay: 1000;
