@@ -1,8 +1,5 @@
 @props([
     'components' => [],
-    'collapsed' => false,
-    'collapseAttributes',
-    'translates' => [],
 ])
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
        :class="{ '_is-minimized': minimizedMenu, '_is-opened': asideMenuOpen }"
