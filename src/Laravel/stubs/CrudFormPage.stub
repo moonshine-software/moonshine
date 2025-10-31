@@ -6,6 +6,8 @@ namespace {namespace};
 
 use MoonShine\Laravel\Pages\Crud\{extendShort};
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\UI\Components\FormBuilder;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use {resource-namespace};
@@ -39,6 +41,16 @@ class DummyClass extends {extendShort}
     protected function rules(DataWrapperContract $item): array
     {
         return [];
+    }
+
+    /**
+     * @param  FormBuilder  $component
+     *
+     * @return FormBuilder
+     */
+    protected function modifyFormComponent(FormBuilderContract $component): FormBuilderContract
+    {
+        return $component;
     }
 
     /**
