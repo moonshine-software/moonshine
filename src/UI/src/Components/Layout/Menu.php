@@ -11,7 +11,7 @@ use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(?iterable $elements = null)
+ * @method static static make(?iterable $elements = null, bool $top = false, bool $scrollTo = false)
  */
 class Menu extends MoonShineComponent
 {
@@ -25,7 +25,7 @@ class Menu extends MoonShineComponent
     public function __construct(
         private readonly ?iterable $elements = null,
         protected bool $top = false,
-        protected bool $scrollTo = true,
+        protected bool $scrollTo = false,
     ) {
         parent::__construct();
 
