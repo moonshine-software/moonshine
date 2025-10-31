@@ -184,9 +184,8 @@ abstract class BaseLayout extends AbstractLayout
                 Burger::make(),
             ])->class('menu-burger'),
             Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), label: 'Home'),
-            Locales::make(),
             $this->getSearchComponent(),
-
+            Locales::make(),
             When::make(
                 fn (): bool => $this->isProfileEnabled(),
                 fn (): array

@@ -76,6 +76,7 @@ final class ColorMutatorTest extends TestCase
     {
         return [
             ['#f3f3f3'],
+            ['#1e96fc', 'oklch(66.31% 0.18027 250.614)'],
             ['rgb(243,243,243)'],
             ['rgba(243, 243, 243)'],
             ['rgba(243, 243, 243, 0.5)'],

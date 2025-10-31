@@ -214,17 +214,16 @@ final class ColorMutator
         $y = $red * 0.2126729 + $green * 0.7151522 + $blue * 0.0721750;
         $z = $red * 0.0193339 + $green * 0.1191920 + $blue * 0.9503041;
 
-        $x /= 0.95047;
-        $y /= 1.00000;
-        $z /= 1.08883;
+        // Convert XYZ D65 to LMS using the OKLab M1 matrix
+        $l = 0.8189330101 * $x + 0.3618667424 * $y - 0.1288597137 * $z;
+        $m = 0.0329845436 * $x + 0.9293118715 * $y + 0.0361456387 * $z;
+        $s = 0.0482003018 * $x + 0.2643662691 * $y + 0.6338517070 * $z;
 
-        $delta = 6.0 / 29.0;
-        $delta2 = $delta * $delta;
-        $delta3 = $delta2 * $delta;
-
-        $l_val = $x > $delta3 ? $x ** (1.0 / 3.0) : ($x / (3.0 * $delta2)) + (4.0 / 29.0);
-        $m_val = $y > $delta3 ? $y ** (1.0 / 3.0) : ($y / (3.0 * $delta2)) + (4.0 / 29.0);
-        $s_val = $z > $delta3 ? $z ** (1.0 / 3.0) : ($z / (3.0 * $delta2)) + (4.0 / 29.0);
+        // Apply cubic root to get LMS'
+        $cbrt = static fn (float $v): float => $v >= 0 ? $v ** (1.0 / 3.0) : -((-$v) ** (1.0 / 3.0));
+        $l_val = $cbrt($l);
+        $m_val = $cbrt($m);
+        $s_val = $cbrt($s);
 
         $L = 0.2104542553 * $l_val + 0.7936177850 * $m_val - 0.0040720468 * $s_val;
         $a = 1.9779984951 * $l_val - 2.4285922050 * $m_val + 0.4505937099 * $s_val;
