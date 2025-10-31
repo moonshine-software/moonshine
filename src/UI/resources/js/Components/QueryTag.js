@@ -1,15 +1,15 @@
 import {prepareQueryParams} from '../Support/URLs.js'
 
 export default (activeClass, componentEvent) => ({
-  request(data) {
+  request(data, prefix = '') {
     const queryParams = new URLSearchParams(window.location.search)
 
     if (this.$root.classList.contains(activeClass)) {
-      queryParams.set('query-tag', '')
+      queryParams.set(`${prefix}query-tag`, '')
       this.disableQueryTags()
       this.activeDefaultQueryTag()
     } else {
-      queryParams.set('query-tag', data)
+      queryParams.set(`${prefix}query-tag`, data)
       this.disableQueryTags()
       this.$root.classList.add(activeClass)
     }

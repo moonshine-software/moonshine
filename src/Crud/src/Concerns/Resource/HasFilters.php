@@ -85,7 +85,7 @@ trait HasFilters
 
         $filters = $collection
             ->withoutOutside()
-            ->wrapNames('filter');
+            ->wrapNames($this->getQueryParamName('filter'));
 
         $filters->each(function ($filter): void {
             if (\in_array($filter::class, $this->getIgnoredFields(), true)) {
@@ -102,9 +102,9 @@ trait HasFilters
      */
     public function getFilterParams(): array
     {
-        $default = $this->getQueryParams()->get('filter', []);
+        $default = $this->getQueryParam('filter', []);
 
-        if ($this->isSaveQueryState() && ! $this->getCore()->getRequest()->has('reset')) {
+        if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
             return data_get(
                 $this->getCore()->getCache()->get($this->getQueryCacheKey(), []),
                 'filter',

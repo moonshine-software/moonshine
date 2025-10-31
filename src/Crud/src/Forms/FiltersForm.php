@@ -66,11 +66,14 @@ final readonly class FiltersForm implements FormContract
             }
         }
 
-        $sort = $this->core->getRequest()->getScalar('sort');
-        $queryTag = $this->core->getRequest()->getScalar('query-tag');
+        $sort = $this->core->getRequest()->getScalar($resource->getQueryParamName('sort'));
+        $queryTag = $this->core->getRequest()->getScalar($resource->getQueryParamName('query-tag'));
 
         return FormBuilder::make($action, FormMethod::GET)
             ->name('filters')
+            ->customAttributes([
+                'data-query-param-prefix' => $resource->getQueryParamPrefix(),
+            ])
             ->fillCast($values, $resource->getCaster())
             ->fields(
                 $filters
@@ -79,7 +82,7 @@ final readonly class FiltersForm implements FormContract
                         static fn ($fields): FieldsContract
                             => $fields
                             ->prepend(
-                                Hidden::make(column: 'sort')->setValue(
+                                Hidden::make(column: $resource->getQueryParamName('sort'))->setValue(
                                     $sort,
                                 ),
                             ),
@@ -89,7 +92,7 @@ final readonly class FiltersForm implements FormContract
                         static fn ($fields): FieldsContract
                             => $fields
                             ->prepend(
-                                Hidden::make(column: 'query-tag')->setValue(
+                                Hidden::make(column: $resource->getQueryParamName('query-tag'))->setValue(
                                     $queryTag,
                                 ),
                             ),
@@ -110,23 +113,29 @@ final readonly class FiltersForm implements FormContract
                 ]);
 
                 $form->buttons([
-                    $this->getResetButton($page->isAsync(), true),
+                    $this->getResetButton(
+                        async: $page->isAsync(),
+                        hide: true,
+                        name: $resource->getQueryParamName('reset')
+                    ),
                 ]);
             })
             ->submit($this->core->getTranslator()->get('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 $resource->getFilterParams() !== [],
                 fn (FormBuilderContract $form): FormBuilderContract => $form->buttons([
-                    $this->getResetButton(),
+                    $this->getResetButton(
+                        name: $resource->getQueryParamName('reset')
+                    ),
                 ]),
             );
     }
 
-    private function getResetButton(bool $async = false, bool $hide = false): ActionButton
+    private function getResetButton(bool $async = false, bool $hide = false, string $name = 'reset'): ActionButton
     {
         $button = ActionButton::make(
             $this->core->getTranslator()->get('moonshine::ui.reset'),
-            $this->getFormAction(query: ['reset' => true]),
+            $this->getFormAction(query: [$name => true]),
         )
             ->secondary()
             ->showInLine()

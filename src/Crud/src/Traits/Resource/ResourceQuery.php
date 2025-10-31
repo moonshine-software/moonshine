@@ -57,6 +57,8 @@ trait ResourceQuery
      */
     protected iterable $queryParams = [];
 
+    protected string $queryParamPrefix = '';
+
     /**
      * @return iterable<T>|Collection<array-key, T>|LazyCollection<array-key, T>|CursorPaginator<array-key, T>|Paginator<array-key, T>
      */
@@ -239,7 +241,7 @@ trait ResourceQuery
         $column = $this->getSortColumn();
         $direction = $this->getSortDirection();
 
-        if (($sort = $this->getQueryParams()->get('sort')) && \is_string($sort)) {
+        if (($sort = $this->getQueryParam('sort')) && \is_string($sort)) {
             $column = ltrim($sort, '-');
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
@@ -276,6 +278,28 @@ trait ResourceQuery
         return new Collection($this->queryParams);
     }
 
+    public function getQueryParamPrefix(): string
+    {
+        return $this->queryParamPrefix;
+    }
+
+    public function getQueryParamName(string $key): string
+    {
+        return $this->queryParamPrefix . $key;
+    }
+
+    public function getQueryParam(string $key, mixed $default = null): mixed
+    {
+        return $this->getQueryParams()->get($this->getQueryParamName($key), $default);
+    }
+
+    public function hasQueryParam(string $key): bool
+    {
+        return $this->getCore()->getRequest()->has(
+            $this->getQueryParamName($key)
+        );
+    }
+
     protected function getItemsPerPage(): int
     {
         return $this->itemsPerPage;
@@ -290,9 +314,9 @@ trait ResourceQuery
 
     protected function getPaginatorPage(): int
     {
-        $page = $this->paginatorPage ?? (int)$this->getQueryParams()->get('page');
+        $page = $this->paginatorPage ?? (int)$this->getQueryParam('page');
 
-        if ($this->isSaveQueryState() && ! $this->getCore()->getRequest()->has('reset')) {
+        if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
             return (int)data_get(
                 $this->getCore()->getCache()->get($this->getQueryCacheKey(), []),
                 'page',
@@ -335,7 +359,13 @@ trait ResourceQuery
      */
     public function getQueryParamsKeys(): array
     {
-        return ['sort', 'filter', 'page', 'query-tag', $this->getSearchQueryKey()];
+        return [
+            $this->getQueryParamName('sort'),
+            $this->getQueryParamName('filter'),
+            $this->getQueryParamName('page'),
+            $this->getQueryParamName('query-tag'),
+            $this->getSearchQueryKey()
+        ];
     }
 
     /**
@@ -360,7 +390,7 @@ trait ResourceQuery
             return $this;
         }
 
-        if ($this->getCore()->getRequest()->has('reset')) {
+        if ($this->hasQueryParam('reset')) {
             $this->getCore()->getCache()->delete($this->getQueryCacheKey());
 
             return $this;
@@ -385,7 +415,7 @@ trait ResourceQuery
     protected function withCache(): static
     {
         if ($this->isSaveQueryState()
-            && ! $this->getCore()->getRequest()->has('reset')
+            && ! $this->hasQueryParam('reset')
             && ! $this->getQueryParams()->hasAny($this->getCachedRequestKeys())
         ) {
             /** @var Collection<string, mixed> $collection */
@@ -394,7 +424,7 @@ trait ResourceQuery
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
                     $collection->filter(
-                        fn (mixed $value, string $key): bool => ! $this->getQueryParams()->has($key),
+                        fn (mixed $value, string $key): bool => ! $this->hasQueryParam($key),
                     )->toArray(),
                 ),
             );

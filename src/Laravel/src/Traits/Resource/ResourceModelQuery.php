@@ -68,16 +68,18 @@ trait ResourceModelQuery
         } elseif ($this->isSimplePaginate()) {
             $paginate = $query->simplePaginate(
                 $this->getItemsPerPage(),
-                page: $this->getPaginatorPage(),
+                pageName: $this->getQueryParamName('page'),
+                page: $this->getPaginatorPage()
             );
         } else {
             $paginate = $query->paginate(
                 $this->getItemsPerPage(),
+                pageName: $this->getQueryParamName('page'),
                 page: $this->getPaginatorPage(),
             );
         }
 
-        $params = $this->getQueryParams()->except('page')->toArray();
+        $params = $this->getQueryParams()->except($this->getQueryParamName('page'))->toArray();
 
         return $paginate->appends($params);
     }

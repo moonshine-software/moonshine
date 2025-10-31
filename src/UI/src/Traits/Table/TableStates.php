@@ -57,6 +57,19 @@ trait TableStates
 
     protected bool $withSkeleton = true;
 
+    protected string $queryParamPrefix = '';
+
+    public function queryParamPrefix(string $prefix): static
+    {
+        $this->queryParamPrefix = trim($prefix);
+
+        $this->customAttributes([
+            'data-query-param-prefix' => $this->queryParamPrefix,
+        ]);
+
+        return $this;
+    }
+
     public function withFilters(string $formName): static
     {
         return $this->customAttributes([
@@ -157,7 +170,7 @@ trait TableStates
             ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->get('moonshine::ui.add'))
                 ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
-                    array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes)
+                    array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes),
                 )
         ;
 
@@ -202,7 +215,7 @@ trait TableStates
     public function reorderable(
         ?string $url = null,
         ?string $key = null,
-        ?string $group = null
+        ?string $group = null,
     ): static {
         $this->isReorderable = true;
         $this->reorderableUrl = $url;
@@ -306,7 +319,7 @@ trait TableStates
         ]))->tdAttributes(
             static fn (): array => [
                 '@click' => 'rowClickAction',
-            ]
+            ],
         );
     }
 
