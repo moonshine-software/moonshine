@@ -20,9 +20,9 @@ use MoonShine\UI\Components\{Layout\Body,
 
 class AppLayout extends BaseLayout
 {
-    protected bool $contentCentered = true;
+    protected bool $contentCentered = false;
 
-    protected bool $contentSimpled = true;
+    protected bool $contentSimpled = false;
 
     /**
      * @return list<MenuElementContract>
