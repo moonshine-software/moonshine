@@ -20,6 +20,10 @@ use MoonShine\UI\Components\{Layout\Body,
 
 class AppLayout extends BaseLayout
 {
+    protected bool $contentCentered = true;
+
+    protected bool $contentSimpled = true;
+
     /**
      * @return list<MenuElementContract>
      */
@@ -52,8 +56,8 @@ class AppLayout extends BaseLayout
                                 Content::make($this->getContentComponents()),
 
                                 $this->getFooterComponent(),
-                            ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
-                        ])->class('layout-main')->customAttributes(['id' => self::CONTENT_ID]),
+                            ])->class(['layout-page', 'layout-page-simple' => $this->contentSimpled])->name(self::CONTENT_FRAGMENT_NAME),
+                        ])->class(['layout-main', 'layout-main-containered' => $this->contentCentered])->customAttributes(['id' => self::CONTENT_ID]),
                         Div::make()
                             ->class('layout-overlay')
                             ->customAttributes([
