@@ -52,6 +52,31 @@ input {
   &[type='number'] {
     -moz-appearance: textfield;
   }
+
+  /* Fix for Safari date/time inputs blue color */
+  &[type='date'],
+  &[type='datetime-local'],
+  &[type='time'],
+  &[type='month'],
+  &[type='week'] {
+    &::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    &::-webkit-datetime-edit,
+    &::-webkit-datetime-edit-fields-wrapper,
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-hour-field,
+    &::-webkit-datetime-edit-minute-field,
+    &::-webkit-datetime-edit-second-field,
+    &::-webkit-datetime-edit-millisecond-field,
+    &::-webkit-datetime-edit-meridiem-field {
+      color: inherit;
+    }
+  }
 }
 
 fieldset {
@@ -224,7 +249,8 @@ fieldset {
   background-clip: padding-box;
   cursor: pointer;
 
-  &::file-selector-button {
+  &::file-selector-button,
+  &::-webkit-file-selector-button {
     margin: calc(var(--ms-form-field-padding, --spacing(2)) * -1.5);
     margin-inline-end: var(--ms-form-field-padding, --spacing(2));
     padding: calc(var(--ms-form-field-padding, --spacing(2)) * 1.5);
@@ -234,33 +260,13 @@ fieldset {
     border-style: solid;
     border-color: inherit;
     border-radius: 0;
-    background-color: var(--ms-file-upload-button-bg, var(--color-base-200));
-    color: inherit;
+    background-color: var(--ms-file-upload-button-bg-color, var(--ms-form-default-border-color));
+    color: var(--ms-file-upload-button-color, var(--ms-form-default-color));
     overflow: hidden;
     cursor: pointer;
     transition-property: background-color, color;
     transition-duration: var(--default-transition-duration);
     transition-timing-function: var(--default-transition-timing-function);
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-
-    @variant dark {
-      background-color: var(--ms-file-upload-button-bg, var(--color-primary));
-      color: var(--color-white);
-    }
-  }
-
-  &:not(:disabled) {
-    &::file-selector-button:hover {
-      background-color: var(--ms-file-upload-button-hover-bg, var(--color-neutral-200));
-
-      @variant dark {
-        background-color: var(--ms-file-upload-button-hover-bg, var(--color-secondary));
-        color: var(--color-white);
-      }
-    }
   }
 }
 
@@ -293,26 +299,6 @@ fieldset {
   transition-duration: 0.125s;
   transition-timing-function: ease-in-out;
 
-  &:hover {
-    --ms-form-control-border-color: var(--color-primary);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--ms-form-focus-border-color);
-    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
-  }
-
-  &:disabled {
-    --ms-form-control-border-color: var(--ms-form-disabled-border-color);
-    --ms-form-control-bg-color: var(--ms-form-disabled-bg-color);
-    cursor: not-allowed;
-  }
-
-  &:disabled + span {
-    color: var(--ms-form-disabled-color);
-  }
-
   &::before {
     will-change: transform;
     transform: scale(0);
@@ -327,6 +313,23 @@ fieldset {
     &::before {
       transform: scale(1);
     }
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--ms-form-focus-border-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
+  }
+
+  &:hover {
+    --ms-form-control-border-color: var(--color-primary);
+  }
+
+  &:disabled {
+    border-color: var(--ms-form-disabled-border-color);
+    background-color: var(--ms-form-disabled-bg-color);
+    cursor: default;
+    opacity: var(--ms-form-control-disabled-opacity, 0.7);
   }
 
   /* Invalid field */
@@ -468,7 +471,7 @@ fieldset {
     --ms-form-switcher-thumb-bg-color: var(--ms-form-disabled-color);
 
     cursor: default;
-    opacity: var(--ms-form-switcher-disabled-opacity, 0.5);
+    opacity: var(--ms-form-switcher-disabled-opacity, 0.7);
   }
 
   &:checked:disabled + .form-switcher-toggler {

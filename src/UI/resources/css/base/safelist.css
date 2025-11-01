@@ -6,8 +6,7 @@
 @source inline('{xs:,sm:,md:,lg:,xl:,}{relative,fixed,absolute,static,z-[{0..100},dropdown,notifications,offcanvas,modal,menu,toast]}');
 @source inline("{xs:,sm:,md:,lg:,xl:,}object-{cover,contain,fill,none,scale-down}");
 @source inline("bg-base{,-50,-100,-200,-300,-400,-500,-600,-700,-800,-900}");
-
-/* @source inline("{xs:,sm:,md:,lg:,xl:,}{min,max,}{w,h}-{auto,full,fit,screen,{0..10}}");*/
-/* @source inline('{xs:,sm:,md:,lg:,xl:,}{m,p}-{0..20}'); */
-/* @source inline("{xs:,sm:,md:,lg:,xl:,}text-{xs,sm,md,lg,xl,primary,secondary,info,success,warning,error,left,center,right}");
-@source inline("{xs:,sm:,md:,lg:,xl:,}{badge,badge-{primary,secondary,info,success,warning,error}}"); */
+@source inline("{xs:,sm:,md:,lg:,xl:,}{min,max,}{size,w,h}-{auto,full,fit,screen,{0..10}}");
+@source inline('{xs:,sm:,md:,lg:,xl:,}{m,p}-{0..20}');
+@source inline("{xs:,sm:,md:,lg:,xl:,}text-{xs,sm,md,lg,xl,left,center,right}");
+@source inline("{xs:,sm:,md:,lg:,xl:,}text-{base,primary,secondary,info,success,warning,error}");

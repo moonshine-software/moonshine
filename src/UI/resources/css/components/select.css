@@ -1,6 +1,6 @@
 @import 'tom-select/dist/css/tom-select.css';
 
-@inline {
+:root {
   --ts-pr-caret: 32px;
   --ts-pr-clear-button: 1em;
 }
@@ -23,8 +23,8 @@
 
 .ts-wrapper.single.input-active .ts-control,
 .ts-wrapper.multi.input-active .ts-control {
-  background-color: inherit;
-  color: inherit;
+  background-color: var(--ms-form-default-bg-color);
+  color: var(--ms-form-default-color);
 }
 
 .ts-wrapper.single .ts-control,
@@ -33,11 +33,13 @@
     right: var(--ms-ts-clear-button-space-right, --spacing(6));
     display: inline-flex;
     align-items: center;
+    height: 100%;
     margin-bottom: 0;
     padding-block: 0;
     padding-inline: --spacing(1);
     color: var(--ms-clear-button-color, var(--color-base-text));
     font-size: var(--ms-ts-base-font-size, var(--text-xs));
+    line-height: 0;
   }
 }
 
@@ -46,6 +48,7 @@
 .ts-wrapper {
   &::after {
     content: '';
+    pointer-events: none;
     position: absolute;
     top: 50%;
     right: var(--ms-ts-caret-right, --spacing(2));
@@ -228,5 +231,16 @@
     transition-property: opacity;
     transition-duration: var(--default-transition-duration);
     transition-timing-function: var(--default-transition-timing-function);
+  }
+}
+
+.disabled .ts-control {
+  opacity: 1;
+  border-color: var(--ms-form-disabled-border-color);
+  background-color: var(--ms-form-disabled-bg-color);
+  color: var(--ms-form-disabled-color);
+
+  .item {
+    color: var(--ms-form-disabled-color);
   }
 }

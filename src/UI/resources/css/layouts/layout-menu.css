@@ -12,6 +12,13 @@
   padding-block: var(--ms-layout-wrapper-spacing);
   padding-inline: var(--ms-layout-wrapper-spacing);
 
+  &:hover {
+    .layout-collapse {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
   @variant max-lg {
     position: fixed;
     inset-block: 0;
@@ -44,6 +51,18 @@
     overflow-y: auto;
     flex-grow: 1;
     min-height: 0;
+  }
+
+  /* Profile */
+
+  .profile {
+    --ms-profile-max-width: 100%;
+
+    width: 100%;
+  }
+
+  .profile-info {
+    display: block;
   }
 
   /* Minimized state */

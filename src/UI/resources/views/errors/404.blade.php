@@ -9,13 +9,13 @@
 
     <div class="text-center md:text-left">
         <div class="space-y-3">
-            <h1 class="text-2xl font-bold leading-none text-white lg:text-3xl">
+            <h1 class="text-2xl font-bold leading-none lg:text-3xl">
                 {{ $code }}
             </h1>
-            <h2 class="text-md font-semibold text-white md:text-lg lg:text-xl">
+            <h2 class="text-md font-semibold md:text-lg lg:text-xl">
                 Oops.
             </h2>
-            <p class="text-sm text-white md:text-base">{{ $message }}</p>
+            <p class="text-sm">{{ $message }}</p>
         </div>
 
         <div class="mt-8">
