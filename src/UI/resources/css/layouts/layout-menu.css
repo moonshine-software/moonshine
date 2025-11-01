@@ -46,6 +46,18 @@
     min-height: 0;
   }
 
+  /* Profile */
+
+  .profile {
+    --ms-profile-max-width: 100%;
+
+    width: 100%;
+  }
+
+  .profile-info {
+    display: block;
+  }
+
   /* Minimized state */
 
   &._is-minimized {

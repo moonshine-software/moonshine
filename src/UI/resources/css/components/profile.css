@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: --spacing(3) --spacing(2);
+  gap: var(--ms-profile-gap-y, --spacing(3)) var(--ms-profile-gap-x, --spacing(2));
   width: fit-content;
   line-height: 0;
 
@@ -16,7 +16,7 @@
   flex-grow: 1;
   display: flex;
   align-items: center;
-  column-gap: --spacing(2.5);
+  gap: var(--ms-profile-main-gap, --spacing(2.5));
   min-width: 0;
 }
 
@@ -32,7 +32,7 @@
   flex-grow: 1;
   display: none;
   min-width: 0;
-  max-width: 120px;
+  max-width: var(--ms-profile-max-width, 120px);
   font-size: var(--ms-profile-font-size, var(--text-xs));
   line-height: 1.3;
 
@@ -63,7 +63,7 @@
 }
 
 .profile-exit {
-  --ms-icon-size: var(--ms-profile-exit-icon-size, --spacing(5));
+  --ms-icon-size: var(--ms-profile-exit-icon-size, --spacing(4.5));
 
   @variant hover {
     color: var(--color-primary);

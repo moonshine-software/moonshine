@@ -1,4 +1,6 @@
 @theme {
+  --ms-menu-gap-y: --spacing(3);
+  --ms-menu-gap-x: --spacing(3);
   --ms-menu-space-y: --spacing(1);
   --ms-menu-space-x: --spacing(1.5);
   --ms-menu-icon-size: --spacing(5);
@@ -31,7 +33,7 @@
 .menu {
   flex: 1;
   display: flex;
-  gap: --spacing(3);
+  gap: var(--ms-menu-gap-y, --spacing(4)) var(--ms-menu-gap-y, --spacing(3));
 }
 
 .menu--vertical {
@@ -74,9 +76,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: --spacing(3) --spacing(2);
-  padding-bottom: --spacing(3);
-  border-bottom: 1px solid var(--color-base-stroke);
+  gap: var(--ms-menu-gap-y, --spacing(3)) var(--ms-menu-gap-x, --spacing(2));
+  padding-bottom: var(--ms-menu-gap-y, --spacing(3));
+  border-bottom: var(--ms-menu-header-border-width, 1px);
+  border-style: solid;
+  border-color: var(--ms-menu-header-border-color, var(--color-base-stroke));
 }
 
 .menu-footer {
@@ -85,9 +89,11 @@
   @variant lg {
     display: flex;
     flex-direction: column;
-    row-gap: --spacing(3);
-    padding-top: --spacing(3);
-    border-top: 1px solid var(--color-base-stroke);
+    row-gap: var(--ms-menu-gap-y, --spacing(3));
+    padding-top: var(--ms-menu-gap-y, --spacing(3));
+    border-top: var(--ms-menu-footer-border-width, 1px);
+    border-style: solid;
+    border-color: var(--ms-menu-footer-border-color, var(--color-base-stroke));
   }
 }
 
@@ -113,7 +119,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: --spacing(3) --spacing(2);
+  gap: var(--ms-menu-actions-gap-y, --spacing(3)) var(--ms-menu-actions-gap-x, --spacing(2));
   margin-left: auto;
 }
 
@@ -168,8 +174,7 @@
 
 .menu-list {
   display: flex;
-  row-gap: var(--ms-menu-space-y, --spacing(1));
-  column-gap: var(--ms-menu-space-x, --spacing(1));
+  gap: var(--ms-menu-space-y, --spacing(1)) var(--ms-menu-space-x, --spacing(1));
   width: 100%;
 }
 
@@ -197,8 +202,9 @@
         top: 0;
         right: 0;
         bottom: 0;
-        height: 50%;
+        display: block;
         width: --spacing(1);
+        height: 50%;
         margin-block: auto;
         border-radius: --spacing(1) 0 0 --spacing(1);
         background-color: var(--ms-menu-item-active-glow-color, var(--color-primary));
