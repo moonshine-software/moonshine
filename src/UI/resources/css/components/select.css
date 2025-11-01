@@ -33,11 +33,13 @@
     right: var(--ms-ts-clear-button-space-right, --spacing(6));
     display: inline-flex;
     align-items: center;
+    height: 100%;
     margin-bottom: 0;
     padding-block: 0;
     padding-inline: --spacing(1);
     color: var(--ms-clear-button-color, var(--color-base-text));
     font-size: var(--ms-ts-base-font-size, var(--text-xs));
+    line-height: 0;
   }
 }
 
