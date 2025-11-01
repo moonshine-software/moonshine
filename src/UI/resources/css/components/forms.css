@@ -21,7 +21,7 @@
 
   --ms-form-disabled-border-color: var(--color-base-stroke);
   --ms-form-disabled-bg-color: var(--color-base-100);
-  --ms-form-disabled-color: var(--color-base-800);
+  --ms-form-disabled-color: var(--color-base-text);
 
   --ms-form-error-border-color: var(--color-error);
   --ms-form-error-bg-color: var(--color-error);
@@ -371,6 +371,12 @@ fieldset {
       transform: scale(1) rotate(-45deg);
     }
   }
+
+  &:disabled:checked {
+    --ms-form-control-checked-border-color: var(--ms-form-disabled-border-color);
+    --ms-form-control-checked-bg-color: var(--ms-form-disabled-color);
+    --ms-form-control-checked-color: var(--ms-form-disabled-bg-color);
+  }
 }
 
 /* Form Radio */
@@ -389,6 +395,10 @@ fieldset {
     border-radius: 50%;
     box-shadow: inset var(--_radio-size) var(--_radio-size)
       var(--ms-form-control-checked-bg-color, var(--color-primary));
+  }
+
+  &:disabled::before {
+    --ms-form-control-checked-bg-color: var(--ms-form-disabled-color);
   }
 }
 
