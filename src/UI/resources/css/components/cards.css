@@ -129,8 +129,8 @@
   flex-direction: column;
   row-gap: var(--_card-gap-y);
   height: 100%;
-  padding-block: var(--ms-report-card-padding-y, --spacing(3));
-  padding-inline: var(--ms-report-card-padding-x, --spacing(3));
+  padding-block: var(--ms-report-card-padding-y, --spacing(3.5));
+  padding-inline: var(--ms-report-card-padding-x, --spacing(3.5));
   border-radius: var(--ms-report-card-radius, inherit);
   background-color: var(--ms-report-card-bg-color, var(--color-base));
 
@@ -180,7 +180,7 @@
   .report-card-value {
     @apply truncate;
 
-    font-size: var(--ms-report-card-value-font-size, var(--text-xl));
+    font-size: var(--ms-report-card-value-font-size, var(--text-3xl));
     font-weight: var(--ms-report-card-value-font-weight, var(--font-weight-medium));
     line-height: 1;
   }
