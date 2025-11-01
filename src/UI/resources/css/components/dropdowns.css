@@ -5,7 +5,6 @@
   --_dropdown-padding-x: var(--ms-dropdown-heading-padding-x, --spacing(3));
 
   position: relative;
-  z-index: var(--z-dropdown);
 }
 
 /* Dropdown body */
@@ -13,6 +12,7 @@
 .dropdown-body {
   overflow: hidden;
   position: absolute;
+  z-index: var(--z-dropdown);
   box-shadow: 0 4px 10px -5px rgb(0 0 0 / 0.1);
   border: var(--ms-dropdown-border-width, 1px) solid
     var(--ms-dropdown-border-color, var(--color-base-stroke));
