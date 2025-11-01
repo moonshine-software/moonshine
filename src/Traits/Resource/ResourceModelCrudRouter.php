@@ -34,7 +34,7 @@ trait ResourceModelCrudRouter
      *
      */
     public function route(
-        string $name = null,
+        ?string $name = null,
         Model|int|string|null $key = null,
         array $query = []
     ): string {

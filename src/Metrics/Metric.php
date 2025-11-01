@@ -34,7 +34,7 @@ abstract class Metric extends MoonShineComponent implements HasAssets
         }
     }
 
-    public function id(string $index = null): string
+    public function id(?string $index = null): string
     {
         return (string) str($this->label())
             ->slug('_')

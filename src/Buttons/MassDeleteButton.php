@@ -12,7 +12,7 @@ final class MassDeleteButton
 {
     public static function for(
         ModelResource $resource,
-        string $componentName = null,
+        ?string $componentName = null,
         string $redirectAfterDelete = '',
         bool $isAsync = false,
     ): ActionButton {

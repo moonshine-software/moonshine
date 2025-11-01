@@ -66,7 +66,7 @@ final class PageComponents extends MoonShineRenderElements
      */
     public function findForm(
         string $name,
-        FormBuilder $default = null
+        ?FormBuilder $default = null
     ): ?FormBuilder {
         return $this->onlyForms()->first(
             static fn (FormBuilder $component): bool => $component->getName() === $name,
@@ -79,7 +79,7 @@ final class PageComponents extends MoonShineRenderElements
      */
     public function findTable(
         string $name,
-        TableBuilder $default = null
+        ?TableBuilder $default = null
     ): ?TableBuilder {
         return $this->onlyTables()->first(
             static fn (TableBuilder $component): bool => $component->getName() === $name,
@@ -92,7 +92,7 @@ final class PageComponents extends MoonShineRenderElements
      */
     public function findByName(
         string $name,
-        MoonShineComponent $default = null
+        ?MoonShineComponent $default = null
     ): ?MoonShineComponent {
         return $this->onlyComponents()->first(
             static fn (MoonShineComponent $component): bool => $component->getName() === $name,

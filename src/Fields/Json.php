@@ -585,7 +585,7 @@ class Json extends Field implements
         );
     }
 
-    private function saveRelation(array $items, mixed $model, string $relationName = null)
+    private function saveRelation(array $items, mixed $model, ?string $relationName = null)
     {
         $items = collect($items);
 

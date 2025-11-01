@@ -15,7 +15,7 @@ class MenuGroup extends MenuElement
     public function __construct(
         Closure|string $label,
         protected iterable $items = [],
-        string $icon = null,
+        ?string $icon = null,
     ) {
         $this->setLabel($label);
 

@@ -22,7 +22,7 @@ final class Pages extends Collection
 
     public function findByType(
         PageType $type,
-        Page $default = null
+        ?Page $default = null
     ): ?Page {
         return $this->first(fn (Page $page): bool => $page->pageType() === $type, $default);
     }
@@ -44,7 +44,7 @@ final class Pages extends Collection
 
     public function findByUri(
         string $uri,
-        Page $default = null
+        ?Page $default = null
     ): ?Page {
         return $this->first(
             function (Page $page) use ($uri): bool {

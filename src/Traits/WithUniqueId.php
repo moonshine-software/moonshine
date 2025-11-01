@@ -17,7 +17,7 @@ trait WithUniqueId
         return $this;
     }
 
-    public function id(string $index = null): string
+    public function id(?string $index = null): string
     {
         if (is_null($this->uniqueId)) {
             $this->uniqueId = (string) str(Str::random())

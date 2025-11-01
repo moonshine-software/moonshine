@@ -20,7 +20,7 @@ class MenuItem extends MenuElement
     final public function __construct(
         Closure|string $label,
         protected Closure|MenuFiller|string $filler,
-        string $icon = null,
+        ?string $icon = null,
         Closure|bool $blank = false
     ) {
         $this->setLabel($label);

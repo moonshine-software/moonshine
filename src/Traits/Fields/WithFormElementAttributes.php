@@ -26,7 +26,7 @@ trait WithFormElementAttributes
 
     protected bool $readonly = false;
 
-    public function id(string $index = null): string
+    public function id(?string $index = null): string
     {
         // TODO: Html id attribute will be fixed in version 3
         if ($this instanceof Hidden) {
@@ -50,7 +50,7 @@ trait WithFormElementAttributes
             );
     }
 
-    public function name(string $index = null): string
+    public function name(?string $index = null): string
     {
         return $this->prepareName($index);
     }
