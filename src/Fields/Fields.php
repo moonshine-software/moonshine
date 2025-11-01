@@ -277,7 +277,6 @@ final class Fields extends FormElements
     /**
      * @template-covariant T of Field
      * @param  class-string<T>  $class
-     * @param ?Field  $default
      * @return T
      * @throws Throwable
      */

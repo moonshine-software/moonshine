@@ -29,10 +29,7 @@ trait ResourceModelCrudRouter
         )->value();
     }
 
-    /**
-     * @param string|null $name
-     *
-     */
+    
     public function route(
         ?string $name = null,
         Model|int|string|null $key = null,
