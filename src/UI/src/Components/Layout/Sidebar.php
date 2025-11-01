@@ -45,4 +45,3 @@ class Sidebar extends AbstractWithComponents
         return $this;
     }
 }
-
