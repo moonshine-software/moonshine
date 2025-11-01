@@ -364,7 +364,7 @@ trait ResourceQuery
             $this->getQueryParamName('filter'),
             $this->getQueryParamName('page'),
             $this->getQueryParamName('query-tag'),
-            $this->getSearchQueryKey()
+            $this->getSearchQueryKey(),
         ];
     }
 
