@@ -213,7 +213,7 @@ export default (
   asyncRequest() {
     listComponentRequest(this, this.$root?.dataset?.pushState, () => {
       this.init()
-    })
+    }, this.table?.dataset?.queryParamPrefix)
   },
   asyncRowRequest(key = null, index = null) {
     let eventData = this.$event.detail

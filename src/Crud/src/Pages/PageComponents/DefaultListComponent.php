@@ -34,6 +34,7 @@ final class DefaultListComponent implements DefaultListComponentContract
 
         return TableBuilder::make(items: $items)
             ->name($page->getListComponentName())
+            ->queryParamPrefix($resource->getQueryParamPrefix())
             ->fields($fields)
             ->cast($resource->getCaster())
             ->withNotFound()

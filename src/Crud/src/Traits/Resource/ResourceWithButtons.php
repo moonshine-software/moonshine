@@ -25,7 +25,7 @@ trait ResourceWithButtons
         ?CrudResource $resource = null,
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'resource-create-modal'
+        string $modalName = 'resource-create-modal',
     ): ActionButtonContract {
         /** @var string $label */
         $label = $this->getCore()->getTranslator()->get('moonshine::ui.create');
@@ -35,7 +35,7 @@ trait ResourceWithButtons
             $resource ?? $this,
             componentName: $componentName,
             isAsync: $isAsync,
-            modalName: $modalName
+            modalName: $modalName,
         );
     }
 
@@ -46,30 +46,27 @@ trait ResourceWithButtons
         ?CrudResource $resource = null,
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'resource-edit-modal'
+        string $modalName = 'resource-edit-modal',
     ): ActionButtonContract {
         return EditButton::for(
             $resource ?? $this,
             componentName: $componentName,
             isAsync: $isAsync,
             modalName: $modalName,
-            query: $isAsync ? array_filter([
-                'page' => $this->getCore()->getRequest()->getScalar('page'),
-                'sort' => $this->getCore()->getRequest()->getScalar('sort'),
-            ]) : []
+            query: $isAsync ? $this->getButtonDefaultQuery() : [],
         );
     }
 
     public function getDetailButton(
         ?CrudResource $resource = null,
         string $modalName = 'resource-detail-modal',
-        bool $isSeparateModal = true
+        bool $isSeparateModal = true,
     ): ActionButtonContract {
         return DetailButton::for(
             $this->getCore()->getTranslator()->get('moonshine::ui.show'),
             $resource ?? $this,
             $modalName,
-            $isSeparateModal
+            $isSeparateModal,
         );
     }
 
@@ -86,10 +83,7 @@ trait ResourceWithButtons
             redirectAfterDelete: $isAsync ? null : $redirectAfterDelete,
             isAsync: $isAsync,
             modalName: $modalName,
-            query: $isAsync ? array_filter([
-                'page' => $this->getCore()->getRequest()->getScalar('page'),
-                'sort' => $this->getCore()->getRequest()->getScalar('sort'),
-            ]) : []
+            query: $isAsync ? $this->getButtonDefaultQuery() : [],
         );
     }
 
@@ -103,7 +97,7 @@ trait ResourceWithButtons
         return FiltersButton::for(
             label: $this->getCore()->getTranslator()->get('moonshine::ui.filters'),
             form: $form,
-            resource: $resource ?? $this
+            resource: $resource ?? $this,
         );
     }
 
@@ -120,10 +114,18 @@ trait ResourceWithButtons
             redirectAfterDelete: $isAsync ? null : $redirectAfterDelete,
             isAsync: $isAsync,
             modalName: $modalName,
-            query: $isAsync ? array_filter([
-                'page' => $this->getCore()->getRequest()->getScalar('page'),
-                'sort' => $this->getCore()->getRequest()->getScalar('sort'),
-            ]) : []
+            query: $isAsync ? $this->getButtonDefaultQuery() : [],
         );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getButtonDefaultQuery(): array
+    {
+        return array_filter([
+            $this->getQueryParamName('page') => $this->getCore()->getRequest()->getScalar($this->getQueryParamName('page')),
+            $this->getQueryParamName('sort') => $this->getCore()->getRequest()->getScalar($this->getQueryParamName('sort')),
+        ]);
     }
 }

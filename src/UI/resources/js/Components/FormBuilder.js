@@ -260,6 +260,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
   asyncFilters(componentEvent, exclude = null) {
     const form = this.$el
+    const prefix = form.dataset.queryParamPrefix ?? ''
     let formData = new FormData(form)
 
     const urlSearchParams = new URLSearchParams(window.location.search)
@@ -269,8 +270,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
       exclude = '*'
     }
 
-    formData.set('query-tag', urlSearchParams.get('query-tag') || '')
-    formData.set('sort', urlSearchParams.get('sort') || '')
+    formData.set(`${prefix}query-tag`, urlSearchParams.get(`${prefix}query-tag`) || '')
+    formData.set(`${prefix}sort`, urlSearchParams.get(`${prefix}sort`) || '')
 
     this._filtersCount()
 
@@ -284,9 +285,10 @@ export default (name = '', initData = {}, reactive = {}) => ({
     const form = this.$el
     const formData = new FormData(form)
     const filledFields = new Set()
+    const prefix = form.dataset.queryParamPrefix ?? ''
 
     for (const [name, value] of formData.entries()) {
-      if (name.startsWith('filter') && value && value !== '0') {
+      if (name.startsWith(prefix + 'filter') && value && value !== '0') {
         const match = name.match(/\[(.*?)]/)
         filledFields.add(match ? match[1] : null)
       }

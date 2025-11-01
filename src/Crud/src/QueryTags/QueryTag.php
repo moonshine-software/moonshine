@@ -22,7 +22,7 @@ use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @template TBuilder of mixed = mixed
- * @method static static make(Closure|string $label, Closure $builder)
+ * @method static static make(Closure|string $label, Closure $builder, string $prefix = '')
  */
 class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, HasCoreContract
 {
@@ -47,6 +47,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
         Closure|string $label,
         /** @var Closure(TBuilder): TBuilder $builder */
         protected Closure $builder,
+        protected string $prefix = '',
     ) {
         $this->setLabel($label);
     }
@@ -81,11 +82,11 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
 
     public function isActive(): bool
     {
-        if ($this->isDefault() && ! $this->getCore()->getRequest()->has('query-tag')) {
+        if ($this->isDefault() && ! $this->getCore()->getRequest()->has($this->prefix . 'query-tag')) {
             return true;
         }
 
-        return $this->getCore()->getRequest()->getScalar('query-tag') === $this->getUri();
+        return $this->getCore()->getRequest()->getScalar($this->prefix . 'query-tag') === $this->getUri();
     }
 
     /**
@@ -123,7 +124,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
     {
         return ActionButton::make(
             $this->getLabel(),
-            $page->getRoute(['query-tag' => $this->getUri()])
+            $page->getRoute([$this->prefix . 'query-tag' => $this->getUri()])
         )
             ->name("query-tag-{$this->getUri()}-button")
             ->showInLine()
@@ -143,7 +144,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
                 $page->isAsync(),
                 fn (ActionButtonContract $btn): ActionButtonContract => $btn
                     ->onClick(
-                        fn ($action): string => "request(`{$this->getUri()}`)",
+                        fn ($action): string => "request(`{$this->getUri()}`, `$this->prefix`)",
                         'prevent'
                     )
             )

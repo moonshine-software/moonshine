@@ -10,6 +10,8 @@ interface SortableFieldContract
 {
     public function sortable(Closure|string|null $callback = null): static;
 
+    public function sortablePrefix(string $prefix): static;
+
     public function disableSortable(): static;
 
     public function getSortableCallback(): Closure|string|null;

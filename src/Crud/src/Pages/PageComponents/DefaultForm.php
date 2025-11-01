@@ -63,8 +63,8 @@ final class DefaultForm implements DefaultFormContract
                             $resource->getListEventName(
                                 $this->getCore()->getRequest()->getScalar('_component_name', 'default'),
                                 $isAsync && $resource->isItemExists() ? array_filter([
-                                    'page' => $this->getCore()->getRequest()->getScalar('page'),
-                                    'sort' => $this->getCore()->getRequest()->getScalar('sort'),
+                                    $resource->getQueryParamName('page') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('page')),
+                                    $resource->getQueryParamName('sort') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('sort')),
                                 ]) : [],
                             ),
                             ! $resource->isItemExists() && $resource->isCreateInModal()

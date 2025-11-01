@@ -55,14 +55,17 @@ final readonly class ModelCaster implements DataCasterContract
             return null;
         }
 
+        $pageName = method_exists($data, 'getPageName') ? $data->getPageName() : 'page';
+
         /**
          * @var (Paginator|CursorPaginator)&Arrayable $data
          */
         $paginator = new PaginatorCaster(
             $data->appends(
-                moonshine()->getRequest()->getExcept('page')
+                moonshine()->getRequest()->getExcept($pageName)
             )->toArray(),
-            $data->items()
+            $data->items(),
+            pageName: $pageName
         );
 
         return $paginator->cast();
