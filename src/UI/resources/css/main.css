@@ -99,23 +99,3 @@
     font-size: var(--ms-html-mobile-font-size, 14px);
   }
 }
-
-/* :root {
-  --primary: 0.67 0.27 26.88;
-  --secondary: 0.95 0.35 264.05;
-  --spacing: 0.2rem;
-
-  &:not(.dark) {
-    --ms-layout-body-bg-color: var(--color-rose-50);
-    --ms-layout-page-bg-color: var(--color-rose-100);
-    --ms-box-bg-color: var(--color-rose-50);
-    --color-base: var(--color-rose-100);
-
-    --ms-menu-item-active-glow-color: var(--color-blue-400);
-  }
-
-  &.dark {
-    --ms-layout-body-bg-color: var(--color-zinc-800);
-    --primary: 0.9 0.5 264.05;
-  }
-} */
