@@ -253,7 +253,7 @@ final class Fields extends FormElements
      */
     public function findByRelation(
         string $relation,
-        ModelRelationField $default = null
+        ?ModelRelationField $default = null
     ): ?ModelRelationField {
         return $this->onlyRelationFields()->first(
             static fn (ModelRelationField $field): bool => $field->getRelationName() === $relation,
@@ -266,7 +266,7 @@ final class Fields extends FormElements
      */
     public function findByColumn(
         string $column,
-        Field $default = null
+        ?Field $default = null
     ): Field|ModelRelationField|null {
         return $this->first(
             static fn (Field $field): bool => $field->column() === $column,
@@ -283,7 +283,7 @@ final class Fields extends FormElements
      */
     public function findByClass(
         string $class,
-        Field $default = null
+        ?Field $default = null
     ): ?Field {
         return $this->first(
             static fn (Field $field): bool => $field::class === $class,

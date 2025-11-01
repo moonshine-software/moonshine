@@ -97,6 +97,6 @@ expect()->extend('isSuccessfulOrRedirect', fn (): Expectation => expect($this->v
 
 expect()->extend('see', fn (string $value): Expectation => expect($this->value->content())->toContain($value));
 
-expect()->extend('hasFields', fn (array $fields = null) => expect($this->value)
+expect()->extend('hasFields', fn (?array $fields = null) => expect($this->value)
     ->toBeCollection()
     ->toHaveCount($fields ? count($fields) : 0));

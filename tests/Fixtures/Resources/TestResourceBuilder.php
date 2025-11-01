@@ -18,7 +18,7 @@ use MoonShine\QueryTags\QueryTag;
 
 class TestResourceBuilder
 {
-    public static function new(string $model = null): TestResource
+    public static function new(?string $model = null): TestResource
     {
         $resource = new TestResource();
 
