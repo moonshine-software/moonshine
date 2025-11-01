@@ -5,6 +5,7 @@
   justify-content: space-between;
   gap: --spacing(3) --spacing(2);
   width: fit-content;
+  line-height: 0;
 
   @variant xl {
     flex-direction: row;
