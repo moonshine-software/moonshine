@@ -117,6 +117,7 @@
   --_btn-width: var(--ms-layout-collapse-btn-width, --spacing(5));
   --ms-btn-icon-size: calc(var(--_btn-width) / 1.375);
   --ms-btn-radius: var(--ms-layout-collapse-btn-radius, var(--radius-md));
+  --ms-btn-bg-color: var(--ms-layout-collapse-btn-bg-color, var(--color-base-100));
 
   position: absolute;
   inset-block: 0;
