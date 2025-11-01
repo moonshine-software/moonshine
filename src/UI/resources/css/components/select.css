@@ -23,8 +23,8 @@
 
 .ts-wrapper.single.input-active .ts-control,
 .ts-wrapper.multi.input-active .ts-control {
-  background-color: inherit;
-  color: inherit;
+  background-color: var(--ms-form-default-bg-color);
+  color: var(--ms-form-default-color);
 }
 
 .ts-wrapper.single .ts-control,
@@ -231,5 +231,16 @@
     transition-property: opacity;
     transition-duration: var(--default-transition-duration);
     transition-timing-function: var(--default-transition-timing-function);
+  }
+}
+
+.disabled .ts-control {
+  opacity: 1;
+  border-color: var(--ms-form-disabled-border-color);
+  background-color: var(--ms-form-disabled-bg-color);
+  color: var(--ms-form-disabled-color);
+
+  .item {
+    color: var(--ms-form-disabled-color);
   }
 }
