@@ -52,6 +52,31 @@ input {
   &[type='number'] {
     -moz-appearance: textfield;
   }
+
+  /* Fix for Safari date/time inputs blue color */
+  &[type='date'],
+  &[type='datetime-local'],
+  &[type='time'],
+  &[type='month'],
+  &[type='week'] {
+    &::-webkit-date-and-time-value {
+      text-align: left;
+    }
+
+    &::-webkit-datetime-edit,
+    &::-webkit-datetime-edit-fields-wrapper,
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-hour-field,
+    &::-webkit-datetime-edit-minute-field,
+    &::-webkit-datetime-edit-second-field,
+    &::-webkit-datetime-edit-millisecond-field,
+    &::-webkit-datetime-edit-meridiem-field {
+      color: inherit;
+    }
+  }
 }
 
 fieldset {
