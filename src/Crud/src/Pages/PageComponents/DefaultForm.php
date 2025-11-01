@@ -80,7 +80,7 @@ final class DefaultForm implements DefaultFormContract
             ->name($resource->getUriKey())
             ->submit(
                 $this->getCore()->getTranslator()->get('moonshine::ui.save'),
-                ['class' => 'btn-primary btn-lg'],
+                ['class' => 'btn-primary'],
             )
             ->buttons($page->getFormButtons());
     }
