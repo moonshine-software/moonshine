@@ -17,8 +17,7 @@
 
 /* Box variants */
 
-.box.box-dark,
-.box.dark {
+.box--dark {
   --ms-box-bg-color: var(--color-neutral-900);
   --ms-box-color: var(--color-white);
 
