@@ -1,8 +1,8 @@
 @theme {
   --ms-layout-main-containered-max-width: 1080px;
   --ms-layout-wrapper-spacing: --spacing(2);
-  --ms-layout-page-padding-y: --spacing(5);
-  --ms-layout-page-padding-x: --spacing(5);
+  --ms-layout-page-padding-y: --spacing(4);
+  --ms-layout-page-padding-x: --spacing(4);
   --ms-layout-page-bg-color: var(--color-base-50);
 }
 
@@ -44,8 +44,8 @@
   flex-direction: column;
   flex-grow: 1;
   width: 100%;
-  padding-block: var(--ms-layout-page-padding-y, --spacing(5));
-  padding-inline: var(--ms-layout-page-padding-x, --spacing(5));
+  padding-block: var(--ms-layout-page-padding-y, --spacing(4));
+  padding-inline: var(--ms-layout-page-padding-x, --spacing(4));
   border-radius: var(--ms-layout-page-radius, var(--radius-xl));
   border: var(--ms-layout-page-border-width, 1px) solid
     var(--ms-layout-page-border-color, var(--color-base-stroke));
@@ -54,6 +54,15 @@
   @variant max-sm {
     border-radius: 0;
     border: none;
+  }
+
+  &.layout-page-simple {
+    --ms-layout-page-padding-y: var(--ms-layout-page-simple-padding-y, --spacing(2.5));
+    --ms-layout-page-padding-x: var(--ms-layout-page-simple-padding-x, --spacing(2.5));
+
+    border-radius: 0;
+    border: none;
+    background: initial;
   }
 }
 
