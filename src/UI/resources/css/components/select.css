@@ -1,6 +1,6 @@
 @import 'tom-select/dist/css/tom-select.css';
 
-@inline {
+:root {
   --ts-pr-caret: 32px;
   --ts-pr-clear-button: 1em;
 }
