@@ -1,42 +1,40 @@
 @layer base {
   /* Custom Scrollbar */
   :root {
-    --ms-scrollbar-color: var(--color-gray-300);
-    --ms-scrollbar-hover-color: var(--color-gray-200);
+    --ms-scrollbar-color: var(--color-base-800);
+    --ms-scrollbar-hover-color: var(--color-base-700);
 
     @variant dark {
       --ms-scrollbar-color: var(--color-base-300);
-      --ms-scrollbar-hover-color: var(--color-base-200);
+      --ms-scrollbar-hover-color: var(--color-base-400);
     }
   }
 
-  .scrollbar {
-    * {
-      @-moz-document url-prefix() {
-        scrollbar-width: thin;
-        scrollbar-color: var(--ms-scrollbar-color) transparent;
-      }
+  * {
+    @-moz-document url-prefix() {
+      scrollbar-width: thin;
+      scrollbar-color: var(--ms-scrollbar-color) transparent;
     }
+  }
 
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
 
-    ::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 
-    ::-webkit-scrollbar-thumb {
-      border-radius: 20px;
-      border: 3px solid transparent;
-      background-clip: padding-box;
-      background-color: var(--ms-scrollbar-color);
-    }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--ms-scrollbar-color);
+  }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: var(--ms-scrollbar-hover-color);
-    }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ms-scrollbar-hover-color);
   }
 
   /* General CSS */
