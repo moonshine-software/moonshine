@@ -48,6 +48,7 @@
 .ts-wrapper {
   &::after {
     content: '';
+    pointer-events: none;
     position: absolute;
     top: 50%;
     right: var(--ms-ts-caret-right, --spacing(2));
