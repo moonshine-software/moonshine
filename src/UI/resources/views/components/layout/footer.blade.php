@@ -11,7 +11,7 @@
 
         {{ $slot ?? '' }}
 
-        <div class="text-center text-sm text-slate-500 md:text-left">
+        <div class="text-center text-sm md:text-left">
             {!! $copyright !!}
         </div>
 
@@ -19,7 +19,7 @@
             <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start lg:gap-x-6">
                 @foreach($menu as $link => $label)
                     <a href="{{ $link }}"
-                       class="text-sm text-slate-500 hover:text-primary"
+                       class="text-sm"
                        target="_blank">
                         {!! $label !!}
                     </a>

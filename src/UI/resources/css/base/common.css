@@ -10,31 +10,33 @@
     }
   }
 
-  * {
-    @-moz-document url-prefix() {
-      scrollbar-width: thin;
-      scrollbar-color: var(--ms-scrollbar-color) transparent;
+  .scrollbar {
+    * {
+      @-moz-document url-prefix() {
+        scrollbar-width: thin;
+        scrollbar-color: var(--ms-scrollbar-color) transparent;
+      }
     }
-  }
 
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
 
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    border: 3px solid transparent;
-    background-clip: padding-box;
-    background-color: var(--ms-scrollbar-color);
-  }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 20px;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      background-color: var(--ms-scrollbar-color);
+    }
 
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--ms-scrollbar-hover-color);
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--ms-scrollbar-hover-color);
+    }
   }
 
   /* General CSS */

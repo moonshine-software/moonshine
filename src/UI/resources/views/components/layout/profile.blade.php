@@ -15,7 +15,7 @@
     {{ $slot }}
 @else
     <div {{ $attributes->merge(['class' => 'profile']) }}>
-        @if($route)
+        @if($route && $menu === null)
         <a href="{{ $route }}" class="profile-main">
         @endif
             @if($avatar && $menu === null)
@@ -34,7 +34,7 @@
                     <div class="email">{{ $username }}</div>
                 </div>
             @endif
-        @if($route)
+        @if($route && $menu === null)
         </a>
         @endif
 

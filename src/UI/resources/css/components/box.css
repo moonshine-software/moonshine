@@ -17,8 +17,7 @@
 
 /* Box variants */
 
-.box.box-dark,
-.box.dark {
+.box--dark {
   --ms-box-bg-color: var(--color-neutral-900);
   --ms-box-color: var(--color-white);
 
@@ -28,8 +27,11 @@
 /* Box elements */
 
 .box-title {
+  --ms-icon-size: --spacing(5);
+
   display: flex;
-  column-gap: var(--ms-box-title-gap, --spacing(2));
+  align-items: center;
+  column-gap: var(--ms-box-title-gap, --spacing(2.5));
   padding-bottom: var(--ms-box-title-padding-bottom, --spacing(3));
   margin-bottom: var(--_box-padding-y);
   border-bottom: var(--ms-box-title-border-width, 1px) solid
