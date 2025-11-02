@@ -153,7 +153,7 @@ final class ColorManager implements ColorManagerContract
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
 
-        $formatted = static fn (string $rgb): string => str_replace(['rgb(', ')'], ['', ''], $rgb);
+        $formatted = static fn (string $value): string => "oklch(" . str_replace(['rgb(', ')', 'oklch('], ['', ''], $value) . ")";
 
         foreach ($data as $name => $shades) {
             if (! \is_array($shades)) {
