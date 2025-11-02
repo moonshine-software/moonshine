@@ -58,7 +58,7 @@
     min-width: 320px;
     background-color: var(--ms-layout-body-bg-color, var(--color-body));
     font-size: var(--text-base);
-    color: var(--color-base-text);
+    color: var(--ms-layout-body-color, var(--color-base-text));
   }
 
   h1,
@@ -111,7 +111,7 @@
 
   a {
     --ms-link-color: var(--ms-defaults-link-color, var(--color-base-text));
-    --ms-link-hover-color: var(--ms-defaults-link-color, var(--color-primary));
+    --ms-link-hover-color: var(--ms-defaults-link-hover-color, var(--color-primary));
 
     color: var(--ms-link-color);
     transition-property:
@@ -230,17 +230,46 @@
     height: 1px;
     margin-block: var(--ms-hr-divider-spacing-y, --spacing(4));
     border: none;
-    border-top: 1px solid var(--ms-hr-divider-bg-color, var(--color-base-stroke));
+    border-top: 1px solid var(--ms-hr-divider-border-color, var(--color-base-stroke));
     background: none;
   }
 
-  div {
-    &.divider {
-      @apply my-4 flex items-center gap-x-2.5 text-slate-400 before:h-[1px] before:min-w-[16px] before:shrink-0 before:bg-slate-300 dark:before:bg-base-100;
+  div.divider {
+    --_divider-color: var(--ms-divider-color, var(--color-base-text));
+    --_divider-line-bg-color: var(--ms-divider-line-bg-color, var(--color-base-stroke));
+    --_divider-line-min-width: var(--ms-divider-line-min-width, --spacing(4));
+    --_divider-line-height: var(--ms-divider-line-height, 1px);
+
+    display: flex;
+    align-items: center;
+    gap: var(--ms-divider-gap, --spacing(2.5));
+    margin-block: var(--ms-divider-space-y, --spacing(4));
+    color: var(--_divider-color);
+
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      min-width: var(--_divider-line-min-width);
+      height: var(--_divider-line-height);
+      background-color: var(--_divider-line-bg-color);
     }
 
     &.divider-centered {
-      @apply justify-center text-center before:grow after:h-[1px] after:min-w-[16px] after:shrink-0 after:grow after:bg-slate-300 dark:after:bg-base-100;
+      justify-content: center;
+      text-align: center;
+
+      &::before,
+      &::after {
+        flex-grow: 1;
+      }
+
+      &::after {
+        content: '';
+        flex-shrink: 0;
+        min-width: var(--_divider-line-min-width);
+        height: var(--_divider-line-height);
+        background-color: var(--_divider-line-bg-color);
+      }
     }
   }
 

@@ -60,6 +60,7 @@
     0 10px 15px -3px rgb(0 0 0 / 0.1),
     0 4px 6px -4px rgb(0 0 0 / 0.1);
   pointer-events: auto;
+  color: var(--ms-modal-content-color, var(--color-base-text));
 }
 
 /* Modal header */
@@ -75,7 +76,6 @@
   padding-inline: var(--ms-modal-header-padding-x, --spacing(4));
   border-bottom: var(--ms-modal-header-border-width, 1px) solid
     var(--ms-modal-header-border-color, var(--color-base-stroke));
-  background-color: var(--ms-modal-header-bg-color, var(--color-base));
 }
 
 .modal-title {

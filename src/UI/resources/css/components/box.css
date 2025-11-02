@@ -13,15 +13,14 @@
   border-radius: var(--ms-box-radius, --spacing(3));
   border: var(--ms-box-border-width, 1px) solid var(--ms-box-border-color, var(--color-base-stroke));
   background-color: var(--ms-box-bg-color, var(--color-base));
+  color: var(--ms-box-color);
 }
 
 /* Box variants */
 
 .box--dark {
-  --ms-box-bg-color: var(--color-neutral-900);
-  --ms-box-color: var(--color-white);
-
-  color: var(--ms-box-color);
+  --ms-box-bg-color: var(--ms-box-dark-bg-color, var(--color-neutral-900));
+  --ms-box-color: var(--ms-box-dark-color, var(--color-white));
 }
 
 /* Box elements */

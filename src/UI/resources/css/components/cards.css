@@ -131,28 +131,21 @@
   height: 100%;
   padding-block: var(--ms-report-card-padding-y, --spacing(3.5));
   padding-inline: var(--ms-report-card-padding-x, --spacing(3.5));
-  border-radius: var(--ms-report-card-radius, inherit);
-  background-color: var(--ms-report-card-bg-color, var(--color-base));
-
-  &::before {
-    display: none;
-  }
+  color: inherit;
 
   /* Report card elements */
 
   .report-card-heading {
+    --ms-icon-size: var(--ms-report-card-heading-icon-size, --spacing(6));
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    svg {
-      width: var(--ms-report-card-heading-icon-size, --spacing(6));
-      height: var(--ms-report-card-heading-icon-size, --spacing(6));
-      color: var(--ms-report-card-heading-icon-color, var(--color-base-text));
-    }
   }
 
   .report-card-indicator {
+    --ms-icon-size: --ms-report-card-indicator-icon-size, --spacing(3.5);
+
     display: flex;
     align-items: center;
     column-gap: var(--ms-report-card-indicator-gap, --spacing(1));
@@ -163,11 +156,6 @@
     color: var(--ms-report-card-indicator-color, var(--color-white));
     font-size: var(--ms-report-card-indicator-font-size, var(--text-xs));
     line-height: 1;
-
-    > svg {
-      width: var(--ms-report-card-indicator-icon-size, --spacing(3.5));
-      height: var(--ms-report-card-indicator-icon-size, --spacing(3.5));
-    }
   }
 
   .report-card-body {
@@ -186,7 +174,7 @@
   }
 
   .report-card-title {
-    color: var(--ms-report-card-title-color, var(--color-base-text));
+    color: var(--ms-report-card-title-color, inherit);
     font-size: var(--ms-report-card-title-font-size, var(--text-sm));
     text-overflow: ellipsis;
     white-space: nowrap;
