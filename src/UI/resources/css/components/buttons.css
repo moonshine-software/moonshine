@@ -149,7 +149,7 @@
   --ms-btn-border-color: var(--color-primary);
   --ms-btn-bg-color: var(--color-primary);
   --ms-btn-color: var(--color-primary-text);
-  --ms-btn-badge-bg-color: --alpha(var(--color-black) / 0.1);
+  --ms-btn-badge-bg-color: --alpha(var(--color-primary-text) / 0.1);
 
   --ms-btn-hover-border-color: var(--color-primary);
   --ms-btn-hover-bg-color: --alpha(var(--color-primary) / 0.9);
@@ -160,7 +160,7 @@
   --ms-btn-border-color: var(--color-secondary);
   --ms-btn-bg-color: var(--color-secondary);
   --ms-btn-color: var(--color-secondary-text);
-  --ms-btn-badge-bg-color: --alpha(var(--color-black) / 0.1);
+  --ms-btn-badge-bg-color: --alpha(var(--color-secondary-text) / 0.1);
 
   --ms-btn-hover-border-color: var(--color-secondary);
   --ms-btn-hover-bg-color: --alpha(var(--color-secondary) / 0.9);

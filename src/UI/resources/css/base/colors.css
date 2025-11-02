@@ -98,20 +98,12 @@
 /* Background colors */
 .bgc-primary {
   background-color: --alpha(var(--color-primary) / 0.2);
-  color: var(--color-black);
-
-  @variant dark {
-    color: var(--color-white);
-  }
+  color: var(--color-primary-text);
 }
 
 .bgc-secondary {
   background-color: --alpha(var(--color-secondary) / 0.2);
-  color: var(--color-black);
-
-  @variant dark {
-    color: var(--color-white);
-  }
+  color: var(--color-secondary-text);
 }
 
 .bgc-success {

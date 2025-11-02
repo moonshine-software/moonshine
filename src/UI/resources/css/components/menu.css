@@ -11,21 +11,15 @@
   --ms-menu-item-padding-y: --spacing(1.5);
   --ms-menu-item-radius: --spacing(2);
   --ms-menu-item-font-size: var(--text-sm);
-  --ms-menu-item-color: var(--color-black);
+  --ms-menu-item-color: var(--color-base-text);
 
-  --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.1);
+  --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.15);
 
-  --ms-menu-item-active-bg-color: var(--color-base-50);
-  --ms-menu-item-active-color: var(--color-black);
+  --ms-menu-item-active-bg-color: var(--color-base-100);
+  --ms-menu-item-active-color: var(--color-base-text);
   --ms-menu-item-active-icon-color: var(--color-primary);
 
   --ms-menu-submenu-space-y: --spacing(1);
-}
-
-@variant dark {
-  --ms-menu-item-color: var(--color-slate-300);
-  --ms-menu-item-hover-bg-color: --alpha(var(--color-primary) / 0.15);
-  --ms-menu-item-active-color: var(--color-white);
 }
 
 /* Menu base */
@@ -275,15 +269,9 @@
   border-radius: var(--ms-menu-badge-radius, var(--radius-sm));
   border: 1px solid --alpha(var(--ms-menu-badge-border-color, var(--color-primary)) / 0.4);
   background-color: --alpha(var(--ms-menu-badge-bg-color, var(--color-primary)) / 0.2);
-  color: var(--ms-menu-badge-color, var(--color-black));
+  color: var(--ms-menu-badge-color, var(--color-base-text));
   font-size: var(--ms-menu-badge-font-size, var(--text-2xs));
   line-height: 1.2;
-
-  @variant dark {
-    border-color: --alpha(var(--ms-menu-badge-border-color, var(--color-primary)) / 0.4);
-    background-color: --alpha(var(--ms-menu-badge-bg-color, var(--color-primary)) / 0.2);
-    color: var(--ms-menu-badge-color, var(--color-white));
-  }
 }
 
 .menu-arrow {
