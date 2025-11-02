@@ -234,7 +234,7 @@ final class ColorManager implements ColorManagerContract
         return $this
             ->set('ms-box-dark-bg-color', $value);
     }
-    
+
     public function boxDarkText(string $value): static
     {
         return $this
