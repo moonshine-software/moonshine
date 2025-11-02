@@ -6,6 +6,7 @@ namespace {namespace};
 
 use MoonShine\Laravel\Pages\Crud\{extendShort};
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
@@ -56,6 +57,16 @@ class DummyClass extends {extendShort}
     protected function metrics(): array
     {
         return [];
+    }
+
+    /**
+     * @param  TableBuilder  $component
+     *
+     * @return TableBuilder
+     */
+    protected function modifyListComponent(ComponentContract $component): ComponentContract
+    {
+        return $component;
     }
 
     /**

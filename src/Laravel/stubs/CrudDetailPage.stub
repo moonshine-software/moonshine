@@ -6,6 +6,7 @@ namespace {namespace};
 
 use MoonShine\Laravel\Pages\Crud\{extendShort};
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\Contracts\UI\FieldContract;
 use {resource-namespace};
 use MoonShine\Support\ListOf;
@@ -28,6 +29,16 @@ class DummyClass extends {extendShort}
     protected function buttons(): ListOf
     {
         return parent::buttons();
+    }
+
+    /**
+     * @param  TableBuilder  $component
+     *
+     * @return TableBuilder
+     */
+    protected function modifyDetailComponent(ComponentContract $component): ComponentContract
+    {
+        return $component;
     }
 
     /**

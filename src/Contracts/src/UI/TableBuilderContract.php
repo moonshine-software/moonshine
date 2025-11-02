@@ -123,6 +123,8 @@ interface TableBuilderContract extends
 
     public function isCreatable(): bool;
 
+    public function queryParamPrefix(string $prefix): static;
+
     public function withFilters(string $formName): static;
 
     public function hasNotFound(): bool;

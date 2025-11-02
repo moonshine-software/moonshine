@@ -11,6 +11,8 @@ trait WithSorts
 {
     protected bool $sortable = false;
 
+    protected string $sortablePrefix = '';
+
     protected Closure|string|null $sortableCallback = null;
 
     /**
@@ -20,6 +22,13 @@ trait WithSorts
     {
         $this->sortable = true;
         $this->sortableCallback = $callback;
+
+        return $this;
+    }
+
+    public function sortablePrefix(string $prefix): static
+    {
+        $this->sortablePrefix = $prefix;
 
         return $this;
     }
@@ -44,8 +53,8 @@ trait WithSorts
     public function getSortQuery(?string $url = null): string
     {
         $sortData = [
-            'sort' => ($this->isSortActive() && $this->sortDirectionIs('asc') ? '-' : '') . $this->getColumn(),
-            'page' => $this->getCore()->getRequest()->getScalar('page', 1),
+            $this->sortablePrefix . 'sort' => ($this->isSortActive() && $this->sortDirectionIs('asc') ? '-' : '') . $this->getColumn(),
+            $this->sortablePrefix . 'page' => $this->getCore()->getRequest()->getScalar($this->sortablePrefix . 'page', 1),
         ];
 
         if (\is_null($url)) {
@@ -72,7 +81,7 @@ trait WithSorts
 
     protected function getSortColumnFromRequest(): ?string
     {
-        if ($sort = $this->getCore()->getRequest()->getScalar('sort')) {
+        if ($sort = $this->getCore()->getRequest()->getScalar($this->sortablePrefix . 'sort')) {
             return ltrim((string) $sort, '-');
         }
 
@@ -81,7 +90,7 @@ trait WithSorts
 
     protected function getSortDirectionFromRequest(): ?string
     {
-        if ($sort = $this->getCore()->getRequest()->getScalar('sort')) {
+        if ($sort = $this->getCore()->getRequest()->getScalar($this->sortablePrefix . 'sort')) {
             return str_starts_with((string) $sort, '-') ? 'desc' : 'asc';
         }
 

@@ -19,6 +19,7 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
     public function __construct(
         private array $data,
         private iterable $originalData,
+        private string $pageName = 'page',
     ) {
     }
 
@@ -53,6 +54,7 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
         $data['currentPage'] ??= 1;
         $data['from'] ??= 1;
         $data['to'] ??= 1;
+        $data['pageName'] ??= $this->pageName;
 
         return new Paginator(...$data);
     }

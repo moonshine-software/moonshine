@@ -63,8 +63,8 @@ final class DefaultForm implements DefaultFormContract
                             $resource->getListEventName(
                                 $this->getCore()->getRequest()->getScalar('_component_name', 'default'),
                                 $isAsync && $resource->isItemExists() ? array_filter([
-                                    'page' => $this->getCore()->getRequest()->getScalar('page'),
-                                    'sort' => $this->getCore()->getRequest()->getScalar('sort'),
+                                    $resource->getQueryParamName('page') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('page')),
+                                    $resource->getQueryParamName('sort') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('sort')),
                                 ]) : [],
                             ),
                             ! $resource->isItemExists() && $resource->isCreateInModal()
@@ -80,7 +80,7 @@ final class DefaultForm implements DefaultFormContract
             ->name($resource->getUriKey())
             ->submit(
                 $this->getCore()->getTranslator()->get('moonshine::ui.save'),
-                ['class' => 'btn-primary btn-lg'],
+                ['class' => 'btn-primary'],
             )
             ->buttons($page->getFormButtons());
     }

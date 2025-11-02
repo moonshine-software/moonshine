@@ -31,6 +31,10 @@ interface PaginatorContract extends
 
     public function setPath(string $path): static;
 
+    public function getPageName(): string;
+
+    public function setPageName(string $name): static;
+
     public function getLinks(): PaginatorLinksContract;
 
     /**

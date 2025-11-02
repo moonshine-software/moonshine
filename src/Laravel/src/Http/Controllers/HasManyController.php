@@ -123,7 +123,7 @@ final class HasManyController extends MoonShineController
                     $resource->getCaster()
                 )
             )
-            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary'])
             ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
                 static fn (ComponentContract $element): bool => $element instanceof ModelRelationField
                     && $element->isToOne()

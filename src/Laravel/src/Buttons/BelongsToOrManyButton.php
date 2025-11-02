@@ -69,7 +69,7 @@ final class BelongsToOrManyButton
                         [],
                         $resource->getCaster()
                     )
-                    ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
+                    ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary'])
                     /** @phpstan-ignore-next-line  */
                     ->fields($getFields),
                 name: static fn (?Model $data): string => "modal-belongs-to-or-many-{$field->getResource()->getUriKey()}-{$field->getRelationName()}",

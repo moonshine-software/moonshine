@@ -50,8 +50,10 @@ export function listRowRequest(component, key = null, index = null, type = 'chan
     .catch(error => {})
 }
 
-export function listComponentRequest(component, pushState = false, after = null) {
+export function listComponentRequest(component, pushState = false, after = null, prefix = null) {
   component.$event.preventDefault()
+
+  const queryPrefix = prefix ?? ''
 
   let url = component.$el.href ? component.$el.href : component.asyncUrl
 
@@ -64,31 +66,31 @@ export function listComponentRequest(component, pushState = false, after = null)
       `form[data-component="${component.$root.dataset.filtersFormName}"]`,
     )
 
-    url = prepareListComponentRequestUrl(url)
+    url = prepareListComponentRequestUrl(url, queryPrefix)
     url = urlWithQuery(url, prepareFormQueryString(new FormData(form), '_token,_component_name'))
   }
 
   if (eventData && eventData.filterQuery) {
-    url = prepareListComponentRequestUrl(url)
+    url = prepareListComponentRequestUrl(url, queryPrefix)
     url = urlWithQuery(url, eventData.filterQuery)
     delete eventData.filterQuery
   }
 
   if (eventData && eventData.queryTag) {
-    url = prepareListComponentRequestUrl(url)
+    url = prepareListComponentRequestUrl(url, queryPrefix)
     url = urlWithQuery(url, eventData.queryTag)
     delete eventData.queryTag
   }
 
   if (eventData && eventData.page) {
-    url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, `page=${eventData.page}`)
+    url = prepareListComponentRequestUrl(url, queryPrefix)
+    url = urlWithQuery(url, `${queryPrefix}page=${eventData.page}`)
     delete eventData.page
   }
 
   if (eventData && eventData.sort) {
-    url = prepareListComponentRequestUrl(url)
-    url = urlWithQuery(url, `sort=${eventData.sort}`)
+    url = prepareListComponentRequestUrl(url, queryPrefix)
+    url = urlWithQuery(url, `${queryPrefix}sort=${eventData.sort}`)
     delete eventData.sort
   }
 
@@ -162,21 +164,22 @@ export function listComponentRequest(component, pushState = false, after = null)
     }
   })
 
-  function prepareListComponentRequestUrl(url) {
+  function prepareListComponentRequestUrl(url, prefix = null) {
+    const queryPrefix = prefix ?? ''
     const resultUrl = url.startsWith('/') ? new URL(url, window.location.origin) : new URL(url)
 
-    if (resultUrl.searchParams.get('reset')) {
-      resultUrl.searchParams.delete('reset')
+    if (resultUrl.searchParams.get(`${queryPrefix}reset`)) {
+      resultUrl.searchParams.delete(`${queryPrefix}reset`)
     }
 
-    if (resultUrl.searchParams.get('query-tag')) {
-      resultUrl.searchParams.delete('query-tag')
+    if (resultUrl.searchParams.get(`${queryPrefix}query-tag`)) {
+      resultUrl.searchParams.delete(`${queryPrefix}query-tag`)
     }
 
     Array.from(resultUrl.searchParams).map(function (values) {
       let [index] = values
 
-      if (index.indexOf('filter[') === 0) {
+      if (index.indexOf(`${queryPrefix}filter[`) === 0) {
         resultUrl.searchParams.delete(index)
       }
 

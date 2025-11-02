@@ -363,7 +363,7 @@ class HasOne extends ModelRelationField implements
                         redirectAfterDelete: $this->getDefaultRedirect($parentItem->getKey()),
                         isAsync: false,
                         modalName: "has-one-{$this->getResource()->getUriKey()}-{$this->getRelationName()}",
-                    )->class('btn-lg'),
+                    ),
                 ]
             )
             ->onBeforeFieldsRender(static fn (FieldsContract $fields): FieldsContract => $fields->exceptElements(
@@ -371,7 +371,7 @@ class HasOne extends ModelRelationField implements
                     && $element->isToOne()
                     && $element->getColumn() === $relation->getForeignKeyName()
             ))
-            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary btn-lg'])
+            ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary'])
             ->when(
                 ! \is_null($this->modifyForm),
                 fn (FormBuilderContract $form) => value($this->modifyForm, $form)

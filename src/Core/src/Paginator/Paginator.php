@@ -43,6 +43,7 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
         private ?string $prevPageUrl = null,
         private ?string $lastPageUrl = null,
         private ?string $nextPageUrl = null,
+        private string $pageName = 'page',
         array $translates = [],
     ) {
         $this->translates = $translates;
@@ -123,6 +124,18 @@ final class Paginator implements PaginatorContract, HasCoreContract, HasViewRend
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function getPageName(): string
+    {
+        return $this->pageName;
+    }
+
+    public function setPageName(string $name): static
+    {
+        $this->pageName = $name ?: 'page';
+
+        return $this;
     }
 
     public function getCurrentPage(): int

@@ -25,4 +25,12 @@ interface CrudResourceWithQueryParamsContract
      * @return  Collection<string, mixed>
      */
     public function getQueryParams(): Collection;
+
+    public function getQueryParamPrefix(): string;
+
+    public function getQueryParamName(string $key): string;
+
+    public function getQueryParam(string $key, mixed $default = null): mixed;
+
+    public function hasQueryParam(string $key): bool;
 }

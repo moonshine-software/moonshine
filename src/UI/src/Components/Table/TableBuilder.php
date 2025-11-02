@@ -190,9 +190,9 @@ final class TableBuilder extends IterableComponent implements
         return $url ?? fn (): string => $this->getCore()->getRouter()->getEndpoints()->component(
             $this->getName(),
             additionally: [
-                'filter' => $this->getCore()->getRequest()->get('filter'),
-                'query-tag' => $this->getCore()->getRequest()->getScalar('query-tag'),
-                'search' => $this->getCore()->getRequest()->getScalar('search'),
+                $this->queryParamPrefix . 'filter' => $this->getCore()->getRequest()->get($this->queryParamPrefix . 'filter'),
+                $this->queryParamPrefix . 'query-tag' => $this->getCore()->getRequest()->getScalar($this->queryParamPrefix . 'query-tag'),
+                $this->queryParamPrefix . 'search' => $this->getCore()->getRequest()->getScalar($this->queryParamPrefix . 'search'),
             ],
         );
     }
@@ -512,6 +512,8 @@ final class TableBuilder extends IterableComponent implements
         if (! $this->isVertical()) {
             $fields = $this->getPreparedFields()->onlyVisible();
             foreach ($fields as $index => $field) {
+                $field->sortablePrefix($this->queryParamPrefix);
+
                 $thContent = $field->isSortable() && ! $this->isPreview()
                     ?
                     (string) Link::make(
@@ -710,7 +712,9 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->paginator(
-                $this->getPaginator()?->setPath($this->prepareAsyncUrlFromPaginator()),
+                $this->getPaginator()
+                    ?->setPageName($this->queryParamPrefix)
+                    ?->setPath($this->prepareAsyncUrlFromPaginator()),
             );
         }
 
