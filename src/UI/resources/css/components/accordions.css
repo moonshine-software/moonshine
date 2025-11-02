@@ -9,9 +9,11 @@
   border: var(--ms-accordion-item-border-width, 1px) solid
     var(--ms-accordion-item-border-color, var(--color-base-stroke));
   background-color: var(--ms-accordion-item-bg-color, var(--color-base));
+  color: var(--ms-accordion-item-color, var(--color-base-text));
 
   &._is-opened {
     background-color: var(--ms-accordion-item-opened-bg-color, var(--color-base));
+    color: var(--ms-accordion-item-opened-color, var(--color-base-text));
   }
 }
 

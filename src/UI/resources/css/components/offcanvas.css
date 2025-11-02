@@ -10,6 +10,7 @@
   max-width: min(100%, var(--ms-offcanvas-max-width, 400px));
   background-color: var(--ms-offcanvas-bg-color, var(--color-base));
   background-clip: padding-box;
+  color: var(--ms-offcanvas-color, var(--color-base-text));
   outline: none;
 }
 

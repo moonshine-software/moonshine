@@ -7,8 +7,8 @@
   --ms-menu-arrow-size: --spacing(3);
   --ms-menu-item-gap-y: --spacing(1);
   --ms-menu-item-gap-x: --spacing(2);
-  --ms-menu-item-padding-x: --spacing(2.5);
   --ms-menu-item-padding-y: --spacing(1.5);
+  --ms-menu-item-padding-x: --spacing(2.5);
   --ms-menu-item-radius: --spacing(2);
   --ms-menu-item-font-size: var(--text-sm);
   --ms-menu-item-color: var(--color-base-text);

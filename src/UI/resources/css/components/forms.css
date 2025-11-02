@@ -1,5 +1,5 @@
 @theme {
-  --ms-form-default-placeholder-color: --alpha(var(--color-base-text) / 0.5);
+  --ms-form-default-placeholder-color: --alpha(var(--ms-form-default-color) / 0.5);
   --ms-form-default-min-height: --spacing(10);
   --ms-form-default-padding-y: --spacing(2);
   --ms-form-default-padding-x: --spacing(2);
@@ -13,7 +13,7 @@
 
   --ms-form-focus-border-color: var(--color-primary);
   --ms-form-focus-ring-width: --spacing(0.875);
-  --ms-form-focus-ring-color: --alpha(var(--color-primary) / 0.1);
+  --ms-form-focus-ring-color: var(--color-primary) / 0.1;
 
   --ms-form-readonly-border-color: var(--color-base-stroke);
   --ms-form-readonly-bg-color: var(--color-base-50);
@@ -26,7 +26,7 @@
   --ms-form-error-border-color: var(--color-error);
   --ms-form-error-bg-color: var(--color-error);
   --ms-form-error-color: var(--color-error);
-  --ms-form-error-ring-color: --alpha(var(--color-error) / 0.1);
+  --ms-form-error-ring-color: ar(--color-error);
 
   --ms-form-control-size: --spacing(5);
 }
@@ -182,7 +182,7 @@ fieldset {
   &:focus {
     outline: none;
     border-color: var(--ms-form-focus-border-color);
-    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) --alpha(var(--ms-form-focus-ring-color) / 0.1);
   }
 
   &[readonly] {
@@ -204,7 +204,8 @@ fieldset {
     border-color: var(--ms-form-error-border-color);
 
     &:focus {
-      box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-error-ring-color);
+      box-shadow: 0 0 0 var(--ms-form-focus-ring-width)
+        --alpha(var(--ms-form-error-ring-color) / 0.1);
     }
   }
 }
@@ -318,7 +319,7 @@ fieldset {
   &:focus {
     outline: none;
     border-color: var(--ms-form-focus-border-color);
-    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) --alpha(var(--ms-form-focus-ring-color) / 0.1);
   }
 
   &:hover {
@@ -418,7 +419,8 @@ fieldset {
 
     & ~ .form-switcher-control:focus ~ .form-switcher-toggler {
       border-color: var(--ms-form-error-border-color);
-      box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-error-ring-color);
+      box-shadow: 0 0 0 var(--ms-form-focus-ring-width)
+        --alpha(var(--ms-form-error-ring-color) / 0.1);
     }
 
     & ~ .form-switcher-control {
@@ -473,7 +475,7 @@ fieldset {
   &:focus + .form-switcher-toggler {
     outline: none;
     border-color: var(--ms-form-focus-border-color);
-    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) var(--ms-form-focus-ring-color);
+    box-shadow: 0 0 0 var(--ms-form-focus-ring-width) --alpha(var(--ms-form-focus-ring-color) / 0.1);
   }
 
   &:disabled + .form-switcher-toggler {

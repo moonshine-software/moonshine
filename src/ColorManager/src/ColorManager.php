@@ -60,49 +60,254 @@ final class ColorManager implements ColorManagerContract
     public function background(string $value): static
     {
         return $this
-            ->set('body', $value)
-            ->set('base.800', $value)
-            ->set('body', $value, dark: true);
+            ->set('ms-layout-body-bg-color', $value);
     }
 
-    public function tableRow(string $value): static
+    public function pageBackground(string $value): static
     {
         return $this
-            ->set('base.600', $value);
+            ->set('ms-layout-page-bg-color', $value);
     }
 
     public function borders(string $value): static
     {
         return $this
-            ->set('base.300', $value);
-    }
-
-    public function dropdowns(string $value): static
-    {
-        return $this
-            ->set('base.400', $value);
-    }
-
-    public function buttons(string $value): static
-    {
-        return $this
-            ->set('base.50', $value)
-            ->set('base.500', $value)
-            ->dropdowns($value);
+            ->set('base.stroke', $value);
     }
 
     public function dividers(string $value): static
     {
         return $this
-            ->set('base.100', $value)
-            ->set('base.200', $value);
+            ->set('ms-hr-divider-border-color', $value)
+            ->set('ms-divider-line-bg-color', $value)
+            ->set('ms-divider-color', $value);
     }
 
-    public function content(string $value): static
+    // Buttons
+    public function button(string $value): static
     {
         return $this
-            ->set('base.700', $value)
-            ->set('base.900', $value);
+            ->set('ms-btn-bg-color', $value);
+    }
+
+    public function buttonText(string $value): static
+    {
+        return $this
+            ->set('ms-btn-color', $value);
+    }
+
+    public function buttonHover(string $value): static
+    {
+        return $this
+            ->set('ms-btn-hover-bg-color', $value);
+    }
+
+    public function buttonHoverText(string $value): static
+    {
+        return $this
+            ->set('ms-btn-hover-color', $value);
+    }
+
+    // Alerts
+    public function alert(string $value): static
+    {
+        return $this
+            ->set('ms-alert-bg-color', $value);
+    }
+
+    public function alertText(string $value): static
+    {
+        return $this
+            ->set('ms-alert-color', $value);
+    }
+
+    // Badges
+    public function badge(string $value): static
+    {
+        return $this
+            ->set('ms-badge-bg-color', $value);
+    }
+
+    public function badgeText(string $value): static
+    {
+        return $this
+            ->set('ms-badge-color', $value);
+    }
+
+    // Collapse
+    public function collapse(string $value): static
+    {
+        return $this
+            ->set('ms-accordion-item-bg-color', $value);
+    }
+
+    public function collapseText(string $value): static
+    {
+        return $this
+            ->set('ms-accordion-btn-color', $value)
+            ->set('ms-accordion-item-color', $value);
+    }
+
+    public function collapseOpen(string $value): static
+    {
+        return $this
+            ->set('ms-accordion-item-opened-bg-color', $value);
+    }
+
+    public function collapseOpenText(string $value): static
+    {
+        return $this
+            ->set('ms-accordion-btn-active-color', $value)
+            ->set('ms-accordion-item-opened-color', $value);
+    }
+
+    // Popovers
+    public function popover(string $value): static
+    {
+        return $this
+            ->set('ms-popover-border-color', $value)
+            ->set('ms-popover-bg-color', $value);
+    }
+
+    public function popoverText(string $value): static
+    {
+        return $this
+            ->set('ms-popover-color', $value);
+    }
+
+    // Progress bars
+    public function progress(string $value): static
+    {
+        return $this
+            ->set('ms-progress-bar-bg-color', $value)
+            ->set('ms-radial-progress-track-color', $value);
+    }
+
+    public function progressText(string $value): static
+    {
+        return $this
+            ->set('ms-progress-bar-color', $value)
+            ->set('ms-radial-progress-color', $value);
+    }
+
+    // Modal
+    public function modal(string $value): static
+    {
+        return $this
+            ->set('ms-modal-content-bg-color', $value);
+    }
+
+    public function modalText(string $value): static
+    {
+        return $this
+            ->set('ms-modal-content-color', $value);
+    }
+
+    // Offcanvas
+    public function offcanvas(string $value): static
+    {
+        return $this
+            ->set('ms-offcanvas-bg-color', $value);
+    }
+
+    public function offcanvasText(string $value): static
+    {
+        return $this
+            ->set('ms-offcanvas-color', $value);
+    }
+
+    // Box
+    public function box(string $value): static
+    {
+        return $this
+            ->set('ms-box-bg-color', $value);
+    }
+
+    public function boxText(string $value): static
+    {
+        return $this
+            ->set('ms-box-color', $value);
+    }
+
+    public function boxDark(string $value): static
+    {
+        return $this
+            ->set('ms-box-dark-bg-color', $value);
+    }
+    
+    public function boxDarkText(string $value): static
+    {
+        return $this
+            ->set('ms-box-dark-color', $value);
+    }
+
+    // Cards
+    public function card(string $value): static
+    {
+        return $this
+            ->set('ms-card-bg-color', $value);
+    }
+
+    public function cardText(string $value): static
+    {
+        return $this
+            ->set('ms-card-color', $value);
+    }
+
+    // Forms
+    public function formDefault(string $value): static
+    {
+        return $this
+            ->set('ms-form-default-bg-color', $value);
+    }
+
+    public function formDefaultText(string $value): static
+    {
+        return $this
+            ->set('ms-form-default-color', $value);
+    }
+
+    public function formFocus(string $value): static
+    {
+        return $this
+            ->set('ms-form-focus-border-color', $value)
+            ->set('ms-form-focus-ring-color', $value);
+    }
+
+    public function formDisabled(string $value): static
+    {
+        return $this
+            ->set('ms-form-disabled-bg-color', $value);
+    }
+
+    public function formDisabledText(string $value): static
+    {
+        return $this
+            ->set('ms-form-disabled-color', $value);
+    }
+
+    public function formReadOnly(string $value): static
+    {
+        return $this
+            ->set('ms-form-readonly-bg-color', $value);
+    }
+
+    public function formReadOnlyText(string $value): static
+    {
+        return $this
+            ->set('ms-form-readonly-color', $value);
+    }
+
+    public function formExpansion(string $value): static
+    {
+        return $this
+            ->set('ms-form-expansion-bg-color', $value);
+    }
+
+    public function formExpansionText(string $value): static
+    {
+        return $this
+            ->set('ms-form-expansion-color', $value);
     }
 
     /**
@@ -204,7 +409,7 @@ final class ColorManager implements ColorManagerContract
 
         return <<<HTML
         <style>
-            :root {
+            :root:not(.dark) {
             {$values($this->getAll())}
             }
             :root.dark {
