@@ -153,14 +153,14 @@ final class ColorManager implements ColorManagerContract
         $colors = [];
         $data = $dark ? $this->darkColors : $this->colors;
 
-        $formatRgb = static fn (string $rgb): string => str_replace(['rgb(', ')', 'oklch('], ['', ''], $rgb);
+        $formatted = static fn (string $rgb): string => str_replace(['rgb(', ')'], ['', ''], $rgb);
 
         foreach ($data as $name => $shades) {
             if (! \is_array($shades)) {
-                $colors[$name] = $formatRgb(ColorMutator::toOKLCH($shades));
+                $colors[$name] = $formatted(ColorMutator::toOKLCH($shades));
             } else {
                 foreach ($shades as $shade => $color) {
-                    $colors["$name-$shade"] = $formatRgb(ColorMutator::toOKLCH($color));
+                    $colors["$name-$shade"] = $formatted(ColorMutator::toOKLCH($color));
                 }
             }
         }
