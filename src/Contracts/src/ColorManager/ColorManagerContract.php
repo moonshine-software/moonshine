@@ -18,9 +18,20 @@ interface ColorManagerContract extends Htmlable
     public function getAll(bool $dark = false): array;
 
     /**
-     * @param  string  $name
      * @param  string|array<string|int, string>  $value
      *
      */
-    public function set(string $name, string|array $value, bool $dark = false): static;
+    public function set(string $name, string|array $value, bool $dark = false, bool $everything = false): static;
+
+    /**
+     * @param  string|array<string|int, string>  $value
+     *
+     */
+    public function setEverything(string $name, string|array $value): static;
+
+    /**
+     * @api
+     * @param array<string, string|array<string|int, string>> $colors
+     */
+    public function bulkAssign(array $colors, bool $dark = false, bool $everything = false): static;
 }

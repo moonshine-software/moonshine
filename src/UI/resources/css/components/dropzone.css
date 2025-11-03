@@ -37,6 +37,7 @@
   padding-inline: var(--ms-dropzone-file-padding-x, --spacing(2));
   border-radius: var(--ms-dropzone-file-radius, var(--radius-lg));
   background-color: var(--ms-dropzone-file-bg-color, var(--color-base-100));
+  color: var(--ms-dropzone-file-color, var(--color-base-text));
 }
 
 .dropzone-item.dropzone-item-file .dropzone-remove {
@@ -45,6 +46,7 @@
 
 .dropzone-item.dropzone-item-file a {
   display: inline;
+  color: var(--ms-dropzone-file-color, var(--color-base-text));
 }
 
 .dropzone-item > img {
