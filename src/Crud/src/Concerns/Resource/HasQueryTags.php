@@ -22,10 +22,19 @@ trait HasQueryTags
     public function getQueryTags(): array
     {
         if ($this->getIndexPage() instanceof HasQueryTagsContract && $this->getIndexPage()->hasQueryTags()) {
-            return $this->getIndexPage()->getQueryTags();
+            $queryTags = $this->getIndexPage()->getQueryTags();
+        } else {
+            $queryTags = $this->getQueryTags();
         }
 
-        return $this->queryTags();
+        $queryParamPrefix = $this->getQueryParamPrefix();
+        if ($queryParamPrefix != '') {
+            foreach ($queryTags as $queryTag) {
+                $queryTag->setPrefix($queryParamPrefix);
+            }
+        }
+
+        return $queryTags;
     }
 
     /**
