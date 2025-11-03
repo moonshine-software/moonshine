@@ -24,7 +24,7 @@ trait HasQueryTags
         if ($this->getIndexPage() instanceof HasQueryTagsContract && $this->getIndexPage()->hasQueryTags()) {
             $queryTags = $this->getIndexPage()->getQueryTags();
         } else {
-            $queryTags = $this->getQueryTags();
+            $queryTags = $this->queryTags();
         }
 
         $queryParamPrefix = $this->getQueryParamPrefix();
