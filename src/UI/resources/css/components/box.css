@@ -1,18 +1,38 @@
 /* Box basic */
 
+@theme {
+  --ms-box-margin-bottom: --spacing(4);
+  --ms-box-padding-y: --spacing(4);
+  --ms-box-padding-x: --spacing(4);
+  --ms-box-radius: var(--radius-lg);
+  --ms-box-border-width: 1px;
+  --ms-box-border-color: var(--color-base-stroke);
+  --ms-box-bg-color: var(--color-base);
+  --ms-box-color: var(--color-base-text);
+
+  --ms-box-title-gap: --spacing(2.5);
+  --ms-box-title-padding-bottom: --spacing(3);
+  --ms-box-title-border-width: 1px;
+  --ms-box-title-border-color: var(--color-base-stroke);
+  --ms-box-title-font-size: var(--text-base);
+  --ms-box-title-font-weight: var(--font-weight-semibold);
+}
+
 .box {
-  --_box-margin-bottom: var(--ms-box-margin-bottom, --spacing(4));
-  --_box-padding-y: var(--ms-box-padding-y, --spacing(4));
-  --_box-padding-x: var(--ms-box-padding-x, --spacing(4));
+  --_box-margin-bottom: var(--ms-box-margin-bottom);
+  --_box-padding-y: var(--ms-box-padding-y);
+  --_box-padding-x: var(--ms-box-padding-x);
 
   position: relative;
   display: block;
   margin-bottom: var(--_box-margin-bottom);
   padding-block: var(--_box-padding-y);
   padding-inline: var(--_box-padding-x);
-  border-radius: var(--ms-box-radius, --spacing(3));
-  border: var(--ms-box-border-width, 1px) solid var(--ms-box-border-color, var(--color-base-stroke));
-  background-color: var(--ms-box-bg-color, var(--color-base));
+  border-radius: var(--ms-box-radius);
+  border-width: var(--ms-box-border-width, 1px);
+  border-style: solid;
+  border-color: var(--ms-box-border-color);
+  background-color: var(--ms-box-bg-color);
   color: var(--ms-box-color);
 }
 
@@ -30,11 +50,12 @@
 
   display: flex;
   align-items: center;
-  column-gap: var(--ms-box-title-gap, --spacing(2.5));
-  padding-bottom: var(--ms-box-title-padding-bottom, --spacing(3));
+  column-gap: var(--ms-box-title-gap);
+  padding-bottom: var(--ms-box-title-padding-bottom);
   margin-bottom: var(--_box-padding-y);
-  border-bottom: var(--ms-box-title-border-width, 1px) solid
-    var(--ms-box-title-border-color, var(--color-base-stroke));
-  font-size: var(--ms-box-title-font-size, var(--text-base));
-  font-weight: var(--ms-box-title-font-weight, var(--font-weight-semibold));
+  border-bottom-width: var(--ms-box-title-border-width);
+  border-style: solid;
+  border-color: var(--ms-box-title-border-color);
+  font-size: var(--ms-box-title-font-size);
+  font-weight: var(--ms-box-title-font-weight);
 }

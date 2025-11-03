@@ -15,11 +15,11 @@
     border-radius: 50%;
     border-width: var(--ms-spinner-border-width, 2px);
     border-style: solid;
-    border-color: var(--ms-spinner-border-color, var(--color-base-900));
+    border-color: var(--ms-spinner-border-color, var(--color-base-text));
     animation: ms-loader-spinner var(--ms-spinner-animation-duration, 2000ms) linear infinite;
 
     @variant dark {
-      border-color: var(--ms-spinner-border-color, var(--color-base-900));
+      border-color: var(--ms-spinner-border-color, var(--color-base-text));
     }
   }
 }
