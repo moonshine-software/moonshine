@@ -454,7 +454,7 @@ trait ColorShortcuts
 
         if($expansionText !== null) {
             $this
-                ->set('ms-form-expansion-color', $readonlyText, dark: $dark, everything: $everything)
+                ->set('ms-form-expansion-color', $expansionText, dark: $dark, everything: $everything)
             ;
         }
 
