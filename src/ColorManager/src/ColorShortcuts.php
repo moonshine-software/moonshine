@@ -122,6 +122,21 @@ trait ColorShortcuts
         return $this->set('info-bg', $bg, dark: $dark, everything: $everything);
     }
 
+    /** Scrollbar */
+
+    public function scrollbar(string $bg, ?string $hoverBg = null, bool $dark = false, bool $everything = false): static
+    {
+        if($hoverBg !== null) {
+            $this
+                ->set('ms-scrollbar-hover-color', $hoverBg, dark: $dark, everything: $everything)
+            ;
+        }
+
+        return $this
+            ->set('ms-scrollbar-color', $bg, dark: $dark, everything: $everything);
+    }
+
+    /** Buttons */
     public function button(
         string $bg,
         ?string $text = null,

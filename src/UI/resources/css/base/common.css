@@ -211,13 +211,21 @@
 
   /* Images in a row */
   .images-row {
+    --_images-size: var(--ms-images-row-size, --spacing(10));
+
     display: flex;
 
     & > * {
-      @apply h-10 w-10 overflow-hidden rounded-full border-3 border-primary/10 dark:border-base-200;
+      overflow: hidden;
+      width: var(--_images-size);
+      height: var(--_images-size);
+      border-radius: var(--ms-images-row-radius, 50%);
+      border-width: var(--ms-images-row-border-width, --spacing(0.5));
+      border-style: solid;
+      border-color: var(--ms-images-row-border-color, var(--color-base-stroke));
 
       &:not(:first-child) {
-        @apply -ml-5;
+        margin-left: calc(var(--_images-size) * -0.5);
       }
     }
   }

@@ -1,37 +1,64 @@
 /* Authentication */
 .authentication {
-  @apply flex min-h-screen flex-col items-center justify-center gap-y-6 px-4 py-8;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ms-auth-gap, --spacing(6));
+  min-height: 100vh;
+  padding-block: var(--ms-auth-padding-y, --spacing(8));
+  padding-inline: var(--ms-auth-padding-x, --spacing(4));
+  background-color: var(--ms-auth-bg-color, var(--ms-layout-page-bg-color));
+  color: var(--ms-auth-color, var(--color-base-text));
+}
 
-  .authentication-content {
-    width: 100%;
-    max-width: 420px;
-    background-color: var(--color-base);
-    border: 1px solid var(--color-base-stroke);
-    border-radius: var(--radius-xl);
-    padding: --spacing(6) --spacing(4);
+.authentication-content {
+  overflow: clip;
+  position: relative;
+  width: 100%;
+  max-width: var(--ms-auth-content-max-width, 420px);
+  background-color: var(--ms-auth-content-bg-color, var(--ms-box-bg-color, var(--color-base)));
+  border-width: var(--ms-box-border-width, --spacing(0.5));
+  border-style: solid;
+  border-color: var(
+    --ms-auth-content-border-color,
+    var(--ms-box-border-color, var(--color-base-stroke))
+  );
+  border-radius: var(--ms-auth-content-radius, var(--radius-xl));
+  padding-block: var(--ms-auth-content-padding-y, --spacing(6));
+  padding-inline: var(--ms-auth-content-padding-x, --spacing(6));
 
-    @variant lg {
-      padding: --spacing(8);
-    }
+  /* Glow effect */
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    display: block;
+    width: var(--ms-auth-glow-width, 17%);
+    height: var(--ms-auth-glow-height, --spacing(1));
+    margin-inline: auto;
+    border-radius: var(--ms-auth-glow-radius, 0 0 --spacing(1) --spacing(1));
+    background-color: var(--ms-auth-glow-color, var(--color-primary));
+    box-shadow: 0 0 --spacing(10) --spacing(10)
+      --alpha(var(--ms-auth-glow-color, var(--color-primary)) / 0.05);
   }
+}
 
-  .authentication-header {
-    @apply mb-6 space-y-2 text-center;
+.authentication-header {
+  @apply space-y-2;
+  padding-top: --spacing(6);
+  margin-bottom: --spacing(6);
+  text-align: center;
 
-    .title {
-      @apply text-md font-semibold;
-    }
-
-    .description {
-      @apply text-sm text-slate-500 dark:text-slate-400;
-    }
+  .description {
+    color: var(--color-base-text);
+    font-size: var(--text-sm);
   }
+}
 
-  .authentication-footer {
-    @apply mt-6 space-y-4;
-
-    > p {
-      @apply dark:text-slate-400;
-    }
-  }
+.authentication-footer {
+  @apply space-y-4;
+  margin-top: --spacing(6);
 }

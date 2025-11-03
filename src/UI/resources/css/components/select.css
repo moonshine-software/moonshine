@@ -185,7 +185,10 @@
 
 .ts-dropdown .create:hover,
 .ts-dropdown .option:hover {
-  background-color: var(--ms-ts-dropdown-option-hover-bg-color, var(--color-base-100));
+  background-color: var(
+    --ms-ts-dropdown-option-hover-bg-color,
+    --alpha(var(--color-base-text) / 0.05)
+  );
   color: var(--ms-ts-dropdown-option-hover-color, var(--color-base-text));
 }
 

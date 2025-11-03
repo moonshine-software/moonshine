@@ -36,14 +36,16 @@
 }
 
 .pagination-link {
-  border-radius: var(--ms-pagination-element-radius, var(--radius-md));
+  border-radius: var(--ms-pagination-element-radius, var(--ms-btn-radius));
   border: var(--ms-pagination-element-border-width, 1px) solid
-    var(--ms-pagination-element-border-color, var(--color-base-stroke));
-  background-color: var(--ms-pagination-element-bg-color, var(--color-base));
-  color: var(--ms-pagination-element-color, var(--color-base-text));
+    var(--ms-pagination-element-border-color, var(--ms-btn-border-color));
+  background-color: var(--ms-pagination-element-bg-color, var(--ms-btn-bg-color));
+  color: var(--ms-pagination-element-color, var(--ms-btn-color));
 
   @variant hover {
-    background-color: var(--ms-pagination-element-hover-bg-color, var(--color-base-50));
+    border-color: var(--ms-pagination-element-hover-border-color, var(--ms-btn-hover-border-color));
+    background-color: var(--ms-pagination-element-hover-bg-color, var(--ms-btn-hover-bg-color));
+    color: var(--ms-pagination-element-hover-color, var(--ms-btn-hover-color));
   }
 
   @variant is_active {
@@ -55,8 +57,7 @@
 
   &._is-disabled {
     pointer-events: none;
-    border-color: var(--ms-pagination-element-disabled-border-color, var(--color-base-stroke));
-    opacity: var(--ms-pagination-element-disabled-opacity, 0.6);
+    opacity: var(--ms-pagination-element-disabled-opacity, var(--ms-btn-disabled-opacity));
   }
 }
 

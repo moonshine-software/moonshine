@@ -6,6 +6,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-width: var(--ms-carousel-border-width, 1px);
+  border-style: solid;
+  border-color: var(--ms-carousel-border-color, var(--color-base-stroke));
+  border-radius: var(--ms-carousel-radius, var(--radius-lg));
   aspect-ratio: var(--ms-carousel-aspect-ratio, 16 / 9);
 }
 
@@ -51,20 +55,28 @@
 }
 
 .carousel-navigation a {
+  --ms-icon-size: var(--ms-carousel-nav-icon-size, --spacing(4.5));
+
   position: absolute;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ms-carousel-nav-size, --spacing(8));
-  height: var(--ms-carousel-nav-size, --spacing(8));
-  border-radius: var(--ms-carousel-nav-radius, var(--radius-full));
-  background-color: var(--ms-carousel-nav-bg-color, --alpha(var(--color-base) / 0.75));
-  color: var(--ms-carousel-nav-color, var(--color-base-text));
+  width: var(--ms-carousel-nav-size, --spacing(8.5));
+  height: var(--ms-carousel-nav-size, --spacing(8.5));
+  border-width: var(--ms-carousel-nav-border-width, var(--ms-btn-border-width));
+  border-style: solid;
+  border-color: var(--ms-carousel-nav-border-color, var(--ms-btn-border-color));
+  border-radius: var(--ms-carousel-nav-radius, var(--ms-btn-radius));
+  background-color: var(--ms-carousel-nav-bg-color, --alpha(var(--ms-btn-bg-color) / 0.75));
+  color: var(--ms-carousel-nav-color, var(--ms-btn-color));
+  font-size: var(--ms-carousel-nav-font-size, var(--ms-btn-font-size));
   text-align: center;
   transform: translateY(-50%);
 
   @variant hover {
-    background-color: var(--ms-carousel-nav-bg-color-hover, var(--color-base-100));
+    border-color: var(--ms-carousel-nav-hover-border-color, var(--ms-btn-hover-border-color));
+    background-color: var(--ms-carousel-nav-hover-bg-color, var(--ms-btn-hover-bg-color));
+    color: var(--ms-carousel-nav-hover-color, var(--ms-btn-hover-color));
   }
 }
 
@@ -80,14 +92,11 @@
 
 .carousel-slide-count {
   position: absolute;
+  inset-inline: 0;
   bottom: 0;
-  z-index: var(--ms-carousel-slide-count-z-index, 10);
-  width: 100%;
-  background-color: var(--ms-carousel-count-bg-color, --alpha(var(--color-white) / 0.5));
+  z-index: var(--ms-carousel-count-z-index, 10);
+  background-color: var(--ms-carousel-count-bg-color, --alpha(var(--color-base) / 0.95));
+  color: var(--ms-carousel-count-color, var(--color-base-text));
   font-size: var(--ms-carousel-count-font-size, var(--text-2xs));
   text-align: center;
-
-  @variant dark {
-    --ms-carousel-count-bg-color: --alpha(var(--color-base-600) / 0.5);
-  }
 }

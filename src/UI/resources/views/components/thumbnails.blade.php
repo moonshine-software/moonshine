@@ -25,7 +25,7 @@
     <div class="images-row">
         @foreach($values as $index => $value)
             <div
-                {{ $value['attributes']?->class(['zoom-in images-row-item bg-white dark:bg-base-700 cursor-pointer']) }}
+                {{ $value['attributes']?->class(['zoom-in images-row-item bg-base cursor-pointer']) }}
             >
                 <img
                     class="h-full w-full object-cover"
