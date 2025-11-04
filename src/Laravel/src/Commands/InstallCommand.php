@@ -12,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
 
 use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
 
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
@@ -301,7 +301,7 @@ class InstallCommand extends MoonShineCommand
         $this->call(MakeLayoutCommand::class, array_filter([
             'className' => 'MoonShineLayout',
             '--default' => true,
-            '--palette' => $this->quickMode || $this->testsMode ? DefaultPalette::class : null,
+            '--palette' => $this->quickMode || $this->testsMode ? PurplePalette::class : null,
         ]));
 
         $this->components->task('Layout published');

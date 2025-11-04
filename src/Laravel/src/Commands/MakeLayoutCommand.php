@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 
 use function Laravel\Prompts\{confirm, select, text};
 
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Laravel\Support\StubsPath;
 use SplFileInfo;
@@ -44,7 +44,7 @@ class MakeLayoutCommand extends MoonShineCommand
         $extendClassName = 'AppLayout';
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
 
-        $palette = $this->option('palette') ?: select('Select a palette', $this->findPalettes(), DefaultPalette::class);
+        $palette = $this->option('palette') ?: select('Select a palette', $this->findPalettes(), PurplePalette::class);
 
         $this->copyStub('Layout', $stubsPath->getPath(), [
             '{namespace}' => $stubsPath->namespace,
@@ -83,9 +83,7 @@ class MakeLayoutCommand extends MoonShineCommand
                         . " ({$paletteInstance($file->getFilenameWithoutExtension())->getDescription()})",
                 ],
             )
-            ->except(['Default'])
             ->mapWithKeys(static fn (string $description, string $title): array => [('MoonShine\ColorManager\Palettes\\' . $title) => $description])
-            ->prepend('Default (Black/White)', DefaultPalette::class)
             ->toArray();
     }
 }
