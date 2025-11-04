@@ -190,7 +190,7 @@ table {
         th,
         td {
           &:not([class*='bgc-']) {
-            background: inherit;
+            background-color: --alpha(var(--_bg-color, inherit) / 0.9);
           }
         }
       }
@@ -220,9 +220,9 @@ table {
       th,
       td {
         &.sticky-col {
-          &:not([class*='bgc-']) {
-            background-color: --alpha(var(--ms-table-bg-color) / 0.95);
-          }
+          background-color: --alpha(
+            var(--_bg-color, var(--ms-table-bg-color, inherit)) / 0.95
+          ) !important;
 
           &:has(.dropdown-body.visible) {
             z-index: 1;
