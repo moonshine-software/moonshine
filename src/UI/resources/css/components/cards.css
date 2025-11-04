@@ -168,14 +168,14 @@
   .report-card-value {
     @apply truncate;
 
-    font-size: var(--ms-report-card-value-font-size, var(--text-3xl));
+    font-size: var(--ms-report-card-value-font-size, var(--text-2xl));
     font-weight: var(--ms-report-card-value-font-weight, var(--font-weight-medium));
     line-height: 1;
   }
 
   .report-card-title {
     color: var(--ms-report-card-title-color, inherit);
-    font-size: var(--ms-report-card-title-font-size, var(--text-sm));
+    font-size: var(--ms-report-card-title-font-size, var(--text-xs));
     text-overflow: ellipsis;
     white-space: nowrap;
   }

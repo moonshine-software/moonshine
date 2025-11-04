@@ -31,13 +31,17 @@
         --ms-menu-divider-min-width: 1px;
       }
     }
-  }
 
-  .menu-submenu {
-    overflow-y: auto;
-    position: absolute;
-    top: 100%;
-    z-index: var(--z-dropdown);
-    max-height: calc(var(--_menu-safezone-scroll-height) - --spacing(5));
+    .menu-submenu {
+      overflow-y: auto;
+      position: absolute;
+      top: 100%;
+      z-index: var(--z-dropdown);
+      max-height: calc(var(--_menu-safezone-scroll-height) - --spacing(5));
+
+      .menu-submenu {
+        position: static;
+      }
+    }
   }
 }

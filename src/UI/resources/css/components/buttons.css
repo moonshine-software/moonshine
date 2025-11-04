@@ -134,8 +134,8 @@
 }
 
 .btn-square {
-  width: var(--ms-btn-square-size, --spacing(8.5));
-  height: var(--ms-btn-square-size, --spacing(8.5));
+  width: var(--ms-btn-square-size, --spacing(10));
+  height: var(--ms-btn-square-size, --spacing(10));
   font-size: var(--ms-btn-square-font-size, var(--ms-btn-icon-size, --spacing(4.5)));
 }
 
