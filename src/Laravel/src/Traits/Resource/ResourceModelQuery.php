@@ -229,7 +229,7 @@ trait ResourceModelQuery
 
         $tags = array_merge(
             $this->getIndexPage()?->getQueryTags() ?? [],
-            $this->queryTags()
+            $this->getQueryTags()
         );
 
         /** @var ?QueryTag $tag */

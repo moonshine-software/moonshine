@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Concerns\Page;
 
+use Illuminate\Support\Collection;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Crud\QueryTags\QueryTag;
 
@@ -17,7 +18,15 @@ trait HasQueryTags
      */
     public function getQueryTags(): array
     {
-        return $this->queryTags();
+        $queryParamPrefix = $this->getResource()?->getQueryParamPrefix() ?? '';
+
+        return Collection::make($this->queryTags())
+            ->when(
+                $queryParamPrefix != '',
+                fn (Collection $queryTags): Collection => $queryTags
+                    ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->setPrefix($queryParamPrefix))
+            )
+            ->toArray();
     }
 
     /**
