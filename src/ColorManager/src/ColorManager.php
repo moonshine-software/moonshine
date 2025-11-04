@@ -49,7 +49,7 @@ final class ColorManager implements ColorManagerContract
      */
     public function set(string $name, string|array $value, bool $dark = false, bool $everything = false): static
     {
-        if($everything) {
+        if ($everything) {
             return $this->setEverything($name, $value);
         }
 

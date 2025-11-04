@@ -14,7 +14,7 @@ trait ColorShortcuts
 
     public function background(string $bg, ?string $pageBg = null, bool $dark = false, bool $everything = false): static
     {
-        if($pageBg !== null) {
+        if ($pageBg !== null) {
             $this->pageBackground($pageBg, dark: $dark, everything: $everything);
         }
 
@@ -40,13 +40,12 @@ trait ColorShortcuts
         ?string $icon = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($icon !== null) {
+    ): static {
+        if ($icon !== null) {
             $this->set('ms-dropzone-icon-color', $icon, dark: $dark, everything: $everything);
         }
 
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('ms-dropzone-file-color', $text, dark: $dark, everything: $everything);
         }
 
@@ -68,7 +67,7 @@ trait ColorShortcuts
 
     public function primary(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('primary-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -77,7 +76,7 @@ trait ColorShortcuts
 
     public function secondary(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('secondary-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -88,7 +87,7 @@ trait ColorShortcuts
 
     public function error(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('error-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -97,7 +96,7 @@ trait ColorShortcuts
 
     public function success(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('success-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -106,7 +105,7 @@ trait ColorShortcuts
 
     public function warning(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('warning-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -115,7 +114,7 @@ trait ColorShortcuts
 
     public function info(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('info-text', $text, dark: $dark, everything: $everything);
         }
 
@@ -126,7 +125,7 @@ trait ColorShortcuts
 
     public function scrollbar(string $bg, ?string $hoverBg = null, bool $dark = false, bool $everything = false): static
     {
-        if($hoverBg !== null) {
+        if ($hoverBg !== null) {
             $this
                 ->set('ms-scrollbar-hover-color', $hoverBg, dark: $dark, everything: $everything)
             ;
@@ -141,31 +140,30 @@ trait ColorShortcuts
         string $bg,
         ?string $text = null,
         ?string $hoverBg = null,
-        string $hoverText = null,
+        ?string $hoverText = null,
         ?string $disabledBg = null,
         ?string $disabledText = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this->set('ms-btn-color', $text, dark: $dark, everything: $everything);
         }
 
-        if($hoverBg !== null) {
+        if ($hoverBg !== null) {
             $this->set('ms-btn-hover-bg-color', $hoverBg, dark: $dark, everything: $everything);
         }
 
-        if($hoverText !== null) {
+        if ($hoverText !== null) {
             $this->set('ms-btn-hover-color', $hoverText, dark: $dark, everything: $everything);
         }
 
-        if($disabledBg !== null) {
+        if ($disabledBg !== null) {
             $this->set('ms-btn-disabled-border-color', $disabledBg, dark: $dark, everything: $everything);
             $this->set('ms-btn-disabled-bg-color', $disabledBg, dark: $dark, everything: $everything);
         }
 
-        if($disabledText !== null) {
+        if ($disabledText !== null) {
             $this->set('ms-btn-disabled-color', $disabledText, dark: $dark, everything: $everything);
         }
 
@@ -180,15 +178,14 @@ trait ColorShortcuts
         ?string $hoverBg = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this
                 ->set('ms-menu-item-active-color', $text, dark: $dark, everything: $everything)
             ;
         }
 
-        if($hoverBg !== null) {
+        if ($hoverBg !== null) {
             $this
                 ->set('ms-menu-item-hover-bg-color', $hoverBg, dark: $dark, everything: $everything)
             ;
@@ -196,7 +193,7 @@ trait ColorShortcuts
 
         return $this
             ->set('ms-menu-item-active-bg-color', $active, dark: $dark, everything: $everything)
-            ;
+        ;
     }
 
     /** Dropdown */
@@ -210,33 +207,32 @@ trait ColorShortcuts
         ?string $hoverText = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this
                 ->set('ms-dropdown-color', $text, dark: $dark, everything: $everything)
             ;
         }
 
-        if($footerBg !== null) {
+        if ($footerBg !== null) {
             $this
                 ->set('ms-dropdown-footer-bg-color', $footerBg, dark: $dark, everything: $everything)
             ;
         }
 
-        if($headerBg !== null) {
+        if ($headerBg !== null) {
             $this
                 ->set('ms-dropdown-heading-bg-color', $headerBg, dark: $dark, everything: $everything)
             ;
         }
 
-        if($hoverBg !== null) {
+        if ($hoverBg !== null) {
             $this
                 ->set('ms-dropdown-menu-item-hover-bg-color', $hoverBg, dark: $dark, everything: $everything)
             ;
         }
 
-        if($hoverText !== null) {
+        if ($hoverText !== null) {
             $this
                 ->set('ms-dropdown-menu-item-hover-color', $hoverText, dark: $dark, everything: $everything)
             ;
@@ -244,14 +240,14 @@ trait ColorShortcuts
 
         return $this
             ->set('ms-dropdown-bg-color', $bg, dark: $dark, everything: $everything)
-            ;
+        ;
     }
 
     /** Alerts */
 
     public function alert(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('ms-alert-color', $text, dark: $dark, everything: $everything);
         }
 
@@ -263,7 +259,7 @@ trait ColorShortcuts
 
     public function badge(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this->set('ms-badge-color', $text, dark: $dark, everything: $everything);
         }
 
@@ -278,9 +274,8 @@ trait ColorShortcuts
         ?string $headBg = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($headBg !== null) {
+    ): static {
+        if ($headBg !== null) {
             $this
                 ->set('ms-table-thead-bg-color', $headBg, dark: $dark, everything: $everything);
         }
@@ -298,9 +293,8 @@ trait ColorShortcuts
         ?string $textOpen = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this
                 ->set('ms-accordion-btn-color', $text, dark: $dark, everything: $everything)
                 ->set('ms-accordion-item-color', $text, dark: $dark, everything: $everything)
@@ -318,7 +312,7 @@ trait ColorShortcuts
 
     public function searchButtons(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-search-key-color', $text, dark: $dark, everything: $everything)
             ;
@@ -333,7 +327,7 @@ trait ColorShortcuts
 
     public function popover(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-popover-color', $text, dark: $dark, everything: $everything)
             ;
@@ -352,9 +346,8 @@ trait ColorShortcuts
         ?string $text = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this
                 ->set('ms-progress-bar-color', $text, dark: $dark, everything: $everything)
                 ->set('ms-radial-progress-color', $text, dark: $dark, everything: $everything)
@@ -372,7 +365,7 @@ trait ColorShortcuts
 
     public function modal(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-modal-content-color', $text, dark: $dark, everything: $everything)
             ;
@@ -384,7 +377,7 @@ trait ColorShortcuts
 
     public function offCanvas(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-offcanvas-color', $text, dark: $dark, everything: $everything)
             ;
@@ -398,7 +391,7 @@ trait ColorShortcuts
 
     public function box(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-box-color', $text, dark: $dark, everything: $everything)
             ;
@@ -410,7 +403,7 @@ trait ColorShortcuts
 
     public function boxDark(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-box-dark-color', $text, dark: $dark, everything: $everything)
             ;
@@ -424,7 +417,7 @@ trait ColorShortcuts
 
     public function card(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
-        if($text !== null) {
+        if ($text !== null) {
             $this
                 ->set('ms-card-color', $text, dark: $dark, everything: $everything)
             ;
@@ -448,52 +441,51 @@ trait ColorShortcuts
         ?string $expansionText = null,
         bool $dark = false,
         bool $everything = false
-    ): static
-    {
-        if($text !== null) {
+    ): static {
+        if ($text !== null) {
             $this
                 ->set('ms-form-default-color', $text, dark: $dark, everything: $everything)
             ;
         }
 
-        if($focus !== null) {
+        if ($focus !== null) {
             $this
                 ->set('ms-form-focus-border-color', $focus, dark: $dark, everything: $everything)
                 ->set('ms-form-focus-ring-color', $focus, dark: $dark, everything: $everything)
             ;
         }
 
-        if($disabled !== null) {
+        if ($disabled !== null) {
             $this
                 ->set('ms-form-disabled-bg-color', $disabled, dark: $dark, everything: $everything)
             ;
         }
 
-        if($disabledText !== null) {
+        if ($disabledText !== null) {
             $this
                 ->set('ms-form-disabled-color', $disabledText, dark: $dark, everything: $everything)
             ;
         }
 
-        if($readonly !== null) {
+        if ($readonly !== null) {
             $this
                 ->set('ms-form-readonly-bg-color', $readonly, dark: $dark, everything: $everything)
             ;
         }
 
-        if($readonlyText !== null) {
+        if ($readonlyText !== null) {
             $this
                 ->set('ms-form-readonly-color', $readonlyText, dark: $dark, everything: $everything)
             ;
         }
 
-        if($expansion !== null) {
+        if ($expansion !== null) {
             $this
                 ->set('ms-form-expansion-bg-color', $expansion, dark: $dark, everything: $everything)
             ;
         }
 
-        if($expansionText !== null) {
+        if ($expansionText !== null) {
             $this
                 ->set('ms-form-expansion-color', $expansionText, dark: $dark, everything: $everything)
             ;
