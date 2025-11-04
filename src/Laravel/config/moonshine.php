@@ -7,7 +7,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Crud\Forms\FiltersForm;
 use MoonShine\Crud\Forms\LoginForm;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
@@ -81,7 +81,7 @@ return [
 
     // Layout, palette, pages, forms
     'layout' => AppLayout::class,
-    'palette' => DefaultPalette::class,
+    'palette' => PurplePalette::class,
 
     'forms' => [
         'login' => LoginForm::class,

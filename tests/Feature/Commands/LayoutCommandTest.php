@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Feature\Commands;
 
 use Illuminate\Support\Facades\File;
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\NeutralPalette;
 use MoonShine\Laravel\Commands\MakeLayoutCommand;
 use MoonShine\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +32,7 @@ final class LayoutCommandTest extends TestCase
         $this->artisan(MakeLayoutCommand::class, [
             'className' => $name,
         ])
-            ->expectsQuestion('Select a palette', DefaultPalette::class)
+            ->expectsQuestion('Select a palette', NeutralPalette::class)
             ->expectsQuestion('Use the default template in the system?', 'yes')
             ->expectsOutputToContain(
                 "$name was created"
@@ -61,7 +61,7 @@ final class LayoutCommandTest extends TestCase
         $this->artisan(MakeLayoutCommand::class, [
             'className' => "$dir/$name",
         ])
-            ->expectsQuestion('Select a palette', DefaultPalette::class)
+            ->expectsQuestion('Select a palette', NeutralPalette::class)
             ->expectsQuestion('Use the default template in the system?', 'yes')
             ->expectsOutputToContain(
                 "$name was created"

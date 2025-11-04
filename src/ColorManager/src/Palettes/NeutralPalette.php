@@ -6,7 +6,7 @@ namespace MoonShine\ColorManager\Palettes;
 
 use MoonShine\Contracts\ColorManager\PaletteContract;
 
-final class DefaultPalette implements PaletteContract
+final class NeutralPalette implements PaletteContract
 {
     public function getDescription(): string
     {

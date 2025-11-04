@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -321,7 +321,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getPalette(): string
     {
-        return $this->get('palette', DefaultPalette::class);
+        return $this->get('palette', PurplePalette::class);
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
-use MoonShine\ColorManager\Palettes\DefaultPalette;
+use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 
@@ -29,7 +29,7 @@ final class ColorManager implements ColorManagerContract
 
     public function __construct(?PaletteContract $palette = null)
     {
-        $palette ??= new DefaultPalette();
+        $palette ??= new PurplePalette();
 
         $this->colors = $palette->getColors();
         $this->darkColors = $palette->getDarkColors();
