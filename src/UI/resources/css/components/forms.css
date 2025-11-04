@@ -1,6 +1,6 @@
 @theme {
   --ms-form-default-placeholder-color: --alpha(var(--ms-form-default-color) / 0.5);
-  --ms-form-default-min-height: --spacing(10);
+  --ms-form-default-min-height: --spacing(9);
   --ms-form-default-padding-y: --spacing(2);
   --ms-form-default-padding-x: --spacing(2);
   --ms-form-default-radius: var(--radius-lg);
@@ -187,7 +187,7 @@ fieldset {
     box-shadow: 0 0 0 var(--ms-form-focus-ring-width) --alpha(var(--ms-form-focus-ring-color) / 0.1);
   }
 
-  &:read-only {
+  &[read-only] {
     background-color: var(--ms-form-readonly-bg-color);
     color: var(--ms-form-readonly-color);
     cursor: default;

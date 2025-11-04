@@ -183,6 +183,8 @@ table {
 }
 
 .table {
+  --ms-btn-square-size: var(--ms-table-btn-square-size, --spacing(8));
+
   @variant md {
     & > thead,
     & > tbody {
