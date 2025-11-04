@@ -179,15 +179,18 @@
 
 .ts-dropdown .active,
 .ts-dropdown .selected {
-  background-color: var(--ms-ts-dropdown-option-default-bg-color, var(--color-base-300));
-  color: var(--ms-ts-dropdown-option-default-color, var(--color-base-text));
+  background-color: var(
+    --ms-ts-dropdown-option-active-bg-color,
+    --alpha(var(--color-base-text) / 0.125)
+  );
+  color: var(--ms-ts-dropdown-option-active-color, var(--color-base-text));
 }
 
 .ts-dropdown .create:hover,
 .ts-dropdown .option:hover {
   background-color: var(
     --ms-ts-dropdown-option-hover-bg-color,
-    --alpha(var(--color-base-text) / 0.05)
+    --alpha(var(--color-base-text) / 0.075)
   );
   color: var(--ms-ts-dropdown-option-hover-color, var(--color-base-text));
 }
