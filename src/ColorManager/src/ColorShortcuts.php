@@ -64,7 +64,7 @@ trait ColorShortcuts
             ], dark: $dark, everything: $everything);
     }
 
-    /** Buttons */
+    /** Themes */
 
     public function primary(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
     {
@@ -142,6 +142,8 @@ trait ColorShortcuts
         ?string $text = null,
         ?string $hoverBg = null,
         string $hoverText = null,
+        ?string $disabledBg = null,
+        ?string $disabledText = null,
         bool $dark = false,
         bool $everything = false
     ): static
@@ -156,6 +158,15 @@ trait ColorShortcuts
 
         if($hoverText !== null) {
             $this->set('ms-btn-hover-color', $hoverText, dark: $dark, everything: $everything);
+        }
+
+        if($disabledBg !== null) {
+            $this->set('ms-btn-disabled-border-color', $disabledBg, dark: $dark, everything: $everything);
+            $this->set('ms-btn-disabled-bg-color', $disabledBg, dark: $dark, everything: $everything);
+        }
+
+        if($disabledText !== null) {
+            $this->set('ms-btn-disabled-color', $disabledText, dark: $dark, everything: $everything);
         }
 
         return $this->set('ms-btn-bg-color', $bg, dark: $dark, everything: $everything);
