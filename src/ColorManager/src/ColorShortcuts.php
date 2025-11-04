@@ -314,6 +314,21 @@ trait ColorShortcuts
             ->set('ms-accordion-item-opened-bg-color', $bgOpen ?? $bg, dark: $dark, everything: $everything);
     }
 
+    /** Search buttons */
+
+    public function searchButtons(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static
+    {
+        if($text !== null) {
+            $this
+                ->set('ms-search-key-color', $text, dark: $dark, everything: $everything)
+            ;
+        }
+
+        return $this
+            ->set('ms-search-key-bg-color', $bg, dark: $dark, everything: $everything)
+            ->set('ms-search-key-shadow', $bg, dark: $dark, everything: $everything);
+    }
+
     /** Popovers */
 
     public function popover(string $bg, ?string $text = null, bool $dark = false, bool $everything = false): static

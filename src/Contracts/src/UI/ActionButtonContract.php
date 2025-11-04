@@ -157,6 +157,8 @@ interface ActionButtonContract extends
 
     public function error(Closure|bool|null $condition = null): static;
 
+    public function square(Closure|bool|null $condition = null): static;
+
     /**
      * @param non-empty-array<string> $keys
      */
