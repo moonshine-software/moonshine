@@ -1,5 +1,5 @@
 @theme {
-  --ms-layout-main-containered-max-width: 1080px;
+  --ms-layout-main-centered-max-width: 1080px;
   --ms-layout-wrapper-spacing: --spacing(2);
   --ms-layout-page-padding-y: --spacing(4);
   --ms-layout-page-padding-x: --spacing(4);
@@ -33,12 +33,12 @@
   flex: 1;
   min-width: 0;
 
-  &:not(.layout-main-containered) {
+  &:not(.layout-main-centered) {
     max-width: 100%;
   }
 
-  &.layout-main-containered {
-    max-width: var(--ms-layout-main-containered-max-width, 1080px);
+  &.layout-main-centered {
+    max-width: var(--ms-layout-main-centered-max-width, 1080px);
     margin-inline: auto;
   }
 }

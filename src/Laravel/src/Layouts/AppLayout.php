@@ -57,7 +57,7 @@ class AppLayout extends BaseLayout
 
                                 $this->getFooterComponent(),
                             ])->class(['layout-page', 'layout-page-simple' => $this->contentSimpled])->name(self::CONTENT_FRAGMENT_NAME),
-                        ])->class(['layout-main', 'layout-main-containered' => $this->contentCentered])->customAttributes(['id' => self::CONTENT_ID]),
+                        ])->class(['layout-main', 'layout-main-centered' => $this->contentCentered])->customAttributes(['id' => self::CONTENT_ID]),
                     ]),
                 ]),
             ])
