@@ -187,7 +187,7 @@ fieldset {
     box-shadow: 0 0 0 var(--ms-form-focus-ring-width) --alpha(var(--ms-form-focus-ring-color) / 0.1);
   }
 
-  &[read-only] {
+  &[readonly] {
     background-color: var(--ms-form-readonly-bg-color);
     color: var(--ms-form-readonly-color);
     cursor: default;
