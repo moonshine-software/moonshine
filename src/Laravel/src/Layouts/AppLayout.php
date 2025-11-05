@@ -58,14 +58,6 @@ class AppLayout extends BaseLayout
                                 $this->getFooterComponent(),
                             ])->class(['layout-page', 'layout-page-simple' => $this->contentSimpled])->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class(['layout-main', 'layout-main-containered' => $this->contentCentered])->customAttributes(['id' => self::CONTENT_ID]),
-                        Div::make()
-                            ->class('layout-overlay')
-                            ->customAttributes([
-                                'x-cloak' => '',
-                                'x-show' => 'asideMenuOpen',
-                                'x-on:click' => 'asideMenuOpen = false',
-                                'x-transition.opacity' => '',
-                            ]),
                     ]),
                 ]),
             ])

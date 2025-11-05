@@ -9,4 +9,13 @@
     />
 
     {{ $slot ?? '' }}
+
+    <div
+        class="layout-overlay"
+        x-cloak
+        x-show="asideMenuOpen"
+        x-on:click="asideMenuOpen = false"
+        x-transition.opacity=""
+    >
+    </div>
 </div>
