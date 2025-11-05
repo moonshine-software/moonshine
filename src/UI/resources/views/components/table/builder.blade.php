@@ -103,13 +103,17 @@
                 </x-slot:skeleton>
             @endif
 
-            <x-slot:topLeft>
-                {!! $topLeft ?? '' !!}
-            </x-slot:topLeft>
+            @if($topLeft ?? false)
+                <x-slot:topLeft>
+                    {!! $topLeft ?? '' !!}
+                </x-slot:topLeft>
+            @endif
 
-            <x-slot:topRight>
-                {!! $topRight ?? '' !!}
-            </x-slot:topRight>
+            @if($topRight ?? false)
+                <x-slot:topRight>
+                    {!! $topRight ?? '' !!}
+                </x-slot:topRight>
+            @endif
 
             <x-moonshine::table
                 :simple="$simple"
