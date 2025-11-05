@@ -693,7 +693,7 @@ final class TableBuilder extends IterableComponent implements
                 ->content(
                     fn (): Div => Div::make($selectionFields)->class('p-2 space-y-2')
                 )
-                ->toggler(fn (): ActionButton => ActionButton::make('')->icon('table-cells')->class('btn-square'));
+                ->toggler(fn (): ActionButton => ActionButton::make('')->icon('table-cells')->square());
         }
 
         return Components::make($components);
