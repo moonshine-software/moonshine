@@ -44,7 +44,7 @@ it('to array', function () {
     $autoloader = app(MenuAutoloaderContract::class);
     $items = $autoloader->toArray();
     $snapshot = [
-        'position' => 0,
+        'position' => 1,
         'group' => [
             'class' => 'MoonShine\Laravel\Resources\MoonShineUserRoleResource',
             'label' => 'moonshine::ui.resource.system',
@@ -61,7 +61,7 @@ it('to array', function () {
             1 => [
                 'filler' => 'MoonShine\Laravel\Resources\MoonShineUserRoleResource',
                 'canSee' => 'canSee',
-                'position' => 0,
+                'position' => 1,
             ],
         ],
     ];

@@ -300,8 +300,7 @@ describe('Layouts', function () {
 
     it('wrapper', function () {
         compare(
-            Wrapper::make($this->components),
-            slot: $this->slot
+            Wrapper::make(),
         );
     });
 });
