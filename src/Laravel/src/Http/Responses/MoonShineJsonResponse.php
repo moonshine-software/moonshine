@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MoonShine\Laravel;
+namespace MoonShine\Laravel\Http\Responses;
 
 use MoonShine\Crud\JsonResponse;
 
