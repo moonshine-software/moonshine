@@ -92,11 +92,10 @@
 }
 
 .menu-logo {
-  flex-shrink: 0;
+  flex: 1;
 
-  img,
-  svg {
-    max-height: --spacing(10);
+  .logo {
+    width: auto;
     max-width: --spacing(20);
 
     @variant md {
@@ -106,6 +105,12 @@
     @variant xl {
       max-width: --spacing(40);
     }
+  }
+
+  img,
+  svg {
+    width: auto;
+    max-height: --spacing(10);
   }
 }
 
