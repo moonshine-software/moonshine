@@ -7,7 +7,7 @@
     'darkLogo' => null,
     'darkLogoSmall' => null,
 ])
-<a {{ $attributes->merge(['class' => 'block', 'rel' => 'home', 'href' => $href]) }}>
+<a {{ $attributes->merge(['class' => 'logo block', 'rel' => 'home', 'href' => $href]) }}>
     <img src="{{ $logo }}"
         {{ $logoAttributes?->merge([
             'class' => 'hidden h-14 xl:block',
