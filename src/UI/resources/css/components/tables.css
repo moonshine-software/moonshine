@@ -237,10 +237,6 @@ table {
 
 /* Table helper classes */
 
-.js-table-builder-wrapper {
-  @apply space-y-3;
-}
-
 /* TODO: Remove dependency on this class used in detail record page
  * This class is currently applied to tables on the record detail/preview page.
  * Need to refactor the detail record page to work without table.
