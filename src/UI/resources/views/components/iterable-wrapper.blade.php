@@ -9,7 +9,7 @@
     'topRight' => null,
 ])
 
-@if(($topLeft ?? false) || $searchable)
+@if($searchable || trim(($topLeft ?? '')) !== '')
 <x-moonshine::layout.flex justify-align="start">
     @if($searchable)
         <x-moonshine::form
@@ -30,10 +30,14 @@
 </x-moonshine::layout.flex>
 @endif
 
-@if($topRight ?? false)
+@if(trim(($topRight ?? '')) !== '')
 <x-moonshine::layout.flex justify-align="end">
     {!! $topRight ?? '' !!}
 </x-moonshine::layout.flex>
+@endif
+
+@if(($searchable || trim(($topLeft ?? '')) !== '') || trim(($topRight ?? '')) !== '')
+<x-moonshine::layout.line-break />
 @endif
 
 @if($skeleton ?? false)
