@@ -227,13 +227,8 @@ trait ResourceModelQuery
             return $this;
         }
 
-        $tags = array_merge(
-            $this->getIndexPage()?->getQueryTags() ?? [],
-            $this->getQueryTags()
-        );
-
         /** @var ?QueryTag $tag */
-        $tag = Collection::make($tags)
+        $tag = Collection::make($this->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive(),
             );
