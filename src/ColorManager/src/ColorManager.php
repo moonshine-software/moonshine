@@ -157,7 +157,7 @@ final class ColorManager implements ColorManagerContract
         };
 
         return <<<HTML
-        <style>
+        <style id="colors-definer">
             :root:not(.dark) {
             {$values($this->getAll())}
             }
