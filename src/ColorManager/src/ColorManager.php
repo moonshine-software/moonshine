@@ -84,7 +84,7 @@ final class ColorManager implements ColorManagerContract
         return $this;
     }
 
-    public function get(string $name, ?int $shade = null, bool $dark = false, bool $hex = true): string
+    public function get(string $name, null|int|string $shade = null, bool $dark = false, bool $hex = true): string
     {
         $data = $dark ? $this->darkColors : $this->colors;
         $value = $data[$name];

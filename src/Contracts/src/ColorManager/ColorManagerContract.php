@@ -10,7 +10,7 @@ interface ColorManagerContract extends Htmlable
 {
     public function palette(PaletteContract $palette): self;
 
-    public function get(string $name, ?int $shade = null, bool $dark = false, bool $hex = true): string;
+    public function get(string $name, null|int|string $shade = null, bool $dark = false, bool $hex = true): string;
 
     /**
      * @return array<string, string>
