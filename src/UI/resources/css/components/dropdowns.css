@@ -105,6 +105,10 @@
   }
 }
 
+.dropdown-menu-item {
+  --ms-btn-active-translateY: 0;
+}
+
 .dropdown-menu-item--active {
   .dropdown-menu-link,
   .btn {
