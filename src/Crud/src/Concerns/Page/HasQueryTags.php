@@ -24,7 +24,7 @@ trait HasQueryTags
             ->when(
                 $queryParamPrefix != '',
                 fn (Collection $queryTags): Collection => $queryTags
-                    ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->setPrefix($queryParamPrefix))
+                    ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($queryParamPrefix))
             )
             ->toArray();
     }
