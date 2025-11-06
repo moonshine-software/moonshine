@@ -153,7 +153,7 @@ final class ColorManager implements ColorManagerContract
             $collection = new Collection($data);
 
             return $collection
-                ->implode(static fn (string $value, string $name): string => "--$name:$value;", PHP_EOL);
+                ->implode(static fn (string $value, string $name): string => "--ms-cm-$name: $value;", PHP_EOL);
         };
 
         return <<<HTML
