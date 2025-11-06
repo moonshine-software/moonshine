@@ -28,7 +28,7 @@
   --ms-form-error-border-color: var(--color-error);
   --ms-form-error-bg-color: var(--color-error);
   --ms-form-error-color: var(--color-error);
-  --ms-form-error-ring-color: ar(--color-error);
+  --ms-form-error-ring-color: var(--color-error);
 
   --ms-form-control-size: --spacing(5);
 }
