@@ -52,6 +52,13 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
         $this->setLabel($label);
     }
 
+    public function prefix(string $prefix): static
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
     public function alias(string $alias): self
     {
         $this->alias = $alias;
