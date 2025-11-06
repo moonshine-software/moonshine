@@ -26,14 +26,8 @@ trait HasQueryTags
             return $this->getIndexPage()->getQueryTags();
         }
 
-        $queryParamPrefix = $this->getQueryParamPrefix();
-
         return Collection::make($this->queryTags())
-            ->when(
-                $queryParamPrefix != '',
-                fn (Collection $queryTags): Collection => $queryTags
-                    ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($queryParamPrefix))
-            )
+            ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($this->getQueryParamPrefix()))
             ->toArray();
     }
 

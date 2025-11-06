@@ -18,14 +18,8 @@ trait HasQueryTags
      */
     public function getQueryTags(): array
     {
-        $queryParamPrefix = $this->getResource()?->getQueryParamPrefix() ?? '';
-
         return Collection::make($this->queryTags())
-            ->when(
-                $queryParamPrefix != '',
-                fn (Collection $queryTags): Collection => $queryTags
-                    ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($queryParamPrefix))
-            )
+            ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($this->getResource()?->getQueryParamPrefix() ?? ''))
             ->toArray();
     }
 
