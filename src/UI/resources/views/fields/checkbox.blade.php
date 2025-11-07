@@ -9,7 +9,7 @@
     @if(!$isSimpleMode)
         <x-moonshine::form.input
             type="hidden"
-            :attributes="$attributes->except(['class', ':id', 'id', 'type', 'checked', 'value', 'x-model'])"
+            :attributes="$attributes->except(['class', ':id', 'id', 'type', 'checked', 'value', 'x-model'])->merge(['data-checkbox-hidden' => true])"
             value="{{ $offValue }}"
         />
     @endif

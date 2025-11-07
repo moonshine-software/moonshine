@@ -5,7 +5,7 @@
 <label {{ $attributes->class(['form-switcher'])->only('class') }} x-data>
     <x-moonshine::form.input
         type="hidden"
-        :attributes="$attributes->only(['data-name', 'data-level', 'disabled'])"
+        :attributes="$attributes->only(['data-name', 'data-level', 'disabled'])->merge(['data-checkbox-hidden' => true])"
         :name="$attributes->get('name')"
         value="{{ $offValue }}"
     />

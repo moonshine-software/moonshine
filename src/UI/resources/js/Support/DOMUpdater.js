@@ -54,9 +54,53 @@ export default function DOMUpdater(
   if (data.fields_values !== undefined && typeof data.fields_values == 'object') {
     for (let [selector, value] of Object.entries(data.fields_values)) {
       let el = document.querySelector(selector)
-      if (el !== null) {
-        el.value = value
-        el.dispatchEvent(new Event('change'))
+      if (el === null) {
+        continue;
+      }
+
+      let changeEl = el
+      let changeValue = el
+      let changedValue = value
+      let changed = false
+      let needChangeEl = true
+
+      if (el.getAttribute('type') === 'color') {
+        let parent = el.closest('div.form-color')
+
+        if(parent) {
+          let inputEl = parent.querySelector(`input[name="${el.getAttribute('name')}"][data-color-input="data-color-input"]`)
+          if(inputEl) {
+            inputEl.value = changedValue
+            inputEl.dispatchEvent(new Event('change'))
+            changed = true
+          }
+        }
+      }
+
+      if (el.getAttribute('data-checkbox-hidden')) {
+        let parent = el.parentElement
+        if(parent) {
+          let inputEl = parent.querySelector(`input[name="${el.getAttribute('name')}"][type="checkbox"]`)
+          if(inputEl) {
+            inputEl.checked = changedValue.toString() !== el.value.toString()
+            inputEl.dispatchEvent(new Event('change'))
+            changed = true
+            needChangeEl = false
+          }
+        }
+      }
+
+      if (el.tagName.toLowerCase() === 'select' && el.classList.contains('tomselected')) {
+        el.tomselect.setValue(changedValue.toString())
+      }
+
+      if(needChangeEl) {
+        changeValue.value = changedValue
+      }
+
+
+      if(!changed) {
+        changeEl.dispatchEvent(new Event('change'))
       }
     }
   }

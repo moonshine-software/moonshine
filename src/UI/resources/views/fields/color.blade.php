@@ -7,6 +7,7 @@
             <x-moonshine::form.input
                 :attributes="$attributes->except('type')->merge([
                     'type' => 'color',
+                    'data-color-thumb' => true,
                 ])"
                 x-model:value="color"
             />
@@ -16,6 +17,7 @@
             :attributes="$attributes->except(['type'])->merge([
                 'type' => 'text',
                 'placeholder' => '#000000',
+                'data-color-input' => true,
             ])"
             x-model:value="color"
         />
