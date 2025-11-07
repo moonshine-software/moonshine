@@ -2,7 +2,7 @@
 <meta-storm xmlns="meta-storm">
     <definitions>
         <classProperty
-            class="\MoonShine\Laravel\Resources\CrudResource"
+            class="\MoonShine\Crud\Resources\CrudResource"
             property="column"
         >
             <arrayValues xpath="$containingClass.$model.$fillable"/>
@@ -77,7 +77,11 @@
             method="onChangeMethod"
             argument="0"
         >
-            <methods xpath="$containingClass" private="false" protected="false" static="false" />
+            <methods xpath="$containingClass" private="false" protected="false" static="false">
+                <filters>
+                    <hasAttribute class="\MoonShine\Support\Attributes\AsyncMethod"/>
+                </filters>
+            </methods>
         </classMethod>
 
         <classConstructor
