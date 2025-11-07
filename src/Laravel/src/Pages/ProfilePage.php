@@ -115,7 +115,7 @@ class ProfilePage extends Page
             ->fields($this->fields())
             ->fillCast($user, new ModelCaster($user::class))
             ->submit(__('moonshine::ui.save'), [
-                'class' => 'btn-primary',
+                'class' => 'btn-primary btn-lg',
             ]);
     }
 }
