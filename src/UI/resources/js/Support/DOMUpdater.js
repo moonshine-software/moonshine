@@ -55,7 +55,7 @@ export default function DOMUpdater(
     for (let [selector, value] of Object.entries(data.fields_values)) {
       let el = document.querySelector(selector)
       if (el === null) {
-        continue;
+        continue
       }
 
       let changeEl = el
@@ -67,9 +67,11 @@ export default function DOMUpdater(
       if (el.getAttribute('type') === 'color') {
         let parent = el.closest('div.form-color')
 
-        if(parent) {
-          let inputEl = parent.querySelector(`input[name="${el.getAttribute('name')}"][data-color-input="data-color-input"]`)
-          if(inputEl) {
+        if (parent) {
+          let inputEl = parent.querySelector(
+            `input[name="${el.getAttribute('name')}"][data-color-input="data-color-input"]`,
+          )
+          if (inputEl) {
             inputEl.value = changedValue
             inputEl.dispatchEvent(new Event('change'))
             changed = true
@@ -79,9 +81,11 @@ export default function DOMUpdater(
 
       if (el.getAttribute('data-checkbox-hidden')) {
         let parent = el.parentElement
-        if(parent) {
-          let inputEl = parent.querySelector(`input[name="${el.getAttribute('name')}"][type="checkbox"]`)
-          if(inputEl) {
+        if (parent) {
+          let inputEl = parent.querySelector(
+            `input[name="${el.getAttribute('name')}"][type="checkbox"]`,
+          )
+          if (inputEl) {
             inputEl.checked = changedValue.toString() !== el.value.toString()
             inputEl.dispatchEvent(new Event('change'))
             changed = true
@@ -94,12 +98,11 @@ export default function DOMUpdater(
         el.tomselect.setValue(changedValue.toString())
       }
 
-      if(needChangeEl) {
+      if (needChangeEl) {
         changeValue.value = changedValue
       }
 
-
-      if(!changed) {
+      if (!changed) {
         changeEl.dispatchEvent(new Event('change'))
       }
     }
