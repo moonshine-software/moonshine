@@ -43,7 +43,7 @@ final class MoonShineUserFormPage extends FormPage
             Box::make([
                 Tabs::make([
                     Tab::make(__('moonshine::ui.resource.main_information'), [
-                        ID::make()->sortable(),
+                        ID::make(),
 
                         BelongsTo::make(
                             __('moonshine::ui.resource.role'),

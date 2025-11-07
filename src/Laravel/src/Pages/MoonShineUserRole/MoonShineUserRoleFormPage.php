@@ -26,7 +26,7 @@ final class MoonShineUserRoleFormPage extends FormPage
     {
         return [
             Box::make([
-                ID::make()->sortable(),
+                ID::make(),
                 Text::make(__('moonshine::ui.resource.role_name'), 'name')
                     ->required(),
             ]),

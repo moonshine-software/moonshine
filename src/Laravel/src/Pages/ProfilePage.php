@@ -49,7 +49,7 @@ class ProfilePage extends Page
     protected function fields(): iterable
     {
         $userFields = array_filter([
-            ID::make()->sortable(),
+            ID::make(),
 
             moonshineConfig()->getUserField('name')
                 ? Text::make(__('moonshine::ui.resource.name'), moonshineConfig()->getUserField('name'))
