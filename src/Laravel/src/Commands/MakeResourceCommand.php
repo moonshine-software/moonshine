@@ -60,7 +60,7 @@ class MakeResourceCommand extends MoonShineCommand
             $keys = array_keys($types);
             $stub = $keys[$type - 1] ?? $keys[0];
         } else {
-            $stub = select('Type', $types, 'ModelResourceDefault');
+            $stub = select('Type', $types, 'ModelResource');
         }
 
         if (! $force && file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {
