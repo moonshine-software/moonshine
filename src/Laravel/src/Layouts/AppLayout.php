@@ -10,13 +10,22 @@ use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\UI\Components\{Layout\Body,
+use MoonShine\UI\Components\{
+    When,
+    Layout\Body,
     Layout\Content,
     Layout\Div,
     Layout\Flash,
     Layout\Html,
     Layout\Layout,
-    Layout\Wrapper};
+    Layout\Wrapper,
+    Layout\MobileBar,
+    Layout\Burger,
+    Layout\ThemeSwitcher,
+    Layout\Menu,
+};
+use MoonShine\Laravel\Components\Layout\Profile;
+use MoonShine\Crud\Components\Layout\Notifications;
 
 class AppLayout extends BaseLayout
 {

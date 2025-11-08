@@ -2,7 +2,6 @@ import tippy from 'tippy.js'
 
 export default () => ({
   tooltipInstance: null,
-  horizontalMenuEl: document.querySelector('.layout-menu-horizontal'),
 
   init() {
     this.tooltipInstance = tippy(this.$el, {

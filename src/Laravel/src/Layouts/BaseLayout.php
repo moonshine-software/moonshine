@@ -121,7 +121,7 @@ abstract class BaseLayout extends AbstractLayout
                     ...$this->sidebarTopSlot(),
                 ])->class('menu-actions'),
                 Div::make([
-                    Burger::make(),
+                    Burger::make()->toggleMethod('toggleSidebarMenu'),
                 ])->class('menu-burger'),
             ])->class('menu-header')->name('sidebar-top'),
 
@@ -169,11 +169,9 @@ abstract class BaseLayout extends AbstractLayout
                     static fn (): array => [ThemeSwitcher::make()]
                 ),
                 Div::make([
-                    Burger::make(),
+                    Burger::make()->toggleMethod('toggleTopbarMenu'),
                 ])->class('menu-burger'),
             ])->class('menu-actions')->name('topbar-actions'),
-        ])->customAttributes([
-            ':class' => "asideMenuOpen && '_is-opened'",
         ]);
     }
 

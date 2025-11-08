@@ -4,8 +4,9 @@
     'collapseAttributes',
     'translates' => [],
 ])
+<!-- Sidebar -->
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
-       :class="{ '_is-minimized': minimizedMenu, '_is-opened': asideMenuOpen }"
+       :class="{ '_is-minimized': minimizedMenu, '_is-opened': $store.menu.sidebarMenuOpen }"
 >
     <x-moonshine::components
         :components="$components"
@@ -34,3 +35,4 @@
 
     {{ $slot ?? '' }}
 </aside>
+<!-- END: Sidebar -->

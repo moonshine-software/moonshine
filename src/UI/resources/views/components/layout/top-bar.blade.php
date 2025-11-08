@@ -1,12 +1,14 @@
 @props([
     'components' => [],
 ])
-<!-- Menu horizontal -->
-<div {{ $attributes->merge(['class' => 'layout-menu-horizontal']) }}>
+<!-- Top bar -->
+<div {{ $attributes->merge(['class' => 'layout-menu-horizontal']) }}
+    :class="$store.menu.topbarMenuOpen && '_is-opened'"
+>
     <x-moonshine::components
         :components="$components"
     />
 
     {{ $slot ?? '' }}
 </div>
-<!-- END: Menu horizontal -->
+<!-- END: Top bar -->

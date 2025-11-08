@@ -9,8 +9,7 @@
   flex-shrink: 0;
   row-gap: var(--ms-layout-menu-gap-y, --spacing(3));
   width: min(var(--ms-layout-vertical-menu-width, 264px), 100%);
-  padding-block: var(--ms-layout-wrapper-spacing);
-  padding-inline: var(--ms-layout-wrapper-spacing);
+  padding: var(--ms-layout-wrapper-spacing);
 
   &:hover {
     .layout-collapse {

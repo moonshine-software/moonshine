@@ -13,9 +13,9 @@
     <div
         class="layout-overlay"
         x-cloak
-        x-show="asideMenuOpen"
-        x-on:click="asideMenuOpen = false"
-        x-transition.opacity=""
+        x-show="$store.menu.sidebarMenuOpen"
+        x-on:click="$store.menu.toggleSidebarMenu()"
+        x-transition.opacity
     >
     </div>
 </div>

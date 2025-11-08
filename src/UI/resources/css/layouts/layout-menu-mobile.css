@@ -1,0 +1,13 @@
+/* Layout Mobile */
+
+.layout-menu-mobile {
+  @variant max-lg {
+    & ~ .layout-menu-horizontal {
+      display: none;
+    }
+  }
+
+  @variant lg {
+    display: none;
+  }
+}
