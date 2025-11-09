@@ -163,3 +163,19 @@
   padding-block: var(--ms-layout-collapse-btn-padding-y, --spacing(2));
   padding-inline: 0;
 }
+
+.layout-main ~ .layout-menu {
+  .layout-collapse {
+    left: auto;
+    right: calc(
+      100% + var(--ms-layout-wrapper-gap-x, var(--ms-layout-wrapper-spacing)) -
+        calc(var(--_btn-width) / 2)
+    );
+  }
+
+  .layout-collapse-btn {
+    .icon-wrapper {
+      transform: scaleX(-1);
+    }
+  }
+}
