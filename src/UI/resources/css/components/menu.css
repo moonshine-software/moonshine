@@ -79,6 +79,23 @@
         }
       }
     }
+
+    .menu-list > .menu-item {
+      @variant is_active {
+        .menu-link::after {
+          top: auto;
+          inset-inline: 0;
+          bottom: 0;
+          width: --spacing(5);
+          height: --spacing(0.75);
+          margin-block: 0;
+          margin-inline: auto;
+          border-radius: --spacing(0.75) --spacing(0.75) 0 0;
+          box-shadow: 0 0 --spacing(4) --spacing(4)
+            --alpha(var(--ms-menu-item-active-glow-color, var(--color-primary)) / 0.1);
+        }
+      }
+    }
   }
 }
 
@@ -213,6 +230,7 @@
       /* Glow effect */
       &::after {
         content: '';
+        pointer-events: none;
         position: absolute;
         top: 0;
         right: 0;
@@ -223,7 +241,7 @@
         margin-block: auto;
         border-radius: --spacing(1) 0 0 --spacing(1);
         background-color: var(--ms-menu-item-active-glow-color, var(--color-primary));
-        box-shadow: 0 0 64px 64px
+        box-shadow: 0 0 --spacing(16) --spacing(16)
           --alpha(var(--ms-menu-item-active-glow-color, var(--color-primary)) / 0.1);
       }
     }
