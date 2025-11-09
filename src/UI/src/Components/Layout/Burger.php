@@ -18,8 +18,7 @@ final class Burger extends MoonShineComponent
         public bool $sidebar = false,
         public bool $topbar = false,
         public bool $mobileBar = false,
-    )
-    {
+    ) {
         parent::__construct();
 
         if ($this->sidebar) {
