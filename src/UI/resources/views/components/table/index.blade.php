@@ -22,6 +22,15 @@
                 x-id="['table-component']" :id="$id('table-component')"
             >
                 <thead {{ $headAttributes ??  $thead->attributes ?? '' }}>
+                @if(is_iterable($columns))
+                    <tr>
+                        @foreach($columns as $index => $label)
+                            <th>
+                                {!! $label !!}
+                            </th>
+                        @endforeach
+                    </tr>
+                @endif
                 {{ $thead ?? '' }}
                 </thead>
                 <tbody  {{ $bodyAttributes ?? $tbody->attributes ?? '' }}>
