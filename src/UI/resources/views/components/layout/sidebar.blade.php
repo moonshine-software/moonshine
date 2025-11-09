@@ -6,7 +6,7 @@
 ])
 <!-- Sidebar -->
 <aside {{ $attributes->merge(['class' => 'layout-menu']) }}
-       :class="{ '_is-minimized': minimizedMenu, '_is-opened': $store.menu.sidebarMenuOpen }"
+       :class="{ '_is-minimized': minimizedMenu, '_is-opened': $store.menu.isSidebarOpen }"
 >
     <x-moonshine::components
         :components="$components"

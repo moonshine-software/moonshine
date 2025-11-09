@@ -88,15 +88,16 @@ final class ColorManager implements ColorManagerContract
     {
         $data = $dark ? $this->darkColors : $this->colors;
         $value = $data[$name];
-        $value = \is_null($shade)
-            ? $value
-            : (\is_array($value) ? $value[$shade] : $value);
 
-        $hexValue = \is_array($value) ? $value['DEFAULT'] : $value;
+        if (! is_null($shade) && is_array($value)) {
+            $value = $value[$shade];
+        }
+
+        $result = is_array($value) ? $value['default'] : $value;
 
         return $hex ?
-            ColorMutator::toHEX($hexValue)
-            : $hexValue;
+            ColorMutator::toHEX($result)
+            : $result;
     }
 
     /**

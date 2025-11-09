@@ -13,8 +13,8 @@
     <div
         class="layout-overlay"
         x-cloak
-        x-show="$store.menu.sidebarMenuOpen"
-        x-on:click="$store.menu.toggleSidebarMenu()"
+        x-show="$store.menu.isSidebarOpen"
+        x-on:click="$store.menu.toggleSidebar()"
         x-transition.opacity
     >
     </div>

@@ -79,26 +79,26 @@ document.addEventListener('alpine:init', () => {
 
   /* Navigation menues */
   Alpine.store('menu', {
-    sidebarMenuOpen: false,
-    topbarMenuOpen: false,
-    mobilebarMenuOpen: false,
+    isSidebarOpen: false,
+    isTopbarOpen: false,
+    isMobileBarOpen: false,
     menuOverlayShown: false,
 
     toggleOverlay() {
       this.menuOverlayShown = !this.menuOverlayShown
     },
 
-    toggleSidebarMenu() {
-      this.sidebarMenuOpen = !this.sidebarMenuOpen
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
       this.toggleOverlay()
     },
 
-    toggleTopbarMenu() {
-      this.topbarMenuOpen = !this.topbarMenuOpen
+    toggleTopbar() {
+      this.isTopbarOpen = !this.isTopbarOpen
     },
 
-    toggleMobilebarMenu() {
-      this.mobilebarMenuOpen = !this.mobilebarMenuOpen
+    toggleMobileBar() {
+      this.isMobileBarOpen = !this.isMobileBarOpen
     },
   })
 })
