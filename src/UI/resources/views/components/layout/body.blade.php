@@ -3,7 +3,7 @@
 ])
 <body {{ $attributes->merge(['class' => 'antialiased']) }}
     x-cloak
-    x-data="{ minimizedMenu: $persist(false).as('minimizedMenu'), asideMenuOpen: false }"
+    x-data="{ minimizedMenu: $persist(false).as('minimizedMenu') }"
 >
     <x-moonshine::components
         :components="$components"

@@ -76,6 +76,31 @@ document.addEventListener('alpine:init', () => {
       this.on = !this.on
     },
   })
+
+  /* Navigation menues */
+  Alpine.store('menu', {
+    sidebarMenuOpen: false,
+    topbarMenuOpen: false,
+    mobilebarMenuOpen: false,
+    menuOverlayShown: false,
+
+    toggleOverlay() {
+      this.menuOverlayShown = !this.menuOverlayShown
+    },
+
+    toggleSidebarMenu() {
+      this.sidebarMenuOpen = !this.sidebarMenuOpen
+      this.toggleOverlay()
+    },
+
+    toggleTopbarMenu() {
+      this.topbarMenuOpen = !this.topbarMenuOpen
+    },
+
+    toggleMobilebarMenu() {
+      this.mobilebarMenuOpen = !this.mobilebarMenuOpen
+    },
+  })
 })
 
 if (window.Livewire === undefined) {

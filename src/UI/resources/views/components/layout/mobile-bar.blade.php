@@ -1,12 +1,14 @@
 @props([
     'components' => [],
 ])
-<aside {{ $attributes->merge(['class' => 'layout-menu-mobile']) }}
-       :class="minimizedMenu && '_is-minimized'"
+<!-- Mobile bar -->
+<div {{ $attributes->merge(['class' => 'layout-menu-mobile layout-menu-horizontal']) }}
+    :class="$store.menu.mobilebarMenuOpen && '_is-opened'"
 >
     <x-moonshine::components
         :components="$components"
     />
 
     {{ $slot ?? '' }}
-</aside>
+</div>
+<!-- END: Mobile bar -->

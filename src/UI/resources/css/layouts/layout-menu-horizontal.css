@@ -1,3 +1,9 @@
+@theme {
+  --ms-layout-menu-horizontal-height: --spacing(12);
+}
+
+/* Layout Horizontal */
+
 .layout-menu-horizontal {
   --_menu-safezone-scroll-height: --spacing(75);
 
@@ -5,42 +11,70 @@
   align-items: center;
   column-gap: var(--ms-layout-menu-horizontal-gap-x, --spacing(3));
   width: 100%;
-  padding-block: calc(var(--ms-layout-wrapper-spacing) * 0.5);
-  padding-inline: var(--ms-layout-wrapper-spacing);
+  height: var(--ms-layout-menu-horizontal-height);
+  padding-inline: calc(var(--ms-layout-page-padding-x, --spacing(4)) * 0.75);
+  background-color: var(--ms-layout-menu-horizontal-bg-color, var(--color-body));
 
   @variant lg {
     padding-inline: calc(var(--ms-layout-wrapper-spacing) * 0.5);
   }
 
-  // Compensate height of vertical layout menu
-  & + .layout-menu {
+  @variant max-lg {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-aside);
+    border-bottom: 1px solid var(--color-base-stroke);
+    box-shadow: 0 1px --spacing(4) 0 --alpha(var(--color-base-text) / 0.05);
+
+    &._is-opened {
+      .menu {
+        pointer-events: auto;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
   }
 
   .menu {
     @apply scrollbar-hidden;
 
-    margin-bottom: calc(var(--_menu-safezone-scroll-height) * -1);
-    padding-bottom: var(--_menu-safezone-scroll-height);
-
     @variant max-lg {
-      display: none;
+      pointer-events: none;
+      position: fixed;
+      left: 0;
+      top: var(--ms-layout-menu-horizontal-height);
+      bottom: 0;
+      width: 100%;
+      background-color: var(--ms-layout-body-bg-color, var(--color-body));
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(--spacing(-2));
+      transition-property: opacity, visibility, transform;
+      transition-duration: 250ms;
+      transition-timing-function: var(--default-transition-timing-function);
     }
 
-    .menu-list {
-      > .menu-divider {
-        --ms-menu-divider-min-width: 1px;
+    @variant lg {
+      margin-bottom: calc(var(--_menu-safezone-scroll-height) * -1);
+      padding-bottom: var(--_menu-safezone-scroll-height);
+
+      .menu-list {
+        > .menu-divider {
+          --ms-menu-divider-min-width: 1px;
+        }
       }
-    }
-
-    .menu-submenu {
-      overflow-y: auto;
-      position: absolute;
-      top: 100%;
-      z-index: var(--z-dropdown);
-      max-height: calc(var(--_menu-safezone-scroll-height) - --spacing(5));
 
       .menu-submenu {
-        position: static;
+        overflow-y: auto;
+        position: absolute;
+        top: 100%;
+        z-index: var(--z-dropdown);
+        max-height: calc(var(--_menu-safezone-scroll-height) - --spacing(5));
+
+        .menu-submenu {
+          position: static;
+        }
       }
     }
   }

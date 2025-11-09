@@ -90,7 +90,7 @@ final class ColorManager implements ColorManagerContract
         $value = $data[$name];
         $value = \is_null($shade)
             ? $value
-            : $value[$shade];
+            : (\is_array($value) ? $value[$shade] : $value);
 
         $hexValue = \is_array($value) ? $value['DEFAULT'] : $value;
 
