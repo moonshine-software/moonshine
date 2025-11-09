@@ -119,7 +119,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
     protected function viewData(): array
     {
         return [
-            'icon' => $this->getIcon(6, Color::SECONDARY),
+            'icon' => $this->getIcon(6),
             'label' => $this->getLabel(),
             'labelAttributes' => $this->labelAttributes,
             'id' => $this->getId(),
