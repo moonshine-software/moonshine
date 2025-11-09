@@ -146,8 +146,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* opacity: 0;
-  visibility: hidden; */
+  opacity: 0;
+  visibility: hidden;
   transition-property: opacity, visibility;
   transition-duration: var(--default-transition-duration);
   transition-timing-function: var(--default-transition-timing-function);
