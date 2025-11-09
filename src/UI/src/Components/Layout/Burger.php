@@ -22,11 +22,11 @@ final class Burger extends MoonShineComponent
     {
         parent::__construct();
 
-        if($this->sidebar) {
+        if ($this->sidebar) {
             $this->sidebar();
-        } else if($this->topbar) {
+        } elseif ($this->topbar) {
             $this->topbar();
-        } else if($this->mobileBar) {
+        } elseif ($this->mobileBar) {
             $this->mobileBar();
         }
     }
