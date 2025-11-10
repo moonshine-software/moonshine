@@ -90,7 +90,7 @@
                             <x-moonshine::form.input type="hidden" name="_method" value="delete" />
                             <x-moonshine::form.button
                                 :raw="true"
-                                class="btn-link"
+                                class="btn"
                                 type="submit"
                             >
                                 <x-moonshine::icon icon="arrow-right-start-on-rectangle" />

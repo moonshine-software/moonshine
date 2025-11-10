@@ -10,6 +10,26 @@
   @variant xl {
     flex-direction: row;
   }
+
+  /* Profile dropdown */
+  .dropdown-footer {
+    --_dropdown-footer-padding-y: 0;
+    --_dropdown-footer-padding-x: 0;
+
+    .btn {
+      column-gap: var(--ms-dropdown-menu-item-gap, --spacing(2));
+      padding-block: var(--ms-dropdown-menu-item-padding-y, var(--_dropdown-padding-y));
+      padding-inline: var(--ms-dropdown-menu-item-padding-x, var(--_dropdown-padding-x));
+      width: 100%;
+      border-radius: 0;
+      border: 0;
+      justify-content: flex-start;
+
+      &:not(:hover) {
+        background-color: transparent;
+      }
+    }
+  }
 }
 
 .profile-main {
