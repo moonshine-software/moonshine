@@ -10,7 +10,6 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
-use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\ComponentException;
