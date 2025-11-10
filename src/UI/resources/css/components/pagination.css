@@ -38,7 +38,7 @@
 .pagination-link {
   border-radius: var(--ms-pagination-element-radius, var(--ms-btn-radius));
   border: var(--ms-pagination-element-border-width, 1px) solid
-  var(--ms-pagination-element-border-color, var(--ms-btn-border-color));
+    var(--ms-pagination-element-border-color, var(--ms-btn-border-color));
   background-color: var(--ms-pagination-element-bg-color, var(--ms-btn-bg-color));
   color: var(--ms-pagination-element-color, var(--ms-btn-color));
 
