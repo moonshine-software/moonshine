@@ -93,6 +93,17 @@
     font-weight: var(--font-weight-medium);
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    a {
+      color: inherit;
+    }
+  }
+
   .heading {
     margin-bottom: --spacing(4);
 
