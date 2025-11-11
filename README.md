@@ -1,4 +1,4 @@
-![logo](https://github.com/moonshine-software/moonshine/raw/3.x/art/new.jpg)
+![logo](https://github.com/moonshine-software/moonshine/raw/4.x/art/new.jpg)
 
 ## MoonShine - Simple for beginners and powerful for experts:
 ### Administration panel for Laravel framework

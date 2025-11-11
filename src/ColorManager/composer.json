@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10|^11|^12",
-        "moonshine/contracts": "4.x-dev"
+        "moonshine/contracts": "^4.0"
     },
     "autoload": {
         "psr-4": {

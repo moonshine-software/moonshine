@@ -33,12 +33,14 @@
         "nyholm/psr7": "^1.8",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
+        "psr/simple-cache": "^3.0",
+        "symfony/http-foundation": "^7.1|^7.2|^7.3",
         "symfony/psr-http-message-bridge": "^7.1|^7.2|^7.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.89",
         "larastan/larastan": "^3.4",
-        "moonshine/import-export": "^1.0",
+        "moonshine/import-export": "^2.0",
         "orchestra/testbench": "^9.9",
         "pestphp/pest": "^4",
         "pestphp/pest-plugin-laravel": "^4",

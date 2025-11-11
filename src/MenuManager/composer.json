@@ -21,10 +21,10 @@
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10|^11|^12",
-        "moonshine/contracts": "4.x-dev",
-        "moonshine/core": "4.x-dev",
-        "moonshine/support": "4.x-dev",
-        "moonshine/ui": "4.x-dev",
+        "moonshine/contracts": "^4.0",
+        "moonshine/core": "^4.0",
+        "moonshine/support": "^4.0",
+        "moonshine/ui": "^4.0",
         "lee-to/fast-attributes": "^0.3"
     },
     "autoload": {

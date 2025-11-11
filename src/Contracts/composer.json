@@ -24,7 +24,7 @@
         "illuminate/support": "^10|^11|^12",
         "illuminate/contracts": "^10|^11|^12",
         "illuminate/view": "^10|^11|^12",
-        "moonshine/support": "4.x-dev",
+        "moonshine/support": "^4.0",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",
         "psr/simple-cache": "^3.0"
