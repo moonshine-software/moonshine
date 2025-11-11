@@ -9,4 +9,6 @@
             </x-moonshine::alert>
         @endforeach
     @endforeach
+
+    <x-moonshine::layout.line-break />
 @endif
