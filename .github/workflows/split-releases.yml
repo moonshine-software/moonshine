@@ -9,7 +9,7 @@ concurrency:
   group: split
 
 env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.SUPER_ACCESS_TOKEN }}
 
 jobs:
   split:
