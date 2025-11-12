@@ -55,15 +55,29 @@ trait WithRelatedLink
         }
 
         if (\is_callable($this->isRelatedLink)) {
-            $value = $this->getRelatedModel()?->{$this->getRelationName()}() ?? new Collection();
-            $this->relatedCount = $value->count();
+            $model = $this->getRelatedModel();
+            $relation = $this->getRelationName();
+
+            if ($model && $relation) {
+                if ($model->relationLoaded($relation)) {
+                    $this->relatedCount = $model->{$relation}->count();
+                } else {
+                    $this->relatedCount = $model->{$relation}()->count();
+                }
+            } else {
+                $this->relatedCount = 0;
+            }
+
             $result = (bool) value($this->isRelatedLink, $this->relatedCount, $this);
-            $this->relatedCount = $result === false ? null : $this->relatedCount;
+
+            if ($result === false) {
+                $this->relatedCount = null;
+            }
 
             return $result;
         }
 
-        return $this->isRelatedLink;
+        return (bool) $this->isRelatedLink;
     }
 
     public function getRelatedLinkRelation(): string
@@ -90,8 +104,18 @@ trait WithRelatedLink
         $relationName = $this->getRelatedLinkRelation();
 
         if ($this->relatedCount === null) {
-            $value = $this->getRelatedModel()?->{$this->getRelationName()}() ?? new Collection();
-            $this->relatedCount = $value->count();
+            $model = $this->getRelatedModel();
+            $relation = $this->getRelationName();
+
+            if ($model && $relation) {
+                if ($model->relationLoaded($relation)) {
+                    $this->relatedCount = $model->{$relation}->count();
+                } else {
+                    $this->relatedCount = $model->{$relation}()->count();
+                }
+            } else {
+                $this->relatedCount = 0;
+            }
         }
 
         return ActionButton::make(
