@@ -40,6 +40,8 @@ table {
 
 .table-responsive {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
   position: relative;
   width: 100%;
 }
