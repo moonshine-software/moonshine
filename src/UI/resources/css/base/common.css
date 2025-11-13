@@ -54,6 +54,10 @@
     @variant motion-safe {
       scroll-behavior: smooth;
     }
+
+    @variant max-sm {
+      font-size: var(--ms-html-mobile-font-size, 14px);
+    }
   }
 
   body {

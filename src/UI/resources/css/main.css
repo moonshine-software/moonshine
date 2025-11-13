@@ -94,9 +94,3 @@
   --z-menu: 1200;
   --z-toast: 1300;
 }
-
-@variant max-sm {
-  html {
-    font-size: var(--ms-html-mobile-font-size, 14px);
-  }
-}
