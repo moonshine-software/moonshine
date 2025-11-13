@@ -23,7 +23,7 @@
     inset-block: 0;
     left: 0;
     z-index: var(--z-menu);
-    height: 100svh;
+    height: 100%;
     background-color: var(--ms-layout-body-bg-color, var(--color-body));
     transition: transform 250ms var(--default-transition-timing-function);
 
