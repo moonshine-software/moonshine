@@ -41,7 +41,6 @@ table {
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none;
   position: relative;
   width: 100%;
 }
@@ -174,14 +173,10 @@ table {
 
 /* Sticky table & columns */
 
-.table-sticky {
-  max-height: var(--ms-table-sticky-max-height, 70dvh);
-
-  & > table > thead {
-    position: sticky;
-    top: 0;
-    z-index: var(--ms-table-sticky-z-index, 1);
-  }
+.table-sticky > table > thead {
+  position: sticky;
+  top: 0;
+  z-index: var(--ms-table-sticky-z-index, 1);
 }
 
 .table {
