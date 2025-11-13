@@ -64,6 +64,7 @@ final class HasManyButton
 
         $actionButton = $actionButton
             ->canSee($authorize)
+            ->square($update)
             ->primary()
             ->icon($update ? 'pencil' : 'plus');
 
