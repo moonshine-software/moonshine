@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use MoonShine\Crud\JsonResponse;
 use Illuminate\Http\Request;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -11,7 +12,6 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasReactivityContract;
 use MoonShine\Laravel\TypeCasts\ModelDataWrapper;
 use MoonShine\UI\Components\FieldsGroup;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ReactiveController extends MoonShineController
 {
