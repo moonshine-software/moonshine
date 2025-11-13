@@ -54,30 +54,25 @@ trait WithRelatedLink
             return true;
         }
 
-        if (\is_callable($this->isRelatedLink)) {
-            $model = $this->getRelatedModel();
-            $relation = $this->getRelationName();
+        $model = $this->getRelatedModel();
 
-            if ($model && $relation) {
-                if ($model->relationLoaded($relation)) {
-                    $this->relatedCount = $model->{$relation}->count();
-                } else {
-                    $this->relatedCount = $model->{$relation}()->count();
-                }
-            } else {
-                $this->relatedCount = 0;
-            }
+        if ($model === null) {
+            return false;
+        }
+
+        if (\is_callable($this->isRelatedLink)) {
+            $relation = $this->getRelationName();
+            $this->relatedCount = $model->relationLoaded($relation)
+                ? $model->{$relation}->count()
+                : $model->{$relation}()->count();
 
             $result = (bool) value($this->isRelatedLink, $this->relatedCount, $this);
-
-            if ($result === false) {
-                $this->relatedCount = null;
-            }
+            $this->relatedCount = $result === false ? null : $this->relatedCount;
 
             return $result;
         }
 
-        return (bool) $this->isRelatedLink;
+        return $this->isRelatedLink;
     }
 
     public function getRelatedLinkRelation(): string
@@ -107,15 +102,11 @@ trait WithRelatedLink
             $model = $this->getRelatedModel();
             $relation = $this->getRelationName();
 
-            if ($model && $relation) {
-                if ($model->relationLoaded($relation)) {
-                    $this->relatedCount = $model->{$relation}->count();
-                } else {
-                    $this->relatedCount = $model->{$relation}()->count();
-                }
-            } else {
-                $this->relatedCount = 0;
-            }
+            $this->relatedCount = match (true) {
+                !($model && $relation) => 0,
+                $model->relationLoaded($relation) => $model->{$relation}->count(),
+                default => $model->{$relation}()->count(),
+            };
         }
 
         return ActionButton::make(
