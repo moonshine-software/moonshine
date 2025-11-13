@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'home' => 'Home',
     'profile' => 'Profile',
     'dashboard' => 'Dashboard',
     'add' => 'Add',

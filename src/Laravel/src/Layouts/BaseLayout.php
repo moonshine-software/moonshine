@@ -177,11 +177,22 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function getHeaderComponent(): Header
     {
+        $homeLabel = $this->getCore()->getTranslator()->get('moonshine::ui.home');
+
+        if ($homeLabel === 'moonshine::ui.home') {
+            $homeLabel = 'Home';
+        }
+
         return Header::make([
             Div::make([
                 Burger::make(),
             ])->class('menu-burger'),
-            Breadcrumbs::make($this->getPage()->getBreadcrumbs())->prepend($this->getHomeUrl(), label: 'Home'),
+            Breadcrumbs::make(
+                $this->getPage()->getBreadcrumbs()
+            )->prepend(
+                $this->getHomeUrl(),
+                label: $homeLabel,
+            ),
             $this->getSearchComponent(),
             Locales::make(),
             When::make(
