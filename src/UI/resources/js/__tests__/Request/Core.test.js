@@ -86,11 +86,20 @@ describe('request function', () => {
     delete window.location
     window.location = {assign: jest.fn()}
 
+    // Mock $nextTick to execute callback immediately
+    const nextTickMock = jest.fn((callback) => {
+      callback()
+      return Promise.resolve()
+    })
+
+    t.$nextTick = nextTickMock
+
     const componentRequestData = new ComponentRequestData()
     mockAxios.onGet('/test-url').reply(200, {redirect: '/new-location'})
 
     await request(t, '/test-url', 'get', {}, {}, componentRequestData)
 
+    expect(nextTickMock).toHaveBeenCalled()
     expect(window.location.assign).toHaveBeenCalledWith('/new-location')
     window.location = origWindowLocation
   })
