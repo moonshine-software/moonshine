@@ -87,7 +87,7 @@ describe('request function', () => {
     window.location = {assign: jest.fn()}
 
     // Mock $nextTick to execute callback immediately
-    const nextTickMock = jest.fn((callback) => {
+    const nextTickMock = jest.fn(callback => {
       callback()
       return Promise.resolve()
     })
