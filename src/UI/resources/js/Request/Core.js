@@ -80,10 +80,6 @@ export default async function request(
         fields_values: data.fields_values,
       })
 
-      if (data.redirect) {
-        window.location.assign(data.redirect)
-      }
-
       if (isAttachment) {
         downloadFile(fileName, data)
       }
@@ -103,6 +99,12 @@ export default async function request(
       if (componentRequestData.hasAfterResponse()) {
         const afterResponseCallback = componentRequestData.afterResponse(data, type, t)
         afterResponse(afterResponseCallback, data, type, t)
+      }
+
+      if (data.redirect) {
+        await t.$nextTick(() => {
+          window.location.assign(data.redirect)
+        })
       }
     })
   } catch (errorResponse) {
