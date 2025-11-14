@@ -10,6 +10,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\Contracts\UI\FieldContract;
 use {resource-namespace};
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Fields\ID;
 use Throwable;
 {uses}
 
@@ -23,7 +24,9 @@ class DummyClass extends {extendShort}
      */
     protected function fields(): iterable
     {
-        return [];
+        return [
+            ID::make(),
+        ];
     }
 
     protected function buttons(): ListOf

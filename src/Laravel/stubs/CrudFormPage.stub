@@ -12,6 +12,8 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use {resource-namespace};
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Components\Layout\Box;
 use Throwable;
 {uses}
 
@@ -25,7 +27,11 @@ class DummyClass extends {extendShort}
      */
     protected function fields(): iterable
     {
-        return [];
+        return [
+            Box::make([
+                ID::make(),
+            ]),
+        ];
     }
 
     protected function buttons(): ListOf

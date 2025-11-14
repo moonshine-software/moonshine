@@ -10,6 +10,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
+use MoonShine\UI\Fields\ID;
 use {resource-namespace};
 use MoonShine\Support\ListOf;
 use Throwable;
@@ -27,7 +28,9 @@ class DummyClass extends {extendShort}
      */
     protected function fields(): iterable
     {
-        return [];
+        return [
+            ID::make(),
+        ];
     }
 
     protected function buttons(): ListOf
