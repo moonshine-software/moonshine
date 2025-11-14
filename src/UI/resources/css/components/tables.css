@@ -173,10 +173,16 @@ table {
 
 /* Sticky table & columns */
 
-.table-sticky > table > thead {
-  position: sticky;
-  top: 0;
-  z-index: var(--ms-table-sticky-z-index, 1);
+.table-sticky {
+  @variant lg {
+    max-height: var(--ms-table-sticky-max-height, 70dvh);
+
+    & > table > thead {
+      position: sticky;
+      top: 0;
+      z-index: var(--ms-table-sticky-z-index, 1);
+    }
+  }
 }
 
 .table {
