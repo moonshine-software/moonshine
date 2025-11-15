@@ -236,10 +236,14 @@ class FormPage extends CrudPage implements FormPageContract
     protected function buttons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
-            $this->getResource()->getDetailButton(),
-            $this->getResource()->getDeleteButton(
-                redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
-                isAsync: false,
+            $this->modifyDetailButton(
+                $this->getResource()->getDetailButton()
+            ),
+            $this->modifyDeleteButton(
+                $this->getResource()->getDeleteButton(
+                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                    isAsync: false,
+                )
             ),
         ]);
     }
@@ -266,5 +270,15 @@ class FormPage extends CrudPage implements FormPageContract
         return ActionButtons::make(
             $this->formButtons()->toArray(),
         )->withoutBulk();
+    }
+
+    protected function modifyDetailButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyDeleteButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
     }
 }
