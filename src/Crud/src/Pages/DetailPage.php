@@ -160,12 +160,16 @@ class DetailPage extends CrudPage implements DetailPageContract
     protected function buttons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, [
-            $this->getResource()->getEditButton(
-                isAsync: $this->isAsync(),
+            $this->modifyEditButton(
+                $this->getResource()->getEditButton(
+                    isAsync: $this->isAsync(),
+                )
             ),
-            $this->getResource()->getDeleteButton(
-                redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
-                isAsync: false,
+            $this->modifyDeleteButton(
+                $this->getResource()->getDeleteButton(
+                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                    isAsync: false,
+                )
             ),
         ]);
     }
@@ -189,5 +193,15 @@ class DetailPage extends CrudPage implements DetailPageContract
                 ->fill($this->getResource()->getCastedData())
                 ->class('justify-end'),
         ];
+    }
+
+    protected function modifyEditButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
+    }
+
+    protected function modifyDeleteButton(ActionButtonContract $button): ActionButtonContract
+    {
+        return $button;
     }
 }
