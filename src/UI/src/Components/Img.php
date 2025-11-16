@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use Illuminate\Support\Collection;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
@@ -108,8 +109,8 @@ final class Img extends MoonShineComponent
 
     public function srcset(array $sources): static
     {
-        $this->srcset = collect($sources)
-            ->map(fn ($value, $key): string => "{$key} {$value}")
+        $this->srcset = Collection::make($sources)
+            ->map(fn ($value, $key): string => "{$value} {$key}")
             ->join(', ');
 
         return $this;
