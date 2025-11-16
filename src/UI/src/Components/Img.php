@@ -33,6 +33,10 @@ final class Img extends MoonShineComponent
         parent::__construct();
     }
 
+    /**
+     * @param string $alt
+     * @return static
+     */
     public function alt(string $alt): static
     {
         $this->alt = $alt;
@@ -40,6 +44,11 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param integer $widht
+     * @param integer|null $height
+     * @return static
+     */
     public function size(int $widht, ?int $height = null): static
     {
         $this->width = $this->height = $widht;
@@ -51,6 +60,10 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param integer $width
+     * @return static
+     */
     public function width(int $width): static
     {
         $this->width = $width;
@@ -58,6 +71,10 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param integer $height
+     * @return static
+     */
     public function height(int $height): static
     {
         $this->height = $height;
@@ -65,6 +82,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function rounded(): static
     {
         $this->style(['border-radius: 50%']);
@@ -72,6 +92,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function eagerLoaded(): static
     {
         $this->loading = 'eager';
@@ -79,6 +102,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function lazyLoaded(): static
     {
         $this->loading = 'lazy';
@@ -86,6 +112,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function autoDecoded(): static
     {
         $this->decoded = 'auto';
@@ -93,6 +122,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function asyncDecoded(): static
     {
         $this->decoded = 'async';
@@ -100,6 +132,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function syncDecoded(): static
     {
         $this->decoded = 'sync';
@@ -107,6 +142,10 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param array<string, string> $sources
+     * @return static
+     */
     public function srcset(array $sources): static
     {
         $this->srcset = Collection::make($sources)
