@@ -3,6 +3,7 @@
 @theme {
   --ms-table-border-color: var(--color-base-stroke);
   --ms-table-bg-color: var(--color-base);
+  --ms-table-radius: var(--radius-lg);
   --ms-table-thead-bg-color: var(--color-base-100);
 }
 
@@ -33,7 +34,7 @@ table {
 
 .table-container {
   overflow: hidden;
-  border-radius: var(--ms-table-radius, var(--radius-lg));
+  border-radius: var(--ms-table-radius);
   border: var(--ms-table-border-width, 1px) solid
     var(--ms-table-border-color, var(--ms-table-border-color));
 }
@@ -43,10 +44,11 @@ table {
   -webkit-overflow-scrolling: touch;
   position: relative;
   width: 100%;
+  border-radius: var(--ms-table-radius);
 }
 
 .table {
-  background-color: var(--ms-table-bg-color,);
+  background-color: var(--ms-table-bg-color);
   font-size: var(--ms-table-font-size, var(--text-xs));
 
   th,
