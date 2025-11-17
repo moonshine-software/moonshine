@@ -173,6 +173,16 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->get('disk_options', []);
     }
 
+    public function getUserAvatarsDir(): string
+    {
+        return $this->get('user_avatars_dir', 'moonshine_users');
+    }
+
+    public function userAvatarsDir(string|Closure $dir): self
+    {
+        return $this->set('user_avatars_dir', $dir);
+    }
+
     public function isUseMigrations(): bool
     {
         return $this->get('use_migrations', true);

@@ -64,7 +64,7 @@ final class MoonShineUserFormPage extends FormPage
 
                         Image::make(__('moonshine::ui.resource.avatar'), 'avatar')
                             ->disk(moonshineConfig()->getDisk())
-                            ->dir('moonshine_users')
+                            ->dir(moonshineConfig()->getUserAvatarsDir())
                             ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif']),
 
                         Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
