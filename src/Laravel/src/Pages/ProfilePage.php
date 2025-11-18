@@ -65,7 +65,7 @@ class ProfilePage extends Page
                 ? Image::make(__('moonshine::ui.resource.avatar'), moonshineConfig()->getUserField('avatar'))
                 ->disk(moonshineConfig()->getDisk())
                 ->options(moonshineConfig()->getDiskOptions())
-                ->dir('moonshine_users')
+                ->dir(moonshineConfig()->getUserAvatarsDir())
                 ->removable()
                 ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif'])
                 : null,
