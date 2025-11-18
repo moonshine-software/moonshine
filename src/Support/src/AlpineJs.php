@@ -28,7 +28,7 @@ final readonly class AlpineJs
     {
         $event = \is_string($event) ? $event : $event->value;
 
-        if($params instanceof ListRowEventParams) {
+        if ($params instanceof ListRowEventParams) {
             $name = "$name-{$params->key}";
         }
 
