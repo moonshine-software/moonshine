@@ -6,7 +6,7 @@
     'srcset' => null,
     'sizes' => null,
     'loading' => null, // eager, lazy
-    'decoded' => null, // auto, async, sync
+    'decoding' => null, // auto, async, sync
 ])
 
 <img {{ $attributes->merge([
@@ -16,6 +16,5 @@
     'height' => $height,
     'loadimg' => $loading,
     'decoded' => $decoded,
-    'srcset' => $srcset,
-    'sizes' => $sizes
+    'srcset' => $srcset
 ]) }}>

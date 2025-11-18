@@ -22,11 +22,9 @@ final class Img extends MoonShineComponent
 
     protected ?string $loading = null;
 
-    protected ?string $decoded = null;
+    protected ?string $decoding = null;
 
     protected ?string $srcset = null;
-
-    protected ?string $sizes = null;
 
     protected function __construct(protected string $src)
     {
@@ -72,37 +70,37 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
-    public function eagerLoaded(): static
+    public function eagerLoading(): static
     {
         $this->loading = 'eager';
 
         return $this;
     }
 
-    public function lazyLoaded(): static
+    public function lazyLoading(): static
     {
         $this->loading = 'lazy';
 
         return $this;
     }
 
-    public function autoDecoded(): static
+    public function autoDecoding(): static
     {
         $this->decoded = 'auto';
 
         return $this;
     }
 
-    public function asyncDecoded(): static
+    public function asyncDecoding(): static
     {
-        $this->decoded = 'async';
+        $this->decoding = 'async';
 
         return $this;
     }
 
-    public function syncDecoded(): static
+    public function syncDecoding(): static
     {
-        $this->decoded = 'sync';
+        $this->decoding = 'sync';
 
         return $this;
     }
@@ -130,7 +128,7 @@ final class Img extends MoonShineComponent
             'width' => $this->width,
             'height' => $this->height,
             'loading' => $this->loading,
-            'decoded' => $this->decoded,
+            'decoding' => $this->decoding,
             'srcset' => $this->srcset,
             'sizes' => $this->sizes,
         ];
