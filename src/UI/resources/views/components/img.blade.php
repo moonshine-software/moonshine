@@ -15,6 +15,6 @@
     'width' => $width,
     'height' => $height,
     'loadimg' => $loading,
-    'decoded' => $decoded,
+    'decoding' => $decoding,
     'srcset' => $srcset
 ]) }}>
