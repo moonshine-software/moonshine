@@ -58,7 +58,6 @@ return [
     // Storage
     'disk' => 'public',
     'disk_options' => [],
-    'user_avatars_dir' => 'moonshine_users',
     'cache' => 'file',
 
     // Authentication and profile
