@@ -49,6 +49,10 @@ trait SelectTrait
 
     public function getValues(): Options
     {
+        if ($this->options instanceof Options && empty($this->getValue())) {
+            return $this->options;
+        }
+
         if ($this->options instanceof Options) {
             ['options' => $options, 'properties' => $properties] = $this->options->toRaw();
 

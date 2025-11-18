@@ -21,5 +21,5 @@ it('perform eventBlade with params', function () {
     );
 
     expect($event)
-        ->toBe("@table_row_updated:my-table|key~$key;type~$type->value;_delay~0.window");
+        ->toBe("@table_row_updated:my-table-$key|key~$key;type~$type->value;_delay~0.window");
 });
