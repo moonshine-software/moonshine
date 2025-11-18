@@ -11,7 +11,7 @@ use MoonShine\Support\Enums\ListRowEventType;
  */
 class ListRowEventParams extends EventParams
 {
-    public function __construct(int|string|null $key = null, ListRowEventType $type = ListRowEventType::CHANGE)
+    public function __construct(public int|string|null $key = null, ListRowEventType $type = ListRowEventType::CHANGE)
     {
         parent::__construct([
             'key' => $key,

@@ -18,6 +18,12 @@ final readonly class OptionProperty implements Arrayable
 
     public function getImage(): null|string|OptionImage
     {
+        if(\is_string($this->image)){
+            return new OptionImage(
+                src: $this->image
+            );
+        }
+
         return $this->image;
     }
 
@@ -26,14 +32,8 @@ final readonly class OptionProperty implements Arrayable
      */
     public function toArray(): array
     {
-        $image = $this->getImage();
-
-        if ($image instanceof OptionImage) {
-            $image = $image->toArray();
-        }
-
         return [
-            'image' => $image,
+            'image' => $this->getImage()?->toArray(),
         ];
     }
 }

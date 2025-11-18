@@ -13,6 +13,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\Select;
 
 uses()->group('fields');
+uses()->group('selects');
 
 beforeEach(function (): void {
     $this->selectOptions = [
@@ -244,7 +245,7 @@ describe('select field with images', function () {
             new Option(
                 'Option 1',
                 '1',
-                properties: new OptionProperty('image1.jpg')
+                properties: new OptionProperty(new OptionImage('image1.jpg'))
             ),
             new Option(
                 'Option 2',
@@ -257,7 +258,7 @@ describe('select field with images', function () {
                     'Option 3',
                     '3',
                     true,
-                    properties: new OptionProperty('image3.png')
+                    properties: new OptionProperty(new OptionImage('image3.png'))
                 ),
             ])),
         ]);
@@ -266,6 +267,39 @@ describe('select field with images', function () {
             ->options($options);
 
         $result = $field->toArray();
+
+        expect($result['values'][0]['selected'])->toBeFalse();
+        expect($result['values'][1]['selected'])->toBeTrue();
+        expect($result['values'][2]['values'][0]['selected'])->toBeTrue();
+
+        expect($result['values'][0]['properties']['image'])->toBe([
+            'src' => 'image1.jpg',
+            'width' => 10,
+            'height' => 10,
+            'objectFit' => ObjectFit::COVER->value,
+        ])->and($result['values'][1]['properties']['image'])->toBe([
+            'src' => 'image2.png',
+            'width' => 10,
+            'height' => 10,
+            'objectFit' => ObjectFit::COVER->value,
+        ])->and($result['values'][2]['values'][0]['properties']['image'])->toBe([
+            'src' => 'image3.png',
+            'width' => 10,
+            'height' => 10,
+            'objectFit' => ObjectFit::COVER->value,
+        ]);
+
+        $field = Select::make('Select field with images')
+            ->setValue(1)
+            ->options($options);
+
+        $result = $field->toArray();
+
+        // keys is option value
+
+        expect($result['values'][1]['selected'])->toBeTrue();
+        expect($result['values'][2]['selected'])->toBeFalse();
+        expect($result['values']['Group']['values'][0]['selected'])->toBeFalse();
 
         expect($result['values'][1]['properties']['image'])->toBe([
             'src' => 'image1.jpg',
@@ -364,6 +398,6 @@ describe('select field with images', function () {
 
         $result = $field->toArray();
 
-        expect($result['values'][1]['properties']['image'])->toBeNull();
+        expect($result['values'][0]['properties']['image'])->toBeNull();
     });
 });

@@ -11,6 +11,7 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\EventParams\EventParams;
+use MoonShine\Support\EventParams\ListRowEventParams;
 
 final readonly class AlpineJs
 {
@@ -26,6 +27,10 @@ final readonly class AlpineJs
     public static function event(string|JsEvent $event, ?string $name = null, array|EventParams $params = []): string
     {
         $event = \is_string($event) ? $event : $event->value;
+
+        if($params instanceof ListRowEventParams) {
+            $name = "$name-{$params->key}";
+        }
 
         if (! \is_null($name)) {
             $event .= self::EVENT_SEPARATOR . $name;
