@@ -5,6 +5,6 @@
 ])
 <div {{ $attributes->merge(['class' => 'flex items-center gap-x-1']) }}>
     @for($star = $min; $star <= $max; $star++)
-        <x-moonshine::icon icon="star" size="4" :class="($star <= $value) ? 'text-primary' : 'text-secondary'"/>
+        <x-moonshine::icon :icon="($star <= $value) ? 's.star' : 'star'" size="4" :class="($star <= $value) ? 'text-primary' : 'text-secondary'"/>
     @endfor
 </div>
