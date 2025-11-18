@@ -86,7 +86,7 @@ final class Img extends MoonShineComponent
 
     public function autoDecoding(): static
     {
-        $this->decoded = 'auto';
+        $this->decoding = 'auto';
 
         return $this;
     }
