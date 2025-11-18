@@ -130,7 +130,6 @@ final class Img extends MoonShineComponent
             'loading' => $this->loading,
             'decoding' => $this->decoding,
             'srcset' => $this->srcset,
-            'sizes' => $this->sizes,
         ];
     }
 }
