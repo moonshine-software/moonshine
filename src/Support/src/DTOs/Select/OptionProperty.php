@@ -16,7 +16,7 @@ final readonly class OptionProperty implements Arrayable
     ) {
     }
 
-    public function getImage(): null|OptionImage
+    public function getImage(): ?OptionImage
     {
         if(\is_string($this->image)){
             return new OptionImage(
