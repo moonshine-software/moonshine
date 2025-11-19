@@ -4,7 +4,6 @@
     'width' => null,
     'height' => null,
     'srcset' => null,
-    'sizes' => null,
     'loading' => null, // eager, lazy
     'decoding' => null, // auto, async, sync
 ])
