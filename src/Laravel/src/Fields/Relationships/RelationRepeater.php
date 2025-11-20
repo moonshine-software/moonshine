@@ -278,10 +278,16 @@ class RelationRepeater extends ModelRelationField implements
             ? $this->toFormattedValue()
             : $this->toValue();
 
+        if($this->getRelation() instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
+            $this
+                ->vertical()
+                ->creatable(false);
+        }
+
         $values = Collection::make(
             is_iterable($value)
                 ? $value
-                : []
+                : [$value]
         );
 
         return $values->when(
