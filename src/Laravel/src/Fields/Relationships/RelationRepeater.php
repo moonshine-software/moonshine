@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
@@ -278,7 +279,7 @@ class RelationRepeater extends ModelRelationField implements
             ? $this->toFormattedValue()
             : $this->toValue();
 
-        if($this->getRelation() instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
+        if($this->getRelation() instanceof HasOne) {
             $this
                 ->vertical()
                 ->creatable(false);
