@@ -119,7 +119,7 @@
 
 .ts-dropdown {
   overflow: hidden;
-  z-index: calc(var(--z-dropdown) + 9);
+  z-index: calc(var(--z-menu) + 9);
   border-width: var(--ms-ts-dropdown-border-width, 1px);
   border-style: solid;
   border-color: var(--ms-ts-dropdown-border-color, var(--ms-form-default-border-color));
