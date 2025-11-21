@@ -79,7 +79,7 @@
                                                          class="zoom-in h-10 w-10 overflow-hidden rounded-md"
                                                     >
                                                         <img class="h-full w-full object-cover"
-                                                              :src="item.properties.image"
+                                                              :src="item.properties.image.src"
                                                               alt=""
                                                         >
                                                     </div>
