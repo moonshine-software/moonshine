@@ -13,6 +13,7 @@
 @import './layouts/layout-menu.css';
 @import './layouts/layout-menu-horizontal.css';
 @import './layouts/layout-menu-mobile.css';
+@import './layouts/layout-bottom-bar.css';
 
 /* Tailwind Components */
 @import './components/accordions.css' layer(components);
