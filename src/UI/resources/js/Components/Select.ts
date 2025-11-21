@@ -143,6 +143,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
             disabledField: 'disabled',
             searchField: [ 'label' ],
             dataAttr: 'customProperties',
+            dropdownParent: 'body',
 
             shouldOpen: ! asyncUrl,
 
@@ -263,6 +264,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         let canRequest = this.$el.dataset.asyncOnInit || (query !== null && query.length > 0)
         let options = []
         let optgroups = []
+        let selected = []
 
         if (canRequest) {
             const url = new URL(
@@ -291,9 +293,20 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
             optgroups = normalizeOptions.groups
             options = normalizeOptions.options
+            selected = normalizeOptions.selected
         }
 
         this.selectInstance.loadCallback(options, optgroups)
+        if (selected.length) {
+            this.$nextTick(() => {
+                let isOpen = this.selectInstance.isOpen
+                this.selectInstance.setValue(selected)
+
+                if (isOpen) {
+                    this.selectInstance.open()
+                }
+            })
+        }
 
         this.isLoadedOptions = true
     },
@@ -310,7 +323,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
         return options
     },
-    normalizeOptions(items): { options: Record<string, any>, groups: Record<string, any> } {
+    normalizeOptions(items): { options: Record<string, any>, groups: Record<string, any>, selected: (string|number)[] } {
         const {
             optgroupValueField, optgroupLabelField,
             childrenField, disabledField
@@ -318,6 +331,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
         const options = []
         const groups = []
+        const selected = []
 
         for (const key in items) {
             let item = items[key]
@@ -346,18 +360,18 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 groups.push(group)
 
                 for (let key in groupOptions) {
-                    options.push(this.normalizeOption(groupOptions[key], key, group[optgroupValueField]))
+                    options.push(this.normalizeOption(groupOptions[key], key, group[optgroupValueField], selected))
                 }
 
                 continue
             }
 
-            options.push(this.normalizeOption(item, key))
+            options.push(this.normalizeOption(item, key, undefined, selected))
         }
 
-        return { options, groups }
+        return { options, groups, selected }
     },
-    normalizeOption(option, key, group): Record<string, any> {
+    normalizeOption(option, key, group, selected): Record<string, any> {
         // If it is passed as an object, then we normalize it
         // { "value": "Label", "value_2": "Label 2", ... }
         if (typeof option === 'string') {
@@ -369,6 +383,10 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
         if (group) {
             option[this.selectInstance.settings.optgroupField] = group
+        }
+
+        if (option.selected) {
+            selected.push(option[this.selectInstance.settings.valueField])
         }
 
         const { properties, ...rest } = option
