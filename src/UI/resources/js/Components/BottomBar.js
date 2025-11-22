@@ -9,12 +9,9 @@ export default () => ({
     // Alpine.js directive attributes to remove from cloned elements
     ALPINE_DIRECTIVES: ['x-data', 'x-show', 'x-if', 'x-for'],
 
-    /**
-     * Initialize bottom bar with menu items
-     * @param {HTMLElement} el - The bottom bar container element
-     */
-    initBottomBar(el) {
-        const rootMenu = el.querySelector('[data-bottom-menu-source]');
+    init() {
+        const rootMenu = this.$el.querySelector('[data-bottom-menu-source]');
+
         if (rootMenu) {
             this.menuStack[0] = this.extractMenuItems(rootMenu);
         }

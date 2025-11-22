@@ -4,7 +4,6 @@
 ])
 <div {{ $attributes->merge(['class' => 'layout-bottom-bar']) }}
     x-data="bottomBarMenu"
-    x-init="initBottomBar($el)"
 >
     <div class="layout-bottom-bar-content">
         <button
