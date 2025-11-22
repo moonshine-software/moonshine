@@ -27,6 +27,7 @@ use MoonShine\UI\Components\Layout\Header;
 use MoonShine\UI\Components\Layout\Logo;
 use MoonShine\UI\Components\Layout\Menu;
 use MoonShine\UI\Components\Layout\Meta;
+use MoonShine\UI\Components\Layout\SecondBar;
 use MoonShine\UI\Components\Layout\Sidebar;
 use MoonShine\UI\Components\Layout\ThemeSwitcher;
 use MoonShine\UI\Components\Layout\TopBar;
@@ -41,6 +42,8 @@ abstract class BaseLayout extends AbstractLayout
     public const CONTENT_FRAGMENT_NAME = '_content';
 
     public const CONTENT_ID = '_moonshine-content';
+
+    protected bool $secondBar = false;
 
     protected function getFaviconComponent(): Favicon
     {
@@ -102,6 +105,13 @@ abstract class BaseLayout extends AbstractLayout
         return [];
     }
 
+    protected function getSecondBarComponent(): SecondBar
+    {
+        return SecondBar::make([
+            Menu::make($this->getPage()->getMenu())
+        ])->collapsed();
+    }
+
     protected function getSidebarComponent(): Sidebar
     {
         return Sidebar::make([
@@ -131,7 +141,7 @@ abstract class BaseLayout extends AbstractLayout
             ])->customAttributes([
                 'class' => 'menu menu--vertical',
             ])->name('sidebar-content'),
-        ])->collapsed();
+        ])->collapsed($this->secondBar === false);
     }
 
     /**

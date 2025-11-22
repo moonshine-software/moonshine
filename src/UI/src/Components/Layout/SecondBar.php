@@ -6,12 +6,16 @@ namespace MoonShine\UI\Components\Layout;
 
 use Closure;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\AbstractWithComponents;
 
-class Sidebar extends AbstractWithComponents
+/**
+ * @method static static make(iterable $components = [])
+ */
+class SecondBar extends AbstractWithComponents
 {
-    protected string $view = 'moonshine::components.layout.sidebar';
+    protected string $view = 'moonshine::components.layout.second-bar';
 
     protected array $translates = [
         'collapse_menu' => 'moonshine::ui.collapse_menu',
@@ -37,12 +41,21 @@ class Sidebar extends AbstractWithComponents
 
     /**
      * @param  array<string, mixed>  $attributes
-     *
      */
     public function collapseAttributes(array $attributes): static
     {
         $this->collapseAttributes = $this->collapseAttributes->merge($attributes);
 
         return $this;
+    }
+
+    protected function viewData(): array
+    {
+        /** @var ?Menu $menu */
+        $menu = $this->getComponents()->first(fn(ComponentContract $component) => $component instanceof Menu);
+
+        return [
+            'hasMenu' => $menu?->items?->isNotEmpty() ?? false
+        ];
     }
 }

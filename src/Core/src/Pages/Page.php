@@ -10,6 +10,7 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\Core\Attributes\Layout;
@@ -124,6 +125,22 @@ abstract class Page implements PageContract
         $this->checkUrl = true;
 
         return $this;
+    }
+
+    /**
+     * @return list<MenuElementContract>
+     */
+    protected function menu(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return list<MenuElementContract>
+     */
+    public function getMenu(): iterable
+    {
+        return $this->menu();
     }
 
     /**

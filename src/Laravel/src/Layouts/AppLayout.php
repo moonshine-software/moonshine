@@ -10,15 +10,14 @@ use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\UI\Components\{
-    Layout\Body,
+use MoonShine\UI\Components\{Layout\Body,
     Layout\Content,
     Layout\Div,
     Layout\Flash,
     Layout\Html,
     Layout\Layout,
     Layout\Wrapper,
-};
+    When};
 
 class AppLayout extends BaseLayout
 {
@@ -48,6 +47,12 @@ class AppLayout extends BaseLayout
                     Wrapper::make([
                         // $this->getTopBarComponent(),
                         $this->getSidebarComponent(),
+                        When::make(
+                            fn (): bool => $this->secondBar,
+                            fn (): array => [
+                                $this->getSecondBarComponent(),
+                            ]
+                        ),
 
                         Div::make([
                             Fragment::make([
