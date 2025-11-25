@@ -187,7 +187,7 @@ describe('showWhenVisibilityChange', () => {
       'test-form',
     )
 
-    expect(inputElement.style.display).toBe('none')
+    expect(inputElement.classList.contains('hidden')).toBe(true)
   })
 
   it('should show the field if conditions are met', () => {
@@ -200,7 +200,7 @@ describe('showWhenVisibilityChange', () => {
       'test-form',
     )
 
-    expect(inputElement.style.display).toBe('')
+    expect(inputElement.classList.contains('hidden')).toBe(false)
   })
 
   it('should do nothing if inputElement is null', () => {
