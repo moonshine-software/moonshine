@@ -15,7 +15,7 @@ export default () => ({
   toggleTooltip() {
     const lgMediaQuery = window.matchMedia('(min-width: 1024px) and (max-width: 1279.98px)')
 
-    if (!this.$data.minimizedMenu && !lgMediaQuery.matches) {
+    if (this.tooltipInstance && !this.$data.minimizedMenu && !lgMediaQuery.matches) {
       this.tooltipInstance.hide()
     }
   },
