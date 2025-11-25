@@ -153,13 +153,13 @@ abstract class AbstractLayout implements LayoutContract
     /**
      * @return list<MenuElementContract>
      */
-    protected function autoloadMenu(): array
+    protected function autoloadMenu(bool $onlyIcons = false): array
     {
         $data = $this->getCore()->getOptimizer()->hasType(MenuElementContract::class)
             ? $this->getCore()->getOptimizer()->getType(MenuElementContract::class)
             : null;
 
-        return $this->menuAutoloader->resolve($data);
+        return $this->menuAutoloader->resolve($data, $onlyIcons);
     }
 
     abstract public function build(): Layout;

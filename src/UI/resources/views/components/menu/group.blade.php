@@ -2,6 +2,7 @@
     'label' => '',
     'previewLabel' => '',
     'icon' => '',
+    'onlyIcon' => false,
     'items' => [],
     'isActive' => false,
     'top' => false,
@@ -38,7 +39,7 @@
             </div>
         @endif
 
-        <span class="menu-text">{{ $label }}</span>
+        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
         <span class="menu-arrow">
             <x-moonshine::icon
                 icon="chevron-down"

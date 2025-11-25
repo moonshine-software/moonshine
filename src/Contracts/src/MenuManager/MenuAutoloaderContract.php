@@ -34,5 +34,5 @@ interface MenuAutoloaderContract
      *
      * @return MenuElementContract[]
      */
-    public function resolve(?array $cached = null): array;
+    public function resolve(?array $cached = null, bool $onlyIcons = false): array;
 }

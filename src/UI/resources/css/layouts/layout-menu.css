@@ -96,6 +96,10 @@
         font-size: 0.875em;
       }
 
+      .menu-text.menu-only-icon {
+        display: none;
+      }
+
       .menu-submenu {
         .menu-submenu .menu-icon ~ .menu-text {
           display: none;

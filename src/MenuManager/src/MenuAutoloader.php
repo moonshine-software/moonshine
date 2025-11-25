@@ -164,9 +164,9 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
      *
      * @return list<MenuElementContract>
      */
-    public function resolve(?array $cached = null): array
+    public function resolve(?array $cached = null, bool $onlyIcons = false): array
     {
-        return $this->generateMenu($cached ?? $this->toArray());
+        return $this->generateMenu($cached ?? $this->toArray(), $onlyIcons);
     }
 
     /**
@@ -174,7 +174,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
      *
      * @return list<MenuElementContract>
      */
-    private function generateMenu(array $data): array
+    private function generateMenu(array $data, bool $onlyIcons = false): array
     {
         $menu = [];
 
@@ -186,15 +186,15 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
 
                 $menu[] = MenuGroup::make(
                     $group['translatable'] ? $label : $group['label'],
-                    $this->generateMenu($item['items']),
+                    $this->generateMenu($item['items'], $onlyIcons),
                     $group['icon'],
-                )->when($group['canSee'], fn (MenuGroup $ctx): MenuGroup => $ctx->canSee($this->canSee($group['class'], $group['canSee'])));
+                )->onlyIcon($onlyIcons)->when($group['canSee'], fn (MenuGroup $ctx): MenuGroup => $ctx->canSee($this->canSee($group['class'], $group['canSee'])));
 
                 continue;
             }
 
             if (isset($item['filler'])) {
-                $menu[] = $this->toMenuItem($item['filler'], $item['canSee'] ?? 'canSee');
+                $menu[] = $this->toMenuItem($item['filler'], $item['canSee'] ?? 'canSee')->onlyIcon($onlyIcons);
             }
         }
 

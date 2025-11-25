@@ -285,10 +285,6 @@
   }
 }
 
-.menu-char {
-  display: none;
-}
-
 .menu-text {
   @apply truncate;
 
