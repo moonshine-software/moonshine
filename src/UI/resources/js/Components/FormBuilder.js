@@ -223,6 +223,10 @@ export default (name = '', initData = {}, reactive = {}) => ({
           t.toggleModal()
         }
 
+        if (type !== 'error' && t.inOffCanvas && t.autoClose) {
+          t.toggleCanvas()
+        }
+
         if (typeof data !== 'object' || data === null || !('redirect' in data)) {
           submitState(form, false, false)
         }
@@ -260,6 +264,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
   asyncFilters(componentEvent, exclude = null) {
     const form = this.$el
+    const t = this
     const prefix = form.dataset.queryParamPrefix ?? ''
     let formData = new FormData(form)
 
@@ -277,6 +282,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     this.dispatchEvents(componentEvent, exclude, {
       filterQuery: prepareFormQueryString(formData, exclude),
+      component: t,
     })
 
     form.removeAttribute('data-reset')

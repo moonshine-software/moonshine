@@ -26,6 +26,8 @@ final class OffCanvas extends AbstractWithComponents
 
     protected bool $full = false;
 
+    protected bool $autoClose = true;
+
     /**
      * @var  array<string, mixed>
      *
@@ -79,6 +81,13 @@ final class OffCanvas extends AbstractWithComponents
         return $this;
     }
 
+    public function autoClose(Closure|bool|null $condition = null): self
+    {
+        $this->autoClose = \is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
     /**
      * @param  array<string, mixed>  $attributes
      *
@@ -126,6 +135,7 @@ final class OffCanvas extends AbstractWithComponents
             'isWide' => $this->wide,
             'isFull' => $this->full,
             'isOpen' => $this->open,
+            'isAutoClose' => $this->autoClose,
             'title' => value($this->title, $this),
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',

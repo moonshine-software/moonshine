@@ -1,11 +1,13 @@
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import load from '../Support/AsyncLoadContent.js'
 
-export default (open = false, asyncUrl = '') => ({
+export default (open = false, asyncUrl = '', autoClose = true) => ({
   open: open,
   id: '',
   asyncUrl: asyncUrl,
+  inOffCanvas: true,
   asyncLoaded: false,
+  autoClose: autoClose,
 
   init() {
     this.id = this.$id('offcanvas-content')
