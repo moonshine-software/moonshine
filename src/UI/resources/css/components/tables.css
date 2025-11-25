@@ -61,7 +61,9 @@ table {
       border-bottom: var(--ms-table-thead-border-width, 1px) solid
         var(--ms-table-thead-border-color, var(--ms-table-border-color));
     }
-
+    th {
+      white-space: nowrap;
+    }
     th,
     td {
       padding-block: var(--ms-table-space-y, var(--ms-table-thead-space-y, --spacing(3)));
