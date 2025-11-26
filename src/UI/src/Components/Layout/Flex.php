@@ -34,6 +34,8 @@ class Flex extends AbstractWithComponents
             ->columnSpan($colSpan, $adaptiveColSpan);
 
         parent::__construct($components);
+
+        $this->class('flex-wrap');
     }
 
     public function withoutSpace(): static
@@ -74,7 +76,12 @@ class Flex extends AbstractWithComponents
 
     public function wrap(): static
     {
-        return $this->class('flex-wrap');
+        return $this->removeClass('flex-nowrap')->class('flex-wrap');
+    }
+
+    public function unwrap(): static
+    {
+        return $this->removeClass('flex-wrap')->class('flex-nowrap');
     }
 
     protected function viewData(): array
