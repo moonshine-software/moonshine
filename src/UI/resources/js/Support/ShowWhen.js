@@ -247,7 +247,7 @@ function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
       if (element.cellIndex !== cellIndexTd) {
         return
       }
-      element.classList.toggle('hidden', ! isShow)
+      element.classList.toggle('hidden', !isShow)
     })
   }
 }
