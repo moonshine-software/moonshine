@@ -79,8 +79,11 @@ trait WithRelatedValues
     {
         $formatted = ! \is_null($this->getFormattedValueCallback());
 
-        $values = $this->memoizeValues ?? $this->resolveValuesQuery()->get();
-        $this->memoizeValues = $values;
+        $values = $this->memoizeValues ?? ($this->isAsyncSearch() && !$this->isToOne() ? $this->toValue() : $this->resolveValuesQuery()->get());
+
+        if($values === null || $values instanceof Collection) {
+            $this->memoizeValues = $values;
+        }
 
         $getValue = fn (Model $item) => $formatted ? value(
             $this->getFormattedValueCallback(),
