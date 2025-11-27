@@ -38,8 +38,8 @@ it('preview value', function (): void {
         ->toBe('***');
 });
 
-it('apply', function (): void {
-    $data = ['password' => '12345'];
+it('apply', function ($password, $isEqual): void {
+    $data = ['password' => $password];
 
     fakeRequest(parameters: $data);
 
@@ -55,6 +55,24 @@ it('apply', function (): void {
     )
         ->toBeInstanceOf(Model::class)
         ->and(Hash::check($data['password'], $item->password))
-        ->toBeTrue()
+        ->toBe($isEqual)
     ;
-});
+})->with([
+    ['3Lt\'`I"ge),B%\d&quot;\t9%\\\'x#B!<>', true],
+    ['\';', true],
+    ['***', true],
+    ['0', true],
+    [' ', true],
+    ['密码123', true],
+    ['🔒pa\nss\0word🔑', true],
+    ["\t\r\n", true],
+    ['constructor', true],
+    ['null', true],
+    ['false', true],
+    ['true', true],
+    ['<script>', true],
+    ['http://', true],
+    ['', false],
+    [[''], false],
+    [['1234'], false],
+]);
