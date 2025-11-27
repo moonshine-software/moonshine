@@ -38,10 +38,12 @@ it('preview value', function (): void {
         ->toBe('***');
 });
 
-it('apply', function (): void {
-    $data = ['password' => '12345'];
+it('apply', function ($password, $escape, $isEqual): void {
+    $data = ['password' => $password];
 
     fakeRequest(parameters: $data);
+
+    $escape ? $this->field->escape() : $this->field->unescape();
 
     expect(
         $item = $this->field->apply(
@@ -55,6 +57,23 @@ it('apply', function (): void {
     )
         ->toBeInstanceOf(Model::class)
         ->and(Hash::check($data['password'], $item->password))
-        ->toBeTrue()
+        ->toBe($isEqual)
     ;
-});
+})->with([
+    ['3Lt\'`I"ge),B%\d&quot;\t9%\\\'x#B!<>密码\n\0🔑', false, true],
+    ['3Lt\'`I"ge),B%\d&quot;\t9%\\\'x#B!<>密码\n\0🔑', true, true],
+    ["Invalid UTF-8: \xC3\x28", false, true],
+    ["Invalid UTF-8: \xC3\x28", true, true],
+    ['0', false, true],
+    ['0', true, true],
+    [' ', false, true],
+    [' ', true, true],
+    ["\t\r\n", false, true],
+    ["\t\r\n", true, true],
+    ['', false, false],
+    ['', true, false],
+    [[''], false, false],
+    [[''], true, false],
+    [['1234'], false, false],
+    [['1234'], true, false],
+]);
