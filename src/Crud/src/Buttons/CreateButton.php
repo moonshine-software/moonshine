@@ -6,6 +6,7 @@ namespace MoonShine\Crud\Buttons;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Components\ActionButton;
@@ -54,7 +55,7 @@ final class CreateButton
                     static fn (): string => $label,
                     static fn (): string => '',
                     name: $modalName,
-                    builder: static fn (Modal $modal): Modal => $modal->wide(),
+                    builder: static fn (ModalContract $modal): ModalContract => $resource->resolveCreateModal($modal),
                 )
             )
             ->canSee(

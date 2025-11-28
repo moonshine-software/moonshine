@@ -9,6 +9,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\HttpMethod;
@@ -23,7 +24,7 @@ use MoonShine\UI\Fields\HiddenIds;
 trait WithModal
 {
     /**
-     * @var null|Closure(mixed, DataWrapperContract, static): ComponentContract
+     * @var null|Closure(mixed, DataWrapperContract, static): ModalContract
      */
     protected ?Closure $modal = null;
 
@@ -33,7 +34,7 @@ trait WithModal
     }
 
     /**
-     * @param  ?Closure(Modal $modal, ActionButtonContract $ctx): Modal  $builder
+     * @param  ?Closure(ModalContract $modal, ActionButtonContract $ctx): ModalContract  $builder
      */
     public function inModal(
         Closure|string|null $title = null,
@@ -57,7 +58,7 @@ trait WithModal
             ->name(value($name, $item, $ctx))
             ->when(
                 ! \is_null($builder),
-                static fn (Modal $modal): Modal => $builder($modal, $ctx)
+                static fn (ModalContract $modal): ModalContract => $builder($modal, $ctx)
             );
 
         return $this->onBeforeRender(
@@ -69,7 +70,7 @@ trait WithModal
 
     /**
      * @param  ?Closure(FormBuilderContract $form, mixed $data): FormBuilderContract  $formBuilder
-     * @param  ?Closure(Modal $modal, ActionButtonContract $ctx): Modal  $modalBuilder
+     * @param  ?Closure(ModalContract $modal, ActionButtonContract $ctx): ModalContract  $modalBuilder
      */
     public function withConfirm(
         Closure|string|null $title = null,

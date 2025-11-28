@@ -3,6 +3,7 @@
     'async' => false,
     'asyncUrl' => '',
     'wide' => $isWide ?? false,
+    'full' => $isFull ?? false,
     'open' => $isOpen ?? false,
     'auto' => $isAuto ?? false,
     'autoClose' => $isAutoClose ?? false,
@@ -18,7 +19,7 @@
     {{ $attributes }}
 >
     <template x-teleport="body">
-        <div 
+        <div
             class="modal-template"
             @defineEvent('modal_toggled', $name, 'toggleModal')
         >
@@ -35,15 +36,15 @@
                 {{ $attributes->merge(['class' => 'modal']) }}
                 @if($closeOutside) @click.self="toggleModal" @endif
             >
-                <div 
+                <div
                     class="modal-dialog
-                    @if($wide) modal-dialog-xl @elseif($auto) modal-dialog-auto @endif"
+                    @if($wide) modal-dialog-xl @elseif($full) w-full max-w-none @elseif($auto) modal-dialog-auto @endif"
                     x-bind="dismissModal"
                 >
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">{{ $title ?? '' }}</h5>
-                            <button 
+                            <button
                                 type="button"
                                 class="modal-close btn-fit"
                                 @click.stop="toggleModal"

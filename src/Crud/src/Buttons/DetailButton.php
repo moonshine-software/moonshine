@@ -7,12 +7,12 @@ namespace MoonShine\Crud\Buttons;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\Modal;
 use MoonShine\UI\Exceptions\ActionButtonException;
 
 final class DetailButton
@@ -57,7 +57,7 @@ final class DetailButton
                     title: static fn (): string => $label,
                     content: static fn (): string => '',
                     name: static fn (mixed $data, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}",
-                    builder: static fn (Modal $modal): Modal => $modal->wide()
+                    builder: static fn (ModalContract $modal): ModalContract => $resource->resolveDetailModal($modal)
                 )
             )
             ->canSee(

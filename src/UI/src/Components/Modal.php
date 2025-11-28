@@ -9,13 +9,14 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
  * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
-final class Modal extends AbstractWithComponents
+final class Modal extends AbstractWithComponents implements ModalContract
 {
     protected string $view = 'moonshine::components.modal';
 
@@ -24,6 +25,8 @@ final class Modal extends AbstractWithComponents
     protected bool $closeOutside = true;
 
     protected bool $wide = false;
+
+    protected bool $full = false;
 
     protected bool $auto = false;
 
@@ -72,6 +75,13 @@ final class Modal extends AbstractWithComponents
     public function wide(Closure|bool|null $condition = null): self
     {
         $this->wide = \is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
+    public function full(Closure|bool|null $condition = null): self
+    {
+        $this->full = \is_null($condition) || value($condition, $this);
 
         return $this;
     }
@@ -147,6 +157,7 @@ final class Modal extends AbstractWithComponents
             'isWide' => $this->wide,
             'isOpen' => $this->open,
             'isAuto' => $this->auto,
+            'isFull' => $this->full,
             'isAutoClose' => $this->autoClose,
             'isCloseOutside' => $this->closeOutside,
             'async' => ! empty($this->asyncUrl),

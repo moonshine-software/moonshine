@@ -17,6 +17,9 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\ModalContract;
+use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Core\Resources\Resource;
 use MoonShine\Core\TypeCasts\MixedDataCaster;
@@ -40,6 +43,8 @@ use MoonShine\Crud\Traits\Resource\ResourceQuery;
 use MoonShine\Crud\Traits\Resource\ResourceWithAuthorization;
 use MoonShine\Crud\Traits\Resource\ResourceWithButtons;
 use MoonShine\Crud\Traits\Resource\ResourceWithFields;
+use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Components\OffCanvas;
 use Throwable;
 
 /**
@@ -171,14 +176,74 @@ abstract class CrudResource extends Resource implements
         return $this->createInModal;
     }
 
+    public function resolveCreateModal(ModalContract $modal): ModalContract
+    {
+        return $this->modifyCreateModal($modal);
+    }
+
+    protected function modifyCreateModal(ModalContract $modal): ModalContract
+    {
+        return $modal->wide();
+    }
+
     public function isEditInModal(): bool
     {
         return $this->editInModal;
     }
 
+    public function resolveEditModal(ModalContract $modal): ModalContract
+    {
+        return $this->modifyEditModal($modal);
+    }
+
+    protected function modifyEditModal(ModalContract $modal): ModalContract
+    {
+        return $modal->wide();
+    }
+
     public function isDetailInModal(): bool
     {
         return $this->detailInModal;
+    }
+
+    public function resolveDetailModal(ModalContract $modal): ModalContract
+    {
+        return $this->modifyDetailModal($modal);
+    }
+
+    protected function modifyDetailModal(ModalContract $modal): ModalContract
+    {
+        return $modal->wide();
+    }
+
+    public function resolveDeleteModal(ModalContract $modal): ModalContract
+    {
+        return $this->modifyDeleteModal($modal);
+    }
+
+    protected function modifyDeleteModal(ModalContract $modal): ModalContract
+    {
+        return $modal->auto();
+    }
+
+    public function resolveMassDeleteModal(ModalContract $modal): ModalContract
+    {
+        return $this->modifyMassDeleteModal($modal);
+    }
+
+    protected function modifyMassDeleteModal(ModalContract $modal): ModalContract
+    {
+        return $modal->auto();
+    }
+
+    public function resolveFiltersOffCanvas(OffCanvasContract $offCanvas): OffCanvasContract
+    {
+        return $this->modifyFiltersOffCanvas($offCanvas);
+    }
+
+    protected function modifyFiltersOffCanvas(OffCanvasContract $offCanvas): OffCanvasContract
+    {
+        return $offCanvas;
     }
 
     /**
@@ -255,7 +320,7 @@ abstract class CrudResource extends Resource implements
         }
 
         return $this->getCaster()->cast(
-            $this->getItem()
+            $this->getItem(),
         );
     }
 
