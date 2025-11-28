@@ -184,6 +184,7 @@ describe('Layouts', function () {
                 ->columnSpan(6, 6)
                 ->withoutSpace()
                 ->itemsAlign('center')
+                ->removeClass('flex-wrap')
                 ->justifyAlign('start'),
             [
                 'without-space' => true,
