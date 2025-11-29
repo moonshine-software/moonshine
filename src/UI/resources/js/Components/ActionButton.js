@@ -30,7 +30,7 @@ export default () => ({
         ? '<div class="spinner spinner--primary spinner-sm"></div>' + btnText
         : btnText
     })
-
+    let modal = null;
     if (this.$el.dataset.hotKeys) {
       const hotkeys = this.$el.dataset.hotKeys.split(',').map(s => s.trim())
 
