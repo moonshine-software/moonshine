@@ -33,7 +33,7 @@ export default () => ({
 
     if (this.$el.dataset.hotKeys) {
       const hotkeys = this.$el.dataset.hotKeys.split(',').map(s => s.trim())
-      let modal = this.$el.closest('.modal');
+      let modal = this.$el.closest('.modal')
       if (modal) {
         this._modalHotkey(modal, hotkeys)
       } else {
