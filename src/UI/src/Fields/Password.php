@@ -26,14 +26,21 @@ class Password extends Text
         return '';
     }
 
+    public function isUnescape(): bool
+    {
+        return true;
+    }
+
     protected function resolveOnApply(): ?Closure
     {
         return function ($item) {
-            if ($this->getRequestValue()) {
+            $value = $this->getRequestValue();
+
+            if (\is_string($value) && $value !== '') {
                 data_set(
                     $item,
                     $this->getColumn(),
-                    $this->getCore()->getContainer(Hasher::class)->make($this->getRequestValue())
+                    $this->getCore()->getContainer(Hasher::class)->make($value)
                 );
             }
 
