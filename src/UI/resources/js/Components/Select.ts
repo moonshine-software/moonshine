@@ -449,6 +449,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
     morphClear(type: string) {
         if (type && this.morphClearValue !== type) {
+            this.selectInstance.clear(true)
             this.selectInstance.clearOptions()
             this.asyncSearch()
             this.morphClearValue = type
