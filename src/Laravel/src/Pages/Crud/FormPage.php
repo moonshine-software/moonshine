@@ -75,19 +75,21 @@ class FormPage extends CrudFormPage
                     $item,
                     $field->getResource()?->getCaster(),
                 )
-                : Fragment::make([
-                    Heading::make($field->getLabel()),
+                : Fragment::make(array_filter([
+                    $field instanceof HasTabModeContract && $field->isTabMode()
+                        ? null
+                        : Heading::make($field->getLabel()),
 
                     $field->fillCast(
                         $item,
                         $field->getResource()?->getCaster(),
                     ),
-                ])->name($field->getRelationName());
+                ]))->name($field->getRelationName());
 
             if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                 $tabs[] = Tab::make($field->getLabel(), [
                     $fieldComponent,
-                ]);
+                ])->canSee(static fn(): bool => $field->isSee());
 
                 continue;
             }

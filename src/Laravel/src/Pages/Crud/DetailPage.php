@@ -93,7 +93,7 @@ class DetailPage extends CrudDetailPage
                         $field->isToOne() ? $toOneRenderer($field, $this->getResource()->getDetailPageUrl(
                             $this->getResource()->getItemID(),
                         )) : $field,
-                    ]);
+                    ])->canSee(static fn(): bool => $field->isSee());
 
                     continue;
                 }
