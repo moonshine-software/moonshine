@@ -105,7 +105,7 @@ class DetailPage extends CrudDetailPage
                     : [Heading::make($field->getLabel()), $field];
 
                 $components[] = Fragment::make($blocks)
-                    ->canSee(static fn(): bool => $field->isSee())
+                    ->canSee(static fn (): bool => $field->isSee())
                     ->name($field->getRelationName());
             }
         }
