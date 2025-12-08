@@ -46,8 +46,17 @@ final class AsyncSearchController extends MoonShineController
                 ? data_get($request->input($field->getWrapName(), []), $field->getMorphType())
                 : $request->input($field->getMorphType());
 
+            if (! class_exists($morphClass)) {
+                return response()->json();
+            }
+
             /** @var Model $model */
             $model = new $morphClass();
+
+            if (! $model instanceof Model) {
+                return response()->json();
+            }
+
             $searchColumn = $field->getSearchColumn($morphClass);
             $query = $model->newModelQuery();
         }

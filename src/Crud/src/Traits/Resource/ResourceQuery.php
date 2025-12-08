@@ -80,7 +80,7 @@ trait ResourceQuery
     {
         $this->stopGettingItemFromUrl = true;
 
-        return $this;
+        return $this->setItem(null);
     }
 
     public function isStopGettingItemFromUrl(): bool

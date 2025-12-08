@@ -40,9 +40,9 @@ class DetailPage extends CrudDetailPage
     {
         $components = parent::bottomLayer();
 
-        $item = $this->getResource()->getItem();
+        $item = $this->getItem();
 
-        if (! $this->getResource()->isItemExists()) {
+        if (! $this->isItemExists()) {
             return $components;
         }
 
@@ -93,7 +93,7 @@ class DetailPage extends CrudDetailPage
                         $field->isToOne() ? $toOneRenderer($field, $this->getResource()->getDetailPageUrl(
                             $this->getResource()->getItemID(),
                         )) : $field,
-                    ]);
+                    ])->canSee(static fn (): bool => $field->isSee());
 
                     continue;
                 }
@@ -105,6 +105,7 @@ class DetailPage extends CrudDetailPage
                     : [Heading::make($field->getLabel()), $field];
 
                 $components[] = Fragment::make($blocks)
+                    ->canSee(static fn (): bool => $field->isSee())
                     ->name($field->getRelationName());
             }
         }

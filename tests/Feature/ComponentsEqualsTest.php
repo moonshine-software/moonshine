@@ -19,6 +19,7 @@ use MoonShine\UI\Components\Files;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Icon;
+use MoonShine\UI\Components\Img;
 use MoonShine\UI\Components\Layout\Assets;
 use MoonShine\UI\Components\Layout\Body;
 use MoonShine\UI\Components\Layout\Box;
@@ -525,6 +526,13 @@ describe('Basic', function () {
     it('when', function () {
         compare(
             When::make(fn () => false, fn () => $this->components),
+        );
+    });
+
+    it('img', function () {
+        compare(
+            Img::make('image.png'),
+            ['src' => 'image.png']
         );
     });
 });

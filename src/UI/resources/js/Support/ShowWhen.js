@@ -163,20 +163,29 @@ function showHideInputElement(isShow, inputElement, showWhenSubmit) {
   }
 
   if (isShow) {
-    fieldContainer.style.removeProperty('display')
+    fieldContainer.classList.remove('hidden')
 
     const nameAttr = inputElement.getAttribute('data-show-when-column')
     if (nameAttr) {
       inputElement.setAttribute('name', nameAttr)
     }
+    const requiredAttr = inputElement.getAttribute('data-required-when-column')
+    if (nameAttr) {
+      inputElement.setAttribute('required', requiredAttr)
+    }
   } else {
-    fieldContainer.style.display = 'none'
+    fieldContainer.classList.add('hidden')
 
     if (!showWhenSubmit) {
       const nameAttr = inputElement.getAttribute('name')
       if (nameAttr) {
         inputElement.setAttribute('data-show-when-column', nameAttr)
         inputElement.removeAttribute('name')
+      }
+      const requiredAttr = inputElement.getAttribute('required')
+      if (requiredAttr) {
+        inputElement.setAttribute('data-required-when-column', requiredAttr)
+        inputElement.removeAttribute('required')
       }
     }
   }
@@ -201,20 +210,29 @@ function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
     }
 
     if (isShow) {
-      td.style.removeProperty('display')
+      td.classList.remove('hidden')
 
       const nameAttr = element.getAttribute('data-show-when-column')
       if (nameAttr) {
         element.setAttribute('name', nameAttr)
       }
+      const requiredAttr = element.getAttribute('data-required-when-column')
+      if (requiredAttr) {
+        element.setAttribute('required', requiredAttr)
+      }
     } else {
-      td.style.display = 'none'
+      td.classList.add('hidden')
 
       if (!showWhenSubmit) {
         const nameAttr = element.getAttribute('name')
         if (nameAttr) {
           element.setAttribute('data-show-when-column', nameAttr)
           element.removeAttribute('name')
+        }
+        const requiredAttr = element.getAttribute('required')
+        if (requiredAttr) {
+          element.setAttribute('data-required-when-column', requiredAttr)
+          element.removeAttribute('required')
         }
       }
     }
@@ -229,7 +247,7 @@ function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
       if (element.cellIndex !== cellIndexTd) {
         return
       }
-      element.style.display = isShow ? null : 'none'
+      element.classList.toggle('hidden', !isShow)
     })
   }
 }

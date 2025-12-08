@@ -86,6 +86,7 @@ final class Search extends MoonShineComponent
 
     protected function getInput(): Text
     {
+        $value = $this->getCore()->getRequest()->getScalar($this->key, '');
         $input = Text::make($this->placeholder, $this->key)
             ->setAttribute('type', 'search')
             ->xModel('searchValue')
@@ -97,7 +98,7 @@ final class Search extends MoonShineComponent
                 'x-ref' => 'searchInput',
                 '@keyup.ctrl.k.window' => '$refs.searchInput.focus()',
                 '@keyup.ctrl.period.window' => '$refs.searchInput.focus()',
-                '@input.debounce.300ms' => '$refs.searchInput.value == "" ? $refs.searchForm.submit(): ""',
+                '@input.debounce.300ms' => $value ? '$refs.searchInput.value == "" ? $refs.searchForm.submit(): ""' : '',
             ]);
 
         if (! \is_null($this->modifyInput)) {
@@ -131,7 +132,7 @@ final class Search extends MoonShineComponent
 
                     ActionButton::make('')
                         ->rawMode()
-                        ->onClick(fn (): string => 'searchValue = ""; $refs.searchInput.value = ""; $refs.searchForm.submit()')
+                        ->onClick(fn (): string => 'searchValue = ""; $refs.searchInput.value = ""')
                         ->class('search-form-clear')
                         ->xShow('searchValue', '!=', '')
                         ->customAttributes([
@@ -163,6 +164,7 @@ final class Search extends MoonShineComponent
                     ->style('display: inline')
                     ->xData([
                         'searchValue' => $value,
+                        'hasRequestValue' => $value !== '',
                         'isCtrlPressed' => false,
                         'isKPressed' => false,
                     ]),

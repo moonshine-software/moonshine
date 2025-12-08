@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -278,7 +279,7 @@ class RelationRepeater extends ModelRelationField implements
             ? $this->toFormattedValue()
             : $this->toValue();
 
-        if($this->getRelation() instanceof \Illuminate\Database\Eloquent\Relations\HasOne) {
+        if ($this->getRelation() instanceof HasOne) {
             $this
                 ->vertical()
                 ->creatable(false);

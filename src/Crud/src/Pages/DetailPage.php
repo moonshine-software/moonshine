@@ -72,7 +72,7 @@ class DetailPage extends CrudPage implements DetailPageContract
 
         $breadcrumbs = parent::getBreadcrumbs();
 
-        $breadcrumbs[$this->getRoute()] = data_get($this->getResource()->getItem(), $this->getResource()->getColumn());
+        $breadcrumbs[$this->getRoute()] = data_get($this->getItem(), $this->getResource()->getColumn());
 
         return $breadcrumbs;
     }
@@ -100,7 +100,7 @@ class DetailPage extends CrudPage implements DetailPageContract
     {
         $this->validateResource();
 
-        if (! $this->getResource()->isItemExists()) {
+        if (! $this->isItemExists()) {
             $this->throw404();
         }
 
@@ -133,6 +133,16 @@ class DetailPage extends CrudPage implements DetailPageContract
     protected function modifyDetailComponent(ComponentContract $component): ComponentContract
     {
         return $component;
+    }
+
+    protected function getItem(): mixed
+    {
+        return $this->getResource()->getItem();
+    }
+
+    protected function isItemExists(): bool
+    {
+        return $this->getResource()->isItemExists();
     }
 
     public function getDetailComponent(bool $withoutFragment = false): ComponentContract

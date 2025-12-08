@@ -66,6 +66,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
     searchEnabled: null,
     removeItemButton: null,
     associatedWith: null,
+    morphClearValue: '',
 
     isLoadedOptions: false,
 
@@ -444,5 +445,14 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         }
 
         de(componentEvent, '', this, extra)
-    }
+    },
+
+    morphClear(type: string) {
+        if (type && this.morphClearValue !== type) {
+            this.selectInstance.clear(true)
+            this.selectInstance.clearOptions()
+            this.asyncSearch()
+            this.morphClearValue = type
+        }
+    },
 })

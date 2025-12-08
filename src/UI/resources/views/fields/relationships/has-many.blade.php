@@ -7,16 +7,18 @@
 <div x-id="['has-many']"
      :id="$id('has-many')"
 >
-    <x-moonshine::layout.flex justify-align="between" items-align="start">
-        @if($isCreatable)
-            {!! $createButton !!}
-        @endif
+    @if($isCreatable || ($buttons && $buttons->getActions()->isNotEmpty()))
+        <x-moonshine::layout.flex justify-align="between" items-align="start">
+            @if($isCreatable)
+                {!! $createButton !!}
+            @endif
 
-        {!! $buttons ?? '' !!}
-    </x-moonshine::layout.flex>
+            {!! $buttons ?? '' !!}
+        </x-moonshine::layout.flex>
 
 
-    <x-moonshine::layout.line-break />
+        <x-moonshine::layout.line-break />
+    @endif
 
     {!! $component !!}
 </div>

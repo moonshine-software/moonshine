@@ -53,6 +53,6 @@ class Url extends Text
         )->when(
             $this->blank,
             fn (Link $ctx): Link => $ctx->blank()
-        )->icon('link')->render();
+        )->icon('link')->customAttributes($this->getAttributes()->except('type')->jsonSerialize())->render();
     }
 }
