@@ -6,7 +6,6 @@ namespace MoonShine\MenuManager;
 
 use Attribute;
 use Closure;
-use Illuminate\Support\Str;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
