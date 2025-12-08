@@ -72,7 +72,7 @@ class FormPage extends CrudPage implements FormPageContract
 
         if ($this->getResource()->getItemID()) {
             $breadcrumbs[$this->getRoute()] = data_get(
-                $this->getResource()->getItem(),
+                $this->getItem(),
                 $this->getResource()->getColumn(),
             );
         } else {
@@ -112,7 +112,7 @@ class FormPage extends CrudPage implements FormPageContract
     {
         $this->validateResource();
 
-        if (! $this->getResource()->isItemExists() && $this->getResource()->getItemID()) {
+        if (! $this->isItemExists() && $this->getResource()->getItemID()) {
             $this->throw404();
         }
 
@@ -149,7 +149,7 @@ class FormPage extends CrudPage implements FormPageContract
     protected function getFormAction(): string
     {
         return $this->getResource()->getRoute(
-            $this->getResource()->isItemExists() ? 'crud.update' : 'crud.store',
+            $this->isItemExists() ? 'crud.update' : 'crud.store',
             $this->getResource()->getItemID(),
         );
     }
@@ -186,6 +186,19 @@ class FormPage extends CrudPage implements FormPageContract
     }
 
     /**
+     * @return null|TData
+     */
+    protected function getItem(): mixed
+    {
+        return $this->getResource()->getItem();
+    }
+
+    protected function isItemExists(): bool
+    {
+        return $this->getResource()->isItemExists();
+    }
+
+    /**
      * @param  DataWrapperContract<TData>|null  $item
      */
     protected function getForm(
@@ -217,7 +230,7 @@ class FormPage extends CrudPage implements FormPageContract
      */
     protected function getTopButtons(): array
     {
-        if (! $this->getResource()->isItemExists()) {
+        if (! $this->isItemExists()) {
             return [];
         }
 

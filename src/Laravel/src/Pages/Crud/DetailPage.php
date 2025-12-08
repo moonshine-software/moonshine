@@ -40,9 +40,9 @@ class DetailPage extends CrudDetailPage
     {
         $components = parent::bottomLayer();
 
-        $item = $this->getResource()->getItem();
+        $item = $this->getItem();
 
-        if (! $this->getResource()->isItemExists()) {
+        if (! $this->isItemExists()) {
             return $components;
         }
 
