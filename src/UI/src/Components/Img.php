@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Illuminate\Support\Collection;
-use MoonShine\UI\Components\MoonShineComponent;
 
 /**
  * @method static static make(string $src)
@@ -42,7 +41,7 @@ final class Img extends MoonShineComponent
     {
         $this->width = $this->height = $widht;
 
-        if (!is_null($height)) {
+        if (! \is_null($height)) {
             $this->height = $height;
         }
 
