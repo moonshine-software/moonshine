@@ -29,6 +29,7 @@ import queryTag from './Components/QueryTag'
 import fragment from './Components/Fragment'
 import tabs from './Components/Tabs.js'
 import collapse from './Components/Collapse.js'
+import bottomBarMenu from './Components/BottomBar.js'
 import {validationInHiddenBlocks} from './Support/Forms.js'
 
 window.MoonShine = new MoonShine()
@@ -60,6 +61,7 @@ Alpine.data('range', range)
 Alpine.data('fragment', fragment)
 Alpine.data('tabs', tabs)
 Alpine.data('collapse', collapse)
+Alpine.data('bottomBarMenu', bottomBarMenu)
 
 window.Alpine = Alpine
 
