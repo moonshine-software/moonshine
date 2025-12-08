@@ -4,6 +4,7 @@
     'left' => $isLeft ?? false,
     'wide' => $isWide ?? false,
     'full' => $isFull ?? false,
+    'autoClose' => $isAutoClose ?? false,
     'title' => '',
     'async' => false,
     'asyncUrl' => '',
@@ -11,7 +12,8 @@
 ])
 <div x-data="offCanvas(
     `{{ $open }}`,
-    `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`
+    `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`,
+    `{{ $autoClose }}`
 )"
     {{ $attributes }}
 >
@@ -26,7 +28,7 @@
     @endif
 
     <template x-teleport="body">
-        <div 
+        <div
             class="offcanvas-template"
             @defineEvent('off_canvas_toggled', $name, 'toggleCanvas')
         >
@@ -60,10 +62,10 @@
             >
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title">{{ $title }}</h5>
-                    <button 
-                        type="button" 
-                        class="offcanvas-close btn-fit" 
-                        @click.prevent="toggleCanvas" 
+                    <button
+                        type="button"
+                        class="offcanvas-close btn-fit"
+                        @click.prevent="toggleCanvas"
                         aria-label="Close"
                     >
                         <x-moonshine::icon icon="x-mark" />
