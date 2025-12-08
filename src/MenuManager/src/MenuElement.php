@@ -33,6 +33,8 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
 
     private bool $topMode = false;
 
+    private bool $onlyIcon = false;
+
     abstract public function isActive(): bool;
 
     public function __construct()
@@ -52,6 +54,22 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
         return $this->topMode;
     }
 
+    public function onlyIcon(Closure|bool|null $condition = true): static
+    {
+        $this->onlyIcon = \is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
+    public function isOnlyIcon(): bool
+    {
+        if($this->getLabel() === '') {
+            return true;
+        }
+
+        return $this->onlyIcon;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -64,6 +82,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
             'previewLabel' => Str::of($this->getLabel())->limit(3),
             'icon' => $this->getIcon(),
             'isActive' => $this->isActive(),
+            'onlyIcon' => $this->isOnlyIcon(),
             'top' => $this->isTopMode(),
         ];
     }
