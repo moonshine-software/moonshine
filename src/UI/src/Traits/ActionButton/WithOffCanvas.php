@@ -8,6 +8,7 @@ use Closure;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
@@ -15,7 +16,7 @@ use MoonShine\UI\Components\OffCanvas;
 trait WithOffCanvas
 {
     /**
-     * @var null|Closure(mixed, DataWrapperContract, static): ComponentContract
+     * @var null|Closure(mixed, DataWrapperContract, static): OffCanvasContract
      */
     protected ?Closure $offCanvas = null;
 
@@ -25,7 +26,7 @@ trait WithOffCanvas
     }
 
     /**
-     * @param  ?Closure(OffCanvas $offCanvas, ActionButtonContract $ctx): OffCanvas  $builder
+     * @param  ?Closure(OffCanvasContract $offCanvas, ActionButtonContract $ctx): OffCanvasContract  $builder
      */
     public function inOffCanvas(
         Closure|string|null $title = null,
@@ -49,7 +50,7 @@ trait WithOffCanvas
             ->name(value($name, $item, $ctx))
             ->when(
                 ! \is_null($builder),
-                static fn (OffCanvas $offCanvas) => $builder($offCanvas, $ctx)
+                static fn (OffCanvasContract $offCanvas) => $builder($offCanvas, $ctx)
             );
 
         return $this->onBeforeRender(

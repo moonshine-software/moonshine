@@ -8,10 +8,12 @@ use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\Modal;
 
 final class DeleteButton
 {
@@ -49,9 +51,10 @@ final class DeleteButton
                             $componentName ?? $resource->getListComponentName(),
                             params: $query,
                         )
-                    )
+                    ),
                 ),
-                name: static fn (mixed $item, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}"
+                modalBuilder: static fn (ModalContract $modal): ModalContract => $resource->resolveDeleteModal($modal),
+                name: static fn (mixed $item, ActionButtonContract $ctx): string => "$modalName-{$ctx->getData()?->getKey()}",
             )
             ->canSee(
                 static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()

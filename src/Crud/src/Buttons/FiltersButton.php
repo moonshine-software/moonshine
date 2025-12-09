@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\UI\Components\ActionButton;
 
@@ -33,7 +34,8 @@ final class FiltersButton
                 static fn (): string => $label,
                 static fn (): FormBuilderContract => $form,
                 name: 'filters-off-canvas',
-                components: [$form]
+                builder: fn(OffCanvasContract $offCanvas): OffCanvasContract => $resource->resolveFiltersOffCanvas($offCanvas),
+                components: [$form],
             )
             ->showInLine()
             ->class('js-filter-button')

@@ -8,13 +8,14 @@ use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
  * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
-final class OffCanvas extends AbstractWithComponents
+final class OffCanvas extends AbstractWithComponents implements OffCanvasContract
 {
     protected string $view = 'moonshine::components.off-canvas';
 
