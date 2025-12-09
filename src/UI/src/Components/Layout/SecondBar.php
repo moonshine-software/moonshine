@@ -52,10 +52,10 @@ class SecondBar extends AbstractWithComponents
     protected function viewData(): array
     {
         /** @var ?Menu $menu */
-        $menu = $this->getComponents()->first(fn(ComponentContract $component) => $component instanceof Menu);
+        $menu = $this->getComponents()->first(fn (ComponentContract $component): bool => $component instanceof Menu);
 
         return [
-            'hasMenu' => $menu?->items?->isNotEmpty() ?? false
+            'hasMenu' => $menu?->items?->isNotEmpty() ?? false,
         ];
     }
 }

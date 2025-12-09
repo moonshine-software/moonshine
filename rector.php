@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
+use Rector\CodingStyle\Rector\ArrowFunction\ArrowFunctionDelegatingCallToFirstClassCallableRector;
+use Rector\CodingStyle\Rector\Closure\ClosureDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FunctionLike\FunctionLikeToFirstClassCallableRector;
 use Rector\Config\RectorConfig;
@@ -11,7 +13,6 @@ use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\DeadCode\Rector\Node\RemoveNonExistingVarAnnotationRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
@@ -30,9 +31,9 @@ return static function (RectorConfig $rectorConfig): void {
         // Laravel
         __DIR__ . '/src/Laravel/stubs',
         ExplicitBoolCompareRector::class,
-        FirstClassCallableRector::class,
         FunctionFirstClassCallableRector::class,
-        FunctionLikeToFirstClassCallableRector::class,
+        ClosureDelegatingCallToFirstClassCallableRector::class,
+        ArrowFunctionDelegatingCallToFirstClassCallableRector::class,
         RemoveUselessReturnTagRector::class,
         RemoveUselessVarTagRector::class,
         RemoveUselessParamTagRector::class,

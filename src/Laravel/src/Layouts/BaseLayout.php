@@ -108,7 +108,7 @@ abstract class BaseLayout extends AbstractLayout
     protected function getSecondBarComponent(): SecondBar
     {
         return SecondBar::make([
-            Menu::make($this->getPage()->getMenu())
+            Menu::make($this->getPage()->getMenu()),
         ])->collapsed();
     }
 
