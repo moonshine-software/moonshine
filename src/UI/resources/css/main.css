@@ -39,6 +39,7 @@
 @import './components/progressbars.css' layer(components);
 @import './components/search.css' layer(components);
 @import './components/select.css' layer(components);
+@import './components/second-bar.css';
 @import './components/social.css' layer(components);
 @import './components/spinners.css' layer(components);
 @import './components/tables.css' layer(components);

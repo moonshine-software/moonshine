@@ -1,0 +1,105 @@
+@theme {
+  --ms-layout-second-sidebar-width: 220px;
+  --ms-layout-second-sidebar-minimized-width: 68px;
+}
+
+/* Second Sidebar */
+
+.layout-second-sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  row-gap: var(--ms-layout-menu-gap-y, --spacing(3));
+  width: var(--ms-layout-second-sidebar-width);
+  padding: var(--ms-layout-wrapper-spacing);
+  border-left: 1px solid var(--color-base-stroke);
+  border-right: 1px solid var(--color-base-stroke);
+
+  &:hover {
+    .layout-collapse {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @variant max-lg {
+    display: none;
+  }
+
+  @variant lg {
+    position: sticky;
+    top: var(--ms-layout-wrapper-spacing, 0);
+    z-index: var(--z-aside);
+    height: calc(100svh - var(--ms-layout-wrapper-spacing) * 2);
+    padding-inline: calc(var(--ms-layout-wrapper-spacing) * 0.5);
+  }
+
+  .menu {
+    flex-grow: 1;
+    flex-direction: column;
+  }
+
+  .menu-list {
+    @apply scrollbar-hidden;
+
+    overflow-y: auto;
+    flex-grow: 1;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .menu-divider {
+    margin-block: var(--ms-menu-divider-space-y, --spacing(1));
+  }
+
+  /* Minimized state */
+
+  &._is-minimized {
+    @variant lg {
+      --ms-menu-item-padding-x: --spacing(1.5);
+      --ms-menu-item-padding-y: --spacing(1.5);
+
+      width: var(--ms-layout-second-sidebar-minimized-width);
+
+      .menu-header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .menu-actions {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+      }
+
+      .menu-button,
+      .menu-link {
+        flex-direction: column;
+      }
+
+      .menu-text {
+        text-align: center;
+        max-width: 100%;
+        margin-right: 0;
+        font-size: 0.875em;
+      }
+
+      .menu-submenu {
+        .menu-submenu .menu-icon ~ .menu-text {
+          display: none;
+        }
+      }
+
+      .menu-divider {
+        span {
+          display: none;
+        }
+      }
+
+      .menu-badge {
+        max-width: 100%;
+      }
+    }
+  }
+}
+

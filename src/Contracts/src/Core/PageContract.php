@@ -7,6 +7,7 @@ namespace MoonShine\Contracts\Core;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
+use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\LayoutContract;
@@ -41,6 +42,11 @@ interface PageContract extends
     public function setLayout(string $layout): static;
 
     public function getRouter(): RouterContract;
+
+    /**
+     * @return list<MenuElementContract>
+     */
+    public function getMenu(): iterable;
 
     /**
      * @param  array<string, mixed>  $params
