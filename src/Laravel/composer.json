@@ -26,7 +26,7 @@
         "lee-to/laravel-package-command": "^0.9",
         "lee-to/fast-attributes": "^0.3",
         "illuminate/filesystem": "^10|^11|^12",
-        "symfony/psr-http-message-bridge": "^7.1|^7.2|^7.3",
+        "symfony/psr-http-message-bridge": "^6.2|^7.1|^7.2|^7.3",
         "nyholm/psr7": "^1.8",
         "moonshine/contracts": "^4.0",
         "moonshine/asset-manager": "^4.0",
