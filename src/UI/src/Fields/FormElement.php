@@ -535,6 +535,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this;
     }
 
+    /**
+     * @param  string|array<int|string, bool|string>  $classes
+     */
     public function wrapperClass(string|array $classes): static
     {
         $this->wrapperAttributes = $this->wrapperAttributes->class($classes);
@@ -555,6 +558,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this;
     }
 
+    /**
+     * @param  string|array<int|string, bool|string>  $styles
+     */
     public function wrapperStyle(string|array $styles): static
     {
         $this->wrapperAttributes = $this->wrapperAttributes->style($styles);
