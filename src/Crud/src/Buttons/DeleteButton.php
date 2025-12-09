@@ -13,7 +13,6 @@ use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\Modal;
 
 final class DeleteButton
 {

@@ -63,7 +63,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
 
     public function isOnlyIcon(): bool
     {
-        if($this->getLabel() === '') {
+        if ($this->getLabel() === '') {
             return true;
         }
 

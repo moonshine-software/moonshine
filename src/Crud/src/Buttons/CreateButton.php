@@ -10,7 +10,6 @@ use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\Modal;
 use Throwable;
 
 final class CreateButton

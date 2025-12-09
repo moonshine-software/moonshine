@@ -17,7 +17,6 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -43,8 +42,6 @@ use MoonShine\Crud\Traits\Resource\ResourceQuery;
 use MoonShine\Crud\Traits\Resource\ResourceWithAuthorization;
 use MoonShine\Crud\Traits\Resource\ResourceWithButtons;
 use MoonShine\Crud\Traits\Resource\ResourceWithFields;
-use MoonShine\UI\Components\Modal;
-use MoonShine\UI\Components\OffCanvas;
 use Throwable;
 
 /**
