@@ -76,9 +76,7 @@ trait Reactivity
             )
             ->value();
 
-        $this->customWrapperAttributes([
-            'class' => "field-{$this->getColumn()}-wrapper",
-        ]);
+        $this->wrapperClass("field-{$this->getColumn()}-wrapper");
 
         $this->reactiveAttributes = static fn (string $dot, string $class): array => [
             $attribute => "reactive.$dot",

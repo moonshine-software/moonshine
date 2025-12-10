@@ -17,12 +17,6 @@ export default async function request(
     return
   }
 
-  if (!navigator.onLine) {
-    t.loading = false
-    MoonShine.ui.toast('No internet connection', 'error')
-    return
-  }
-
   if (!(componentRequestData instanceof ComponentRequestData)) {
     componentRequestData = new ComponentRequestData()
   }

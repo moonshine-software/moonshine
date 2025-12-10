@@ -142,9 +142,7 @@ final readonly class FiltersForm implements FormContract
             ->class('js-async-reset-button');
 
         if ($hide) {
-            $button = $button->customAttributes([
-                'style' => 'display: none',
-            ]);
+            $button = $button->style('display: none');
         }
 
         if (! $async) {

@@ -34,13 +34,6 @@ describe('request function', () => {
     expect(MoonShine.ui.toast).toHaveBeenCalledWith('Request URL not set', 'error')
   })
 
-  it('should display an error if offline', () => {
-    jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false)
-    request(t, '/test-url')
-    expect(t.loading).toBe(false)
-    expect(MoonShine.ui.toast).toHaveBeenCalledWith('No internet connection', 'error')
-  })
-
   it('should instantiate ComponentRequestData if not provided', () => {
     const componentRequestData = null
     request(t, '/test-url', 'get', {}, {}, componentRequestData)

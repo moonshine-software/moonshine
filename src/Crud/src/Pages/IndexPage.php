@@ -329,7 +329,7 @@ class IndexPage extends CrudPage implements IndexPageContract
 
                     return $group;
                 },
-            )->customAttributes(['class' => 'flex-wrap']),
+            )->class('flex-wrap'),
             LineBreak::make(),
         ];
     }

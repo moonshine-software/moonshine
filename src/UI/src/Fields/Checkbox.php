@@ -60,9 +60,7 @@ class Checkbox extends Field implements
         parent::prepareBeforeRender();
 
         $this->beforeLabel();
-        $this->customWrapperAttributes([
-            'class' => 'form-group-inline',
-        ]);
+        $this->wrapperClass('form-group-inline');
 
         if ($this->isSimpleMode()) {
             return;

@@ -100,8 +100,7 @@ class ActionButton extends MoonShineComponent implements
 
     public static function emptyHidden(): static
     {
-        return self::make('')
-            ->customAttributes(['style' => 'display:none']);
+        return self::make()->style('display:none');
     }
 
     public function blank(): static

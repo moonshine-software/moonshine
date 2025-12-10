@@ -164,9 +164,7 @@ abstract class Field extends FormElement implements FieldContract
 
     public function horizontal(): static
     {
-        $this->customWrapperAttributes([
-            'class' => 'form-group-inline',
-        ]);
+        $this->wrapperClass('form-group-inline');
 
         return $this;
     }
