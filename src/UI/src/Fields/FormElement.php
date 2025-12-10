@@ -528,6 +528,46 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this;
     }
 
+    public function removeWrapperAttribute(string $name): static
+    {
+        $this->getWrapperAttributes()->remove($name);
+
+        return $this;
+    }
+
+    /**
+     * @param  string|array<int|string, bool|string>  $classes
+     */
+    public function wrapperClass(string|array $classes): static
+    {
+        $this->wrapperAttributes = $this->wrapperAttributes->class($classes);
+
+        return $this;
+    }
+
+    public function removeWrapperClass(string $pattern): static
+    {
+        $before = $this->wrapperAttributes->get('class', '');
+
+        $this->getWrapperAttributes()->remove('class');
+
+        $this->wrapperAttributes = $this->wrapperAttributes->class(
+            trim((string) preg_replace("/(?<=\s|^)$pattern(?=\s|$)/", '', (string) $before))
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param  string|array<int|string, bool|string>  $styles
+     */
+    public function wrapperStyle(string|array $styles): static
+    {
+        $this->wrapperAttributes = $this->wrapperAttributes->style($styles);
+
+        return $this;
+    }
+
     public function getWrapperAttributes(): ComponentAttributesBagContract
     {
         return $this->wrapperAttributes;
