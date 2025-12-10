@@ -83,6 +83,20 @@ interface FormElementContract extends
 
     public function getWrapperAttributes(): ComponentAttributesBagContract;
 
+    public function removeWrapperAttribute(string $name): static;
+
+    /**
+     * @param  string|array<int|string, bool|string>  $classes
+     */
+    public function wrapperClass(string|array $classes): static;
+
+    /**
+     * @param  string|array<int|string, bool|string>  $styles
+     */
+    public function wrapperStyle(string|array $styles): static;
+
+    public function removeWrapperClass(string $pattern): static;
+
     public function changeFill(Closure $callback): static;
 
     public function afterFill(Closure $callback): static;
