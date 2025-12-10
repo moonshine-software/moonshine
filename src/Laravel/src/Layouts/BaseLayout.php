@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Layouts;
 
+use MoonShine\AssetManager\InlineCss;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Components\Layout\Locales;
@@ -43,11 +44,41 @@ abstract class BaseLayout extends AbstractLayout
 
     public const CONTENT_ID = '_moonshine-content';
 
+    protected bool $topBar = false;
+
     protected bool $secondBar = false;
+
+    protected bool $bottomBar = false;
+
+    protected bool $sidebar = true;
+
+    protected bool $mobileMode = false;
 
     protected function getFaviconComponent(): Favicon
     {
         return Favicon::make();
+    }
+
+    protected function assets(): array
+    {
+        if ($this->mobileMode) {
+            return [
+                ...parent::assets(),
+
+                InlineCss::make(
+                    <<<CSS
+                        :root {
+                            --spacing: 0.25rem;
+                            --text-xs: 14px;
+                            --text-sm: 14px;
+                            --ms-btn-icon-size:16px;
+                        }
+                        CSS,
+                ),
+            ];
+        }
+
+        return parent::assets();
     }
 
     protected function getHeadComponent(bool $withAssetsFragment = true): Head
@@ -84,7 +115,7 @@ abstract class BaseLayout extends AbstractLayout
                 label: $this->getCore()->getTranslator()->get('moonshine::ui.profile'),
                 url: $this->getCore()->getRouter()->getEndpoints()->toPage(
                     $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
-                )
+                ),
             )->icon('user'),
         ]);
     }
@@ -126,21 +157,19 @@ abstract class BaseLayout extends AbstractLayout
                     ),
                     When::make(
                         fn (): bool => $this->hasThemes() && ! $this->isAlwaysDark(),
-                        static fn (): array => [ThemeSwitcher::make()]
+                        static fn (): array => [ThemeSwitcher::make()],
                     ),
                     ...$this->sidebarTopSlot(),
                 ])->class('menu-actions'),
-                Div::make([
-                    Burger::make()->sidebar(),
-                ])->class('menu-burger'),
+                Div::make(array_filter([
+                    $this->mobileMode ? null : Burger::make()->sidebar(),
+                ]))->class('menu-burger'),
             ])->class('menu-header')->name('sidebar-top'),
 
             Fragment::make([
                 ...$this->sidebarSlot(),
                 Menu::make(),
-            ])->customAttributes([
-                'class' => 'menu menu--vertical',
-            ])->name('sidebar-content'),
+            ])->class('menu menu--vertical')->name('sidebar-content'),
         ])->collapsed($this->secondBar === false);
     }
 
@@ -176,11 +205,11 @@ abstract class BaseLayout extends AbstractLayout
                 Div::make()->class('menu-divider menu-divider--vertical'),
                 When::make(
                     fn (): bool => $this->hasThemes() && ! $this->isAlwaysDark(),
-                    static fn (): array => [ThemeSwitcher::make()]
+                    static fn (): array => [ThemeSwitcher::make()],
                 ),
-                Div::make([
-                    Burger::make()->topbar(),
-                ])->class('menu-burger'),
+                Div::make(array_filter([
+                    $this->mobileMode ? null : Burger::make()->topbar(),
+                ]))->class('menu-burger'),
             ])->class('menu-actions')->name('topbar-actions'),
         ]);
     }
@@ -194,11 +223,11 @@ abstract class BaseLayout extends AbstractLayout
         }
 
         return Header::make([
-            Div::make([
-                Burger::make(),
-            ])->class('menu-burger'),
+            Div::make(array_filter([
+                $this->mobileMode ? null : Burger::make(),
+            ]))->class('menu-burger'),
             Breadcrumbs::make(
-                $this->getPage()->getBreadcrumbs()
+                $this->getPage()->getBreadcrumbs(),
             )->prepend(
                 $this->getHomeUrl(),
                 label: $homeLabel,

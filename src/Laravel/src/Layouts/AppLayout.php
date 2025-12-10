@@ -11,11 +11,13 @@ use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\UI\Components\{Layout\Body,
+    Layout\BottomBar,
     Layout\Content,
     Layout\Div,
     Layout\Flash,
     Layout\Html,
     Layout\Layout,
+    Layout\Menu,
     Layout\Wrapper,
     When};
 
@@ -45,12 +47,33 @@ class AppLayout extends BaseLayout
                 $this->getHeadComponent(),
                 Body::make([
                     Wrapper::make([
-                        // $this->getTopBarComponent(),
-                        $this->getSidebarComponent(),
+                        When::make(
+                            fn (): bool => $this->topBar,
+                            fn (): array => [
+                                $this->getTopBarComponent(),
+                            ]
+                        ),
+
+                        When::make(
+                            fn (): bool => $this->sidebar,
+                            fn (): array => [
+                                $this->getSidebarComponent(),
+                            ]
+                        ),
+
                         When::make(
                             fn (): bool => $this->secondBar,
                             fn (): array => [
                                 $this->getSecondBarComponent(),
+                            ]
+                        ),
+
+                        When::make(
+                            fn (): bool => $this->mobileMode || $this->bottomBar,
+                            static fn (): array => [
+                                BottomBar::make([
+                                    Menu::make()->top(),
+                                ]),
                             ]
                         ),
 
