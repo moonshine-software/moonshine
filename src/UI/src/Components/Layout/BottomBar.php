@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use Closure;
 use MoonShine\UI\Components\AbstractWithComponents;
 
 /**
@@ -21,5 +22,10 @@ class BottomBar extends AbstractWithComponents
         iterable $components = [],
     ) {
         parent::__construct($components);
+    }
+
+    public function alwaysVisible(): static
+    {
+        return $this->class('always-visible');
     }
 }

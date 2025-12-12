@@ -70,10 +70,8 @@ class AppLayout extends BaseLayout
 
                         When::make(
                             fn (): bool => $this->mobileMode || $this->bottomBar,
-                            static fn (): array => [
-                                BottomBar::make([
-                                    Menu::make()->top(),
-                                ]),
+                            fn (): array => [
+                                $this->getBottomBarComponent(),
                             ]
                         ),
 

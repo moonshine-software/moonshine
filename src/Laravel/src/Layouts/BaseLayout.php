@@ -19,6 +19,7 @@ use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Assets;
+use MoonShine\UI\Components\Layout\BottomBar;
 use MoonShine\UI\Components\Layout\Burger;
 use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Layout\Favicon;
@@ -141,6 +142,13 @@ abstract class BaseLayout extends AbstractLayout
         return SecondBar::make([
             Menu::make($this->getPage()->getMenu()),
         ])->collapsed();
+    }
+
+    protected function getBottomBarComponent(): BottomBar
+    {
+        return BottomBar::make([
+            Menu::make()->top(),
+        ]);
     }
 
     protected function getSidebarComponent(): Sidebar

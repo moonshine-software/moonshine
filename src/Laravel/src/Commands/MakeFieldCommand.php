@@ -18,7 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 #[AsCommand(name: 'moonshine:field')]
 class MakeFieldCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:field {className?} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:field {className?} {--view=} {--extends=} {--base-dir=} {--base-namespace=}';
 
     protected $description = 'Create field';
 
@@ -39,7 +39,7 @@ class MakeFieldCommand extends MoonShineCommand
 
         $stubsPath = $this->qualifyStubsDir($stubsPath, 'Fields');
 
-        $extends = select('Extends', $this->findExtends(), Field::class);
+        $extends = $this->option('extends') ?? select('Extends', $this->findExtends(), Field::class);
 
         $this->makeDir($stubsPath->dir);
 

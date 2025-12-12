@@ -14,7 +14,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:component')]
 class MakeComponentCommand extends MoonShineCommand
 {
-    protected $signature = 'moonshine:component {className?} {--base-dir=} {--base-namespace=}';
+    protected $signature = 'moonshine:component {className?} {--view=} {--base-dir=} {--base-namespace=}';
 
     protected $description = 'Create component';
 

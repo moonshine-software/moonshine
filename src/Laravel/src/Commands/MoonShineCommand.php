@@ -182,7 +182,7 @@ abstract class MoonShineCommand extends Command
             )
             ->value();
 
-        $view = text(
+        $view = $this->option('view') ?? text(
             'Path to view',
             $suggestView,
             default: $suggestView,
