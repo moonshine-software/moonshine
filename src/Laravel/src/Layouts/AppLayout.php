@@ -11,13 +11,11 @@ use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\UI\Components\{Layout\Body,
-    Layout\BottomBar,
     Layout\Content,
     Layout\Div,
     Layout\Flash,
     Layout\Html,
     Layout\Layout,
-    Layout\Menu,
     Layout\Wrapper,
     When};
 
