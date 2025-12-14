@@ -37,8 +37,8 @@ class LoginFormRequest extends MoonShineFormRequest
     private function getCredentials(): array
     {
         return [
-            moonshineConfig()->getUserField('username', 'email') => request()->getScalar('username'),
-            moonshineConfig()->getUserField('password') => request()->getScalar('password'),
+            moonshineConfig()->getUserField('username', 'email') => $this->input('username'),
+            moonshineConfig()->getUserField('password') => $this->input('password'),
         ];
     }
 
