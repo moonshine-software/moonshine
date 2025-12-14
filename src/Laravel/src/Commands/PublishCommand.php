@@ -78,13 +78,14 @@ class PublishCommand extends MoonShineCommand
             base_path('postcss.config.js'),
         );
 
-        if (confirm('Install modules automatically? (tailwindcss, @tailwindcss/postcss, @tailwindcss/vite)')) {
+        if (confirm('Install modules automatically? (tailwindcss, @tailwindcss/postcss, @tailwindcss/vite, tom-select)')) {
             $this->flushNodeModules();
 
             self::updateNodePackages(static fn ($packages): array => [
                  'tailwindcss' => '^4',
                  '@tailwindcss/postcss' => '^4',
                  '@tailwindcss/vite' => '^4',
+                 'tom-select' => '^2.4.3',
              ] + $packages);
 
             $this->installNodePackages();
