@@ -66,6 +66,14 @@
     -webkit-print-color-adjust: exact;
   }
 
+  input.tomselected + & {
+    --ms-ts-clear-button-space-right: --spacing(2);
+
+    &::after {
+      display: none;
+    }
+  }
+
   &.dropdown-active::after {
     transform: translateY(-50%) scaleY(-1);
   }
