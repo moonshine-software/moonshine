@@ -73,8 +73,8 @@
     margin-left: auto;
     padding-block: var(--ms-btn-badge-padding-y);
     padding-inline: var(--ms-btn-badge-padding-x);
-    background-color: var(--ms-btn-badge-bg-color, inherit);
-    color: inherit;
+    background-color: var(--ms-btn-badge-bg-color, var(--ms-btn-hover-bg-color));
+    color: var(--ms-btn-badge-color, var(--ms-btn-hover-color));
     text-align: center;
     font-size: 1em;
 
