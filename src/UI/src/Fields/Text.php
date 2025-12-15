@@ -33,11 +33,25 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
 
     public function tags(?int $limit = null): static
     {
-        return $this->customAttributes([
-            'x-data' => 'select',
-            'data-max-item-count' => $limit,
-            'data-remove-item-button' => true,
-        ]);
+        return $this
+            ->xDataMethod(
+                'select',
+                null,
+                json_encode([
+                    'create' => true,
+                    'persist' => true,
+                    'createOnBlur' => true,
+                    'maxItems' => $limit,
+                    'mode' => 'multi',
+                ]),
+                json_encode([
+                    'max_items' => []
+                ])
+            )
+            ->customAttributes([
+                'data-search-enabled' => true,
+                'data-remove-item-button' => true,
+            ]);
     }
 
     protected function prepareRequestValue(mixed $value): mixed
