@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
+use JsonException;
 use MoonShine\Support\Enums\TextWrap;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
@@ -31,9 +32,13 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
 
     protected string $type = 'text';
 
+    /**
+     * @throws JsonException
+     */
     public function tags(?int $limit = null): static
     {
         return $this
+            ->setAttribute('type', 'hidden')
             ->xDataMethod(
                 'select',
                 null,
@@ -43,13 +48,13 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
                     'createOnBlur' => true,
                     'maxItems' => $limit,
                     'mode' => 'multi',
-                ]),
+                ], JSON_THROW_ON_ERROR),
                 json_encode([
                     'max_items' => [],
                     'caret_position' => [],
                     'input_autogrow' => [],
                     'restore_on_backspace' => [],
-                ])
+                ], JSON_THROW_ON_ERROR)
             )
             ->customAttributes([
                 'data-search-enabled' => true,
