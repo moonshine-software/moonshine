@@ -45,7 +45,10 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
                     'mode' => 'multi',
                 ]),
                 json_encode([
-                    'max_items' => []
+                    'max_items' => [],
+                    'caret_position' => [],
+                    'input_autogrow' => [],
+                    'restore_on_backspace' => [],
                 ])
             )
             ->customAttributes([
