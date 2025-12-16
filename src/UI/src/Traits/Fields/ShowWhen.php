@@ -62,7 +62,7 @@ trait ShowWhen
      */
     public function modifyShowFieldName(string $name): static
     {
-        $this->showWhenCondition = array_map(function (array $item) use ($name): array {
+        $this->showWhenCondition = array_map(static function (array $item) use ($name): array {
             $item['showField'] = $name;
 
             return $item;
@@ -103,15 +103,52 @@ trait ShowWhen
         [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
-        $this->showWhenCondition[] = [
+        $this->showWhenCondition[] = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+        );
+
+        return $this;
+    }
+
+    public function showWhenRow(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null
+    ): static {
+        $this->showWhenData = $this->makeCondition(...\func_get_args());
+        [$column, $value, $operator] = $this->showWhenData;
+        $this->showWhenState = true;
+
+        $this->showWhenCondition[] = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+            isRowMode: true
+        );
+
+        return $this;
+    }
+
+    protected function showWhenCondition(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null,
+        bool $isRowMode = false,
+        ?string $nameIndex = null,
+        array $additionally = []
+    ): array
+    {
+        return [
             'object_id' => (string) spl_object_id($this),
-            'showField' => $this->getNameAttribute(),
+            'showField' => $this->getNameAttribute($nameIndex),
             'changeField' => $this->getDotNestedToName($column),
             'operator' => $operator,
             'value' => $value,
+            'is_row_mode' => $isRowMode,
+            ...$additionally
         ];
-
-        return $this;
     }
 
     public function showWhenDate(
@@ -152,14 +189,16 @@ trait ShowWhen
         [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
-        $showWhenCondition = [
-            'object_id' => (string) spl_object_id($this),
-            'showField' => $this->getNameAttribute($this->getFromField()),
-            'changeField' => $this->getDotNestedToName($column),
-            'operator' => $operator,
-            'value' => $value,
-            'range_type' => 'from',
-        ];
+        $showWhenCondition = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+            nameIndex: $this->getFromField(),
+            additionally: [
+                'range_type' => 'from',
+            ]
+        );
+
         $this->showWhenCondition[] = $showWhenCondition;
 
         $showWhenCondition['showField'] = $this->getNameAttribute($this->getToField());

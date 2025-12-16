@@ -122,8 +122,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       t.whenFields.forEach(field => {
         if (
+          field.is_row_mode === false && (
           inputs[field.changeField] === undefined ||
-          inputs[field.changeField].value === undefined
+          inputs[field.changeField].value === undefined)
         ) {
           return
         }
