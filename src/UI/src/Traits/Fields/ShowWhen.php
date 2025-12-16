@@ -131,6 +131,10 @@ trait ShowWhen
         return $this;
     }
 
+    /**
+     * @param array<array-key, mixed> $additionally
+     * @return array<array-key, mixed>
+     */
     protected function showWhenCondition(
         string $column,
         mixed $operator = null,
