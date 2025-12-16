@@ -51,13 +51,13 @@
   padding-inline: var(--ms-layout-bottom-bar-padding-x);
   border-radius: var(--ms-layout-bottom-bar-radius);
   border: 1px solid --alpha(var(--color-base-stroke) / 0.3);
-  background-color: --alpha(var(--color-base) / var(--ms-layout-bottom-bar-bg-opacity));
+  background-color: color-mix(in oklch, var(--color-base) 80%, transparent);
   backdrop-filter: var(--ms-layout-bottom-bar-bg-blur);
   -webkit-backdrop-filter: var(--ms-layout-bottom-bar-bg-blur);
   box-shadow: 0 --spacing(-2) --spacing(8) --alpha(var(--color-black) / 0.1);
 
   @variant dark {
-    background-color: --alpha(var(--color-base-100) / var(--ms-layout-bottom-bar-bg-opacity));
+    background-color: color-mix(in oklch, var(--color-base-100) 80%, transparent);
     border-color: --alpha(var(--color-base-stroke) / 0.2);
   }
 }
