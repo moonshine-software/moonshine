@@ -50,7 +50,6 @@
 
 .profile-info {
   flex-grow: 1;
-  display: none;
   min-width: 0;
   max-width: var(--ms-profile-max-width, 120px);
   font-size: var(--ms-profile-font-size, var(--text-xs));
