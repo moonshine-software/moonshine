@@ -69,4 +69,10 @@ interface ConfiguratorContract extends ArrayAccess
      * @return string[]
      */
     public function getDiskOptions(): array;
+
+    public function has(string $key): bool;
+
+    public function get(string $key, mixed $default = null): mixed;
+
+    public function set(string $key, mixed $value): self;
 }
