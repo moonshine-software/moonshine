@@ -85,6 +85,10 @@ final class HasManyController extends MoonShineController
                     Hidden::make($relation?->getForeignKeyName())
                         ->setValue($parent->getKey())
                 )
+                ->push(
+                    Hidden::make('_relation_name')
+                        ->setValue($field->getRelationName())
+                )
                 ->toArray();
         };
 
@@ -100,6 +104,7 @@ final class HasManyController extends MoonShineController
                     ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item->getKey()])
             )
             ->name($formName)
+            ->class("form-resource-{$resource->getUriKey()}-{$field->getRelationName()}")
             ->switchFormMode(
                 $isAsync,
                 array_filter([

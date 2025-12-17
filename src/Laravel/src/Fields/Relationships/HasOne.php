@@ -326,6 +326,7 @@ class HasOne extends ModelRelationField implements
                     ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
             )
             ->name($resource->getUriKey())
+            ->class("form-resource-{$resource->getUriKey()}-{$this->getRelationName()}")
             ->switchFormMode($isAsync)
             ->fields(
                 $fields->when(
@@ -333,6 +334,9 @@ class HasOne extends ModelRelationField implements
                     static fn (FieldsContract $fields): FieldsContract => $fields->push(
                         Hidden::make('_method')->setValue('PUT'),
                     )
+                )->push(
+                    Hidden::make('_relation_name')
+                        ->setValue($this->getRelationName())
                 )->push(
                     Hidden::make($relation->getForeignKeyName())
                         ->setValue($this->getRelatedModel()?->getKey())
