@@ -21,7 +21,7 @@ final class ReactiveController extends MoonShineController
 
         /** @var ?FormBuilderContract $form */
         $form = $page->getComponents()->findForm(
-            $crudRequest->getComponentName()
+            $crudRequest->getComponentName(),
         );
 
         if (\is_null($form)) {
@@ -36,34 +36,54 @@ final class ReactiveController extends MoonShineController
         $casted = null;
         $except = [];
 
-        $values = $request->collect('values')->map(function (mixed $value, string $column) use ($fields, &$casted, &$except) {
-            $field = $fields->findByColumn($column);
+        $values = $request->collect('values')->map(
+            function (mixed $value, string $column) use ($fields, &$casted, &$except) {
+                $field = $fields->findByColumn($column);
 
-            if (! $field instanceof HasReactivityContract) {
-                return $value;
-            }
+                if (! $field instanceof HasReactivityContract) {
+                    return $value;
+                }
 
-            return $field->prepareReactivityValue($value, $casted, $except);
-        });
+                return $field->prepareReactivityValue($value, $casted, $except);
+            },
+        );
 
         $fields->fill(
             $values->toArray(),
-            $casted ? new ModelDataWrapper($casted->forceFill($values->except($except)->toArray())) : null
+            $casted ? new ModelDataWrapper($casted->forceFill($values->except($except)->toArray())) : null,
         );
+
+        $additionally = $request->array('additionally');
 
         foreach ($fields as $field) {
             $fields = $field->formName($form->getName())->getReactiveCallback(
                 $fields,
                 data_get($values, $field->getColumn()),
                 $values->toArray(),
+                $additionally,
             );
         }
 
         $values = $fields
-            ->mapWithKeys(static fn (FieldContract $field): array => [$field->getColumn() => $field->getReactiveValue()]);
+            ->mapWithKeys(
+                static fn (FieldContract $field): array => [$field->getColumn() => $field->getReactiveValue()],
+            );
+
+        $currentColumn = $request->input('current');
+
+        $skipRender = static fn (FieldContract $field): bool
+            => $field->isSilentReactive(data_get($values, $field->getColumn()), $values->toArray())
+               || ($field->isSilentSelfReactive(
+                   data_get($values, $field->getColumn()),
+                   $values->toArray(),
+               ) && $currentColumn === $field->getColumn());
 
         $fields = $fields->mapWithKeys(
-            static fn (FieldContract $field): array => [$field->getColumn() => (string) FieldsGroup::make([$field])->render()]
+            static fn (FieldContract $field): array => $skipRender($field)
+                ? []
+                : [
+                    $field->getColumn() => (string)FieldsGroup::make([$field])->render(),
+                ],
         );
 
         return $this->json(data: [

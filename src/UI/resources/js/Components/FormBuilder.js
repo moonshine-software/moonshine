@@ -31,6 +31,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       if (!t.blockWatch) {
         let focused = document.activeElement
+        let additionally = {}
 
         componentRequestData.withAfterResponse(function (data) {
           for (let [column, html] of Object.entries(data.fields)) {
@@ -75,14 +76,23 @@ export default (name = '', initData = {}, reactive = {}) => ({
           t.$nextTick(() => (t.blockWatch = false))
         })
 
-        const choices = focused.closest('.choices')
-        const select = choices?.querySelector('select')
+        let tsWrapper = focused.closest('.ts-wrapper')
 
-        if (select && select.multiple) {
-          await t.$nextTick(() => {
-            values[select.getAttribute('data-reactive-column')] =
-              select.dataset.choicesValue.split(',')
-          })
+        if(tsWrapper) {
+          let select = tsWrapper.previousElementSibling
+          focused = select.tagName === 'SELECT' ? select : focused
+        }
+
+        for (let column of Object.keys(values)) {
+          const element = t.$root.querySelector(
+            `[data-reactive-column='${column}']`,
+          )
+
+          if(element.tagName === 'SELECT') {
+            additionally[column] = {
+              label: element.selectedOptions[0]?.text
+            }
+          }
         }
 
         request(
@@ -91,7 +101,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
           'post',
           {
             _component_name: t.name,
-            values: values,
+            current: focused?.getAttribute('data-column'),
+            additionally,
+            values,
           },
           {},
           componentRequestData,

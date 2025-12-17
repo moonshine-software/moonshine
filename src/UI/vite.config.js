@@ -61,9 +61,6 @@ export default defineConfig(({mode}) => {
           },
         },
       },
-    },
-    define: {
-      'process.env.CHOICES_CAN_USE_DOM': true,
-    },
+    }
   }
 })
