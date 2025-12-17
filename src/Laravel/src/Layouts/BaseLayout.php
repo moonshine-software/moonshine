@@ -232,7 +232,7 @@ abstract class BaseLayout extends AbstractLayout
 
         return Header::make([
             Div::make(array_filter([
-                $this->mobileMode || !$this->sidebar ? null : Burger::make(),
+                $this->mobileMode || ! $this->sidebar ? null : Burger::make(),
             ]))->class('menu-burger'),
             Breadcrumbs::make(
                 $this->getPage()->getBreadcrumbs(),
@@ -242,7 +242,7 @@ abstract class BaseLayout extends AbstractLayout
             ),
             $this->getSearchComponent(),
             When::make(
-                fn (): bool => $this->hasThemes() && ! $this->isAlwaysDark() && ($this->mobileMode || (!$this->sidebar && !$this->topBar)),
+                fn (): bool => $this->hasThemes() && ! $this->isAlwaysDark() && ($this->mobileMode || (! $this->sidebar && ! $this->topBar)),
                 static fn (): array => [ThemeSwitcher::make(),],
             ),
             Locales::make(),
@@ -256,7 +256,7 @@ abstract class BaseLayout extends AbstractLayout
                 ],
             ),
             When::make(
-                fn (): bool => $this->isUseNotifications() && ($this->mobileMode || !$this->sidebar),
+                fn (): bool => $this->isUseNotifications() && ($this->mobileMode || ! $this->sidebar),
                 static fn (): array => [Notifications::make()],
             ),
         ]);

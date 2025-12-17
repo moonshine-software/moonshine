@@ -43,7 +43,14 @@ trait ConfigurableSelect
             $settings = AsyncSettings::make($settings);
         }
 
-        return $this->customAttributes($settings->toArray());
+        return $this->customAttributes($settings->toArray(), true);
+    }
+
+    public function asyncWithFields(): static
+    {
+        return $this->asyncSettings(
+            AsyncSettings::make()->withAllFields()
+        );
     }
 
     /**
