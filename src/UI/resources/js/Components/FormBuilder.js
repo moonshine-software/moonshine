@@ -48,7 +48,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
               let input =
                 focused &&
                 focused !== document.body &&
-                isTextInput(focused) &&
+                (isTextInput(focused) || focused?.tagName === 'TEXTAREA') &&
                 !containsAttribute(focused, 'x-model.lazy')
                   ? t.$root.querySelector(
                       `[data-reactive-column='${focused.getAttribute('data-reactive-column')}']`,
