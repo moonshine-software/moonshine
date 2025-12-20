@@ -77,10 +77,15 @@ final class MenuManager implements MenuManagerContract
     {
         return MenuElements::make($items ?? $this->items)
             ->map(static function (array|MenuElementContract $item): MenuElementContract {
-                /** @var array{url: string, label: string}|MenuElementContract $item */
+                /** @var array{url: string, label: string, icon?: null|string}|MenuElementContract $item */
                 /** @phpstan-ignore-next-line  */
                 if (\is_array($item)) {
-                    return MenuItem::make($item['url'], $item['label']);
+                    return MenuItem::make(
+                        $item['url'],
+                        $item['label'],
+                        /** @phpstan-ignore nullCoalesce.offset */
+                        icon: $item['icon'] ?? null
+                    );
                 }
 
                 return $item;
