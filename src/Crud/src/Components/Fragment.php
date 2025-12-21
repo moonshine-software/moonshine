@@ -25,6 +25,8 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
 
     protected string $view = 'moonshine::components.fragment';
 
+    protected ?int $interval = null;
+
     /**
      * @param  iterable<array-key, ComponentContract>  $components
      *
@@ -106,6 +108,17 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         );
     }
 
+    public function autoUpdate(int $ms): static
+    {
+        if($ms <= 0) {
+            throw new \InvalidArgumentException('Must be greater than 0');
+        }
+
+        $this->interval = $ms;
+
+        return $this;
+    }
+
     /**
      * @throws JsonException
      */
@@ -121,5 +134,12 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
                 JSON_THROW_ON_ERROR
             ) . ')',
         ]);
+    }
+
+    protected function viewData(): array
+    {
+        return [
+            'interval' => $this->interval,
+        ];
     }
 }

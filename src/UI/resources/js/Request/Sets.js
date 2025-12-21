@@ -115,6 +115,7 @@ export function listComponentRequest(component, pushState = false, after = null,
       let query = originalUrl.slice(originalUrl.indexOf('?') + 1)
       const params = new URLSearchParams(query)
       params.delete('_component_name')
+      params.delete('_fragment-load')
 
       query = params.toString()
 
