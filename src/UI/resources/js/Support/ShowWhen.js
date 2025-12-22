@@ -54,7 +54,7 @@ export function showWhenChange(fieldName, formId) {
 
     let syncWith = inputElement.dataset.syncWith
 
-    if (fieldName !== field.changeField && syncWith !== field.changeField) {
+    if (field.is_row_mode === false && fieldName !== field.changeField && syncWith !== field.changeField) {
       return
     }
 
@@ -101,8 +101,9 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
   }
 
   let visibleFieldsCount = 0
+
   showWhenFields.forEach(field => {
-    if (isShowField(fieldName, inputs, field)) {
+    if (isShowField(fieldName, inputs, field, formId)) {
       visibleFieldsCount++
     }
   })
@@ -115,7 +116,7 @@ export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, form
 
     // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
     document
-      .querySelectorAll('[data-show-when-field="' + fieldName + '"]')
+      .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
       .forEach(function (element) {
         let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
         if (tablesWithInput.indexOf(inputTable) === -1) {
@@ -286,13 +287,39 @@ export function inputGetValue(element) {
   return value
 }
 
-function isShowField(fieldName, inputs, field) {
+function isShowField(fieldName, inputs, field, formId) {
+  if(field.is_row_mode) {
+    document
+    .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
+    .forEach(function (element) {
+      let row = element.closest('tr')
+      let target = row.querySelector('[data-column="'+field.changeField+'"]')
+
+      let isShow = isShowFieldCondition(
+        target.type,
+        field.operator,
+        field.value,
+        target.value
+      )
+
+      console.log(isShow, field.value, target.value, target.type)
+
+      element.classList.toggle('hidden', !isShow);
+    })
+
+    return true
+  }
+
+  return isShowFieldCondition(
+    inputs[field.changeField].type,
+    field.operator,
+    inputs[field.changeField].value,
+    field.value
+  )
+}
+
+function isShowFieldCondition(inputType, operator, valueInput, valueField) {
   let isShowField = false
-
-  let valueInput = inputs[field.changeField].value
-  let valueField = field.value
-
-  const inputType = inputs[field.changeField].type
 
   if (inputType === 'number') {
     valueInput = parseFloat(valueInput)
@@ -308,7 +335,7 @@ function isShowField(fieldName, inputs, field) {
     }
   }
 
-  switch (field.operator) {
+  switch (operator) {
     case '=':
       isShowField = valueInput == valueField
       break
