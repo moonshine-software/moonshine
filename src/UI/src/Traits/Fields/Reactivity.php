@@ -24,9 +24,37 @@ trait Reactivity
 
     protected bool $isReactive = false;
 
+    /**
+     * @var bool|(Closure(mixed, array<string, mixed>, static): bool)
+     */
+    protected bool|Closure $isSilentReactive = false;
+
+    /**
+     * @var bool|(Closure(mixed, array<string, mixed>, static): bool)
+     */
+    protected bool|Closure $isSilentSelfReactive = false;
+
     public function isReactive(): bool
     {
         return $this->isReactive;
+    }
+
+    public function isSilentReactive(mixed $value, array $values): bool
+    {
+        if (\is_bool($this->isSilentReactive)) {
+            return $this->isSilentReactive;
+        }
+
+        return (bool) \call_user_func($this->isSilentReactive, $value, $values, $this);
+    }
+
+    public function isSilentSelfReactive(mixed $value, array $values): bool
+    {
+        if (\is_bool($this->isSilentSelfReactive)) {
+            return $this->isSilentSelfReactive;
+        }
+
+        return (bool) \call_user_func($this->isSilentSelfReactive, $value, $values, $this);
     }
 
     public function prepareReactivityValue(mixed $value, mixed &$casted, array &$except): mixed
@@ -39,13 +67,13 @@ trait Reactivity
         return true;
     }
 
-    public function getReactiveCallback(FieldsContract $fields, mixed $value, array $values): FieldsContract
+    public function getReactiveCallback(FieldsContract $fields, mixed $value, array $values, array $additionally): FieldsContract
     {
         if (\is_null($this->reactiveCallback) || ! $this->isReactive()) {
             return $fields;
         }
 
-        return \call_user_func($this->reactiveCallback, $fields, $value, $this, $values);
+        return \call_user_func($this->reactiveCallback, $fields, $value, $this, $values, $additionally);
     }
 
     public function reactive(
@@ -53,12 +81,16 @@ trait Reactivity
         bool $lazy = false,
         int $debounce = 0,
         int $throttle = 0,
+        bool|Closure $silent = false,
+        bool|Closure $silentSelf = false,
     ): static {
         if (! $this->isReactivitySupported()) {
             throw FieldException::reactivityNotSupported(static::class);
         }
 
         $this->isReactive = true;
+        $this->isSilentReactive = $silent;
+        $this->isSilentSelfReactive = $silentSelf;
         $this->reactiveCallback = $callback;
 
         $attribute = Str::of('x-model')
