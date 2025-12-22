@@ -301,8 +301,6 @@ function isShowField(fieldName, inputs, field, formId) {
 
         let isShow = isShowFieldCondition(target.type, field.operator, field.value, target.value)
 
-        console.log(isShow, field.value, target.value, target.type)
-
         element.classList.toggle('hidden', !isShow)
       })
 
