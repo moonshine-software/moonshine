@@ -51,14 +51,18 @@ final class Favicon extends MoonShineComponent
 
     protected function viewData(): array
     {
+        $favicons = $this->getCore()->getConfig()->get('favicons');
+
         return [
-            'assets' => $this->customAssets ?: [
-                'apple-touch' => $this->getAssetManager()->getAsset('/vendor/moonshine/apple-touch-icon.png'),
-                '32' => $this->getAssetManager()->getAsset('/vendor/moonshine/favicon-32x32.png'),
-                '16' => $this->getAssetManager()->getAsset('/vendor/moonshine/favicon-16x16.png'),
-                'safari-pinned-tab' => $this->getAssetManager()->getAsset('/vendor/moonshine/safari-pinned-tab.svg'),
-                'web-manifest' => $this->getAssetManager()->getAsset('/vendor/moonshine/site.webmanifest'),
-            ],
+            'assets' => $this->customAssets ?: array_filter([
+                'apple-touch' => $this->getAssetManager()->getAsset($favicons['apple-touch'] ?? '/vendor/moonshine/apple-touch-icon.png'),
+                '32' => $this->getAssetManager()->getAsset($favicons['32'] ?? '/vendor/moonshine/favicon-32x32.png'),
+                '16' => $this->getAssetManager()->getAsset($favicons['16'] ?? '/vendor/moonshine/favicon-16x16.png'),
+                'safari-pinned-tab' => $this->getAssetManager()->getAsset($favicons['safari-pinned-tab'] ?? '/vendor/moonshine/safari-pinned-tab.svg'),
+                'web-manifest' => isset($favicons['web-manifest']) && empty($favicons['web-manifest'])
+                    ? null
+                    : $this->getAssetManager()->getAsset($favicons['web-manifest'] ?? '/vendor/moonshine/site.webmanifest'),
+            ]),
             'bodyColor' => $this->bodyColor,
         ];
     }

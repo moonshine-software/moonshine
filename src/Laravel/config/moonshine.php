@@ -25,6 +25,13 @@ return [
     'logo' => '/vendor/moonshine/logo-small.svg',
     'logo_small' => '/vendor/moonshine/logo-small.svg',
 
+    'favicons' => [
+        'apple-touch' => '/vendor/moonshine/apple-touch-icon.png',
+        '32' => '/vendor/moonshine/favicon-32x32.png',
+        '16' => '/vendor/moonshine/favicon-16x16.png',
+        'safari-pinned-tab' => '/vendor/moonshine/safari-pinned-tab.svg',
+        'web-manifest' => '/vendor/moonshine/site.webmanifest',
+    ],
 
     // Default flags
     'use_migrations' => true,
