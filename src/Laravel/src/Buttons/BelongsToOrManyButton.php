@@ -17,6 +17,7 @@ use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Fields\Hidden;
 use Throwable;
 
 final class BelongsToOrManyButton
@@ -43,6 +44,10 @@ final class BelongsToOrManyButton
             $fields->onlyFields()
                 ->each(static fn (FieldContract $nestedFields): FieldContract => $nestedFields->setParent($field));
 
+            $fields->push(
+                Hidden::make('_relation_name')->setValue($field->getRelationName())
+            );
+
             return $fields->toArray();
         };
 
@@ -65,6 +70,7 @@ final class BelongsToOrManyButton
                         AlpineJs::event(JsEvent::FORM_RESET, $resource->getUriKey()),
                     ])
                     ->name($resource->getUriKey())
+                    ->class("form-resource-{$resource->getUriKey()}-{$field->getRelationName()}")
                     ->fillCast(
                         [],
                         $resource->getCaster()

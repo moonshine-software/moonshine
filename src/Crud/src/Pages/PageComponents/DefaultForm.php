@@ -78,6 +78,7 @@ final class DefaultForm implements DefaultFormContract
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->precognitive(),
             )
             ->name($resource->getUriKey())
+            ->class("form-resource-{$resource->getUriKey()}")
             ->submit(
                 $this->getCore()->getTranslator()->get('moonshine::ui.save'),
                 ['class' => 'btn-primary btn-lg'],

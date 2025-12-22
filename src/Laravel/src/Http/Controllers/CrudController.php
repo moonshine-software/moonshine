@@ -222,17 +222,20 @@ final class CrudController extends MoonShineController
             $data = [];
             $castedData = $resource->getCastedData();
 
+            $formClass = ".form-resource-{$resource->getUriKey()}"
+                         . ($request->has('_relation_name') ? "-" . $request->input('_relation_name') : '');
+
             $resource
                 ->getFormFields()
                 ->onlyFields()
                 ->refreshFields()
                 ->fillCloned($castedData?->toArray() ?? [], $castedData)
-                ->each(function (FieldContract $field) use (&$data): void {
+                ->each(function (FieldContract $field) use (&$data, $formClass): void {
                     $data['htmlData'][] = [
                         'html' => (string) $field
                             ->resolveRefreshAfterApply()
                             ->render(),
-                        'selector' => "[data-field-selector='{$field->getNameDot()}']",
+                        'selector' => "$formClass [data-field-selector='{$field->getNameDot()}']",
                         'htmlMode' => HtmlMode::OUTER_HTML->value,
                     ];
                 });
