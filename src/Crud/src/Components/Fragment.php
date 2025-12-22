@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components;
 
+use InvalidArgumentException;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -111,7 +112,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     public function autoUpdate(int $ms): static
     {
         if($ms <= 0) {
-            throw new \InvalidArgumentException('Must be greater than 0');
+            throw new InvalidArgumentException('Must be greater than 0');
         }
 
         $this->interval = $ms;
