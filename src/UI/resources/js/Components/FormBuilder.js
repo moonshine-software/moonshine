@@ -78,19 +78,17 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
         let tsWrapper = focused.closest('.ts-wrapper')
 
-        if(tsWrapper) {
+        if (tsWrapper) {
           let select = tsWrapper.previousElementSibling
           focused = select.tagName === 'SELECT' ? select : focused
         }
 
         for (let column of Object.keys(values)) {
-          const element = t.$root.querySelector(
-            `[data-reactive-column='${column}']`,
-          )
+          const element = t.$root.querySelector(`[data-reactive-column='${column}']`)
 
-          if(element.tagName === 'SELECT') {
+          if (element.tagName === 'SELECT') {
             additionally[column] = {
-              label: element.selectedOptions[0]?.text
+              label: element.selectedOptions[0]?.text,
             }
           }
         }
@@ -134,9 +132,8 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       t.whenFields.forEach(field => {
         if (
-          field.is_row_mode === false && (
-          inputs[field.changeField] === undefined ||
-          inputs[field.changeField].value === undefined)
+          field.is_row_mode === false &&
+          (inputs[field.changeField] === undefined || inputs[field.changeField].value === undefined)
         ) {
           return
         }

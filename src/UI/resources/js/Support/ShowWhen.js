@@ -54,7 +54,11 @@ export function showWhenChange(fieldName, formId) {
 
     let syncWith = inputElement.dataset.syncWith
 
-    if (field.is_row_mode === false && fieldName !== field.changeField && syncWith !== field.changeField) {
+    if (
+      field.is_row_mode === false &&
+      fieldName !== field.changeField &&
+      syncWith !== field.changeField
+    ) {
       return
     }
 
@@ -288,24 +292,19 @@ export function inputGetValue(element) {
 }
 
 function isShowField(fieldName, inputs, field, formId) {
-  if(field.is_row_mode) {
+  if (field.is_row_mode) {
     document
-    .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
-    .forEach(function (element) {
-      let row = element.closest('tr')
-      let target = row.querySelector('[data-column="'+field.changeField+'"]')
+      .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
+      .forEach(function (element) {
+        let row = element.closest('tr')
+        let target = row.querySelector('[data-column="' + field.changeField + '"]')
 
-      let isShow = isShowFieldCondition(
-        target.type,
-        field.operator,
-        field.value,
-        target.value
-      )
+        let isShow = isShowFieldCondition(target.type, field.operator, field.value, target.value)
 
-      console.log(isShow, field.value, target.value, target.type)
+        console.log(isShow, field.value, target.value, target.type)
 
-      element.classList.toggle('hidden', !isShow);
-    })
+        element.classList.toggle('hidden', !isShow)
+      })
 
     return true
   }
@@ -314,7 +313,7 @@ function isShowField(fieldName, inputs, field, formId) {
     inputs[field.changeField].type,
     field.operator,
     inputs[field.changeField].value,
-    field.value
+    field.value,
   )
 }
 
