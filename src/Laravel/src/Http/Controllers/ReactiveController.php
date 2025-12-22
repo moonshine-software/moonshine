@@ -53,7 +53,7 @@ final class ReactiveController extends MoonShineController
             $casted ? new ModelDataWrapper($casted->forceFill($values->except($except)->toArray())) : null,
         );
 
-        $additionally = $request->array('additionally');
+        $additionally = $request->collect('additionally')->all();
 
         foreach ($fields as $field) {
             $fields = $field->formName($form->getName())->getReactiveCallback(
