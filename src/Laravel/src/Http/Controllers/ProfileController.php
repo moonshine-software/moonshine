@@ -9,7 +9,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Http\Requests\ProfileFormRequest;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\Pages\ProfilePage;
-use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\ToastType;
