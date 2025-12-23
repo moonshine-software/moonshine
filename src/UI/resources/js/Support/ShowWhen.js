@@ -119,8 +119,8 @@ export function showWhenUpdateVisibility(relatedFields, fieldName, inputs, formI
   })
 
   /**
-   * If showWhenRow, we don't calculate cell hiding and don't call the element's hiding function again.
-   * todo We'll implement cell hiding in the future.
+   * In row mode, visibility is handled per-row in shouldShowField,
+   * including th hiding when all cells are hidden
    */
   if(fieldElement.dataset.isRowMode) {
     return
@@ -304,6 +304,10 @@ function toggleTableCell(isShow, element, keepName) {
  */
 function shouldShowField(fieldName, inputs, field, formId, keepName) {
   if (field.is_row_mode) {
+    let visibleCellsCount = 0
+    let columnIndex = null
+    let table = null
+
     document
       .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
       .forEach(function (element) {
@@ -320,7 +324,29 @@ function shouldShowField(fieldName, inputs, field, formId, keepName) {
         element.setAttribute('data-is-row-mode', 'true')
 
         toggleTableCell(isVisible, element, keepName)
+
+        if (isVisible) {
+          visibleCellsCount++
+        }
+
+        // Remember columnIndex and table for hiding th
+        if (columnIndex === null) {
+          const cell = element.closest('td')
+          if (cell) {
+            columnIndex = cell.cellIndex
+            table = element.closest('table[data-inside=field]')
+          }
+        }
       })
+
+    // Hide th if all cells in the column are hidden
+    if (table !== null && columnIndex !== null) {
+      table.querySelectorAll('th').forEach(header => {
+        if (header.cellIndex === columnIndex) {
+          header.classList.toggle('hidden', visibleCellsCount === 0)
+        }
+      })
+    }
 
     return true
   }
