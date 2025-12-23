@@ -142,8 +142,7 @@ trait ShowWhen
         bool $isRowMode = false,
         ?string $nameIndex = null,
         array $additionally = []
-    ): array
-    {
+    ): array {
         return [
             'object_id' => (string) spl_object_id($this),
             'showField' => $this->getNameAttribute($nameIndex),
@@ -151,7 +150,7 @@ trait ShowWhen
             'operator' => $operator,
             'value' => $value,
             'is_row_mode' => $isRowMode,
-            ...$additionally
+            ...$additionally,
         ];
     }
 
