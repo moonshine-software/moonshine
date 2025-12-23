@@ -131,15 +131,16 @@ export default (name = '', initData = {}, reactive = {}) => ({
       const showWhenFields = {}
 
       t.whenFields.forEach(field => {
-        if (
-          field.is_row_mode === false &&
-          (inputs[field.changeField] === undefined || inputs[field.changeField].value === undefined)
-        ) {
+        const inputUndefined = inputs[field.changeField]?.value === undefined
+
+        if (!field.is_row_mode && inputUndefined) {
           return
         }
+
         if (showWhenFields[field.showField] === undefined) {
           showWhenFields[field.showField] = []
         }
+
         showWhenFields[field.showField].push(field)
       })
 

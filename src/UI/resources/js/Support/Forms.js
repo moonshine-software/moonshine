@@ -1,5 +1,38 @@
-import {inputFieldName, inputGetValue} from './ShowWhen.js'
 import {excludeFromParams, prepareQueryParams} from './URLs.js'
+
+export function inputGetValue(element) {
+  let value
+
+  const type = element.getAttribute('type')
+
+  if (element.hasAttribute('multiple') && element.options !== undefined) {
+    value = []
+    for (let option of element.options) {
+      if (option.selected) {
+        value.push(option.value)
+      }
+    }
+  } else if (type === 'checkbox') {
+    value = element.checked
+  } else if (type === 'radio') {
+    value = element.value
+  } else {
+    value = element.value ?? null
+  }
+
+  return value
+}
+
+export function inputFieldName(inputName) {
+  if (inputName === null) {
+    return ''
+  }
+  inputName = inputName.replace('[]', '')
+  if (inputName.indexOf('slide[') !== -1) {
+    inputName = inputName.replace('slide[', '').replace(']', '')
+  }
+  return inputName
+}
 
 export function filterAttributeStartsWith(data, startsWith) {
   const filtered = {}
