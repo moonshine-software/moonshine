@@ -8,7 +8,7 @@ import {
 } from '../Support/Forms.js'
 import request, {initCallback, prepareUrl} from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
-import {getInputs, showWhenChange, showWhenVisibilityChange} from '../Support/ShowWhen.js'
+import {getShowWhenInputs, showWhenChange, showWhenUpdateVisibility} from '../Support/ShowWhen.js'
 import {formToJSON} from 'axios'
 
 export default (name = '', initData = {}, reactive = {}) => ({
@@ -126,7 +126,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       await t.$nextTick()
 
-      const inputs = t.getInputs(formId)
+      const inputs = t.getShowWhenInputs(formId)
 
       const showWhenFields = {}
 
@@ -145,7 +145,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
       })
 
       for (let key in showWhenFields) {
-        t.showWhenVisibilityChange(showWhenFields[key], key, inputs, formId)
+        t.showWhenUpdateVisibility(showWhenFields[key], key, inputs, formId)
       }
     })
   },
@@ -347,9 +347,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
   showWhenChange,
 
-  showWhenVisibilityChange,
+  showWhenUpdateVisibility,
 
-  getInputs,
+  getShowWhenInputs,
 })
 
 function submitState(form, loading = true, reset = false) {
