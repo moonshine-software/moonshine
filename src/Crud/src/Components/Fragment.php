@@ -111,7 +111,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
 
     public function autoUpdate(int $ms): static
     {
-        if($ms <= 0) {
+        if ($ms <= 0) {
             throw new InvalidArgumentException('Must be greater than 0');
         }
 

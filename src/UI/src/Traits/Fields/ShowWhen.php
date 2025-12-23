@@ -4,17 +4,44 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use MoonShine\Support\DTOs\ShowWhenCondition;
+use InvalidArgumentException;
 use MoonShine\UI\Contracts\RangeFieldContract;
 
 trait ShowWhen
 {
+    /**
+     * @var string[]
+     */
+    public array $operators = [
+        '=',
+        '<',
+        '>',
+        '<=',
+        '>=',
+        '!=',
+        'in',
+        'not in',
+    ];
+
+    /**
+     * @var string[]
+     */
+    public array $arrayOperators = [
+        'in',
+        'not in',
+    ];
+
     public bool $showWhenState = false;
 
     /**
-     * @var array<array-key, ShowWhenCondition>
+     * @var array<array-key, mixed>
      */
     protected array $showWhenCondition = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
+    protected array $showWhenData = [];
 
     public function hasShowWhen(): bool
     {
@@ -22,35 +49,65 @@ trait ShowWhen
     }
 
     /**
-     * @return array<array-key, ShowWhenCondition>
+     * @return array<string, string>
      */
     public function getShowWhenCondition(): array
     {
-        $data = [];
+        return $this->showWhenCondition;
+    }
 
-        foreach ($this->showWhenCondition as $condition) {
-            if($this instanceof RangeFieldContract) {
-                $data[] = $this->showWhenConditionToArray($condition, $this->getFromField(), 'from');
-                $data[] = $this->showWhenConditionToArray($condition, $this->getToField(), 'to');
-            } else {
-                $data[] = $this->showWhenConditionToArray($condition);
-            }
+    /*
+     * The "name" attribute in some fields may be changed after "showWhenCondition" is initialized,
+     * then we have to change showField value
+     */
+    public function modifyShowFieldName(string $name): static
+    {
+        $this->showWhenCondition = array_map(static function (array $item) use ($name): array {
+            $item['showField'] = $name;
+
+            return $item;
+        }, $this->showWhenCondition);
+
+        return $this;
+    }
+
+    public function modifyShowFieldRangeName(): static
+    {
+        if (! $this instanceof RangeFieldContract) {
+            return $this;
         }
 
-        return $data;
+        $this->showWhenCondition = array_map(function (array $item): array {
+            $item['showField'] = $item['range_type'] === 'from'
+                ? $this->getNameAttribute($this->getFromField())
+                : $this->getNameAttribute($this->getToField());
+
+            return $item;
+        }, $this->showWhenCondition);
+
+        return $this;
     }
 
     public function showWhen(
         string $column,
         mixed $operator = null,
-        mixed $value = null,
+        mixed $value = null
     ): static {
-        $this->showWhenState = true;
-        $condition = $this->makeCondition(
-            ...\func_get_args(),
-        );
+        if ($this instanceof RangeFieldContract) {
+            $this->showWhenRange($column, $operator, $value);
 
-        $this->showWhenCondition[] = $condition;
+            return $this;
+        }
+
+        $this->showWhenData = $this->makeCondition(...\func_get_args());
+        [$column, $value, $operator] = $this->showWhenData;
+        $this->showWhenState = true;
+
+        $this->showWhenCondition[] = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+        );
 
         return $this;
     }
@@ -58,25 +115,49 @@ trait ShowWhen
     public function showWhenRow(
         string $column,
         mixed $operator = null,
-        mixed $value = null,
+        mixed $value = null
     ): static {
+        $this->showWhenData = $this->makeCondition(...\func_get_args());
+        [$column, $value, $operator] = $this->showWhenData;
         $this->showWhenState = true;
 
-        $condition = $this->makeCondition(
-            ...\func_get_args(),
+        $this->showWhenCondition[] = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+            isRowMode: true
         );
 
-        $condition->isRowMode = true;
-
-        $this->showWhenCondition[] = $condition;
-
         return $this;
+    }
+
+    /**
+     * @param array<array-key, mixed> $additionally
+     * @return array<array-key, mixed>
+     */
+    protected function showWhenCondition(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null,
+        bool $isRowMode = false,
+        ?string $nameIndex = null,
+        array $additionally = []
+    ): array {
+        return [
+            'object_id' => (string) spl_object_id($this),
+            'showField' => $this->getNameAttribute($nameIndex),
+            'changeField' => $this->getDotNestedToName($column),
+            'operator' => $operator,
+            'value' => $value,
+            'is_row_mode' => $isRowMode,
+            ...$additionally,
+        ];
     }
 
     public function showWhenDate(
         string $column,
         mixed $operator = null,
-        mixed $value = null,
+        mixed $value = null
     ): static {
         if (\func_num_args() === 2) {
             $value = $operator;
@@ -84,7 +165,7 @@ trait ShowWhen
 
         if (\is_array($value)) {
             foreach ($value as $key => $item) {
-                // Casting to Date type for JavaScript
+                // Casting to Date type for javascript
                 $value[$key] = strtotime((string) $item) * 1000;
             }
         } else {
@@ -98,39 +179,100 @@ trait ShowWhen
         return $this->showWhen($column, $operator, $value);
     }
 
-    protected function showWhenConditionToArray(
-        ShowWhenCondition $condition,
-        ?string $nameIndex = null,
-        ?string $rangeType = null,
-    ): array
-    {
-        $data = [
-            'object_id' => (string) spl_object_id($this),
-            'showField' => $this->getAttribute('data-show-when-field') ?? $this->getNameAttribute($nameIndex),
-            'changeField' => $this->getDotNestedToName($condition->column),
-            'operator' => $condition->operator,
-            'value' => $condition->value,
-            'is_row_mode' => $condition->isRowMode,
-        ];
-
-        if($rangeType) {
-            $data['range_type'] = $rangeType;
+    protected function showWhenRange(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null
+    ): static {
+        if (! $this instanceof RangeFieldContract) {
+            return $this;
         }
 
-        return $data;
+        $this->showWhenData = $this->makeCondition(...\func_get_args());
+        [$column, $value, $operator] = $this->showWhenData;
+        $this->showWhenState = true;
+
+        $showWhenCondition = $this->showWhenCondition(
+            $column,
+            $operator,
+            $value,
+            nameIndex: $this->getFromField(),
+            additionally: [
+                'range_type' => 'from',
+            ]
+        );
+
+        $this->showWhenCondition[] = $showWhenCondition;
+
+        $showWhenCondition['showField'] = $this->getNameAttribute($this->getToField());
+        $showWhenCondition['range_type'] = 'to';
+        $this->showWhenCondition[] = $showWhenCondition;
+
+        return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected function makeCondition(
         string $column,
         mixed $operator = null,
-        mixed $value = null,
-        bool $isRowMode = false,
-    ): ShowWhenCondition {
-        return new ShowWhenCondition(
+        mixed $value = null
+    ): array {
+        return [
             $column,
-            func_num_args() === 2 ? '=' : $operator,
-            func_num_args() === 2 ? $operator : $value,
-            isRowMode: $isRowMode,
-        );
+            ...$this->prepareValueAndOperator(
+                $value,
+                $operator,
+                \func_num_args() === 2
+            ),
+        ];
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    protected function prepareValueAndOperator(
+        mixed $value,
+        mixed $operator = null,
+        bool $useDefault = false
+    ): array {
+        if ($useDefault) {
+            return [$operator, '='];
+        }
+
+        if ($this->isInvalidOperatorAndValue($operator, $value)) {
+            throw new InvalidArgumentException(
+                'Illegal operator and value combination.'
+            );
+        }
+
+        if ($this->isInvalidOperator($operator)) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if (! \is_array($value) && \in_array($operator, $this->arrayOperators)) {
+            throw new InvalidArgumentException(
+                'Illegal operator and value combination. Value must be array type'
+            );
+        }
+
+        return [$value, $operator];
+    }
+
+    protected function isInvalidOperatorAndValue(mixed $operator, mixed $value): bool
+    {
+        return \is_null($value) && \in_array($operator, $this->operators) &&
+            ! \in_array($operator, ['=', '!=']);
+    }
+
+    protected function isInvalidOperator(mixed $operator): bool
+    {
+        return ! \is_string($operator) || (! \in_array(
+            strtolower($operator),
+            $this->operators,
+            true
+        ));
     }
 }
