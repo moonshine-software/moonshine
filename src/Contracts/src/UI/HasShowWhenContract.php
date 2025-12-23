@@ -9,7 +9,7 @@ interface HasShowWhenContract
     public function hasShowWhen(): bool;
 
     /**
-     * @return array<string, string>
+     * @return array<array-key, mixed>
      */
     public function getShowWhenCondition(): array;
 
@@ -23,5 +23,11 @@ interface HasShowWhenContract
         string $column,
         mixed $operator = null,
         mixed $value = null
+    ): static;
+
+    public function showWhenRow(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null,
     ): static;
 }

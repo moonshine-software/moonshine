@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\DTOs;
 
+use InvalidArgumentException;
 
 final class ShowWhenCondition
 {
@@ -35,36 +36,36 @@ final class ShowWhenCondition
         public mixed $value,
         public bool $isRowMode = false,
     ) {
-        if ($this->isInvalidValueForOperator($operator, $value)) {
-            throw new \InvalidArgumentException(
+        if ($this->isInvalidValueForOperator()) {
+            throw new InvalidArgumentException(
                 'Illegal operator and value combination.'
             );
         }
 
-        if ($this->isInvalidOperator($operator)) {
-            $value = $operator;
-            $operator = '=';
+        if ($this->isInvalidOperator()) {
+            $this->value = $this->operator;
+            $this->operator = '=';
         }
 
         if (! \is_array($value) && \in_array($operator, $this->arrayOperators)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Illegal operator and value combination. Value must be array type'
             );
         }
     }
 
-    protected function isInvalidValueForOperator(mixed $operator, mixed $value): bool
+    protected function isInvalidValueForOperator(): bool
     {
-        return \is_null($value) && \in_array($operator, $this->operators) &&
-               ! \in_array($operator, ['=', '!=']);
+        return \is_null($this->value) && \in_array($this->operator, $this->operators) &&
+               ! \in_array($this->operator, ['=', '!=']);
     }
 
-    protected function isInvalidOperator(mixed $operator): bool
+    protected function isInvalidOperator(): bool
     {
-        return ! \is_string($operator) || (! \in_array(
-                strtolower($operator),
-                $this->operators,
-                true
-            ));
+        return ! \is_string($this->operator) || (! \in_array(
+            strtolower($this->operator),
+            $this->operators,
+            true
+        ));
     }
 }
