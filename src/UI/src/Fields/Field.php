@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -17,6 +18,7 @@ use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\TextWrap;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Contracts\RangeFieldContract;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\WithBadge;
 use MoonShine\UI\Traits\Fields\WithHint;
