@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
-use InvalidArgumentException;
 use MoonShine\Support\DTOs\ShowWhenCondition;
 use MoonShine\UI\Contracts\RangeFieldContract;
 
@@ -107,7 +106,7 @@ trait ShowWhen
     {
         $data = [
             'object_id' => (string) spl_object_id($this),
-            'showField' => $this->getNameAttribute($nameIndex),
+            'showField' => $this->getAttribute('data-show-when-field') ?? $this->getNameAttribute($nameIndex),
             'changeField' => $this->getDotNestedToName($condition->column),
             'operator' => $condition->operator,
             'value' => $condition->value,
