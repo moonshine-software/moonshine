@@ -1,37 +1,43 @@
-export function getInputs(formId) {
+import {inputFieldName, inputGetValue} from './Forms.js'
+
+/**
+ * We collect all the fields that participate in ShowWhen
+ */
+export function getShowWhenInputs(formId) {
   const inputs = {}
 
   const form = document.getElementById(formId)
 
   form.querySelectorAll('[name]').forEach(element => {
-    const value = element.getAttribute('name')
-    const fieldName = inputFieldName(value)
+    const name = element.getAttribute('name')
+    const column = inputFieldName(name)
     const type = element.getAttribute('type')
 
     if (type === 'radio' && !element.checked) {
       return
     }
 
-    inputs[fieldName] = {
+    inputs[column] = {
       value: inputGetValue(element),
       type: type,
     }
   })
 
   form.querySelectorAll('[data-show-when-field]').forEach(element => {
-    const value = element.getAttribute('data-show-when-field')
-    const fieldName = inputFieldName(value)
+    const name = element.getAttribute('data-show-when-field')
+    const column = inputFieldName(name)
 
-    inputs[fieldName] = {
-      value,
-      type: 'text',
+    inputs[column] = {
+      value: name,
+      type: element.getAttribute('type'),
     }
   })
 
   form.querySelectorAll('[data-show-when-column]').forEach(element => {
-    const fieldName = element.getAttribute('data-show-when-column')
+    const name = element.getAttribute('data-show-when-column')
+    const column = inputFieldName(name)
 
-    inputs[fieldName] = {
+    inputs[column] = {
       value: inputGetValue(element),
       type: element.getAttribute('type'),
     }
@@ -40,274 +46,312 @@ export function getInputs(formId) {
   return inputs
 }
 
+/**
+ * Triggered when a field changes on the onChangeField event
+ *
+ * Find related fields and trigger showWhenUpdateVisibility for each
+ */
 export function showWhenChange(fieldName, formId) {
-  fieldName = inputFieldName(fieldName)
+  let fieldColumn = inputFieldName(fieldName)
 
-  const showWhenFields = []
+  const relatedFields = []
 
   this.whenFields.forEach(field => {
-    let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
+    let fieldElement = findFieldElement(fieldName, formId)
 
-    if (inputElement === null || inputElement === undefined) {
+    if (fieldElement === null || fieldElement === undefined) {
       return
     }
 
-    let syncWith = inputElement.dataset.syncWith
+    /**
+     * Paired fields (range, date range, etc.) use data-sync-with attribute
+     * to reference their sibling field for synchronized show/hide behavior
+     */
+    let syncWith = fieldElement.dataset.syncWith
 
-    if (
-      field.is_row_mode === false &&
-      fieldName !== field.changeField &&
-      syncWith !== field.changeField
-    ) {
+    const isTargetField = fieldColumn === field.changeField || syncWith === field.changeField
+
+    if (!field.is_row_mode && !isTargetField) {
       return
     }
 
     let showField = field.showField
 
-    if (!showWhenFields[showField]) {
-      showWhenFields[showField] = []
+    if (!relatedFields[showField]) {
+      relatedFields[showField] = []
     }
 
-    showWhenFields[showField].push(field)
+    relatedFields[showField].push(field)
   })
 
-  for (let showField in showWhenFields) {
-    this.showWhenVisibilityChange(
-      showWhenFields[showField],
+  for (let showField in relatedFields) {
+    this.showWhenUpdateVisibility(
+      relatedFields[showField],
       showField,
-      this.getInputs(formId),
+      this.getShowWhenInputs(formId),
       formId,
     )
   }
 }
 
-export function showWhenVisibilityChange(showWhenFields, fieldName, inputs, formId) {
-  if (showWhenFields.length === 0) {
+/**
+ * Main function
+ */
+export function showWhenUpdateVisibility(relatedFields, fieldName, inputs, formId) {
+  if (relatedFields.length === 0) {
     return
   }
 
-  let inputElement = document.querySelector('#' + formId + ' [name="' + fieldName + '"]')
+  let fieldElement = findFieldElement(fieldName, formId)
 
-  if (inputElement === null) {
-    inputElement = document.querySelector(
-      '#' + formId + ' [data-show-when-field="' + fieldName + '"]',
-    )
-  }
-
-  if (inputElement === null) {
-    inputElement = document.querySelector(
-      '#' + formId + ' [data-show-when-column="' + fieldName + '"]',
-    )
-  }
-
-  if (inputElement === null) {
+  if (fieldElement === null || fieldElement === undefined) {
     return
   }
 
-  let visibleFieldsCount = 0
+  let matchedConditions = 0
 
-  showWhenFields.forEach(field => {
-    if (isShowField(fieldName, inputs, field, formId)) {
-      visibleFieldsCount++
+  const keepName = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
+
+  relatedFields.forEach(field => {
+    if (shouldShowField(fieldName, inputs, field, formId, keepName)) {
+      matchedConditions++
     }
   })
 
-  const showWhenSubmit = document.querySelector(`#${formId}`).getAttribute('data-submit-show-when')
+  /**
+   * In row mode, visibility is handled per-row in shouldShowField,
+   * including th hiding when all cells are hidden
+   */
+  if(fieldElement.dataset.isRowMode) {
+    return
+  }
 
-  if (inputElement.closest('table[data-inside=field]')) {
-    // If input is in a table, then find all tables with this input
-    const tablesWithInput = []
+  // If input is in a table, then find all tables with this input
+  if (fieldElement.closest('table[data-inside=field]')) {
+    const relatedTables = []
 
     // Only data-show-when-field is used in tables, see in UI/Collections/Fields.php(prepareReindex)
     document
       .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
       .forEach(function (element) {
-        let inputTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
-        if (tablesWithInput.indexOf(inputTable) === -1) {
-          tablesWithInput.push(inputTable)
+        let parentTable = element.closest('table[data-inside=field]') // Get parent table for data-show-field
+        if (relatedTables.indexOf(parentTable) === -1) {
+          relatedTables.push(parentTable)
         }
       })
 
     // Tables hide the entire column
-    tablesWithInput.forEach(table => {
-      showHideTableInputs(
-        showWhenFields.length === visibleFieldsCount,
+    relatedTables.forEach(table => {
+      toggleTableColumn(
+        relatedFields.length === matchedConditions,
         table,
         fieldName,
-        showWhenSubmit,
+        keepName,
       )
     })
 
     return
   }
 
-  showHideField(showWhenFields.length === visibleFieldsCount, inputElement, showWhenSubmit)
+  toggleField(relatedFields.length === matchedConditions, fieldElement, keepName)
 }
 
-function showHideField(isShow, inputElementField, showWhenSubmit) {
-  showHideInputElement(isShow, inputElementField, showWhenSubmit)
+function findFieldElement(name, formId) {
+  let element = document.querySelector('#' + formId + ' [name="' + name + '"]')
+
+  if (element === null) {
+    element = document.querySelector(
+      '#' + formId + ' [data-show-when-field="' + name + '"]',
+    )
+  }
+
+  if (element === null) {
+    element = document.querySelector(
+      '#' + formId + ' [data-show-when-column="' + name + '"]',
+    )
+  }
+
+  return element
+}
+
+function toggleField(isShow, fieldElement, keepName) {
+  toggleInputElement(isShow, fieldElement, keepName)
 
   // If inside the field there are entry fields with the name attribute
-  let inputs = inputElementField.querySelectorAll('[name]')
+  let inputs = fieldElement.querySelectorAll('[name]')
   if (inputs.length === 0) {
     // If the fields were hidden, then their attribute name is data-show-when-column
-    inputs = inputElementField.querySelectorAll('[data-show-when-column]')
+    inputs = fieldElement.querySelectorAll('[data-show-when-column]')
   }
   for (let i = 0; i < inputs.length; i++) {
-    showHideInputElement(isShow, inputs[i], showWhenSubmit)
+    toggleInputElement(isShow, inputs[i], keepName)
   }
 }
 
-function showHideInputElement(isShow, inputElement, showWhenSubmit) {
-  let fieldContainer = inputElement.closest('.moonshine-field')
-  if (fieldContainer === null) {
-    fieldContainer = inputElement.closest('.form-group')
-  }
-  if (fieldContainer === null) {
-    fieldContainer = inputElement
+function toggleInputElement(isShow, element, keepName) {
+  let container = element.closest('.moonshine-field')
+  let siblingElements = []
+
+  if (container === null) {
+    container = element.closest('.form-group')
   }
 
-  if (isShow) {
-    fieldContainer.classList.remove('hidden')
-
-    const nameAttr = inputElement.getAttribute('data-show-when-column')
-    if (nameAttr) {
-      inputElement.setAttribute('name', nameAttr)
+  if (container === null) {
+    container = element
+    /** tom-select without container problem */
+    const nextElement = container.nextElementSibling
+    if (nextElement?.classList.contains('ts-wrapper')) {
+      siblingElements.push(nextElement)
     }
-    const requiredAttr = inputElement.getAttribute('data-required-when-column')
+  }
+
+  applyVisibility(isShow, container, element, keepName, siblingElements)
+}
+
+function applyVisibility(isShow, container, element, keepName, siblingElements = []) {
+  if (isShow) {
+    container.classList.remove('hidden')
+    siblingElements.forEach(el => el.classList.remove('hidden'))
+
+    const nameAttr = element.getAttribute('data-show-when-column')
+
     if (nameAttr) {
-      inputElement.setAttribute('required', requiredAttr)
+      element.setAttribute('name', nameAttr)
+    }
+
+    const requiredAttr = element.getAttribute('data-required-when-column')
+
+    if (requiredAttr) {
+      element.setAttribute('required', requiredAttr)
     }
   } else {
-    fieldContainer.classList.add('hidden')
+    container.classList.add('hidden')
+    siblingElements.forEach(el => el.classList.add('hidden'))
 
-    if (!showWhenSubmit) {
-      const nameAttr = inputElement.getAttribute('name')
+    if (!keepName) {
+      const nameAttr = element.getAttribute('name')
+
       if (nameAttr) {
-        inputElement.setAttribute('data-show-when-column', nameAttr)
-        inputElement.removeAttribute('name')
+        element.setAttribute('data-show-when-column', nameAttr)
+        element.removeAttribute('name')
       }
-      const requiredAttr = inputElement.getAttribute('required')
+
+      const requiredAttr = element.getAttribute('required')
+
       if (requiredAttr) {
-        inputElement.setAttribute('data-required-when-column', requiredAttr)
-        inputElement.removeAttribute('required')
+        element.setAttribute('data-required-when-column', requiredAttr)
+        element.removeAttribute('required')
       }
     }
   }
 }
 
-function showHideTableInputs(isShow, table, fieldName, showWhenSubmit) {
-  let cellIndexTd = null
+function toggleTableColumn(isShow, table, fieldName, keepName) {
+  let columnIndex = null
 
   table.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(element => {
-    if (element.dataset.objectMode) {
-      showHideField(isShow, element)
+    const cell = toggleTableCell(isShow, element, keepName)
 
+    if(cell === null) {
       return
     }
 
-    const td = element.closest('td')
-
-    if (td.dataset.objectMode) {
-      showHideField(isShow, element)
-
-      return
-    }
-
-    if (isShow) {
-      td.classList.remove('hidden')
-
-      const nameAttr = element.getAttribute('data-show-when-column')
-      if (nameAttr) {
-        element.setAttribute('name', nameAttr)
-      }
-      const requiredAttr = element.getAttribute('data-required-when-column')
-      if (requiredAttr) {
-        element.setAttribute('required', requiredAttr)
-      }
-    } else {
-      td.classList.add('hidden')
-
-      if (!showWhenSubmit) {
-        const nameAttr = element.getAttribute('name')
-        if (nameAttr) {
-          element.setAttribute('data-show-when-column', nameAttr)
-          element.removeAttribute('name')
-        }
-        const requiredAttr = element.getAttribute('required')
-        if (requiredAttr) {
-          element.setAttribute('data-required-when-column', requiredAttr)
-          element.removeAttribute('required')
-        }
-      }
-    }
-
-    if (cellIndexTd === null) {
-      cellIndexTd = td.cellIndex
+    if (columnIndex === null) {
+      columnIndex = cell.cellIndex
     }
   })
 
-  if (cellIndexTd !== null) {
-    table.querySelectorAll('th').forEach(element => {
-      if (element.cellIndex !== cellIndexTd) {
+  if (columnIndex !== null) {
+    table.querySelectorAll('th').forEach(header => {
+      if (header.cellIndex !== columnIndex) {
         return
       }
-      element.classList.toggle('hidden', !isShow)
+      header.classList.toggle('hidden', !isShow)
     })
   }
 }
 
-export function inputFieldName(inputName) {
-  if (inputName === null) {
-    return ''
+function toggleTableCell(isShow, element, keepName) {
+  if (element.dataset.objectMode) {
+    toggleField(isShow, element)
+
+    return null
   }
-  inputName = inputName.replace('[]', '')
-  if (inputName.indexOf('slide[') !== -1) {
-    inputName = inputName.replace('slide[', '').replace(']', '')
+
+  const cell = element.closest('td')
+
+  if (cell.dataset.objectMode) {
+    toggleField(isShow, element)
+
+    return null
   }
-  return inputName
+
+  let siblingElements = []
+
+  /** tom-select without container problem */
+  const nextElement = element.nextElementSibling
+  if (nextElement?.classList.contains('ts-wrapper')) {
+    siblingElements.push(nextElement)
+  }
+
+  applyVisibility(isShow, cell, element, keepName, siblingElements)
+
+  return cell
 }
 
-export function inputGetValue(element) {
-  let value
-
-  const type = element.getAttribute('type')
-
-  if (element.hasAttribute('multiple') && element.options !== undefined) {
-    value = []
-    for (let option of element.options) {
-      if (option.selected) {
-        value.push(option.value)
-      }
-    }
-  } else if (type === 'checkbox') {
-    value = element.checked
-  } else if (type === 'radio') {
-    value = element.value
-  } else {
-    value = element.value
-  }
-
-  return value
-}
-
-function isShowField(fieldName, inputs, field, formId) {
+/**
+ * Check if field should be visible based on conditions
+ */
+function shouldShowField(fieldName, inputs, field, formId, keepName) {
   if (field.is_row_mode) {
+    let visibleCellsCount = 0
+    let columnIndex = null
+    let table = null
+
     document
       .querySelectorAll('#' + formId + ' [data-show-when-field="' + fieldName + '"]')
       .forEach(function (element) {
         let row = element.closest('tr')
         let target = row.querySelector('[data-column="' + field.changeField + '"]')
 
-        let isShow = isShowFieldCondition(target.type, field.operator, field.value, target.value)
+        let isVisible = evaluateCondition(
+          target.type,
+          field.operator,
+          field.value,
+          inputGetValue(target)
+        )
 
-        element.classList.toggle('hidden', !isShow)
+        element.setAttribute('data-is-row-mode', 'true')
+
+        toggleTableCell(isVisible, element, keepName)
+
+        if (isVisible) {
+          visibleCellsCount++
+        }
+
+        // Remember columnIndex and table for hiding th
+        if (columnIndex === null) {
+          const cell = element.closest('td')
+          if (cell) {
+            columnIndex = cell.cellIndex
+            table = element.closest('table[data-inside=field]')
+          }
+        }
       })
+
+    // Hide th if all cells in the column are hidden
+    if (table !== null && columnIndex !== null) {
+      table.querySelectorAll('th').forEach(header => {
+        if (header.cellIndex === columnIndex) {
+          header.classList.toggle('hidden', visibleCellsCount === 0)
+        }
+      })
+    }
 
     return true
   }
 
-  return isShowFieldCondition(
+  return evaluateCondition(
     inputs[field.changeField].type,
     field.operator,
     inputs[field.changeField].value,
@@ -315,69 +359,77 @@ function isShowField(fieldName, inputs, field, formId) {
   )
 }
 
-function isShowFieldCondition(inputType, operator, valueInput, valueField) {
-  let isShowField = false
+function evaluateCondition(inputType, operator, inputValue, conditionValue) {
+  let result = false
 
   if (inputType === 'number') {
-    valueInput = parseFloat(valueInput)
-    valueField = parseFloat(valueField)
+    inputValue = parseFloat(inputValue)
+    conditionValue = parseFloat(conditionValue)
   } else if (inputType === 'date' || inputType === 'datetime-local') {
     if (inputType === 'date') {
-      valueInput = valueInput + ' 00:00:00'
+      inputValue = inputValue + ' 00:00:00'
     }
-    valueInput = new Date(valueInput).getTime()
+    inputValue = new Date(inputValue).getTime()
 
-    if (!Array.isArray(valueField)) {
-      valueField = new Date(valueField).getTime()
+    if (!Array.isArray(conditionValue)) {
+      conditionValue = new Date(conditionValue).getTime()
     }
   }
 
+  /**
+   * Using loose equality (==) intentionally to compare values of different types
+   * e.g., string "1" should match number 1 from form inputs
+   */
   switch (operator) {
     case '=':
-      isShowField = valueInput == valueField
+      result = inputValue == conditionValue
       break
     case '!=':
-      isShowField = valueInput != valueField
+      result = inputValue != conditionValue
       break
     case '>':
-      isShowField = valueInput > valueField
+      result = inputValue > conditionValue
       break
     case '<':
-      isShowField = valueInput < valueField
+      result = inputValue < conditionValue
       break
     case '>=':
-      isShowField = valueInput >= valueField
+      result = inputValue >= conditionValue
       break
     case '<=':
-      isShowField = valueInput <= valueField
+      result = inputValue <= conditionValue
       break
     case 'in':
-      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
-        for (let i = 0; i < valueField.length; i++) {
-          if (valueInput.includes(valueField[i])) {
-            isShowField = true
+      if (Array.isArray(inputValue) && Array.isArray(conditionValue)) {
+        for (let i = 0; i < conditionValue.length; i++) {
+          if (inputValue.some(v => v == conditionValue[i])) {
+            result = true
             break
           }
         }
       } else {
-        isShowField = valueField.includes(valueInput)
+        result = Array.isArray(conditionValue)
+          ? conditionValue.some(v => v == inputValue)
+          : conditionValue.includes(inputValue);
       }
       break
     case 'not in':
-      if (Array.isArray(valueInput) && Array.isArray(valueField)) {
+      if (Array.isArray(inputValue) && Array.isArray(conditionValue)) {
         let includes = false
-        for (let i = 0; i < valueField.length; i++) {
-          if (valueInput.includes(valueField[i])) {
+        for (let i = 0; i < conditionValue.length; i++) {
+          if (inputValue.some(v => v == conditionValue[i])) {
             includes = true
             break
           }
         }
-        isShowField = !includes
+        result = !includes
       } else {
-        isShowField = !valueField.includes(valueInput)
+        result = Array.isArray(conditionValue)
+          ? !conditionValue.some(v => v == inputValue)
+          : !conditionValue.includes(inputValue);
       }
       break
   }
 
-  return isShowField
+  return result
 }

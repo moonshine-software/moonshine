@@ -99,8 +99,6 @@ trait RangeTrait
         $this->fromField = $fromField;
         $this->toField = $toField;
 
-        $this->modifyShowFieldRangeName();
-
         return $this;
     }
 

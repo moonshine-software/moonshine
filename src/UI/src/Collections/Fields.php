@@ -306,10 +306,9 @@ class Fields extends BaseCollection implements FieldsContract
                 ->replace('_', '.')
                 ->value();
 
-            return $field->modifyShowFieldName($showWhenName)
-                ->customAttributes([
-                    'data-show-when-field' => $showWhenName,
-                ]);
+            return $field->customAttributes([
+                'data-show-when-field' => $showWhenName,
+            ]);
         });
     }
 

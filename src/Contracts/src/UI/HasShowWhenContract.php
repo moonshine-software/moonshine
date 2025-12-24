@@ -9,13 +9,9 @@ interface HasShowWhenContract
     public function hasShowWhen(): bool;
 
     /**
-     * @return array<string, string>
+     * @return array<array-key, mixed>
      */
     public function getShowWhenCondition(): array;
-
-    public function modifyShowFieldName(string $name): static;
-
-    public function modifyShowFieldRangeName(): static;
 
     public function showWhen(
         string $column,
@@ -27,5 +23,11 @@ interface HasShowWhenContract
         string $column,
         mixed $operator = null,
         mixed $value = null
+    ): static;
+
+    public function showWhenRow(
+        string $column,
+        mixed $operator = null,
+        mixed $value = null,
     ): static;
 }
