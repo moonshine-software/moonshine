@@ -36,17 +36,6 @@ trait WithQuickFormElementAttributes
     {
         $this->wrapName = $wrapName;
 
-        // because showWhen can be declared after
-        if ($this->showWhenState) {
-            [$column, $value, $operator] = $this->showWhenData;
-
-            $this->showWhenCondition = (new Collection($this->showWhenCondition))
-                ->reject(fn (array $data, int|string $index): bool => $data['object_id'] === spl_object_id($this))
-                ->toArray();
-
-            return $this->showWhen($column, $value, $operator);
-        }
-
         return $this;
     }
 

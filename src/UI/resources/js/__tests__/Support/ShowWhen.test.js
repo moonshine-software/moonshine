@@ -1,14 +1,13 @@
 import {afterEach, beforeEach, describe, expect, it, jest} from '@jest/globals'
 
 import {
-  getInputs,
-  inputFieldName,
-  inputGetValue,
+  getShowWhenInputs,
   showWhenChange,
-  showWhenVisibilityChange,
+  showWhenUpdateVisibility,
 } from '../../Support/ShowWhen.js'
+import {inputFieldName, inputGetValue} from '../../Support/Forms.js'
 
-describe('getInputs', () => {
+describe('getShowWhenInputs', () => {
   let form
 
   beforeEach(() => {
@@ -36,7 +35,7 @@ describe('getInputs', () => {
   })
 
   it('should extract input values correctly', () => {
-    const inputs = getInputs('test-form')
+    const inputs = getShowWhenInputs('test-form')
 
     expect(inputs).toEqual({
       username: {value: 'john_doe', type: 'text'},
@@ -52,17 +51,17 @@ describe('getInputs', () => {
 
   it('should handle empty form gracefully', () => {
     document.body.innerHTML = `<form id="empty-form"></form>`
-    const inputs = getInputs('empty-form')
+    const inputs = getShowWhenInputs('empty-form')
     expect(inputs).toEqual({})
   })
 
   it('should extract values from data-show-when-field attributes', () => {
-    const inputs = getInputs('test-form')
+    const inputs = getShowWhenInputs('test-form')
     expect(inputs.dynamicField).toEqual({value: 'dynamicField', type: 'text'})
   })
 
   it('should extract values from data-show-when-column attributes', () => {
-    const inputs = getInputs('test-form')
+    const inputs = getShowWhenInputs('test-form')
     expect(inputs.columnField).toEqual({value: 'columnValue', type: 'text'})
   })
 })
@@ -130,32 +129,32 @@ describe('showWhenChange', () => {
       whenFields: [
         {changeField: 'field1', showField: 'field2', value: 'test-value', operator: '='},
       ],
-      showWhenVisibilityChange: jest.fn(),
-      getInputs: jest.fn().mockReturnValue({
+      showWhenUpdateVisibility: jest.fn(),
+      getShowWhenInputs: jest.fn().mockReturnValue({
         field1: {value: 'test-value', type: 'text'},
         field2: {value: '', type: 'text'},
       }),
     }
   })
 
-  it('should call showWhenVisibilityChange with correct parameters', () => {
+  it('should call showWhenUpdateVisibility with correct parameters', () => {
     showWhenChange.call(mockContext, 'field1', 'test-form')
 
-    expect(mockContext.showWhenVisibilityChange).toHaveBeenCalledWith(
+    expect(mockContext.showWhenUpdateVisibility).toHaveBeenCalledWith(
       [mockContext.whenFields[0]],
       'field2',
-      mockContext.getInputs('test-form'),
+      mockContext.getShowWhenInputs('test-form'),
       'test-form',
     )
   })
 
   it('should do nothing if the changed field is not in whenFields', () => {
     showWhenChange.call(mockContext, 'nonExistentField', 'test-form')
-    expect(mockContext.showWhenVisibilityChange).not.toHaveBeenCalled()
+    expect(mockContext.showWhenUpdateVisibility).not.toHaveBeenCalled()
   })
 })
 
-describe('showWhenVisibilityChange', () => {
+describe('showWhenUpdateVisibility', () => {
   let form, inputElement, mockContext
 
   beforeEach(() => {
@@ -170,7 +169,7 @@ describe('showWhenVisibilityChange', () => {
     inputElement = form.querySelector('[data-show-when-field="field2"]')
 
     mockContext = {
-      getInputs: jest.fn().mockReturnValue({
+      getShowWhenInputs: jest.fn().mockReturnValue({
         field1: {value: 'test-value', type: 'text'},
         field2: {value: '', type: 'text'},
       }),
@@ -180,10 +179,10 @@ describe('showWhenVisibilityChange', () => {
   it('should hide the field if conditions are not met', () => {
     const mockShowWhenFields = [{changeField: 'field1', value: 'wrong-value', operator: '='}]
 
-    showWhenVisibilityChange(
+    showWhenUpdateVisibility(
       mockShowWhenFields,
       'field2',
-      mockContext.getInputs('test-form'),
+      mockContext.getShowWhenInputs('test-form'),
       'test-form',
     )
 
@@ -193,10 +192,10 @@ describe('showWhenVisibilityChange', () => {
   it('should show the field if conditions are met', () => {
     const mockShowWhenFields = [{changeField: 'field1', value: 'test-value', operator: '='}]
 
-    showWhenVisibilityChange(
+    showWhenUpdateVisibility(
       mockShowWhenFields,
       'field2',
-      mockContext.getInputs('test-form'),
+      mockContext.getShowWhenInputs('test-form'),
       'test-form',
     )
 
@@ -206,7 +205,12 @@ describe('showWhenVisibilityChange', () => {
   it('should do nothing if inputElement is null', () => {
     document.body.innerHTML = `<form id="test-form"></form>` // Без полей
     expect(() => {
-      showWhenVisibilityChange([], 'field2', mockContext.getInputs('test-form'), 'test-form')
+      showWhenUpdateVisibility(
+        [],
+        'field2',
+        mockContext.getShowWhenInputs('test-form'),
+        'test-form',
+      )
     }).not.toThrow()
   })
 })

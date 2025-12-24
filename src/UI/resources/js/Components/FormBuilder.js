@@ -8,7 +8,7 @@ import {
 } from '../Support/Forms.js'
 import request, {initCallback, prepareUrl} from '../Request/Core.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
-import {getInputs, showWhenChange, showWhenVisibilityChange} from '../Support/ShowWhen.js'
+import {getShowWhenInputs, showWhenChange, showWhenUpdateVisibility} from '../Support/ShowWhen.js'
 import {formToJSON} from 'axios'
 
 export default (name = '', initData = {}, reactive = {}) => ({
@@ -126,25 +126,26 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
       await t.$nextTick()
 
-      const inputs = t.getInputs(formId)
+      const inputs = t.getShowWhenInputs(formId)
 
       const showWhenFields = {}
 
       t.whenFields.forEach(field => {
-        if (
-          field.is_row_mode === false &&
-          (inputs[field.changeField] === undefined || inputs[field.changeField].value === undefined)
-        ) {
+        const inputUndefined = inputs[field.changeField]?.value === undefined
+
+        if (!field.is_row_mode && inputUndefined) {
           return
         }
+
         if (showWhenFields[field.showField] === undefined) {
           showWhenFields[field.showField] = []
         }
+
         showWhenFields[field.showField].push(field)
       })
 
       for (let key in showWhenFields) {
-        t.showWhenVisibilityChange(showWhenFields[key], key, inputs, formId)
+        t.showWhenUpdateVisibility(showWhenFields[key], key, inputs, formId)
       }
     })
   },
@@ -346,9 +347,9 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
   showWhenChange,
 
-  showWhenVisibilityChange,
+  showWhenUpdateVisibility,
 
-  getInputs,
+  getShowWhenInputs,
 })
 
 function submitState(form, loading = true, reset = false) {

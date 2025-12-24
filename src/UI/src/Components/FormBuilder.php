@@ -460,9 +460,9 @@ final class FormBuilder extends MoonShineComponent implements
      */
     protected function showWhenFields(FieldsContract $fields, array &$data): void
     {
-        foreach ($fields->whenFieldsConditions() as $whenConditions) {
-            foreach ($whenConditions as $value) {
-                $data[] = $value;
+        foreach ($fields->whenFieldsConditions() as $conditions) {
+            foreach ($conditions as $condition) {
+                $data[] = $condition;
             }
         }
 

@@ -187,12 +187,6 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     public function setColumn(string $column): static
     {
-        if ($this->showWhenState) {
-            foreach (array_keys($this->showWhenCondition) as $key) {
-                $this->showWhenCondition[$key]['showField'] = $column;
-            }
-        }
-
         $this->column = $column;
 
         return $this;

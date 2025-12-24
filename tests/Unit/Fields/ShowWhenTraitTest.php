@@ -21,6 +21,11 @@ beforeEach(function (): void {
             return 'field1';
         }
 
+        public function getAttribute(string $key, mixed $default = null): mixed
+        {
+            return null;
+        }
+
         protected function getDotNestedToName(string $value): string
         {
             return $value;
@@ -32,6 +37,7 @@ it('default operator', function (): void {
     $this->showWhenTest->showWhen('field2', 1);
 
     $condition = $this->showWhenTest->getShowWhenCondition()[0];
+
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('=')
@@ -65,6 +71,7 @@ it('error operator', function (): void {
     $this->showWhenTest->showWhen('field2', '%', 1);
 
     $condition = $this->showWhenTest->getShowWhenCondition()[0];
+
     expect($condition['showField'])->toBe('field1')
         ->and($condition['changeField'])->toBe('field2')
         ->and($condition['operator'])->toBe('=')
