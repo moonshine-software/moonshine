@@ -30,7 +30,6 @@ return [
         '32' => '/vendor/moonshine/favicon-32x32.png',
         '16' => '/vendor/moonshine/favicon-16x16.png',
         'safari-pinned-tab' => '/vendor/moonshine/safari-pinned-tab.svg',
-        'web-manifest' => '/vendor/moonshine/site.webmanifest',
     ],
 
     // Default flags

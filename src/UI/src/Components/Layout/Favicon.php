@@ -16,7 +16,6 @@ final class Favicon extends MoonShineComponent
      *     32?: string,
      *     16?: string,
      *     safari-pinned-tab?: string,
-     *     web-manifest?: string,
      * }  $customAssets
      */
     public function __construct(
@@ -32,7 +31,6 @@ final class Favicon extends MoonShineComponent
      *     32: string,
      *     16: string,
      *     safari-pinned-tab: string,
-     *     web-manifest: string,
      * }  $assets
      */
     public function customAssets(array $assets): self
@@ -59,9 +57,6 @@ final class Favicon extends MoonShineComponent
                 '32' => $this->getAssetManager()->getAsset($favicons['32'] ?? '/vendor/moonshine/favicon-32x32.png'),
                 '16' => $this->getAssetManager()->getAsset($favicons['16'] ?? '/vendor/moonshine/favicon-16x16.png'),
                 'safari-pinned-tab' => $this->getAssetManager()->getAsset($favicons['safari-pinned-tab'] ?? '/vendor/moonshine/safari-pinned-tab.svg'),
-                'web-manifest' => isset($favicons['web-manifest']) && empty($favicons['web-manifest'])
-                    ? null
-                    : $this->getAssetManager()->getAsset($favicons['web-manifest'] ?? '/vendor/moonshine/site.webmanifest'),
             ]),
             'bodyColor' => $this->bodyColor,
         ];

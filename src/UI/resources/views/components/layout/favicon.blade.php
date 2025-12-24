@@ -23,12 +23,6 @@
 >
 @endif
 
-@if(isset($assets['web-manifest']))
-<link rel="manifest"
-      href="{{ $assets['web-manifest'] }}"
->
-@endif
-
 @if(isset($assets['safari-pinned-tab']))
 <link rel="mask-icon"
       href="{{ $assets['safari-pinned-tab'] }}"
