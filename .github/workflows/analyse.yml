@@ -2,6 +2,7 @@ name: phpstan
 
 on:
   push:
+    branches: [ '4.x' ]
   pull_request:
     types:
       - opened
