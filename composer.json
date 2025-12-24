@@ -12,8 +12,14 @@
     "authors": [
         {
             "name": "Danil Shutsky",
-            "email": "info@cutcode.ru",
+            "email": "info@cutcode.dev",
             "homepage": "https://cutcode.dev"
+        }
+    ],
+    "funding": [
+        {
+            "type": "boosty",
+            "url": "https://boosty.to/cutcode"
         }
     ],
     "homepage": "https://getmoonshine.app",
