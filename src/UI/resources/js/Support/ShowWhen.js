@@ -122,7 +122,7 @@ export function showWhenUpdateVisibility(relatedFields, fieldName, inputs, formI
    * In row mode, visibility is handled per-row in shouldShowField,
    * including th hiding when all cells are hidden
    */
-  if(fieldElement.dataset.isRowMode) {
+  if (fieldElement.dataset.isRowMode) {
     return
   }
 
@@ -142,12 +142,7 @@ export function showWhenUpdateVisibility(relatedFields, fieldName, inputs, formI
 
     // Tables hide the entire column
     relatedTables.forEach(table => {
-      toggleTableColumn(
-        relatedFields.length === matchedConditions,
-        table,
-        fieldName,
-        keepName,
-      )
+      toggleTableColumn(relatedFields.length === matchedConditions, table, fieldName, keepName)
     })
 
     return
@@ -160,15 +155,11 @@ function findFieldElement(name, formId) {
   let element = document.querySelector('#' + formId + ' [name="' + name + '"]')
 
   if (element === null) {
-    element = document.querySelector(
-      '#' + formId + ' [data-show-when-field="' + name + '"]',
-    )
+    element = document.querySelector('#' + formId + ' [data-show-when-field="' + name + '"]')
   }
 
   if (element === null) {
-    element = document.querySelector(
-      '#' + formId + ' [data-show-when-column="' + name + '"]',
-    )
+    element = document.querySelector('#' + formId + ' [data-show-when-column="' + name + '"]')
   }
 
   return element
@@ -252,7 +243,7 @@ function toggleTableColumn(isShow, table, fieldName, keepName) {
   table.querySelectorAll('[data-show-when-field="' + fieldName + '"]').forEach(element => {
     const cell = toggleTableCell(isShow, element, keepName)
 
-    if(cell === null) {
+    if (cell === null) {
       return
     }
 
@@ -318,7 +309,7 @@ function shouldShowField(fieldName, inputs, field, formId, keepName) {
           target.type,
           field.operator,
           field.value,
-          inputGetValue(target)
+          inputGetValue(target),
         )
 
         element.setAttribute('data-is-row-mode', 'true')
@@ -410,7 +401,7 @@ function evaluateCondition(inputType, operator, inputValue, conditionValue) {
       } else {
         result = Array.isArray(conditionValue)
           ? conditionValue.some(v => v == inputValue)
-          : conditionValue.includes(inputValue);
+          : conditionValue.includes(inputValue)
       }
       break
     case 'not in':
@@ -426,7 +417,7 @@ function evaluateCondition(inputType, operator, inputValue, conditionValue) {
       } else {
         result = Array.isArray(conditionValue)
           ? !conditionValue.some(v => v == inputValue)
-          : !conditionValue.includes(inputValue);
+          : !conditionValue.includes(inputValue)
       }
       break
   }

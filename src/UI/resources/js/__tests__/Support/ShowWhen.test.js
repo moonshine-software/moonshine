@@ -205,7 +205,12 @@ describe('showWhenUpdateVisibility', () => {
   it('should do nothing if inputElement is null', () => {
     document.body.innerHTML = `<form id="test-form"></form>` // Без полей
     expect(() => {
-      showWhenUpdateVisibility([], 'field2', mockContext.getShowWhenInputs('test-form'), 'test-form')
+      showWhenUpdateVisibility(
+        [],
+        'field2',
+        mockContext.getShowWhenInputs('test-form'),
+        'test-form',
+      )
     }).not.toThrow()
   })
 })
