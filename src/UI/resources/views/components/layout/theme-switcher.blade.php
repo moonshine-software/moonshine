@@ -1,10 +1,10 @@
-<div class="theme-switcher">
+<div <div {{ $attributes->class('theme-switcher') }}>>
     <button @click.prevent="$dispatch('darkMode:toggle')"
             class="theme-switcher-btn btn-fit"
             type="button"
             :title="$store.darkMode.on ? 'Toggle light mode' : 'Toggle dark mode'"
     >
-        <svg 
+        <svg
             class="theme-switcher-icon"
             x-show="!$store.darkMode.on"
             xmlns="http://www.w3.org/2000/svg"
