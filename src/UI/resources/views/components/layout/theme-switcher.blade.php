@@ -1,4 +1,4 @@
-<div <div {{ $attributes->class('theme-switcher') }}>>
+<div {{ $attributes->class('theme-switcher') }}>
     <button @click.prevent="$dispatch('darkMode:toggle')"
             class="theme-switcher-btn btn-fit"
             type="button"
