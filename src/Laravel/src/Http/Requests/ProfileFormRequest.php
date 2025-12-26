@@ -29,7 +29,7 @@ class ProfileFormRequest extends MoonShineFormRequest
             $username => blank($username) ? null : [
                 'required',
                 Rule::unique(
-                    MoonShineAuth::getModel()->getTable(),
+                    MoonShineAuth::getModel()::class,
                     moonshineConfig()->getUserField('username')
                 )->ignore(MoonShineAuth::getGuard()->id()),
             ],

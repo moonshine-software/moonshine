@@ -98,7 +98,7 @@ final class MoonShineUserFormPage extends FormPage
                 'bail',
                 'required',
                 'email',
-                Rule::unique('moonshine_users')->ignoreModel($item->getOriginal()),
+                Rule::unique($item->getOriginal()::class)->ignoreModel($item->getOriginal()),
             ],
             'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,jpg,png,gif'],
             'password' => [
