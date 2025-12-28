@@ -18,13 +18,12 @@
     <a href="https://laravel.com"><img alt="PHP 8.2+" src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php"></a>
 </p>
 
+<p align="center">
 [![Meta Storm Plugin](https://img.shields.io/static/v1?&label=Better+with&message=Meta+Storm+Plugin&logo=phpstorm&color=aa55ee)](https://github.com/xepozz/meta-storm-idea-plugin)
-
+</p>
 
 #### [Documentation](https://getmoonshine.app/en/docs)  •  [Documentation repository](https://github.com/moonshine-software/doc)
-#### [Demo project 1](https://github.com/moonshine-software/demo-project)
-#### [Demo project 2](https://github.com/moonshine-software/demo-blog)
-#### [Demo project 3](https://github.com/moonshine-software/todo-list-demo)
+#### [Demo project 1](https://demo.moonshine-laravel.com)  •  [Demo project 1](https://github.com/moonshine-software/demo-project)  •  [Demo project 2](https://github.com/moonshine-software/demo-blog)  •  [Demo project 3](https://github.com/moonshine-software/todo-list-demo)
 
 #### Hello Laravel user!
 
