@@ -20,12 +20,8 @@
 
 [![Meta Storm Plugin](https://img.shields.io/static/v1?&label=Better+with&message=Meta+Storm+Plugin&logo=phpstorm&color=aa55ee)](https://github.com/xepozz/meta-storm-idea-plugin)
 
-
-#### [Documentation](https://getmoonshine.app)
-#### [Documentation repository](https://github.com/moonshine-software/doc)
-#### [Demo project 1](https://github.com/moonshine-software/demo-project)
-#### [Demo project 2](https://github.com/moonshine-software/demo-blog)
-#### [Demo project 3](https://github.com/moonshine-software/todo-list-demo)
+#### [Documentation](https://getmoonshine.app/en/docs)  •  [Documentation repository](https://github.com/moonshine-software/doc)
+#### [Demo](https://demo.moonshine-laravel.com)  •  [Demo project 1](https://github.com/moonshine-software/demo-project)  •  [Demo project 2](https://github.com/moonshine-software/demo-blog)  •  [Demo project 3](https://github.com/moonshine-software/todo-list-demo)
 
 #### Hello Laravel user!
 
