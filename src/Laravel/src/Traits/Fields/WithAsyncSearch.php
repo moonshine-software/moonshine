@@ -98,6 +98,11 @@ trait WithAsyncSearch
         return $this->asyncSearch;
     }
 
+    public function isAssociatedWith(): bool
+    {
+        return $this->associatedWith !== null;
+    }
+
     public function getAsyncSearchColumn(): ?string
     {
         return $this->asyncSearchColumn;
@@ -203,7 +208,7 @@ trait WithAsyncSearch
      */
     public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {
-        $defaultQuery = static fn (Builder $query, string $term, RelationModelFieldRequest $request) => $query->where($column, $term);
+        $defaultQuery = static fn (Builder $query, string $term, RelationModelFieldRequest $request) => $query->where($column, $request->input($column));
 
         return $this->asyncSearch(
             searchQuery: \is_null($searchQuery) ? $defaultQuery : $searchQuery,

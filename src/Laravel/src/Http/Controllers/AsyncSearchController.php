@@ -86,7 +86,7 @@ final class AsyncSearchController extends MoonShineController
         $offset = $request->input('offset', 0);
 
         $query->when(
-            $term && \is_null($field->getAsyncSearchQuery()),
+            $term && ($field->isAssociatedWith() || \is_null($field->getAsyncSearchQuery())),
             static fn (Builder $q) => $q->where(
                 $searchColumn,
                 DBOperators::byModel($q->getModel())->like(),

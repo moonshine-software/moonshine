@@ -27,4 +27,5 @@ interface HasAsyncSearchContract
         ?string $url = null,
     ): static;
 
+    public function isAssociatedWith(): bool;
 }
