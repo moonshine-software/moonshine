@@ -33,8 +33,11 @@ All of this is MoonShine 4. It’s a new philosophy for working with admin panel
 
 ### With MoonShine, you get a whole world of possibilities:
 
-## **Forty-Five — Your Personal AI Admin Panel Developer**  
+## **Forty-Five and MoonVibe — Your Personal AI Admin Panel Developers**  
 Tired of writing repetitive CRUD pages? Just say, “Create a page for managing a blog with comments,” and Forty-Five will generate it for you. Your new colleague is artificial intelligence that already knows all the best MoonShine practices.
+[Forty-Five package](https://github.com/moonshine-software/forty-five)
+The second powerful AI tool for admin panel development is MoonVibe — a ready-made admin panel generator!
+[MoonVibe package](https://github.com/moonshine-software/moon-vibe)
 
 ## **An Admin Panel That Always Matches Your Style**  
 Purple isn’t your color? No problem! Choose from 20+ ready-made themes or create your own in just a few clicks with our generator. Want the admin panel to perfectly match your client’s logo colors? It’ll take a minute, not a day. Your clients will love their “exclusive” panel.
@@ -73,7 +76,7 @@ In simple terms: MoonShine is a modern admin panel, but with AI, cross-platform 
 - Give us a star on GitHub — it’s the best thank you!
 
 ❤️ Open source is about community  
-*What does moonshine mean? It’s not exactly “moonlight” — my idea is the name “moonshine.” The term refers to independently producing a drink under illegal conditions, under the cover of night :). So I developed this admin panel at night in my free time, under the moonlight ;)*
+What does moonshine mean? It’s not exactly “moonlight” — my idea is the name “moonshine.” The term refers to independently producing a drink under illegal conditions, under the cover of night :). So I developed this admin panel at night in my free time, under the moonlight ;)
 
 We believe good tools should be available to everyone. But to make them better, we need your support:  
 - Tell your colleagues about MoonShine  
