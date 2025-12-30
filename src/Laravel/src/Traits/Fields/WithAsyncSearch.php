@@ -33,6 +33,8 @@ trait WithAsyncSearch
 
     protected ?string $associatedWith = null;
 
+    protected ?Closure $associatedWithSearchQuery = null;
+
     public function withImage(string $column, string $disk = 'public', string $dir = ''): static
     {
         $this->withImage = [
@@ -116,6 +118,11 @@ trait WithAsyncSearch
     public function getAsyncSearchQuery(): ?Closure
     {
         return $this->asyncSearchQuery;
+    }
+
+    public function getAssociatedWithSearchQuery(): ?Closure
+    {
+        return $this->associatedWithSearchQuery;
     }
 
     public function getAsyncSearchValueCallback(): ?Closure
@@ -209,6 +216,8 @@ trait WithAsyncSearch
     public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {
         $defaultQuery = static fn (Builder $query, string $term, RelationModelFieldRequest $request) => $query->where($column, $request->input($column));
+
+        $this->associatedWithSearchQuery = $searchQuery;
 
         return $this->asyncSearch(
             searchQuery: \is_null($searchQuery) ? $defaultQuery : $searchQuery,

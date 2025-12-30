@@ -239,7 +239,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
             // Fix for form reset event
             if (this.$el.form) {
                 this.$el.form.addEventListener('reset', () => {
-                    setTimeout(() => {
+                    this.$nextTick(() => {
                         this.selectInstance.sync()
                     })
                 })

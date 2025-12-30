@@ -14,6 +14,8 @@ interface HasAsyncSearchContract
 
     public function getAsyncSearchQuery(): ?Closure;
 
+    public function getAssociatedWithSearchQuery(): ?Closure;
+
     public function getAsyncSearchCount(): int;
 
     public function getAsyncSearchValueCallback(): ?Closure;
