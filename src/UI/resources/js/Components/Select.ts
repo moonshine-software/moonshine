@@ -83,9 +83,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         }
 
         const _this = this
-        const commonPlugins: Record<string, Record<string, any>> = {
-            change_listener: {}
-        }
+        const commonPlugins: Record<string, Record<string, any>> = {}
 
         this.isMultiple = this.$el.hasAttribute('multiple') || settings.mode === 'multi'
         this.placeholder = this.$el.getAttribute('placeholder')
