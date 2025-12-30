@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
@@ -85,8 +86,8 @@ final class AsyncSearchController extends MoonShineController
 
         $offset = $request->input('offset', 0);
 
-        $isAssociatedTermSearch = $field->isAssociatedWith() && $field->getAssociatedWithSearchQuery() === null;
-        $isTermSearch = $term && ($isAssociatedTermSearch || $field->getAsyncSearchQuery() === null);
+        $isAssociatedTermSearch = $field->isAssociatedWith() && !$field->getAssociatedWithSearchQuery() instanceof Closure;
+        $isTermSearch = $term && ($isAssociatedTermSearch || !$field->getAsyncSearchQuery() instanceof Closure);
 
         $query->when(
             $isTermSearch,
