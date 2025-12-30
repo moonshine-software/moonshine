@@ -235,6 +235,15 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                     false
                 )
             }
+
+            // Fix for form reset event
+            if (this.$el.form) {
+                this.$el.form.addEventListener('reset', () => {
+                    setTimeout(() => {
+                        this.selectInstance.sync()
+                    })
+                })
+            }
         })
     },
 
