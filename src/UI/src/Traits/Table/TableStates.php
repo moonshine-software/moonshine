@@ -372,8 +372,8 @@ trait TableStates
             'columnSelection' => $this->isColumnSelection(),
             'searchable' => $this->isSearchable(),
             'searchValue' => $this->getCore()->getRequest()->getScalar('search', ''),
-            'skeleton' => true,
-            'loader' => true,
+            'skeleton' => $this->hasSkeleton(),
+            'loader' => $this->hasLoader(),
         ];
     }
 }

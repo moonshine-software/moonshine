@@ -65,38 +65,26 @@
                             </x-slot:thead>
                         @endif
                         <x-slot:tbody>
-                            @if ($rows->count() > 0)
+                            @if ($rows->isNotEmpty())
                                 @for($i = 0; $i < $rows->count(); $i++)
                                     <tr>
-                                        @foreach($row->getCells() as $column)
+                                        @foreach($rows[0]->getCells() as $column)
                                             <td>
                                                 <div class="skeleton"></div>
                                             </td>
                                         @endforeach
                                     </tr>
                                 @endfor
-                            @else
-                                <tr>
-                                    @foreach($row->getCells() as $column)
-                                        <td>
-                                            <div class="skeleton"></div>
-                                        </td>
-                                    @endforeach
-                                </tr>
-                                <tr>
-                                    @foreach($row->getCells() as $column)
-                                        <td>
-                                            <div class="skeleton"></div>
-                                        </td>
-                                    @endforeach
-                                </tr>
-                                <tr>
-                                    @foreach($row->getCells() as $column)
-                                        <td>
-                                            <div class="skeleton"></div>
-                                        </td>
-                                    @endforeach
-                                </tr>
+                            @elseif($headRows->isNotEmpty())
+                                @for($i = 0; $i < 3; $i++)
+                                    <tr>
+                                        @foreach($headRows[0]->getCells() as $column)
+                                            <td>
+                                                <div class="skeleton"></div>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endfor
                             @endif
                         </x-slot:tbody>
                     </x-moonshine::table>

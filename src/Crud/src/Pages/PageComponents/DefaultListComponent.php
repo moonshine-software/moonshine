@@ -37,7 +37,6 @@ final class DefaultListComponent implements DefaultListComponentContract
             ->queryParamPrefix($resource->getQueryParamPrefix())
             ->fields($fields)
             ->cast($resource->getCaster())
-            ->withNotFound()
             ->buttons($page->getButtons())
             ->when($page->isAsync(), function (TableBuilderContract $table) use ($page): void {
                 $table->async(
@@ -48,14 +47,18 @@ final class DefaultListComponent implements DefaultListComponentContract
                         ),
                 )->pushState();
             })
-            ->when($page->isLazy(), function (TableBuilderContract $table) use ($resource): void {
-                $table->lazy()->whenAsync(
-                    fn (TableBuilderContract $t): TableBuilderContract
-                        => $t->items(
-                            $resource->getItems(),
-                        ),
-                );
-            })
+            ->when(
+                $page->isLazy(),
+                function (TableBuilderContract $table) use ($resource): void {
+                    $table->lazy()->whenAsync(
+                        fn (TableBuilderContract $t): TableBuilderContract
+                            => $t->items(
+                                $resource->getItems(),
+                            )->withNotFound(),
+                    );
+                },
+                fn(TableBuilderContract $table) => $table->withNotFound()
+            )
             ->when(
                 ! \is_null($resource->getItemsResolver()),
                 function (TableBuilderContract $table) use ($resource): void {

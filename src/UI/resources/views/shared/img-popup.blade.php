@@ -2,6 +2,7 @@
     <template
         @img-popup.window="open = true; src = $event.detail.src; auto = $event.detail.auto; wide = $event.detail.wide; styles = $event.detail.styles"
         x-if="open"
+        x-teleport="body"
     >
         <div class="modal-template">
             <div
@@ -17,13 +18,13 @@
                 role="dialog"
                 @click.self="open=false"
             >
-                <div 
+                <div
                     class="modal-dialog"
                     :class="{'modal-dialog-auto': auto, 'modal-dialog-xl': wide}"
                 >
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button 
+                            <button
                                 type="button"
                                 class="modal-close btn-fit"
                                 @click.stop="open=false"
@@ -33,7 +34,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <img 
+                            <img
                                 @click.outside="open = false"
                                 src=""
                                 :src="src"
