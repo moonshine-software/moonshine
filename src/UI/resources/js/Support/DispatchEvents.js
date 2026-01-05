@@ -9,7 +9,7 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
     return
   }
 
-  if (events !== '' && type !== 'error') {
+  if (events !== '') {
     const allEvents = events.split(',')
 
     allEvents.forEach(function (event) {

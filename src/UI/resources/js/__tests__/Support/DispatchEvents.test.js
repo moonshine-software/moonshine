@@ -73,12 +73,12 @@ describe('dispatchEvents', () => {
     )
   })
 
-  it('should not dispatch events if type is error', () => {
+  it('should dispatch events if type is error', () => {
     dispatchEvents('click', 'error', component)
 
     jest.runAllTimers()
 
-    expect(mockDispatchEvents()).not.toHaveBeenCalled()
+    expect(mockDispatchEvents()).toHaveBeenCalled()
   })
 
   function expectEvent(type, detail = {}) {
