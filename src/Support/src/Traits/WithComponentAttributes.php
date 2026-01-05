@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormElementContract;
 use Throwable;
 
 /**
@@ -117,7 +118,7 @@ trait WithComponentAttributes
 
         if ($level === 0 && $this->hasParent()) {
             /**
-             * @var null|ComponentContract $parent
+             * @var null|FormElementContract $parent
              */
             $parent = $this->getParent();
 
@@ -244,12 +245,10 @@ trait WithComponentAttributes
         $type = $if ? 'if' : 'show';
 
         if ($if && $this instanceof FieldContract) {
-            /** @var FieldContract $field */
-            $field = $this
-                ->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">');
-
-            /** @var static */
-            return $field->afterRender(fn (): string => '</template>');
+            /** @phpstan-ignore return.type,method.nonObject */
+            return $this
+                ->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">')
+                ->afterRender(fn (): string => '</template>');
         }
 
         if ($this instanceof FieldContract && $wrapper) {
