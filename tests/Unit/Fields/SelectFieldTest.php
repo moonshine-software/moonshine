@@ -101,7 +101,7 @@ describe('basic methods', function () {
     it('options', function (): void {
         expect($this->fieldMultiple)
             ->getValues()->toArray()
-            ->toBe((new Options(
+            ->toEqual((new Options(
                 $this->selectOptions,
                 [1]
             ))->toArray());

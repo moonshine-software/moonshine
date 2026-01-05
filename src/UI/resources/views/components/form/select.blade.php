@@ -19,7 +19,7 @@
         ]))->when($nullable && !$native && $attributes->get('placeholder') === null, fn($a) => $a->merge(['placeholder' => '-'])) }}
 >
     @if($options ?? false)
-        {{ $options }}
+        {!! $options !!}
     @else
         @if($nullable && !$attributes->has('multiple'))
             <option value="">{{ $attributes->get('placeholder', '-') }}</option>
@@ -27,7 +27,7 @@
 
         @foreach($values as $optionValue)
             @if(isset($optionValue['values']))
-                <optgroup label="{{ $optionValue['label'] }}">
+                <optgroup {{ $optionValue['attributes']?->merge(['label' => $optionValue['label']]) ?? '' }}>
                     @foreach($optionValue['values'] as $oValue)
                         <option @selected($oValue['selected'] || $attributes->get('value', '') == $oValue['value'])
                                 value="{{ $oValue['value'] }}"
@@ -41,6 +41,7 @@
                 <option @selected($optionValue['selected'] || $attributes->get('value', '') == $optionValue['value'])
                         value="{{ $optionValue['value'] }}"
                         data-custom-properties='@json(['customProperties' => $optionValue['properties']])'
+                        {{ $optionValue['attributes'] ?? '' }}
                 >
                     {{ $optionValue['label'] }}
                 </option>
