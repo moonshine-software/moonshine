@@ -77,6 +77,13 @@ trait TableStates
         ]);
     }
 
+    public function withMorphLoad(): static
+    {
+        return $this->customAttributes([
+            'data-morph-load' => true,
+        ]);
+    }
+
     public function hasLoader(): bool
     {
         return $this->withLoader;
