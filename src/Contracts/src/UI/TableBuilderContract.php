@@ -127,6 +127,8 @@ interface TableBuilderContract extends
 
     public function withFilters(string $formName): static;
 
+    public function withMorphLoad(): static;
+
     public function hasNotFound(): bool;
 
     public function withNotFound(): static;

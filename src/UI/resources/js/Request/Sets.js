@@ -152,11 +152,15 @@ export function listComponentRequest(component, pushState = false, after = null,
       let tempElement = document.createElement('div')
       tempElement.innerHTML = data
 
-      Alpine.morph(t.$root, tempElement.firstElementChild.innerHTML, {
-        key(el) {
-          return el.dataset.rowKey ?? el.rowIndex ?? el.id
-        },
-      })
+      if(t.$root?.dataset?.morphLoad) {
+        Alpine.morph(t.$root, tempElement.firstElementChild.innerHTML, {
+          key(el) {
+            return el.dataset.rowKey ?? el.rowIndex ?? el.id
+          },
+        })
+      } else {
+        t.$root.outerHTML = tempElement.firstElementChild.innerHTML
+      }
 
       t.loading = false
     })
