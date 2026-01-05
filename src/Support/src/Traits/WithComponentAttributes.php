@@ -7,7 +7,6 @@ namespace MoonShine\Support\Traits;
 use Closure;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
-use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
 use Throwable;
