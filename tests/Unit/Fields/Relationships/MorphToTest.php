@@ -64,14 +64,16 @@ describe('unique field methods', function () {
     });
 
     it('types', function (): void {
+        $options = (new Options([
+            Item::class => new Option('Item', Item::class, selected: true, properties: new OptionProperty(null)),
+            Category::class => 'Category',
+        ]))->toArray();
+
         expect($this->field)
             ->getSearchColumn(Item::class)
             ->toBe('name')
             ->and($this->field->getTypes()->toArray())
-            ->toBe((new Options([
-                Item::class => new Option('Item', Item::class, selected: true, properties: new OptionProperty(null)),
-                Category::class => 'Category',
-            ]))->toArray())
+            ->toEqual($options)
             ->and($this->field)
             ->getMorphType()
             ->toBe('imageable_type')

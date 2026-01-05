@@ -4,19 +4,29 @@ declare(strict_types=1);
 
 namespace MoonShine\Support\DTOs\Select;
 
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Traits\Makeable;
+use MoonShine\Support\Traits\WithComponentAttributes;
 
 /**
+ * @method static static make(string $label, string $value, bool $selected = false, null|OptionProperty $properties = null)
+ *
  * @implements Arrayable<string, mixed>
  */
-final readonly class Option implements Arrayable
+final class Option implements Arrayable
 {
+    use Makeable;
+    use WithComponentAttributes;
+
     public function __construct(
-        private string $label,
-        private string $value,
-        private bool $selected = false,
-        private ?OptionProperty $properties = null
+        private readonly string $label,
+        private readonly string $value,
+        private readonly bool $selected = false,
+        private readonly ?OptionProperty $properties = null
     ) {
+        $this->attributes = new MoonShineComponentAttributeBag();
     }
 
     public function getLabel(): string
@@ -42,6 +52,13 @@ final readonly class Option implements Arrayable
         return $this->selected;
     }
 
+    public function disabled(Closure|bool|null $condition = null): self
+    {
+        return $this->customAttributes([
+            'disabled' => value($condition, $this) ?? true,
+        ]);
+    }
+
     public function getProperties(): ?OptionProperty
     {
         return $this->properties;
@@ -57,6 +74,7 @@ final readonly class Option implements Arrayable
             'label' => $this->getLabel(),
             'selected' => $this->isSelected(),
             'properties' => $this->getProperties()?->toArray() ?? [],
+            'attributes' => $this->getAttributes(),
         ];
     }
 }
