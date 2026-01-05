@@ -57,7 +57,7 @@ final class DefaultListComponent implements DefaultListComponentContract
                             )->withNotFound(),
                     );
                 },
-                fn(TableBuilderContract $table): TableBuilder => $table->withNotFound()
+                fn (TableBuilderContract $table): TableBuilder => $table->withNotFound()
             )
             ->when(
                 ! \is_null($resource->getItemsResolver()),

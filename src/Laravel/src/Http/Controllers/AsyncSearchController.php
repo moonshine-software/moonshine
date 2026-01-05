@@ -86,8 +86,8 @@ final class AsyncSearchController extends MoonShineController
 
         $offset = $request->input('offset', 0);
 
-        $isAssociatedTermSearch = $field->isAssociatedWith() && !$field->getAssociatedWithSearchQuery() instanceof Closure;
-        $isTermSearch = $term && ($isAssociatedTermSearch || !$field->getAsyncSearchQuery() instanceof Closure);
+        $isAssociatedTermSearch = $field->isAssociatedWith() && ! $field->getAssociatedWithSearchQuery() instanceof Closure;
+        $isTermSearch = $term && ($isAssociatedTermSearch || ! $field->getAsyncSearchQuery() instanceof Closure);
 
         $query->when(
             $isTermSearch,
