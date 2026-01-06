@@ -9,7 +9,9 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
 use MoonShine\UI\Exceptions\ComponentException;
@@ -103,6 +105,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
             '@set-active-tab' => "setActiveTab(`{$this->getId()}`)",
             ':class' => "activeTab === '{$this->getId()}' ? 'block' : 'hidden'",
             'class' => "tab-panel",
+            AlpineJs::eventBlade(JSEvent::TAB_ACTIVE, $this->getName()) => "setActiveTab(`{$this->getId()}`)",
         ]);
     }
 

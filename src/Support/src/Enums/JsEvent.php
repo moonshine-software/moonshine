@@ -33,4 +33,6 @@ enum JsEvent: string
     case TOAST = 'toast';
 
     case SHOW_WHEN_REFRESH = 'show_when_refresh';
+
+    case TAB_ACTIVE = 'tab_active';
 }
