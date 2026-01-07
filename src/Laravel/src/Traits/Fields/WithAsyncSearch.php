@@ -35,11 +35,11 @@ trait WithAsyncSearch
 
     protected ?Closure $associatedWithSearchQuery = null;
 
-    public function withImage(string $column, string $disk = 'public', string $dir = ''): static
+    public function withImage(string $column, string $disk = '', string $dir = ''): static
     {
         $this->withImage = [
             'column' => $column,
-            'disk' => $disk,
+            'disk' => $disk ?: $this->getCore()->getConfig()->getDisk(),
             'dir' => $dir,
         ];
 
