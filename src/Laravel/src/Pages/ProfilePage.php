@@ -8,7 +8,6 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Crud\Traits\WithComponentsPusher;
-use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\MoonShineAuth;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\MenuManager\Attributes\SkipMenu;
@@ -110,7 +109,9 @@ class ProfilePage extends Page
     {
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
-        return FormBuilder::make(action([ProfileController::class, 'store']))
+        return FormBuilder::make(
+            $this->getRouter()->to('profile.store')
+        )
             ->async()
             ->name('profile-form')
             ->class('profile-form')

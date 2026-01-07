@@ -104,8 +104,15 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
             return $url;
         }
 
-        return route(
-            moonshineConfig()->getHomeRoute()
-        );
+        $route = moonshineConfig()->getHomeRoute();
+
+        if(str_starts_with($route, 'moonshine.')) {
+            return $this->router->to(
+                str_replace('moonshine.', '', $route)
+            );
+        }
+
+
+        return route($route);
     }
 }

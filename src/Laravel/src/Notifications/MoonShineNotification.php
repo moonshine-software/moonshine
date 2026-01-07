@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
 use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Laravel\MoonShineAuth;
@@ -91,6 +92,6 @@ final class MoonShineNotification implements MoonShineNotificationContract
 
     public function getReadAllRoute(): string
     {
-        return route('moonshine.notifications.readAll');
+        return app(RouterContract::class)->to('notifications.readAll');
     }
 }

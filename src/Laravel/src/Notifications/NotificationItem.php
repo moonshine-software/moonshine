@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Notifications;
 
 use DateTimeInterface;
 use Illuminate\Notifications\DatabaseNotification;
+use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Crud\Contracts\Notifications\NotificationItemContract;
 use MoonShine\Crud\Notifications\NotificationButton;
@@ -24,7 +25,9 @@ final readonly class NotificationItem implements NotificationItemContract
 
     public function getReadRoute(): string
     {
-        return route('moonshine.notifications.read', $this->notification);
+        return app(RouterContract::class)->to('notifications.read', [
+            'notification' => $this->notification,
+        ]);
     }
 
     public function getColor(): string
