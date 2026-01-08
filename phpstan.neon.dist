@@ -21,5 +21,6 @@ parameters:
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
         - ./src/Laravel/routes/moonshine.php
+        - ./src/Laravel/src/DefaultRoutes.php
         - ./src/Laravel/config/moonshine.php
         - ./src/Laravel/src/Providers/MoonShineServiceProvider.php

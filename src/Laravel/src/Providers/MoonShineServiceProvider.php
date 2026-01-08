@@ -65,6 +65,7 @@ use MoonShine\Laravel\Commands\MakeUserCommand;
 use MoonShine\Laravel\Commands\OptimizeClearCommand;
 use MoonShine\Laravel\Commands\OptimizeCommand;
 use MoonShine\Laravel\Commands\PublishCommand;
+use MoonShine\Laravel\DefaultRoutes;
 use MoonShine\Laravel\DependencyInjection\AssetResolver;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
@@ -230,25 +231,41 @@ final class MoonShineServiceProvider extends ServiceProvider
 
         Router::macro(
             'moonshine',
-            fn (Closure $callback, bool $withResource = false, bool $withPage = false, bool $withAuthenticate = false) => $this->group(
-                moonshineConfig()->getDefaultRouteGroup(),
-                function () use ($callback, $withResource, $withPage, $withAuthenticate): void {
-                    $parameters = [];
+            function (
+                Closure $callback,
+                bool $withResource = false,
+                bool $withPage = false,
+                bool $withAuthenticate = false,
+                ?array $groupParameters = null,
+            ): Router {
+                $groupParameters ??= moonshineConfig()->getDefaultRouteGroup();
 
-                    if ($withResource) {
-                        $parameters['prefix'] = '{resourceUri}';
+                return $this->group(
+                    $groupParameters,
+                    function () use ($callback, $withResource, $withPage, $withAuthenticate, $groupParameters): void {
+                        $parameters = [];
+
+                        if ($withResource) {
+                            $parameters['prefix'] = '{resourceUri}';
+                        }
+
+                        if ($withPage) {
+                            $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUri}';
+                        }
+
+                        $middleware = $withAuthenticate ? moonshineConfig()->getAuthMiddleware() : null;
+
+                        if ($groupParameters['middleware'] ?? false) {
+                            $middleware = $groupParameters['middleware'];
+                        }
+
+                        Router::group(
+                            $parameters,
+                            fn () => $callback($this, app(DefaultRoutes::class))
+                        )->middleware($middleware);
                     }
-
-                    if ($withPage) {
-                        $parameters['prefix'] = ($parameters['prefix'] ?? '') . '/{pageUri}';
-                    }
-
-                    Router::group(
-                        $parameters,
-                        fn () => $callback($this)
-                    )->middleware($withAuthenticate ? moonshineConfig()->getAuthMiddleware() : null);
-                }
-            )
+                );
+            }
         );
 
         return $this;

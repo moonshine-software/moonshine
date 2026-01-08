@@ -79,6 +79,10 @@ class MoonShineRequest extends Request implements CrudRequestContract
 
     public function isMoonShineRequest(): bool
     {
+        if (str_starts_with(request()->route()?->getName() ?? '', 'moonshine.')) {
+            return true;
+        }
+
         return \in_array(
             'moonshine',
             $this->route()?->gatherMiddleware() ?? [],

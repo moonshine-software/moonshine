@@ -10,7 +10,7 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\AbstractRouter;
 use MoonShine\Laravel\MoonShineEndpoints;
 
-final class MoonShineRouter extends AbstractRouter
+class MoonShineRouter extends AbstractRouter
 {
     public function getEndpoints(): MoonShineEndpoints
     {
