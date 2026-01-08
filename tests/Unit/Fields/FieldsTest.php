@@ -11,6 +11,7 @@ use MoonShine\UI\Components\Layout\LineBreak;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Components\When;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\Switcher;
@@ -30,6 +31,9 @@ beforeEach(function () {
                         Fieldset::make()->fields([
                             Text::make('Text')->sortable(),
                             Text::make('Email')->showWhen('column', '=', 'value'),
+                            When::make(static fn () => true, static fn () => [
+                                Text::make('When'),
+                            ]),
                         ]),
                         HasOne::make('HasOne', 'hasone', resource: TestItemResource::class),
                     ]),
@@ -57,7 +61,7 @@ beforeEach(function () {
 describe('form elements', function () {
     it('only fields', function () {
         expect($this->collection->onlyFields())
-            ->toHaveCount(4)
+            ->toHaveCount(5)
             ->each->toBeInstanceOf(Field::class);
     });
 
@@ -69,7 +73,7 @@ describe('form elements', function () {
 
     it('prepare attributes', function () {
         expect($this->collection->prepareAttributes())
-            ->toHaveCount(4)
+            ->toHaveCount(5)
             ->each(static fn ($expect) => $expect->getAttribute('x-on:change')->toContain('onChangeField($event)'))
         ;
     });
@@ -92,6 +96,7 @@ describe('fields', function () {
     it('fill cloned', function () {
         $values = [
             'switcher' => 'value',
+            'when' => 'value',
             'text' => 'value',
             'email' => 'value',
         ];
@@ -108,6 +113,7 @@ describe('fields', function () {
 
     it('fill', function () {
         $values = [
+            'when' => 'value',
             'switcher' => 'value',
             'text' => 'value',
             'email' => 'value',
@@ -159,7 +165,7 @@ describe('fields', function () {
 
     it('without outside', function () {
         expect($this->collection->onlyFields()->withoutOutside())
-            ->toHaveCount(3)
+            ->toHaveCount(4)
             ->each->not->toBeInstanceOf(ModelRelationField::class)
         ;
     });
@@ -173,7 +179,7 @@ describe('fields', function () {
 
     it('without relation fields', function () {
         expect($this->collection->onlyFields()->withoutRelationFields())
-            ->toHaveCount(3)
+            ->toHaveCount(4)
             ->each->not->toBeInstanceOf(ModelRelationField::class)
         ;
     });
@@ -191,6 +197,7 @@ describe('fields', function () {
                 'switcher' => 'Switcher',
                 'text' => 'Text',
                 'email' => 'Email',
+                'when' => 'When',
                 'hasone' => 'HasOne',
             ])
         ;

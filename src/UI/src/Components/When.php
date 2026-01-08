@@ -5,31 +5,29 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\Core\HasComponentsContract;
+use MoonShine\UI\Traits\Components\WithComponents;
 
 /**
  * @method static static make(Closure $condition, Closure $components, ?Closure $default = null)
  */
-class When extends MoonShineComponent
+class When extends MoonShineComponent implements HasComponentsContract
 {
-    protected string $view = 'moonshine::components.components';
+    use WithComponents;
 
-    /**
-     * @var array<array-key, ComponentContract>
-     */
-    protected array $conditionComponents;
+    protected string $view = 'moonshine::components.components';
 
     public function __construct(
         protected Closure $condition,
-        protected Closure $components,
+        Closure $components,
         protected ?Closure $default = null
     ) {
         parent::__construct();
 
         if (($this->condition)()) {
-            $this->conditionComponents = ($this->components)();
+            $this->components = $components();
         } else {
-            $this->conditionComponents = \is_null($this->default) ? [] : ($this->default)();
+            $this->components = \is_null($this->default) ? [] : ($this->default)();
         }
     }
 
@@ -39,7 +37,7 @@ class When extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'components' => $this->conditionComponents,
+            'components' => $this->components,
         ];
     }
 }
