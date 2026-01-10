@@ -1,18 +1,17 @@
 <div x-data="{ open : false, src : '', auto: true, wide: false, styles: ''}">
     <template
         @img-popup.window="open = true; src = $event.detail.src; auto = $event.detail.auto; wide = $event.detail.wide; styles = $event.detail.styles"
-        x-if="open"
         x-teleport="body"
     >
         <div class="modal-template">
             <div
                 x-show="open"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 -translate-y-10"
-                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:enter="transition ease-out duration-250"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
                 x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-10"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
                 class="modal"
                 aria-modal="true"
                 role="dialog"
