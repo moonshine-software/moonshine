@@ -96,7 +96,7 @@ document.addEventListener('alpine:init', () => {
   })
 
   /* Global Escape handler for overlays */
-  window.addEventListener('keydown', (e) => {
+  window.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       const store = Alpine.store('overlays')
       if (store.stack.length > 0) {
