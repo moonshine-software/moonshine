@@ -32,7 +32,6 @@ final class FiltersButton
             ->icon('adjustments-horizontal')
             ->inOffCanvas(
                 static fn (): string => $label,
-                static fn (): FormBuilderContract => $form,
                 name: 'filters-off-canvas',
                 builder: fn (OffCanvasContract $offCanvas): OffCanvasContract => $resource->resolveFiltersOffCanvas($offCanvas),
                 components: [$form],
