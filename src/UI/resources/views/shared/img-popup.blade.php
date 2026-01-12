@@ -1,9 +1,6 @@
-<div x-data="{ open : false, src : '', auto: true, wide: false, styles: ''}">
-    <template
-        @img-popup.window="open = true; src = $event.detail.src; auto = $event.detail.auto; wide = $event.detail.wide; styles = $event.detail.styles"
-        x-teleport="body"
-    >
-        <div class="modal-template">
+<div x-data="imgPopup()" @img-popup.window="show($event.detail)">
+    <template x-teleport="body">
+        <div class="modal-template" data-img-popup>
             <div
                 x-show="open"
                 x-transition:enter="transition ease-out duration-250"
@@ -15,7 +12,7 @@
                 class="modal"
                 aria-modal="true"
                 role="dialog"
-                @click.self="open=false"
+                @click.self="close"
             >
                 <div
                     class="modal-dialog"
@@ -26,7 +23,7 @@
                             <button
                                 type="button"
                                 class="modal-close btn-fit"
-                                @click.stop="open=false"
+                                @click.stop="close"
                                 aria-label="Close"
                             >
                                 <x-moonshine::icon icon="x-mark" />
@@ -34,7 +31,7 @@
                         </div>
                         <div class="modal-body">
                             <img
-                                @click.outside="open = false"
+                                @click.outside="close"
                                 src=""
                                 :src="src"
                                 :style="styles"

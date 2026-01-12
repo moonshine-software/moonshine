@@ -4,6 +4,7 @@ import load from '../Support/AsyncLoadContent.js'
 export default (open = false, asyncUrl = '', autoClose = true) => ({
   open: open,
   id: '',
+  canvasId: '',
   asyncUrl: asyncUrl,
   inOffCanvas: true,
   asyncLoaded: false,
@@ -11,27 +12,24 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
 
   init() {
     this.id = this.$id('offcanvas-content')
+    this.canvasId = this.$id('offcanvas')
 
-    if (this.open && this.asyncUrl) {
-      load(asyncUrl, this.id)
+    // Register if initially open
+    if (this.open) {
+      this.registerInStack()
+
+      if (this.asyncUrl) {
+        load(asyncUrl, this.id)
+      }
     }
+  },
 
-    Alpine.bind('dismissCanvas', () => ({
-      '@click.outside'() {
-        if (this.open) {
-          this.open = false
+  registerInStack() {
+    Alpine.store('overlays').register(this.canvasId, () => this.closeCanvas())
+  },
 
-          this.dispatchEvents()
-        }
-      },
-      '@keydown.escape.window'() {
-        if (this.open) {
-          this.open = false
-
-          this.dispatchEvents()
-        }
-      },
-    }))
+  unregisterFromStack() {
+    Alpine.store('overlays').unregister(this.canvasId)
   },
 
   dispatchEvents() {
@@ -44,13 +42,26 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
     }
   },
 
+  closeCanvas() {
+    if (this.open) {
+      this.open = false
+      this.unregisterFromStack()
+      this.dispatchEvents()
+    }
+  },
+
   async toggleCanvas() {
     this.open = !this.open
 
-    if (this.open && this.asyncUrl && !this.asyncLoaded) {
-      await load(asyncUrl, this.id)
+    if (this.open) {
+      this.registerInStack()
 
-      this.asyncLoaded = !this.$root.dataset.alwaysLoad
+      if (this.asyncUrl && !this.asyncLoaded) {
+        await load(asyncUrl, this.id)
+        this.asyncLoaded = !this.$root.dataset.alwaysLoad
+      }
+    } else {
+      this.unregisterFromStack()
     }
 
     this.dispatchEvents()

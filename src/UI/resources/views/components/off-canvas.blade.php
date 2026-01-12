@@ -9,6 +9,7 @@
     'async' => false,
     'asyncUrl' => '',
     'toggler' => null,
+    'togglerButton' => false,
 ])
 <div x-data="offCanvas(
     `{{ $open }}`,
@@ -18,13 +19,19 @@
     {{ $attributes }}
 >
     @if($toggler?->isNotEmpty())
-        <x-moonshine::link-button
-            :attributes="$toggler->attributes?->merge([
-                '@click.prevent' => 'toggleCanvas',
-            ])"
-        >
-            {{ $toggler ?? '' }}
-        </x-moonshine::link-button>
+        @if(!$togglerButton)
+            <x-moonshine::link-button
+                :attributes="$toggler->attributes?->merge([
+                    '@click.prevent' => 'toggleCanvas',
+                ])"
+            >
+                {{ $toggler ?? '' }}
+            </x-moonshine::link-button>
+        @else
+            <div {{ $toggler->attributes }}>
+                {{ $toggler ?? '' }}
+            </div>
+        @endif
     @endif
 
     <template x-teleport="body">

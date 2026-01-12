@@ -30,6 +30,7 @@ import fragment from './Components/Fragment'
 import tabs from './Components/Tabs.js'
 import collapse from './Components/Collapse.js'
 import bottomBarMenu from './Components/BottomBar.js'
+import imgPopup from './Components/ImgPopup.js'
 import {validationInHiddenBlocks} from './Support/Forms.js'
 
 window.MoonShine = new MoonShine()
@@ -62,11 +63,59 @@ Alpine.data('fragment', fragment)
 Alpine.data('tabs', tabs)
 Alpine.data('collapse', collapse)
 Alpine.data('bottomBarMenu', bottomBarMenu)
+Alpine.data('imgPopup', imgPopup)
 
 window.Alpine = Alpine
 
 document.addEventListener('alpine:init', () => {
   validationInHiddenBlocks()
+
+  /* Overlay stack (modals, offcanvas, popups) for proper Escape key handling */
+  Alpine.store('overlays', {
+    stack: [],
+
+    register(id, closeCallback) {
+      this.stack = this.stack.filter(m => m.id !== id)
+      this.stack.push({id, close: closeCallback})
+    },
+
+    unregister(id) {
+      this.stack = this.stack.filter(m => m.id !== id)
+    },
+
+    closeTop() {
+      const top = this.stack.at(-1)
+      if (top) {
+        top.close()
+      }
+    },
+
+    isTop(id) {
+      return this.stack.at(-1)?.id === id
+    },
+  })
+
+  /* Global Escape handler for overlays */
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const store = Alpine.store('overlays')
+      if (store.stack.length > 0) {
+        e.stopImmediatePropagation()
+        store.closeTop()
+      }
+    }
+  })
+
+  /* Global bind for OffCanvas click outside */
+  Alpine.bind('dismissCanvas', () => ({
+    '@click.outside'() {
+      // Only close if this OffCanvas is the top-most overlay
+      // Prevents closing when clicking on a Modal that's above this OffCanvas
+      if (this.open && Alpine.store('overlays').isTop(this.canvasId)) {
+        this.closeCanvas()
+      }
+    },
+  }))
 
   /* Dark mode */
   Alpine.store('darkMode', {

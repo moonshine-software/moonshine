@@ -39,7 +39,6 @@
                 <div
                     class="modal-dialog
                     @if($wide) modal-dialog-xl @elseif($full) w-full max-w-none @elseif($auto) modal-dialog-auto @endif"
-                    x-bind="dismissModal"
                 >
                     <div class="modal-content">
                         <div class="modal-header">
