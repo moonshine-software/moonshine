@@ -38,7 +38,7 @@
     padding-block: 0;
     padding-inline: --spacing(1);
     color: var(--ms-clear-button-color, var(--color-base-text));
-    font-size: var(--ms-ts-base-font-size, var(--text-xs));
+    font-size: var(--ms-ts-base-font-size, var(--text-lg));
     line-height: 0;
   }
 }
@@ -237,7 +237,7 @@
 
   .clear-button {
     position: absolute;
-    top: 50%;
+    top: 45%;
     margin-right: 0;
     background-color: transparent;
     opacity: 0;

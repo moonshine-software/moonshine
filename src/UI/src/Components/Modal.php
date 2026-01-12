@@ -145,7 +145,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
     {
         $componentsHtml = $this->getComponents()->isNotEmpty()
             ? Components::make($this->getComponents())
-            : '';
+            : value($this->content, $this);
 
         $outer = value($this->outer, $this);
 
@@ -163,7 +163,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
-            'slot' => new ComponentSlot(value($this->content, $this) . $componentsHtml),
+            'slot' => new ComponentSlot($componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
     }

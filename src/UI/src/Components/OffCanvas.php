@@ -134,7 +134,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
     {
         $componentsHtml = $this->getComponents()->isNotEmpty()
             ? Components::make($this->getComponents())
-            : '';
+            : value($this->content, $this);
 
         $togglerButton = false;
         $toggler = value($this->toggler, $this);
@@ -155,7 +155,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'toggler' => new ComponentSlot($toggler, $this->togglerAttributes),
             'togglerButton' => $togglerButton,
-            'slot' => new ComponentSlot(value($this->content, $this) . $componentsHtml),
+            'slot' => new ComponentSlot($componentsHtml),
         ];
     }
 }
