@@ -144,7 +144,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
     protected function viewData(): array
     {
         $componentsHtml = $this->getComponents()->isNotEmpty()
-            ? Components::make($this->getComponents())
+            ? (string) Components::make($this->getComponents())
             : value($this->content, $this);
 
         $outer = value($this->outer, $this);
