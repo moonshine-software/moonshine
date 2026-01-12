@@ -22,6 +22,7 @@
         <div
             class="modal-template"
             @defineEvent('modal_toggled', $name, 'toggleModal')
+            @modal:close="toggleModal"
         >
             <div
                 x-show="open"

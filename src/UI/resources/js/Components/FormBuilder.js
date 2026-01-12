@@ -231,11 +231,11 @@ export default (name = '', initData = {}, reactive = {}) => ({
       .withEvents(events)
       .withAfterResponse(function (data, type) {
         if (type !== 'error' && t.inModal && t.autoClose) {
-          t.toggleModal()
+          t.$dispatch('modal:close')
         }
 
         if (type !== 'error' && t.inOffCanvas && t.autoClose) {
-          t.toggleCanvas()
+          t.$dispatch('offcanvas:close')
         }
 
         if (typeof data !== 'object' || data === null || !('redirect' in data)) {

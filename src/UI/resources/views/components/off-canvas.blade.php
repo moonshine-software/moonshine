@@ -31,6 +31,7 @@
         <div
             class="offcanvas-template"
             @defineEvent('off_canvas_toggled', $name, 'toggleCanvas')
+            @offcanvas:close="toggleCanvas"
         >
             <div
                 x-show="open"
