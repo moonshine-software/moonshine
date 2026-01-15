@@ -51,7 +51,7 @@ final class FileModelApply implements ApplyContract
                 }
             }
 
-            if($newValue instanceof Collection) {
+            if ($newValue instanceof Collection) {
                 $newValue = $newValue->toArray();
             }
 
