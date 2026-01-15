@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Applies\Fields;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Crud\Exceptions\FileFieldException;
@@ -50,6 +51,10 @@ final class FileModelApply implements ApplyContract
                 }
             }
 
+            if($newValue instanceof Collection) {
+                $newValue = $newValue->toArray();
+            }
+
             $field->removeExcludedFiles(
                 $field->getCustomName() !== null || $field->isKeepOriginalFileName()
                     ? $newValue
@@ -72,7 +77,7 @@ final class FileModelApply implements ApplyContract
             return $file->storeAs(
                 $field->getDir(),
                 $file->getClientOriginalName(),
-                $field->getOptions()
+                $field->getOptions(),
             );
         }
 
@@ -80,7 +85,7 @@ final class FileModelApply implements ApplyContract
             return $file->storeAs(
                 $field->getDir(),
                 \call_user_func($field->getCustomName(), $file, $field),
-                $field->getOptions()
+                $field->getOptions(),
             );
         }
 
