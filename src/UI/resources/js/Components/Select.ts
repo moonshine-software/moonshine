@@ -6,6 +6,7 @@ import { crudFormQuery, getQueryString, prepareFormExtraData } from '../Support/
 import { dispatchEvents as de } from '../Support/DispatchEvents.js'
 import { formToJSON } from 'axios'
 import { getDom } from 'tom-select/src/vanilla'
+import { ComponentRequestData } from '../DTOs/ComponentRequestData.js'
 
 let pluginInitialize = false
 
@@ -321,17 +322,25 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         this.isLoadedOptions = true
     },
     async fetchOptions(url: string) {
-        let options = []
-        try {
-            const response = await fetch(url)
-            options = await response.json()
-            if (this.$el.dataset.asyncResultKey) {
-                options = options[this.$el.dataset.asyncResultKey]
-            }
-        } catch (e) {
-        }
+        return await new Promise((resolve) => {
+            const crd = new ComponentRequestData()
+                .withBeforeHandleResponse((data) => {
+                    try {
+                        let options = data || []
+                        if (this.$el.dataset.asyncResultKey) {
+                            options = options[this.$el.dataset.asyncResultKey]
+                        }
+                        resolve(options ?? [])
+                    } catch (_) {
+                        resolve([])
+                    }
+                })
+                .withErrorCallback(() => {
+                    resolve([])
+                })
 
-        return options
+            ;(window as any).MoonShine.request(this, url, 'get', {}, {}, crd)
+        })
     },
     normalizeOptions(items): { options: Record<string, any>, groups: Record<string, any>, selected: (string|number)[] } {
         const {
