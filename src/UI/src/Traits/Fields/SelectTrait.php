@@ -27,8 +27,6 @@ trait SelectTrait
 
     /**
      * @param  Closure|array<int|string,string|Option|OptionGroup|array<int|string,string>>|Options  $data
-     *
-     * @return $this
      */
     public function options(Closure|array|Options $data): static
     {
@@ -90,5 +88,24 @@ trait SelectTrait
                 ),
             )
             ->implode(',');
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return function (mixed $item): mixed {
+            if ($this->getRequestValue() === false && ! $this->hasRequestValue() && ! $this->getDefaultIfExists()) {
+                return $item;
+            }
+
+            $value = $this->getRequestValue() !== false ? $this->getRequestValue() : null;
+
+            if ($value === null && ! $this->isNullable()) {
+                return $item;
+            }
+
+            data_set($item, $this->getColumn(), $value);
+
+            return $item;
+        };
     }
 }

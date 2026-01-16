@@ -140,6 +140,20 @@ it('apply as base with default', function () {
     ;
 });
 
+it('apply as base with empty', function () {
+    $resource = addFieldsToTestResource(
+        $this->field->multiple()
+    );
+
+    $data = [];
+
+    asAdmin()->put(
+        $resource->getRoute('crud.update', $this->item->getKey()),
+        $data
+    )->assertRedirect();
+
+})->fails('set `moonshine_user_id` = []');
+
 function selectExport(Item $item, Select $field, int $value, string $label): ?string
 {
     $data = ['moonshine_user_id' => $value];
