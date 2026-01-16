@@ -5,7 +5,9 @@ import { TPluginHash } from 'tom-select/src/contrib/microplugin'
 import { crudFormQuery, getQueryString, prepareFormExtraData } from '../Support/Forms.js'
 import { dispatchEvents as de } from '../Support/DispatchEvents.js'
 import { formToJSON } from 'axios'
+import request from '../Request/Core.js'
 import { getDom } from 'tom-select/src/vanilla'
+import {ComponentRequestData} from "../DTOs/ComponentRequestData";
 
 let pluginInitialize = false
 
@@ -323,11 +325,19 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
     async fetchOptions(url: string) {
         let options = []
         try {
-            const response = await fetch(url)
-            options = await response.json()
-            if (this.$el.dataset.asyncResultKey) {
-                options = options[this.$el.dataset.asyncResultKey]
-            }
+            let componentRequestData = new ComponentRequestData()
+            componentRequestData.withAfterResponse((data: any) => {
+                let optionsData = data.options ?? data
+                let result = this.$el.dataset.asyncResultKey
+                    ? optionsData[this.$el.dataset.asyncResultKey]
+                    : optionsData
+
+                if (Array.isArray(result)) {
+                    options = result
+                }
+            })
+
+            await request(this,url,'get',{},{},componentRequestData)
         } catch (e) {
         }
 

@@ -38,10 +38,18 @@ class JsonResponse extends SymfonyJsonResponse
     protected function mergeJsonData(array $data): self
     {
         $this->jsonData = array_filter(
-            array_merge($this->jsonData, $data)
+            array_merge($this->jsonData, $data),
         );
 
         return $this->setData($this->jsonData);
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    public function merge(array $data): self
+    {
+        return $this->mergeJsonData($data);
     }
 
     public function toast(string $value, ToastType $type = ToastType::DEFAULT, null|int|false $duration = null): self

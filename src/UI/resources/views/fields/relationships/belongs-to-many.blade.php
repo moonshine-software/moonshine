@@ -75,14 +75,17 @@
                                                    class="dropdown-menu-link flex gap-x-2 items-center"
                                                    @click.prevent="select(item, {{ $isDeduplicate ? 1 : 0}})"
                                                 >
-                                                    <div x-show="item?.properties?.image"
-                                                         class="zoom-in h-10 w-10 overflow-hidden rounded-md"
-                                                    >
-                                                        <img class="h-full w-full object-cover"
-                                                              :src="item.properties.image.src"
-                                                              alt=""
+                                                    <template x-if="item?.properties?.image">
+                                                        <div
+                                                            class="zoom-in h-10 w-10 overflow-hidden rounded-md"
                                                         >
-                                                    </div>
+                                                            <img class="h-full w-full object-cover"
+                                                                 :src="item.properties.image.src"
+                                                                 alt=""
+                                                            >
+                                                        </div>
+                                                    </template>
+
                                                     <span x-text="item.label" />
                                                 </a>
                                             </li>
