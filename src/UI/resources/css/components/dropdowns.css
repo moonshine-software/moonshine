@@ -35,6 +35,13 @@
   }
 }
 
+/* Dropdown modifiers */
+
+.dropdown-body--column-selection {
+  --ms-dropdown-content-max-width: none;
+  white-space: nowrap;
+}
+
 /* Dropdown heading */
 
 .dropdown-heading {
