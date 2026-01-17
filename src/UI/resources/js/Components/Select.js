@@ -5,6 +5,8 @@ import {crudFormQuery, getQueryString, prepareFormExtraData} from '../Support/Fo
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import {formToJSON} from 'axios'
 import {DEFAULT_CONFIG} from '../../../node_modules/choices.js/src/scripts/defaults'
+import request from '../Request/Core.js'
+import {ComponentRequestData} from "../DTOs/ComponentRequestData";
 
 export default (asyncUrl = '') => ({
   choicesInstance: null,
@@ -430,9 +432,19 @@ export default (asyncUrl = '') => ({
     de(componentEvent, '', this, extra)
   },
   async fromUrl(url) {
-    const response = await fetch(url)
-    const json = await response.json()
-    return json
+    let options = []
+
+    try {
+        let componentRequestData = new ComponentRequestData()
+        componentRequestData.withAfterResponse((data) => {
+          options = data
+        })
+
+        await request(this,url,'get',{},{},componentRequestData)
+    } catch (e) {
+    }
+
+    return options
   },
   normalizeOptions(items) {
     return items.map(item => {
