@@ -691,6 +691,7 @@ final class TableBuilder extends IterableComponent implements
 
             $components[] = Dropdown::make()
                 ->strategy('auto')
+                ->class('dropdown-body--column-selection')
                 ->content(
                     fn (): Div => Div::make($selectionFields)->class('p-2 space-y-2')
                 )
