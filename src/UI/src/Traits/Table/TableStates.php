@@ -302,9 +302,15 @@ trait TableStates
         return $this->isLazy;
     }
 
-    public function columnSelection(): static
+    public function columnSelection(?string $prefix = null): static
     {
         $this->isColumnSelection = true;
+
+        if($prefix !== null) {
+            $this->customAttributes([
+                'data-column-selection' => $prefix,
+            ]);
+        }
 
         return $this;
     }
