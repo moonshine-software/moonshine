@@ -183,7 +183,7 @@ interface TableBuilderContract extends
 
     public function getStickyClass(): string;
 
-    public function columnSelection(): static;
+    public function columnSelection(?string $prefix = null): static;
 
     public function isColumnSelection(): bool;
 
