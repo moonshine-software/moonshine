@@ -302,13 +302,13 @@ trait TableStates
         return $this->isLazy;
     }
 
-    public function columnSelection(?string $prefix = null): static
+    public function columnSelection(null|string|Closure $prefix = null): static
     {
         $this->isColumnSelection = true;
 
-        if($prefix !== null) {
-            $this->customAttributes([
-                'data-column-selection' => $prefix,
+        if ($prefix !== null) {
+            $this->onBeforeRenderCallbacks[] = static fn (self $ctx): self => $ctx->customAttributes([
+                'data-column-selection' => value($prefix, $ctx),
             ]);
         }
 

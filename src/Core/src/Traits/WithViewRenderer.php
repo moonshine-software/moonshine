@@ -29,6 +29,11 @@ trait WithViewRenderer
 
     protected ?Closure $onBeforeRenderCallback = null;
 
+    /**
+     * @var list<Closure(static): static>|null
+     */
+    protected ?array $onBeforeRenderCallbacks = null;
+
     private Renderable|Closure|string|null $cachedRender = null;
 
     /**
@@ -135,6 +140,14 @@ trait WithViewRenderer
 
         if (! \is_null($this->onBeforeRenderCallback)) {
             \call_user_func($this->onBeforeRenderCallback, $this);
+        }
+
+        if ($this->onBeforeRenderCallbacks !== null) {
+            foreach ($this->onBeforeRenderCallbacks as $callback) {
+                $callback($this);
+            }
+
+            $this->onBeforeRenderCallbacks = null;
         }
 
         $view = $this->resolveRender();

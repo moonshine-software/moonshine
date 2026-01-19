@@ -183,7 +183,10 @@ interface TableBuilderContract extends
 
     public function getStickyClass(): string;
 
-    public function columnSelection(?string $prefix = null): static;
+    /**
+     * @param  null|string|(Closure(static $ctx): string)  $prefix
+     */
+    public function columnSelection(null|string|Closure $prefix = null): static;
 
     public function isColumnSelection(): bool;
 
