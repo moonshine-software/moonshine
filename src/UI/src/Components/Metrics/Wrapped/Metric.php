@@ -22,11 +22,20 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
     use WithLabel;
     use WithIcon;
 
+    protected Color $iconColor = Color::PRIMARY;
+
     final public function __construct(Closure|string $label)
     {
         parent::__construct();
 
         $this->setLabel($label);
+    }
+
+    public function iconColor(Color $color): static
+    {
+        $this->iconColor = $color;
+
+        return $this;
     }
 
     protected function prepareBeforeRender(): void
@@ -44,7 +53,7 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
-            'icon' => $this->getIcon(6, Color::SECONDARY),
+            'icon' => $this->getIcon(6, $this->iconColor),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),
         ];

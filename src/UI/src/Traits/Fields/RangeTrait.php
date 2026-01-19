@@ -207,6 +207,17 @@ trait RangeTrait
                 return $item;
             }
 
+            if (\is_array($values) && array_filter($values) === [] && $this->isNullable()) {
+                data_set($item, $this->getFromField(), null);
+                data_set($item, $this->getToField(), null);
+
+                return $item;
+            }
+
+            if (\is_array($values) && array_filter($values) === []) {
+                return $item;
+            }
+
             data_set($item, $this->getFromField(), $values[$this->getFromField()] ?? '');
             data_set($item, $this->getToField(), $values[$this->getToField()] ?? '');
 
