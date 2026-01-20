@@ -7,6 +7,8 @@ namespace MoonShine\UI\Fields;
 use BackedEnum;
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
 use Throwable;
 
@@ -48,21 +50,42 @@ class Enum extends Select implements CanBeEnum
             return '';
         }
 
+        $rescueEnum = static function (Closure $callback): BackedEnum|null {
+            try {
+                return $callback();
+            } catch (Throwable) {
+            }
+
+            return null;
+        };
+
         if ($this->attached !== null && ! $value instanceof $this->attached) {
-            $rescueEnum = static function (Closure $callback): BackedEnum|null {
-                try {
-                    return $callback();
-                } catch (Throwable) {
-                }
-
-                return null;
-            };
-
             $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
         if ($this->isMultiple()) {
-            return $this->getMultiplePreview($value);
+            $badged = false;
+            $values = $value->map(function ($v) use ($rescueEnum, &$badged) {
+                $enum = $rescueEnum(fn () => $this->attached::tryFrom($v)) ?? $this->attached::tryFrom((int) $v);
+                $result = $enum ? (string) ($enum->value ?? '') : $v;
+
+                if (method_exists($enum, 'toString')) {
+                    $result = (string) $enum->toString();
+                }
+
+                if (method_exists($enum, 'getColor')) {
+                    $badged = true;
+
+                    return (string) Badge::make($result, $enum->getColor(), method_exists($enum, 'getIcon') ? $enum->getIcon() : null);
+                }
+
+                return $result;
+            });
+
+
+            return (string) Flex::make([
+                $this->getMultiplePreview($values, $badged ? '' : ','),
+            ])->unwrap()->withoutSpace()->class('gap-1');
         }
 
         if (\is_scalar($value)) {
@@ -74,7 +97,10 @@ class Enum extends Select implements CanBeEnum
         }
 
         if (method_exists($value, 'getColor')) {
-            $this->badge($value->getColor());
+            $this->badge(
+                $value->getColor(),
+                method_exists($value, 'getIcon') ? $value->getIcon() : null
+            );
         }
 
         if (method_exists($value, 'toString')) {

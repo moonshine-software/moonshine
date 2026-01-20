@@ -71,7 +71,7 @@ trait SelectTrait
     /**
      * @throws JsonException
      */
-    protected function getMultiplePreview(mixed $value): string
+    protected function getMultiplePreview(mixed $value, string $separator = ','): string
     {
         $value = \is_string($value) && Str::of($value)->isJson() ?
             json_decode($value, true, 512, JSON_THROW_ON_ERROR)
@@ -84,10 +84,10 @@ trait SelectTrait
             ->when(
                 ! $this->isRawMode(),
                 fn (Collection $collect): Collection => $collect->map(
-                    fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", ''),
+                    fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", $v),
                 ),
             )
-            ->implode(',');
+            ->implode($separator);
     }
 
     protected function resolveOnApply(): ?Closure

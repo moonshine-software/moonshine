@@ -11,9 +11,10 @@ interface HasBadgeContract
 {
     /**
      * @param  string|Color|(Closure(mixed $value, static $ctx): string|Color)|null  $color
+     * @param  string|(Closure(static $ctx): string)|null  $icon
      *
      */
-    public function badge(string|Color|Closure|null $color = null): static;
+    public function badge(string|Color|Closure|null $color = null, string|Closure|null $icon = null): static;
 
     public function isBadge(): bool;
 
