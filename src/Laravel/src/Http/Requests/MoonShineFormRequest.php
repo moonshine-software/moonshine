@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Core\Exceptions\ResourceException;
+use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Resources\CrudResource;
 use Throwable;
 
@@ -28,7 +29,7 @@ class MoonShineFormRequest extends FormRequest
             $this->errorBag = $this->getResource()->getUriKey();
         }
 
-        if ($this->hasResource() && $this->getResource()->getFormPage() instanceof PageContract) {
+        if ($this->hasResource() && $this->getResource()->getFormPage() instanceof FormPageContract) {
             $this->getResource()->getFormPage()->prepareForValidation();
         }
 
@@ -37,12 +38,14 @@ class MoonShineFormRequest extends FormRequest
 
     public function messages(): array
     {
-        if ($this->getResource() instanceof CrudResource && $this->getResource()->getFormPage() instanceof PageContract) {
+        $page = $this->getResource()?->getFormPage();
+
+        if ($page instanceof FormPageContract && $this->getResource() instanceof CrudResource) {
             $messages = __('moonshine::validation');
 
             return array_merge(
                 \is_array($messages) ? $messages : [],
-                $this->getResource()->getFormPage()->validationMessages()
+                $page->validationMessages()
             );
         }
 
