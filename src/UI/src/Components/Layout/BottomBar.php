@@ -17,12 +17,6 @@ class BottomBar extends AbstractWithComponents
         'back' => 'moonshine::ui.back',
     ];
 
-    public function __construct(
-        iterable $components = [],
-    ) {
-        parent::__construct($components);
-    }
-
     public function alwaysVisible(): static
     {
         return $this->class('always-visible');

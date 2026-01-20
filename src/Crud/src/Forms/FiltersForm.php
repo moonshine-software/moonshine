@@ -6,6 +6,7 @@ namespace MoonShine\Crud\Forms;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -44,6 +45,7 @@ final readonly class FiltersForm implements FormContract
     {
         /** @var CrudResource $resource */
         $resource = $this->resource;
+        /** @var CrudPageContract $page */
         $page = $resource->getIndexPage();
 
         if ($page === null) {
