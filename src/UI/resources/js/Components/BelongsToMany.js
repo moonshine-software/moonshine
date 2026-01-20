@@ -1,5 +1,5 @@
 import {crudFormQuery} from '../Support/Forms.js'
-import {ComponentRequestData} from "../DTOs/ComponentRequestData"
+import {ComponentRequestData} from '../DTOs/ComponentRequestData'
 import request from '../Request/Core.js'
 
 export default () => ({
@@ -14,8 +14,8 @@ export default () => ({
       const url = route + query + (formQuery.length ? '&' + formQuery : '')
 
       let componentRequestData = new ComponentRequestData()
-      componentRequestData.withAfterResponse((data) => {
-        if(Array.isArray(data)) {
+      componentRequestData.withAfterResponse(data => {
+        if (Array.isArray(data)) {
           this.match = data
         }
       })
