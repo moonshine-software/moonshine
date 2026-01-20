@@ -22,7 +22,7 @@
                 <a
                     :href="item.url"
                     class="layout-bottom-bar-item"
-                    @click="handleItemClick(item)"
+                    @click.prevent="handleItemClick(item)"
                     :class="{ '_is-active': item.isActive }"
                 >
                     <div class="layout-bottom-bar-item-icon" x-html="item.icon"></div>
