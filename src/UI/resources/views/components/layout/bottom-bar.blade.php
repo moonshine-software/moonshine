@@ -19,8 +19,8 @@
 
         <div class="layout-bottom-bar-items">
             <template x-for="(item, index) in currentItems" :key="index">
-                <button
-                    type="button"
+                <a
+                    :href="item.url"
                     class="layout-bottom-bar-item"
                     @click="handleItemClick(item)"
                     :class="{ '_is-active': item.isActive }"
@@ -28,7 +28,7 @@
                     <div class="layout-bottom-bar-item-icon" x-html="item.icon"></div>
                     <div class="layout-bottom-bar-item-text" x-text="item.text"></div>
                     <div class="layout-bottom-bar-item-badge" x-show="item.badge" x-text="item.badge" x-cloak></div>
-                </button>
+                </a>
             </template>
         </div>
     </div>
