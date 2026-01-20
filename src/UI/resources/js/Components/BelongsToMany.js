@@ -1,4 +1,6 @@
 import {crudFormQuery} from '../Support/Forms.js'
+import {ComponentRequestData} from "../DTOs/ComponentRequestData"
+import request from '../Request/Core.js'
 
 export default () => ({
   match: [],
@@ -9,14 +11,16 @@ export default () => ({
 
       const form = this.$el.closest('form')
       const formQuery = crudFormQuery(form.querySelectorAll('[name]'))
+      const url = route + query + (formQuery.length ? '&' + formQuery : '')
 
-      fetch(route + query + (formQuery.length ? '&' + formQuery : ''))
-        .then(response => {
-          return response.json()
-        })
-        .then(data => {
+      let componentRequestData = new ComponentRequestData()
+      componentRequestData.withAfterResponse((data) => {
+        if(Array.isArray(data)) {
           this.match = data
-        })
+        }
+      })
+
+      await request(this, url, 'get', {}, {}, componentRequestData)
     }
   },
   select(item, deduplicate = false) {
