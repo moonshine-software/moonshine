@@ -352,6 +352,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $identityField = Checkbox::make('#', $this->getRelatedKeyName())
             ->simpleMode()
+            ->wrapperClass('w-10')
             ->customAttributes($this->getReactiveAttributes())
             ->withoutWrapper()
             ->class('js-pivot-checker')

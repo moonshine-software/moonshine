@@ -343,8 +343,8 @@ class RelationRepeater extends ModelRelationField implements
             $fields->prepend(
                 Preview::make(
                     column: '__handle',
-                    formatted: static fn () => Icon::make('bars-4'),
-                )->customAttributes(['class' => 'handle', 'style' => 'cursor: move']),
+                    formatted: static fn () => Icon::make('bars-3-bottom-right', size: 5),
+                )->wrapperStyle('width: 10px; white-space: nowrap;')->customAttributes(['class' => 'handle', 'style' => 'cursor: move']),
             );
         }
 
