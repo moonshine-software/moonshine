@@ -180,7 +180,9 @@ export default (
     })
   },
   getColumnSelectionStoreKey(el) {
-    return `${this.table.dataset.name}-column-selection:${el.dataset.column}`
+    const prefix = this.table.dataset.columnSelectionPrefix ?? ''
+
+    return `${prefix}${this.table.dataset.name}-column-selection:${el.dataset.column}`
   },
   columnSelection(element = null) {
     const el = element ?? this.$el
