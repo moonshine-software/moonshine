@@ -39,7 +39,7 @@ class TestResourceBuilder
                 Text::make('Name'),
                 Email::make('Email'),
                 Password::make('Password'),
-                Preview::make('Badge')->badge(static fn () => 'red'),
+                Preview::make('Badge')->setValue(1)->badge(static fn () => 'red'),
             ])
             ->setTestQueryTags([
                 QueryTag::make(
