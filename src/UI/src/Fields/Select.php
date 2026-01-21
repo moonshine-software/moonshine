@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
@@ -51,8 +54,20 @@ class Select extends Field implements
     {
         $value = $this->toValue();
 
+        if ($this->isBadge() && $this->isMultiple()) {
+            /** @var Collection<array-key, string|int> $collection */
+            $collection = new Collection($value);
+            $values = $collection->map(fn (string|int $v): string => (string) Badge::make($v, $this->getBadgeColor($v), $this->getBadgeIcon($v)));
+
+            $this->isBadge = false;
+
+            return (string) Flex::make([
+                $this->getMultiplePreview($values, ''),
+            ])->unwrap()->withoutSpace()->class('gap-1');
+        }
+
         if ($this->isMultiple()) {
-            return $this->getMultiplePreview($value);
+            $this->getMultiplePreview($value);
         }
 
         if (\is_null($value)) {

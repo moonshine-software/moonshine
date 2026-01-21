@@ -472,7 +472,11 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         if ($this->isBadge()) {
-            return Badge::make((string) $value, $this->getBadgeColor($this->toValue()))
+            return Badge::make(
+                (string) $value,
+                $this->getBadgeColor($this->toValue()),
+                $this->getBadgeIcon($this->toValue()),
+            )
                 ->render();
         }
 
