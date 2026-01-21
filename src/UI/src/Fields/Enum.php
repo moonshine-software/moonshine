@@ -83,6 +83,10 @@ class Enum extends Select implements CanBeEnum
             });
 
 
+            if ($badged) {
+                $this->isBadge = false;
+            }
+
             return (string) Flex::make([
                 $this->getMultiplePreview($values, $badged ? '' : ','),
             ])->unwrap()->withoutSpace()->class('gap-1');

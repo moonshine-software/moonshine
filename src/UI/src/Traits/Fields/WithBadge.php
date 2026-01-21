@@ -17,9 +17,11 @@ trait WithBadge
 
     protected ?Closure $badgeColorCallback = null;
 
+    protected ?Closure $badgeIconCallback = null;
+
     /**
      * @param  string|Color|(Closure(mixed $value, static $ctx): string|Color)|null  $color
-     * @param  string|(Closure(static $ctx): string)|null  $icon
+     * @param  string|(Closure(mixed $value, static $ctx): string)|null  $icon
      */
     public function badge(string|Color|Closure|null $color = null, string|Closure|null $icon = null): static
     {
@@ -30,9 +32,7 @@ trait WithBadge
         }
 
         if ($icon instanceof Closure) {
-            $this->onBeforeRenderCallbacks[] = static function ($ctx) use ($icon): void {
-                $ctx->badgeIcon = $icon($ctx);
-            };
+            $this->badgeIconCallback = $icon;
         } elseif (! \is_null($icon)) {
             $this->badgeIcon = $icon;
         }
@@ -57,8 +57,10 @@ trait WithBadge
         return $color instanceof Color ? $color->value : $color;
     }
 
-    public function getBadgeIcon(): ?string
+    public function getBadgeIcon(mixed $value = null): ?string
     {
-        return $this->badgeIcon;
+        return \is_null($this->badgeIconCallback)
+            ? $this->badgeIcon
+            : \call_user_func($this->badgeIconCallback, $value ?? $this->toValue(withDefault: false), $this);
     }
 }
