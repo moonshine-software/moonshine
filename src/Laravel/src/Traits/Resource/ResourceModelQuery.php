@@ -104,9 +104,7 @@ trait ResourceModelQuery
 
         $item = $builder->find($this->getItemID());
 
-        return $item !== null ? $this->getCaster()->cast(
-            $builder->find($this->getItemID())
-        ) : null;
+        return $item !== null ? $this->getCaster()->cast($item) : null;
     }
 
     protected function modifyItemQueryBuilder(Builder $builder): Builder
