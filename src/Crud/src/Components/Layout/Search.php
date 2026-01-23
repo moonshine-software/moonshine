@@ -91,7 +91,6 @@ final class Search extends MoonShineComponent
             ->setAttribute('type', 'search')
             ->xModel('searchValue')
             ->class('search-form-field')
-            ->required()
             ->placeholder($this->placeholder)
             ->withoutWrapper()
             ->customAttributes([
