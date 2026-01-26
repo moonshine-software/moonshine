@@ -67,7 +67,7 @@ class Select extends Field implements
         }
 
         if ($this->isMultiple()) {
-            $this->getMultiplePreview($value);
+            return $this->getMultiplePreview($value);
         }
 
         if (\is_null($value)) {
