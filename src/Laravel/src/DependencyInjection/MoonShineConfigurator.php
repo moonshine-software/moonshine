@@ -19,6 +19,7 @@ use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
 use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\Support\Enums\Ability;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 final class MoonShineConfigurator implements ConfiguratorContract
@@ -26,6 +27,10 @@ final class MoonShineConfigurator implements ConfiguratorContract
     private array $items;
 
     private readonly Collection $authorizationRules;
+
+    private ?Closure $logoutUsing = null;
+
+    private ?Closure $authenticateUsing = null;
 
     public function __construct(Repository $repository)
     {
@@ -415,6 +420,50 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return \call_user_func(
             new $class(...$parameters)
         );
+    }
+
+    /**
+     * @param  Closure((Closure(): Response) $default): Response  $callback
+     */
+    public function authenticateUsing(Closure $callback): self
+    {
+        $this->authenticateUsing = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(): Response  $default
+     */
+    public function handleAuthenticate(Closure $default): Response
+    {
+        if ($this->authenticateUsing instanceof Closure) {
+            return \call_user_func($this->authenticateUsing, $default);
+        }
+
+        return $default();
+    }
+
+    /**
+     * @param  Closure((Closure(): Response) $default): Response  $callback
+     */
+    public function logoutUsing(Closure $callback): self
+    {
+        $this->logoutUsing = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  Closure(): Response  $default
+     */
+    public function handleLogout(Closure $default): Response
+    {
+        if ($this->logoutUsing instanceof Closure) {
+            return \call_user_func($this->logoutUsing, $default);
+        }
+
+        return $default();
     }
 
     public function has(string $key): bool
