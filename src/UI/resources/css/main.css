@@ -47,6 +47,7 @@
 @import './components/theme-switcher.css' layer(components);
 @import './components/toasts.css' layer(components);
 @import './components/skeleton.css' layer(components);
+@import './components/snippet.css' layer(components);
 
 /* Pages */
 @import './pages/authentication.css';

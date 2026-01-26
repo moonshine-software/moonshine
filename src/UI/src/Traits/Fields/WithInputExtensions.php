@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\UI\Components\Snippet;
 use MoonShine\UI\InputExtensions\InputCopy;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
@@ -57,6 +58,7 @@ trait WithInputExtensions
     public function copy(string $value = '{{value}}'): static
     {
         $this->extension(new InputCopy($value));
+        $this->changePreview(static fn(string|int|null $value): string => $value ? (string) Snippet::make((string) $value) : (string) $value);
 
         return $this;
     }
