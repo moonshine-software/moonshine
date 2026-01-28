@@ -64,7 +64,9 @@ use MoonShine\Laravel\Commands\MakeTypeCastCommand;
 use MoonShine\Laravel\Commands\MakeUserCommand;
 use MoonShine\Laravel\Commands\OptimizeClearCommand;
 use MoonShine\Laravel\Commands\OptimizeCommand;
+use MoonShine\Laravel\Commands\PagesCommand;
 use MoonShine\Laravel\Commands\PublishCommand;
+use MoonShine\Laravel\Commands\ResourcesCommand;
 use MoonShine\Laravel\DefaultRoutes;
 use MoonShine\Laravel\DependencyInjection\AssetResolver;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
@@ -116,6 +118,8 @@ final class MoonShineServiceProvider extends ServiceProvider
         MakePolicyCommand::class,
         OptimizeCommand::class,
         OptimizeClearCommand::class,
+        ResourcesCommand::class,
+        PagesCommand::class,
     ];
 
     /**

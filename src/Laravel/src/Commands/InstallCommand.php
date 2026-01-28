@@ -10,9 +10,10 @@ use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
-use function Laravel\Prompts\{confirm, intro, outro, spin, warning};
+use function Laravel\Prompts\{confirm, outro, spin, warning};
 
 use MoonShine\ColorManager\Palettes\PurplePalette;
+use MoonShine\Laravel\Commands\Concerns\DisplayHelper;
 use MoonShine\Laravel\Providers\MoonShineServiceProvider;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
@@ -21,6 +22,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'moonshine:install')]
 class InstallCommand extends MoonShineCommand
 {
+    use DisplayHelper;
+
     protected $signature = 'moonshine:install {--u|without-user} {--m|without-migrations} {--l|default-layout} {--a|without-auth} {--d|without-notifications} {--t|tests-mode} {--Q|quick-mode}';
 
     protected $description = 'Install the MoonShine Laravel package';
@@ -35,7 +38,7 @@ class InstallCommand extends MoonShineCommand
 
     public function handle(): int
     {
-        intro('MoonShine installation ...');
+        $this->displayMoonShineHeader('Install');
 
         if ($this->option('tests-mode')) {
             $this->testsMode = true;
@@ -89,6 +92,8 @@ class InstallCommand extends MoonShineCommand
             $this->components->bulletList([
                 'Star or contribute to MoonShine: https://github.com/moonshine-software/moonshine',
                 'MoonShine Documentation: https://getmoonshine.app',
+                'AI-powered development toolkit: https://github.com/moonshine-software/forty-five',
+                'MoonShine PhpStorm Plugin: https://plugins.jetbrains.com/plugin/28640-moonshine',
                 'CutCode: https://cutcode.dev',
             ]);
         }
@@ -97,6 +102,8 @@ class InstallCommand extends MoonShineCommand
             $this->components->task('');
             outro("Now run 'php artisan moonshine:user'");
         }
+
+        $this->displayOutro('Installation complete! Docs: ', $this->hyperlink('https://getmoonshine.app', 'https://getmoonshine.app'));
 
         return self::SUCCESS;
     }
