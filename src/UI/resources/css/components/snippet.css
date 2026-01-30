@@ -9,7 +9,9 @@
   border-radius: var(--ms-snippet-radius, var(--radius-lg));
   background-color: var(--ms-snippet-bg-color, var(--color-base-200));
   color: var(--ms-snippet-color, var(--color-base-text));
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   font-size: var(--ms-snippet-font-size, var(--text-xs));
   transition-property: background-color, color;
   transition-duration: var(--default-transition-duration);
