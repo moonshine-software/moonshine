@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 
 use Closure;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Laravel\Buttons\BelongsToManyPivotButton;
 use MoonShine\Laravel\Buttons\BelongsToOrManyButton;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use Throwable;
@@ -15,6 +16,11 @@ trait BelongsToOrManyCreatable
     protected bool $isCreatable = false;
 
     protected ?ActionButtonContract $creatableButton = null;
+
+    /**
+     * @var (Closure(ActionButtonContract, static): ActionButtonContract)|null
+     */
+    protected ?Closure $modifyCreateButton = null;
 
     protected ?string $creatableFragmentUrl = null;
 
@@ -48,11 +54,29 @@ trait BelongsToOrManyCreatable
             return null;
         }
 
-        $button = BelongsToOrManyButton::for($this, button: $this->creatableButton);
+        if ($this instanceof BelongsToMany && $this->isPivotModalMode()) {
+            $button = BelongsToManyPivotButton::for($this, button: $this->creatableButton);
+        } else {
+            $button = BelongsToOrManyButton::for($this, button: $this->creatableButton);
+        }
+
+        if (! \is_null($this->modifyCreateButton)) {
+            $button = \call_user_func($this->modifyCreateButton, $button, $this);
+        }
 
         return $button->isSee()
             ? $button
             : null;
+    }
+
+    /**
+     * @param  Closure(ActionButtonContract $button, static $ctx): ActionButtonContract  $callback
+     */
+    public function modifyCreateButton(Closure $callback): static
+    {
+        $this->modifyCreateButton = $callback;
+
+        return $this;
     }
 
     public function getFragmentUrl(): string
