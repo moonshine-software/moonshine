@@ -51,7 +51,7 @@ trait HasListFormatting
         $rightWidth = $availableWidth - $leftWidth;
 
         $displayLeft = $this->truncate($left, $leftWidth - 2);
-        $dots = str_repeat('.', max($leftWidth - mb_strlen($displayLeft) - 1, 1));
+        $dots = str_repeat('.', max($leftWidth - mb_strlen((string) $displayLeft) - 1, 1));
         $displayRight = $this->truncate($right, $rightWidth - 1);
 
         $leftStyle = $leftBold ? "fg=$leftColor;options=bold" : "fg=$leftColor";
