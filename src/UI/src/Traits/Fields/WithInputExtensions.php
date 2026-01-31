@@ -58,7 +58,7 @@ trait WithInputExtensions
     public function copy(string $value = '{{value}}'): static
     {
         $this->extension(new InputCopy($value));
-        $this->changePreview(static fn(string|int|null $value): string => $value ? (string) Snippet::make((string) $value) : (string) $value);
+        $this->changePreview(static fn (string|int|null $value): string => $value ? (string) Snippet::make((string) $value) : (string) $value);
 
         return $this;
     }
