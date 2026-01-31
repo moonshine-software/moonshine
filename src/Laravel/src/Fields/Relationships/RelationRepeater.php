@@ -285,6 +285,10 @@ class RelationRepeater extends ModelRelationField implements
                 ->creatable(false);
         }
 
+        if ($value === null && $this->getRelation() instanceof HasOne) {
+            $value = $this->getRelated();
+        }
+
         $values = Collection::make(
             is_iterable($value)
                 ? $value
