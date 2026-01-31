@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\ActionButton;
 
 use Closure;
+use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
@@ -44,7 +45,7 @@ trait WithModal
         iterable $components = [],
     ): static {
         if (\is_null($name)) {
-            $name = fn (mixed $data, ActionButtonContract $ctx): string => spl_object_id($this) . $ctx->getData()?->getKey();
+            $name = static fn (mixed $data, ActionButtonContract $ctx): string => Str::random(6) . $ctx->getData()?->getKey();
         }
 
         $async = $this->purgeAsyncTap();
@@ -63,7 +64,7 @@ trait WithModal
 
         return $this->onBeforeRender(
             static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleModal(
-                value($name, $ctx->getData()?->getOriginal(), $ctx)
+                $ctx->getComponent()?->getName() ?? value($name, $ctx->getData()?->getOriginal(), $ctx)
             )
         );
     }
