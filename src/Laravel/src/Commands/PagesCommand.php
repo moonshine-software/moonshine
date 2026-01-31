@@ -112,7 +112,7 @@ class PagesCommand extends Command
             ->prepend('')
             ->push('')
             ->push($this->formatCountOutput(
-                sprintf('Showing [%d] pages', $rows->count()),
+                \sprintf('Showing [%d] pages', $rows->count()),
                 $terminalWidth
             ))
             ->push('')

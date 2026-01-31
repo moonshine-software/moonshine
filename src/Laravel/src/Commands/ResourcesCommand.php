@@ -116,7 +116,7 @@ class ResourcesCommand extends Command
             ->prepend('')
             ->push('')
             ->push($this->formatCountOutput(
-                sprintf('Showing [%d] resources with [%d] pages', $resourceCount, $pageCount),
+                \sprintf('Showing [%d] resources with [%d] pages', $resourceCount, $pageCount),
                 $terminalWidth
             ))
             ->push('')

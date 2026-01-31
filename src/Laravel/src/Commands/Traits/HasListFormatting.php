@@ -56,7 +56,7 @@ trait HasListFormatting
 
         $leftStyle = $leftBold ? "fg=$leftColor;options=bold" : "fg=$leftColor";
 
-        return sprintf(
+        return \sprintf(
             '%s<%s>%s</> <fg=#6C7280>%s</> <fg=%s>%s</>',
             $prefix,
             $leftStyle,
