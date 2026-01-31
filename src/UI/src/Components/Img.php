@@ -37,9 +37,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
-    public function size(int $widht, ?int $height = null): static
+    public function size(int $width, ?int $height = null): static
     {
-        $this->width = $this->height = $widht;
+        $this->width = $this->height = $width;
 
         if (! \is_null($height)) {
             $this->height = $height;
@@ -62,9 +62,9 @@ final class Img extends MoonShineComponent
         return $this;
     }
 
-    public function rounded(): static
+    public function rounded(int $percent = 50): static
     {
-        $this->style(['border-radius: 50%']);
+        $this->style(["border-radius: $percent%"]);
 
         return $this;
     }
