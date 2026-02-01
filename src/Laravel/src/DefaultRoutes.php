@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Laravel\Http\Controllers\AsyncSearchController;
 use MoonShine\Laravel\Http\Controllers\AuthenticateController;
+use MoonShine\Laravel\Http\Controllers\BelongsToManyPivotController;
 use MoonShine\Laravel\Http\Controllers\ComponentController;
 use MoonShine\Laravel\Http\Controllers\CrudController;
 use MoonShine\Laravel\Http\Controllers\HandlerController;
@@ -104,6 +105,25 @@ final readonly class DefaultRoutes
                 function (): void {
                     Route::get('form/{pageUri}/{resourceUri?}/{resourceItem?}', 'formComponent')
                         ->name('form');
+                    Route::get('list/{pageUri}/{resourceUri?}/{resourceItem?}', 'listComponent')
+                        ->name('list');
+                }
+            );
+
+            /**
+             * Pivot modal mode for BelongsToMany field
+             * @see BelongsToMany::pivotModalMode()
+             */
+            Route::prefix('belongs-to-many-pivot')->as('belongs-to-many-pivot.')->controller(BelongsToManyPivotController::class)->group(
+                function (): void {
+                    Route::get('form/{pageUri}/{resourceUri?}/{resourceItem?}', 'formComponent')
+                        ->name('form');
+                    Route::post('store/{pageUri}/{resourceUri?}/{resourceItem?}', 'store')
+                        ->name('store');
+                    Route::put('update/{pageUri}/{resourceUri?}/{resourceItem?}', 'update')
+                        ->name('update');
+                    Route::delete('destroy/{pageUri}/{resourceUri?}/{resourceItem?}', 'destroy')
+                        ->name('destroy');
                     Route::get('list/{pageUri}/{resourceUri?}/{resourceItem?}', 'listComponent')
                         ->name('list');
                 }

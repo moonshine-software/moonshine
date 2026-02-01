@@ -63,7 +63,7 @@ final class BelongsToOrManyButton
                 content: static fn (?Model $data): string => (string) FormBuilder::make($action)
                     ->withoutRedirect()
                     ->reactiveUrl(
-                        moonshineRouter()->getEndpoints()->reactive($resource->getFormPage(), $resource)
+                        $field->getCore()->getRouter()->getEndpoints()->reactive($resource->getFormPage(), $resource)
                     )
                     ->async(events: [
                         AlpineJs::event(JsEvent::FRAGMENT_UPDATED, $field->getRelationName()),

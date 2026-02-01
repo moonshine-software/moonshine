@@ -10,6 +10,7 @@
     'isSelectMode' => false,
     'isTreeMode' => false,
     'isHorizontalMode' => false,
+    'isPivotModalMode' => false,
     'treeHtml' => '',
     'listHtml' => '',
     'asyncSearchUrl' => '',
@@ -36,7 +37,9 @@
                  @defineEvent('fragment_updated', $relationName, 'fragmentUpdate')
             >
         @endif
-            @if($isSelectMode)
+            @if($isPivotModalMode)
+                {!! $component !!}
+            @elseif($isSelectMode)
                 <x-moonshine::form.select
                     :attributes="$attributes->merge([
                         'multiple' => true

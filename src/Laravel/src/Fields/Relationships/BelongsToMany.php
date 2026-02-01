@@ -23,11 +23,13 @@ use MoonShine\Crud\Contracts\Fields\HasRelatedValuesContact;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\HasHorizontalMode;
+use MoonShine\Laravel\Traits\Fields\HasPivotModalModeConcern;
 use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Color;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
@@ -50,7 +52,7 @@ use Throwable;
  *
  * @extends ModelRelationField<R>
  * @implements HasFieldsContract<Fields|FieldsContract>
- * @implements FieldWithComponentContract<TableBuilderContract|ActionButtonContract>
+ * @implements FieldWithComponentContract<TableBuilderContract|ComponentContract|ActionButtonContract>
  */
 class BelongsToMany extends ModelRelationField implements
     HasRelatedValuesContact,
@@ -69,6 +71,7 @@ class BelongsToMany extends ModelRelationField implements
     use BelongsToOrManyCreatable;
     use HasHorizontalMode;
     use ConfigurableSelect;
+    use HasPivotModalModeConcern;
 
     protected string $view = 'moonshine::fields.relationships.belongs-to-many';
 
@@ -106,7 +109,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected ?string $columnLabel = null;
 
-    protected ?TableBuilderContract $resolvedComponent = null;
+    protected ?ComponentContract $resolvedComponent = null;
 
     protected bool $isDeduplicate = true;
 
@@ -192,9 +195,18 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    protected function getPivotAs(): string
+    public function getPivotAs(): string
     {
         return $this->getRelation()?->getPivotAccessor() ?? 'pivot';
+    }
+
+    public function getComponentEvent(): JsEvent
+    {
+        if ($this->isPivotCardsMode()) {
+            return JsEvent::CARDS_UPDATED;
+        }
+
+        return JsEvent::TABLE_UPDATED;
     }
 
     public function getTableComponentName(): string
@@ -239,7 +251,7 @@ class BelongsToMany extends ModelRelationField implements
         return $this;
     }
 
-    protected function getResourceColumnLabel(): string
+    public function getResourceColumnLabel(): string
     {
         return $this->columnLabel ?? $this->getResource()->getTitle();
     }
@@ -331,6 +343,10 @@ class BelongsToMany extends ModelRelationField implements
     {
         if (! \is_null($this->resolvedComponent)) {
             return $this->resolvedComponent;
+        }
+
+        if ($this->isPivotModalMode()) {
+            return $this->resolvedComponent = $this->getPivotModalTable();
         }
 
         $values = $this->getAvailableValues();
@@ -542,6 +558,10 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveAfterApply(mixed $data): mixed
     {
+        if ($this->isPivotModalMode()) {
+            return $data;
+        }
+
         /* @var Model $item */
         $item = $data;
 
@@ -615,6 +635,10 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveBeforeApply(mixed $data): mixed
     {
+        if ($this->isPivotModalMode()) {
+            return $data;
+        }
+
         $this->getFields()
             ->onlyFields()
             ->each(static fn (Field $field): mixed => $field->beforeApply($data));
@@ -663,6 +687,10 @@ class BelongsToMany extends ModelRelationField implements
 
     public function getReactiveValue(): mixed
     {
+        if ($this->isPivotModalMode()) {
+            throw FieldException::reactivityNotSupported(static::class, 'with pivotModalMode');
+        }
+
         if ($this->isAsyncSearch()) {
             throw FieldException::reactivityNotSupported(static::class, 'with asyncSearch');
         }
@@ -688,6 +716,7 @@ class BelongsToMany extends ModelRelationField implements
     {
         $viewData = [
             'isTreeMode' => $this->isTree(),
+            'isPivotModalMode' => $this->isPivotModalMode(),
             'isHorizontalMode' => $this->isHorizontalMode(),
             'isSelectMode' => $this->isSelectMode(),
             'isDeduplicate' => $this->isDeduplicate(),
@@ -697,8 +726,28 @@ class BelongsToMany extends ModelRelationField implements
             'createButton' => $this->getCreateButton(),
             'fragmentUrl' => $this->getFragmentUrl(),
             'relationName' => $this->getRelationName(),
-            'keys' => $this->getKeys(),
         ];
+
+        if($this->isPivotModalMode() && $this->getRelated()?->getKey() === null) {
+            $viewData['isCreatable'] = false;
+
+            $this->withoutWrapper();
+
+            return [
+                ...$viewData,
+                'component' => '',
+            ];
+        }
+
+        if ($this->isPivotModalMode()) {
+            return [
+                ...$viewData,
+                'component' => $this->getComponent(),
+                'componentName' => $this->getComponent()->getName(),
+            ];
+        }
+
+        $viewData['keys'] = $this->getKeys();
 
         if ($this->isSelectMode()) {
             $this->customAttributes(
