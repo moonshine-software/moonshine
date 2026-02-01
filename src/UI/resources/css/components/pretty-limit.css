@@ -1,0 +1,255 @@
+/* PrettyLimit basic */
+
+.pretty-limit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: var(--pretty-limit-width, 150px);
+  vertical-align: middle;
+}
+
+/* Ghost element to maintain height when inner becomes absolute */
+.pretty-limit::before {
+  content: '\00a0';
+  display: block;
+  padding-block: var(--ms-pretty-limit-padding-y, --spacing(1.5));
+  font-size: var(--ms-pretty-limit-font-size, var(--text-sm));
+  visibility: hidden;
+}
+
+.pretty-limit-inner {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  max-width: var(--pretty-limit-width, 150px);
+  padding-block: var(--ms-pretty-limit-padding-y, --spacing(1.5));
+  padding-inline: var(--ms-pretty-limit-padding-x, --spacing(3));
+  border-radius: var(--ms-pretty-limit-radius, var(--radius-lg));
+  background-color: var(--ms-pretty-limit-bg-color, var(--color-base-200));
+  color: var(--ms-pretty-limit-color, var(--color-base-text));
+  font-size: var(--ms-pretty-limit-font-size, var(--text-sm));
+  transition-property: box-shadow;
+  transition-duration: var(--default-transition-duration);
+  transition-timing-function: var(--default-transition-timing-function);
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: var(--color-base-700);
+  }
+}
+
+.pretty-limit-label {
+  flex-shrink: 0;
+  padding-inline-end: --spacing(2);
+  margin-inline-end: --spacing(2);
+  border-inline-end: 1px solid var(--ms-pretty-limit-border-color, currentColor);
+  opacity: 0.5;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pretty-limit-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover: expand without affecting layout */
+.pretty-limit:hover .pretty-limit-inner {
+  max-width: none;
+  z-index: 10;
+  box-shadow: var(--shadow-lg);
+  background-color: var(--ms-pretty-limit-bg-color-hover, var(--color-base-200));
+  color: var(--ms-pretty-limit-color-hover, var(--ms-pretty-limit-color, var(--color-base-text)));
+
+  @variant dark {
+    background-color: var(--ms-pretty-limit-bg-color-hover, var(--color-base-700));
+  }
+}
+
+.pretty-limit:hover .pretty-limit-value {
+  overflow: visible;
+}
+
+/* Allow overflow in table cells */
+td:has(.pretty-limit:hover),
+th:has(.pretty-limit:hover) {
+  overflow: visible;
+}
+
+/* PrettyLimit themes */
+
+.pretty-limit-primary {
+  --ms-pretty-limit-bg-color: var(--color-primary);
+  --ms-pretty-limit-color: var(--color-primary-text);
+  --ms-pretty-limit-color-hover: var(--color-primary-text);
+  --ms-pretty-limit-bg-color-hover: var(--color-primary);
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: var(--color-primary);
+    --ms-pretty-limit-color: var(--color-primary-text);
+  }
+}
+
+.pretty-limit-secondary {
+  --ms-pretty-limit-bg-color: var(--color-secondary);
+  --ms-pretty-limit-color: var(--color-secondary-text);
+  --ms-pretty-limit-color-hover: var(--color-secondary-text);
+  --ms-pretty-limit-bg-color-hover: var(--color-secondary);
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: var(--color-secondary);
+    --ms-pretty-limit-color: var(--color-secondary-text);
+  }
+}
+
+.pretty-limit-success {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-success) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-success);
+  --ms-pretty-limit-color: var(--color-success-text);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-success) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-success);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-warning {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-warning) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-warning);
+  --ms-pretty-limit-color: var(--color-warning-text);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-warning) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-warning);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-error {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-error) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-error);
+  --ms-pretty-limit-color: var(--color-error-text);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-error) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-error);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-info {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-info) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-info);
+  --ms-pretty-limit-color: var(--color-info-text);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-info) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-info);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-purple {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-purple-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-purple-500);
+  --ms-pretty-limit-color: var(--color-purple-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-purple-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-purple-600);
+    --ms-pretty-limit-color: var(--color-purple-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-pink {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-pink-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-pink-500);
+  --ms-pretty-limit-color: var(--color-pink-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-pink-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-pink-600);
+    --ms-pretty-limit-color: var(--color-pink-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-blue {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-blue-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-blue-500);
+  --ms-pretty-limit-color: var(--color-blue-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-blue-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-blue-600);
+    --ms-pretty-limit-color: var(--color-blue-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-green {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-green-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-green-500);
+  --ms-pretty-limit-color: var(--color-green-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-green-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-green-600);
+    --ms-pretty-limit-color: var(--color-green-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-yellow {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-yellow-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-yellow-400);
+  --ms-pretty-limit-color: var(--color-yellow-700);
+  --ms-pretty-limit-color-hover: var(--color-yellow-900);
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-yellow-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-yellow-500);
+    --ms-pretty-limit-color: var(--color-yellow-300);
+    --ms-pretty-limit-color-hover: var(--color-yellow-900);
+  }
+}
+
+.pretty-limit-red {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-red-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-red-500);
+  --ms-pretty-limit-color: var(--color-red-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-red-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-red-600);
+    --ms-pretty-limit-color: var(--color-red-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}
+
+.pretty-limit-gray {
+  --ms-pretty-limit-bg-color: --alpha(var(--color-gray-500) / 0.15);
+  --ms-pretty-limit-bg-color-hover: var(--color-gray-500);
+  --ms-pretty-limit-color: var(--color-gray-700);
+  --ms-pretty-limit-color-hover: #fff;
+
+  @variant dark {
+    --ms-pretty-limit-bg-color: --alpha(var(--color-gray-500) / 0.25);
+    --ms-pretty-limit-bg-color-hover: var(--color-gray-600);
+    --ms-pretty-limit-color: var(--color-gray-300);
+    --ms-pretty-limit-color-hover: #fff;
+  }
+}

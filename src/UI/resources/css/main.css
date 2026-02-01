@@ -48,6 +48,7 @@
 @import './components/toasts.css' layer(components);
 @import './components/skeleton.css' layer(components);
 @import './components/snippet.css' layer(components);
+@import './components/pretty-limit.css' layer(components);
 
 /* Pages */
 @import './pages/authentication.css';
