@@ -77,6 +77,8 @@ class ActionButton extends MoonShineComponent implements
 
     protected ?Closure $onAfterSetCallback = null;
 
+    protected ?ComponentContract $resolvedComponent = null;
+
     public function __construct(
         Closure|string $label = '',
         protected Closure|string $url = 'javascript:void(0);',
@@ -385,12 +387,16 @@ class ActionButton extends MoonShineComponent implements
 
     public function getComponent(): ?ComponentContract
     {
+        if ($this->resolvedComponent instanceof ComponentContract) {
+            return $this->resolvedComponent;
+        }
+
         if ($this->isInModal()) {
-            return $this->getModal();
+            return $this->resolvedComponent = $this->getModal();
         }
 
         if ($this->isInOffCanvas()) {
-            return $this->getOffCanvas();
+            return $this->resolvedComponent = $this->getOffCanvas();
         }
 
         return null;
