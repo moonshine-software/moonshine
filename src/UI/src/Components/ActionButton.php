@@ -485,7 +485,7 @@ class ActionButton extends MoonShineComponent implements
     public function primary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-primary');
         }
 
         return $this->removeClasses()->class('btn-primary');
@@ -494,7 +494,7 @@ class ActionButton extends MoonShineComponent implements
     public function secondary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-secondary');
         }
 
         return $this->removeClasses()->class('btn-secondary');
@@ -503,7 +503,7 @@ class ActionButton extends MoonShineComponent implements
     public function success(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-success');
         }
 
         return $this->removeClasses()->class('btn-success');
@@ -512,7 +512,7 @@ class ActionButton extends MoonShineComponent implements
     public function warning(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-warning');
         }
 
         return $this->removeClasses()->class('btn-warning');
@@ -521,7 +521,7 @@ class ActionButton extends MoonShineComponent implements
     public function info(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-info');
         }
 
         return $this->removeClasses()->class('btn-info');
@@ -530,7 +530,7 @@ class ActionButton extends MoonShineComponent implements
     public function error(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-error');
         }
 
         return $this->removeClasses()->class('btn-error');
@@ -539,7 +539,7 @@ class ActionButton extends MoonShineComponent implements
     public function square(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
-            return $this;
+            return $this->removeClass('btn-square');
         }
 
         return $this->removeClasses()->class('btn-square');
@@ -547,7 +547,7 @@ class ActionButton extends MoonShineComponent implements
 
     private function removeClasses(): static
     {
-        return $this->removeClass('btn-(primary|secondary|info|success|warning|error)');
+        return $this->removeClass('btn-(primary|secondary|info|success|warning|error|square)');
     }
 
     /**
