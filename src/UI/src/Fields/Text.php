@@ -16,11 +16,13 @@ use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithEscapedValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
 use MoonShine\UI\Traits\Fields\WithMask;
+use MoonShine\UI\Traits\Fields\WithPrettyLimit;
 
 class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract
 {
     use WithInputExtensions;
     use WithMask;
+    use WithPrettyLimit;
     use WithDefaultValue;
     use HasPlaceholder;
     use UpdateOnPreview;
