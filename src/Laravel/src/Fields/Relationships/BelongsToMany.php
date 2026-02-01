@@ -728,7 +728,7 @@ class BelongsToMany extends ModelRelationField implements
             'relationName' => $this->getRelationName(),
         ];
 
-        if($this->isPivotModalMode() && $this->getRelated()?->getKey() === null) {
+        if ($this->isPivotModalMode() && $this->getRelated()?->getKey() === null) {
             $viewData['isCreatable'] = false;
 
             $this->withoutWrapper();
