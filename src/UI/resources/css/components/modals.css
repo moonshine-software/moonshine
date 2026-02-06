@@ -78,10 +78,20 @@
     var(--ms-modal-header-border-color, var(--color-base-stroke));
 }
 
-.modal-title {
+.modal-header-content {
   align-self: center;
+  min-width: 0;
+}
+
+.modal-title {
   font-size: var(--ms-modal-title-font-size, var(--text-md));
   font-weight: var(--ms-modal-title-font-weight, var(--font-weight-semibold));
+  word-break: break-word;
+}
+
+.modal-subtitle {
+  font-size: var(--ms-modal-subtitle-font-size, var(--text-sm));
+  color: var(--ms-modal-subtitle-color, var(--color-base-secondary-text));
   word-break: break-word;
 }
 

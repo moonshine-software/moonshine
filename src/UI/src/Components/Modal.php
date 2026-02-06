@@ -14,7 +14,7 @@ use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [], Closure|string $subtitle = '')
  */
 final class Modal extends AbstractWithComponents implements ModalContract
 {
@@ -31,6 +31,8 @@ final class Modal extends AbstractWithComponents implements ModalContract
     protected bool $auto = false;
 
     protected bool $autoClose = true;
+
+    protected Closure|string $subtitle = '';
 
     /**
      * @var  array<string, mixed>
@@ -49,9 +51,11 @@ final class Modal extends AbstractWithComponents implements ModalContract
         protected Closure|Renderable|ActionButtonContract|string $outer = '',
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
+        Closure|string $subtitle = '',
         // anonymous component variables
         string $name = 'default'
     ) {
+        $this->subtitle = $subtitle;
         parent::__construct($components);
 
         $this->name($name);
@@ -96,6 +100,13 @@ final class Modal extends AbstractWithComponents implements ModalContract
     public function autoClose(Closure|bool|null $condition = null): self
     {
         $this->autoClose = \is_null($condition) || value($condition, $this);
+
+        return $this;
+    }
+
+    public function subtitle(Closure|string $subtitle): self
+    {
+        $this->subtitle = $subtitle;
 
         return $this;
     }
@@ -163,6 +174,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
+            'subtitle' => value($this->subtitle, $this),
             'slot' => new ComponentSlot($componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];

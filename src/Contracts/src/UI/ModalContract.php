@@ -31,5 +31,7 @@ interface ModalContract
      */
     public function toggleEvents(array $events, bool $onlyOpening = false, bool $onlyClosing = false): self;
 
+    public function subtitle(Closure|string $subtitle): self;
+
     public function alwaysLoad(): self;
 }
