@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MoonShine\Tests\Fixtures\Pages\CategoryResource\CategoryPageIndex;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
+use MoonShine\Tests\Fixtures\Resources\WithCustomPages\TestCategoryPageResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 uses()->group('core');
@@ -143,6 +144,18 @@ it('default to page', function (): void {
         ->toContain("/admin/page/{$this->page->getUriKey()}?_fragment-load=index-table")
         ->and($this->moonshineCore->getRouter()->getEndpoints()->toPage($this->page, extra: ['redirect' => true]))
         ->toBeInstanceOf(RedirectResponse::class)
+    ;
+});
+
+it('to page only page in resource', function (): void {
+    expect($this->moonshineCore->getRouter()->getEndpoints()->toPage(page: CategoryPageIndex::class))
+        ->toContain("/admin/test-category-page-resource/category-page-index")
+    ;
+});
+
+it('to page only resource', function (): void {
+    expect($this->moonshineCore->getRouter()->getEndpoints()->toPage(resource: TestCategoryPageResource::class))
+        ->toContain("/admin/test-category-page-resource/category-page-index")
     ;
 });
 

@@ -9,7 +9,6 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Core\AbstractEndpoints;
 use MoonShine\Core\Exceptions\EndpointException;
-use MoonShine\Core\Pages\Pages;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\UriKey;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,8 +33,6 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
         array $params = [],
         array $extra = [],
     ): string|RedirectResponse {
-        $targetPage = null;
-
         $redirect = $extra['redirect'] ?? false;
         $fragment = $extra['fragment'] ?? null;
 
@@ -60,6 +57,10 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
                 ? $resource
                 : moonshine()->getResources()->findByClass($resource);
 
+            if (\is_null($page)) {
+                return $targetResource->getUrl();
+            }
+
             $pageUri = $page instanceof PageContract
                 ? $page->getUriKey()
                 : (new UriKey($page))->generate();
@@ -68,11 +69,7 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
              * Because from the resource we call the method with default CRUD pages, which can be replaced with custom ones
              * @example toPage(FormPage::class, $resource) -> CustomFormPage
              */
-            $targetPage = $targetResource?->getPages()->when(
-                \is_null($page),
-                static fn (Pages $pages) => $pages->first(),
-                static fn (Pages $pages): ?PageContract => $pages->findByUri($pageUri),
-            );
+            $targetPage = $targetResource?->getPages()?->findByUri($pageUri);
 
             if (! $targetPage instanceof PageContract) {
                 $pageType = PageType::getTypeFromUri($pageUri);
@@ -81,12 +78,16 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
                     ? $targetResource?->getPages()->findByType($pageType)
                     : null;
             }
-        }
+        } elseif ($page instanceof PageContract) {
+            $targetPage = $page;
+        } else {
+            /** @var ?ResourceContract $targetResource */
+            $targetResource = moonshine()->getResources()->first(
+                static fn (ResourceContract $resource): bool => $resource->getPages()->findByClass($page) instanceof PageContract
+            );
+            $targetPage = $targetResource?->getPages()?->findByClass($page);
 
-        if (\is_null($resource)) {
-            $targetPage = $page instanceof PageContract
-                ? $page
-                : moonshine()->getPages()->findByClass($page);
+            $targetPage ??= moonshine()->getPages()->findByClass($page);
         }
 
         if (! $targetPage instanceof PageContract) {

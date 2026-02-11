@@ -542,12 +542,12 @@ class ActionButton extends MoonShineComponent implements
             return $this->removeClass('btn-square');
         }
 
-        return $this->removeClasses()->class('btn-square');
+        return $this->class('btn-square');
     }
 
     private function removeClasses(): static
     {
-        return $this->removeClass('btn-(primary|secondary|info|success|warning|error|square)');
+        return $this->removeClass('btn-(primary|secondary|info|success|warning|error)');
     }
 
     /**
