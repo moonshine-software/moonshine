@@ -14,7 +14,7 @@ use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [], string|null $subTitle = null)
  */
 final class Modal extends AbstractWithComponents implements ModalContract
 {
@@ -164,7 +164,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
-            'subTitle' => value($this->subTitle, $this),
+            'subTitle' => $this->subTitle,
             'slot' => new ComponentSlot($componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
