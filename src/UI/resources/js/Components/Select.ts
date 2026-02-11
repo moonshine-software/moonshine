@@ -163,6 +163,17 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 }
             },
 
+            onChange(values: string) {
+                if (this.settings.mode !== 'multi') {
+                    return
+                }
+
+                if (! this.settings.notClearSearchField) {
+                    this.setTextboxValue()
+                    this._onInput()
+                }
+            },
+
             render: {
                 option(data, escape) {
                     const label = escape(data[this.settings.labelField])

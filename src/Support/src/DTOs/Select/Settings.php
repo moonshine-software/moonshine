@@ -50,6 +50,9 @@ final class Settings implements Arrayable
         'itemClass' => null,                // default: item
         'optionClass' => null,              // default: option
         'loadingClass' => null,             // default: loading
+
+        // Custom
+        'notClearSearchField' => null,      // default: false
     ];
 
     /**
@@ -225,5 +228,10 @@ final class Settings implements Arrayable
     public function loadingClass(string $value): self
     {
         return $this->set('loadingClass', $value);
+    }
+
+    public function notClearSearchField(bool $value = true): self
+    {
+        return $this->set('notClearSearchField', $value);
     }
 }
