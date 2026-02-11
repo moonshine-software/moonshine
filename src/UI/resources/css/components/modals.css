@@ -85,6 +85,12 @@
   word-break: break-word;
 }
 
+.modal-subtitle {
+  font-size: var(--ms-modal-subtitle-font-size, var(--text-sm));
+  font-weight: var(--ms-modal-subtitle-font-weight, var(--font-weight-normal));
+  color: var(--ms-modal-subtitle-color, var(--color-secondary-text));
+}
+
 /* Modal body */
 
 .modal-body {

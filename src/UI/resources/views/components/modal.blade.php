@@ -9,6 +9,7 @@
     'autoClose' => $isAutoClose ?? false,
     'closeOutside' => $isCloseOutside ?? true,
     'title' => '',
+    'subTitle' => null,
     'outerHtml' => null
 ])
 <div x-data="modal(
@@ -42,7 +43,12 @@
                 >
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{ $title ?? '' }}</h5>
+                            <div>
+                                <h5 class="modal-title">{{ $title ?? '' }}</h5>
+                                @if (!is_null($subTitle))
+                                    <p class="modal-subtitle">{{ $subTitle }}</p>
+                                @endif
+                            </div>
                             <button
                                 type="button"
                                 class="modal-close btn-fit"

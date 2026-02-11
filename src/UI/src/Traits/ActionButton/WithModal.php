@@ -43,6 +43,7 @@ trait WithModal
         Closure|string|null $name = null,
         ?Closure $builder = null,
         iterable $components = [],
+        string|null $subTitle = null
     ): static {
         if (\is_null($name)) {
             $name = static fn (mixed $data, ActionButtonContract $ctx): string => Str::random(6) . $ctx->getData()?->getKey();
@@ -54,7 +55,8 @@ trait WithModal
             title: static fn () => value($title, $item, $ctx) ?? $ctx->getLabel(),
             content: static fn () => value($content, $item, $ctx) ?? '',
             asyncUrl: $async ? static fn (): string => $ctx->getUrl($item) : null,
-            components: $components
+            components: $components,
+            subTitle: $subTitle
         )
             ->name(value($name, $item, $ctx))
             ->when(

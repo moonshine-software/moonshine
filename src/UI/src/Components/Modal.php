@@ -50,7 +50,8 @@ final class Modal extends AbstractWithComponents implements ModalContract
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables
-        string $name = 'default'
+        string $name = 'default',
+        protected string|null $subTitle = null
     ) {
         parent::__construct($components);
 
@@ -163,6 +164,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
+            'subTitle' => value($this->subTitle, $this),
             'slot' => new ComponentSlot($componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
