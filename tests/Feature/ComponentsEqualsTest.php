@@ -454,8 +454,8 @@ describe('Basic', function () {
 
     it('modal', function () {
         compare(
-            Modal::make('Title'),
-            ['title' => 'Title'],
+            Modal::make(title: 'Title', subTitle: 'Modal subtitle'),
+            ['title' => 'Title', 'subTitle' => 'Modal subtitle'],
         );
     });
 
