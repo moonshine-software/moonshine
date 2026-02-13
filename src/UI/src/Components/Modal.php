@@ -32,6 +32,8 @@ final class Modal extends AbstractWithComponents implements ModalContract
 
     protected bool $autoClose = true;
 
+    protected ?string $subtitle = null;
+
     /**
      * @var  array<string, mixed>
      *
@@ -50,17 +52,16 @@ final class Modal extends AbstractWithComponents implements ModalContract
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables
-        string $name = 'default',
-        protected string|null $subTitle = null
+        string $name = 'default'
     ) {
         parent::__construct($components);
 
         $this->name($name);
     }
 
-    public function subTitle(string $subTitle): self
+    public function subtitle(string $subtitle): self
     {
-        $this->subTitle = $subTitle;
+        $this->subtitle = $subtitle;
 
         return $this;
     }
@@ -170,7 +171,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
-            'subTitle' => $this->subTitle,
+            'subtitle' => $this->subtitle,
             'slot' => new ComponentSlot($componentsHtml),
             'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
         ];
