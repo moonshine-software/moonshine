@@ -459,6 +459,13 @@ describe('Basic', function () {
         );
     });
 
+    it('modal-subtitle', function () {
+        compare(
+            Modal::make(title: 'Title')->subTitle('Modal subtitle'),
+            ['title' => 'Title', 'subTitle' => 'Modal subtitle'],
+        );
+    });
+
     it('off-canvas', function () {
         compare(
             OffCanvas::make('Title'),

@@ -58,6 +58,12 @@ final class Modal extends AbstractWithComponents implements ModalContract
         $this->name($name);
     }
 
+    public function subTitle(string $subTitle): self
+    {
+        $this->subTitle = $subTitle;
+
+        return $this;
+    }
 
     public function open(Closure|bool|null $condition = null): self
     {
