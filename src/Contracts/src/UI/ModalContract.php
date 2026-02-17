@@ -20,6 +20,8 @@ interface ModalContract
 
     public function autoClose(Closure|bool|null $condition = null): self;
 
+    public function subtitle(string $subtitle): self;
+
     /**
      * @param  array<string, mixed>  $attributes
      *

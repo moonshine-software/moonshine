@@ -42,7 +42,7 @@ trait WithModal
         Closure|string|null $content = null,
         Closure|string|null $name = null,
         ?Closure $builder = null,
-        iterable $components = [],
+        iterable $components = []
     ): static {
         if (\is_null($name)) {
             $name = static fn (mixed $data, ActionButtonContract $ctx): string => Str::random(6) . $ctx->getData()?->getKey();
