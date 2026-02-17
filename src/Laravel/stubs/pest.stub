@@ -25,7 +25,7 @@ it('detail page', function (): void {
 
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->getDetailPageUrl($item)
+            $this->resource->getDetailPageUrl($item->getKey())
         )
         ->assertOk();
 });
@@ -43,7 +43,7 @@ it('edit page', function (): void {
 
     actingAs($this->user, 'moonshine')
         ->get(
-            $this->resource->getFormPageUrl($item)
+            $this->resource->getFormPageUrl($item->getKey())
         )
         ->assertOk();
 });
