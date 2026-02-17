@@ -56,7 +56,7 @@ class DummyResourceTest extends TestCase
         $item = {model}::factory()->create();
 
         $response = $this->get(
-            $this->getResource()->getDetailPageUrl($item)
+            $this->getResource()->getDetailPageUrl($item->getKey())
         );
 
         $response->assertSuccessful();
@@ -78,7 +78,7 @@ class DummyResourceTest extends TestCase
         $item = {model}::factory()->create();
 
         $response = $this->get(
-            $this->getResource()->getFormPageUrl($item)
+            $this->getResource()->getFormPageUrl($item->getKey())
         );
 
         $response->assertSuccessful();
