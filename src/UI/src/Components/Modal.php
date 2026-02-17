@@ -14,7 +14,7 @@ use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '')
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
  */
 final class Modal extends AbstractWithComponents implements ModalContract
 {
