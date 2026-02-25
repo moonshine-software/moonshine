@@ -306,7 +306,7 @@ final class ColorMutator
             ? ((float) rtrim($parts[1], '%')) / 100
             : (float) $parts[1];
 
-        $h = (float) ($parts[2] ?? 0);
+        $h = (float) $parts[2];
 
         $a = cos(deg2rad($h)) * $c;
         $b = sin(deg2rad($h)) * $c;
