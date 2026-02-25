@@ -189,7 +189,7 @@ abstract class BaseLayout extends AbstractLayout
         return [];
     }
 
-    protected function getTopBarComponent(): TopBar
+    protected function getTopBarComponent(): Topbar
     {
         return TopBar::make([
             Fragment::make([
