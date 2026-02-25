@@ -19,7 +19,7 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
       this.registerInStack()
 
       if (this.asyncUrl) {
-        load(asyncUrl, this.id)
+        load(this.asyncUrl, this.id)
       }
     }
   },
@@ -50,14 +50,21 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
     }
   },
 
-  async toggleModal() {
+  async toggleModal(event = null) {
+    const incomingAsyncUrl = typeof event?.detail === 'string' ? event.detail : null
+
+    if (incomingAsyncUrl && incomingAsyncUrl !== this.asyncUrl) {
+      this.asyncUrl = incomingAsyncUrl
+      this.asyncLoaded = false
+    }
+
     this.open = !this.open
 
     if (this.open) {
       this.registerInStack()
 
       if (this.asyncUrl && !this.asyncLoaded) {
-        await load(asyncUrl, this.id)
+        await load(this.asyncUrl, this.id)
         this.asyncLoaded = !this.$root.dataset.alwaysLoad
       }
     } else {
