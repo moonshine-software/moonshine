@@ -158,7 +158,7 @@ trait WithModal
         return $this->onClick(
             static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
                 $original = $ctx->getData()?->getOriginal();
-                $resolvedName = (string) (value($name, $original, $ctx) ?? 'default');
+                $resolvedName = Str::lower((string) (value($name, $original, $ctx) ?? 'default'));
                 $resolvedAsyncUrl = value($asyncUrl, $original, $ctx);
 
                 if (! \is_null($resolvedAsyncUrl) && ! \is_string($resolvedAsyncUrl)) {
