@@ -17,6 +17,7 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\HiddenIds;
 
@@ -161,18 +162,23 @@ trait WithModal
                 $resolvedAsyncUrl = value($asyncUrl, $original, $ctx);
 
                 if (! \is_null($resolvedAsyncUrl) && ! \is_string($resolvedAsyncUrl)) {
-                    $resolvedAsyncUrl = (string) $resolvedAsyncUrl;
+                    throw new ActionButtonException(
+                        sprintf(
+                            'asyncUrl must be string|null, %s given',
+                            get_debug_type($resolvedAsyncUrl)
+                        )
+                    );
                 }
 
-                $modalNameJson = json_encode($resolvedName, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '"default"';
+                $params = json_encode($resolvedName, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '"default"';
 
                 if (\is_string($resolvedAsyncUrl)) {
                     $asyncUrlJson = json_encode($resolvedAsyncUrl, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: 'null';
-
-                    return "window.MoonShine.ui.toggleModal($modalNameJson, $asyncUrlJson)";
+                    $params .= ", $asyncUrlJson";
                 }
 
-                return "window.MoonShine.ui.toggleModal($modalNameJson)";
+                return "window.MoonShine.ui.toggleModal($params)";
+
             },
             'prevent'
         );

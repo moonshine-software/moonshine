@@ -6,6 +6,7 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
   id: '',
   modalId: '',
   asyncUrl: asyncUrl,
+  initialAsyncUrl: asyncUrl,
   inModal: true,
   asyncLoaded: false,
   autoClose: autoClose,
@@ -13,6 +14,7 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
   init() {
     this.id = this.$id('modal-content')
     this.modalId = this.$id('modal')
+    this.initialAsyncUrl = this.asyncUrl
 
     // Register if initially open
     if (this.open) {
@@ -51,11 +53,18 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
   },
 
   async toggleModal(event = null) {
-    const incomingAsyncUrl = typeof event?.detail === 'string' ? event.detail : null
+    const hasDetail = !!event && 'detail' in event
+    const incomingAsyncUrl = hasDetail && typeof event.detail === 'string' ? event.detail : null
 
-    if (incomingAsyncUrl && incomingAsyncUrl !== this.asyncUrl) {
-      this.asyncUrl = incomingAsyncUrl
-      this.asyncLoaded = false
+    if (hasDetail) {
+      const nextAsyncUrl = incomingAsyncUrl && incomingAsyncUrl.length > 0
+        ? incomingAsyncUrl
+        : this.initialAsyncUrl
+
+      if (nextAsyncUrl !== this.asyncUrl) {
+        this.asyncUrl = nextAsyncUrl
+        this.asyncLoaded = false
+      }
     }
 
     this.open = !this.open
