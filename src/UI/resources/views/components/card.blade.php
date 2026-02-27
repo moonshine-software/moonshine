@@ -5,6 +5,7 @@
     'thumbnail' => '',
     'overlay' => false,
     'values' => [],
+    'valuesRaw' => false,
     'header' => null,
     'actions' => null,
 ])
@@ -53,7 +54,13 @@
                 @foreach($values as $label => $value)
                     <tr>
                         <th width="40%">{{ $label }}:</th>
-                        <td width="60%">{!! $value !!}</td>
+                        <td width="60%">
+                            @if($valuesRaw)
+                                {!! $value !!}
+                            @else
+                                {{ $value }}
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
