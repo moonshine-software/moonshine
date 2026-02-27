@@ -20,7 +20,11 @@
                             type="button"
                     >
                         {!! $tab['icon'] !!}
-                        {!! $tab['label'] !!}
+                        @if($tab['labelRaw'] ?? false)
+                            {!! $tab['label'] !!}
+                        @else
+                            {{ $tab['label'] }}
+                        @endif
                     </button>
                 </li>
             @endforeach

@@ -15,6 +15,15 @@
     'translates' => [],
 ])
 
+@php
+    $previousTranslate = html_entity_decode((string) ($translates['previous'] ?? ''));
+    $nextTranslate = html_entity_decode((string) ($translates['next'] ?? ''));
+    $showingTranslate = html_entity_decode((string) ($translates['showing'] ?? ''));
+    $toTranslate = html_entity_decode((string) ($translates['to'] ?? ''));
+    $ofTranslate = html_entity_decode((string) ($translates['of'] ?? ''));
+    $resultsTranslate = html_entity_decode((string) ($translates['results'] ?? ''));
+@endphp
+
 @if($simple)
     <!-- Pagination -->
     <div class="pagination">
@@ -26,13 +35,13 @@
                         href="{{ $prev_page_url }}"
                         @if($async) @click.prevent="asyncRequest" @endif
                         class="pagination-link pagination-link--first"
-                        title="{!! $translates['previous']  !!}"
+                        title="{{ $previousTranslate }}"
                     >
-                        {!! $translates['previous'] !!}
+                        {{ $previousTranslate }}
                     </a>
                 @else
                     <span class="pagination-link _is-disabled">
-                        {!! $translates['previous'] !!}
+                        {{ $previousTranslate }}
                     </span>
                 @endif
             </li>
@@ -44,13 +53,13 @@
                         href="{{ $next_page_url }}"
                         @if($async) @click.prevent="asyncRequest" @endif
                         class="pagination-link pagination-link--last"
-                        title="{!! $translates['next']  !!}"
+                        title="{{ $nextTranslate }}"
                     >
-                        {!! $translates['next'] !!}
+                        {{ $nextTranslate }}
                     </a>
                 @else
                     <span class="pagination-link _is-disabled">
-                        {!! $translates['next'] !!}
+                        {{ $nextTranslate }}
                     </span>
                 @endif
             </li>
@@ -66,7 +75,7 @@
                     <a href="{{ $prev_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-link pagination-link--first"
-                       title="{!! $translates['previous']  !!}"
+                       title="{{ $previousTranslate }}"
                     >
                         <x-moonshine::icon icon="chevron-double-left" />
                     </a>
@@ -87,7 +96,7 @@
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-link @if($link['active']) _is-active @endif"
                     >
-                        {!! $link['label'] !!}
+                        {{ html_entity_decode((string) ($link['label'] ?? '')) }}
                     </a>
                 </li>
                 @endif
@@ -98,7 +107,7 @@
                     <a href="{{ $next_page_url }}"
                        @if($async) @click.prevent="asyncRequest" @endif
                        class="pagination-link pagination-link--last"
-                       title="{!! $translates['next']  !!}"
+                       title="{{ $nextTranslate }}"
                     >
                         <x-moonshine::icon icon="chevron-double-right" />
                     </a>
@@ -106,17 +115,17 @@
             @endif
         </ul>
         <div class="pagination-results">
-            {!! $translates['showing']  !!}
+            {{ $showingTranslate }}
             @if ($from)
                 {{ $from }}
-                {!! $translates['to']  !!}
+                {{ $toTranslate }}
                 {{ $to }}
             @else
                 {{ $per_page }}
             @endif
-            {!! $translates['of']  !!}
+            {{ $ofTranslate }}
             {{ $total }}
-            {!! $translates['results']  !!}
+            {{ $resultsTranslate }}
         </div>
     </div>
     <!-- END: Pagination -->

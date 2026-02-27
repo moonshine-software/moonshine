@@ -2,6 +2,7 @@
     'title' => '',
     'placement' => 'right',
     'trigger',
+    'triggerRaw' => false,
 ])
 <span
     {{ $attributes }}
@@ -9,6 +10,10 @@
     title="{{ $title }}"
     x-data="popover({placement: '{{ $placement }}'})"
 >
-    {!! $trigger !!}
+    @if($triggerRaw)
+        {!! $trigger !!}
+    @else
+        {{ $trigger }}
+    @endif
     <div class="hidden popover-body-content">{!! $slot !!}</div>
 </span>

@@ -1,9 +1,11 @@
 @props([
     'title' => '',
+    'titleRaw' => false,
     'icon' => '',
     'progress' => false,
     'value' => 0,
     'simpleValue' => '',
+    'valueRaw' => false,
 ])
 <div {{ $attributes->merge(['class' => 'report-card']) }}>
     @if($icon)
@@ -23,7 +25,19 @@
     @endif
 
     <div class="report-card-body">
-        <div class="report-card-value">{!! $simpleValue !== '' ? $simpleValue : $value !!}</div>
-        <h5 class="report-card-title">{!! $title !!}</h5>
+        <div class="report-card-value">
+            @if($valueRaw)
+                {!! $simpleValue !== '' ? $simpleValue : $value !!}
+            @else
+                {{ $simpleValue !== '' ? $simpleValue : $value }}
+            @endif
+        </div>
+        <h5 class="report-card-title">
+            @if($titleRaw)
+                {!! $title !!}
+            @else
+                {{ $title }}
+            @endif
+        </h5>
     </div>
 </div>

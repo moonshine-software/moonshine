@@ -10,5 +10,5 @@
 <li
     {{ $attributes->class(['menu-item', '_is-active' => $isActive]) }}
 >
-    {!! $button !!}
+    {{ $button }}
 </li>

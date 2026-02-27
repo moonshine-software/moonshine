@@ -17,6 +17,8 @@ final class Badge extends MoonShineComponent
 
     protected string $view = 'moonshine::components.badge';
 
+    protected bool $valueRaw = false;
+
     public function __construct(
         public string $value = '',
         public string|Color $color = Color::PURPLE,
@@ -31,13 +33,35 @@ final class Badge extends MoonShineComponent
         }
     }
 
+    public function value(string $value): self
+    {
+        $this->value = $value;
+        $this->valueRaw = false;
+
+        return $this;
+    }
+
+    public function valueHtml(string $value): self
+    {
+        $this->value = $value;
+        $this->valueRaw = true;
+
+        return $this;
+    }
+
+    public function isValueRaw(): bool
+    {
+        return $this->valueRaw;
+    }
+
     /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
     {
         return [
-            'slot' => new ComponentSlot($this->value),
+            'value' => $this->value,
+            'valueRaw' => $this->isValueRaw(),
             'icon' => new ComponentSlot($this->getIcon()),
         ];
     }

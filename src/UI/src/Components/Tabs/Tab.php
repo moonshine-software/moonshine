@@ -24,12 +24,16 @@ use Throwable;
  */
 class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract
 {
-    use WithLabel;
+    use WithLabel {
+        setLabel as private setTraitLabel;
+    }
     use WithIcon;
 
     public bool $active = false;
 
     public ?string $id = null;
+
+    protected bool $labelRaw = false;
 
     private ComponentAttributesBagContract $labelAttributes;
 
@@ -53,6 +57,25 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         $this->labelAttributes = new MoonShineComponentAttributeBag();
 
         parent::__construct($components);
+    }
+
+    public function setLabel(Closure|string $label): static
+    {
+        $this->labelRaw = false;
+
+        return $this->setTraitLabel($label);
+    }
+
+    public function labelHtml(Closure|string $label): static
+    {
+        $this->labelRaw = true;
+
+        return $this->setTraitLabel($label);
+    }
+
+    public function isLabelRaw(): bool
+    {
+        return $this->labelRaw;
     }
 
     /**
@@ -123,6 +146,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         return [
             'icon' => $this->getIcon(6),
             'label' => $this->getLabel(),
+            'labelRaw' => $this->isLabelRaw(),
             'labelAttributes' => $this->labelAttributes,
             'id' => $this->getId(),
             'content' => Components::make(

@@ -1,11 +1,13 @@
 @props([
     'label' => '',
+    'labelRaw' => false,
     'icon' => '',
     'columnSpanValue' => 12,
     'adaptiveColumnSpanValue' => 12,
     'isProgress' => false,
     'valueResult' => 0,
     'simpleValue' => 0,
+    'valueRaw' => false,
 ])
 <x-moonshine::layout.column
     :colSpan="$columnSpanValue"
@@ -16,10 +18,12 @@
         <x-moonshine::metrics.value
             :attributes="$attributes"
             :title="$label"
+            :titleRaw="$labelRaw"
             :icon="$icon"
             :progress="$isProgress"
             :value="$valueResult"
             :simpleValue="$simpleValue"
+            :valueRaw="$valueRaw"
         />
     </x-moonshine::layout.box>
 </x-moonshine::layout.column>

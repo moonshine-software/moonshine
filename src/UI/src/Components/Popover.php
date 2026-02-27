@@ -15,6 +15,8 @@ final class Popover extends MoonShineComponent
 
     protected string $view = 'moonshine::components.popover';
 
+    protected bool $triggerRaw = false;
+
     public function __construct(
         public string $title,
         public string $trigger = '',
@@ -25,6 +27,27 @@ final class Popover extends MoonShineComponent
         if ($this->trigger === '') {
             $this->trigger = $title;
         }
+    }
+
+    public function trigger(string $trigger): self
+    {
+        $this->trigger = $trigger;
+        $this->triggerRaw = false;
+
+        return $this;
+    }
+
+    public function triggerHtml(string $trigger): self
+    {
+        $this->trigger = $trigger;
+        $this->triggerRaw = true;
+
+        return $this;
+    }
+
+    public function isTriggerRaw(): bool
+    {
+        return $this->triggerRaw;
     }
 
     public function showOnClick(): self
@@ -44,6 +67,7 @@ final class Popover extends MoonShineComponent
     protected function viewData(): array
     {
         return [
+            'triggerRaw' => $this->isTriggerRaw(),
             'slot' => $this->getSlot(),
         ];
     }

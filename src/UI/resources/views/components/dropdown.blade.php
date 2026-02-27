@@ -3,9 +3,12 @@
     'placement' => 'bottom-start',
     'toggler',
     'title',
+    'titleRaw' => false,
+    'itemsRaw' => false,
     'searchable' => false,
     'searchPlaceholder' => '',
     'footer' => null,
+    'footerRaw' => false,
     'strategy' => 'fixed',
 ])
 <div x-data="dropdown"
@@ -21,7 +24,13 @@
 
     <div {{ $attributes->merge(['class' => 'dropdown-body']) }}>
         @if($title ?? false)
-            <div class="dropdown-heading">{{ $title }}</div>
+            <div class="dropdown-heading">
+                @if($titleRaw)
+                    {!! $title !!}
+                @else
+                    {{ $title }}
+                @endif
+            </div>
         @endif
 
         <div class="dropdown-content">
@@ -44,7 +53,11 @@
                             class="dropdown-menu-item"
                             @if($searchable) x-ref="dropdown_{{$key}}" @endif
                         >
-                            {!! $item !!}
+                            @if($itemsRaw)
+                                {!! $item !!}
+                            @else
+                                {{ $item }}
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -53,7 +66,11 @@
 
         @if($footer ?? false)
             <div class="dropdown-footer">
-                {{ $footer ?? '' }}
+                @if($footerRaw)
+                    {!! $footer ?? '' !!}
+                @else
+                    {{ $footer ?? '' }}
+                @endif
             </div>
         @endif
     </div>

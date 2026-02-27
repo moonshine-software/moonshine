@@ -19,16 +19,39 @@ use MoonShine\UI\Traits\WithLabel;
 abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract
 {
     use WithColumnSpan;
-    use WithLabel;
+    use WithLabel {
+        setLabel as private setTraitLabel;
+    }
     use WithIcon;
 
     protected Color $iconColor = Color::PRIMARY;
+
+    protected bool $labelRaw = false;
 
     final public function __construct(Closure|string $label)
     {
         parent::__construct();
 
         $this->setLabel($label);
+    }
+
+    public function setLabel(Closure|string $label): static
+    {
+        $this->labelRaw = false;
+
+        return $this->setTraitLabel($label);
+    }
+
+    public function labelHtml(Closure|string $label): static
+    {
+        $this->labelRaw = true;
+
+        return $this->setTraitLabel($label);
+    }
+
+    public function isLabelRaw(): bool
+    {
+        return $this->labelRaw;
     }
 
     public function iconColor(Color $color): static
@@ -53,6 +76,7 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
+            'labelRaw' => $this->isLabelRaw(),
             'icon' => $this->getIcon(6, $this->iconColor),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),

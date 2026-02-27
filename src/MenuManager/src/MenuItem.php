@@ -6,6 +6,7 @@ namespace MoonShine\MenuManager;
 
 use Attribute;
 use Closure;
+use Illuminate\Support\HtmlString;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\MenuManager\MenuFillerContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -250,7 +251,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
             'url' => $this->getUrl(),
         ];
 
-        $viewData['button'] = (string) $this->actionButton
+        $viewData['button'] = new HtmlString((string) $this->actionButton
             ->badge($this->hasBadge() ? $this->getBadge() : null)
             ->setUrl($this->getUrl())
             ->customView('moonshine::components.menu.item-link', [
@@ -259,7 +260,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
                 'onlyIcon' => $this->isOnlyIcon(),
                 'icon' => $this->getIcon(),
                 'top' => $this->isTopMode(),
-            ]);
+            ]));
 
         return $viewData;
     }
