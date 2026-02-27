@@ -1,8 +1,15 @@
 @props([
     'label' => '',
+    'labelRaw' => false,
 ])
 <fieldset {{ $attributes }}>
-    <legend>{!! $label !!}</legend>
+    <legend>
+        @if($labelRaw)
+            {!! $label !!}
+        @else
+            {{ $label }}
+        @endif
+    </legend>
 
     {{ $slot }}
 </fieldset>

@@ -15,6 +15,8 @@ trait WithLabel
 
     protected string $translatableKey = '';
 
+    protected bool $labelRaw = false;
+
     public function hasLabel(): bool
     {
         return $this->label !== '';
@@ -39,8 +41,22 @@ trait WithLabel
     public function setLabel(Closure|string $label): static
     {
         $this->label = $label;
+        $this->labelRaw = false;
 
         return $this;
+    }
+
+    public function labelHtml(Closure|string $label): static
+    {
+        $this->label = $label;
+        $this->labelRaw = true;
+
+        return $this;
+    }
+
+    public function isLabelRaw(): bool
+    {
+        return $this->labelRaw;
     }
 
     public function translatable(string $key = ''): static

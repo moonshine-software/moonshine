@@ -20,7 +20,11 @@
             ::for="$id('field-{{ $formName }}')"
         >
             {{ $beforeLabel && $insideLabel ? $slot : '' }}
-            {!! $label !!}
+            @if($labelRaw ?? false)
+                {!! $label !!}
+            @else
+                {{ $label }}
+            @endif
             {{ !$beforeLabel && $insideLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

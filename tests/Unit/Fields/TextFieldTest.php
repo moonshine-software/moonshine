@@ -139,3 +139,24 @@ it('text wrap', function () {
         ->not->toContain('div class="text-clamp">', 'div class="text-ellipsis">')
     ;
 });
+
+it('label escapes html by default', function () {
+    $field = Text::make('Name <script>alert("xss")</script>');
+
+    expect($field->getLabel())
+        ->toBe('Name <script>alert("xss")</script>');
+
+    expect($field->isLabelRaw())
+        ->toBeFalse();
+});
+
+it('labelHtml renders raw html', function () {
+    $field = Text::make('Name')
+        ->labelHtml('Use <strong>bold</strong> label');
+
+    expect($field->getLabel())
+        ->toBe('Use <strong>bold</strong> label');
+
+    expect($field->isLabelRaw())
+        ->toBeTrue();
+});

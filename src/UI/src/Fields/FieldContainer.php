@@ -64,8 +64,11 @@ final class FieldContainer extends MoonShineComponent
 
     protected function viewData(): array
     {
+        $labelRaw = method_exists($this->field, 'isLabelRaw') && $this->field->isLabelRaw();
+
         return [
             'label' => $this->field->getLabel(),
+            'labelRaw' => $labelRaw,
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
