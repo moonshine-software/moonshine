@@ -1,5 +1,7 @@
 @props([
     'label' => '',
+    'labelRaw' => false,
+    'escapeLabel' => false,
     'formName' => '',
     'fieldErrors' => [],
     'beforeLabel' => false,
@@ -20,7 +22,11 @@
             ::for="$id('field-{{ $formName }}')"
         >
             {{ $beforeLabel && $insideLabel ? $slot : '' }}
-            {!! $label !!}
+            @if(! $escapeLabel || $labelRaw)
+                {!! $label !!}
+            @else
+                {{ $label }}
+            @endif
             {{ !$beforeLabel && $insideLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

@@ -16,13 +16,29 @@ class ValueMetric extends Metric
 
     protected string $valueFormat = '{value}';
 
+    protected bool $simpleValueRaw = false;
+
     protected bool $progress = false;
 
     public function valueFormat(string|Closure $value): static
     {
         $this->valueFormat = value($value, $this->value);
+        $this->simpleValueRaw = false;
 
         return $this;
+    }
+
+    public function valueFormatHtml(string|Closure $value): static
+    {
+        $this->valueFormat = value($value, $this->value);
+        $this->simpleValueRaw = true;
+
+        return $this;
+    }
+
+    public function isSimpleValueRaw(): bool
+    {
+        return $this->simpleValueRaw;
     }
 
     public function getValueResult(): string|float|int
@@ -85,6 +101,7 @@ class ValueMetric extends Metric
             'isProgress' => $this->isProgress(),
             'valueResult' => $this->getValueResult(),
             'simpleValue' => $this->getSimpleValue(),
+            'simpleValueRaw' => $this->isSimpleValueRaw(),
         ];
     }
 }

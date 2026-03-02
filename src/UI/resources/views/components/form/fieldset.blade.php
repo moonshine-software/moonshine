@@ -1,8 +1,16 @@
 @props([
     'label' => '',
+    'labelRaw' => false,
+    'escapeLabel' => false,
 ])
 <fieldset {{ $attributes }}>
-    <legend>{!! $label !!}</legend>
+    <legend>
+        @if(! $escapeLabel || $labelRaw)
+            {!! $label !!}
+        @else
+            {{ $label }}
+        @endif
+    </legend>
 
     {{ $slot }}
 </fieldset>

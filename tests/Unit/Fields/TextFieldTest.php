@@ -139,3 +139,31 @@ it('text wrap', function () {
         ->not->toContain('div class="text-clamp">', 'div class="text-ellipsis">')
     ;
 });
+
+it('prepareRequestValue does not escape html (storage invariant)', function (): void {
+    fakeRequest(parameters: ['field_name' => '<b>Test</b>']);
+
+    expect($this->field->getRequestValue())->toBe('<b>Test</b>');
+});
+
+it('hint escapes html by default', function () {
+    $field = Text::make('Name')
+        ->hint('Use <strong>title</strong> tag');
+
+    expect($field->getHint())
+        ->toBe('Use <strong>title</strong> tag');
+
+    expect($field->isHintRaw())
+        ->toBeFalse();
+});
+
+it('hintHtml renders raw html', function () {
+    $field = Text::make('Name')
+        ->hintHtml('Use <strong>title</strong> tag');
+
+    expect($field->getHint())
+        ->toBe('Use <strong>title</strong> tag');
+
+    expect($field->isHintRaw())
+        ->toBeTrue();
+});

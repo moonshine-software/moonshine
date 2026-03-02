@@ -75,10 +75,14 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
      */
     protected function systemViewData(): array
     {
+        $escapeUi = (bool) $this->getCore()->getConfig()->get('html_escaping.ui_elements', false);
+
         return [
             'type' => class_basename($this),
             'attributes' => $this->getAttributes(),
             'label' => $this->getLabel(),
+            'labelRaw' => $this->isLabelRaw(),
+            'escapeUi' => $escapeUi,
             'previewLabel' => Str::of($this->getLabel())->limit(3),
             'icon' => $this->getIcon(),
             'isActive' => $this->isActive(),

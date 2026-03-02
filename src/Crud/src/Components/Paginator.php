@@ -42,6 +42,8 @@ final class Paginator extends MoonShineComponent
      */
     protected function viewData(): array
     {
+        $escapeUi = (bool) $this->getCore()->getConfig()->get('html_escaping.ui_elements', false);
+
         /**
          * @var (PaginatorContract<array-key, mixed>|CursorPaginator<array-key, mixed>)&Arrayable<array-key, mixed> $data
          */
@@ -49,16 +51,24 @@ final class Paginator extends MoonShineComponent
 
         $pageName = method_exists($data, 'getPageName') ? $data->getPageName() : 'page';
 
+        /**
+         * @var (PaginatorContract<array-key, mixed>|CursorPaginator<array-key, mixed>)&Arrayable<array-key, mixed> $appended
+         */
+        $appended = $data->appends(
+            $this->getCore()->getRequest()->getExcept($pageName)
+        );
+
         $paginator = (new PaginatorCaster(
-            $data->appends(
-                $this->getCore()->getRequest()->getExcept($pageName)
-            )->toArray(),
+            $appended->toArray(),
             $data->items()
         ))->cast();
 
         /**
          * @var array<string, mixed>
          */
-        return $paginator->toArray();
+        return [
+            ...$paginator->toArray(),
+            'escapeUi' => $escapeUi,
+        ];
     }
 }

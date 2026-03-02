@@ -15,6 +15,12 @@ final class Dropdown extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.dropdown';
 
+    protected bool $titleRaw = false;
+
+    protected bool $itemsRaw = false;
+
+    protected bool $footerRaw = false;
+
     /**
      * @var array<string, mixed>
      */
@@ -54,6 +60,18 @@ final class Dropdown extends MoonShineComponent
     public function items(Closure|array $items): self
     {
         $this->items = $items;
+        $this->itemsRaw = false;
+
+        return $this;
+    }
+
+    /**
+     * @param  (Closure(self): string[])|string[]  $items
+     */
+    public function itemsHtml(Closure|array $items): self
+    {
+        $this->items = $items;
+        $this->itemsRaw = true;
 
         return $this;
     }
@@ -99,8 +117,48 @@ final class Dropdown extends MoonShineComponent
     public function footer(Closure|string $value): self
     {
         $this->footer = $value;
+        $this->footerRaw = false;
 
         return $this;
+    }
+
+    public function footerHtml(Closure|string $value): self
+    {
+        $this->footer = $value;
+        $this->footerRaw = true;
+
+        return $this;
+    }
+
+    public function title(?string $title): self
+    {
+        $this->title = $title;
+        $this->titleRaw = false;
+
+        return $this;
+    }
+
+    public function titleHtml(?string $title): self
+    {
+        $this->title = $title;
+        $this->titleRaw = true;
+
+        return $this;
+    }
+
+    public function isTitleRaw(): bool
+    {
+        return $this->titleRaw;
+    }
+
+    public function isItemsRaw(): bool
+    {
+        return $this->itemsRaw;
+    }
+
+    public function isFooterRaw(): bool
+    {
+        return $this->footerRaw;
     }
 
 
@@ -116,10 +174,16 @@ final class Dropdown extends MoonShineComponent
      */
     protected function viewData(): array
     {
+        $escapeUi = (bool) $this->getCore()->getConfig()->get('html_escaping.ui_elements', false);
+
         return [
             'toggler' => new ComponentSlot(value($this->toggler, $this), $this->togglerAttributes),
             'slot' => new ComponentSlot(value($this->content, $this)),
             'footer' => new ComponentSlot(value($this->footer, $this)),
+            'titleRaw' => $this->isTitleRaw(),
+            'itemsRaw' => $this->isItemsRaw(),
+            'footerRaw' => $this->isFooterRaw(),
+            'escapeUi' => $escapeUi,
             'searchable' => $this->searchable,
             'searchPlaceholder' => value($this->searchPlaceholder, $this),
             'items' => value($this->items, $this),

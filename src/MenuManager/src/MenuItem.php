@@ -256,6 +256,8 @@ class MenuItem extends MenuElement implements WithBadgeContract
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
+                'labelRaw' => $this->isLabelRaw(),
+                'escapeUi' => (bool) $this->getCore()->getConfig()->get('html_escaping.ui_elements', false),
                 'onlyIcon' => $this->isOnlyIcon(),
                 'icon' => $this->getIcon(),
                 'top' => $this->isTopMode(),

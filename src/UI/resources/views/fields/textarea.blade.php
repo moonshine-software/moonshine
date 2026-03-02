@@ -6,4 +6,4 @@
     :attributes="$attributes->merge([
         'aria-label' => $label ?? '',
     ])"
->{!! $value ?? '' !!}</x-moonshine::form.textarea>
+>{{ $value ?? '' }}</x-moonshine::form.textarea>

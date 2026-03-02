@@ -7,6 +7,10 @@
     'searchPlaceholder' => '',
     'footer' => null,
     'strategy' => 'fixed',
+    'escapeUi' => false,
+    'titleRaw' => false,
+    'itemsRaw' => false,
+    'footerRaw' => false,
 ])
 <div x-data="dropdown"
      @click.outside="closeDropdown"
@@ -21,7 +25,13 @@
 
     <div {{ $attributes->merge(['class' => 'dropdown-body']) }}>
         @if($title ?? false)
-            <div class="dropdown-heading">{{ $title }}</div>
+            <div class="dropdown-heading">
+                @if(! $escapeUi || $titleRaw)
+                    {!! $title !!}
+                @else
+                    {{ $title }}
+                @endif
+            </div>
         @endif
 
         <div class="dropdown-content">
@@ -44,7 +54,11 @@
                             class="dropdown-menu-item"
                             @if($searchable) x-ref="dropdown_{{$key}}" @endif
                         >
-                            {!! $item !!}
+                            @if(! $escapeUi || $itemsRaw)
+                                {!! $item !!}
+                            @else
+                                {{ $item }}
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -53,7 +67,11 @@
 
         @if($footer ?? false)
             <div class="dropdown-footer">
-                {{ $footer ?? '' }}
+                @if(! $escapeUi || $footerRaw)
+                    {!! $footer ?? '' !!}
+                @else
+                    {!! e((string) ($footer ?? '')) !!}
+                @endif
             </div>
         @endif
     </div>

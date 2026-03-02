@@ -7,6 +7,8 @@
     'component' => null,
     'badge' => false,
     'raw' => false,
+    'labelRaw' => false,
+    'escapeUi' => false,
 ])
 @if($attributes->has('type'))
     <x-moonshine::form.button
@@ -17,7 +19,11 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        @if(! $escapeUi || $labelRaw)
+            {!! $label !!}
+        @else
+            {{ $label }}
+        @endif
 
         @if($badge !== false)
             <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
@@ -34,7 +40,11 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        @if(! $escapeUi || $labelRaw)
+            {!! $label !!}
+        @else
+            {{ $label }}
+        @endif
     </x-moonshine::link-button>
 @endif
 

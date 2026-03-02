@@ -50,9 +50,13 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
      */
     protected function systemViewData(): array
     {
+        $escapeUi = (bool) $this->getCore()->getConfig()->get('html_escaping.ui_elements', false);
+
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
+            'labelRaw' => $this->isLabelRaw(),
+            'escapeUi' => $escapeUi,
             'icon' => $this->getIcon(6, $this->iconColor),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),

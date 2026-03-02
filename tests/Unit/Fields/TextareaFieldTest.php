@@ -30,6 +30,12 @@ it('view', function (): void {
         ->toBe('moonshine::fields.textarea');
 });
 
+it('prepareRequestValue does not escape html (storage invariant)', function (): void {
+    fakeRequest(parameters: ['field_name' => '<b>Test</b>']);
+
+    expect($this->field->getRequestValue())->toBe('<b>Test</b>');
+});
+
 it('apply', function (): void {
     $data = ['field_name' => 'test'];
 

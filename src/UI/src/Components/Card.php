@@ -21,6 +21,8 @@ final class Card extends MoonShineComponent
 
     protected Closure|string $actions = '';
 
+    protected bool $valuesRaw = false;
+
     /**
      * @param  (Closure(self):string)|string  $title
      * @param  (Closure(self): string[])|string[]|string  $thumbnail
@@ -86,8 +88,25 @@ final class Card extends MoonShineComponent
     public function values(Closure|array $values): self
     {
         $this->values = $values;
+        $this->valuesRaw = false;
 
         return $this;
+    }
+
+    /**
+     * @param  (Closure(self): array<string, mixed>)|array<string, mixed>  $values
+     */
+    public function valuesHtml(Closure|array $values): self
+    {
+        $this->values = $values;
+        $this->valuesRaw = true;
+
+        return $this;
+    }
+
+    public function isValuesRaw(): bool
+    {
+        return $this->valuesRaw;
     }
 
     public function overlay(): self
@@ -102,6 +121,8 @@ final class Card extends MoonShineComponent
      */
     protected function viewData(): array
     {
+        $escapeValues = (bool) $this->getCore()->getConfig()->get('html_escaping.card_values', false);
+
         return [
             'title' => value($this->title, $this),
             'url' => value($this->url, $this),
@@ -109,6 +130,8 @@ final class Card extends MoonShineComponent
             'overlay' => $this->overlay,
             'subtitle' => value($this->subtitle, $this),
             'values' => value($this->values, $this),
+            'valuesRaw' => $this->isValuesRaw(),
+            'escapeValues' => $escapeValues,
             'slot' => $this->getSlot(),
             'header' => new ComponentSlot(
                 value($this->header, $this),

@@ -1,5 +1,7 @@
 @props([
     'label' => '',
+    'labelRaw' => false,
+    'escapeUi' => false,
     'previewLabel' => '',
     'url' => 'javascript:void(0);',
     'icon' => '',
@@ -27,7 +29,13 @@
         </div>
     @endif
 
-    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
+    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">
+        @if(! $escapeUi || $labelRaw)
+            {!! $label !!}
+        @else
+            {{ $label }}
+        @endif
+    </span>
 
     @if($badge !== false)
         <span class="menu-badge">{{ $badge }}</span>

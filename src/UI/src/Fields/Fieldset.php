@@ -146,8 +146,12 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
      */
     protected function viewData(): array
     {
+        $escapeLabel = (bool) $this->getCore()->getConfig()->get('html_escaping.labels', false);
+
         return [
             'fields' => $this->getPreparedFields(),
+            'labelRaw' => $this->isLabelRaw(),
+            'escapeLabel' => $escapeLabel,
         ];
     }
 }
