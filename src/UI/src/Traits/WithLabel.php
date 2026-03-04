@@ -11,6 +11,8 @@ trait WithLabel
 {
     protected Closure|string $label = '';
 
+    protected bool $unescapeLabel = false;
+
     protected bool $translatable = false;
 
     protected string $translatableKey = '';
@@ -41,6 +43,18 @@ trait WithLabel
         $this->label = $label;
 
         return $this;
+    }
+
+    public function unescapeLabel(bool $unescape = true): static
+    {
+        $this->unescapeLabel = $unescape;
+
+        return $this;
+    }
+
+    public function isUnescapeLabel(): bool
+    {
+        return $this->unescapeLabel;
     }
 
     public function translatable(string $key = ''): static

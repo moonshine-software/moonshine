@@ -64,8 +64,16 @@ final class FieldContainer extends MoonShineComponent
 
     protected function viewData(): array
     {
+        $globalEscapeLabel = (bool) $this->getCore()->getConfig()->get('html_escaping.labels', false);
+        $unescapeLabel = method_exists($this->field, 'isUnescapeLabel')
+            ? (bool) \call_user_func([$this->field, 'isUnescapeLabel'])
+            : false;
+
+        $escapeLabel = $globalEscapeLabel && ! $unescapeLabel;
+
         return [
             'label' => $this->field->getLabel(),
+            'escapeLabel' => $escapeLabel,
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),

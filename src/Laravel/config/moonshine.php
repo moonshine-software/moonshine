@@ -66,6 +66,11 @@ return [
     'disk_options' => [],
     'cache' => 'file',
 
+    // Opt-in HTML escaping for field labels (false = backward compatible, raw HTML allowed)
+    'html_escaping' => [
+        'labels' => false,
+    ],
+
     // Authentication and profile
     'auth' => [
         'enabled' => true,
