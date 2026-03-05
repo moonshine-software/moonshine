@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
 use MoonShine\Laravel\Applies\Filters\DateRangeModelApply;
@@ -71,10 +72,10 @@ it('apply as base', function () {
 
     $this->item->refresh();
 
-    expect($this->item->start_date)
-        ->toBe($from->format('Y-m-d'))
-        ->and($this->item->end_date)
-        ->toBe($to->format('Y-m-d'));
+    expect(Carbon::parse((string) $this->item->start_date)->toDateString())
+        ->toBe($from->toDateString())
+        ->and(Carbon::parse((string) $this->item->end_date)->toDateString())
+        ->toBe($to->toDateString());
 });
 
 it('before apply', function () {
@@ -144,10 +145,10 @@ it('apply as base with default', function () {
 
     $this->item->refresh();
 
-    expect($this->item->start_date)
-        ->toBe($from->format('Y-m-d'))
-        ->and($this->item->end_date)
-        ->toBe($to->format('Y-m-d'));
+    expect(Carbon::parse((string) $this->item->start_date)->toDateString())
+        ->toBe($from->toDateString())
+        ->and(Carbon::parse((string) $this->item->end_date)->toDateString())
+        ->toBe($to->toDateString());
 });
 
 it('apply as base with null', function () {

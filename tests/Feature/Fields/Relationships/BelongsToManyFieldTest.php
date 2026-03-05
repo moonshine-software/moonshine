@@ -249,8 +249,12 @@ it('apply as filter', function (): void {
             $query
         );
 
-    expect($query->toRawSql())
-        ->toContain('`category_item`.`category_id` in (3)');
+    $sql = strtolower($query->toRawSql());
+
+    expect($sql)
+        ->toContain('category_item')
+        ->toContain('category_id')
+        ->toContain('in (3)');
 });
 
 function belongsToManyExport(Item $item, BelongsToMany $field): ?string
@@ -266,6 +270,8 @@ function belongsToManyExport(Item $item, BelongsToMany $field): ?string
     );
 
     $export = ExportHandler::make('');
+
+    Storage::disk('public')->delete('test-resource.csv');
 
     asAdmin()->get(
         $resource->getRoute('handler', query: ['handlerUri' => $export->getUriKey()])

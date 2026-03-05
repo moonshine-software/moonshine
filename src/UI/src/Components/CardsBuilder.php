@@ -257,12 +257,11 @@ final class CardsBuilder extends IterableComponent implements
      */
     protected function getMapper(mixed $data, FieldsContract $fields, int $index): array
     {
-        /** @var array<string, string> $values */
-        /** @phpstan-ignore-next-line */
-        $values = $fields
-            ->values()
-            ->mapWithKeys(static fn (FieldContract $value): array => [$value->getLabel() => (string) $value->preview()])
-            ->toArray();
+        $values = [];
+
+        foreach ($fields->values() as $value) {
+            $values[$value->getLabel()] = (string) $value->preview();
+        }
 
         return [
             'title' => $this->getMapperValue('title', $data, $index),
