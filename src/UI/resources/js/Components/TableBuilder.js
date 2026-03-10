@@ -139,6 +139,13 @@ export default (
     if (!force && this.reindex) {
       this.resolveReindex()
     }
+
+    this.$nextTick(() => {
+      document.dispatchEvent(new CustomEvent('tablebuilder:row-added', {
+        bubbles: true,
+        detail: { table: this.table?.dataset?.name }
+      }));
+    });
   },
   remove() {
     this.$el.closest('tr').remove()
