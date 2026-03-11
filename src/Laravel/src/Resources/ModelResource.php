@@ -262,7 +262,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
                 $item = $this->afterSave($item, $fields);
             }
         } catch (QueryException $queryException) {
-            throw new ResourceException($queryException->getMessage(), previous: $queryException);
+            throw new ResourceException($queryException->getMessage(), $queryException->getCode(), previous: $queryException);
         }
 
         $this->setItem($item->getOriginal());
