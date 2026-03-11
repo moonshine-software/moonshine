@@ -345,6 +345,13 @@ class ActionButton extends MoonShineComponent implements
         );
     }
 
+    public function withFormData(?string $selector = null): static
+    {
+        return $this->customAttributes(
+            AlpineJs::asyncFormDataAttributes($selector),
+        );
+    }
+
     public function withQueryParams(): static
     {
         return $this->customAttributes(

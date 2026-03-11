@@ -91,6 +91,13 @@ final readonly class AlpineJs
         ]);
     }
 
+    public static function asyncFormDataAttributes(?string $selector = null): array
+    {
+        return [
+            'data-async-form-data' => $selector ?? '',
+        ];
+    }
+
     public static function asyncWithQueryParamsAttributes(): array
     {
         return [
