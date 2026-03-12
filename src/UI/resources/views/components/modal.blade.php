@@ -22,7 +22,7 @@
     <template x-teleport="body">
         <div
             class="modal-template"
-            @defineEvent('modal_toggled', $name, 'toggleModal')
+            @defineEvent('modal_toggled', $name, 'toggleModal($event)')
         >
             <div
                 x-show="open"

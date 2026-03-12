@@ -11,8 +11,8 @@ export class UI {
     )
   }
 
-  toggleModal(name) {
-    dispatchEvent(new CustomEvent(`modal_toggled:${name}`))
+  toggleModal(name, asyncUrl = null) {
+    dispatchEvent(new CustomEvent(`modal_toggled:${name}`, { detail: asyncUrl ?? null }))
   }
 
   toggleOffCanvas(name) {

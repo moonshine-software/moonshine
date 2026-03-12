@@ -19,7 +19,11 @@ interface HasModalContract
      */
     public function getModal(): ?ComponentContract;
 
-    public function toggleModal(string $name = 'default'): static;
+    /**
+     * @param  (Closure(mixed $original, ActionButtonContract $ctx): string)|string  $name
+     * @param  (Closure(mixed $original, ActionButtonContract $ctx): (string|null))|string|null  $asyncUrl
+     */
+    public function toggleModal(Closure|string $name = 'default', Closure|string|null $asyncUrl = null): static;
 
     public function openModal(): static;
 
