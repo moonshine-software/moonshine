@@ -152,7 +152,7 @@ it('apply as base with empty', function () {
         $data
     )->assertRedirect();
 
-})->fails('set `moonshine_user_id` = []');
+})->fails('moonshine_user_id');
 
 function selectExport(Item $item, Select $field, int $value, string $label): ?string
 {

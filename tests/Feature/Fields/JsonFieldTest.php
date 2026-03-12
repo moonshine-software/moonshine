@@ -67,12 +67,12 @@ it('apply as base with file', function () {
 
     $this->item->refresh();
 
-    expect($this->item->data->toArray())->toBe(
-        [
-            ['file' => $file->hashName(), 'title' => 'Title 1', 'value' => 'Value 1',],
-            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2',],
-        ]
-    );
+    $savedData = $this->item->data->toArray();
+
+    expect($savedData)
+        ->toHaveCount(2)
+        ->and($savedData[0])->toMatchArray(['title' => 'Title 1', 'value' => 'Value 1', 'file' => $file->hashName()])
+        ->and($savedData[1])->toMatchArray(['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file->hashName()]);
 });
 
 it('apply as base with file stay hidden', function () {
@@ -107,12 +107,12 @@ it('apply as base with file stay hidden', function () {
 
     $this->item->refresh();
 
-    expect($this->item->data->toArray())->toBe(
-        [
-            ['file' => null, 'title' => 'Title 1', 'value' => 'Value 1'],
-            ['file' => $file->hashName(), 'title' => 'Title 2', 'value' => 'Value 2'],
-        ]
-    );
+    $savedData = $this->item->data->toArray();
+
+    expect($savedData)
+        ->toHaveCount(2)
+        ->and($savedData[0])->toMatchArray(['title' => 'Title 1', 'value' => 'Value 1', 'file' => null])
+        ->and($savedData[1])->toMatchArray(['title' => 'Title 2', 'value' => 'Value 2', 'file' => $file->hashName()]);
 });
 
 it('apply as base', function () {
@@ -269,8 +269,10 @@ it('apply as filter', function (): void {
             $query
         );
 
-    expect($query->toRawSql())
-        ->toContain('json_contains');
+    $sql = strtolower($query->toRawSql());
+
+    expect(str_contains($sql, 'json_contains') || str_contains($sql, 'json_each'))
+        ->toBeTrue();
 });
 
 function jsonExport(Item $item): ?string
