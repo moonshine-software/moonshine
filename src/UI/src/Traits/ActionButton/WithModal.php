@@ -163,7 +163,7 @@ trait WithModal
 
                 if (! \is_null($resolvedAsyncUrl) && ! \is_string($resolvedAsyncUrl)) {
                     throw new ActionButtonException(
-                        sprintf(
+                        \sprintf(
                             'asyncUrl must be string|null, %s given',
                             get_debug_type($resolvedAsyncUrl)
                         )
