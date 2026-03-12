@@ -57,9 +57,8 @@ export default (open = false, asyncUrl = '', autoClose = true) => ({
     const incomingAsyncUrl = hasDetail && typeof event.detail === 'string' ? event.detail : null
 
     if (hasDetail) {
-      const nextAsyncUrl = incomingAsyncUrl && incomingAsyncUrl.length > 0
-        ? incomingAsyncUrl
-        : this.initialAsyncUrl
+      const nextAsyncUrl =
+        incomingAsyncUrl && incomingAsyncUrl.length > 0 ? incomingAsyncUrl : this.initialAsyncUrl
 
       if (nextAsyncUrl !== this.asyncUrl) {
         this.asyncUrl = nextAsyncUrl
