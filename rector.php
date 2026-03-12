@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodingStyle\Rector\ArrowFunction\ArrowFunctionDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\Closure\ClosureDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
+use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveParentDelegatingConstructorRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
@@ -40,6 +41,7 @@ return static function (RectorConfig $rectorConfig): void {
         RemoveNonExistingVarAnnotationRector::class,
         StringClassNameToClassConstantRector::class,
         RemoveParentDelegatingConstructorRector::class,
+        ThrowWithPreviousExceptionRector::class,
     ]);
 
     $rectorConfig->importNames();

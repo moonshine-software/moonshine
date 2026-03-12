@@ -290,11 +290,10 @@ final class TableBuilder extends IterableComponent implements
             $casted = $this->castData($data);
             $cells = TableCells::make();
 
-            /** @phpstan-ignore argument.templateType */
             $fields = $this
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
                 ->onlyVisible()
-                ->when(
+                ->when( // @phpstan-ignore argument.templateType
                     $this->isReindex() && ! $this->isPreparedReindex(),
                     static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames(),
                 );
