@@ -292,11 +292,11 @@ final class TableBuilder extends IterableComponent implements
 
             $fields = $this
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
-                ->onlyVisible();
-
-            if ($this->isReindex() && ! $this->isPreparedReindex()) {
-                $fields = $fields->prepareReindexNames();
-            }
+                ->onlyVisible()
+                ->when( // @phpstan-ignore argument.templateType
+                    $this->isReindex() && ! $this->isPreparedReindex(),
+                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames(),
+                );
 
             $key = $casted->getKey();
 

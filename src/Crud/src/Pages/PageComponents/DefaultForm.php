@@ -9,6 +9,7 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Traits\WithCore;
+use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Contracts\PageComponents\DefaultFormContract;
 use MoonShine\Support\AlpineJs;
@@ -33,17 +34,20 @@ final class DefaultForm implements DefaultFormContract
         bool $isAsync = true,
     ): FormBuilderContract {
         $resource = $page->getResource();
-        $formFields = \is_null($item)
-            ? $fields
-            : $fields->push(
-                Hidden::make('_method')->setValue('PUT'),
-            );
 
         return FormBuilder::make($action)
             ->cast($resource->getCaster())
             ->fill($item)
             ->fields([
-                ...$formFields->toArray(),
+                ...$fields
+                    ->when( // @phpstan-ignore argument.templateType
+                        ! \is_null($item),
+                        static fn (Fields $fields): Fields
+                            => $fields->push(
+                                Hidden::make('_method')->setValue('PUT'),
+                            ),
+                    )
+                    ->toArray(),
             ])
             ->when(
                 ! $page->hasErrorsAbove(),
