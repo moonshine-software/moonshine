@@ -39,9 +39,8 @@ final class DefaultForm implements DefaultFormContract
             ->cast($resource->getCaster())
             ->fill($item)
             ->fields([
-                /** @phpstan-ignore argument.templateType */
                 ...$fields
-                    ->when(
+                    ->when( // @phpstan-ignore argument.templateType
                         ! \is_null($item),
                         static fn (Fields $fields): Fields
                             => $fields->push(

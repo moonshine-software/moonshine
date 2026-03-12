@@ -92,8 +92,10 @@ it('add new filter apply', function (): void {
 
     $data = $field->apply($defaultApply, (new Item())->newQuery());
 
-    expect($data->toRawSql())
-        ->toContain("`some_column` = '!'");
+    expect($data->toSql())
+        ->toContain('some_column')
+        ->and($data->getBindings())
+        ->toContain('!');
 });
 
 class CustomTextFilterApply implements ApplyContract
