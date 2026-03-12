@@ -244,10 +244,10 @@ trait WithComponentAttributes
         $type = $if ? 'if' : 'show';
 
         if ($if && $this instanceof FieldContract) {
-            /** @phpstan-ignore return.type,method.nonObject */
+            /** @phpstan-ignore return.type */
             return $this
                 ->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">')
-                ->afterRender(fn (): string => '</template>');
+                ->afterRender(fn (): string => '</template>'); // @phpstan-ignore method.nonObject
         }
 
         if ($this instanceof FieldContract && $wrapper) {
