@@ -6,13 +6,17 @@ namespace MoonShine\UI\Traits\ActionButton;
 
 use Closure;
 use Illuminate\Support\Str;
+use JsonException;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\ModalContract;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\EventParams\EventParams;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
@@ -153,10 +157,13 @@ trait WithModal
         return \call_user_func($this->modal, $this->getData()?->getOriginal(), $this->getData(), $this);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function toggleModal(Closure|string $name = 'default', Closure|string|null $asyncUrl = null): static
     {
         return $this->onClick(
-            static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
+         static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
                 $original = $ctx->getData()?->getOriginal();
                 $resolvedName = Str::lower((string) (value($name, $original, $ctx) ?? 'default'));
                 $resolvedAsyncUrl = value($asyncUrl, $original, $ctx);
@@ -170,10 +177,16 @@ trait WithModal
                     );
                 }
 
-                $params = json_encode($resolvedName, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '"default"';
+                $params = json_encode(
+                    $resolvedName,
+                    JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                ) ?: '"default"';
 
                 if (\is_string($resolvedAsyncUrl)) {
-                    $asyncUrlJson = json_encode($resolvedAsyncUrl, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: 'null';
+                    $asyncUrlJson = json_encode(
+                        $resolvedAsyncUrl,
+                        JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                    ) ?: 'null';
                     $params .= ", $asyncUrlJson";
                 }
 

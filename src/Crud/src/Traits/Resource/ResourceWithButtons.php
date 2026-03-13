@@ -25,8 +25,10 @@ trait ResourceWithButtons
         ?CrudResource $resource = null,
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'resource-create-modal',
+        ?string $modalName = null,
     ): ActionButtonContract {
+        $modalName ??= ($resource ?? $this)->getUriKey() . '-create-modal';
+
         /** @var string $label */
         $label = $this->getCore()->getTranslator()->get('moonshine::ui.create');
 
@@ -46,8 +48,10 @@ trait ResourceWithButtons
         ?CrudResource $resource = null,
         ?string $componentName = null,
         bool $isAsync = true,
-        string $modalName = 'resource-edit-modal',
+        ?string $modalName = null,
     ): ActionButtonContract {
+        $modalName ??= ($resource ?? $this)->getUriKey() . '-edit-modal';
+
         return EditButton::for(
             $resource ?? $this,
             componentName: $componentName,
@@ -59,9 +63,11 @@ trait ResourceWithButtons
 
     public function getDetailButton(
         ?CrudResource $resource = null,
-        string $modalName = 'resource-detail-modal',
+        ?string $modalName = null,
         bool $isSeparateModal = true,
     ): ActionButtonContract {
+        $modalName ??= ($resource ?? $this)->getUriKey() . '-detail-modal';
+
         return DetailButton::for(
             $this->getCore()->getTranslator()->get('moonshine::ui.show'),
             $resource ?? $this,
@@ -75,8 +81,10 @@ trait ResourceWithButtons
         ?string $componentName = null,
         ?string $redirectAfterDelete = null,
         bool $isAsync = true,
-        string $modalName = 'resource-delete-modal',
+        ?string $modalName = null,
     ): ActionButtonContract {
+        $modalName ??= ($resource ?? $this)->getUriKey() . '-delete-modal';
+
         return DeleteButton::for(
             $resource ?? $this,
             componentName: $componentName,
@@ -106,8 +114,10 @@ trait ResourceWithButtons
         ?string $componentName = null,
         ?string $redirectAfterDelete = null,
         bool $isAsync = true,
-        string $modalName = 'resource-mass-delete-modal',
+        ?string $modalName = null,
     ): ActionButtonContract {
+        $modalName ??= ($resource ?? $this)->getUriKey() . '-mass-delete-modal';
+
         return MassDeleteButton::for(
             $resource ?? $this,
             componentName: $componentName,

@@ -71,24 +71,28 @@ abstract class CrudPage extends Page implements CrudPageContract
         $components = [];
 
         if ($this->getResource()->isEditInModal()) {
+            $modalName = $this->getResource()->getUriKey() . '-edit-modal';
+
             $components[] = $this->getResource()->resolveEditModal(
                 Modal::make(
                     $this->getCore()->getTranslator()->get('moonshine::ui.edit'),
                     components: [
-                        Div::make()->customAttributes(['id' => 'resource-edit-modal']),
+                        Div::make()->customAttributes(['id' => $modalName]),
                     ],
-                )->name('resource-edit-modal')
+                )->name($modalName)
             );
         }
 
         if ($this->getResource()->isDetailInModal()) {
+            $modalName = $this->getResource()->getUriKey() . '-detail-modal';
+
             $components[] = $this->getResource()->resolveDetailModal(
                 Modal::make(
                     $this->getCore()->getTranslator()->get('moonshine::ui.show'),
                     components: [
-                        Div::make()->customAttributes(['id' => 'resource-detail-modal']),
+                        Div::make()->customAttributes(['id' => $modalName]),
                     ],
-                )->name('resource-detail-modal')
+                )->name($modalName)
             );
         }
 
