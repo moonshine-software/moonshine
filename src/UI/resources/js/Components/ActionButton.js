@@ -3,12 +3,14 @@ import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import request from '../Request/Core.js'
 import {mergeURLString, prepareQueryParams} from '../Support/URLs.js'
+import {formToJSON} from 'axios'
 
 export default () => ({
   url: '',
   method: 'GET',
   withParams: '',
   withQueryParams: false,
+  withFormData: false,
   loading: false,
   btnText: '',
 
@@ -19,6 +21,7 @@ export default () => ({
 
     this.withParams = this.$el?.dataset?.asyncWithParams
     this.withQueryParams = this.$el?.dataset?.asyncWithQueryParams ?? false
+    this.withFormData = this.$el?.dataset?.asyncWithFormData ?? false
 
     this.loading = false
     const el = this.$el
@@ -56,7 +59,17 @@ export default () => ({
         ? {}
         : Object.fromEntries(prepareQueryParams(new URLSearchParams(url.search), exclude))
 
-    extra['_data'] = Object.assign({}, preparedURLParams, selectorsParams(this.withParams))
+    const data = Object.assign({}, preparedURLParams, selectorsParams(this.withParams))
+
+    if (this.withFormData !== undefined && this.withFormData !== false) {
+      Object.assign(data, formToJSON(
+        this.withFormData
+          ? document.querySelector(this.withFormData)
+          : this.$el.closest('form')
+      ))
+    }
+
+    extra['_data'] = data
 
     de(componentEvent, '', this, extra)
   },
@@ -77,6 +90,16 @@ export default () => ({
     }
 
     let body = selectorsParams(this.withParams)
+
+    if (this.withFormData !== undefined && this.withFormData !== false) {
+      this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
+
+      Object.assign(body, formToJSON(
+        this.withFormData
+          ? document.querySelector(this.withFormData)
+          : this.$el.closest('form')
+      ))
+    }
 
     if (this.withQueryParams) {
       const queryParams = new URLSearchParams(window.location.search)
