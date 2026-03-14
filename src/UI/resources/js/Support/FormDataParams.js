@@ -1,3 +1,5 @@
+import {formToJSON} from 'axios'
+
 export default function formDataParams(selector, el) {
   let form = null
 
@@ -11,19 +13,5 @@ export default function formDataParams(selector, el) {
     return {}
   }
 
-  const formData = new FormData(form)
-  const data = {}
-
-  formData.forEach(function (value, key) {
-    if (key in data) {
-      if (!Array.isArray(data[key])) {
-        data[key] = [data[key]]
-      }
-      data[key].push(value)
-    } else {
-      data[key] = value
-    }
-  })
-
-  return data
+  return formToJSON(new FormData(form))
 }
