@@ -131,6 +131,8 @@ interface ActionButtonContract extends
 
     public function withQueryParams(): static;
 
+    public function withFormData(?string $selector = null): static;
+
     public function hasComponent(): bool;
 
     public function getComponent(): ?ComponentContract;

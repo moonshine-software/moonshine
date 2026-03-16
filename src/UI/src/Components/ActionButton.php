@@ -380,6 +380,11 @@ class ActionButton extends MoonShineComponent implements
         );
     }
 
+    public function withFormData(?string $selector = null): static
+    {
+        return $this->customAttributes(['data-async-with-form-data' => $selector ?: '']);
+    }
+
     public function hasComponent(): bool
     {
         return $this->isInOffCanvas() || $this->isInModal();
