@@ -82,6 +82,8 @@ interface ActionButtonContract extends
 
     public function withSelectorsParams(array $selectors): static;
 
+    public function withFormData(?string $selector = null): static;
+
     public function dispatchEvent(array|string $events): static;
 
     public function async(

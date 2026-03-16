@@ -1,4 +1,5 @@
 import selectorsParams from '../Support/SelectorsParams.js'
+import formDataParams from '../Support/FormDataParams.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import {dispatchEvents as de} from '../Support/DispatchEvents.js'
 import request from '../Request/Core.js'
@@ -9,6 +10,7 @@ export default () => ({
   method: 'GET',
   withParams: '',
   withQueryParams: false,
+  withFormData: false,
   loading: false,
   btnText: '',
 
@@ -18,6 +20,7 @@ export default () => ({
     this.method = this.$el?.dataset?.asyncMethod
 
     this.withParams = this.$el?.dataset?.asyncWithParams
+    this.withFormData = this.$el?.dataset?.asyncFormData
     this.withQueryParams = this.$el?.dataset?.asyncWithQueryParams ?? false
 
     this.loading = false
@@ -56,7 +59,12 @@ export default () => ({
         ? {}
         : Object.fromEntries(prepareQueryParams(new URLSearchParams(url.search), exclude))
 
-    extra['_data'] = Object.assign({}, preparedURLParams, selectorsParams(this.withParams))
+    extra['_data'] = Object.assign(
+      {},
+      preparedURLParams,
+      selectorsParams(this.withParams),
+      this.withFormData !== undefined ? formDataParams(this.withFormData, this.$el) : {},
+    )
 
     de(componentEvent, '', this, extra)
   },
@@ -72,11 +80,15 @@ export default () => ({
       this.loading = true
     }
 
-    if (this.withParams !== undefined && this.withParams) {
+    if ((this.withParams !== undefined && this.withParams) || this.withFormData !== undefined) {
       this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
     }
 
     let body = selectorsParams(this.withParams)
+
+    if (this.withFormData !== undefined) {
+      Object.assign(body, formDataParams(this.withFormData, this.$el))
+    }
 
     if (this.withQueryParams) {
       const queryParams = new URLSearchParams(window.location.search)

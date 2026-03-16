@@ -129,7 +129,7 @@ abstract class BaseLayout extends AbstractLayout
         return [];
     }
 
-    protected function getTopBarComponent(): Topbar
+    protected function getTopBarComponent(): TopBar
     {
         return TopBar::make([
             Div::make([
