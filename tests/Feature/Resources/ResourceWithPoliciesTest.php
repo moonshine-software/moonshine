@@ -42,7 +42,7 @@ it('policies in index', function () {
     )
         ->assertOk()
         ->assertSeeHtml(CreateButton::for('Create', $this->resource))
-        ->assertSeeHtml(MassDeleteButton::for($this->resource))
+        ->assertSeeHtml(MassDeleteButton::for($this->resource, modalName: $this->resource->getUriKey() . '-mass-delete-modal'))
     ;
 
 });
