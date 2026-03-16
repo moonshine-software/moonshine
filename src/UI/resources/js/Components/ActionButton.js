@@ -62,11 +62,12 @@ export default () => ({
     const data = Object.assign({}, preparedURLParams, selectorsParams(this.withParams))
 
     if (this.withFormData !== undefined && this.withFormData !== false) {
-      Object.assign(data, formToJSON(
-        this.withFormData
-          ? document.querySelector(this.withFormData)
-          : this.$el.closest('form')
-      ))
+      Object.assign(
+        data,
+        formToJSON(
+          this.withFormData ? document.querySelector(this.withFormData) : this.$el.closest('form'),
+        ),
+      )
     }
 
     extra['_data'] = data
@@ -94,11 +95,12 @@ export default () => ({
     if (this.withFormData !== undefined && this.withFormData !== false) {
       this.method = this.method.toLowerCase() === 'get' ? 'post' : this.method
 
-      Object.assign(body, formToJSON(
-        this.withFormData
-          ? document.querySelector(this.withFormData)
-          : this.$el.closest('form')
-      ))
+      Object.assign(
+        body,
+        formToJSON(
+          this.withFormData ? document.querySelector(this.withFormData) : this.$el.closest('form'),
+        ),
+      )
     }
 
     if (this.withQueryParams) {
