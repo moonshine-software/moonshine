@@ -10,6 +10,7 @@ export default () => ({
   method: 'GET',
   withParams: '',
   withQueryParams: false,
+  withFormData: false,
   loading: false,
   btnText: '',
 
