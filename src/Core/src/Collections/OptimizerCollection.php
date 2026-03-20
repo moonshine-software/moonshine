@@ -99,7 +99,9 @@ final class OptimizerCollection implements OptimizerCollectionContract
 
         foreach ($this->groups as $type) {
             foreach ($items as $value) {
-                $autoload[$type] = array_unique(array_merge($autoload[$type] ?? [], $value[$type] ?? []));
+                /** @var array<string> $merged */
+                $merged = array_merge($autoload[$type] ?? [], $value[$type] ?? []);
+                $autoload[$type] = array_unique($merged);
             }
         }
 

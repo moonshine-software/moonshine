@@ -21,9 +21,9 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "illuminate/support": "^10|^11|^12",
-        "illuminate/contracts": "^10|^11|^12",
-        "illuminate/view": "^10|^11|^12",
+        "illuminate/support": "^10|^11|^12|^13",
+        "illuminate/contracts": "^10|^11|^12|^13",
+        "illuminate/view": "^10|^11|^12|^13",
         "moonshine/support": "^4.0",
         "psr/container": "^2.0",
         "psr/http-message": "^2.0",

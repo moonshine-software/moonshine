@@ -160,7 +160,7 @@ trait WithModal
     public function toggleModal(Closure|string $name = 'default', Closure|string|null $asyncUrl = null): static
     {
         return $this->onClick(
-         static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
+            static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
                 $original = $ctx->getData()?->getOriginal();
                 $resolvedName = Str::lower((string) (value($name, $original, $ctx) ?? 'default'));
                 $resolvedAsyncUrl = value($asyncUrl, $original, $ctx);
