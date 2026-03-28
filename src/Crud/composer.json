@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "symfony/http-foundation": "^6.2|^7.1|^7.2|^7.3",
+        "symfony/http-foundation": "^6.2|^7.1|^7.2|^7.3|^8.0",
         "moonshine/ui": "^4.0",
         "moonshine/asset-manager": "^4.0",
         "moonshine/contracts": "^4.0",

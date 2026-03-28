@@ -52,6 +52,8 @@ abstract class IterableComponent extends MoonShineComponent implements
 
     protected bool $itemsResolved = false;
 
+    protected bool $paginatorResolved = false;
+
     /**
      * @param  Closure(iterable<TData> $items, static $ctx): iterable<TData>  $resolver
      */
@@ -76,6 +78,12 @@ abstract class IterableComponent extends MoonShineComponent implements
 
     protected function resolvePaginator(): void
     {
+        if ($this->paginatorResolved) {
+            return;
+        }
+
+        $this->paginatorResolved = true;
+
         $items = $this->hasCast()
             ? $this->getCast()->paginatorCast($this->items)
             : $this->items;
