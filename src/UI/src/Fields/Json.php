@@ -315,7 +315,7 @@ class Json extends Field implements
         if ($this->isObjectMode()) {
             $fields = $fields
                 ->map(
-                    fn ($field) => $field
+                    fn ($field): FieldContract => $field
                         ->customAttributes($this->getReactiveAttributes("{$this->getColumn()}.{$field->getColumn()}"))
                         ->customAttributes(['data-object-mode' => true])
                 );

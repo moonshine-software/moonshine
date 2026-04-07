@@ -177,9 +177,7 @@ class Fields extends BaseCollection implements FieldsContract
                 );
             }
 
-            if ($component instanceof FieldContract) {
-                $component->fillData(\is_null($casted) ? $raw : $casted, $index);
-            }
+            $component->fillData(\is_null($casted) ? $raw : $casted, $index);
 
             return clone $component;
         });
