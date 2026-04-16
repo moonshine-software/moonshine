@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Providers;
 
-use Illuminate\Foundation\Http\Events\RequestHandled;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
