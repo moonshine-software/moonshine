@@ -366,8 +366,13 @@ final class MoonShineServiceProvider extends ServiceProvider
             ->registerAuth()
             ->registerApplies();
 
-        // Octane events
         tap($this->app['events'], static function ($event): void {
+            $event->listen(
+                \Illuminate\Foundation\Http\Events\RequestHandled::class,
+                static fn () => moonshine()->flushState()
+            );
+
+            // Octane events
             $event->listen(
                 'Laravel\Octane\Events\RequestHandled',
                 static fn () => moonshine()->flushState()
