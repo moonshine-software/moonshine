@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
+use MoonShine\Contracts\Core\StatefulContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 
@@ -13,7 +14,8 @@ interface FormElementContract extends
     HasQuickFormElementAttributesContract,
     HasLabelContract,
     NowOnContract,
-    HasShowWhenContract
+    HasShowWhenContract,
+    StatefulContract
 {
     public function hasParent(): bool;
 

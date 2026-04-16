@@ -572,7 +572,7 @@ class RelationRepeater extends ModelRelationField implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        static fn (Field $field): mixed => $field
+                        static fn (FieldContract $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value)
                     );

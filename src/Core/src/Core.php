@@ -60,7 +60,7 @@ abstract class Core implements CoreContract, StatefulContract
     protected array $instances = [];
 
     /**
-     * @var (Closure(): CoreContract<ConfiguratorContract>)|CoreContract<ConfiguratorContract>
+     * @var (Closure(): CoreContract)|CoreContract
      */
     protected static Closure|CoreContract $instance;
 
@@ -87,7 +87,7 @@ abstract class Core implements CoreContract, StatefulContract
     }
 
     /**
-     * @param (Closure(): CoreContract<ConfiguratorContract>)|CoreContract<ConfiguratorContract> $core
+     * @param (Closure(): CoreContract)|CoreContract $core
      */
     public static function setInstance(Closure|CoreContract $core): void
     {

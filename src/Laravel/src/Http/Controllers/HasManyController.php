@@ -31,6 +31,7 @@ final class HasManyController extends MoonShineController
      */
     public function formComponent(RelationModelFieldRequest $request): string
     {
+        /** @var Model|null $parent */
         $parent = $request->getResource()?->getItemOrInstance();
 
         /** @var null|HasMany|MorphMany $field */
@@ -122,7 +123,7 @@ final class HasManyController extends MoonShineController
                     array_filter([
                         $relation?->getForeignKeyName() => $parent?->getKey(),
                         ...$relation instanceof MorphOneOrMany
-                            ? [$relation->getMorphType() => $parent?->getMorphClass()]
+                            ? [$relation->getMorphType() => $parent->getMorphClass()]
                             : [],
                     ], static fn ($value) => filled($value)),
                     $resource->getCaster()

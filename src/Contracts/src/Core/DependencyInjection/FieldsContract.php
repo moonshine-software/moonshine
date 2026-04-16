@@ -63,7 +63,10 @@ interface FieldsContract extends Enumerable, HasStructureContract
 
     public function prepareAttributes(): static;
 
-    public function whenFieldsConditions(): static;
+    /**
+     * @return Collection<array-key, array<array-key, mixed>>
+     */
+    public function whenFieldsConditions(): Collection;
 
     /**
      * @param  T  $default

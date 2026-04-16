@@ -83,7 +83,10 @@ class Tabs extends AbstractWithComponents
      */
     public function getActive(): string|int|null
     {
-        return $this->getTabs()->firstWhere('active', true)?->getId();
+        /** @var ?Tab $active */
+        $active = $this->getTabs()->firstWhere('active', true);
+
+        return $active?->getId();
     }
 
     /**

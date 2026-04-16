@@ -14,6 +14,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FieldWithComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -641,7 +642,7 @@ class BelongsToMany extends ModelRelationField implements
 
         $this->getFields()
             ->onlyFields()
-            ->each(static fn (Field $field): mixed => $field->beforeApply($data));
+            ->each(static fn (FieldContract $field): mixed => $field->beforeApply($data));
 
         return $data;
     }
@@ -662,7 +663,7 @@ class BelongsToMany extends ModelRelationField implements
                 $this->getFields()
                     ->onlyFields()
                     ->each(
-                        static fn (Field $field): mixed => $field
+                        static fn (FieldContract $field): mixed => $field
                             ->fillData($value)
                             ->afterDestroy($value),
                     );

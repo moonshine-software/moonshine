@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\HasCanSeeContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 
 /**
@@ -199,7 +200,7 @@ trait WithViewRenderer
         }
 
         if ($this instanceof HasFieldsContract) {
-            /** @var Collection<array-key, ComponentContract> $fieldsCollection */
+            /** @var Collection<array-key, FieldContract> $fieldsCollection */
             $fieldsCollection = $this->getFields();
 
             $components = $fieldsCollection

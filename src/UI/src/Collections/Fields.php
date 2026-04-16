@@ -135,11 +135,11 @@ class Fields extends BaseCollection implements FieldsContract
     }
 
     /**
+     * @return Collection<array-key, array<array-key, mixed>>
      * @throws Throwable
      */
-    public function whenFieldsConditions(): static
+    public function whenFieldsConditions(): Collection
     {
-        /** @var static */
         return $this->whenFields()->map(
             static fn (
                 FieldContract $field
@@ -177,9 +177,7 @@ class Fields extends BaseCollection implements FieldsContract
                 );
             }
 
-            if ($component instanceof FieldContract) {
-                $component->fillData(\is_null($casted) ? $raw : $casted, $index);
-            }
+            $component->fillData(\is_null($casted) ? $raw : $casted, $index);
 
             return clone $component;
         });
