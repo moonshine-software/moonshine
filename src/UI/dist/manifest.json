@@ -3,6 +3,7 @@
     "file": "assets/main.css",
     "src": "resources/css/main.css",
     "isEntry": true,
+    "name": "main",
     "names": [
       "main.css"
     ]

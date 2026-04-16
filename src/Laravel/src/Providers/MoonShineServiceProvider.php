@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Providers;
 
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
@@ -366,8 +367,13 @@ final class MoonShineServiceProvider extends ServiceProvider
             ->registerAuth()
             ->registerApplies();
 
-        // Octane events
         tap($this->app['events'], static function ($event): void {
+            $event->listen(
+                RequestHandled::class,
+                static fn () => moonshine()->flushState()
+            );
+
+            // Octane events
             $event->listen(
                 'Laravel\Octane\Events\RequestHandled',
                 static fn () => moonshine()->flushState()

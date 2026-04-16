@@ -130,11 +130,4 @@ abstract class AbstractTestingCrudResource extends CrudResource
         return null;
     }
 
-    public function flushState(): void
-    {
-        parent::flushState();
-
-        $this->lastId = 0;
-        $this->items = [];
-    }
 }

@@ -98,13 +98,33 @@ describe('without special fields', function () {
             ->assertStatus(201);
     });
 
+    it('crud store multiple times in one test creates distinct items', function () {
+        $before = Item::query()->count();
+
+        foreach (['first row', 'second row', 'third row'] as $name) {
+            $data = $this->storeData;
+            $data['name'] = $name;
+
+            asAdmin()
+                ->post($this->itemResource->getRoute('crud.store'), $data)
+                ->assertRedirect();
+        }
+
+        expect(Item::query()->count() - $before)->toBe(3)
+            ->and(Item::query()->where('name', 'first row')->exists())->toBeTrue()
+            ->and(Item::query()->where('name', 'second row')->exists())->toBeTrue()
+            ->and(Item::query()->where('name', 'third row')->exists())->toBeTrue();
+    });
+
     it('crud update', function () {
         $item = storeResource($this->itemResource, $this->storeData);
 
-        asAdmin()->put(
-            $this->itemResource->getRoute('crud.update', $item->getKey()),
-            ['name' => 'New test name']
-        )
+        asAdmin()
+            ->from($this->itemResource->getFormPageUrl($item->getKey()))
+            ->put(
+                $this->itemResource->getRoute('crud.update', $item->getKey()),
+                ['name' => 'New test name']
+            )
             ->assertRedirect($this->itemResource->getFormPageUrl($item->getKey()));
 
         $item->refresh();
@@ -173,11 +193,9 @@ describe('without special fields', function () {
 
 describe('with base crud resource', function () {
     it('crud create ajax', function () {
-        /** @var TestCommentCrudResource $crudResource */
-        $crudResource = $this->moonshineCore
-            ->resources([TestCommentCrudResource::class])
-            ->getResources()
-            ->findByClass(TestCommentCrudResource::class);
+        $crudResource = app(TestCommentCrudResource::class);
+
+        $this->moonshineCore->resources([$crudResource]);
 
         $saveData = [
             'user_id' => 1,
@@ -195,11 +213,9 @@ describe('with base crud resource', function () {
     });
 
     it('crud update', function () {
-        /** @var TestCommentCrudResource $crudResource */
-        $crudResource = $this->moonshineCore
-            ->resources([TestCommentCrudResource::class])
-            ->getResources()
-            ->findByClass(TestCommentCrudResource::class);
+        $crudResource = app(TestCommentCrudResource::class);
+
+        $this->moonshineCore->resources([$crudResource]);
 
         $saveData = [
             'user_id' => 1,
