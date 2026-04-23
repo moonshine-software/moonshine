@@ -38,9 +38,11 @@ class Password extends Text
         return true;
     }
 
-    public function raw(bool $condition = true): self
+    public function raw((Closure|bool|null $condition = null): static
     {
-        $this->hashed = ! $condition;
+        $result = value($condition, $this) ?? true;
+
+        $this->hashed = ! $result;
 
         return $this;
     }
