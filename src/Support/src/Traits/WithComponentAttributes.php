@@ -237,7 +237,7 @@ trait WithComponentAttributes
         if (! $variable instanceof Closure) {
             $o = \is_null($value) ? '=' : $operator;
             $o = $o === '=' ? '==' : $o;
-            $v = \is_null($value) ? $operator : $value;
+            $v = $value ?? $operator;
             $variable = static fn (self $ctx): string => "$variable$o'$v'";
         }
 

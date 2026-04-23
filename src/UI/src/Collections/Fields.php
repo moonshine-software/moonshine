@@ -159,7 +159,7 @@ class Fields extends BaseCollection implements FieldsContract
         /** @var static */
         return ($preparedFields ?? $this->onlyFields(withApplyWrappers: true))->map(
             static fn (FieldContract $field): FieldContract => (clone $field)
-                ->fillData(\is_null($casted) ? $raw : $casted, $index)
+                ->fillData($casted ?? $raw, $index)
         );
     }
 
@@ -177,7 +177,7 @@ class Fields extends BaseCollection implements FieldsContract
                 );
             }
 
-            $component->fillData(\is_null($casted) ? $raw : $casted, $index);
+            $component->fillData($casted ?? $raw, $index);
 
             return clone $component;
         });
@@ -190,7 +190,7 @@ class Fields extends BaseCollection implements FieldsContract
     {
         $this->onlyFields(withApplyWrappers: true)->map(
             static fn (FieldContract $field): FieldContract => $field
-                ->fillData(\is_null($casted) ? $raw : $casted, $index)
+                ->fillData($casted ?? $raw, $index)
         );
     }
 

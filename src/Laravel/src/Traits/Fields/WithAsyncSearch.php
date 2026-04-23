@@ -220,7 +220,7 @@ trait WithAsyncSearch
         $this->associatedWithSearchQuery = $searchQuery;
 
         return $this->asyncSearch(
-            searchQuery: \is_null($searchQuery) ? $defaultQuery : $searchQuery,
+            searchQuery: $searchQuery ?? $defaultQuery,
             associatedWith: $column,
         );
     }
