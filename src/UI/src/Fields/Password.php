@@ -38,7 +38,7 @@ class Password extends Text
         return true;
     }
 
-    public function raw((Closure|bool|null $condition = null): static
+    public function raw(Closure|bool|null $condition = null): static
     {
         $result = value($condition, $this) ?? true;
 
