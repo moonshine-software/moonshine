@@ -40,7 +40,7 @@ class Password extends Text
 
     public function raw(bool $condition = true): self
     {
-        $this->hashed = !$condition;
+        $this->hashed = ! $condition;
 
         return $this;
     }
