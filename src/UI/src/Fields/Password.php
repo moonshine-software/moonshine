@@ -16,6 +16,8 @@ class Password extends Text
 
     protected ?TextWrap $textWrap = null;
 
+    protected bool $hashedPassword = true;
+
     protected function resolvePreview(): string
     {
         return '***';
@@ -26,9 +28,21 @@ class Password extends Text
         return '';
     }
 
+    protected function hashedPassword(): bool
+    {
+        return $this->hashedPassword;
+    }
+
     public function isUnescape(): bool
     {
         return true;
+    }
+
+    public function raw(): self
+    {
+        $this->hashedPassword = false;
+
+        return $this;
     }
 
     protected function resolveOnApply(): ?Closure
@@ -40,7 +54,9 @@ class Password extends Text
                 data_set(
                     $item,
                     $this->getColumn(),
-                    $this->getCore()->getContainer(Hasher::class)->make($value)
+                    $this->hashedPassword()
+                        ? $this->getCore()->getContainer(Hasher::class)->make($value)
+                        : $value
                 );
             }
 
