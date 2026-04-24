@@ -145,9 +145,7 @@ trait Applies
             );
         }
 
-        $applyFunction = \is_null($this->onApply)
-            ? $this->resolveOnApply()
-            : $this->onApply;
+        $applyFunction = $this->onApply ?? $this->resolveOnApply();
 
         return \is_null($applyFunction)
             ? $default($data, $this->getRequestValue(), $this)
