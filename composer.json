@@ -101,6 +101,9 @@
             "providers": [
                 "MoonShine\\Laravel\\Providers\\MoonShineServiceProvider"
             ]
+        },
+        "skills": {
+            "source": "skills"
         }
     },
     "scripts": {
