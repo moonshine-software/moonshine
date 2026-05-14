@@ -71,8 +71,26 @@ it('policies index forbidden', function () {
     )->assertForbidden();
 });
 
+it('policy denied index is forbidden by crud json endpoint', function () {
+    MoonshineUser::query()->where('id', 1)->update([
+        'name' => 'Policies test',
+    ]);
+
+    asAdmin()
+        ->withHeader('Accept', 'application/json')
+        ->get($this->resource->getRoute('crud.index'))
+        ->assertForbidden();
+});
+
 it('policies in detail', function () {
     asAdmin()->get(
         $this->resource->getDetailPageUrl($this->item->id)
     )->assertForbidden();
+});
+
+it('policy denied detail is forbidden by crud json endpoint', function () {
+    asAdmin()
+        ->withHeader('Accept', 'application/json')
+        ->get($this->resource->getRoute('crud.show', $this->item->id))
+        ->assertForbidden();
 });

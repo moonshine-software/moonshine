@@ -7,7 +7,6 @@ namespace MoonShine\Laravel\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Http\Request;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Crud\Contracts\Notifications\MoonShineNotificationContract;
@@ -17,6 +16,8 @@ use MoonShine\Laravel\Http\Requests\Resources\DeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\StoreFormRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
+use MoonShine\Laravel\Http\Requests\Resources\ViewAnyFormRequest;
+use MoonShine\Laravel\Http\Requests\Resources\ViewFormRequest;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Enums\HtmlMode;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ final class CrudController extends MoonShineController
             ->only(['store', 'update']);
     }
 
-    public function index(Request $request, CrudRequestContract $crudRequest): Jsonable
+    public function index(ViewAnyFormRequest $request, CrudRequestContract $crudRequest): Jsonable
     {
         abort_if(! $request->wantsJson(), 403);
 
@@ -56,7 +57,7 @@ final class CrudController extends MoonShineController
         );
     }
 
-    public function show(Request $request, CrudRequestContract $crudRequest): Jsonable
+    public function show(ViewFormRequest $request, CrudRequestContract $crudRequest): Jsonable
     {
         abort_if(! $request->wantsJson(), 403);
 
