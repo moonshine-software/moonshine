@@ -18,12 +18,18 @@
 
             @foreach($notifications as $notification)
                 <div class="notifications-item">
-                    <a href="{{ $notification->getReadRoute() }}"
-                       class="notifications-remove"
-                       title="{{ $translates['mark_as_read'] }}"
+                    <form action="{{ $notification->getReadRoute() }}"
+                          method="POST"
+                          class="notifications-remove"
                     >
-                        <x-moonshine::icon icon="x-mark" />
-                    </a>
+                        @csrf
+
+                        <button type="submit"
+                                title="{{ $translates['mark_as_read'] }}"
+                        >
+                            <x-moonshine::icon icon="x-mark" />
+                        </button>
+                    </form>
 
                     <div class="notifications-category text-{{ $notification->getColor() }}">
                         <x-moonshine::icon :icon="$notification->getIcon()" />
@@ -46,9 +52,13 @@
             @endforeach
 
             <x-slot:footer>
-                <a href="{{ $readAllRoute }}" class="notifications-read">
-                    {{ $translates['mark_as_read_all'] }}
-                </a>
+                <form action="{{ $readAllRoute }}" method="POST">
+                    @csrf
+
+                    <button type="submit" class="notifications-read">
+                        {{ $translates['mark_as_read_all'] }}
+                    </button>
+                </form>
             </x-slot:footer>
         </x-moonshine::dropdown>
     </div>

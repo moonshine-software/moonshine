@@ -13,6 +13,7 @@ use MoonShine\Crud\JsonResponse;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Http\Requests\Relations\BelongsToManyPivotRequest;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\AlpineJs;
@@ -187,7 +188,7 @@ final class BelongsToManyPivotController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function store(RelationModelFieldRequest $request): JsonResponse
+    public function store(BelongsToManyPivotRequest $request): JsonResponse
     {
         $parent = $request->getResource()?->getItemOrInstance();
 
@@ -220,7 +221,7 @@ final class BelongsToManyPivotController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function update(RelationModelFieldRequest $request): JsonResponse
+    public function update(BelongsToManyPivotRequest $request): JsonResponse
     {
         $parent = $request->getResource()?->getItemOrInstance();
 
@@ -253,7 +254,7 @@ final class BelongsToManyPivotController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function destroy(RelationModelFieldRequest $request): JsonResponse
+    public function destroy(BelongsToManyPivotRequest $request): JsonResponse
     {
         $parent = $request->getResource()?->getItemOrInstance();
 

@@ -80,8 +80,8 @@ final readonly class DefaultRoutes
                 ->prefix('notifications')
                 ->as('notifications.')
                 ->group(static function (): void {
-                    Route::get('/', 'readAll')->name('readAll');
-                    Route::get('/{notification}', 'read')->name('read');
+                    Route::post('/', 'readAll')->name('readAll');
+                    Route::post('/{notification}', 'read')->name('read');
                 });
 
             /**

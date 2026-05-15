@@ -31,6 +31,10 @@ class ItemPolicy
 
     public function update(MoonshineUser $user, Item $item)
     {
+        if ($user->name === 'Policies test') {
+            return false;
+        }
+
         return true;
     }
 
