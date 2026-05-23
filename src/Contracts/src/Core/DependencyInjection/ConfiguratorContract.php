@@ -22,6 +22,14 @@ interface ConfiguratorContract extends ArrayAccess
 
     public function getTitle(): string;
 
+    public function getLogo(bool $small = false): ?string;
+
+    public function isUseProfile(): bool;
+
+    public function isUseNotifications(): bool;
+
+    public function isAuthEnabled(): bool;
+
     /**
      * @return class-string<LayoutContract>
      */

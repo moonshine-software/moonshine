@@ -76,14 +76,14 @@ interface CoreContract
     public function getFieldsCollection(iterable $items = []): FieldsContract;
 
     /**
-     * @param  list<class-string<ResourceContract>>  $data
+     * @param  list<class-string<ResourceContract>|ResourceContract>  $data
      */
     public function resources(array $data, bool $newCollection = false): static;
 
     public function getResources(): ResourcesContract;
 
     /**
-     * @param  list<class-string<PageContract>>  $data
+     * @param  list<class-string<PageContract>|PageContract>  $data
      */
     public function pages(array $data, bool $newCollection = false): static;
 

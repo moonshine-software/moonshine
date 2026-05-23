@@ -27,7 +27,7 @@ interface ResourcesContract extends Enumerable
     ): ?ResourceContract;
 
     /**
-     * @param  class-string<TResource>  $default
+     * @param  class-string<TResource>  $class
      * @param  null|TResource  $default
      *
      * @return null|TResource
