@@ -12,9 +12,11 @@ interface OptimizerCollectionContract
     public function getCachePath(): string;
 
     /**
-     * @param  class-string  $contract
+     * @template T of object
      *
-     * @return ($contract is class-string<PageContract> ? list<class-string<PageContract>> : ($contract is class-string<ResourceContract> ? list<class-string<ResourceContract>> : array<array-key, mixed>))
+     * @param  class-string<T>  $contract
+     *
+     * @return (T is PageContract ? list<class-string<PageContract>> : (T is ResourceContract ? list<class-string<ResourceContract>> : array<array-key, mixed>))
      */
     public function getType(string $contract, ?string $namespace = null, bool $withCache = true): array;
 
