@@ -50,13 +50,18 @@ final class OptimizerCollection implements OptimizerCollectionContract
     }
 
     /**
-     * @return array<array-key, mixed>
+     * @param  class-string  $contract
+     *
+     * @return ($contract is class-string<PageContract> ? list<class-string<PageContract>> : ($contract is class-string<ResourceContract> ? list<class-string<ResourceContract>> : array<array-key, mixed>))
      */
     public function getType(string $contract, ?string $namespace = null, bool $withCache = true): array
     {
         return $this->getTypes($namespace, $withCache)[$contract] ?? [];
     }
 
+    /**
+     * @param  class-string  $contract
+     */
     public function hasType(string $contract): bool
     {
         return $this->getType($contract) !== [];
