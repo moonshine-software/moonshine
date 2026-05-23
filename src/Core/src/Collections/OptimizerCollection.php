@@ -62,6 +62,21 @@ final class OptimizerCollection implements OptimizerCollectionContract
     }
 
     /**
+     * @template T of object
+     *
+     * @param  class-string<T>  $contract
+     *
+     * @return list<class-string<T>>
+     */
+    public function getClassType(string $contract, ?string $namespace = null, bool $withCache = true): array
+    {
+        return array_values(array_filter(
+            $this->getType($contract, $namespace, $withCache),
+            static fn (mixed $class): bool => \is_string($class) && is_a($class, $contract, true),
+        ));
+    }
+
+    /**
      * @param  class-string  $contract
      */
     public function hasType(string $contract): bool

@@ -21,6 +21,15 @@ interface OptimizerCollectionContract
     public function getType(string $contract, ?string $namespace = null, bool $withCache = true): array;
 
     /**
+     * @template T of object
+     *
+     * @param  class-string<T>  $contract
+     *
+     * @return list<class-string<T>>
+     */
+    public function getClassType(string $contract, ?string $namespace = null, bool $withCache = true): array;
+
+    /**
      * @return array<class-string, mixed>
      */
     public function getTypes(?string $namespace = null, bool $withCache = true): array;
