@@ -184,7 +184,7 @@ table {
     & > table > thead {
       position: sticky;
       top: 0;
-      z-index: var(--ms-table-sticky-z-index, 1);
+      z-index: var(--ms-table-sticky-z-index, 2);
     }
   }
 }
@@ -209,6 +209,7 @@ table {
         &.sticky-col {
           vertical-align: middle;
           position: sticky;
+          z-index: var(--ms-table-sticky-col-z-index, 1);
           right: 0;
         }
       }
@@ -218,9 +219,8 @@ table {
       th,
       td {
         &.sticky-col {
-          background-color: --alpha(
-            var(--ms-table-thead-bg-color, var(--ms-table-bg-color)) / 0.95
-          );
+          background-color: var(--ms-table-thead-bg-color, var(--ms-table-bg-color));
+          z-index: var(--ms-table-sticky-col-thead-z-index, 3);
         }
       }
     }
@@ -234,7 +234,7 @@ table {
           ) !important;
 
           &:has(.dropdown-body.visible) {
-            z-index: 1;
+            z-index: var(--ms-table-sticky-col-dropdown-z-index, 4);
           }
         }
       }

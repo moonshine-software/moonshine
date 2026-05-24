@@ -111,6 +111,23 @@ describe('fields', function () {
         ;
     });
 
+    it('fill cloned recursively skips non-field components', function () {
+        $fields = Fields::make([
+            Fieldset::make('Info', [
+                Text::make('Text'),
+                LineBreak::make(),
+            ])->fillData(['text' => 'value']),
+        ])->fillClonedRecursively(['text' => 'value']);
+
+        $fieldset = $fields->first();
+
+        expect($fieldset)
+            ->toBeInstanceOf(Fieldset::class)
+            ->and($fieldset->getPreparedFields()->onlyFields()->first()->toValue())
+            ->toBe('value')
+        ;
+    });
+
     it('fill', function () {
         $values = [
             'when' => 'value',

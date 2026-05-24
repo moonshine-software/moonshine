@@ -170,17 +170,33 @@ class Fields extends BaseCollection implements FieldsContract
         ?FieldsContract $preparedFields = null
     ): static {
         /** @var static */
-        return ($preparedFields ?? $this)->map(static function (ComponentContract $component) use ($raw, $casted, $index): ComponentContract {
+        return ($preparedFields ?? $this)->map(function (ComponentContract $component) use ($raw, $casted, $index): ComponentContract {
             if ($component instanceof HasFieldsContract) {
                 $component = (clone $component)->fields(
                     $component->getFields()->fillClonedRecursively($raw, $casted, $index)
                 );
             }
 
-            $component->fillData($casted ?? $raw, $index);
+            $this->fillComponent($component, $raw, $casted, $index);
 
             return clone $component;
         });
+    }
+
+    /**
+     * @param  array<string, mixed>  $raw
+     */
+    private function fillComponent(
+        ComponentContract $component,
+        array $raw,
+        ?DataWrapperContract $casted,
+        int $index
+    ): void {
+        if (! $component instanceof FieldContract) {
+            return;
+        }
+
+        $component->fillData($casted ?? $raw, $index);
     }
 
     /**
