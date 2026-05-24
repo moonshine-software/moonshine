@@ -213,4 +213,92 @@ describe('showWhenUpdateVisibility', () => {
       )
     }).not.toThrow()
   })
+
+  it('should show row cells when row value is in condition values', () => {
+    document.body.innerHTML = `
+      <form id="test-form">
+        <table data-inside="field">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" data-column="status" value="published"></td>
+              <td><input type="text" data-show-when-field="details" value="Visible row"></td>
+            </tr>
+            <tr>
+              <td><input type="text" data-column="status" value="archived"></td>
+              <td><input type="text" data-show-when-field="details" value="Hidden row"></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    `
+
+    showWhenUpdateVisibility(
+      [
+        {
+          changeField: 'status',
+          value: ['published', 'draft'],
+          operator: 'in',
+          is_row_mode: true,
+        },
+      ],
+      'details',
+      {},
+      'test-form',
+    )
+
+    const detailCells = document.querySelectorAll('[data-show-when-field="details"]')
+
+    expect(detailCells[0].closest('td').classList.contains('hidden')).toBe(false)
+    expect(detailCells[1].closest('td').classList.contains('hidden')).toBe(true)
+  })
+
+  it('should hide row cells when row value is in not-in condition values', () => {
+    document.body.innerHTML = `
+      <form id="test-form">
+        <table data-inside="field">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" data-column="status" value="published"></td>
+              <td><input type="text" data-show-when-field="details" value="Visible row"></td>
+            </tr>
+            <tr>
+              <td><input type="text" data-column="status" value="archived"></td>
+              <td><input type="text" data-show-when-field="details" value="Hidden row"></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    `
+
+    showWhenUpdateVisibility(
+      [
+        {
+          changeField: 'status',
+          value: ['archived', 'deleted'],
+          operator: 'not in',
+          is_row_mode: true,
+        },
+      ],
+      'details',
+      {},
+      'test-form',
+    )
+
+    const detailCells = document.querySelectorAll('[data-show-when-field="details"]')
+
+    expect(detailCells[0].closest('td').classList.contains('hidden')).toBe(false)
+    expect(detailCells[1].closest('td').classList.contains('hidden')).toBe(true)
+  })
 })

@@ -308,8 +308,8 @@ function shouldShowField(fieldName, inputs, field, formId, keepName) {
         let isVisible = evaluateCondition(
           target.type,
           field.operator,
-          field.value,
           inputGetValue(target),
+          field.value,
         )
 
         element.setAttribute('data-is-row-mode', 'true')
