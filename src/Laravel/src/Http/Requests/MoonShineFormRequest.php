@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
@@ -34,6 +37,22 @@ class MoonShineFormRequest extends FormRequest
         }
 
         $this->request = request()->getPayload();
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        if ($this->expectsJson()) {
+            $exception = new ValidationException($validator);
+
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => $exception->getMessage(),
+                    'errors' => $exception->errors(),
+                ], $exception->status)
+            );
+        }
+
+        parent::failedValidation($validator);
     }
 
     public function messages(): array
