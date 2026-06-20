@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Attributes\Layout;
 use MoonShine\Laravel\Layouts\BlankLayout;
@@ -59,7 +61,7 @@ class ErrorPage extends Page
 
         return [
             FlexibleRender::make(
-                static fn () => view($view),
+                static fn (): Factory|View => view($view),
                 ['code' => $code, 'message' => $message, 'logo' => $logo, 'backUrl' => $backUrl, 'backTitle' => $backTitle]
             ),
         ];

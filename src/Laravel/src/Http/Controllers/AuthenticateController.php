@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Illuminate\Routing\Redirector;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,7 +75,7 @@ class AuthenticateController extends MoonShineController
      */
     public function logout(Request $request, ConfiguratorContract $config, RouterContract $router): Response
     {
-        return $config->handleLogout(function () use ($request, $router) {
+        return $config->handleLogout(function () use ($request, $router): Redirector|RedirectResponse {
             $this->auth()->logout();
 
             $request->session()->invalidate();

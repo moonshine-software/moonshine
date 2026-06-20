@@ -31,7 +31,7 @@ class AppLayout extends BaseLayout
     protected function menu(): array
     {
         return [
-            MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
+            MenuGroup::make(static fn (): string|array|null => __('moonshine::ui.resource.system'), [
                 MenuItem::make(MoonShineUserResource::class),
                 MenuItem::make(MoonShineUserRoleResource::class),
             ]),
