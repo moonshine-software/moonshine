@@ -17,6 +17,8 @@ final class ReactiveController extends MoonShineController
 {
     public function __invoke(Request $request, CrudRequestContract $crudRequest): JsonResponse
     {
+        $this->authorizeResourcePage($crudRequest);
+
         $page = $crudRequest->getPage();
 
         /** @var ?FormBuilderContract $form */

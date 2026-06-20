@@ -47,7 +47,7 @@
         "friendsofphp/php-cs-fixer": "^3.89",
         "larastan/larastan": "^3.4",
         "moonshine/import-export": "^2.0",
-        "orchestra/testbench": "^9.9",
+        "orchestra/testbench": "^11",
         "pestphp/pest": "^4",
         "pestphp/pest-plugin-laravel": "^4",
         "rector/rector": "^2.3",

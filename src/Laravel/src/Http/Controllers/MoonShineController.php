@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Contracts\UI\TableRowContract;
@@ -17,6 +18,9 @@ use MoonShine\Laravel\Pages\QuickPage;
 use MoonShine\Laravel\Traits\Controller\InteractsWithAuth;
 use MoonShine\Laravel\Traits\Controller\InteractsWithUI;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
+use MoonShine\Support\Enums\Ability;
+use MoonShine\Support\Enums\Action;
+use MoonShine\Support\Enums\PageType;
 use MoonShine\Support\Enums\ToastType;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -56,6 +60,34 @@ abstract class MoonShineController extends BaseController
     protected function view(string $path, array $data = []): PageContract
     {
         return QuickPage::make()->setContentView($path, $data);
+    }
+
+    protected function authorizeResourcePage(CrudRequestContract $request): void
+    {
+        $resource = $request->getResource();
+
+        if (! $resource instanceof CrudResourceContract) {
+            return;
+        }
+
+        $ability = match ($request->getPage()->getPageType()) {
+            PageType::DETAIL => Ability::VIEW,
+            PageType::FORM => $resource->getItemID() === null
+                ? Ability::CREATE
+                : Ability::UPDATE,
+            default => Ability::VIEW_ANY,
+        };
+
+        $action = match ($ability) {
+            Ability::CREATE => Action::CREATE,
+            Ability::UPDATE => Action::UPDATE,
+            default => Action::VIEW,
+        };
+
+        abort_unless(
+            $resource->hasAction($action) && $resource->can($ability),
+            Response::HTTP_FORBIDDEN
+        );
     }
 
     /**

@@ -232,7 +232,7 @@ abstract class Core implements CoreContract, StatefulContract
             }
 
             /** @var T $instance */
-            $instance = \is_string($item) ? $this->getContainer()->get($item) : $item;
+            $instance = \is_string($item) ? $this->getContainer($item) : $item;
             $this->instances[$instance::class] = $instance;
             $targets[] = $instance;
         }
