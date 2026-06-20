@@ -34,6 +34,21 @@ it('resolve preview value', function (): void {
         ->toBe('#DDD');
 });
 
+it('escapes malicious values when rendered', function (): void {
+    $payload = "'-alert(document.domain)-<img src=x onerror=alert(1)>";
+
+    $form = (string) $this->field->fill($payload)->render();
+    $preview = (string) $this->field->flushRenderCache()->previewMode()->render();
+
+    expect($form)
+        ->toContain('\\u0027-alert(document.domain)-\\u003Cimg src=x onerror=alert(1)\\u003E')
+        ->not->toContain("color: '{$payload}'")
+        ->not->toContain('<img src=x onerror=alert(1)>')
+        ->and($preview)
+        ->toContain('&lt;img src=x onerror=alert(1)&gt;')
+        ->not->toContain('<img src=x onerror=alert(1)>');
+});
+
 it('apply', function (): void {
     $data = ['color' => '#FFF'];
 

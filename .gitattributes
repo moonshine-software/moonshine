@@ -24,3 +24,5 @@
 /.package-lock.json export-ignore
 /Makefile export-ignore
 /README.md export-ignore
+/repair-monorepo.sh
+/node_modules

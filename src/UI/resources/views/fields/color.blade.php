@@ -1,7 +1,7 @@
 @props([
     'value' => '',
 ])
-<div x-data="{ color: '{!! $value ?? "#000000" !!}' }">
+<div x-data="{ color: @js($value ?? '#000000') }">
     <div class="form-color">
         <div class="form-color-thumb">
             <x-moonshine::form.input
