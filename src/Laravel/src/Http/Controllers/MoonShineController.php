@@ -79,13 +79,14 @@ abstract class MoonShineController extends BaseController
         };
 
         $action = match ($ability) {
+            Ability::VIEW_ANY => null,
             Ability::CREATE => Action::CREATE,
             Ability::UPDATE => Action::UPDATE,
             default => Action::VIEW,
         };
 
         abort_unless(
-            $resource->hasAction($action) && $resource->can($ability),
+            (\is_null($action) || $resource->hasAction($action)) && $resource->can($ability),
             Response::HTTP_FORBIDDEN
         );
     }

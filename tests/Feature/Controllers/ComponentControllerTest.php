@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Resources\MoonShineUserRoleResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\ID;
@@ -48,6 +50,24 @@ it('forbids index component when view any policy denies it', function () {
         'pageUri' => 'index-page',
     ]))
         ->assertForbidden();
+});
+
+it('reloads system role index component after update when detail view action is disabled', function () {
+    $resource = app(MoonShineUserRoleResource::class);
+
+    asAdmin()->putJson(
+        $resource->getRoute('crud.update', MoonshineUserRole::DEFAULT_ROLE_ID),
+        ['name' => 'Admin Renamed']
+    )
+        ->assertOk();
+
+    asAdmin()->get($this->moonshineCore->getRouter()->to('component', [
+        '_component_name' => "index-table-{$resource->getUriKey()}",
+        'resourceUri' => $resource->getUriKey(),
+        'pageUri' => 'moon-shine-user-role-index-page',
+    ]))
+        ->assertSee('Admin Renamed')
+        ->assertOk();
 });
 
 it('forbids detail component when view policy denies it', function () {
