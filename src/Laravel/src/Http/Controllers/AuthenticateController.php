@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use Illuminate\Routing\Redirector;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
