@@ -60,12 +60,23 @@ final class HasManyController extends MoonShineController
 
         $isAsync = $field->isAsync();
 
-        $getFields = static function () use ($resource, $field, $parent, $update): array {
+        $getFields = static function () use ($resource, $field, $parent, $update, $item): array {
             $fields = $resource->getFormFields();
 
             $fields->onlyFields()->each(
-                static fn (FieldContract $nestedFields): FieldContract => $nestedFields
-                    ->setParent($field)
+                static function (FieldContract $nestedFields) use ($field, $resource, $item): FieldContract {
+                    $nestedFields->setParent($field);
+
+                    if ($nestedFields instanceof ModelRelationField && $item->getKey() !== null) {
+                        $nestedFields->nowOn(
+                            page: $resource->getFormPage(),
+                            resource: $resource,
+                            params: ['resourceItem' => $item->getKey()],
+                        );
+                    }
+
+                    return $nestedFields;
+                }
             );
 
             $relation = $field->getRelation();

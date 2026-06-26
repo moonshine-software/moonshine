@@ -2,8 +2,17 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\Tests\Fixtures\Models\Category;
+use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 uses()->group('has-many-controller');
 
@@ -111,5 +120,60 @@ it('get form component', function () {
     ]))
         ->assertOk()
         ->assertSee('form')
+    ;
+});
+
+it('uses related resource context for nested relation fields in form component', function (): void {
+    $category = Category::factory()->create();
+    $item = Item::factory()->create([
+        'category_id' => $category->getKey(),
+    ]);
+
+    $itemResource = (new TestResource(app(CoreContract::class)))
+        ->setTestModel(Item::class)
+        ->setTestUriKey('nested-item-resource')
+        ->setTestFields([
+            ID::make(),
+            Text::make('Name', 'name'),
+            BelongsToMany::make('Categories', resource: TestCategoryResource::class)
+                ->fields([
+                    Text::make('Pivot 1', 'pivot_1'),
+                ])
+                ->pivotModalMode()
+                ->creatable(),
+        ]);
+
+    $categoryResource = (new TestResource(app(CoreContract::class)))
+        ->setTestModel(Category::class)
+        ->setTestUriKey('nested-category-resource')
+        ->setTestFields([
+            ID::make(),
+            Text::make('Name', 'name'),
+            HasMany::make('Items', 'items', resource: $itemResource)
+                ->creatable(),
+        ]);
+
+    app(CoreContract::class)->resources([
+        $categoryResource,
+        $itemResource,
+    ]);
+
+    $expectedNestedPivotUrl = $this->moonshineCore->getRouter()->to('belongs-to-many-pivot.form', [
+        'pageUri' => $itemResource->getFormPage()->getUriKey(),
+        'resourceUri' => $itemResource->getUriKey(),
+        'resourceItem' => $item->getKey(),
+        '_relation' => 'categories',
+    ]);
+
+    asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.form', [
+        'pageUri' => $categoryResource->getFormPage()->getUriKey(),
+        'resourceUri' => $categoryResource->getUriKey(),
+        'resourceItem' => $category->getKey(),
+        '_relation' => 'items',
+        '_key' => $item->getKey(),
+    ]))
+        ->assertOk()
+        ->assertSee($expectedNestedPivotUrl, false)
+        ->assertDontSee("belongs-to-many-pivot/form/{$categoryResource->getFormPage()->getUriKey()}/{$categoryResource->getUriKey()}/{$category->getKey()}?_relation=categories", false)
     ;
 });
