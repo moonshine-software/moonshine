@@ -53,9 +53,7 @@ class RelationModelFieldRequest extends FormRequest
                 /**
                  * @var Fields $fields
                  */
-                $fields = $parent instanceof ModelRelationField
-                    ? $parent->getResource()?->getFormFields()
-                    : $parent->getFields();
+                $fields = $parent->getFields();
             }
 
             if (\is_null($fields)) {

@@ -12,8 +12,11 @@ use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
+use MoonShine\UI\Components\Layout\Flex;
+use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
+use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 
 use function Pest\Laravel\get;
@@ -273,6 +276,57 @@ it('apply as filter', function (): void {
 
     expect(str_contains($sql, 'json_contains') || str_contains($sql, 'json_each'))
         ->toBeTrue();
+});
+
+it('renders preview with nested layout fields', function (): void {
+    $field = Json::make('Data')->fields([
+        Text::make('Title'),
+
+        Json::make('Object')->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+
+            Json::make('Inner')->fields([
+                Fieldset::make('fieldset', [
+                    Flex::make([
+                        Text::make('One'),
+                        Text::make('Two'),
+                    ]),
+                ]),
+
+                Select::make('Multiple')->options([1 => 1, 2 => 2, 3 => 3])->multiple(),
+
+                Json::make('KV')->keyValue(),
+            ])->object(),
+        ])->object(),
+    ]);
+
+    $html = (string) $field
+        ->previewMode()
+        ->fillData([
+            'data' => [
+                [
+                    'title' => 'Title',
+                    'object' => [
+                        'title' => 'Title',
+                        'value' => 'Value',
+                        'inner' => [
+                            'one' => 'One',
+                            'two' => 'Two',
+                            'multiple' => [1, 2],
+                            'kv' => [
+                                'key 1' => 'value 1',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+    expect($html)
+        ->toContain('fieldset')
+        ->toContain('One')
+        ->toContain('Two');
 });
 
 function jsonExport(Item $item): ?string

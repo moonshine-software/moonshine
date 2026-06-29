@@ -2,7 +2,7 @@ import TomSelect from 'tom-select'
 import type { RecursivePartial, TomSettings } from 'tom-select/src/types'
 import { TPluginHash } from 'tom-select/src/contrib/microplugin'
 
-import { crudFormQuery, getQueryString, prepareFormExtraData } from '../Support/Forms.js'
+import { asyncExtraQuery, crudFormQuery, getQueryString, prepareFormExtraData } from '../Support/Forms.js'
 import { dispatchEvents as de } from '../Support/DispatchEvents.js'
 import { formToJSON } from 'axios'
 import request from '../Request/Core.js'
@@ -309,6 +309,11 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
             if (this.$el.dataset.asyncWithAllFields && inputs.length) {
                 formQuery += (formQuery ? '&' : '') + crudFormQuery(inputs)
+            }
+
+            const extraQuery = asyncExtraQuery(this.$el)
+            if (extraQuery) {
+                formQuery += (formQuery ? '&' : '') + extraQuery
             }
 
             options = await this.fetchOptions(url.toString() + '&' + formQuery)

@@ -55,6 +55,7 @@ use MoonShine\UI\Components\Popover;
 use MoonShine\UI\Components\ProgressBar;
 use MoonShine\UI\Components\Rating;
 use MoonShine\UI\Components\Spinner;
+use MoonShine\UI\Components\Table\TableTd;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Thumbnails;
@@ -98,6 +99,9 @@ function compare(
     if (str_contains($bladeHtml, "\n    __SLOT")) {
         $bladeHtml = preg_replace("/\n\s*__SLOT/", "\n    __SLOT", $bladeHtml);
         $html = preg_replace("/__END_SLOT\s*/", "__END_SLOT\n", $html);
+        $html = preg_replace("/\n\s*(__SLOT|__END_SLOT|<div class=\"box space-elements\")/", "\n    $1", $html);
+        $bladeHtml = preg_replace("/\n\s*\n/", "\n", $bladeHtml);
+        $html = preg_replace("/\n\s*\n/", "\n", $html);
     }
 
     expect($html)->toEqual($bladeHtml);
@@ -630,5 +634,17 @@ describe('Table', function () {
         $blade = renderBlade('moonshine::table', ['tbody' => 'Title'], attributes: ['class' => 'test-class']);
 
         expect($blade)->toContain('<table', 'test-class', 'Title');
+    });
+
+    it('renders cell slot content returned as components', function () {
+        $html = (string) TableTd::make(
+            static fn (): Components => Components::make([
+                FlexibleRender::make('Cell content'),
+            ])
+        );
+
+        expect($html)
+            ->toContain('<td')
+            ->toContain('Cell content');
     });
 });

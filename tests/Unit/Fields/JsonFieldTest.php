@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\UI\Components\Components;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\RemovableContract;
@@ -156,6 +158,18 @@ describe('basic methods', function () {
 });
 
 describe('common field methods', function () {
+    it('renders wrapped renderable component content', function (): void {
+        $field = Text::make('Wrapped')
+            ->changeRender(
+                static fn (): Components => Components::make([
+                    FlexibleRender::make('Renderable content'),
+                ])
+            );
+
+        expect((string) $field->render())
+            ->toContain('Renderable content');
+    });
+
     it('names', function (): void {
         expect($this->field)
             ->getNameAttribute()

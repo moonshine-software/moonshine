@@ -346,7 +346,9 @@ final class TableBuilder extends IterableComponent implements
                 $rows->pushRow(
                     TableCells::make([
                         TableTd::make(
-                            static fn () => Components::make($components),
+                            static fn (): string => Collection::make($components)
+                                ->map(static fn (ComponentContract $component): string => (string) $component)
+                                ->implode(''),
                         )->class(['space-elements', 'table-grid'])->when(
                             true,
                             static fn (TableCellContract $td): TableCellContract => $tdAttributes($td)

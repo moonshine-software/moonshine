@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Components;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ComponentContract;
+use Stringable;
 
 trait WithSlotContent
 {
@@ -21,7 +25,20 @@ trait WithSlotContent
     public function getSlot(): ComponentSlot
     {
         return new ComponentSlot(
-            value($this->content, $this)
+            $this->stringifySlotContent(value($this->content, $this))
         );
+    }
+
+    private function stringifySlotContent(mixed $content): string
+    {
+        if ($content instanceof Stringable) {
+            return (string) $content;
+        }
+
+        if (\is_scalar($content) || $content === null) {
+            return (string) $content;
+        }
+
+        return '';
     }
 }
