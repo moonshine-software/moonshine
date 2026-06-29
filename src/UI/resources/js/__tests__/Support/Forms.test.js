@@ -59,7 +59,7 @@ describe('FormUtils', () => {
     select.dataset.asyncExtra = 'MoonShine\\Tests\\Fixtures\\Models\\Item'
 
     expect(asyncExtraQuery(select)).toBe(
-      'imageable_type=MoonShine%5CTests%5CFixtures%5CModels%5CItem'
+      'imageable_type=MoonShine%5CTests%5CFixtures%5CModels%5CItem',
     )
   })
 
