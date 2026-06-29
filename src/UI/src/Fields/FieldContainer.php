@@ -72,7 +72,7 @@ final class FieldContainer extends MoonShineComponent
 
             'before' => new ComponentSlot($this->field->getBeforeRender()),
             'after' => new ComponentSlot($this->field->getAfterRender()),
-            'slot' => new ComponentSlot(value($this->slot)),
+            'slot' => new ComponentSlot($this->stringifySlot(value($this->slot))),
 
             'beforeInner' => $this->afterInner,
             'afterInner' => $this->beforeInner,
@@ -80,5 +80,14 @@ final class FieldContainer extends MoonShineComponent
             'isBeforeLabel' => $this->field->isBeforeLabel(),
             'isInsideLabel' => $this->field->isInsideLabel(),
         ];
+    }
+
+    private function stringifySlot(Renderable|string|null $slot): string
+    {
+        if ($slot instanceof Renderable) {
+            return $slot->render();
+        }
+
+        return (string) $slot;
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -376,7 +377,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $value, static $ctx): string  $callback
+     * @param  Closure(mixed $value, static $ctx): (ComponentContract|FieldContract|Renderable|string)  $callback
      */
     public function changeRender(Closure $callback): static
     {
@@ -527,7 +528,15 @@ abstract class Field extends FormElement implements FieldContract
                 $this,
             );
 
-            return $render instanceof FieldContract ? $render->render() : $render;
+            if ($render instanceof FieldContract) {
+                return $render->render();
+            }
+
+            if ($render instanceof ComponentContract) {
+                return (string) $render->render();
+            }
+
+            return $render;
         }
 
         if ($this->getView() === '') {

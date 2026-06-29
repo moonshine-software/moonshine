@@ -351,7 +351,7 @@ class Json extends Field implements
 
     protected function resolvePreview(): Renderable|string
     {
-        return $this->getComponent()
+        return (string) $this->getComponent()
             ->simple()
             ->preview()
             ->render();

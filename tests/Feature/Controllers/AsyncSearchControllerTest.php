@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Fields\Relationships\MorphTo;
+use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\ImageModel;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
+use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
@@ -199,4 +202,46 @@ it('rejects morph to async search classes outside configured types', function ()
     ]))
         ->assertOk()
         ->assertExactJson([]);
+});
+
+it('resolves morph to async search from relation repeater fields of another resource', function () {
+    $category = Category::factory()->create();
+    $item = Item::factory()->create([
+        'name' => 'nested-morph-target',
+    ]);
+    $imageResource = app(TestImageResource::class);
+    $commentResource = app(TestCommentResource::class);
+
+    $resource = TestResourceBuilder::new(Category::class)
+        ->setTestFields([
+            RelationRepeater::make('Comments', 'comments', resource: $commentResource)
+                ->fields([
+                    MorphTo::make('Imageable', 'imageable', resource: $imageResource)
+                        ->types([
+                            Item::class => 'name',
+                            Category::class => 'name',
+                        ]),
+                ]),
+        ]);
+
+    asAdmin()->get($this->moonshineCore->getRouter()->to("async-search", [
+        'pageUri' => PageType::FORM->value,
+        'resourceUri' => $resource->getUriKey(),
+        'resourceItem' => $category->getKey(),
+        '_component_name' => $resource->getUriKey(),
+        '_parent_field' => 'comments',
+        '_relation' => 'imageable',
+        'imageable_type' => Item::class,
+        'query' => 'nested-morph-target',
+    ]))
+        ->assertOk()
+        ->assertJson([
+            [
+                'value' => $item->getKey(),
+                'label' => $item->name,
+                'properties' => [
+                    'image' => null,
+                ],
+            ],
+        ]);
 });

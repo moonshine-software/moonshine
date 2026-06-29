@@ -190,6 +190,14 @@ class MorphTo extends BelongsTo
             'column' => $this->getColumn(),
             'morphType' => $this->getMorphType(),
             'morphTypeName' => Str::of($this->getNameAttribute())->replace($this->getColumn(), $this->getMorphType()),
+            'morphTypeAttributes' => $this->getAttributes()
+                ->only(['data-level'])
+                ->merge([
+                    'data-name' => (string) Str::of(
+                        $this->getAttribute('data-name', $this->getNameAttribute())
+                    )->replace($this->getColumn(), $this->getMorphType()),
+                    'data-column' => $this->getMorphType(),
+                ]),
         ];
     }
 }
