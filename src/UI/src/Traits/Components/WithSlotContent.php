@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Components;
 
 use Closure;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
-use MoonShine\Contracts\UI\ComponentContract;
 use Stringable;
 
 trait WithSlotContent
