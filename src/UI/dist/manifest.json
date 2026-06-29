@@ -1,10 +1,18 @@
 {
   "resources/css/main.css": {
     "file": "assets/main.css",
-    "src": "resources/css/main.css",
-    "isEntry": true,
+    "name": "main",
     "names": [
       "main.css"
+    ],
+    "src": "resources/css/main.css",
+    "isEntry": true,
+    "assets": [
+      "fonts/Gilroy-Regular.woff2",
+      "fonts/Gilroy-Medium.woff2",
+      "fonts/Gilroy-SemiBold.woff2",
+      "fonts/Gilroy-Bold.woff2",
+      "fonts/Gilroy-Black.woff2"
     ]
   },
   "resources/fonts/Gilroy-Black.woff2": {

@@ -93,6 +93,8 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         this.removeItemButton = !! this.$el.dataset.removeItemButton
         this.associatedWith = this.$el.dataset.associatedWith
 
+        const isInsideTippy = this.$el.closest('[data-tippy-root]') !== null
+
         if (this.associatedWith) {
             this.$el.removeAttribute('data-associated-with')
         }
@@ -146,7 +148,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
             disabledField: 'disabled',
             searchField: [ 'label' ],
             dataAttr: 'customProperties',
-            dropdownParent: 'body',
+            dropdownParent: isInsideTippy ? null : 'body',
 
             shouldOpen: ! asyncUrl,
 
