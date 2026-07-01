@@ -28,6 +28,7 @@
 @import './components/dropzone.css' layer(components);
 @import './components/forms.css' layer(components);
 @import './components/icon.css' layer(components);
+@import "./components/json.css" layer(components);
 @import './components/languages.css' layer(components);
 @import './components/menu.css' layer(components);
 @import './components/modals.css' layer(components);

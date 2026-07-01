@@ -12,103 +12,156 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Contracts\UI\FieldWithComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FieldsGroup;
-use MoonShine\UI\Components\Icon;
-use MoonShine\UI\Components\Layout\Column;
-use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
-use MoonShine\UI\Contracts\RemovableContract;
-use MoonShine\UI\Contracts\WrapperWithApplyContract;
-use MoonShine\UI\Exceptions\FieldException;
-use MoonShine\UI\Traits\Fields\HasVerticalMode;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
-use MoonShine\UI\Traits\Removable;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @implements HasFieldsContract<Fields|FieldsContract>
- * @implements FieldWithComponentContract<TableBuilderContract|FieldsGroup>
  */
-class Json extends Field implements
-    HasFieldsContract,
-    FieldWithComponentContract,
-    RemovableContract,
-    HasDefaultValueContract,
-    CanBeArray
+class Json extends Field implements HasFieldsContract, HasDefaultValueContract, CanBeArray
 {
-    use WithFields;
-    use Removable;
     use WithDefaultValue;
-    use HasVerticalMode;
+    use WithFields {
+        WithFields::fields as protected fieldsFromTrait;
+    }
 
     protected string $view = 'moonshine::fields.json';
+
+    protected bool $isGroup = true;
+
+    protected bool $removable = true;
+
+    protected bool $creatable = true;
+
+    protected ?int $creatableLimit = null;
+
+    protected ?ActionButtonContract $createButton = null;
+
+    protected bool $hideCreateButton = false;
+
+    /**
+     * @var null|Closure(ActionButton $button, self $field): ActionButton
+     */
+    protected ?Closure $modifyCreateButton = null;
+
+    /**
+     * @var null|Closure(ActionButton $button, self $field): ActionButton
+     */
+    protected ?Closure $modifyRemoveButton = null;
+
+    /**
+     * @var iterable<array-key, ActionButtonContract>
+     */
+    protected iterable $buttons = [];
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected array $removeButtonAttributes = [];
+
+    protected bool $reorderable = false;
 
     protected bool $keyValue = false;
 
     protected bool $onlyValue = false;
 
-    protected bool $objectMode = false;
+    protected bool $object = false;
 
-    protected bool $isGroup = true;
+    protected bool $filterEmpty = true;
 
-    protected bool $isCreatable = true;
-
-    protected ?int $creatableLimit = null;
-
-    protected ?ActionButtonContract $creatableButton = null;
+    protected bool $table = false;
 
     /**
-     * @var list<ActionButtonContract>
+     * @var null|Closure(TableBuilder $table, bool $preview): TableBuilder
      */
-    protected array $buttons = [];
-
-    protected bool $isReorderable = true;
-
-    protected bool $isFilterMode = false;
-
     protected ?Closure $modifyTable = null;
 
-    protected ?Closure $modifyRemoveButton = null;
+    protected string $orientation = 'horizontal';
 
-    protected ?Closure $modifyCreateButton = null;
+    protected string $emptyMessage = 'No items added';
 
-    protected bool $resolveValueOnce = true;
+    /**
+     * @param  FieldsContract|(Closure(static): iterable<array-key, ComponentContract>)|iterable<array-key, ComponentContract>  $fields
+     *
+     * @throws Throwable
+     */
+    public function fields(FieldsContract | Closure | iterable $fields, string $orientation = 'horizontal'): static
+    {
+        return $this->setFields($fields, $orientation);
+    }
 
-    protected null|TableBuilderContract|FieldsGroup $resolvedComponent = null;
+    /**
+     * @param  FieldsContract|(Closure(static): iterable<array-key, ComponentContract>)|iterable<array-key, ComponentContract>  $fields
+     *
+     * @throws Throwable
+     */
+    protected function setFields(FieldsContract | Closure | iterable $fields, string $orientation = 'horizontal'): static
+    {
+        $this->resetPreparedFields();
+        $this->orientation($orientation);
 
-    protected bool $isFilterEmpty = true;
+        return $this->fieldsFromTrait($fields);
+    }
+
+    public function orientation(string $orientation): static
+    {
+        $this->orientation = \in_array($orientation, ['horizontal', 'vertical'], true)
+            ? $orientation
+            : 'horizontal';
+
+        return $this;
+    }
+
+    public function vertical(bool $condition = true): static
+    {
+        return $this->orientation($condition ? 'vertical' : 'horizontal');
+    }
 
     /**
      * @throws Throwable
      */
     public function keyValue(
-        string $key = 'Key',
-        string $value = 'Value',
+        string | FieldContract $key = 'Key',
+        string | FieldContract $value = 'Value',
         ?FieldContract $keyField = null,
         ?FieldContract $valueField = null,
+        string $orientation = 'horizontal',
     ): static {
         $this->keyValue = true;
         $this->onlyValue = false;
+        $this->object = false;
 
-        $this->fields([
-            ($keyField ?? Text::make($key, 'key'))
-                ->setColumn('key')
-                ->customAttributes($this->getAttributes()->jsonSerialize()),
+        $keyField ??= $key instanceof FieldContract ? $key : Text::make($key);
+        $valueField ??= $value instanceof FieldContract ? $value : Text::make($value);
 
-            ($valueField ?? Text::make($value, 'value'))
-                ->setColumn('value')
-                ->customAttributes($this->getAttributes()->jsonSerialize()),
-        ]);
+        return $this->setFields([
+            $keyField,
+            $valueField,
+        ], $orientation);
+    }
 
-        return $this;
+    /**
+     * @throws Throwable
+     */
+    public function onlyValue(string $value = 'Value', ?FieldContract $valueField = null): static
+    {
+        $this->onlyValue = true;
+        $this->keyValue = false;
+        $this->object = false;
+
+        return $this->setFields([$valueField ?? Text::make($value)]);
+    }
+
+    public function isKeyOrOnlyValue(): bool
+    {
+        return $this->isKeyValue() || $this->isOnlyValue();
     }
 
     public function isKeyValue(): bool
@@ -116,132 +169,37 @@ class Json extends Field implements
         return $this->keyValue;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function onlyValue(
-        string $value = 'Value',
-        ?FieldContract $valueField = null,
-    ): static {
-        $this->keyValue = false;
-        $this->onlyValue = true;
-
-        $this->fields([
-            ($valueField ?? Text::make($value, 'value'))
-                ->setColumn('value')
-                ->customAttributes($this->getAttributes()->jsonSerialize()),
-        ]);
-
-        return $this;
-    }
-
     public function isOnlyValue(): bool
     {
         return $this->onlyValue;
     }
 
-    /**
-     * @throws Throwable
-     */
-    public function object(): static
+    public function object(bool $condition = true): static
     {
-        $this->objectMode = true;
+        $this->object = $condition;
 
-        return $this->customAttributes([
-            'class' => 'space-elements',
-        ]);
-    }
-
-    public function isObjectMode(): bool
-    {
-        return $this->objectMode;
-    }
-
-    public function isKeyOrOnlyValue(): bool
-    {
-        return $this->keyValue || $this->onlyValue;
-    }
-
-    public function isGroup(): bool
-    {
-        return ! $this->isObjectMode() && $this->isGroup;
-    }
-
-    public function creatable(
-        Closure|bool|null $condition = null,
-        ?int $limit = null,
-        ?ActionButtonContract $button = null,
-    ): static {
-        $this->isCreatable = value($condition, $this) ?? true;
-
-        if ($this->isCreatable()) {
-            $this->creatableLimit = $limit;
-            $this->creatableButton = $button?->customAttributes([
-                '@click.prevent' => 'add()',
-            ]);
+        if ($condition) {
+            $this->keyValue = false;
+            $this->onlyValue = false;
         }
 
         return $this;
-    }
-
-    public function getCreateButton(): ?ActionButtonContract
-    {
-        $button = $this->creatableButton;
-
-        if (! $button instanceof ActionButtonContract) {
-            $button = ActionButton::make($this->getCore()->getTranslator()->get('moonshine::ui.add'))
-                ->icon('plus-circle')
-                ->customAttributes(['@click.prevent' => 'add()', 'class' => 'w-full']);
-        }
-
-        if (! \is_null($this->modifyCreateButton)) {
-            $button = \call_user_func($this->modifyCreateButton, $button, $this);
-        }
-
-        return $button;
-    }
-
-    public function isCreatable(): bool
-    {
-        return $this->isCreatable;
-    }
-
-    public function getCreateLimit(): ?int
-    {
-        return $this->creatableLimit;
-    }
-
-    public function filterMode(): static
-    {
-        $this->isFilterMode = true;
-        $this->creatable(false);
-
-        return $this;
-    }
-
-    public function isFilterMode(): bool
-    {
-        return $this->isFilterMode;
-    }
-
-    public function reorderable(Closure|bool|null $condition = null): static
-    {
-        $this->isReorderable = value($condition, $this) ?? true;
-
-        return $this;
-    }
-
-    public function isReorderable(): bool
-    {
-        return $this->isReorderable;
     }
 
     /**
-     * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
+     * @param  array<string, mixed>  $attributes
      */
-    public function modifyTable(Closure $callback): self
+    public function removable(Closure | bool | null $condition = null, array $attributes = []): static
     {
-        $this->modifyTable = $callback;
+        $this->removable = value($condition, $this) ?? true;
+        $this->removeButtonAttributes = $attributes;
+
+        return $this;
+    }
+
+    public function creatableLimit(?int $limit = null): static
+    {
+        $this->creatableLimit = $limit;
 
         return $this;
     }
@@ -249,17 +207,7 @@ class Json extends Field implements
     /**
      * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
      */
-    public function modifyRemoveButton(Closure $callback): self
-    {
-        $this->modifyRemoveButton = $callback;
-
-        return $this;
-    }
-
-    /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
-     */
-    public function modifyCreateButton(Closure $callback): self
+    public function modifyCreateButton(Closure $callback): static
     {
         $this->modifyCreateButton = $callback;
 
@@ -267,486 +215,1297 @@ class Json extends Field implements
     }
 
     /**
-     * @param  list<ActionButtonContract>  $buttons
+     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
      */
-    public function buttons(array $buttons): static
+    public function modifyRemoveButton(Closure $callback): static
+    {
+        $this->modifyRemoveButton = $callback;
+
+        return $this;
+    }
+
+    public function filterMode(): static
+    {
+        $this->creatable(false);
+
+        return $this;
+    }
+
+    public function creatable(
+        Closure | bool | null $condition = null,
+        ?int $limit = null,
+        ?ActionButtonContract $button = null,
+        bool $hideButton = false,
+    ): static {
+        $this->creatable = value($condition, $this) ?? true;
+        $this->creatableLimit = $limit;
+        $this->createButton = $button;
+        $this->hideCreateButton = $hideButton;
+
+        return $this;
+    }
+
+    /**
+     * @param  iterable<array-key, ActionButtonContract>  $buttons
+     */
+    public function buttons(iterable $buttons): static
     {
         $this->buttons = $buttons;
 
         return $this;
     }
 
-    /**
-     * @return   list<ActionButtonContract>
-     */
-    public function getButtons(): array
+    public function reorderable(bool $condition = true): static
     {
-        if (array_filter($this->buttons) !== []) {
-            return $this->buttons;
-        }
-
-        $buttons = [];
-
-        if ($this->isRemovable()) {
-            $button = ActionButton::make()
-                ->icon('trash')
-                ->onClick(static fn ($action): string => 'remove', 'prevent')
-                ->customAttributes($this->removableAttributes ?: ['class' => 'btn-error'])
-                ->showInLine();
-
-            if (! \is_null($this->modifyRemoveButton)) {
-                $button = \call_user_func($this->modifyRemoveButton, $button, $this);
-            }
-
-            $buttons[] = $button;
-        }
-
-        return $buttons;
-    }
-
-    protected function prepareFields(): FieldsContract
-    {
-        $fields = $this->getFields();
-
-        if (! $this->isPreviewMode()) {
-            $fields->prepareAttributes();
-        }
-
-        if ($this->isObjectMode()) {
-            $fields = $fields
-                ->map(
-                    fn ($field): FieldContract => $field
-                        ->customAttributes($this->getReactiveAttributes("{$this->getColumn()}.{$field->getColumn()}"))
-                        ->customAttributes(['data-object-mode' => true])
-                );
-        }
-
-        $fields
-            ->onlyFields()
-            ->prepareReindexNames(parent: $this, before: static function (self $parent, FieldContract $field): void {
-                if (! $field->getParent() instanceof WrapperWithApplyContract && ! $parent->isObjectMode()) {
-                    $field->withoutWrapper();
-                } else {
-                    $parent->customWrapperAttributes([
-                        'class' => 'inner-json-object-mode',
-                        'data-object-mode' => true,
-                    ]);
-                }
-
-                $field->setRequestKeyPrefix($parent->getRequestKeyPrefix());
-            }, except: fn (FieldContract $parent): bool => $parent instanceof self && $parent->isObjectMode());
-
-
-        return $fields;
-    }
-
-    protected function resolveRawValue(): mixed
-    {
-        if (\is_array($this->rawValue)) {
-            return json_encode($this->rawValue, JSON_THROW_ON_ERROR);
-        }
-
-        return (string) $this->rawValue;
-    }
-
-    protected function resolvePreview(): Renderable|string
-    {
-        return $this->getComponent()
-            ->simple()
-            ->preview()
-            ->render();
-    }
-
-    protected function reformatFilledValue(mixed $data): mixed
-    {
-        if (\is_string($data)) {
-            $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        }
-
-        if ($this->isKeyOrOnlyValue() && ! $this->isFilterMode()) {
-            /** @var Collection<array-key, mixed> $collection */
-            $collection = new Collection($data);
-
-            return $collection->map(fn (mixed $data, int|string $key): array => $this->extractKeyValue(
-                $this->isOnlyValue() ? [$data] : [$key => $data],
-            ))
-                ->values()
-                ->toArray();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     *
-     * @return array<string, mixed>
-     */
-    protected function extractKeyValue(array $data): array
-    {
-        if ($this->isKeyValue()) {
-            return [
-                'key' => key($data) ?? '',
-                'value' => $data[key($data)] ?? '',
-            ];
-        }
-
-        if ($this->isOnlyValue()) {
-            return [
-                'value' => $data[key($data)] ?? '',
-            ];
-        }
-
-        return $data;
-    }
-
-    protected function isBlankValue(): bool
-    {
-        if ($this->isPreviewMode()) {
-            return parent::isBlankValue();
-        }
-
-        return blank($this->value);
-    }
-
-    /**
-     * @param iterable<string, mixed> $collection
-     * @return array<string, mixed>
-     * @throws Throwable
-     */
-    public function prepareOnApplyRecursive(iterable $collection): array
-    {
-        $collection = $this->prepareOnApply($collection);
-
-        foreach ($this->getFields() as $field) {
-            if ($field instanceof File) {
-                $column = $field->getColumn();
-
-                $collection = array_map(static fn (array $data): array => [
-                    ...$data,
-                    $column => $data[$field->getHiddenColumn()] ?? null,
-                ], $collection);
-            }
-
-            if ($field instanceof self) {
-                foreach ($collection as $index => $value) {
-                    $column = $field->getColumn();
-                    $collection[$index][$column] = $field->prepareOnApplyRecursive(
-                        $value[$column] ?? []
-                    );
-                }
-            }
-        }
-
-        return $collection;
-    }
-
-    /**
-     * @throws Throwable
-     */
-    protected function resolveOldValue(mixed $old): mixed
-    {
-        return $this->prepareOnApplyRecursive($old);
-    }
-
-    public function getComponent(): ComponentContract
-    {
-        if (! \is_null($this->resolvedComponent)) {
-            return $this->resolvedComponent;
-        }
-
-        $value = $this->isPreviewMode()
-            ? $this->toFormattedValue()
-            : $this->getValue();
-
-
-        /** @var Collection<array-key, mixed> $values */
-        $values = new Collection(
-            is_iterable($value)
-                ? $value
-                : [],
-        );
-
-        $fields = $this->getPreparedFields();
-
-        if ($this->isObjectMode() && ! $this->isPreviewMode()) {
-            return FieldsGroup::make(
-                Fields::make($fields)->fillCloned($values->toArray())
-            )->mapFields(
-                fn (FieldContract $field): FieldContract => $field
-                    ->formName($this->getFormName())
-                    ->setParent($this),
-            );
-        }
-
-        $values = $values->when(
-            ! $this->isPreviewMode() && ! $this->isCreatable() && blank($values),
-            static fn ($values): Collection => $values->push([null]),
-        );
-
-        $reorderable = ! $this->isPreviewMode() && $this->isReorderable();
-
-        if ($reorderable) {
-            $fields->prepend(
-                Preview::make(
-                    column: '__handle',
-                    formatted: static fn () => Icon::make('bars-3-bottom-right', size: 5),
-                )->wrapperStyle('width: 10px; white-space: nowrap;')->customAttributes(['class' => 'handle', 'style' => 'cursor: move']),
-            );
-        }
-
-        if ($this->isPreviewMode() && $this->isObjectMode()) {
-            $values = [$values];
-        }
-
-        $component = TableBuilder::make($fields, $values)
-            ->name('repeater_' . $this->getColumn())
-            ->inside('field')
-            ->customAttributes(
-                $this->getAttributes()
-                    ->except(['class', 'data-name', 'data-column'])
-                    ->when(
-                        $reorderable,
-                        static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
-                            'data-handle' => '.handle',
-                        ]),
-                    )
-                    ->jsonSerialize()
-            )
-            ->customAttributes(['data-validation-wrapper' => true])
-            ->when(
-                $reorderable,
-                static fn (TableBuilderContract $table): TableBuilderContract => $table->reorderable(),
-            )
-            ->when(
-                ($this->isObjectMode() && $this->isPreviewMode()) || $this->isVertical(),
-                fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
-                    title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
-                        $field->getColumn() === '__handle' ? $field : Div::make([
-                            $field->getLabel(),
-                        ]),
-                    ])->columnSpan($this->verticalTitleSpan) : null,
-                    value: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => $field->getColumn() === '__handle'
-                        ? Column::make()->columnSpan($this->verticalValueSpan)
-                        /** @var Column $default */
-                        /** @phpstan-ignore-next-line  */
-                        : $default->columnSpan($this->verticalValueSpan)->customAttributes(['data-validation-wrapper' => true]) : null,
-                ),
-            )
-            ->when(
-                ! \is_null($this->modifyTable),
-                fn (TableBuilder $tableBuilder) => value($this->modifyTable, $tableBuilder, $this->isPreviewMode()),
-            );
-
-        if (! $this->isPreviewMode()) {
-            $component = $component
-                ->editable()
-                ->reindex(prepared: true)
-                ->when(
-                    $this->isCreatable(),
-                    fn (TableBuilderContract $table): TableBuilderContract => $table->creatable(
-                        limit: $this->getCreateLimit(),
-                        button: $this->getCreateButton(),
-                    )->removeAfterClone(),
-                )
-                ->buttons($this->getButtons())
-                ->simple();
-        }
-
-        return $this->resolvedComponent = $component;
-    }
-
-    /**
-     * @param iterable<array-key, mixed> $collection
-     * @return array<array-key, mixed>
-     *
-     * @throws Throwable
-     */
-    public function prepareOnApply(iterable $collection): array
-    {
-        $collection = new Collection($collection);
-
-        return $collection->when(
-            $this->isKeyOrOnlyValue(),
-            fn (Collection $data): Collection => $data->mapWithKeys(
-                fn (array $data, string|int $key): array => $this->isOnlyValue()
-                    ? [$key => $data['value']]
-                    : [$data['key'] => $data['value']],
-            ),
-        )
-            ->filter(fn ($value): bool => $this->filterEmpty($value))
-            ->when(
-                $this->isReorderable() && ! $this->isObjectMode() && ! $this->isKeyValue(),
-                static fn (Collection $data) => $data->sortKeys()
-            )
-            ->toArray();
-    }
-
-    public function isFilterEmpty(): bool
-    {
-        return $this->isFilterEmpty;
-    }
-
-    public function stopFilteringEmpty(): static
-    {
-        $this->isFilterEmpty = false;
+        $this->reorderable = $condition;
 
         return $this;
     }
 
-    private function filterEmpty(mixed $value): bool
+    public function stopFilteringEmpty(bool $condition = true): static
     {
-        if (! $this->isFilterEmpty()) {
-            return true;
+        $this->filterEmpty = ! $condition;
+
+        return $this;
+    }
+
+    public function table(bool $condition = true): static
+    {
+        $this->table = $condition;
+
+        if ($condition) {
+            $this->previewMode();
         }
 
-        if (is_iterable($value) && filled($value)) {
-            $collection = new Collection($value);
-
-            return $collection
-                ->filter(fn ($v): bool => $this->filterEmpty($v))
-                ->isNotEmpty();
-        }
-
-        return ! blank($value);
+        return $this;
     }
 
     /**
-     * @throws Throwable
+     * @param  Closure(TableBuilder $table, bool $preview): TableBuilder  $callback
      */
-    protected function resolveAppliesCallback(
-        mixed $data,
-        Closure $callback,
-        ?Closure $response = null,
-        bool $fill = false,
-    ): mixed {
-        $requestValues = array_filter($this->getRequestValue() ?: []);
-        $applyValues = [];
+    public function modifyTable(Closure $callback): static
+    {
+        $this->modifyTable = $callback;
 
-        if ($this->isObjectMode()) {
-            $requestValues = [$requestValues];
-        }
-
-        foreach ($requestValues as $index => $values) {
-            foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
-                if (! $field->isCanApply()) {
-                    continue;
-                }
-
-                if (! $this->isObjectMode()) {
-                    $field->setNameIndex($index);
-                }
-
-                $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));
-
-                $apply = $callback($field, $values, $data);
-
-                if ($field instanceof WrapperWithApplyContract) {
-                    $applyValues[$index] = $apply;
-
-                    continue;
-                }
-
-                data_set(
-                    /** @phpstan-ignore-next-line  */
-                    $applyValues[$index],
-                    $field->getColumn(),
-                    data_get($apply, $field->getColumn()),
-                );
-            }
-
-            if ($this->isObjectMode()) {
-                $applyValues = $applyValues[$index] ?? [];
-            }
-        }
-
-        $preparedValues = $this->prepareOnApply($applyValues);
-        $values = $this->isObjectMode() || $this->isKeyValue()
-            ? $preparedValues
-            : array_values($preparedValues);
-
-        return \is_null($response) ? data_set(
-            $data,
-            str_replace('.', '->', $this->getColumn()),
-            $values,
-        ) : $response($values, $data);
+        return $this;
     }
 
-    protected function resolveOnApply(): ?Closure
+    public function emptyMessage(string $message): static
     {
-        return fn ($item): mixed => $this->resolveAppliesCallback(
-            data: $item,
-            callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn(), '')),
-                $values,
-            ),
-        );
+        $this->emptyMessage = $message;
+
+        return $this;
+    }
+
+    protected function reformatFilledValue(mixed $data): array
+    {
+        return $this->normalizeRows($data);
     }
 
     /**
-     * @throws Throwable
+     * @return list<array<string, mixed>>
      */
-    protected function resolveBeforeApply(mixed $data): mixed
+    protected function normalizeRows(mixed $value): array
     {
-        return $this->resolveAppliesCallback(
-            data: $data,
-            callback: static fn (FieldContract $field, mixed $values): mixed => $field->beforeApply($values),
-        );
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            $value = \is_array($decoded) ? $decoded : [];
+        }
+
+        if (! \is_array($value)) {
+            return [];
+        }
+
+        if ($value === []) {
+            return [];
+        }
+
+        if ($this->isKeyValue() && ! array_is_list($value)) {
+            return $this->normalizeKeyValueRows($value);
+        }
+
+        if ($this->isOnlyValue()) {
+            return $this->normalizeOnlyValueRows($value);
+        }
+
+        if ($this->isObject() && ! array_is_list($value)) {
+            return [$this->normalizeRow($value)];
+        }
+
+        if (! array_is_list($value)) {
+            $value = [$value];
+        }
+
+        return array_values(array_map(
+            fn(mixed $row): array => $this->normalizeRow(\is_array($row) ? $row : []),
+            $value,
+        ));
     }
 
     /**
-     * @throws Throwable
+     * @param  array<array-key, mixed>  $value
+     *
+     * @return list<array<string, mixed>>
      */
-    protected function resolveAfterApply(mixed $data): mixed
+    protected function normalizeKeyValueRows(array $value): array
     {
-        return $this->resolveAppliesCallback(
-            data: $data,
-            callback: static fn (FieldContract $field, mixed $values): mixed => $field->afterApply($values),
-            response: static fn (array $values, mixed $data): mixed => $data,
-        );
+        $schema = $this->fieldsSchema();
+        $keyField = $schema[0] ?? null;
+        $valueField = $schema[1] ?? null;
+
+        if ($keyField === null || $valueField === null) {
+            return [];
+        }
+
+        return array_values(array_map(
+            fn(mixed $itemValue, int | string $itemKey): array => $this->normalizeRow([
+                $keyField['column'] => $itemKey,
+                $valueField['column'] => $itemValue,
+            ]),
+            $value,
+            array_keys($value),
+        ));
     }
 
     /**
-     * @throws Throwable
+     * @return list<array<string, mixed>>
      */
-    protected function resolveAfterDestroy(mixed $data): mixed
+    protected function fieldsSchema(): array
     {
-        $values = $this->toValue(withDefault: false);
-
-        if (! $this->isKeyOrOnlyValue() && filled($values)) {
-            foreach ($values as $value) {
-                $this->getFields()
-                    ->onlyFields()
-                    ->each(
-                        static fn (FieldContract $field): mixed => $field
-                            ->fillData($value)
-                            ->afterDestroy($value),
-                    );
-            }
-        }
-
-        return $data;
-    }
-
-    public function getReactiveValue(): mixed
-    {
-        if (! $this->isObjectMode()) {
-            throw FieldException::reactivityNotSupported(static::class, 'without object mode');
-        }
-
-        return $this->toValue() ?? $this->getPreparedFields()
+        return $this->getFields()
             ->onlyFields()
-            ->mapWithKeys(fn (FieldContract $field): array => [$field->getColumn() => null]);
+            ->map(fn(FieldContract $field): array => $this->fieldSchema($field))
+            ->values()
+            ->toArray();
     }
 
     /**
      * @return array<string, mixed>
-     * @throws Throwable
+     */
+    protected function fieldSchema(FieldContract $field): array
+    {
+        $schema = [
+            'column' => $field->getColumn(),
+            'label' => (string) $field->getLabel(),
+            'type' => $this->fieldType($field),
+            'multiple' => method_exists($field, 'isMultiple') && $field->isMultiple(),
+            'nullable' => method_exists($field, 'isNullable') && $field->isNullable(),
+            'options' => $this->fieldOptions($field),
+            'placeholder' => (string) ($field->getAttribute('placeholder') ?? $field->getLabel()),
+            'wrapperClass' => (string) $field->getWrapperAttributes()->get('class', ''),
+            'default' => $field instanceof HasDefaultValueContract ? $field->getDefault() : null,
+        ];
+
+        if ($field instanceof self) {
+            $schema['fields'] = $field->fieldsSchema();
+            $schema['removable'] = $field->isRemovable();
+            $schema['creatable'] = $field->isCreatable();
+            $schema['creatableLimit'] = $field->getCreatableLimit();
+            $schema['hideCreateButton'] = $field->isCreateButtonHidden();
+            $schema['createButton'] = $field->renderCreateButton(
+                '__moonshine_json_add__',
+                '__moonshine_json_disabled__',
+            );
+            $schema['buttons'] = $field->renderButtons('__moonshine_json_remove__');
+            $schema['removeButton'] = $field->renderRemoveButton('__moonshine_json_remove__');
+            $schema['removeButtonAttributes'] = $field->getRemoveButtonAttributes();
+            $schema['reorderable'] = $field->isReorderable();
+            $schema['orientation'] = $field->getOrientation();
+            $schema['keyValue'] = $field->isKeyValue();
+            $schema['onlyValue'] = $field->isOnlyValue();
+            $schema['objectMode'] = $field->isObject();
+            $schema['filterEmpty'] = $field->isFilteringEmpty();
+            $schema['tableMode'] = $field->isTable();
+            $schema['emptyMessage'] = $field->getEmptyMessage();
+        }
+
+        return $schema;
+    }
+
+    protected function fieldType(FieldContract $field): string
+    {
+        return match (true) {
+            $field instanceof self => 'json',
+            $field instanceof Number => 'number',
+            $field instanceof Textarea => 'textarea',
+            $field instanceof Select => 'select',
+            $field instanceof Switcher => 'switcher',
+            $field instanceof Checkbox => 'checkbox',
+            $field instanceof Date => 'date',
+            $field instanceof Color => 'color',
+            $field instanceof Email => 'email',
+            $field instanceof Url => 'url',
+            $field instanceof Phone => 'tel',
+            default => 'text',
+        };
+    }
+
+    /**
+     * @return list<array<string, string>>
+     */
+    protected function fieldOptions(FieldContract $field): array
+    {
+        if (! method_exists($field, 'getValues')) {
+            return [];
+        }
+
+        return $this->normalizeOptions($field->getValues()->toArray());
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $options
+     *
+     * @return list<array<string, string>>
+     */
+    protected function normalizeOptions(array $options): array
+    {
+        $normalized = [];
+
+        foreach ($options as $value => $label) {
+            if (\is_array($label) && array_key_exists('values', $label) && \is_array($label['values'])) {
+                array_push($normalized, ...$this->normalizeOptions($label['values']));
+
+                continue;
+            }
+
+            if (\is_array($label) && ! array_key_exists('value', $label) && ! array_key_exists('label', $label)) {
+                array_push($normalized, ...$this->normalizeOptions($label));
+
+                continue;
+            }
+
+            $normalized[] = \is_array($label)
+                ? [
+                    'value' => (string) ($label['value'] ?? $value),
+                    'label' => (string) ($label['label'] ?? $label['value'] ?? $value),
+                ]
+                : [
+                    'value' => (string) $value,
+                    'label' => (string) $label,
+                ];
+        }
+
+        return $normalized;
+    }
+
+    public function isRemovable(): bool
+    {
+        return $this->removable;
+    }
+
+    public function isCreatable(): bool
+    {
+        return $this->creatable;
+    }
+
+    public function getCreatableLimit(): ?int
+    {
+        return $this->creatableLimit;
+    }
+
+    public function isCreateButtonHidden(): bool
+    {
+        return $this->hideCreateButton;
+    }
+
+    protected function renderCreateButton(string $onClick, string $disabled = '! canAdd()'): ?string
+    {
+        if ($this->createButton === null && $this->modifyCreateButton === null) {
+            return null;
+        }
+
+        $button = $this->createButton === null
+            ? ActionButton::make('')
+                ->icon('plus')
+                ->customAttributes([
+                    'type' => 'button',
+                    'class' => 'btn btn-primary json-field__add',
+                ])
+            : clone $this->createButton;
+
+        $button->customAttributes([
+            'x-on:click.prevent' => $onClick,
+            'x-bind:disabled' => $disabled,
+        ]);
+
+        if ($this->modifyCreateButton !== null) {
+            $button = ($this->modifyCreateButton)($button, $this);
+        }
+
+        return (string) $button->render();
+    }
+
+    protected function renderButtons(string $removeExpression): ?string
+    {
+        $html = '';
+
+        foreach ($this->buttons as $button) {
+            $html .= str_replace(
+                'remove()',
+                $removeExpression,
+                (string) (clone $button)->render(),
+            );
+        }
+
+        return $html === '' ? null : $html;
+    }
+
+    protected function renderRemoveButton(string $onClick): ?string
+    {
+        if ($this->modifyRemoveButton === null) {
+            return null;
+        }
+
+        $removeButtonAttributes = $this->getRemoveButtonAttributes();
+        $hasCustomRemoveClick = array_key_exists('@click.prevent', $removeButtonAttributes)
+            || array_key_exists('x-on:click.prevent', $removeButtonAttributes);
+
+        $button = ActionButton::make('')
+            ->icon('trash')
+            ->customAttributes(array_merge([
+                'type' => 'button',
+                'class' => 'btn btn-error json-field__remove',
+            ], $removeButtonAttributes));
+
+        if (! $hasCustomRemoveClick) {
+            $button->customAttributes([
+                'x-on:click.prevent' => $onClick,
+            ]);
+        }
+
+        $button = ($this->modifyRemoveButton)($button, $this);
+
+        return (string) $button->render();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRemoveButtonAttributes(): array
+    {
+        return $this->removeButtonAttributes;
+    }
+
+    public function isReorderable(): bool
+    {
+        return $this->reorderable;
+    }
+
+    public function getOrientation(): string
+    {
+        return $this->orientation;
+    }
+
+    public function isObject(): bool
+    {
+        return $this->object;
+    }
+
+    public function isFilteringEmpty(): bool
+    {
+        return $this->filterEmpty;
+    }
+
+    public function isTable(): bool
+    {
+        return $this->table;
+    }
+
+    public function getEmptyMessage(): string
+    {
+        return $this->emptyMessage;
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     *
+     * @return array<string, mixed>
+     */
+    protected function normalizeRow(array $row): array
+    {
+        $normalized = [];
+
+        foreach ($this->fieldsSchema() as $field) {
+            $normalized[$field['column']] = $this->normalizeValue(
+                $row[$field['column']] ?? null,
+                $field,
+            );
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function normalizeValue(mixed $value, array $field): mixed
+    {
+        if ($value === null && array_key_exists('default', $field)) {
+            $value = $field['default'];
+        }
+
+        if (($field['type'] ?? null) === 'json') {
+            return $this->normalizeJsonValue($value, $field);
+        }
+
+        if (($field['multiple'] ?? false) === true) {
+            return \is_array($value) ? array_values($value) : [];
+        }
+
+        if (\in_array($field['type'] ?? null, ['checkbox', 'switcher'], true)) {
+            return filter_var($value, FILTER_VALIDATE_BOOL);
+        }
+
+        if (($field['type'] ?? null) === 'select') {
+            return $this->normalizeSelectValue($value, $field);
+        }
+
+        if (($field['type'] ?? null) === 'number') {
+            return $value === null || $value === '' ? null : (is_numeric($value) ? $value + 0 : null);
+        }
+
+        return $value === null ? '' : (string) $value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function normalizeJsonValue(mixed $value, array $field): array
+    {
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            $value = \is_array($decoded) ? $decoded : [];
+        }
+
+        if (! \is_array($value)) {
+            $value = [];
+        }
+
+        if (($field['keyValue'] ?? false) === true && ! array_is_list($value)) {
+            return $this->normalizeNestedKeyValueRows($value, $field);
+        }
+
+        if (($field['onlyValue'] ?? false) === true) {
+            return $this->normalizeNestedOnlyValueRows($value, $field);
+        }
+
+        if (($field['objectMode'] ?? false) === true && ! array_is_list($value)) {
+            return [$this->normalizeNestedRow($value, $field)];
+        }
+
+        if (($field['objectMode'] ?? false) === true) {
+            return array_values(array_map(
+                fn(mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
+                $value,
+            ));
+        }
+
+        if (! array_is_list($value)) {
+            $value = [$value];
+        }
+
+        return array_values(array_map(
+            fn(mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
+            $value,
+        ));
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $value
+     * @param  array<string, mixed>  $field
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function normalizeNestedKeyValueRows(array $value, array $field): array
+    {
+        $keyField = ($field['fields'] ?? [])[0] ?? null;
+        $valueField = ($field['fields'] ?? [])[1] ?? null;
+
+        if (! \is_array($keyField) || ! \is_array($valueField)) {
+            return [];
+        }
+
+        return array_values(array_map(
+            fn(mixed $itemValue, int | string $itemKey): array => $this->normalizeNestedRow([
+                $keyField['column'] => $itemKey,
+                $valueField['column'] => $itemValue,
+            ], $field),
+            $value,
+            array_keys($value),
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @param  array<string, mixed>  $field
+     *
+     * @return array<string, mixed>
+     */
+    protected function normalizeNestedRow(array $row, array $field): array
+    {
+        $normalized = [];
+
+        foreach (($field['fields'] ?? []) as $nestedField) {
+            if (! \is_array($nestedField)) {
+                continue;
+            }
+
+            $normalized[$nestedField['column']] = $this->normalizeValue(
+                $row[$nestedField['column']] ?? null,
+                $nestedField,
+            );
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $value
+     * @param  array<string, mixed>  $field
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function normalizeNestedOnlyValueRows(array $value, array $field): array
+    {
+        $valueField = ($field['fields'] ?? [])[0] ?? null;
+
+        if (! \is_array($valueField)) {
+            return [];
+        }
+
+        $values = array_is_list($value) ? $value : array_values($value);
+
+        return array_values(array_map(
+            fn(mixed $itemValue): array => $this->normalizeNestedRow(\is_array($itemValue)
+                ? $itemValue
+                : [$valueField['column'] => $itemValue], $field),
+            $values,
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function normalizeSelectValue(mixed $value, array $field): string
+    {
+        if (($field['nullable'] ?? false) === false && ($value === null || $value === '')) {
+            $firstOption = ($field['options'] ?? [])[0]['value'] ?? null;
+
+            if ($firstOption !== null) {
+                return (string) $firstOption;
+            }
+        }
+
+        return $value === null ? '' : (string) $value;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $value
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function normalizeOnlyValueRows(array $value): array
+    {
+        $valueField = $this->fieldsSchema()[0] ?? null;
+
+        if ($valueField === null) {
+            return [];
+        }
+
+        $values = array_is_list($value) ? $value : array_values($value);
+
+        return array_values(array_map(
+            fn(mixed $itemValue): array => $this->normalizeRow(\is_array($itemValue)
+                ? $itemValue
+                : [$valueField['column'] => $itemValue]),
+            $values,
+        ));
+    }
+
+    protected function resolvePreview(): Renderable | string
+    {
+        return view('moonshine::components.json.preview', [
+            'label' => (string) $this->getLabel(),
+            'items' => $this->previewItems(
+                $this->normalizeRows($this->toFormattedValue()),
+                $this->previewFieldsSchema(),
+            ),
+            'objectMode' => $this->isObject(),
+            'tableMode' => $this->isTable(),
+            ...$this->resolveTableViewData(preview: true),
+        ]);
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @param  list<array<string, mixed>>  $fields
+     *
+     * @return list<array{fields: list<array<string, mixed>>}>
+     */
+    protected function previewItems(array $rows, array $fields): array
+    {
+        return array_values(array_map(
+            fn(array $row): array => [
+                'fields' => $this->previewFields($row, $fields),
+            ],
+            $rows,
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @param  list<array<string, mixed>>  $fields
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function previewFields(array $row, array $fields): array
+    {
+        $previewFields = [];
+
+        foreach ($fields as $field) {
+            $previewFields[] = $this->previewField(
+                $field,
+                $row[$field['column']] ?? null,
+            );
+        }
+
+        return $previewFields;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     *
+     * @return array<string, mixed>
+     */
+    protected function previewField(array $field, mixed $value): array
+    {
+        if (($field['type'] ?? null) === 'json') {
+            $rows = \is_array($value) ? $value : [];
+
+            return [
+                'label' => $this->previewLabel($field),
+                'type' => 'json',
+                'isBoolean' => false,
+                'isEmpty' => $this->isEmptyValue($rows),
+                'items' => $this->previewItems($rows, $this->previewNestedFields($field)),
+                'objectMode' => ($field['objectMode'] ?? false) === true,
+                'tableMode' => ($field['tableMode'] ?? false) === true,
+                'tableAttributes' => $field['tableAttributes'] ?? null,
+                'tableBuilder' => $field['tableBuilder'] ?? null,
+                'tableSimple' => ($field['tableSimple'] ?? false) === true,
+                'tableSticky' => ($field['tableSticky'] ?? false) === true,
+            ];
+        }
+
+        $isBoolean = \in_array($field['type'] ?? null, ['checkbox', 'switcher'], true);
+
+        return [
+            'label' => $this->previewLabel($field),
+            'type' => $field['type'] ?? 'text',
+            'isBoolean' => $isBoolean,
+            'value' => $isBoolean ? filter_var($value, FILTER_VALIDATE_BOOL) : $this->formatPreviewValue($value, $field),
+            'isEmpty' => ! $isBoolean && $this->isEmptyValue($value),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function previewLabel(array $field): string
+    {
+        return (string) ($field['label'] ?? $field['column'] ?? '');
+    }
+
+    protected function isEmptyValue(mixed $value): bool
+    {
+        if ($value === null || $value === '') {
+            return true;
+        }
+
+        if (! \is_array($value)) {
+            return false;
+        }
+
+        if ($value === []) {
+            return true;
+        }
+
+        foreach ($value as $nestedValue) {
+            if (! $this->isEmptyValue($nestedValue)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function previewNestedFields(array $field): array
+    {
+        return array_values(array_filter(
+            $field['fields'] ?? [],
+            \is_array(...),
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function formatPreviewValue(mixed $value, array $field): string
+    {
+        if ($this->isEmptyValue($value)) {
+            return '';
+        }
+
+        if (($field['type'] ?? null) === 'select') {
+            return $this->formatSelectPreviewValue($value, $field);
+        }
+
+        if (\is_array($value)) {
+            try {
+                return json_encode(
+                    $value,
+                    JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT,
+                );
+            } catch (Throwable) {
+                return '';
+            }
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function formatSelectPreviewValue(mixed $value, array $field): string
+    {
+        if (\is_array($value)) {
+            return implode(', ', array_map(
+                fn(mixed $item): string => $this->selectPreviewLabel($item, $field),
+                $value,
+            ));
+        }
+
+        return $this->selectPreviewLabel($value, $field);
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function selectPreviewLabel(mixed $value, array $field): string
+    {
+        foreach ($field['options'] ?? [] as $option) {
+            if (! \is_array($option)) {
+                continue;
+            }
+
+            if ((string) ($option['value'] ?? '') === (string) $value) {
+                return (string) ($option['label'] ?? $value);
+            }
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    protected function previewFieldsSchema(): array
+    {
+        return $this->getFields()
+            ->onlyFields()
+            ->map(fn(FieldContract $field): array => $this->previewFieldSchema($field))
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function previewFieldSchema(FieldContract $field): array
+    {
+        $schema = $this->fieldSchema($field);
+
+        if ($field instanceof self) {
+            $schema['fields'] = $field->previewFieldsSchema();
+            $schema = [
+                ...$schema,
+                ...$field->resolveTableViewData(preview: true),
+            ];
+        }
+
+        return $schema;
+    }
+
+    /**
+     * @return array{
+     *     tableAttributes: ?ComponentAttributesBagContract,
+     *     tableBuilder: ?TableBuilder,
+     *     tableSimple: bool,
+     *     tableSticky: bool
+     * }
+     */
+    protected function resolveTableViewData(bool $preview): array
+    {
+        if ($this->modifyTable === null) {
+            return [
+                'tableAttributes' => null,
+                'tableBuilder' => null,
+                'tableSimple' => false,
+                'tableSticky' => false,
+            ];
+        }
+
+        $table = TableBuilder::make()->preview();
+        $modifiedTable = ($this->modifyTable)($table, $preview);
+        $table = $modifiedTable instanceof TableBuilder ? $modifiedTable : $table;
+
+        return [
+            'tableAttributes' => $table->getAttributes(),
+            'tableBuilder' => $table,
+            'tableSimple' => $table->isSimple(),
+            'tableSticky' => $table->isSticky(),
+        ];
+    }
+
+    protected function prepareRequestValue(mixed $value): mixed
+    {
+        return $this->prepareValueOnApply($value);
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    protected function prepareValueOnApply(mixed $value): array
+    {
+        return $this->prepareOnApply($this->normalizeRows($value));
+    }
+
+    /**
+     * @param  iterable<array-key, mixed>  $rows
+     *
+     * @return array<array-key, mixed>
+     */
+    public function prepareOnApply(iterable $rows): array
+    {
+        $rows = $rows instanceof Collection
+            ? $rows->toArray()
+            : (\is_array($rows) ? $rows : iterator_to_array($rows));
+
+        if ($this->isKeyValue()) {
+            return $this->prepareKeyValueOnApply($rows);
+        }
+
+        if ($this->isOnlyValue()) {
+            return $this->prepareOnlyValueOnApply($rows);
+        }
+
+        if ($this->isObject()) {
+            return $this->prepareObjectOnApply($rows);
+        }
+
+        return $this->prepareRowsOnApply($rows);
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     *
+     * @return array<string, mixed>
+     */
+    public function prepareKeyValueOnApply(array $rows): array
+    {
+        $schema = $this->fieldsSchema();
+        $keyField = $schema[0] ?? null;
+        $valueField = $schema[1] ?? null;
+
+        if ($keyField === null || $valueField === null) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($this->normalizeRows($rows) as $row) {
+            $key = (string) ($row[$keyField['column']] ?? '');
+
+            if ($key === '' && $this->isFilteringEmpty()) {
+                continue;
+            }
+
+            $result[$key] = $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function prepareFieldValueOnApply(mixed $value, array $field): mixed
+    {
+        if (($field['type'] ?? null) !== 'json') {
+            return $value;
+        }
+
+        $rows = \is_array($value) ? $value : [];
+
+        if (($field['keyValue'] ?? false) === true) {
+            return $this->prepareNestedKeyValueOnApply($rows, $field);
+        }
+
+        if (($field['onlyValue'] ?? false) === true) {
+            return $this->prepareNestedOnlyValueOnApply($rows, $field);
+        }
+
+        if (($field['objectMode'] ?? false) === true) {
+            return $this->prepareNestedObjectOnApply($rows, $field);
+        }
+
+        return $this->filterPreparedRows(array_map(
+            fn(array $row): array => $this->prepareNestedRowOnApply($row, $field),
+            $this->normalizeJsonValue($rows, $field),
+        ), $field);
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     * @param  array<string, mixed>  $field
+     *
+     * @return array<string, mixed>
+     */
+    protected function prepareNestedKeyValueOnApply(array $rows, array $field): array
+    {
+        $keyField = ($field['fields'] ?? [])[0] ?? null;
+        $valueField = ($field['fields'] ?? [])[1] ?? null;
+
+        if (! \is_array($keyField) || ! \is_array($valueField)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($this->normalizeJsonValue($rows, $field) as $row) {
+            $key = (string) ($row[$keyField['column']] ?? '');
+
+            if ($key === '' && $this->shouldFilterEmpty($field)) {
+                continue;
+            }
+
+            $result[$key] = $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $field
+     */
+    protected function shouldFilterEmpty(?array $field = null): bool
+    {
+        if ($field === null) {
+            return $this->isFilteringEmpty();
+        }
+
+        return ($field['filterEmpty'] ?? true) === true;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     * @param  array<string, mixed>  $field
+     *
+     * @return list<mixed>
+     */
+    protected function prepareNestedOnlyValueOnApply(array $rows, array $field): array
+    {
+        $valueField = ($field['fields'] ?? [])[0] ?? null;
+
+        if (! \is_array($valueField)) {
+            return [];
+        }
+
+        $values = array_map(
+            fn(array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
+            $this->normalizeJsonValue($rows, $field),
+        );
+
+        if (! $this->shouldFilterEmpty($field)) {
+            return array_values($values);
+        }
+
+        return array_values(array_filter(
+            $values,
+            fn(mixed $value): bool => ! $this->isEmptyValue($value),
+        ));
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     * @param  array<string, mixed>  $field
+     *
+     * @return array<array-key, mixed>
+     */
+    protected function prepareNestedObjectOnApply(array $rows, array $field): array
+    {
+        $rows = $this->normalizeJsonValue($rows, $field);
+
+        if (\count($rows) <= 1) {
+            $row = $rows[0] ?? [];
+
+            if ($row === []) {
+                return [];
+            }
+
+            $prepared = $this->prepareNestedRowOnApply($row, $field);
+
+            return $this->shouldFilterEmpty($field) && $this->isEmptyValue($prepared)
+                ? []
+                : $prepared;
+        }
+
+        return $this->filterPreparedRows(array_map(
+            fn(array $row): array => $this->prepareNestedRowOnApply($row, $field),
+            $rows,
+        ), $field);
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @param  array<string, mixed>  $field
+     *
+     * @return array<string, mixed>
+     */
+    protected function prepareNestedRowOnApply(array $row, array $field): array
+    {
+        $prepared = [];
+
+        foreach (($field['fields'] ?? []) as $nestedField) {
+            if (! \is_array($nestedField)) {
+                continue;
+            }
+
+            $prepared[$nestedField['column']] = $this->prepareFieldValueOnApply(
+                $row[$nestedField['column']] ?? null,
+                $nestedField,
+            );
+        }
+
+        return $prepared;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $rows
+     * @param  array<string, mixed>|null  $field
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function filterPreparedRows(array $rows, ?array $field = null): array
+    {
+        if (! $this->shouldFilterEmpty($field)) {
+            return array_values($rows);
+        }
+
+        return array_values(array_filter(
+            $rows,
+            fn(array $row): bool => ! $this->isEmptyValue($row),
+        ));
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     *
+     * @return list<mixed>
+     */
+    public function prepareOnlyValueOnApply(array $rows): array
+    {
+        $valueField = $this->fieldsSchema()[0] ?? null;
+
+        if ($valueField === null) {
+            return [];
+        }
+
+        $values = array_map(
+            fn(array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
+            $this->normalizeRows($rows),
+        );
+
+        if (! $this->isFilteringEmpty()) {
+            return array_values($values);
+        }
+
+        return array_values(array_filter(
+            $values,
+            fn(mixed $value): bool => ! $this->isEmptyValue($value),
+        ));
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     *
+     * @return array<array-key, mixed>
+     */
+    public function prepareObjectOnApply(array $rows): array
+    {
+        $rows = $this->normalizeRows($rows);
+
+        if (\count($rows) <= 1) {
+            $row = $rows[0] ?? [];
+
+            if ($row === []) {
+                return [];
+            }
+
+            $prepared = $this->prepareRowOnApply($row);
+
+            return $this->isFilteringEmpty() && $this->isEmptyValue($prepared)
+                ? []
+                : $prepared;
+        }
+
+        return $this->prepareRowsOnApply($rows);
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     *
+     * @return array<string, mixed>
+     */
+    protected function prepareRowOnApply(array $row): array
+    {
+        $prepared = [];
+
+        foreach ($this->fieldsSchema() as $field) {
+            $prepared[$field['column']] = $this->prepareFieldValueOnApply(
+                $row[$field['column']] ?? null,
+                $field,
+            );
+        }
+
+        return $prepared;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function prepareRowsOnApply(array $rows): array
+    {
+        return $this->filterPreparedRows(array_map(
+            fn(array $row): array => $this->prepareRowOnApply($row),
+            $this->normalizeRows($rows),
+        ));
+    }
+
+    /**
+     * @return array<string, mixed>
      */
     protected function viewData(): array
     {
         return [
-            'component' => $this->getComponent(),
+            'rows' => $this->normalizeRows($this->getValue()),
+            'fields' => $this->fieldsSchema(),
+            'controls' => $this->fieldsControls(),
+            'inputName' => str_replace('[]', '', $this->getNameAttribute()),
+            'removable' => $this->isRemovable(),
+            'creatable' => $this->isCreatable(),
+            'creatableLimit' => $this->getCreatableLimit(),
+            'hideCreateButton' => $this->isCreateButtonHidden(),
+            'createButton' => $this->renderCreateButton('add()'),
+            'buttons' => $this->renderButtons('remove(rowIndex)'),
+            'removeButton' => $this->renderRemoveButton('remove(rowIndex)'),
+            'removeButtonAttributes' => $this->getRemoveButtonAttributes(),
+            'reorderable' => $this->isReorderable(),
+            'orientation' => $this->getOrientation(),
+            'keyValue' => $this->isKeyValue(),
+            'onlyValue' => $this->isOnlyValue(),
+            'objectMode' => $this->isObject(),
+            'filterEmpty' => $this->isFilteringEmpty(),
+            'emptyMessage' => $this->getEmptyMessage(),
         ];
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    protected function fieldsControls(string $rowVariable = 'row', string $rowPath = 'rowIndex'): array
+    {
+        return $this->getFields()
+            ->onlyFields()
+            ->map(fn(FieldContract $field): array => $this->fieldControl($field, $rowVariable, $rowPath))
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function fieldControl(FieldContract $field, string $rowVariable, string $rowPath): array
+    {
+        $control = $this->fieldSchema($field);
+
+        if ($field instanceof self) {
+            $control['controls'] = $field->fieldsControls(
+                'nestedRow',
+                $rowPath . " + '.' + " . json_encode($field->getColumn(), JSON_THROW_ON_ERROR) . " + '.' + nestedRowIndex",
+            );
+
+            return $control;
+        }
+
+        $control['html'] = $this->renderFieldControl($field, $rowVariable, $rowPath);
+
+        return $control;
+    }
+
+    protected function renderFieldControl(FieldContract $field, string $rowVariable, string $rowPath): string
+    {
+        $control = clone $field;
+        $column = $field->getColumn();
+        $model = $rowVariable . '[' . json_encode($column, JSON_THROW_ON_ERROR) . ']';
+        $path = $rowPath . " + '.' + " . json_encode($column, JSON_THROW_ON_ERROR);
+
+        $control
+            ->flushRenderCache()
+            ->setNameAttribute($this->virtualFieldName($column))
+            ->customAttributes([
+                'x-bind:data-json-row-path' => $path,
+                'x-model' => $model,
+                'x-on:input' => 'sync()',
+                'x-on:change' => 'sync()',
+            ], override: true);
+
+        return (string) $control->render();
+    }
+
+    protected function virtualFieldName(string $column): string
+    {
+        return '__moonshine_json[' . $this->getIdentity() . '][' . $column . ']';
+    }
+
+    protected function resolveOnApply(): ?Closure
+    {
+        return fn(mixed $item, mixed $value): mixed => data_set(
+            $item,
+            str_replace('.', '->', $this->getColumn()),
+            $this->prepareValueOnApply($value),
+        );
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    protected function prepareRequestRows(): array
+    {
+        return $this->prepareValueOnApply($this->getRequestValue());
     }
 }

@@ -9,9 +9,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Resources\CrudResource;
+use MoonShine\UI\Fields\Json;
 use Throwable;
 
 class MoonShineFormRequest extends FormRequest
@@ -37,6 +39,45 @@ class MoonShineFormRequest extends FormRequest
         }
 
         $this->request = request()->getPayload();
+
+        $this->prepareJsonFieldsForValidation();
+    }
+
+    protected function prepareJsonFieldsForValidation(): void
+    {
+        if (! $this->hasResource()) {
+            return;
+        }
+
+        try {
+            $fields = $this->getResource()?->getFormFields()?->onlyFields() ?? [];
+        } catch (Throwable) {
+            return;
+        }
+
+        foreach ($fields as $field) {
+            if (! $field instanceof Json) {
+                continue;
+            }
+
+            $name = $this->getValidationJsonFieldName($field);
+            $value = $this->request->get($name);
+
+            if (! \is_string($value) || $value === '') {
+                continue;
+            }
+
+            $decoded = json_decode($value, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && \is_array($decoded)) {
+                $this->request->set($name, $decoded);
+            }
+        }
+    }
+
+    protected function getValidationJsonFieldName(FieldContract $field): string
+    {
+        return str_replace('[]', '', $field->getNameAttribute());
     }
 
     protected function failedValidation(Validator $validator): void
