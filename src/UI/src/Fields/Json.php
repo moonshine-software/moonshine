@@ -325,9 +325,9 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         if ($this->isKeyValue()) {
-            return ! array_is_list($value)
-                ? $this->normalizeKeyValueRows($value)
-                : $this->normalizeKeyValueListRows($value);
+            return array_is_list($value)
+                ? $this->normalizeKeyValueListRows($value)
+                : $this->normalizeKeyValueRows($value);
         }
 
         if ($this->isOnlyValue()) {
@@ -421,7 +421,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         $schema = [
             'column' => $field->getColumn(),
-            'label' => (string) $field->getLabel(),
+            'label' => $field->getLabel(),
             'type' => $this->fieldType($field),
             'multiple' => method_exists($field, 'isMultiple') && $field->isMultiple(),
             'nullable' => method_exists($field, 'isNullable') && $field->isNullable(),
@@ -545,25 +545,25 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected function renderCreateButton(string $onClick, string $disabled = '! canAdd()'): ?string
     {
-        if ($this->createButton === null && $this->modifyCreateButton === null) {
+        if (!$this->createButton instanceof ActionButtonContract && !$this->modifyCreateButton instanceof Closure) {
             return null;
         }
 
-        $button = $this->createButton === null
-            ? ActionButton::make('')
+        $button = $this->createButton instanceof ActionButtonContract
+            ? clone $this->createButton
+            : ActionButton::make('')
                 ->icon('plus')
                 ->customAttributes([
                     'type' => 'button',
                     'class' => 'btn btn-primary json-field__add',
-                ])
-            : clone $this->createButton;
+                ]);
 
         $button->customAttributes([
             'x-on:click.prevent' => $onClick,
             'x-bind:disabled' => $disabled,
         ]);
 
-        if ($this->modifyCreateButton !== null) {
+        if ($this->modifyCreateButton instanceof Closure) {
             $button = ($this->modifyCreateButton)($button, $this);
         }
 
@@ -587,7 +587,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected function renderRemoveButton(string $onClick): ?string
     {
-        if ($this->modifyRemoveButton === null) {
+        if (!$this->modifyRemoveButton instanceof Closure) {
             return null;
         }
 
@@ -862,7 +862,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     protected function resolvePreview(): Renderable | string
     {
         return view('moonshine::components.json.preview', [
-            'label' => (string) $this->getLabel(),
+            'label' => $this->getLabel(),
             'items' => $this->resolvePreviewItems(),
             'objectMode' => $this->isObject(),
             'tableMode' => $this->isTable(),
@@ -1304,7 +1304,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      */
     protected function resolveTableViewData(bool $preview): array
     {
-        if ($this->modifyTable === null) {
+        if (!$this->modifyTable instanceof Closure) {
             return [
                 'tableAttributes' => null,
                 'tableBuilder' => null,
