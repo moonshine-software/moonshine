@@ -1426,10 +1426,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     protected function prepareRecursiveRowBeforeApply(array $row): array
     {
         foreach ($this->getFields() as $field) {
-            if (! $field instanceof FieldContract) {
-                continue;
-            }
-
             if ($field instanceof File) {
                 $column = $field->getColumn();
                 $row[$column] = $row[$field->getHiddenColumn()] ?? $row[$column] ?? null;
