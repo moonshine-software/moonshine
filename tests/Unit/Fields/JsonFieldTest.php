@@ -706,6 +706,129 @@ it('uses first select option for empty nested non nullable select value', functi
         ]);
 });
 
+it('renders key value preview as key labels with values', function (): void {
+    $preview = Json::make('Contacts', 'contacts')
+        ->keyValue(
+            keyField: Select::make('Key')
+                ->options([
+                    'vk' => 'VK',
+                    'email' => 'E-mail',
+                ]),
+            valueField: Text::make('Value'),
+        )
+        ->previewMode()
+        ->fill([
+            'vk' => 'Lorem',
+            'email' => 'Ipsum',
+        ])
+        ->preview();
+
+    expect($preview)
+        ->toContain('VK')
+        ->toContain('Lorem')
+        ->toContain('E-mail')
+        ->toContain('Ipsum')
+        ->not->toContain('>Key<')
+        ->not->toContain('>Value<');
+});
+
+it('renders key value table preview as key columns with values', function (): void {
+    $preview = Json::make('Contacts', 'contacts')
+        ->keyValue()
+        ->table()
+        ->fill([
+            'title' => '111',
+            'status' => '222',
+        ])
+        ->preview();
+
+    expect($preview)
+        ->toContain('<th>')
+        ->toContain('Title')
+        ->toContain('Status')
+        ->toContain('111')
+        ->toContain('222')
+        ->not->toContain('>title<')
+        ->not->toContain('>status<')
+        ->not->toContain('>Key<')
+        ->not->toContain('>Value<');
+});
+
+it('renders key value preview from compatible fields rows', function (): void {
+    $preview = Json::make('Contacts preview', 'contacts')
+        ->keyValue(
+            keyField: Select::make('Key')
+                ->options([
+                    'vk' => 'VK',
+                    'email' => 'E-mail',
+                ]),
+            valueField: Text::make('Value'),
+        )
+        ->previewMode()
+        ->fill([
+            ['key_2' => 'vk', 'value_2' => 'Lorem'],
+            ['key_2' => 'email', 'value_2' => 'Ipsum'],
+        ])
+        ->preview();
+
+    expect($preview)
+        ->toContain('VK')
+        ->toContain('Lorem')
+        ->toContain('E-mail')
+        ->toContain('Ipsum')
+        ->not->toContain('>Key<')
+        ->not->toContain('>Value<');
+});
+
+it('renders key value table preview from compatible fields rows', function (): void {
+    $preview = Json::make('Contacts preview', 'contacts')
+        ->keyValue(
+            keyField: Select::make('Key')
+                ->options([
+                    'vk' => 'VK',
+                    'email' => 'E-mail',
+                ]),
+            valueField: Text::make('Value'),
+        )
+        ->table()
+        ->fill([
+            ['key_2' => 'vk', 'value_2' => 'Lorem'],
+            ['key_2' => 'email', 'value_2' => 'Ipsum'],
+        ])
+        ->preview();
+
+    expect($preview)
+        ->toContain('<th>')
+        ->toContain('VK')
+        ->toContain('E-mail')
+        ->toContain('Lorem')
+        ->toContain('Ipsum')
+        ->not->toContain('>Key<')
+        ->not->toContain('>Value<');
+});
+
+it('renders key value payload with configured field labels in preview', function (): void {
+    $preview = Json::make('Settings', 'table_of_contents')
+        ->fields([
+            Text::make('Title'),
+            Text::make('Status'),
+        ])
+        ->previewMode()
+        ->fill([
+            ['key' => 'title', 'value' => '111'],
+            ['key' => 'status', 'value' => '222'],
+        ])
+        ->preview();
+
+    expect($preview)
+        ->toContain('Title')
+        ->toContain('111')
+        ->toContain('Status')
+        ->toContain('222')
+        ->not->toContain('>Key<')
+        ->not->toContain('>Value<');
+});
+
 it('renders object preview as readonly fields', function (): void {
     $preview = Json::make('Data', 'data')
         ->fields([

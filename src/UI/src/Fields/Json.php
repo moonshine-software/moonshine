@@ -324,8 +324,10 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
             return [];
         }
 
-        if ($this->isKeyValue() && ! array_is_list($value)) {
-            return $this->normalizeKeyValueRows($value);
+        if ($this->isKeyValue()) {
+            return ! array_is_list($value)
+                ? $this->normalizeKeyValueRows($value)
+                : $this->normalizeKeyValueListRows($value);
         }
 
         if ($this->isOnlyValue()) {
@@ -334,6 +336,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
         if ($this->isObject() && ! array_is_list($value)) {
             return [$this->normalizeRow($value)];
+        }
+
+        $keyValuePayloadRows = $this->previewKeyValuePayloadRows($value);
+
+        if (! $this->isKeyOrOnlyValue() && $this->keyValuePayloadMatchesFields($keyValuePayloadRows)) {
+            return [$this->normalizeRow($this->rowFromKeyValuePayload($keyValuePayloadRows))];
         }
 
         if (! array_is_list($value)) {
@@ -368,6 +376,29 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
             ]),
             $value,
             array_keys($value),
+        ));
+    }
+
+    /**
+     * @param  list<mixed>  $value
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function normalizeKeyValueListRows(array $value): array
+    {
+        $schema = $this->fieldsSchema();
+        $keyField = $schema[0] ?? null;
+        $valueField = $schema[1] ?? null;
+
+        if ($keyField === null || $valueField === null) {
+            return [];
+        }
+
+        return array_values(array_map(
+            fn(mixed $row): array => $this->normalizeRow(
+                $this->resolveCompatibleKeyValueRow(\is_array($row) ? $row : [], $keyField, $valueField),
+            ),
+            $value,
         ));
     }
 
@@ -832,14 +863,27 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         return view('moonshine::components.json.preview', [
             'label' => (string) $this->getLabel(),
-            'items' => $this->previewItems(
-                $this->normalizeRows($this->toFormattedValue()),
-                $this->previewFieldsSchema(),
-            ),
+            'items' => $this->resolvePreviewItems(),
             'objectMode' => $this->isObject(),
             'tableMode' => $this->isTable(),
             ...$this->resolveTableViewData(preview: true),
         ]);
+    }
+
+    /**
+     * @return list<array{fields: list<array<string, mixed>>}>
+     */
+    protected function resolvePreviewItems(): array
+    {
+        $rawValue = $this->toFormattedValue();
+        $rows = $this->normalizeRows($rawValue);
+        $fields = $this->previewFieldsSchema();
+
+        if ($this->isKeyValue()) {
+            return $this->previewKeyValueItems($rows, $fields);
+        }
+
+        return $this->previewItems($rows, $fields);
     }
 
     /**
@@ -856,6 +900,208 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
             ],
             $rows,
         ));
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @param  list<array<string, mixed>>  $fields
+     *
+     * @return list<array{fields: list<array<string, mixed>>}>
+     */
+    protected function previewKeyValueItems(array $rows, array $fields): array
+    {
+        $keyField = $fields[0] ?? null;
+        $valueField = $fields[1] ?? null;
+
+        if ($keyField === null || $valueField === null) {
+            return [];
+        }
+
+        return [
+            [
+                'fields' => array_values(array_map(
+                    function (array $row) use ($keyField, $valueField): array {
+                        $row = $this->resolveCompatibleKeyValueRow($row, $keyField, $valueField);
+
+                        return [
+                            ...$this->previewField($valueField, $row[$valueField['column']] ?? null),
+                            'label' => $this->formatKeyPreviewLabel($row[$keyField['column']] ?? null, $keyField),
+                        ];
+                    },
+                    $rows,
+                )),
+            ],
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     * @param  array<string, mixed>  $keyField
+     * @param  array<string, mixed>  $valueField
+     *
+     * @return array<string, mixed>
+     */
+    protected function resolveCompatibleKeyValueRow(array $row, array $keyField, array $valueField): array
+    {
+        $keyColumn = (string) ($keyField['column'] ?? 'key');
+        $valueColumn = (string) ($valueField['column'] ?? 'value');
+
+        if (\array_key_exists($keyColumn, $row) && \array_key_exists($valueColumn, $row)) {
+            return $row;
+        }
+
+        [$keyFound, $keyValue] = $this->findCompatibleColumnValue($row, $keyColumn);
+        [$valueFound, $valueValue] = $this->findCompatibleColumnValue($row, $valueColumn);
+        $orderedValues = array_values($row);
+
+        if (! $keyFound && \array_key_exists(0, $orderedValues)) {
+            $keyFound = true;
+            $keyValue = $orderedValues[0];
+        }
+
+        if (! $valueFound && \array_key_exists(1, $orderedValues)) {
+            $valueFound = true;
+            $valueValue = $orderedValues[1];
+        }
+
+        if (! $keyFound && ! $valueFound) {
+            return $row;
+        }
+
+        return [
+            ...$row,
+            $keyColumn => $keyValue,
+            $valueColumn => $valueValue,
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     *
+     * @return array{0: bool, 1: mixed}
+     */
+    protected function findCompatibleColumnValue(array $row, string $column): array
+    {
+        foreach ($row as $rowColumn => $value) {
+            if ($this->isCompatibleColumn((string) $rowColumn, $column)) {
+                return [true, $value];
+            }
+        }
+
+        return [false, null];
+    }
+
+    protected function isCompatibleColumn(string $candidate, string $column): bool
+    {
+        $candidate = str_replace('-', '_', $candidate);
+        $column = str_replace('-', '_', $column);
+
+        return $candidate !== $column && str_starts_with($candidate, "{$column}_");
+    }
+
+    /**
+     * @param  array<string, mixed>  $field
+     */
+    protected function formatKeyPreviewLabel(mixed $value, array $field): string
+    {
+        $label = $this->formatPreviewValue($value, $field);
+        $rawValue = (string) $value;
+
+        if ($label !== $rawValue || $rawValue === '') {
+            return $label;
+        }
+
+        return ucwords(str_replace(['_', '-'], ' ', $rawValue));
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     */
+    protected function hasKeyValueRows(array $rows): bool
+    {
+        if ($rows === []) {
+            return false;
+        }
+
+        foreach ($rows as $row) {
+            if (! \array_key_exists('key', $row) || ! \array_key_exists('value', $row)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    protected function previewKeyValuePayloadRows(mixed $value): array
+    {
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            $value = \is_array($decoded) ? $decoded : [];
+        }
+
+        if (! \is_array($value)) {
+            return [];
+        }
+
+        if ($value === []) {
+            return [];
+        }
+
+        if ($this->hasKeyValueRows([$value])) {
+            return [$value];
+        }
+
+        if (! array_is_list($value)) {
+            return [];
+        }
+
+        return array_values(array_filter($value, \is_array(...)));
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     */
+    protected function keyValuePayloadMatchesFields(array $rows): bool
+    {
+        if (! $this->hasKeyValueRows($rows)) {
+            return false;
+        }
+
+        $columns = array_flip(array_map(
+            fn(array $field): string => (string) ($field['column'] ?? ''),
+            $this->fieldsSchema(),
+        ));
+
+        foreach ($rows as $row) {
+            if (! \array_key_exists((string) ($row['key'] ?? ''), $columns)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     *
+     * @return array<string, mixed>
+     */
+    protected function rowFromKeyValuePayload(array $rows): array
+    {
+        $row = [];
+
+        foreach ($rows as $item) {
+            $row[(string) $item['key']] = $item['value'] ?? null;
+        }
+
+        return $row;
     }
 
     /**
