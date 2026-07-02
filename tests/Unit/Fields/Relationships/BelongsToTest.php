@@ -71,6 +71,14 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
+    it('does not load missing relation when model does not define it', function () {
+        $field = BelongsTo::make('Post', 'post', resource: MoonShineUserResource::class)
+            ->fillData($this->item);
+
+        expect($field->toValue())
+            ->toBeNull();
+    });
+
     it('applies', function () {
         expect()
             ->applies($this->field);

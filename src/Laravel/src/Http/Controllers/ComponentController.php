@@ -16,6 +16,8 @@ final class ComponentController extends MoonShineController
      */
     public function __invoke(CrudRequestContract $request): Renderable|string
     {
+        $this->authorizeResourcePage($request);
+
         $page = $request->getPage();
 
         $component = $page->getComponents()->findByName(

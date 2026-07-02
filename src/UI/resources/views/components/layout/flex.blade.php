@@ -14,9 +14,9 @@
         ])
     }}
 >
-    <x-moonshine::components
-        :components="$components"
-    />
+    @foreach($components as $component)
+        {!! $component !!}
+    @endforeach
 
     {{ $slot ?? '' }}
 </div>

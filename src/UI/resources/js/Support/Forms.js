@@ -140,6 +140,17 @@ export function getQueryString(obj, encode = false) {
   return encode === true ? encodeURI(str) : str
 }
 
+export function asyncExtraQuery(element) {
+  const key = element?.dataset?.asyncExtraKey
+  const value = element?.dataset?.asyncExtra
+
+  if (!key || value === undefined || value === null || value === '') {
+    return ''
+  }
+
+  return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+}
+
 export function crudFormQuery(formElements = null, maxLength = 50) {
   if (formElements.length === 0) {
     return ''

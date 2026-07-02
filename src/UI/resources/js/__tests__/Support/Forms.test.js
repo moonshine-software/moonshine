@@ -1,5 +1,6 @@
 import {
   containsAttribute,
+  asyncExtraQuery,
   filterAttributeStartsWith,
   getAncestorsUntil,
   getQueryString,
@@ -50,6 +51,16 @@ describe('FormUtils', () => {
   test('getQueryString should serialize object to query string', () => {
     const obj = {key1: 'value1', key2: 'value2'}
     expect(getQueryString(obj)).toBe('key1=value1&key2=value2')
+  })
+
+  test('asyncExtraQuery should serialize async extra key and value from element dataset', () => {
+    const select = document.createElement('select')
+    select.dataset.asyncExtraKey = 'imageable_type'
+    select.dataset.asyncExtra = 'MoonShine\\Tests\\Fixtures\\Models\\Item'
+
+    expect(asyncExtraQuery(select)).toBe(
+      'imageable_type=MoonShine%5CTests%5CFixtures%5CModels%5CItem',
+    )
   })
 
   test('limitFormDataParams should limit input lengths', () => {

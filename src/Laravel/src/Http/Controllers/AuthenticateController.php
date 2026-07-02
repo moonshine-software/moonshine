@@ -74,7 +74,7 @@ class AuthenticateController extends MoonShineController
      */
     public function logout(Request $request, ConfiguratorContract $config, RouterContract $router): Response
     {
-        return $config->handleLogout(function () use ($request, $router) {
+        return $config->handleLogout(function () use ($request, $router): RedirectResponse {
             $this->auth()->logout();
 
             $request->session()->invalidate();

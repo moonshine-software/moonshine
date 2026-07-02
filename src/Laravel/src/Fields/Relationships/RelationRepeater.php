@@ -455,6 +455,15 @@ class RelationRepeater extends ModelRelationField implements
                     continue;
                 }
 
+                if ($field instanceof MorphTo) {
+                    data_set(
+                        /** @phpstan-ignore-next-line  */
+                        $applyValues[$index],
+                        $field->getMorphType(),
+                        data_get($apply, $field->getMorphType()),
+                    );
+                }
+
                 data_set(
                     /** @phpstan-ignore-next-line  */
                     $applyValues[$index],

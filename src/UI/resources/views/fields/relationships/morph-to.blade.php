@@ -6,6 +6,7 @@
     'column' => '',
     'morphType' => '',
     'morphTypeName' => '',
+    'morphTypeAttributes' => null,
     'isNullable' => false,
     'isSearchable' => false,
     'isAsyncSearch' => false,
@@ -18,6 +19,7 @@
 >
     <div class="sm:w-1/4 w-full">
         <x-moonshine::form.select
+            :attributes="$morphTypeAttributes"
             :name="$morphTypeName"
             x-model="morphType"
             required="required"
@@ -30,6 +32,7 @@
             :attributes="$attributes"
             :nullable="$isNullable"
             :searchable="true"
+            data-async-extra-key="{{ $morphType }}"
             x-bind:data-async-extra="morphType"
             x-effect="morphClear(morphType)"
             :value="$value"

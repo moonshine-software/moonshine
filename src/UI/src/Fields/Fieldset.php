@@ -73,7 +73,7 @@ class Fieldset extends Field implements HasFieldsContract, WrapperWithApplyContr
      */
     protected function resolvePreview(): Renderable|string
     {
-        return FieldsGroup::make($this->getPreparedFields())
+        return (string) FieldsGroup::make($this->getPreparedFields())
             ->previewMode()
             ->render();
     }

@@ -6,6 +6,7 @@
 
 [data-tippy-root] {
   max-width: calc(100vw - 10px);
+  z-index: var(--z-modal) !important;
 }
 
 .tippy-box {
@@ -161,6 +162,13 @@
   flex-direction: column;
   row-gap: var(--ms-popover-body-gap-y, --spacing(2.5));
   padding: var(--ms-popover-body-padding, --spacing(1));
+}
+
+.popover-body-content,
+.popover-body-content > form,
+.popover-body-content .form,
+.popover-body-content .ts-wrapper {
+  width: 100%;
 }
 
 .popover-body-title {

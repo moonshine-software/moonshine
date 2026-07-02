@@ -6,9 +6,9 @@
 <div
     {{ $attributes->class(["col-span-$adaptiveColSpan", "xl:col-span-$colSpan", "space-elements"]) }}
 >
-    <x-moonshine::components
-        :components="$components"
-    />
+    @foreach($components as $component)
+        {!! $component !!}
+    @endforeach
 
     {{ $slot ?? '' }}
 </div>
