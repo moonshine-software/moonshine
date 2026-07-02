@@ -1327,7 +1327,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected function prepareRequestValue(mixed $value): mixed
     {
-        return $this->prepareValueOnApply($value);
+        return $this->prepareValueOnApplyRecursive($value);
     }
 
     /**
@@ -1336,6 +1336,27 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     protected function prepareValueOnApply(mixed $value): array
     {
         return $this->prepareOnApply($this->normalizeRows($value));
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    protected function prepareValueOnApplyRecursive(mixed $value): array
+    {
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            $value = \is_array($decoded) ? $decoded : [];
+        }
+
+        if (! \is_array($value)) {
+            return [];
+        }
+
+        return $this->prepareOnApplyRecursive($value);
     }
 
     /**
@@ -1362,6 +1383,67 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return $this->prepareRowsOnApply($rows);
+    }
+
+    /**
+     * @param  iterable<array-key, mixed>  $rows
+     *
+     * @return array<array-key, mixed>
+     */
+    public function prepareOnApplyRecursive(iterable $rows): array
+    {
+        $rows = $rows instanceof Collection
+            ? $rows->toArray()
+            : (\is_array($rows) ? $rows : iterator_to_array($rows));
+
+        return $this->prepareOnApply($this->prepareRecursiveRowsBeforeApply($rows));
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $rows
+     *
+     * @return array<array-key, mixed>
+     */
+    protected function prepareRecursiveRowsBeforeApply(array $rows): array
+    {
+        if (! array_is_list($rows)) {
+            return $this->isKeyOrOnlyValue()
+                ? $rows
+                : $this->prepareRecursiveRowBeforeApply($rows);
+        }
+
+        return array_values(array_map(
+            fn(mixed $row): array => $this->prepareRecursiveRowBeforeApply(\is_array($row) ? $row : []),
+            $rows,
+        ));
+    }
+
+    /**
+     * @param  array<string, mixed>  $row
+     *
+     * @return array<string, mixed>
+     */
+    protected function prepareRecursiveRowBeforeApply(array $row): array
+    {
+        foreach ($this->getFields() as $field) {
+            if (! $field instanceof FieldContract) {
+                continue;
+            }
+
+            if ($field instanceof File) {
+                $column = $field->getColumn();
+                $row[$column] = $row[$field->getHiddenColumn()] ?? $row[$column] ?? null;
+
+                continue;
+            }
+
+            if ($field instanceof self) {
+                $column = $field->getColumn();
+                $row[$column] = $field->prepareOnApplyRecursive($row[$column] ?? []);
+            }
+        }
+
+        return $row;
     }
 
     /**
@@ -1743,7 +1825,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         return fn(mixed $item, mixed $value): mixed => data_set(
             $item,
             str_replace('.', '->', $this->getColumn()),
-            $this->prepareValueOnApply($value),
+            $value,
         );
     }
 
@@ -1752,6 +1834,8 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      */
     protected function prepareRequestRows(): array
     {
-        return $this->prepareValueOnApply($this->getRequestValue());
+        $value = $this->getRequestValue();
+
+        return \is_array($value) ? $value : [];
     }
 }

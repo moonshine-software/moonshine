@@ -8,6 +8,7 @@ use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Fields\Checkbox;
+use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Select;
@@ -22,6 +23,13 @@ function jsonViewData(Json $field): array
     $reflection = new ReflectionMethod($field, 'viewData');
 
     return $reflection->invoke($field);
+}
+
+function jsonPrepareRequestValue(Json $field, mixed $value): mixed
+{
+    $reflection = new ReflectionMethod($field, 'prepareRequestValue');
+
+    return $reflection->invoke($field, $value);
 }
 
 it('has the expected contracts', function (): void {
@@ -1203,6 +1211,76 @@ it('prepares rows for apply', function (): void {
     ]))->toBe([
         ['title' => 'A', 'value' => '111'],
         ['title' => 'B', 'value' => '222'],
+    ]);
+});
+
+it('prepares rows recursively for apply', function (): void {
+    $field = Json::make('Products', 'products')
+        ->fields([
+            Text::make('Name'),
+            File::make('Image'),
+            Json::make('Files')
+                ->fields([
+                    Text::make('Title'),
+                    File::make('Attachment'),
+                ]),
+        ]);
+
+    expect($field->prepareOnApplyRecursive([
+        [
+            'name' => 'Product 1',
+            'image' => null,
+            'hidden_image' => 'products/product-1.jpg',
+            'files' => [
+                [
+                    'title' => 'Manual',
+                    'attachment' => null,
+                    'hidden_attachment' => 'files/manual.pdf',
+                ],
+            ],
+        ],
+    ]))->toBe([
+        [
+            'name' => 'Product 1',
+            'image' => 'products/product-1.jpg',
+            'files' => [
+                [
+                    'title' => 'Manual',
+                    'attachment' => 'files/manual.pdf',
+                ],
+            ],
+        ],
+    ]);
+});
+
+it('prepares request rows from array input', function (): void {
+    $field = Json::make('Data')->fields([
+        Text::make('Title'),
+        Text::make('Value'),
+    ]);
+
+    expect(jsonPrepareRequestValue($field, [
+        ['title' => 'Title 1', 'value' => 'Value 1'],
+        ['title' => 'Title 2', 'value' => 'Value 2'],
+    ]))->toBe([
+        ['title' => 'Title 1', 'value' => 'Value 1'],
+        ['title' => 'Title 2', 'value' => 'Value 2'],
+    ]);
+});
+
+it('prepares request rows from encoded payload', function (): void {
+    $field = Json::make('Data')->fields([
+        Select::make('Key')
+            ->options(['vk' => 'VK', 'email' => 'E-mail']),
+        Text::make('Value'),
+    ]);
+
+    expect(jsonPrepareRequestValue($field, json_encode([
+        ['key' => 'vk', 'value' => '111'],
+        ['key' => 'email', 'value' => '222'],
+    ], JSON_THROW_ON_ERROR)))->toBe([
+        ['key' => 'vk', 'value' => '111'],
+        ['key' => 'email', 'value' => '222'],
     ]);
 });
 
