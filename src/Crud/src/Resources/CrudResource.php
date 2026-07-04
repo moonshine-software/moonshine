@@ -334,6 +334,23 @@ abstract class CrudResource extends Resource implements
         return $this->column;
     }
 
+    /**
+     * Resolve the resource column value as a human-readable string label.
+     */
+    public function getColumnValue(mixed $item): string
+    {
+        $value = data_get($item, $this->getColumn());
+
+        return match (true) {
+            $value instanceof \UnitEnum => method_exists($value, 'toString')
+                ? (string) $value->toString()
+                : (string) ($value->value ?? $value->name),
+            \is_scalar($value), $value instanceof \Stringable
+                || (\is_object($value) && method_exists($value, '__toString')) => (string) $value,
+            default => '',
+        };
+    }
+
 
     public function isDeleteRelationships(): bool
     {

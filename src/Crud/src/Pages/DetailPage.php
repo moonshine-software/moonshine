@@ -72,7 +72,7 @@ class DetailPage extends CrudPage implements DetailPageContract
 
         $breadcrumbs = parent::getBreadcrumbs();
 
-        $breadcrumbs[$this->getRoute()] = data_get($this->getItem(), $this->getResource()->getColumn());
+        $breadcrumbs[$this->getRoute()] = $this->getResource()->getColumnValue($this->getItem());
 
         return $breadcrumbs;
     }

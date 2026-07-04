@@ -71,10 +71,7 @@ class FormPage extends CrudPage implements FormPageContract
         $breadcrumbs = parent::getBreadcrumbs();
 
         if ($this->getResource()->getItemID()) {
-            $breadcrumbs[$this->getRoute()] = data_get(
-                $this->getItem(),
-                $this->getResource()->getColumn(),
-            );
+            $breadcrumbs[$this->getRoute()] = $this->getResource()->getColumnValue($this->getItem());
         } else {
             $breadcrumbs[$this->getRoute()] = $this->getCore()->getTranslator()->get('moonshine::ui.add');
         }

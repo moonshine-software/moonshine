@@ -62,6 +62,13 @@ class TestResource extends AbstractTestingResource
         return $this;
     }
 
+    public function setTestColumn(string $column): static
+    {
+        $this->column = $column;
+
+        return $this;
+    }
+
     public function setTestRules(array $testRules): static
     {
         $this->testRules = $testRules;
