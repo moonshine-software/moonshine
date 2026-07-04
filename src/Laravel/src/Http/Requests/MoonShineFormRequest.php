@@ -55,13 +55,15 @@ class MoonShineFormRequest extends FormRequest
             return;
         }
 
+        $payload = $this->request->all();
+
         foreach ($fields as $field) {
             if (! $field instanceof Json) {
                 continue;
             }
 
             $name = $this->getValidationJsonFieldName($field);
-            $value = $this->request->get($name);
+            $value = $payload[$name] ?? null;
 
             if (! \is_string($value) || $value === '') {
                 continue;
