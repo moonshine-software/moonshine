@@ -1816,7 +1816,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
             $control['nestedRowIndex'] = $nestedRowIndex;
             $control['controls'] = $field->fieldsControls(
                 $nestedRowVariable,
-                $rowPath." + '.' + ".json_encode($field->getColumn(), JSON_THROW_ON_ERROR)." + '.' + {$nestedRowIndex}",
+                $rowPath . " + '.' + " . json_encode($field->getColumn(), JSON_THROW_ON_ERROR) . " + '.' + {$nestedRowIndex}",
                 $depth + 1,
             );
 
@@ -1832,8 +1832,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     {
         $control = clone $field;
         $column = $field->getColumn();
-        $model = $rowVariable.'['.json_encode($column, JSON_THROW_ON_ERROR).']';
-        $path = $rowPath." + '.' + ".json_encode($column, JSON_THROW_ON_ERROR);
+        $model = $rowVariable . '[' . json_encode($column, JSON_THROW_ON_ERROR) . ']';
+        $path = $rowPath . " + '.' + " . json_encode($column, JSON_THROW_ON_ERROR);
 
         $control
             ->flushRenderCache()
@@ -1850,7 +1850,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     protected function virtualFieldName(string $column): string
     {
-        return '__moonshine_json['.$this->getIdentity().']['.$column.']';
+        return '__moonshine_json[' . $this->getIdentity() . '][' . $column . ']';
     }
 
     protected function resolveOnApply(): ?Closure
