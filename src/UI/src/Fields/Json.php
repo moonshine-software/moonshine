@@ -310,6 +310,11 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return $this->getFields()->prepareReindexNames($this);
     }
 
+    public function toValue(bool $withDefault = true): mixed
+    {
+        return parent::toValue($withDefault) ?? [];
+    }
+
     /**
      * @return array<array-key, mixed>
      */

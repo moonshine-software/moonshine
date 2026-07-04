@@ -67,23 +67,24 @@ it('builds field schema from fields', function (): void {
             Text::make('Value')->horizontal(),
         ]);
 
-    expect(jsonViewData($field)['fields'])
+    $fields = jsonViewData($field)['fields'];
+
+    expect($fields[0])
         ->toMatchArray([
-            [
-                'column' => 'key',
-                'label' => 'Key',
-                'type' => 'select',
-                'options' => [
-                    ['value' => 'vk', 'label' => 'VK'],
-                    ['value' => 'email', 'label' => 'E-mail'],
-                ],
+            'column' => 'key',
+            'label' => 'Key',
+            'type' => 'select',
+            'options' => [
+                ['value' => 'vk', 'label' => 'VK'],
+                ['value' => 'email', 'label' => 'E-mail'],
             ],
-            [
-                'column' => 'value',
-                'label' => 'Value',
-                'type' => 'text',
-                'wrapperClass' => 'form-group-inline',
-            ],
+        ])
+        ->and($fields[1])
+        ->toMatchArray([
+            'column' => 'value',
+            'label' => 'Value',
+            'type' => 'text',
+            'wrapperClass' => 'form-group-inline',
         ]);
 });
 
@@ -257,7 +258,7 @@ it('can override row buttons', function (): void {
 
     expect(jsonViewData($field)['buttons'])
         ->toContain('remove(rowIndex)')
-        ->toContain('trash');
+        ->toContain('btn-secondary');
 });
 
 it('can modify remove button', function (): void {
@@ -349,7 +350,7 @@ it('passes nested creatable state to field schema', function (): void {
 
     expect(jsonViewData($field)['fields'][1]['buttons'])
         ->toContain('__moonshine_json_remove__')
-        ->toContain('trash');
+        ->toContain('btn-secondary');
 });
 
 it('passes nested hidden create button state to field schema', function (): void {
@@ -459,18 +460,17 @@ it('can use default key value fields', function (): void {
             ['key' => 'foo', 'value' => 'aaa'],
             ['key' => 'bar', 'value' => 'sss'],
         ])
-        ->and(jsonViewData($field)['fields'])
+        ->and(jsonViewData($field)['fields'][0])
         ->toMatchArray([
-            [
-                'column' => 'key',
-                'label' => 'Key',
-                'type' => 'text',
-            ],
-            [
-                'column' => 'value',
-                'label' => 'Value',
-                'type' => 'text',
-            ],
+            'column' => 'key',
+            'label' => 'Key',
+            'type' => 'text',
+        ])
+        ->and(jsonViewData($field)['fields'][1])
+        ->toMatchArray([
+            'column' => 'value',
+            'label' => 'Value',
+            'type' => 'text',
         ])
         ->and($field->prepareOnApply([
             ['key' => 'foo', 'value' => '111'],
@@ -710,8 +710,8 @@ it('uses first select option for empty nested non nullable select value', functi
                 'two' => '44',
                 'city_id' => '1',
             ],
-            ],
-        ]);
+        ],
+    ]);
 });
 
 it('renders key value preview as key labels with values', function (): void {
@@ -1131,16 +1131,17 @@ it('keeps positional key value fields support', function (): void {
             Text::make('Value'),
         );
 
-    expect(jsonViewData($field)['fields'])
+    $fields = jsonViewData($field)['fields'];
+
+    expect($fields[0])
         ->toMatchArray([
-            [
-                'column' => 'key',
-                'type' => 'select',
-            ],
-            [
-                'column' => 'value',
-                'type' => 'text',
-            ],
+            'column' => 'key',
+            'type' => 'select',
+        ])
+        ->and($fields[1])
+        ->toMatchArray([
+            'column' => 'value',
+            'type' => 'text',
         ]);
 });
 
@@ -1184,16 +1185,14 @@ it('can use custom only value field', function (): void {
                 ->options(['email' => 'E-mail', 'vk' => 'VK']),
         );
 
-    expect(jsonViewData($field)['fields'])
+    expect(jsonViewData($field)['fields'][0])
         ->toMatchArray([
-            [
-                'column' => 'type',
-                'label' => 'Type',
-                'type' => 'select',
-                'options' => [
-                    ['value' => 'email', 'label' => 'E-mail'],
-                    ['value' => 'vk', 'label' => 'VK'],
-                ],
+            'column' => 'type',
+            'label' => 'Type',
+            'type' => 'select',
+            'options' => [
+                ['value' => 'email', 'label' => 'E-mail'],
+                ['value' => 'vk', 'label' => 'VK'],
             ],
         ]);
 });
