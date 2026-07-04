@@ -250,7 +250,7 @@ it('can override row buttons', function (): void {
         ->buttons([
             ActionButton::make('')
                 ->icon('trash')
-                ->onClick(fn(): string => 'remove()', 'prevent')
+                ->onClick(fn (): string => 'remove()', 'prevent')
                 ->secondary()
                 ->showInLine(),
         ]);
@@ -267,7 +267,7 @@ it('can modify remove button', function (): void {
             Text::make('Value'),
         ])
         ->modifyRemoveButton(
-            fn(ActionButton $button): ActionButton => $button->customAttributes([
+            fn (ActionButton $button): ActionButton => $button->customAttributes([
                 'class' => 'btn-secondary',
             ])
         );
@@ -285,7 +285,7 @@ it('can modify create button', function (): void {
         ])
         ->creatable()
         ->modifyCreateButton(
-            fn(ActionButton $button): ActionButton => $button->customAttributes([
+            fn (ActionButton $button): ActionButton => $button->customAttributes([
                 'class' => 'btn-primary',
             ])
         );
@@ -305,7 +305,7 @@ it('passes nested modified remove button to field schema', function (): void {
                     Text::make('Url'),
                 ])
                 ->modifyRemoveButton(
-                    fn(ActionButton $button): ActionButton => $button->customAttributes([
+                    fn (ActionButton $button): ActionButton => $button->customAttributes([
                         'class' => 'btn-secondary',
                     ])
                 ),
@@ -329,7 +329,7 @@ it('passes nested creatable state to field schema', function (): void {
                 ->buttons([
                     ActionButton::make('')
                         ->icon('trash')
-                        ->onClick(fn(): string => 'remove()', 'prevent')
+                        ->onClick(fn (): string => 'remove()', 'prevent')
                         ->secondary()
                         ->showInLine(),
                 ]),
@@ -1014,13 +1014,13 @@ it('can modify table preview', function (): void {
         ])
         ->table()
         ->modifyTable(
-            fn(TableBuilder $table, bool $preview): TableBuilder => $table
+            fn (TableBuilder $table, bool $preview): TableBuilder => $table
                 ->customAttributes([
                     'style' => 'width: 20%;',
                     'data-preview' => $preview ? 'true' : 'false',
                 ])
-                ->trAttributes(fn(): array => ['style' => 'background: red'])
-                ->tdAttributes(fn(): array => ['style' => 'background: blue'])
+                ->trAttributes(fn (): array => ['style' => 'background: red'])
+                ->tdAttributes(fn (): array => ['style' => 'background: blue'])
                 ->simple()
                 ->sticky()
         )
@@ -1080,12 +1080,12 @@ it('can modify nested table preview', function (): void {
                 ])
                 ->table()
                 ->modifyTable(
-                    fn(TableBuilder $table): TableBuilder => $table
+                    fn (TableBuilder $table): TableBuilder => $table
                         ->customAttributes([
                             'data-json-nested' => 'links',
                         ])
-                        ->trAttributes(fn(): array => ['style' => 'background: red'])
-                        ->tdAttributes(fn(): array => ['style' => 'background: blue'])
+                        ->trAttributes(fn (): array => ['style' => 'background: red'])
+                        ->tdAttributes(fn (): array => ['style' => 'background: blue'])
                         ->simple()
                 ),
         ])
