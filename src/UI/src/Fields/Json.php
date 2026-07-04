@@ -51,7 +51,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     protected bool $showCreateButtonIcon = true;
 
     /**
-     * @var null|Closure(ActionButton, self): ActionButton
+     * @var null|Closure(ActionButtonContract, self): ActionButtonContract
      */
     protected ?Closure $modifyCreateButton = null;
 
@@ -209,7 +209,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     }
 
     /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
      */
     public function modifyCreateButton(Closure $callback): static
     {
@@ -430,7 +430,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
             'label' => $field->getLabel(),
             'type' => $this->fieldType($field),
             'multiple' => method_exists($field, 'isMultiple') && $field->isMultiple(),
-            'nullable' => method_exists($field, 'isNullable') && $field->isNullable(),
+            'nullable' => $field->isNullable(),
             'options' => $this->fieldOptions($field),
             'placeholder' => (string) ($field->getAttribute('placeholder') ?? $field->getLabel()),
             'wrapperClass' => (string) $field->getWrapperAttributes()->get('class', ''),
@@ -878,7 +878,10 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     protected function resolvePreview(): Renderable|string
     {
-        return view('moonshine::components.json.preview', [
+        /** @phpstan-var view-string $view */
+        $view = 'moonshine::components.json.preview';
+
+        return view($view, [
             'label' => $this->getLabel(),
             'items' => $this->resolvePreviewItems(),
             'objectMode' => $this->isObject(),
