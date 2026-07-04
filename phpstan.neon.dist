@@ -20,6 +20,7 @@ parameters:
         - '#PHPDoc tag @method for method .+make\(\)#'
     excludePaths:
         - ./src/Support/src/Traits/Makeable.php
+        - ./src/UI/src/Traits/Fields/HasVerticalMode.php
         - ./src/Laravel/routes/moonshine.php
         - ./src/Laravel/src/DefaultRoutes.php
         - ./src/Laravel/config/moonshine.php
