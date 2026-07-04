@@ -11,60 +11,63 @@
 }
 
 .json-field__item {
-  display: contents
+  display: contents;
 }
 
 .json-field__row {
   display: grid;
-  grid-template-columns:minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: calc(var(--spacing) * 2);
   align-items: start;
   padding: calc(var(--spacing) * 2);
   border: 1px solid var(--color-base-300);
   border-radius: var(--radius);
   background: var(--color-base);
-  transition: border-color 160ms ease, background-color 160ms ease, opacity 160ms ease
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease;
 }
 
 .json-field__row--reorderable {
-  grid-template-columns:auto minmax(0, 1fr) auto
+  grid-template-columns: auto minmax(0, 1fr) auto;
 }
 
 .json-field__row--dragging {
-  display: none
+  display: none;
 }
 
 .json-field__reorder {
   display: flex;
   align-items: flex-start;
-  align-self: flex-start
+  align-self: flex-start;
 }
 
 .json-field__reorder-button {
   cursor: grab;
   touch-action: none;
-  user-select: none
+  user-select: none;
 }
 
 .json-field__reorder-button:active {
-  cursor: grabbing
+  cursor: grabbing;
 }
 
 .json-field__controls {
   display: grid;
-  grid-template-columns:repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   align-items: flex-start;
   gap: calc(var(--spacing) * 2);
-  min-width: 0
+  min-width: 0;
 }
 
 .json-field__controls--vertical {
-  grid-template-columns:minmax(0, 1fr)
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .json-field__control {
   align-self: flex-start;
-  min-width: 0
+  min-width: 0;
 }
 
 .json-field__actions {
@@ -72,7 +75,7 @@
   flex-direction: column;
   gap: calc(var(--spacing) * 1);
   align-items: flex-end;
-  align-self: flex-start
+  align-self: flex-start;
 }
 
 .json-field__ghost {
@@ -80,15 +83,17 @@
   border: 1px dashed var(--color-primary);
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-primary) 8%, transparent);
-  transition: opacity 160ms ease, transform 160ms ease
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .json-field__drag-ghost {
   flex-shrink: 0;
   overflow: hidden;
-  transition: none
+  transition: none;
 }
 
 .json-field__add {
-  align-self: center
+  align-self: center;
 }
