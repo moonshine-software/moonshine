@@ -66,7 +66,7 @@
                 @endforeach
             </x-moonshine::layout.div>
 
-            @if($nested && ! $loop->last)
+            @if(! $loop->last)
                 <x-moonshine::layout.divider />
             @endif
         @endforeach

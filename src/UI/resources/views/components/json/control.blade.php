@@ -8,6 +8,8 @@
     $column = $control['column'];
     $fieldExpression = "fieldByColumn(" . \Illuminate\Support\Js::from($column) . ", {$fieldsExpression})";
     $nestedRowsExpression = "nestedRows({$rowVariable}, {$fieldExpression})";
+    $nestedRowVariable = $control['nestedRowVariable'] ?? 'nestedRow';
+    $nestedRowIndex = $control['nestedRowIndex'] ?? 'nestedRowIndex';
 @endphp
 
 @if(($control['type'] ?? null) === 'json')
@@ -24,12 +26,12 @@
                     </div>
                 </template>
 
-                <template x-for="(nestedRow, nestedRowIndex) in {{ $rowVariable }}[{{ \Illuminate\Support\Js::from($column) }}]" :key="nestedRow._key">
+                <template x-for="({{ $nestedRowVariable }}, {{ $nestedRowIndex }}) in {{ $nestedRowsExpression }}" :key="{{ $nestedRowVariable }}._key">
                     <div class="json-field__item">
                         <div
                             class="json-field__ghost json-field__drag-ghost"
                             x-cloak
-                            x-show="{{ $fieldExpression }}.reorderable && isDraggingRows({{ $nestedRowsExpression }}) && dropIndex === nestedRowIndex"
+                            x-show="{{ $fieldExpression }}.reorderable && isDraggingRows({{ $nestedRowsExpression }}) && dropIndex === {{ $nestedRowIndex }}"
                             x-bind:style="ghostStyle()"
                         ></div>
 
@@ -38,9 +40,9 @@
                                 'json-field__row',
                                 'json-field__row--reorderable' => ($control['reorderable'] ?? false) === true,
                             ])
-                            x-bind:data-json-row-index="nestedRowIndex"
-                            x-bind:class="{ 'json-field__row--dragging': isDraggingRows({{ $nestedRowsExpression }}) && draggingIndex === nestedRowIndex }"
-                            x-show="! isDraggingRows({{ $nestedRowsExpression }}) || draggingIndex !== nestedRowIndex"
+                            x-bind:data-json-row-index="{{ $nestedRowIndex }}"
+                            x-bind:class="{ 'json-field__row--dragging': isDraggingRows({{ $nestedRowsExpression }}) && draggingIndex === {{ $nestedRowIndex }} }"
+                            x-show="! isDraggingRows({{ $nestedRowsExpression }}) || draggingIndex !== {{ $nestedRowIndex }}"
                         >
                             @if(($control['reorderable'] ?? false) === true)
                                 <div class="json-field__reorder">
@@ -48,7 +50,7 @@
                                         raw
                                         type="button"
                                         class="btn btn-secondary json-field__reorder-button"
-                                        x-on:pointerdown.prevent="dragStartNested($event, {{ $rowVariable }}, {{ $fieldExpression }}, nestedRowIndex)"
+                                        x-on:pointerdown.prevent="dragStartNested($event, {{ $rowVariable }}, {{ $fieldExpression }}, {{ $nestedRowIndex }})"
                                     >
                                         <x-moonshine::icon icon="bars-3-bottom-right" />
                                     </x-moonshine::form.button>
@@ -62,7 +64,7 @@
                                 @foreach($control['controls'] ?? [] as $nestedControl)
                                     @include('moonshine::components.json.control', [
                                         'control' => $nestedControl,
-                                        'rowVariable' => 'nestedRow',
+                                        'rowVariable' => $nestedRowVariable,
                                         'fieldsExpression' => "{$fieldExpression}.fields",
                                     ])
                                 @endforeach
@@ -72,13 +74,13 @@
                                 @if($control['buttons'] ?? null)
                                     {!! str_replace(
                                         '__moonshine_json_remove__',
-                                        "removeNested({$rowVariable}, {$fieldExpression}, nestedRowIndex)",
+                                        "removeNested({$rowVariable}, {$fieldExpression}, {$nestedRowIndex})",
                                         $control['buttons'],
                                     ) !!}
                                 @elseif(($control['removeButton'] ?? null) && ($control['removable'] ?? true))
                                     {!! str_replace(
                                         '__moonshine_json_remove__',
-                                        "removeNested({$rowVariable}, {$fieldExpression}, nestedRowIndex)",
+                                        "removeNested({$rowVariable}, {$fieldExpression}, {$nestedRowIndex})",
                                         $control['removeButton'],
                                     ) !!}
                                 @else
@@ -87,7 +89,7 @@
                                         $hasCustomRemoveClick = array_key_exists('@click.prevent', $removeButtonAttributes)
                                             || array_key_exists('x-on:click.prevent', $removeButtonAttributes);
                                         $removeAttributes = new \Illuminate\View\ComponentAttributeBag(array_merge(
-                                            $hasCustomRemoveClick ? [] : ['x-on:click.prevent' => "removeNested({$rowVariable}, {$fieldExpression}, nestedRowIndex)"],
+                                            $hasCustomRemoveClick ? [] : ['x-on:click.prevent' => "removeNested({$rowVariable}, {$fieldExpression}, {$nestedRowIndex})"],
                                             $removeButtonAttributes,
                                         ));
                                     @endphp
@@ -138,7 +140,13 @@
                         x-on:click.prevent="{{ $nestedAddExpression }}"
                         x-bind:disabled="{{ $nestedDisabledExpression }}"
                     >
-                        <x-moonshine::icon icon="plus" />
+                        @if($control['showCreateButtonIcon'] ?? true)
+                            <x-moonshine::icon icon="plus" />
+                        @endif
+
+                        @if($control['showCreateButtonText'] ?? true)
+                            {{ __('moonshine::ui.add') }}
+                        @endif
                     </x-moonshine::form.button>
                 @endif
             @endif

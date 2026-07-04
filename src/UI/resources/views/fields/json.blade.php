@@ -7,6 +7,8 @@
     'creatable' => true,
     'creatableLimit' => null,
     'hideCreateButton' => false,
+    'showCreateButtonText' => true,
+    'showCreateButtonIcon' => true,
     'createButton' => null,
     'buttons' => null,
     'removeButton' => null,
@@ -29,6 +31,8 @@
     :creatable="$creatable"
     :creatable-limit="$creatableLimit"
     :hide-create-button="$hideCreateButton"
+    :show-create-button-text="$showCreateButtonText"
+    :show-create-button-icon="$showCreateButtonIcon"
     :create-button="$createButton"
     :buttons="$buttons"
     :remove-button="$removeButton"

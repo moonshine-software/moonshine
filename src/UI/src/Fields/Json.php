@@ -25,7 +25,7 @@ use Throwable;
 /**
  * @implements HasFieldsContract<Fields|FieldsContract>
  */
-class Json extends Field implements HasFieldsContract, HasDefaultValueContract, CanBeArray
+class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFieldsContract
 {
     use WithDefaultValue;
     use WithFields {
@@ -46,13 +46,17 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected bool $hideCreateButton = false;
 
+    protected bool $showCreateButtonText = true;
+
+    protected bool $showCreateButtonIcon = true;
+
     /**
-     * @var null|Closure(ActionButton $button, self $field): ActionButton
+     * @var null|Closure(ActionButton, self): ActionButton
      */
     protected ?Closure $modifyCreateButton = null;
 
     /**
-     * @var null|Closure(ActionButton $button, self $field): ActionButton
+     * @var null|Closure(ActionButton, self): ActionButton
      */
     protected ?Closure $modifyRemoveButton = null;
 
@@ -79,20 +83,20 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     protected bool $table = false;
 
     /**
-     * @var null|Closure(TableBuilder $table, bool $preview): TableBuilder
+     * @var null|Closure(TableBuilder, bool): TableBuilder
      */
     protected ?Closure $modifyTable = null;
 
     protected string $orientation = 'horizontal';
 
-    protected string $emptyMessage = 'No items added';
+    protected ?string $emptyMessage = null;
 
     /**
      * @param  FieldsContract|(Closure(static): iterable<array-key, ComponentContract>)|iterable<array-key, ComponentContract>  $fields
      *
      * @throws Throwable
      */
-    public function fields(FieldsContract | Closure | iterable $fields, string $orientation = 'horizontal'): static
+    public function fields(FieldsContract|Closure|iterable $fields, string $orientation = 'horizontal'): static
     {
         return $this->setFields($fields, $orientation);
     }
@@ -102,7 +106,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      *
      * @throws Throwable
      */
-    protected function setFields(FieldsContract | Closure | iterable $fields, string $orientation = 'horizontal'): static
+    protected function setFields(FieldsContract|Closure|iterable $fields, string $orientation = 'horizontal'): static
     {
         $this->resetPreparedFields();
         $this->orientation($orientation);
@@ -128,8 +132,8 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      * @throws Throwable
      */
     public function keyValue(
-        string | FieldContract $key = 'Key',
-        string | FieldContract $value = 'Value',
+        string|FieldContract $key = 'Key',
+        string|FieldContract $value = 'Value',
         ?FieldContract $keyField = null,
         ?FieldContract $valueField = null,
         string $orientation = 'horizontal',
@@ -189,7 +193,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<string, mixed>  $attributes
      */
-    public function removable(Closure | bool | null $condition = null, array $attributes = []): static
+    public function removable(Closure|bool|null $condition = null, array $attributes = []): static
     {
         $this->removable = value($condition, $this) ?? true;
         $this->removeButtonAttributes = $attributes;
@@ -232,15 +236,19 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     }
 
     public function creatable(
-        Closure | bool | null $condition = null,
+        Closure|bool|null $condition = null,
         ?int $limit = null,
         ?ActionButtonContract $button = null,
         bool $hideButton = false,
+        bool $showButtonText = true,
+        bool $showButtonIcon = true,
     ): static {
         $this->creatable = value($condition, $this) ?? true;
         $this->creatableLimit = $limit;
         $this->createButton = $button;
         $this->hideCreateButton = $hideButton;
+        $this->showCreateButtonText = $showButtonText;
+        $this->showCreateButtonIcon = $showButtonIcon;
 
         return $this;
     }
@@ -349,14 +357,13 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $row): array => $this->normalizeRow(\is_array($row) ? $row : []),
+            fn (mixed $row): array => $this->normalizeRow(\is_array($row) ? $row : []),
             $value,
         ));
     }
 
     /**
      * @param  array<array-key, mixed>  $value
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeKeyValueRows(array $value): array
@@ -370,7 +377,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $itemValue, int | string $itemKey): array => $this->normalizeRow([
+            fn (mixed $itemValue, int|string $itemKey): array => $this->normalizeRow([
                 $keyField['column'] => $itemKey,
                 $valueField['column'] => $itemValue,
             ]),
@@ -381,7 +388,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  list<mixed>  $value
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeKeyValueListRows(array $value): array
@@ -395,7 +401,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $row): array => $this->normalizeRow(
+            fn (mixed $row): array => $this->normalizeRow(
                 $this->resolveCompatibleKeyValueRow(\is_array($row) ? $row : [], $keyField, $valueField),
             ),
             $value,
@@ -409,7 +415,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         return $this->getFields()
             ->onlyFields()
-            ->map(fn(FieldContract $field): array => $this->fieldSchema($field))
+            ->map(fn (FieldContract $field): array => $this->fieldSchema($field))
             ->values()
             ->toArray();
     }
@@ -437,6 +443,8 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
             $schema['creatable'] = $field->isCreatable();
             $schema['creatableLimit'] = $field->getCreatableLimit();
             $schema['hideCreateButton'] = $field->isCreateButtonHidden();
+            $schema['showCreateButtonText'] = $field->isCreateButtonTextShown();
+            $schema['showCreateButtonIcon'] = $field->isCreateButtonIconShown();
             $schema['createButton'] = $field->renderCreateButton(
                 '__moonshine_json_add__',
                 '__moonshine_json_disabled__',
@@ -489,7 +497,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<array-key, mixed>  $options
-     *
      * @return list<array<string, string>>
      */
     protected function normalizeOptions(array $options): array
@@ -543,20 +550,36 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         return $this->hideCreateButton;
     }
 
+    public function isCreateButtonTextShown(): bool
+    {
+        return $this->showCreateButtonText;
+    }
+
+    public function isCreateButtonIconShown(): bool
+    {
+        return $this->showCreateButtonIcon;
+    }
+
     protected function renderCreateButton(string $onClick, string $disabled = '! canAdd()'): ?string
     {
-        if (!$this->createButton instanceof ActionButtonContract && !$this->modifyCreateButton instanceof Closure) {
+        if (! ($this->createButton instanceof ActionButtonContract) && ! ($this->modifyCreateButton instanceof Closure)) {
             return null;
         }
 
+        $label = $this->getCore()->getTranslator()->get('moonshine::ui.add');
+
         $button = $this->createButton instanceof ActionButtonContract
             ? clone $this->createButton
-            : ActionButton::make('')
-                ->icon('plus')
+            : ActionButton::make($this->isCreateButtonTextShown() ? $label : '')
+                ->rawMode()
                 ->customAttributes([
                     'type' => 'button',
                     'class' => 'btn btn-primary json-field__add',
                 ]);
+
+        if (! ($this->createButton instanceof ActionButtonContract) && $this->isCreateButtonIconShown()) {
+            $button->icon('plus');
+        }
 
         $button->customAttributes([
             'x-on:click.prevent' => $onClick,
@@ -587,7 +610,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected function renderRemoveButton(string $onClick): ?string
     {
-        if (!$this->modifyRemoveButton instanceof Closure) {
+        if (! $this->modifyRemoveButton instanceof Closure) {
             return null;
         }
 
@@ -648,12 +671,11 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     public function getEmptyMessage(): string
     {
-        return $this->emptyMessage;
+        return $this->emptyMessage ?? $this->getCore()->getTranslator()->get('moonshine::ui.empty');
     }
 
     /**
      * @param  array<string, mixed>  $row
-     *
      * @return array<string, mixed>
      */
     protected function normalizeRow(array $row): array
@@ -704,7 +726,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<string, mixed>  $field
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeJsonValue(mixed $value, array $field): array
@@ -732,7 +753,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
         if (($field['objectMode'] ?? false) === true) {
             return array_values(array_map(
-                fn(mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
+                fn (mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
                 $value,
             ));
         }
@@ -742,7 +763,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
+            fn (mixed $row): array => $this->normalizeNestedRow(\is_array($row) ? $row : [], $field),
             $value,
         ));
     }
@@ -750,7 +771,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<array-key, mixed>  $value
      * @param  array<string, mixed>  $field
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeNestedKeyValueRows(array $value, array $field): array
@@ -763,7 +783,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $itemValue, int | string $itemKey): array => $this->normalizeNestedRow([
+            fn (mixed $itemValue, int|string $itemKey): array => $this->normalizeNestedRow([
                 $keyField['column'] => $itemKey,
                 $valueField['column'] => $itemValue,
             ], $field),
@@ -775,7 +795,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<string, mixed>  $row
      * @param  array<string, mixed>  $field
-     *
      * @return array<string, mixed>
      */
     protected function normalizeNestedRow(array $row, array $field): array
@@ -799,7 +818,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<array-key, mixed>  $value
      * @param  array<string, mixed>  $field
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeNestedOnlyValueRows(array $value, array $field): array
@@ -813,7 +831,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         $values = array_is_list($value) ? $value : array_values($value);
 
         return array_values(array_map(
-            fn(mixed $itemValue): array => $this->normalizeNestedRow(\is_array($itemValue)
+            fn (mixed $itemValue): array => $this->normalizeNestedRow(\is_array($itemValue)
                 ? $itemValue
                 : [$valueField['column'] => $itemValue], $field),
             $values,
@@ -838,7 +856,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<array-key, mixed>  $value
-     *
      * @return list<array<string, mixed>>
      */
     protected function normalizeOnlyValueRows(array $value): array
@@ -852,14 +869,14 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         $values = array_is_list($value) ? $value : array_values($value);
 
         return array_values(array_map(
-            fn(mixed $itemValue): array => $this->normalizeRow(\is_array($itemValue)
+            fn (mixed $itemValue): array => $this->normalizeRow(\is_array($itemValue)
                 ? $itemValue
                 : [$valueField['column'] => $itemValue]),
             $values,
         ));
     }
 
-    protected function resolvePreview(): Renderable | string
+    protected function resolvePreview(): Renderable|string
     {
         return view('moonshine::components.json.preview', [
             'label' => $this->getLabel(),
@@ -889,13 +906,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  list<array<string, mixed>>  $rows
      * @param  list<array<string, mixed>>  $fields
-     *
      * @return list<array{fields: list<array<string, mixed>>}>
      */
     protected function previewItems(array $rows, array $fields): array
     {
         return array_values(array_map(
-            fn(array $row): array => [
+            fn (array $row): array => [
                 'fields' => $this->previewFields($row, $fields),
             ],
             $rows,
@@ -905,7 +921,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  list<array<string, mixed>>  $rows
      * @param  list<array<string, mixed>>  $fields
-     *
      * @return list<array{fields: list<array<string, mixed>>}>
      */
     protected function previewKeyValueItems(array $rows, array $fields): array
@@ -938,7 +953,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      * @param  array<string, mixed>  $row
      * @param  array<string, mixed>  $keyField
      * @param  array<string, mixed>  $valueField
-     *
      * @return array<string, mixed>
      */
     protected function resolveCompatibleKeyValueRow(array $row, array $keyField, array $valueField): array
@@ -977,7 +991,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<string, mixed>  $row
-     *
      * @return array{0: bool, 1: mixed}
      */
     protected function findCompatibleColumnValue(array $row, string $column): array
@@ -1075,7 +1088,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         $columns = array_flip(array_map(
-            fn(array $field): string => (string) ($field['column'] ?? ''),
+            fn (array $field): string => (string) ($field['column'] ?? ''),
             $this->fieldsSchema(),
         ));
 
@@ -1090,7 +1103,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  list<array<string, mixed>>  $rows
-     *
      * @return array<string, mixed>
      */
     protected function rowFromKeyValuePayload(array $rows): array
@@ -1107,7 +1119,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<string, mixed>  $row
      * @param  list<array<string, mixed>>  $fields
-     *
      * @return list<array<string, mixed>>
      */
     protected function previewFields(array $row, array $fields): array
@@ -1126,7 +1137,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<string, mixed>  $field
-     *
      * @return array<string, mixed>
      */
     protected function previewField(array $field, mixed $value): array
@@ -1193,7 +1203,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<string, mixed>  $field
-     *
      * @return list<array<string, mixed>>
      */
     protected function previewNestedFields(array $field): array
@@ -1238,7 +1247,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         if (\is_array($value)) {
             return implode(', ', array_map(
-                fn(mixed $item): string => $this->selectPreviewLabel($item, $field),
+                fn (mixed $item): string => $this->selectPreviewLabel($item, $field),
                 $value,
             ));
         }
@@ -1271,7 +1280,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         return $this->getFields()
             ->onlyFields()
-            ->map(fn(FieldContract $field): array => $this->previewFieldSchema($field))
+            ->map(fn (FieldContract $field): array => $this->previewFieldSchema($field))
             ->values()
             ->toArray();
     }
@@ -1304,7 +1313,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
      */
     protected function resolveTableViewData(bool $preview): array
     {
-        if (!$this->modifyTable instanceof Closure) {
+        if (! $this->modifyTable instanceof Closure) {
             return [
                 'tableAttributes' => null,
                 'tableBuilder' => null,
@@ -1361,7 +1370,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  iterable<array-key, mixed>  $rows
-     *
      * @return array<array-key, mixed>
      */
     public function prepareOnApply(iterable $rows): array
@@ -1387,7 +1395,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  iterable<array-key, mixed>  $rows
-     *
      * @return array<array-key, mixed>
      */
     public function prepareOnApplyRecursive(iterable $rows): array
@@ -1401,7 +1408,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<array-key, mixed>  $rows
-     *
      * @return array<array-key, mixed>
      */
     protected function prepareRecursiveRowsBeforeApply(array $rows): array
@@ -1413,14 +1419,13 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return array_values(array_map(
-            fn(mixed $row): array => $this->prepareRecursiveRowBeforeApply(\is_array($row) ? $row : []),
+            fn (mixed $row): array => $this->prepareRecursiveRowBeforeApply(\is_array($row) ? $row : []),
             $rows,
         ));
     }
 
     /**
      * @param  array<string, mixed>  $row
-     *
      * @return array<string, mixed>
      */
     protected function prepareRecursiveRowBeforeApply(array $row): array
@@ -1444,7 +1449,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<array-key, mixed>  $rows
-     *
      * @return array<string, mixed>
      */
     public function prepareKeyValueOnApply(array $rows): array
@@ -1496,7 +1500,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return $this->filterPreparedRows(array_map(
-            fn(array $row): array => $this->prepareNestedRowOnApply($row, $field),
+            fn (array $row): array => $this->prepareNestedRowOnApply($row, $field),
             $this->normalizeJsonValue($rows, $field),
         ), $field);
     }
@@ -1504,7 +1508,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<array-key, mixed>  $rows
      * @param  array<string, mixed>  $field
-     *
      * @return array<string, mixed>
      */
     protected function prepareNestedKeyValueOnApply(array $rows, array $field): array
@@ -1546,7 +1549,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<array-key, mixed>  $rows
      * @param  array<string, mixed>  $field
-     *
      * @return list<mixed>
      */
     protected function prepareNestedOnlyValueOnApply(array $rows, array $field): array
@@ -1558,7 +1560,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         $values = array_map(
-            fn(array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
+            fn (array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
             $this->normalizeJsonValue($rows, $field),
         );
 
@@ -1568,14 +1570,13 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
         return array_values(array_filter(
             $values,
-            fn(mixed $value): bool => ! $this->isEmptyValue($value),
+            fn (mixed $value): bool => ! $this->isEmptyValue($value),
         ));
     }
 
     /**
      * @param  array<array-key, mixed>  $rows
      * @param  array<string, mixed>  $field
-     *
      * @return array<array-key, mixed>
      */
     protected function prepareNestedObjectOnApply(array $rows, array $field): array
@@ -1597,7 +1598,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         return $this->filterPreparedRows(array_map(
-            fn(array $row): array => $this->prepareNestedRowOnApply($row, $field),
+            fn (array $row): array => $this->prepareNestedRowOnApply($row, $field),
             $rows,
         ), $field);
     }
@@ -1605,7 +1606,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<string, mixed>  $row
      * @param  array<string, mixed>  $field
-     *
      * @return array<string, mixed>
      */
     protected function prepareNestedRowOnApply(array $row, array $field): array
@@ -1629,7 +1629,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @param  array<int, array<string, mixed>>  $rows
      * @param  array<string, mixed>|null  $field
-     *
      * @return list<array<string, mixed>>
      */
     protected function filterPreparedRows(array $rows, ?array $field = null): array
@@ -1640,13 +1639,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
         return array_values(array_filter(
             $rows,
-            fn(array $row): bool => ! $this->isEmptyValue($row),
+            fn (array $row): bool => ! $this->isEmptyValue($row),
         ));
     }
 
     /**
      * @param  array<array-key, mixed>  $rows
-     *
      * @return list<mixed>
      */
     public function prepareOnlyValueOnApply(array $rows): array
@@ -1658,7 +1656,7 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
         }
 
         $values = array_map(
-            fn(array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
+            fn (array $row): mixed => $this->prepareFieldValueOnApply($row[$valueField['column']] ?? null, $valueField),
             $this->normalizeRows($rows),
         );
 
@@ -1668,13 +1666,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
         return array_values(array_filter(
             $values,
-            fn(mixed $value): bool => ! $this->isEmptyValue($value),
+            fn (mixed $value): bool => ! $this->isEmptyValue($value),
         ));
     }
 
     /**
      * @param  array<array-key, mixed>  $rows
-     *
      * @return array<array-key, mixed>
      */
     public function prepareObjectOnApply(array $rows): array
@@ -1700,7 +1697,6 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<string, mixed>  $row
-     *
      * @return array<string, mixed>
      */
     protected function prepareRowOnApply(array $row): array
@@ -1719,13 +1715,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     /**
      * @param  array<array-key, mixed>  $rows
-     *
      * @return list<array<string, mixed>>
      */
     protected function prepareRowsOnApply(array $rows): array
     {
         return $this->filterPreparedRows(array_map(
-            fn(array $row): array => $this->prepareRowOnApply($row),
+            fn (array $row): array => $this->prepareRowOnApply($row),
             $this->normalizeRows($rows),
         ));
     }
@@ -1744,6 +1739,8 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
             'creatable' => $this->isCreatable(),
             'creatableLimit' => $this->getCreatableLimit(),
             'hideCreateButton' => $this->isCreateButtonHidden(),
+            'showCreateButtonText' => $this->isCreateButtonTextShown(),
+            'showCreateButtonIcon' => $this->isCreateButtonIconShown(),
             'createButton' => $this->renderCreateButton('add()'),
             'buttons' => $this->renderButtons('remove(rowIndex)'),
             'removeButton' => $this->renderRemoveButton('remove(rowIndex)'),
@@ -1761,11 +1758,11 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @return list<array<string, mixed>>
      */
-    protected function fieldsControls(string $rowVariable = 'row', string $rowPath = 'rowIndex'): array
+    protected function fieldsControls(string $rowVariable = 'row', string $rowPath = 'rowIndex', int $depth = 0): array
     {
         return $this->getFields()
             ->onlyFields()
-            ->map(fn(FieldContract $field): array => $this->fieldControl($field, $rowVariable, $rowPath))
+            ->map(fn (FieldContract $field): array => $this->fieldControl($field, $rowVariable, $rowPath, $depth))
             ->values()
             ->toArray();
     }
@@ -1773,14 +1770,20 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     /**
      * @return array<string, mixed>
      */
-    protected function fieldControl(FieldContract $field, string $rowVariable, string $rowPath): array
+    protected function fieldControl(FieldContract $field, string $rowVariable, string $rowPath, int $depth): array
     {
         $control = $this->fieldSchema($field);
 
         if ($field instanceof self) {
+            $nestedRowVariable = "nestedRow{$depth}";
+            $nestedRowIndex = "nestedRowIndex{$depth}";
+
+            $control['nestedRowVariable'] = $nestedRowVariable;
+            $control['nestedRowIndex'] = $nestedRowIndex;
             $control['controls'] = $field->fieldsControls(
-                'nestedRow',
-                $rowPath . " + '.' + " . json_encode($field->getColumn(), JSON_THROW_ON_ERROR) . " + '.' + nestedRowIndex",
+                $nestedRowVariable,
+                $rowPath." + '.' + ".json_encode($field->getColumn(), JSON_THROW_ON_ERROR)." + '.' + {$nestedRowIndex}",
+                $depth + 1,
             );
 
             return $control;
@@ -1795,8 +1798,8 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
     {
         $control = clone $field;
         $column = $field->getColumn();
-        $model = $rowVariable . '[' . json_encode($column, JSON_THROW_ON_ERROR) . ']';
-        $path = $rowPath . " + '.' + " . json_encode($column, JSON_THROW_ON_ERROR);
+        $model = $rowVariable.'['.json_encode($column, JSON_THROW_ON_ERROR).']';
+        $path = $rowPath." + '.' + ".json_encode($column, JSON_THROW_ON_ERROR);
 
         $control
             ->flushRenderCache()
@@ -1813,12 +1816,12 @@ class Json extends Field implements HasFieldsContract, HasDefaultValueContract, 
 
     protected function virtualFieldName(string $column): string
     {
-        return '__moonshine_json[' . $this->getIdentity() . '][' . $column . ']';
+        return '__moonshine_json['.$this->getIdentity().']['.$column.']';
     }
 
     protected function resolveOnApply(): ?Closure
     {
-        return fn(mixed $item, mixed $value): mixed => data_set(
+        return fn (mixed $item, mixed $value): mixed => data_set(
             $item,
             str_replace('.', '->', $this->getColumn()),
             $value,

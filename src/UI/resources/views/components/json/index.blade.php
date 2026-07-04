@@ -7,6 +7,8 @@
     'creatable' => true,
     'creatableLimit' => null,
     'hideCreateButton' => false,
+    'showCreateButtonText' => true,
+    'showCreateButtonIcon' => true,
     'createButton' => null,
     'buttons' => null,
     'removeButton' => null,
@@ -133,7 +135,13 @@
                 x-on:click.prevent="add()"
                 x-bind:disabled="! canAdd()"
             >
-                <x-moonshine::icon icon="plus" />
+                @if($showCreateButtonIcon)
+                    <x-moonshine::icon icon="plus" />
+                @endif
+
+                @if($showCreateButtonText)
+                    {{ __('moonshine::ui.add') }}
+                @endif
             </x-moonshine::form.button>
         @endif
     @endif
