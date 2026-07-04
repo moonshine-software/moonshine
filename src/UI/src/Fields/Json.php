@@ -306,11 +306,39 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     }
 
     /**
-     * @return list<array<string, mixed>>
+     * @return array<array-key, mixed>
      */
     protected function reformatFilledValue(mixed $data): array
     {
+        if ($this->getParent() instanceof Fieldset) {
+            return $this->decodeFilledArray($data);
+        }
+
         return $this->normalizeRows($data);
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    protected function decodeFilledArray(mixed $value): array
+    {
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
+
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            $value = \is_array($decoded) ? $decoded : [];
+        }
+
+        return \is_array($value) ? $value : [];
+    }
+
+    protected function resolveRawValue(): mixed
+    {
+        $value = parent::resolveRawValue();
+
+        return \is_array($value) ? json_encode($value) : $value;
     }
 
     /**
@@ -1788,7 +1816,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
             $control['nestedRowIndex'] = $nestedRowIndex;
             $control['controls'] = $field->fieldsControls(
                 $nestedRowVariable,
-                $rowPath . " + '.' + " . json_encode($field->getColumn(), JSON_THROW_ON_ERROR) . " + '.' + {$nestedRowIndex}",
+                $rowPath." + '.' + ".json_encode($field->getColumn(), JSON_THROW_ON_ERROR)." + '.' + {$nestedRowIndex}",
                 $depth + 1,
             );
 
@@ -1804,8 +1832,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     {
         $control = clone $field;
         $column = $field->getColumn();
-        $model = $rowVariable . '[' . json_encode($column, JSON_THROW_ON_ERROR) . ']';
-        $path = $rowPath . " + '.' + " . json_encode($column, JSON_THROW_ON_ERROR);
+        $model = $rowVariable.'['.json_encode($column, JSON_THROW_ON_ERROR).']';
+        $path = $rowPath." + '.' + ".json_encode($column, JSON_THROW_ON_ERROR);
 
         $control
             ->flushRenderCache()
@@ -1822,7 +1850,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     protected function virtualFieldName(string $column): string
     {
-        return '__moonshine_json[' . $this->getIdentity() . '][' . $column . ']';
+        return '__moonshine_json['.$this->getIdentity().']['.$column.']';
     }
 
     protected function resolveOnApply(): ?Closure
