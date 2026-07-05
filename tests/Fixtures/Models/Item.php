@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Tests\Fixtures\Enums\TestEnumLabeled;
 use MoonShine\Tests\Fixtures\Factories\ItemFactory;
 use MoonShine\Tests\Fixtures\Models\Traits\MorphRelationTrait;
 use MoonShine\Tests\Fixtures\Models\Traits\UserBelongsToTrait;
@@ -40,12 +41,14 @@ class Item extends Model
         'created_at',
         'updated_at',
         'active',
+        'status',
     ];
 
     protected $casts = [
         'data' => 'collection',
         'files' => 'collection',
         'active' => 'boolean',
+        'status' => TestEnumLabeled::class,
     ];
 
     public function moonshineUser(): BelongsTo

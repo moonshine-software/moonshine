@@ -42,6 +42,7 @@ use MoonShine\Crud\Traits\Resource\ResourceQuery;
 use MoonShine\Crud\Traits\Resource\ResourceWithAuthorization;
 use MoonShine\Crud\Traits\Resource\ResourceWithButtons;
 use MoonShine\Crud\Traits\Resource\ResourceWithFields;
+use MoonShine\Support\VO\DisplayValue;
 use Throwable;
 
 /**
@@ -339,16 +340,9 @@ abstract class CrudResource extends Resource implements
      */
     public function getColumnValue(mixed $item): string
     {
-        $value = data_get($item, $this->getColumn());
-
-        return match (true) {
-            $value instanceof \UnitEnum => method_exists($value, 'toString')
-                ? (string) $value->toString()
-                : (string) ($value->value ?? $value->name),
-            \is_scalar($value), $value instanceof \Stringable
-                || (\is_object($value) && method_exists($value, '__toString')) => (string) $value,
-            default => '',
-        };
+        return (new DisplayValue(
+            data_get($item, $this->getColumn()),
+        ))->__toString();
     }
 
 

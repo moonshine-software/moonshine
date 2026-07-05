@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 use MoonShine\Tests\Fixtures\Enums\TestEnumLabeled;
+use MoonShine\Tests\Fixtures\Enums\TestEnumUnit;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 
 uses()->group('resources');
@@ -32,6 +33,11 @@ it('resolves a backed enum column value by its backing value', function (): void
 it('prefers the enum toString() convention when available', function (): void {
     expect(columnResource('type')->getColumnValue(['type' => TestEnumLabeled::Web]))
         ->toBe('Web platform');
+});
+
+it('resolves a pure (non-backed) enum by its name', function (): void {
+    expect(columnResource('status')->getColumnValue(['status' => TestEnumUnit::Active]))
+        ->toBe('Active');
 });
 
 it('resolves a stringable column value', function (): void {

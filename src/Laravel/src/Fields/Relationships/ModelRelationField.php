@@ -20,6 +20,7 @@ use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\RelationFieldContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\VO\DisplayValue;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Field;
 use Throwable;
@@ -202,7 +203,7 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
             );
 
             $this->setFormattedValue(
-                data_get($data, $this->getResourceColumn()),
+                $this->toColumnLabel($data),
             );
         }
 
@@ -229,10 +230,23 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         }
 
         if ($this->isToOne()) {
-            $value = data_get($value, $this->getResource()?->getColumn());
+            return $this->formattedValue ?? $this->toColumnLabel($value);
         }
 
         return $this->formattedValue ?? $value;
+    }
+
+    /**
+     * Resolve the related model's display column into a string label.
+     * @throws Throwable
+     */
+    private function toColumnLabel(mixed $related): ?string
+    {
+        return \is_null($related)
+            ? null
+            : (new DisplayValue(
+                data_get($related, $this->getResourceColumn()),
+            ))->__toString();
     }
 
     public function isOutsideComponent(): bool

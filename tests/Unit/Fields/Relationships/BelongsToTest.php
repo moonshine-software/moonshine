@@ -8,7 +8,10 @@ use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
+use MoonShine\Tests\Fixtures\Enums\TestEnumLabeled;
+use MoonShine\Tests\Fixtures\Models\Comment;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Resources\TestEnumColumnResource;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 
@@ -69,6 +72,17 @@ describe('basic methods', function () {
 
         expect($field->toFormattedValue())
             ->toBe(['changed']);
+    });
+
+    it('stringifies an enum display column of the related resource', function () {
+        $item = Item::factory()->create(['status' => TestEnumLabeled::Web]);
+        $comment = Comment::factory()->create(['item_id' => $item->getKey()]);
+
+        $field = BelongsTo::make('Item', 'item', resource: TestEnumColumnResource::class)
+            ->fillData($comment);
+
+        expect($field->toFormattedValue())
+            ->toBe('Web platform');
     });
 
     it('does not load missing relation when model does not define it', function () {

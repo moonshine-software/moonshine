@@ -19,6 +19,7 @@ use MoonShine\Tests\Fixtures\QuickPageController;
 use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestCoverResource;
+use MoonShine\Tests\Fixtures\Resources\TestEnumColumnResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResourceWithParent;
 use MoonShine\Tests\Fixtures\Resources\TestHasManyCommentResource;
@@ -122,6 +123,7 @@ class TestCase extends Orchestra
             TestCategoryResource::class,
             TestCoverResource::class,
             TestItemResource::class,
+            TestEnumColumnResource::class,
             TestCommentResource::class,
             TestImageResource::class,
             TestFileResource::class,
