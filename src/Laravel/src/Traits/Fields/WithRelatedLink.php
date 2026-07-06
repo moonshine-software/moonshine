@@ -103,7 +103,7 @@ trait WithRelatedLink
             $relation = $this->getRelationName();
 
             $this->relatedCount = match (true) {
-                ! ($model && $relation) => 0,
+                !$model || !$relation => 0,
                 $model->relationLoaded($relation) => $model->{$relation}->count(),
                 default => $model->{$relation}()->count(),
             };

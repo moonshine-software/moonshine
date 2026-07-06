@@ -52,7 +52,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<FormBuilderContract>
      * @throws Throwable
      */
     public function onlyForms(): static
@@ -68,7 +67,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<TableBuilderContract>
      * @throws Throwable
      */
     public function onlyTables(): static
@@ -82,7 +80,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<ComponentContract>
      * @throws Throwable
      */
     public function onlyComponents(): static

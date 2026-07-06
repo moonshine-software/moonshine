@@ -56,8 +56,6 @@ interface PageContract extends
 
     /**
      * @param  TResource|null  $resource
-     *
-     * @return $this
      */
     public function simulateRoute(?PageContract $page = null, ?ResourceContract $resource = null): static;
 

@@ -81,8 +81,6 @@ class MenuItem extends MenuElement implements WithBadgeContract
 
     /**
      * @param  Closure(ActionButtonContract): ActionButtonContract  $callback
-     *
-     * @return $this
      */
     public function changeButton(Closure $callback): static
     {
