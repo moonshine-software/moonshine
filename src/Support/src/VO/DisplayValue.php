@@ -20,13 +20,16 @@ final readonly class DisplayValue implements Stringable
 
     public function __toString(): string
     {
+        $value = $this->value;
+
         return match (true) {
-            $this->value instanceof UnitEnum => match (true) {
-                method_exists($this->value, 'toString') => (string) $this->value->toString(),
-                $this->value instanceof BackedEnum => (string) $this->value->value,
-                default => $this->value->name,
+            $value instanceof UnitEnum => match (true) {
+                method_exists($value, 'toString') => (new self($value->toString()))->__toString(),
+                $value instanceof BackedEnum => (string) $value->value,
+                default => $value->name,
             },
-            $this->value instanceof Stringable, \is_scalar($this->value) => (string) $this->value,
+            $value instanceof Stringable => (string) $value,
+            \is_scalar($value) => (string) $value,
             default => '',
         };
     }
