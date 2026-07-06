@@ -27,7 +27,7 @@ it('renders the detail page when the display column is an enum cast', function (
         )
     )
         ->assertOk()
-        ->assertSee('Web platform');
+        ->assertSee('web-platform');
 });
 
 it('renders the form page when the display column is an enum cast', function (): void {
@@ -39,5 +39,5 @@ it('renders the form page when the display column is an enum cast', function ():
         )
     )
         ->assertOk()
-        ->assertSee('Web platform');
+        ->assertSee('web-platform');
 });

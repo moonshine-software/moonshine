@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JsonException;
 use MoonShine\Support\Enums\ObjectFit;
+use MoonShine\Support\VO\DisplayValue;
 use UnitEnum;
 
 /**
@@ -96,7 +97,7 @@ final readonly class Options implements Arrayable
         $current = $this->getValue();
 
         if ($current instanceof UnitEnum) {
-            $current = $current->value ?? $current->name ?? null;
+            $current =  (new DisplayValue($current))->__toString();
         }
 
         if (\is_string($current) && Str::of($current)->isJson()) {

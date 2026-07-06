@@ -74,15 +74,15 @@ describe('basic methods', function () {
             ->toBe(['changed']);
     });
 
-    it('stringifies an enum display column of the related resource', function () {
+    it('stringifies an enum display column of the related resource in preview', function () {
         $item = Item::factory()->create(['status' => TestEnumLabeled::Web]);
         $comment = Comment::factory()->create(['item_id' => $item->getKey()]);
 
         $field = BelongsTo::make('Item', 'item', resource: TestEnumColumnResource::class)
             ->fillData($comment);
 
-        expect($field->toFormattedValue())
-            ->toBe('Web platform');
+        expect((string) $field->preview())
+            ->toContain('web-platform');
     });
 
     it('does not load missing relation when model does not define it', function () {

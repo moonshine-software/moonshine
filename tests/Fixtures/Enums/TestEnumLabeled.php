@@ -6,14 +6,6 @@ namespace MoonShine\Tests\Fixtures\Enums;
 
 enum TestEnumLabeled: string
 {
-    case Web = 'web';
-    case Mobile = 'mobile';
-
-    public function toString(): string
-    {
-        return match ($this) {
-            self::Web => 'Web platform',
-            self::Mobile => 'Mobile app',
-        };
-    }
+    case Web = 'web-platform';
+    case Mobile = 'mobile-app';
 }

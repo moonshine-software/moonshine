@@ -16,6 +16,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\TextWrap;
+use MoonShine\Support\VO\DisplayValue;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Traits\Fields\Reactivity;
@@ -445,7 +446,11 @@ abstract class Field extends FormElement implements FieldContract
 
     protected function resolvePreview(): Renderable|string
     {
-        return (string) ($this->toFormattedValue() ?? '');
+        $value = $this->toFormattedValue();
+
+        return $value instanceof Renderable
+            ? $value
+            : (new DisplayValue($value))->__toString();
     }
 
     private function previewDecoration(Renderable|string $value): Renderable|string

@@ -42,7 +42,6 @@ use MoonShine\Crud\Traits\Resource\ResourceQuery;
 use MoonShine\Crud\Traits\Resource\ResourceWithAuthorization;
 use MoonShine\Crud\Traits\Resource\ResourceWithButtons;
 use MoonShine\Crud\Traits\Resource\ResourceWithFields;
-use MoonShine\Support\VO\DisplayValue;
 use Throwable;
 
 /**
@@ -334,17 +333,6 @@ abstract class CrudResource extends Resource implements
     {
         return $this->column;
     }
-
-    /**
-     * Resolve the resource column value as a human-readable string label.
-     */
-    public function getColumnValue(mixed $item): string
-    {
-        return (new DisplayValue(
-            data_get($item, $this->getColumn()),
-        ))->__toString();
-    }
-
 
     public function isDeleteRelationships(): bool
     {

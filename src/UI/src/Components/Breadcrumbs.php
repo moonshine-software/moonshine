@@ -7,6 +7,7 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
+use MoonShine\Support\VO\DisplayValue;
 
 /** @method static static make(array $items = []) */
 final class Breadcrumbs extends MoonShineComponent
@@ -54,12 +55,16 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = (new Collection($this->items))->mapWithKeys(static fn (?string $title, string $url): array => [
-            $url => [
-                'url' => $url,
-                'title' => Str::of($title)->before(':::'),
-                'icon' => Str::of($title)->contains(':::') ? Str::of($title)->after(':::')->value() : null,
-            ],
-        ])->toArray();
+        $this->items = (new Collection($this->items))->mapWithKeys(static function (mixed $title, string $url): array {
+            $stringifyTitle = (new DisplayValue($title))->__toString();
+
+            return [
+                $url => [
+                    'url' => $url,
+                    'title' => Str::of($stringifyTitle)->before(':::'),
+                    'icon' => Str::of($stringifyTitle)->contains(':::') ? Str::of($stringifyTitle)->after(':::')->value() : null,
+                ],
+            ];
+        })->toArray();
     }
 }
