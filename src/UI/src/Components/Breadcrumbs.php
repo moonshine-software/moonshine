@@ -56,7 +56,7 @@ final class Breadcrumbs extends MoonShineComponent
         parent::prepareBeforeRender();
 
         $this->items = (new Collection($this->items))->mapWithKeys(static function (mixed $title, string $url): array {
-            $stringifyTitle = (new DisplayValue($title))->__toString();
+            $stringifyTitle = (string)(new DisplayValue($title));
 
             return [
                 $url => [

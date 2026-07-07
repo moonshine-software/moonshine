@@ -11,7 +11,7 @@ uses()->group('support');
 
 function displayValue(mixed $value): string
 {
-    return (new DisplayValue($value))->__toString();
+    return (string)(new DisplayValue($value));
 }
 
 it('resolves a plain string value', function (): void {

@@ -450,7 +450,7 @@ abstract class Field extends FormElement implements FieldContract
 
         return $value instanceof Renderable
             ? $value
-            : (new DisplayValue($value))->__toString();
+            : (string)(new DisplayValue($value));
     }
 
     private function previewDecoration(Renderable|string $value): Renderable|string

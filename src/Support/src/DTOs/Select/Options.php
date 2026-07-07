@@ -97,7 +97,7 @@ final readonly class Options implements Arrayable
         $current = $this->getValue();
 
         if ($current instanceof UnitEnum) {
-            $current =  (new DisplayValue($current))->__toString();
+            $current =  (string)(new DisplayValue($current));
         }
 
         if (\is_string($current) && Str::of($current)->isJson()) {
