@@ -110,10 +110,13 @@ final class Components extends BaseCollection implements ComponentsContract
         string $name,
         ?FormBuilderContract $default = null
     ): ?FormBuilderContract {
-        return $this->onlyForms()->first(
-            static fn (FormBuilderContract $component): bool => $component->getName() === $name,
+        /** @var ?FormBuilderContract $component */
+        $component = $this->onlyForms()->first(
+            static fn (ComponentContract $component): bool => $component->getName() === $name,
             $default
         );
+
+        return $component;
     }
 
     /**
@@ -123,10 +126,13 @@ final class Components extends BaseCollection implements ComponentsContract
         string $name,
         ?TableBuilderContract $default = null
     ): ?TableBuilderContract {
-        return $this->onlyTables()->first(
-            static fn (TableBuilderContract $component): bool => $component->getName() === $name,
+        /** @var ?TableBuilderContract $component */
+        $component = $this->onlyTables()->first(
+            static fn (ComponentContract $component): bool => $component->getName() === $name,
             $default
         );
+
+        return $component;
     }
 
     /**
