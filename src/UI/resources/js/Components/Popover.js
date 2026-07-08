@@ -1,6 +1,14 @@
 import tippy, {hideAll} from 'tippy.js'
 import typedDataset from '../Support/TypedDataset.js'
 
+const prepareClonedContent = content => {
+  content.removeAttribute('x-ignore')
+  content.querySelectorAll('.ts-wrapper').forEach(el => el.remove())
+  content.querySelectorAll('.tomselected').forEach(el => {
+    el.classList.remove('tomselected', 'ts-hidden-accessible')
+  })
+}
+
 export default (config = {}) => ({
   popoverInstance: null,
   config: {
@@ -24,6 +32,7 @@ export default (config = {}) => ({
       }
 
       if (clonedContent) {
+        prepareClonedContent(clonedContent)
         clonedContent.classList.remove('hidden')
         wrapper.appendChild(clonedContent)
       }

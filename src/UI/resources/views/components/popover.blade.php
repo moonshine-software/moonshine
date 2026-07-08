@@ -10,5 +10,5 @@
     x-data="popover({placement: '{{ $placement }}'})"
 >
     {!! $trigger !!}
-    <div class="hidden popover-body-content">{!! $slot !!}</div>
+    <div x-ignore class="hidden popover-body-content">{!! $slot !!}</div>
 </span>

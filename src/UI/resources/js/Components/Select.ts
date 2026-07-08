@@ -63,6 +63,7 @@ const MaxItemsPlugin = TomSelect.define('max_items', function (pluginOptions = {
 
 export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash = {}) => ({
     selectInstance: null,
+    ownsSelectInstance: false,
     isMultiple: false,
     placeholder: null,
     searchEnabled: null,
@@ -75,6 +76,11 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
     translates: allTranslates,
 
     init() {
+        if (this.$el.tomselect) {
+            this.selectInstance = this.$el.tomselect
+            return
+        }
+
         if (! pluginInitialize) {
             document.dispatchEvent(new CustomEvent('moonshine:select_init', {
                 detail: {
@@ -230,6 +236,7 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
         }
 
         this.selectInstance = new TomSelect(this.$el, commonSettings)
+        this.ownsSelectInstance = true
 
         this.$nextTick(() => {
             this.setClassSelectedEmptyValue.call(this.selectInstance)
@@ -260,6 +267,16 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
                 })
             }
         })
+    },
+
+    destroy() {
+        if (! this.ownsSelectInstance || ! this.selectInstance || this.$el.tomselect !== this.selectInstance) {
+            return
+        }
+
+        this.selectInstance.destroy()
+        this.selectInstance = null
+        this.ownsSelectInstance = false
     },
 
     asyncOnInit() {
