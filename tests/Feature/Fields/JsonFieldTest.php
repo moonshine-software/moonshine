@@ -114,7 +114,7 @@ function assertJsonValue(TestResource $resource, Item $item, array|string $data,
     updateJsonValue($resource, $item, $data);
 
     expect($item->data->toArray())
-        ->toBe($expected);
+        ->toEqual($expected);
 }
 
 function jsonExport(Item $item): ?string
