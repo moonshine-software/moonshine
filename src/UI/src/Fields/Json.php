@@ -12,20 +12,32 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FieldWithComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FieldsGroup;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RemovableContract;
+use MoonShine\UI\Contracts\WrapperWithApplyContract;
+use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
  * @implements HasFieldsContract<Fields|FieldsContract>
+ * @implements FieldWithComponentContract<TableBuilderContract|FieldsGroup>
  */
-class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFieldsContract
+class Json extends Field implements
+    CanBeArray,
+    FieldWithComponentContract,
+    HasDefaultValueContract,
+    HasFieldsContract,
+    RemovableContract
 {
     use WithDefaultValue;
     use WithFields {
@@ -70,13 +82,15 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     protected array $removeButtonAttributes = [];
 
-    protected bool $reorderable = false;
+    protected bool $reorderable = true;
 
     protected bool $keyValue = false;
 
     protected bool $onlyValue = false;
 
     protected bool $object = false;
+
+    protected bool $filterMode = false;
 
     protected bool $filterEmpty = true;
 
@@ -90,6 +104,20 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     protected string $orientation = 'horizontal';
 
     protected ?string $emptyMessage = null;
+
+    /**
+     * @var list<array<string, mixed>>|null
+     */
+    protected ?array $fieldsSchema = null;
+
+    /**
+     * @var list<array<string, mixed>>|null
+     */
+    protected ?array $previewFieldsSchema = null;
+
+    protected TableBuilderContract|FieldsGroup|null $resolvedComponent = null;
+
+    protected mixed $filledValue = null;
 
     /**
      * @param  FieldsContract|(Closure(static): iterable<array-key, ComponentContract>)|iterable<array-key, ComponentContract>  $fields
@@ -109,6 +137,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     protected function setFields(FieldsContract|Closure|iterable $fields, string $orientation = 'horizontal'): static
     {
         $this->resetPreparedFields();
+        $this->flushFieldsSchema();
         $this->orientation($orientation);
 
         return $this->fieldsFromTrait($fields);
@@ -116,6 +145,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     public function orientation(string $orientation): static
     {
+        $this->flushFieldsSchema();
+
         $this->orientation = \in_array($orientation, ['horizontal', 'vertical'], true)
             ? $orientation
             : 'horizontal';
@@ -138,6 +169,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         ?FieldContract $valueField = null,
         string $orientation = 'horizontal',
     ): static {
+        $this->flushFieldsSchema();
+
         $this->keyValue = true;
         $this->onlyValue = false;
         $this->object = false;
@@ -156,6 +189,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     public function onlyValue(string $value = 'Value', ?FieldContract $valueField = null): static
     {
+        $this->flushFieldsSchema();
+
         $this->onlyValue = true;
         $this->keyValue = false;
         $this->object = false;
@@ -178,8 +213,15 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return $this->onlyValue;
     }
 
+    public function isGroup(): bool
+    {
+        return ! $this->isObject() && $this->isGroup;
+    }
+
     public function object(bool $condition = true): static
     {
+        $this->flushFieldsSchema();
+
         $this->object = $condition;
 
         if ($condition) {
@@ -190,11 +232,18 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return $this;
     }
 
+    public function isObjectMode(): bool
+    {
+        return $this->isObject();
+    }
+
     /**
      * @param  array<string, mixed>  $attributes
      */
     public function removable(Closure|bool|null $condition = null, array $attributes = []): static
     {
+        $this->flushFieldsSchema();
+
         $this->removable = value($condition, $this) ?? true;
         $this->removeButtonAttributes = $attributes;
 
@@ -203,6 +252,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     public function creatableLimit(?int $limit = null): static
     {
+        $this->flushFieldsSchema();
+
         $this->creatableLimit = $limit;
 
         return $this;
@@ -213,6 +264,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     public function modifyCreateButton(Closure $callback): static
     {
+        $this->flushFieldsSchema();
+
         $this->modifyCreateButton = $callback;
 
         return $this;
@@ -223,6 +276,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     public function modifyRemoveButton(Closure $callback): static
     {
+        $this->flushFieldsSchema();
+
         $this->modifyRemoveButton = $callback;
 
         return $this;
@@ -230,9 +285,16 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     public function filterMode(): static
     {
+        $this->flushFieldsSchema();
+        $this->filterMode = true;
         $this->creatable(false);
 
         return $this;
+    }
+
+    public function isFilterMode(): bool
+    {
+        return $this->filterMode;
     }
 
     public function creatable(
@@ -243,6 +305,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         bool $showButtonText = true,
         bool $showButtonIcon = true,
     ): static {
+        $this->flushFieldsSchema();
+
         $this->creatable = value($condition, $this) ?? true;
         $this->creatableLimit = $limit;
         $this->createButton = $button;
@@ -258,20 +322,26 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     public function buttons(iterable $buttons): static
     {
+        $this->flushFieldsSchema();
+
         $this->buttons = $buttons;
 
         return $this;
     }
 
-    public function reorderable(bool $condition = true): static
+    public function reorderable(Closure|bool|null $condition = null): static
     {
-        $this->reorderable = $condition;
+        $this->flushFieldsSchema();
+
+        $this->reorderable = value($condition, $this) ?? true;
 
         return $this;
     }
 
     public function stopFilteringEmpty(bool $condition = true): static
     {
+        $this->flushFieldsSchema();
+
         $this->filterEmpty = ! $condition;
 
         return $this;
@@ -279,6 +349,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     public function table(bool $condition = true): static
     {
+        $this->flushFieldsSchema();
+
         $this->table = $condition;
 
         if ($condition) {
@@ -293,6 +365,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     public function modifyTable(Closure $callback): static
     {
+        $this->flushFieldsSchema();
+
         $this->modifyTable = $callback;
 
         return $this;
@@ -300,14 +374,56 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     public function emptyMessage(string $message): static
     {
+        $this->flushFieldsSchema();
+
         $this->emptyMessage = $message;
 
         return $this;
     }
 
+    protected function flushFieldsSchema(): void
+    {
+        $this->fieldsSchema = null;
+        $this->previewFieldsSchema = null;
+        $this->resolvedComponent = null;
+    }
+
     protected function prepareFields(): FieldsContract
     {
-        return $this->getFields()->prepareReindexNames($this);
+        $fields = $this->getFields();
+
+        if (! $this->isPreviewMode()) {
+            $fields->prepareAttributes();
+        }
+
+        if ($this->isObject()) {
+            $fields = $fields->map(
+                fn (FieldContract $field): FieldContract => $field
+                    ->customAttributes($this->getReactiveAttributes("{$this->getColumn()}.{$field->getColumn()}"))
+                    ->customAttributes(['data-object-mode' => true])
+            );
+        }
+
+        $fields
+            ->onlyFields()
+            ->prepareReindexNames(
+                parent: $this,
+                before: static function (self $parent, FieldContract $field): void {
+                    if (! $field->getParent() instanceof WrapperWithApplyContract && ! $parent->isObject()) {
+                        $field->withoutWrapper();
+                    } else {
+                        $parent->customWrapperAttributes([
+                            'class' => 'inner-json-object-mode',
+                            'data-object-mode' => true,
+                        ]);
+                    }
+
+                    $field->setRequestKeyPrefix($parent->getRequestKeyPrefix());
+                },
+                except: static fn (FieldContract $parent): bool => $parent instanceof self && $parent->isObject(),
+            );
+
+        return $fields;
     }
 
     public function toValue(bool $withDefault = true): mixed
@@ -320,6 +436,8 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     protected function reformatFilledValue(mixed $data): array
     {
+        $this->filledValue = $data;
+
         if ($this->getParent() instanceof Fieldset) {
             return $this->decodeFilledArray($data);
         }
@@ -342,6 +460,41 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         }
 
         return \is_array($value) ? $value : [];
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function extractKeyValue(array $data): array
+    {
+        if ($this->isKeyValue()) {
+            $key = key($data);
+
+            return [
+                'key' => $key ?? '',
+                'value' => $key === null ? '' : ($data[$key] ?? ''),
+            ];
+        }
+
+        if ($this->isOnlyValue()) {
+            $key = key($data);
+
+            return [
+                'value' => $key === null ? '' : ($data[$key] ?? ''),
+            ];
+        }
+
+        return $data;
+    }
+
+    protected function isBlankValue(): bool
+    {
+        if ($this->isPreviewMode()) {
+            return parent::isBlankValue();
+        }
+
+        return blank($this->value);
     }
 
     protected function resolveRawValue(): mixed
@@ -385,12 +538,6 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
         if ($this->isObject() && ! array_is_list($value)) {
             return [$this->normalizeRow($value)];
-        }
-
-        $keyValuePayloadRows = $this->previewKeyValuePayloadRows($value);
-
-        if (! $this->isKeyOrOnlyValue() && $this->keyValuePayloadMatchesFields($keyValuePayloadRows)) {
-            return [$this->normalizeRow($this->rowFromKeyValuePayload($keyValuePayloadRows))];
         }
 
         if (! array_is_list($value)) {
@@ -454,7 +601,11 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     protected function fieldsSchema(): array
     {
-        return $this->getFields()
+        if ($this->fieldsSchema !== null) {
+            return $this->fieldsSchema;
+        }
+
+        return $this->fieldsSchema = $this->getPreparedFields()
             ->onlyFields()
             ->map(fn (FieldContract $field): array => $this->fieldSchema($field))
             ->values()
@@ -581,9 +732,39 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return $this->creatable;
     }
 
+    public function getCreateButton(): ?ActionButtonContract
+    {
+        $label = $this->getCore()->getTranslator()->get('moonshine::ui.add');
+
+        $button = $this->createButton instanceof ActionButtonContract
+            ? clone $this->createButton
+            : ActionButton::make($this->isCreateButtonTextShown() ? $label : '')
+                ->rawMode()
+                ->customAttributes([
+                    'type' => 'button',
+                    'class' => 'btn btn-primary json-field__add',
+                    '@click.prevent' => 'add()',
+                ]);
+
+        if (! ($this->createButton instanceof ActionButtonContract) && $this->isCreateButtonIconShown()) {
+            $button->icon('plus');
+        }
+
+        if ($this->modifyCreateButton instanceof Closure) {
+            $button = ($this->modifyCreateButton)($button, $this);
+        }
+
+        return $button;
+    }
+
     public function getCreatableLimit(): ?int
     {
         return $this->creatableLimit;
+    }
+
+    public function getCreateLimit(): ?int
+    {
+        return $this->getCreatableLimit();
     }
 
     public function isCreateButtonHidden(): bool
@@ -607,29 +788,16 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
             return null;
         }
 
-        $label = $this->getCore()->getTranslator()->get('moonshine::ui.add');
+        $button = $this->getCreateButton();
 
-        $button = $this->createButton instanceof ActionButtonContract
-            ? clone $this->createButton
-            : ActionButton::make($this->isCreateButtonTextShown() ? $label : '')
-                ->rawMode()
-                ->customAttributes([
-                    'type' => 'button',
-                    'class' => 'btn btn-primary json-field__add',
-                ]);
-
-        if (! ($this->createButton instanceof ActionButtonContract) && $this->isCreateButtonIconShown()) {
-            $button->icon('plus');
+        if (! $button instanceof ActionButtonContract) {
+            return null;
         }
 
         $button->customAttributes([
             'x-on:click.prevent' => $onClick,
             'x-bind:disabled' => $disabled,
         ]);
-
-        if ($this->modifyCreateButton instanceof Closure) {
-            $button = ($this->modifyCreateButton)($button, $this);
-        }
 
         return (string) $button->render();
     }
@@ -685,6 +853,40 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return $this->removeButtonAttributes;
     }
 
+    /**
+     * @return list<ActionButtonContract>
+     */
+    public function getButtons(): array
+    {
+        $buttons = [];
+
+        foreach ($this->buttons as $button) {
+            if ($button instanceof ActionButtonContract) {
+                $buttons[] = $button;
+            }
+        }
+
+        if ($buttons !== []) {
+            return $buttons;
+        }
+
+        if (! $this->isRemovable()) {
+            return [];
+        }
+
+        $button = ActionButton::make('')
+            ->icon('trash')
+            ->onClick(static fn (): string => 'remove()', 'prevent')
+            ->customAttributes($this->getRemoveButtonAttributes() ?: ['class' => 'btn-error'])
+            ->showInLine();
+
+        if ($this->modifyRemoveButton instanceof Closure) {
+            $button = ($this->modifyRemoveButton)($button, $this);
+        }
+
+        return [$button];
+    }
+
     public function isReorderable(): bool
     {
         return $this->reorderable;
@@ -703,6 +905,11 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     public function isFilteringEmpty(): bool
     {
         return $this->filterEmpty;
+    }
+
+    public function isFilterEmpty(): bool
+    {
+        return $this->isFilteringEmpty();
     }
 
     public function isTable(): bool
@@ -760,6 +967,10 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
         if (($field['type'] ?? null) === 'number') {
             return $value === null || $value === '' ? null : (is_numeric($value) ? $value + 0 : null);
+        }
+
+        if (\is_object($value)) {
+            return $value instanceof \Stringable ? (string) $value : $value;
         }
 
         return $value === null ? '' : (string) $value;
@@ -937,11 +1148,18 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     protected function resolvePreviewItems(): array
     {
         $rawValue = $this->toFormattedValue();
+        $compatibilityValue = $this->filledValue ?? $rawValue;
         $rows = $this->normalizeRows($rawValue);
         $fields = $this->previewFieldsSchema();
 
         if ($this->isKeyValue()) {
             return $this->previewKeyValueItems($rows, $fields);
+        }
+
+        $keyValuePayloadRows = $this->previewKeyValuePayloadRows($compatibilityValue);
+
+        if (! $this->isOnlyValue() && $this->keyValuePayloadMatchesFields($keyValuePayloadRows)) {
+            $rows = [$this->normalizeRow($this->rowFromKeyValuePayload($keyValuePayloadRows))];
         }
 
         return $this->previewItems($rows, $fields);
@@ -1322,7 +1540,11 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     protected function previewFieldsSchema(): array
     {
-        return $this->getFields()
+        if ($this->previewFieldsSchema !== null) {
+            return $this->previewFieldsSchema;
+        }
+
+        return $this->previewFieldsSchema = $this->getPreparedFields()
             ->onlyFields()
             ->map(fn (FieldContract $field): array => $this->previewFieldSchema($field))
             ->values()
@@ -1380,7 +1602,17 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
 
     protected function prepareRequestValue(mixed $value): mixed
     {
-        return $this->prepareValueOnApplyRecursive($value);
+        if ($value instanceof Collection) {
+            return $value->toArray();
+        }
+
+        if (\is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+
+            return \is_array($decoded) ? $decoded : [];
+        }
+
+        return \is_array($value) ? $value : [];
     }
 
     /**
@@ -1448,6 +1680,11 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
             : (\is_array($rows) ? $rows : iterator_to_array($rows));
 
         return $this->prepareOnApply($this->prepareRecursiveRowsBeforeApply($rows));
+    }
+
+    protected function resolveOldValue(mixed $old): mixed
+    {
+        return $this->prepareValueOnApplyRecursive($old);
     }
 
     /**
@@ -1770,12 +2007,26 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
     }
 
     /**
+     * @return list<array<string, mixed>>
+     */
+    protected function rowsForView(): array
+    {
+        $rows = $this->normalizeRows($this->getValue());
+
+        if (! $this->isPreviewMode() && $this->isFilterMode() && $rows === []) {
+            return [$this->normalizeRow([])];
+        }
+
+        return $rows;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
     {
         return [
-            'rows' => $this->normalizeRows($this->getValue()),
+            'rows' => $this->rowsForView(),
             'fields' => $this->fieldsSchema(),
             'controls' => $this->fieldsControls(),
             'inputName' => str_replace('[]', '', $this->getNameAttribute()),
@@ -1804,7 +2055,7 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
      */
     protected function fieldsControls(string $rowVariable = 'row', string $rowPath = 'rowIndex', int $depth = 0): array
     {
-        return $this->getFields()
+        return $this->getPreparedFields()
             ->onlyFields()
             ->map(fn (FieldContract $field): array => $this->fieldControl($field, $rowVariable, $rowPath, $depth))
             ->values()
@@ -1863,13 +2114,258 @@ class Json extends Field implements CanBeArray, HasDefaultValueContract, HasFiel
         return '__moonshine_json[' . $this->getIdentity() . '][' . $column . ']';
     }
 
+    public function getComponent(): TableBuilderContract|FieldsGroup
+    {
+        if ($this->resolvedComponent !== null) {
+            return $this->resolvedComponent;
+        }
+
+        $value = $this->isPreviewMode()
+            ? $this->toFormattedValue()
+            : $this->getValue();
+
+        $values = new Collection($this->normalizeRows($value));
+        $fields = $this->getPreparedFields();
+
+        if ($this->isObject() && ! $this->isPreviewMode()) {
+            return $this->resolvedComponent = FieldsGroup::make(
+                Fields::make($fields)->fillCloned($values->first() ?? []),
+            )->mapFields(
+                fn (FieldContract $field): FieldContract => $field
+                    ->formName($this->getFormName())
+                    ->setParent($this),
+            );
+        }
+
+        $values = $values->when(
+            ! $this->isPreviewMode() && $this->isFilterMode() && blank($values),
+            fn (Collection $values): Collection => $values->push($this->normalizeRow([])),
+        );
+
+        $component = TableBuilder::make($fields, $values)
+            ->name('repeater_' . $this->getColumn())
+            ->inside('field')
+            ->customAttributes(
+                $this->getAttributes()
+                    ->except(['class', 'data-name', 'data-column'])
+                    ->when(
+                        ! $this->isPreviewMode() && $this->isReorderable(),
+                        static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
+                            'data-handle' => '.json-field__reorder-button',
+                        ]),
+                    )
+                    ->jsonSerialize(),
+            )
+            ->customAttributes(['data-validation-wrapper' => true])
+            ->when(
+                ! $this->isPreviewMode() && $this->isReorderable(),
+                static fn (TableBuilderContract $table): TableBuilderContract => $table->reorderable(),
+            );
+
+        if ($this->modifyTable instanceof Closure) {
+            $modifiedTable = ($this->modifyTable)($component, $this->isPreviewMode());
+            $component = $modifiedTable instanceof TableBuilder ? $modifiedTable : $component;
+        }
+
+        if (! $this->isPreviewMode()) {
+            $component = $component
+                ->editable()
+                ->reindex(prepared: true)
+                ->when(
+                    $this->isCreatable(),
+                    fn (TableBuilderContract $table): TableBuilderContract => $table->creatable(
+                        limit: $this->getCreateLimit(),
+                        button: $this->getCreateButton(),
+                    )->removeAfterClone(),
+                )
+                ->buttons($this->getButtons())
+                ->simple();
+        }
+
+        return $this->resolvedComponent = $component;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAppliesCallback(
+        mixed $data,
+        Closure $callback,
+        ?Closure $response = null,
+        bool $fill = false,
+    ): mixed {
+        $requestValue = $this->getRequestValue() ?: [];
+
+        if ($this->shouldApplyPreparedRequestDirectly($requestValue)) {
+            $values = $this->isOnlyValue()
+                ? $this->prepareValueOnApply($requestValue)
+                : $this->prepareValueOnApplyRecursive($requestValue);
+
+            return $response instanceof Closure
+                ? $response($values, $data)
+                : data_set($data, str_replace('.', '->', $this->getColumn()), $values);
+        }
+
+        $requestValues = array_filter($requestValue);
+        $applyValues = [];
+
+        if ($this->isObject()) {
+            $requestValues = [$requestValues];
+        }
+
+        foreach ($requestValues as $index => $values) {
+            if (! \is_array($values)) {
+                continue;
+            }
+
+            foreach ($this->resetPreparedFields()->getPreparedFields() as $field) {
+                if (! $field->isCanApply()) {
+                    continue;
+                }
+
+                if (! $this->isObject()) {
+                    $field->setNameIndex($index);
+                }
+
+                $field->when($fill, static fn (FieldContract $field): FieldContract => $field->fillData($values));
+
+                if ($field instanceof File) {
+                    $this->prepareFileRemainingValues($field, $values);
+                }
+
+                $apply = $callback($field, $values, $data);
+
+                if ($field instanceof WrapperWithApplyContract) {
+                    $applyValues[$index] = $apply;
+
+                    continue;
+                }
+
+                data_set(
+                    /** @phpstan-ignore-next-line */
+                    $applyValues[$index],
+                    $field->getColumn(),
+                    data_get($apply, $field->getColumn()),
+                );
+            }
+
+            if ($this->isObject()) {
+                $applyValues = $applyValues[$index] ?? [];
+            }
+        }
+
+        $preparedValues = $this->prepareOnApply($applyValues);
+        $values = $this->isObject() || $this->isKeyValue()
+            ? $preparedValues
+            : array_values($preparedValues);
+
+        return $response instanceof Closure
+            ? $response($values, $data)
+            : data_set($data, str_replace('.', '->', $this->getColumn()), $values);
+    }
+
+    protected function shouldApplyPreparedRequestDirectly(mixed $requestValue): bool
+    {
+        if (! $this->isKeyOrOnlyValue() || ! \is_array($requestValue)) {
+            return false;
+        }
+
+        return ! array_is_list($requestValue)
+            || $requestValue === []
+            || array_filter($requestValue, static fn (mixed $value): bool => ! \is_array($value)) !== [];
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    protected function prepareFileRemainingValues(File $field, array $values): void
+    {
+        $remainingValues = $values[$field->getHiddenColumn()]
+            ?? $values[$field->getColumn()]
+            ?? [];
+
+        $field->setRemainingValues(array_filter(
+            \is_array($remainingValues) ? $remainingValues : [$remainingValues],
+        ));
+    }
+
     protected function resolveOnApply(): ?Closure
     {
-        return fn (mixed $item, mixed $value): mixed => data_set(
-            $item,
-            str_replace('.', '->', $this->getColumn()),
-            $this->prepareValueOnApply($value),
+        return fn (mixed $item): mixed => $this->resolveAppliesCallback(
+            data: $item,
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
+                static fn (mixed $data): mixed => data_set(
+                    $data,
+                    $field->getColumn(),
+                    data_get(\is_array($values) ? $values : [], $field->getColumn(), ''),
+                ),
+                $values,
+            ),
         );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function resolveBeforeApply(mixed $data): mixed
+    {
+        return $this->resolveAppliesCallback(
+            data: $data,
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->beforeApply($values),
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAfterApply(mixed $data): mixed
+    {
+        return $this->resolveAppliesCallback(
+            data: $data,
+            callback: static fn (FieldContract $field, mixed $values): mixed => $field->afterApply($values),
+            response: static fn (array $values, mixed $data): mixed => $data,
+            fill: true,
+        );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function resolveAfterDestroy(mixed $data): mixed
+    {
+        $values = $this->toValue(withDefault: false);
+
+        if (! $this->isKeyOrOnlyValue() && filled($values)) {
+            foreach ($values as $value) {
+                $this->getFields()
+                    ->onlyFields()
+                    ->each(
+                        static fn (FieldContract $field): mixed => $field
+                            ->fillData($value)
+                            ->afterDestroy($value),
+                    );
+            }
+        }
+
+        return $data;
+    }
+
+    public function getReactiveValue(): mixed
+    {
+        if (! $this->isObject()) {
+            throw FieldException::reactivityNotSupported(static::class, 'without object mode');
+        }
+
+        $value = $this->prepareObjectOnApply($this->normalizeRows($this->getValue()));
+
+        if ($value !== []) {
+            return $value;
+        }
+
+        return $this->getPreparedFields()
+            ->onlyFields()
+            ->mapWithKeys(fn (FieldContract $field): array => [$field->getColumn() => null])
+            ->toArray();
     }
 
     /**

@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\UI\FieldWithComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\RemovableContract;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
@@ -35,6 +37,8 @@ function jsonPrepareRequestValue(Json $field, mixed $value): mixed
 it('has the expected contracts', function (): void {
     expect(Json::make('Json'))
         ->toBeInstanceOf(HasFieldsContract::class)
+        ->toBeInstanceOf(FieldWithComponentContract::class)
+        ->toBeInstanceOf(RemovableContract::class)
         ->toBeInstanceOf(HasDefaultValueContract::class)
         ->toBeInstanceOf(CanBeArray::class);
 });
@@ -186,6 +190,20 @@ it('can disable creating rows in filter mode', function (): void {
         ->toBeFalse();
 });
 
+it('renders an empty editable row in filter mode', function (): void {
+    $field = Json::make('Product Options', 'column_name')
+        ->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+        ])
+        ->filterMode();
+
+    expect(jsonViewData($field)['rows'])
+        ->toBe([
+            ['title' => '', 'value' => ''],
+        ]);
+});
+
 it('can configure creating rows', function (): void {
     $field = Json::make('Product Options', 'column_name')
         ->fields([
@@ -198,6 +216,10 @@ it('can configure creating rows', function (): void {
         ->toBeTrue()
         ->and($field->getCreatableLimit())
         ->toBe(6)
+        ->and($field->getCreateLimit())
+        ->toBe(6)
+        ->and($field->getCreateButton())
+        ->toBeInstanceOf(ActionButton::class)
         ->and(jsonViewData($field))
         ->toMatchArray([
             'creatable' => true,
@@ -375,7 +397,7 @@ it('passes nested hidden create button state to field schema', function (): void
         ]);
 });
 
-it('does not allow reordering rows by default', function (): void {
+it('allows reordering rows by default', function (): void {
     $field = Json::make('Product Options', 'column_name')
         ->fields([
             Text::make('Title'),
@@ -383,9 +405,9 @@ it('does not allow reordering rows by default', function (): void {
         ]);
 
     expect($field->isReorderable())
-        ->toBeFalse()
+        ->toBeTrue()
         ->and(jsonViewData($field)['reorderable'])
-        ->toBeFalse();
+        ->toBeTrue();
 });
 
 it('can allow reordering rows', function (): void {
@@ -400,6 +422,20 @@ it('can allow reordering rows', function (): void {
         ->toBeTrue()
         ->and(jsonViewData($field)['reorderable'])
         ->toBeTrue();
+});
+
+it('can disable reordering rows with a condition', function (): void {
+    $field = Json::make('Product Options', 'column_name')
+        ->fields([
+            Text::make('Title'),
+            Text::make('Value'),
+        ])
+        ->reorderable(fn (): bool => false);
+
+    expect($field->isReorderable())
+        ->toBeFalse()
+        ->and(jsonViewData($field)['reorderable'])
+        ->toBeFalse();
 });
 
 it('can show custom empty message', function (): void {
@@ -503,6 +539,29 @@ it('normalizes object value for fields', function (): void {
         ->toBe([
             ['title' => 'Title', 'active' => false],
         ]);
+});
+
+it('keeps object mode reactive values and nested reactive attributes', function (): void {
+    $field = Json::make('Data', 'data')
+        ->fields([
+            Text::make('Title'),
+            Text::make('Slug'),
+        ])
+        ->object()
+        ->reactive()
+        ->fill('{"title":"Title","slug":"title"}');
+
+    $controls = jsonViewData($field)['controls'];
+
+    expect($field->isObjectMode())
+        ->toBeTrue()
+        ->and($field->getReactiveValue())
+        ->toBe([
+            'title' => 'Title',
+            'slug' => 'title',
+        ])
+        ->and($controls[1]['html'])
+        ->toContain('data-reactive-column="data.slug"');
 });
 
 it('does not create empty object rows without value', function (): void {
@@ -634,7 +693,7 @@ it('normalizes nested json object for fields', function (): void {
             'type' => 'json',
             'objectMode' => true,
             'removable' => true,
-            'reorderable' => false,
+            'reorderable' => true,
         ]);
 });
 
@@ -1211,6 +1270,19 @@ it('prepares rows for apply', function (): void {
         ['title' => 'A', 'value' => '111'],
         ['title' => 'B', 'value' => '222'],
     ]);
+});
+
+it('does not reshape key value payload rows on apply for regular fields', function (): void {
+    $field = Json::make('Settings', 'settings')
+        ->fields([
+            Text::make('Title'),
+            Text::make('Status'),
+        ]);
+
+    expect($field->prepareOnApply([
+        ['key' => 'title', 'value' => '111'],
+        ['key' => 'status', 'value' => '222'],
+    ]))->toBe([]);
 });
 
 it('prepares rows recursively for apply', function (): void {
