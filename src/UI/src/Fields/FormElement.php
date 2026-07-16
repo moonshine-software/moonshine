@@ -279,7 +279,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
             return $this->fillData($value, $index);
         }
 
-        $casted = $cast ? $cast->cast($value) : new MixedDataWrapper($value);
+        $casted = $cast instanceof DataCasterContract ? $cast->cast($value) : new MixedDataWrapper($value);
 
         return $this->fillData($casted, $index);
     }

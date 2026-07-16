@@ -261,7 +261,7 @@ class Fields extends BaseCollection implements FieldsContract
                 $field = $modifyField;
             }
 
-            $name = Str::of($parent ? $parent->getNameDot() : $field->getNameDot());
+            $name = Str::of($parent instanceof FieldContract ? $parent->getNameDot() : $field->getNameDot());
 
             $level = $name->substrCount('$');
 
@@ -278,7 +278,7 @@ class Fields extends BaseCollection implements FieldsContract
             $name = $field->generateNameFrom(
                 $name->value(),
                 $ignore ? "" : "\${index$level}",
-                $parent ? $field->getColumn() : null,
+                $parent instanceof FieldContract ? $field->getColumn() : null,
             );
 
             $group = $field->getAttribute('multiple') || $field->isGroup();
@@ -287,7 +287,7 @@ class Fields extends BaseCollection implements FieldsContract
                 $name .= '[]';
             }
 
-            if ($parent) {
+            if ($parent instanceof FieldContract) {
                 $field
                     ->formName($parent->getFormName())
                     ->setParent($parent);

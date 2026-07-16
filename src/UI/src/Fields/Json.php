@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use Stringable;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
@@ -970,7 +971,7 @@ class Json extends Field implements
         }
 
         if (\is_object($value)) {
-            return $value instanceof \Stringable ? (string) $value : $value;
+            return $value instanceof Stringable ? (string) $value : $value;
         }
 
         return $value === null ? '' : (string) $value;

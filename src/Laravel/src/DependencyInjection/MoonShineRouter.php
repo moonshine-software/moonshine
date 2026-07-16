@@ -27,14 +27,14 @@ class MoonShineRouter extends AbstractRouter
 
     public function extractPageUri(?PageContract $page = null): ?string
     {
-        return $page
+        return $page instanceof PageContract
             ? $page->getUriKey()
             : $this->getParam('pageUri', moonshineRequest()->getPageUri());
     }
 
     public function extractResourceUri(?ResourceContract $resource = null): ?string
     {
-        return $resource
+        return $resource instanceof ResourceContract
             ? $resource->getUriKey()
             : $this->getParam('resourceUri', moonshineRequest()->getResourceUri());
     }
@@ -44,7 +44,7 @@ class MoonShineRouter extends AbstractRouter
         ?CrudResourceContract $resource = null
     ): string|int|null {
         if (\is_null($key)) {
-            $key = $resource
+            $key = $resource instanceof CrudResourceContract
                 ? $resource->getItem()?->getKey()
                 : $this->getParam('resourceItem', moonshineRequest()->getResource()?->getItemID());
         }

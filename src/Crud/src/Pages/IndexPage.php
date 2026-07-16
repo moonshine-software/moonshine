@@ -123,7 +123,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     {
         $components = [];
 
-        if ($metrics = $this->getMetricsComponent()) {
+        if (($metrics = $this->getMetricsComponent()) instanceof ComponentContract) {
             $components[] = $metrics;
         }
 
