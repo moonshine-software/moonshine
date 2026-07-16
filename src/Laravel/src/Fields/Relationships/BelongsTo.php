@@ -164,7 +164,7 @@ class BelongsTo extends ModelRelationField implements
     protected function viewData(): array
     {
         return [
-            'values' => $this->getRelation() ? $this->getValues()->toArray() : [],
+            'values' => $this->getRelation() instanceof \Illuminate\Database\Eloquent\Relations\BelongsTo ? $this->getValues()->toArray() : [],
             'isNullable' => $this->isNullable(),
             'isAsyncSearch' => $this->isAsyncSearch(),
             'asyncSearchUrl' => $this->isAsyncSearch() ? $this->getAsyncSearchUrl() : '',

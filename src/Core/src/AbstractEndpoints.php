@@ -126,8 +126,8 @@ abstract readonly class AbstractEndpoints implements EndpointsContract
             "update-field.through-$through",
             resourceItem: $this->router->extractResourceItem($resourceItem),
             relation: $relation,
-            resourceUri: $resource ? $resource->getUriKey() : $this->router->extractResourceUri(),
-            pageUri: $page ? $page->getUriKey() : $this->router->extractPageUri()
+            resourceUri: $resource instanceof ResourceContract ? $resource->getUriKey() : $this->router->extractResourceUri(),
+            pageUri: $page instanceof PageContract ? $page->getUriKey() : $this->router->extractPageUri()
         );
     }
 

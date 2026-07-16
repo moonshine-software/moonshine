@@ -58,7 +58,7 @@ final class HasManyButton
             : static fn (): bool => $resource->hasAction(Action::CREATE)
                 && $resource->can(Ability::CREATE);
 
-        $actionButton = $button
+        $actionButton = $button instanceof ActionButtonContract
             ? $button->setUrl($action)
             : ActionButton::make($update ? '' : __('moonshine::ui.add'), url: $action);
 

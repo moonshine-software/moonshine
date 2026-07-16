@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\HasHandlersContract;
@@ -15,7 +16,7 @@ final class HandlerController extends MoonShineController
     {
         $resource = $request->getResource();
 
-        if (! $resource) {
+        if (!$resource instanceof CrudResourceContract) {
             throw ResourceException::required();
         }
 
