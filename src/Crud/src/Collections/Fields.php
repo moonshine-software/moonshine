@@ -99,7 +99,7 @@ class Fields extends BaseFields
         }
 
         return $this->filter(
-            static fn (FieldContract $field): bool => ! ($field instanceof RelationFieldContract && $field->isOutsideComponent())
+            static fn (FieldContract $field): bool => ! $field instanceof RelationFieldContract || ! $field->isOutsideComponent()
         );
     }
 }

@@ -104,11 +104,17 @@ trait HasFilters
     {
         $default = $this->getQueryParam('filter', []);
 
+        if ($this->isSaveQueryState() && $this->hasQueryParam('filter') && ! $this->hasQueryParam('reset')) {
+            return $default;
+        }
+
         if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
+            $cached = $this->getCore()->getCache()->get($this->getQueryCacheKey(), []);
+
             return data_get(
-                $this->getCore()->getCache()->get($this->getQueryCacheKey(), []),
-                'filter',
-                $default,
+                $cached,
+                $this->getQueryParamName('filter'),
+                data_get($cached, 'filter', $default),
             );
         }
 

@@ -409,7 +409,12 @@ trait ResourceQuery
 
     protected function getQueryCacheKey(): string
     {
-        return "moonshine_query_{$this->getUriKey()}";
+        return "moonshine_query_{$this->getUriKey()}{$this->getQueryCacheKeySuffix()}";
+    }
+
+    protected function getQueryCacheKeySuffix(): string
+    {
+        return '';
     }
 
     protected function withCache(): static

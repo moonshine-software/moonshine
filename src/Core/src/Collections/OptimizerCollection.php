@@ -170,8 +170,6 @@ final class OptimizerCollection implements OptimizerCollectionContract
 
     /**
      * @param  class-string  $class
-     *
-     * @return class-string|string
      */
     protected function getGroupName(string $class): string
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 uses()->group('pages-feature');
 
+use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
@@ -55,3 +56,82 @@ it('query tags', function () {
         ->assertSee($item->name)
     ;
 });
+
+it('prefers current filter params over cached query state', function () {
+    $resource = app(SaveQueryStateTestItemResource::class);
+
+    fakeRequest('/', parameters: [
+        'p_filter' => [
+            'name' => 'Fresh filter',
+        ],
+    ]);
+
+    $resource->setQueryParams(
+        $this->moonshineCore->getRequest()->getOnly($resource->getQueryParamsKeys())
+    );
+
+    $this->moonshineCore->getCache()->set(
+        $resource->publicQueryCacheKey(),
+        [
+            'p_filter' => [
+                'name' => 'Cached filter',
+            ],
+        ],
+    );
+
+    expect($resource->getFilterParams())
+        ->toBe([
+            'name' => 'Fresh filter',
+        ]);
+});
+
+it('fills filter params from cached prefixed query state', function () {
+    $resource = app(SaveQueryStateTestItemResource::class);
+
+    fakeRequest('/');
+
+    $resource->setQueryParams(
+        $this->moonshineCore->getRequest()->getOnly($resource->getQueryParamsKeys())
+    );
+
+    $this->moonshineCore->getCache()->set(
+        $resource->publicQueryCacheKey(),
+        [
+            'p_filter' => [
+                'name' => 'Cached filter',
+            ],
+        ],
+    );
+
+    expect($resource->getFilterParams())
+        ->toBe([
+            'name' => 'Cached filter',
+        ]);
+});
+
+it('scopes saved query state by moonshine user', function () {
+    $resource = app(SaveQueryStateTestItemResource::class);
+
+    fakeRequest('/');
+
+    $adminKey = $resource->publicQueryCacheKey();
+
+    $user = MoonshineUser::factory()->create();
+
+    $this->actingAs($user, 'moonshine')->get('/');
+
+    expect($resource->publicQueryCacheKey())
+        ->not->toBe($adminKey);
+});
+
+final class SaveQueryStateTestItemResource extends TestItemResource
+{
+    protected bool $saveQueryState = true;
+
+    protected string $queryParamPrefix = 'p_';
+
+    public function publicQueryCacheKey(): string
+    {
+        return $this->getQueryCacheKey();
+    }
+}

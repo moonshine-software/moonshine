@@ -52,7 +52,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<FormBuilderContract>
      * @throws Throwable
      */
     public function onlyForms(): static
@@ -68,7 +67,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<TableBuilderContract>
      * @throws Throwable
      */
     public function onlyTables(): static
@@ -82,7 +80,6 @@ final class Components extends BaseCollection implements ComponentsContract
     }
 
     /**
-     * @return static<ComponentContract>
      * @throws Throwable
      */
     public function onlyComponents(): static
@@ -113,10 +110,13 @@ final class Components extends BaseCollection implements ComponentsContract
         string $name,
         ?FormBuilderContract $default = null
     ): ?FormBuilderContract {
-        return $this->onlyForms()->first(
-            static fn (FormBuilderContract $component): bool => $component->getName() === $name,
+        /** @var ?FormBuilderContract $component */
+        $component = $this->onlyForms()->first(
+            static fn (ComponentContract $component): bool => $component->getName() === $name,
             $default
         );
+
+        return $component;
     }
 
     /**
@@ -126,10 +126,13 @@ final class Components extends BaseCollection implements ComponentsContract
         string $name,
         ?TableBuilderContract $default = null
     ): ?TableBuilderContract {
-        return $this->onlyTables()->first(
-            static fn (TableBuilderContract $component): bool => $component->getName() === $name,
+        /** @var ?TableBuilderContract $component */
+        $component = $this->onlyTables()->first(
+            static fn (ComponentContract $component): bool => $component->getName() === $name,
             $default
         );
+
+        return $component;
     }
 
     /**
