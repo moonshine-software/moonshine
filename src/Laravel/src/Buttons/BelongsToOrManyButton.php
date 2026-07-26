@@ -51,7 +51,7 @@ final class BelongsToOrManyButton
             return $fields->toArray();
         };
 
-        $actionButton = $button
+        $actionButton = $button instanceof ActionButtonContract
             ? $button->setUrl($action)
             : ActionButton::make(__('moonshine::ui.add'), url: $action);
 
