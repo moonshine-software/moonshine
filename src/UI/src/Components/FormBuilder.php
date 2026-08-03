@@ -62,7 +62,7 @@ final class FormBuilder extends MoonShineComponent implements
     /**
      * @var TData
      */
-    protected mixed $values = [];
+    protected mixed $values;
 
     /**
      * @var string[]
