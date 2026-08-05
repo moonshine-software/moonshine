@@ -5,4 +5,6 @@
     @foreach($cells as $td)
         {!! $td !!}
     @endforeach
+
+    {{ $slot ?? '' }}
 </tr>

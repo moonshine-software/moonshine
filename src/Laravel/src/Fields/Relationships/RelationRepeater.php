@@ -47,20 +47,14 @@ use Throwable;
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements FieldWithComponentContract<TableBuilderContract>
  */
-class RelationRepeater extends ModelRelationField implements
-    HasFieldsContract,
-    FieldWithComponentContract,
-    RemovableContract,
-    HasDefaultValueContract,
-    CanBeArray,
-    CanBeObject
+class RelationRepeater extends ModelRelationField implements CanBeArray, CanBeObject, FieldWithComponentContract, HasDefaultValueContract, HasFieldsContract, RemovableContract
 {
-    use WithFields;
+    use HasVerticalMode;
     use Removable;
     use WithDefaultValue;
-    use HasVerticalMode;
+    use WithFields;
 
-    protected string $view = 'moonshine::fields.json';
+    protected string $view = 'moonshine::fields.relationships.relation-repeater';
 
     protected bool $isGroup = true;
 
@@ -71,6 +65,10 @@ class RelationRepeater extends ModelRelationField implements
     protected ?int $creatableLimit = null;
 
     protected ?ActionButtonContract $creatableButton = null;
+
+    protected bool $showCreateButtonText = true;
+
+    protected bool $showCreateButtonIcon = true;
 
     protected array $buttons = [];
 
@@ -102,9 +100,13 @@ class RelationRepeater extends ModelRelationField implements
     public function creatable(
         Closure|bool|null $condition = null,
         ?int $limit = null,
-        ?ActionButtonContract $button = null
+        ?ActionButtonContract $button = null,
+        bool $showButtonText = true,
+        bool $showButtonIcon = true
     ): static {
         $this->isCreatable = value($condition, $this) ?? true;
+        $this->showCreateButtonText = $showButtonText;
+        $this->showCreateButtonIcon = $showButtonIcon;
 
         if ($this->isCreatable()) {
             $this->creatableLimit = $limit;
@@ -121,9 +123,21 @@ class RelationRepeater extends ModelRelationField implements
         $button = $this->creatableButton;
 
         if (! $button instanceof ActionButtonContract) {
-            $button = ActionButton::make($this->getCore()->getTranslator()->get('moonshine::ui.add'))
-                ->icon('plus-circle')
-                ->customAttributes(['@click.prevent' => 'add()', 'class' => 'w-full']);
+            $button = ActionButton::make(
+                $this->isCreateButtonTextShown()
+                    ? $this->getCore()->getTranslator()->get('moonshine::ui.add')
+                    : ''
+            )
+                ->rawMode()
+                ->customAttributes([
+                    'type' => 'button',
+                    '@click.prevent' => 'add()',
+                    'class' => 'btn btn-primary json-field__add',
+                ]);
+
+            if ($this->isCreateButtonIconShown()) {
+                $button->icon('plus');
+            }
         }
 
         if (! \is_null($this->modifyCreateButton)) {
@@ -143,6 +157,16 @@ class RelationRepeater extends ModelRelationField implements
         return $this->creatableLimit;
     }
 
+    public function isCreateButtonTextShown(): bool
+    {
+        return $this->showCreateButtonText;
+    }
+
+    public function isCreateButtonIconShown(): bool
+    {
+        return $this->showCreateButtonIcon;
+    }
+
     /**
      * @param  Closure(static): string  $url
      */
@@ -157,6 +181,31 @@ class RelationRepeater extends ModelRelationField implements
     public function isReorderable(): bool
     {
         return $this->isReorderable;
+    }
+
+    public function async(): static
+    {
+        return $this;
+    }
+
+    public function disableAsync(): static
+    {
+        return $this;
+    }
+
+    public function isAsync(): bool
+    {
+        return false;
+    }
+
+    public function getRedirectAfter(Model|int|null|string $parentId): ?string
+    {
+        return null;
+    }
+
+    public function getFormButtons(): array
+    {
+        return [];
     }
 
     /**
@@ -240,8 +289,7 @@ class RelationRepeater extends ModelRelationField implements
             $field
                 ->disableSortable()
                 ->withoutWrapper()
-                ->setRequestKeyPrefix($parent->getRequestKeyPrefix())
-            ;
+                ->setRequestKeyPrefix($parent->getRequestKeyPrefix());
         });
 
         return $fields;
@@ -368,6 +416,10 @@ class RelationRepeater extends ModelRelationField implements
                     ->jsonSerialize()
             )
             ->customAttributes(['data-validation-wrapper' => true])
+            ->customAttributes([
+                'data-relation-repeater' => true,
+                'data-empty-message' => $this->getCore()->getTranslator()->get('moonshine::ui.empty'),
+            ])
             ->when(
                 $reorderable,
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->reorderable($reorderableUrl),
@@ -502,7 +554,7 @@ class RelationRepeater extends ModelRelationField implements
         return $this->resolveAppliesCallback(
             data: $data,
             callback: static fn (FieldContract $field, mixed $values): mixed => $field->beforeApply($values),
-            response:  static fn (array $values, mixed $data): mixed => $data
+            response: static fn (array $values, mixed $data): mixed => $data
         );
     }
 
@@ -598,6 +650,7 @@ class RelationRepeater extends ModelRelationField implements
 
     /**
      * @return array<string, mixed>
+     *
      * @throws Throwable
      */
     protected function viewData(): array

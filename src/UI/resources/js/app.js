@@ -31,6 +31,7 @@ import tabs from './Components/Tabs.js'
 import collapse from './Components/Collapse.js'
 import bottomBarMenu from './Components/BottomBar.js'
 import imgPopup from './Components/ImgPopup.js'
+import jsonTreeField from './Components/Json.js'
 import {validationInHiddenBlocks} from './Support/Forms.js'
 
 window.MoonShine = new MoonShine()
@@ -64,6 +65,7 @@ Alpine.data('tabs', tabs)
 Alpine.data('collapse', collapse)
 Alpine.data('bottomBarMenu', bottomBarMenu)
 Alpine.data('imgPopup', imgPopup)
+Alpine.data('jsonTreeField', jsonTreeField)
 
 window.Alpine = Alpine
 

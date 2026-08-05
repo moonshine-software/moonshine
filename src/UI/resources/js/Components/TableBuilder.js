@@ -22,6 +22,7 @@ export default (
   reorderable: reorderable,
   creatable: creatable,
   reindex: reindex,
+  rowsCount: 0,
   loading: false,
   stickyColClass: 'sticky-col',
   init() {
@@ -45,7 +46,9 @@ export default (
       tbody?.lastElementChild?.remove()
     }
 
-    const stayEmpty = (this.creatable || removeAfterClone) && tbody?.childElementCount === 0
+    this.updateRowsCount()
+
+    const stayEmpty = (this.creatable || removeAfterClone) && this.isEmpty()
 
     if (stayEmpty) {
       thead.style.display = 'none'
@@ -129,6 +132,7 @@ export default (
     }
 
     this.table.querySelector('tbody').appendChild(this.lastRow.cloneNode(true))
+    this.updateRowsCount()
 
     const form = this.table.closest('form[data-component]')
     if (form) {
@@ -142,9 +146,21 @@ export default (
   },
   remove() {
     this.$el.closest('tr').remove()
+    this.updateRowsCount()
+
+    if (this.isEmpty()) {
+      this.table?.querySelector('thead')?.style.setProperty('display', 'none')
+    }
+
     if (this.reindex) {
       this.resolveReindex()
     }
+  },
+  updateRowsCount() {
+    this.rowsCount = this.table?.querySelectorAll('tbody > tr').length ?? 0
+  },
+  isEmpty() {
+    return this.rowsCount === 0
   },
   resolveReindex() {
     if (!this.table) {

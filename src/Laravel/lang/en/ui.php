@@ -16,6 +16,7 @@ return [
     'filters' => 'Filters',
     'search' => 'Search',
     'reset' => 'Reset',
+    'empty' => 'Nothing added',
     'total' => 'Total',
     'deleted' => 'Deleted',
     'delete' => 'Delete',
@@ -36,6 +37,14 @@ return [
     'collapse_menu' => 'Collapse menu',
     '404' => 'Houston we have a problem page not found',
     'copied' => 'Copied!',
+    'json' => [
+        'section' => 'Section',
+        'child' => 'Item',
+        'add_section' => 'Add section',
+        'add_child' => 'Add item',
+        'limit_reached' => 'Limit reached',
+        'limit_reached_with_count' => "You can't add more than :count items",
+    ],
     'notifications' => [
         'title' => 'Notifications',
         'mark_as_read_all' => 'Mark all as read',

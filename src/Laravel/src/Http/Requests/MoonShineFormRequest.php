@@ -9,9 +9,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Resources\CrudResource;
+use MoonShine\UI\Fields\Json;
 use Throwable;
 
 class MoonShineFormRequest extends FormRequest
@@ -37,6 +39,101 @@ class MoonShineFormRequest extends FormRequest
         }
 
         $this->request = request()->getPayload();
+
+        $this->prepareJsonFieldsForValidation();
+    }
+
+    protected function prepareJsonFieldsForValidation(): void
+    {
+        if (! $this->hasResource()) {
+            return;
+        }
+
+        $fields = $this->getResource()?->getFormFields()?->onlyFields() ?? [];
+
+        $payload = $this->request->all();
+
+        foreach ($fields as $field) {
+            if (! $field instanceof Json) {
+                continue;
+            }
+
+            $name = $this->getValidationJsonFieldName($field);
+            $this->decodeJsonFieldPayload($payload, $this->validationNameSegments($name));
+        }
+
+        $this->request->replace($payload);
+    }
+
+    protected function getValidationJsonFieldName(FieldContract $field): string
+    {
+        return str_replace('[]', '', $field->getNameAttribute());
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $payload
+     * @param  list<string>  $segments
+     */
+    protected function decodeJsonFieldPayload(array &$payload, array $segments): void
+    {
+        if ($segments === []) {
+            return;
+        }
+
+        $segment = array_shift($segments);
+
+        if ($this->isValidationNameWildcard($segment)) {
+            foreach ($payload as &$value) {
+                if (\is_array($value)) {
+                    $this->decodeJsonFieldPayload($value, $segments);
+                }
+            }
+
+            return;
+        }
+
+        if (! \array_key_exists($segment, $payload)) {
+            return;
+        }
+
+        if ($segments !== []) {
+            if (\is_array($payload[$segment])) {
+                $this->decodeJsonFieldPayload($payload[$segment], $segments);
+            }
+
+            return;
+        }
+
+        if (! \is_string($payload[$segment]) || $payload[$segment] === '') {
+            return;
+        }
+
+        $decoded = json_decode($payload[$segment], true);
+
+        if (json_last_error() === JSON_ERROR_NONE && \is_array($decoded)) {
+            $payload[$segment] = $decoded;
+        }
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function validationNameSegments(string $name): array
+    {
+        preg_match_all('/([^\[\]]+)|\[([^\]]*)\]/', $name, $matches, PREG_SET_ORDER);
+
+        return array_values(array_filter(
+            array_map(
+                static fn (array $match): string => ($match[1] ?? '') ?: ($match[2] ?? ''),
+                $matches,
+            ),
+            static fn (string $segment): bool => $segment !== '',
+        ));
+    }
+
+    protected function isValidationNameWildcard(string $segment): bool
+    {
+        return preg_match('/^\$\{index\d+}$/', $segment) === 1;
     }
 
     protected function failedValidation(Validator $validator): void

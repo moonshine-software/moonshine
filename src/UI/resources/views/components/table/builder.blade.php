@@ -140,10 +140,28 @@
                 @endif
             </x-moonshine::table>
 
+            @if($attributes->has('data-empty-message'))
+                <x-moonshine::alert
+                    type="default"
+                    class="my-4"
+                    icon="s.no-symbol"
+                    x-cloak
+                    x-show="isEmpty()"
+                >
+                    {{ $attributes->get('data-empty-message') }}
+                </x-moonshine::alert>
+            @endif
+
             @if($creatable)
                 <x-moonshine::layout.divider />
 
-                {!! $createButton !!}
+                @if($attributes->has('data-relation-repeater'))
+                    <x-moonshine::layout.flex justify-align="center" :is-without-space="true">
+                        {!! $createButton !!}
+                    </x-moonshine::layout.flex>
+                @else
+                    {!! $createButton !!}
+                @endif
             @endif
 
             @if($hasPaginator)
