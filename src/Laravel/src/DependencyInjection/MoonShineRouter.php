@@ -44,7 +44,7 @@ class MoonShineRouter extends AbstractRouter
         ?CrudResourceContract $resource = null
     ): string|int|null {
         if (\is_null($key)) {
-            $key = $resource instanceof CrudResourceContract
+            return $resource instanceof CrudResourceContract
                 ? $resource->getItem()?->getKey()
                 : $this->getParam('resourceItem', moonshineRequest()->getResource()?->getItemID());
         }

@@ -282,7 +282,7 @@ class BelongsToMany extends ModelRelationField implements
         $values = parent::prepareFill($raw, $casted);
 
         if (! $values instanceof EloquentCollection) {
-            $values = EloquentCollection::make($values);
+            return EloquentCollection::make($values);
         }
 
         return $values;

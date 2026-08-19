@@ -339,7 +339,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
         }
 
         if (! $wasRecentlyCreated) {
-            $item = $this->afterUpdated($item);
+            return $this->afterUpdated($item);
         }
 
         return $item;

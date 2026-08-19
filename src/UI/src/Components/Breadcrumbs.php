@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use UnitEnum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
@@ -55,7 +56,7 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = (new Collection($this->items))->mapWithKeys(static function (null|\UnitEnum|string $title, string $url): array {
+        $this->items = (new Collection($this->items))->mapWithKeys(static function (null|UnitEnum|string $title, string $url): array {
             $title = (string) new EnumToString($title);
 
             return [

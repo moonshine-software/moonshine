@@ -101,7 +101,7 @@ final class Search extends MoonShineComponent
             ]);
 
         if (! \is_null($this->modifyInput)) {
-            $input = \call_user_func($this->modifyInput, $input, $this);
+            return \call_user_func($this->modifyInput, $input, $this);
         }
 
         return $input;
@@ -171,7 +171,7 @@ final class Search extends MoonShineComponent
             ->hideSubmit();
 
         if (! \is_null($this->modifyForm)) {
-            $form = \call_user_func($this->modifyForm, $form, $this);
+            return \call_user_func($this->modifyForm, $form, $this);
         }
 
         return $form;

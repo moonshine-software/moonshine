@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Support;
 
+use UnitEnum;
+use BackedEnum;
 use Stringable;
 
 final readonly class EnumToString implements Stringable
@@ -12,7 +14,7 @@ final readonly class EnumToString implements Stringable
 
     public function convert(): mixed
     {
-        if(!$this->value instanceof \UnitEnum) {
+        if(!$this->value instanceof UnitEnum) {
             return $this->value;
         }
 
@@ -20,10 +22,10 @@ final readonly class EnumToString implements Stringable
             return $this->value->toString();
         }
 
-        return (string) ($this->value instanceof \BackedEnum ? $this->value->value : $this->value->name);
+        return (string) ($this->value instanceof BackedEnum ? $this->value->value : $this->value->name);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $value = $this->convert();
 

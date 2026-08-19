@@ -61,7 +61,7 @@ trait WithRelatedValues
         $query = $related->newQuery();
 
         if (! \is_null($this->valuesQuery)) {
-            $query = value($this->valuesQuery, $query, $this);
+            return value($this->valuesQuery, $query, $this);
         }
 
         return $query;

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ChangeLocale
 {
-    final public const KEY = '_lang';
+    public const KEY = '_lang';
 
     public function handle(Request $request, Closure $next): Response
     {

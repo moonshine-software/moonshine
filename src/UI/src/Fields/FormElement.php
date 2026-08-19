@@ -223,7 +223,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         $value = data_get(\is_null($casted) ? $raw : $casted->getOriginal(), $this->getColumn(), $default);
 
         if (\is_null($value) || $value === false || $value instanceof FieldEmptyValue) {
-            $value = data_get($raw, $this->getColumn(), $default);
+            return data_get($raw, $this->getColumn(), $default);
         }
 
         return $value;
