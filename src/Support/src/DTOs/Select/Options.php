@@ -39,7 +39,7 @@ final readonly class Options implements Arrayable
             ->filter()
             ->map(function (array|string|OptionGroup|Option|UnitEnum $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
                 if ($labelOrValues instanceof UnitEnum) {
-                    $labelOrValues = (new EnumToString($labelOrValues))->convert();
+                    $labelOrValues = (string) new EnumToString($labelOrValues);
                 }
 
                 if ($labelOrValues instanceof Option) {
