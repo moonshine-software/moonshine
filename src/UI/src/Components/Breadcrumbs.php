@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use UnitEnum;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use MoonShine\Support\EnumToString;
+use UnitEnum;
 
 /** @method static static make(array $items = []) */
 final class Breadcrumbs extends MoonShineComponent

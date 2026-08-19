@@ -428,7 +428,8 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         }
 
         return (new EnumToString(
-            $this->formattedValue ?? $this->toValue(withDefault: false))
+            $this->formattedValue ?? $this->toValue(withDefault: false)
+        )
         )->convert();
     }
 

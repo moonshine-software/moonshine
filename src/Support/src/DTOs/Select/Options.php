@@ -38,7 +38,7 @@ final readonly class Options implements Arrayable
         return (new Collection($this->values))
             ->filter()
             ->map(function (array|string|OptionGroup|Option|UnitEnum $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
-                if($labelOrValues instanceof UnitEnum) {
+                if ($labelOrValues instanceof UnitEnum) {
                     $labelOrValues = (new EnumToString($labelOrValues))->convert();
                 }
 
