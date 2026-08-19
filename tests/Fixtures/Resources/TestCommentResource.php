@@ -14,6 +14,8 @@ class TestCommentResource extends AbstractTestingResource
 {
     protected string $model = Comment::class;
 
+    protected string $column = 'color';
+
     protected int $itemsPerPage = 2;
 
     protected function indexFields(): iterable
