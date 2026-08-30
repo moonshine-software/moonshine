@@ -9,6 +9,7 @@ use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\Applies\Filters\JsonModelApply;
+use MoonShine\Laravel\Exceptions\FileFieldException;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\UI\Fields\Field;
@@ -49,6 +50,48 @@ it('apply finder', function (): void {
 
     expect($fileApply->store($file, $upload))
         ->toBe($upload->hashName());
+});
+
+it('does not allow stored file extension to bypass allowed extensions', function (): void {
+    $field = File::make('File')
+        ->keepOriginalFileName()
+        ->allowedExtensions(['gif']);
+    $upload = UploadedFile::fake()->create('shell.php', 1, 'image/gif');
+
+    /** @var FileModelApply $fileApply */
+    $fileApply = $field->getApplyClass();
+
+    expect($upload->extension())
+        ->toBe('gif')
+        ->and(fn (): string => $fileApply->store($field, $upload))
+        ->toThrow(FileFieldException::class, 'php not allowed');
+
+    $field = File::make('File')
+        ->customName(static fn (): string => 'shell.php')
+        ->allowedExtensions(['gif']);
+
+    expect(fn (): string => $fileApply->store($field, $upload))
+        ->toThrow(FileFieldException::class, 'php not allowed');
+});
+
+it('keeps original file name', function (): void {
+    $field = File::make('File')->keepOriginalFileName();
+    $upload = UploadedFile::fake()->create('original.csv');
+
+    /** @var FileModelApply $fileApply */
+    $fileApply = $field->getApplyClass();
+
+    expect($fileApply->store($field, $upload))->toBe('original.csv');
+});
+
+it('uses custom file name', function (): void {
+    $field = File::make('File')->customName(static fn (): string => 'custom-name.txt');
+    $upload = UploadedFile::fake()->create('original.csv');
+
+    /** @var FileModelApply $fileApply */
+    $fileApply = $field->getApplyClass();
+
+    expect($fileApply->store($field, $upload))->toBe('custom-name.txt');
 });
 
 it('add new field apply', function (): void {
