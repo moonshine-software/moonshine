@@ -38,6 +38,11 @@ class Password extends Text
         return true;
     }
 
+    public function isUnescapeOnApply(): bool
+    {
+        return true;
+    }
+
     public function raw(Closure|bool|null $condition = null): static
     {
         $result = value($condition, $this) ?? true;
