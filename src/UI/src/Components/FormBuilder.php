@@ -410,19 +410,17 @@ final class FormBuilder extends MoonShineComponent implements
             $this->getValues(),
         )->getOriginal();
 
-        if (\is_null($default)) {
-            $default = static fn (FieldContract $field): Closure => static function (mixed $item) use ($field): mixed {
-                if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
-                    return $item;
-                }
-
-                $value = $field->getRequestValue() !== false ? $field->getRequestValue() : null;
-
-                data_set($item, $field->getColumn(), $value);
-
+        $default ??= static fn (FieldContract $field): Closure => static function (mixed $item) use ($field): mixed {
+            if (! $field->hasRequestValue() && ! $field->getDefaultIfExists()) {
                 return $item;
-            };
-        }
+            }
+
+            $value = $field->getRequestValue() !== false ? $field->getRequestValue() : null;
+
+            data_set($item, $field->getColumn(), $value);
+
+            return $item;
+        };
 
         try {
             $fields = $this

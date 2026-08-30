@@ -95,9 +95,7 @@ class JsonResponse extends SymfonyJsonResponse
      */
     public function htmlData(string|array $value, ?string $selector = null, HtmlMode $mode = HtmlMode::INNER_HTML): self
     {
-        if (! isset($this->jsonData['htmlData'])) {
-            $this->jsonData['htmlData'] = [];
-        }
+        $this->jsonData['htmlData'] ??= [];
 
         $this->jsonData['htmlData'][] = [
             'html' => $value,

@@ -23,9 +23,7 @@ final class PrettyLimit extends MoonShineComponent
     ) {
         parent::__construct();
 
-        if ($this->color === null) {
-            $this->color = Color::SECONDARY;
-        }
+        $this->color ??= Color::SECONDARY;
 
         if ($this->limit !== null && $this->limit < 100) {
             throw new InvalidArgumentException('Limit should be more than 100');
