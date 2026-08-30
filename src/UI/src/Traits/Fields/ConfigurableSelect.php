@@ -82,7 +82,9 @@ trait ConfigurableSelect
 
     public function fieldsNames(FieldsNames $names): static
     {
-        return $this->settings(array_filter($names->toArray()));
+        $this->settings = array_merge($this->settings, array_filter($names->toArray()));
+
+        return $this;
     }
 
     public function selectCreatable(

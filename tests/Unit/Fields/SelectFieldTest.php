@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Support\DTOs\Select\FieldsNames;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionGroup;
 use MoonShine\Support\DTOs\Select\OptionImage;
@@ -96,6 +97,16 @@ describe('basic methods', function () {
             ->and($this->fieldMultiple->searchable())
             ->isSearchable()
             ->toBeTrue();
+    });
+
+    it('field names', function (): void {
+        expect($this->field->fieldsNames(
+            FieldsNames::make()->value('id')->label('name')
+        )->toArray()['settings'])->toBe([
+            'valueField' => 'id',
+            'labelField' => 'name',
+            'searchField' => ['name'],
+        ]);
     });
 
     it('options', function (): void {
