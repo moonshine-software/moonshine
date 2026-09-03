@@ -14,6 +14,7 @@ use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelColumnUpdateRequest;
 use MoonShine\Laravel\Http\Requests\Resources\UpdateColumnFormRequest;
+use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use Throwable;
 
 class UpdateFieldController extends MoonShineController
@@ -55,6 +56,11 @@ class UpdateFieldController extends MoonShineController
 
     private function save(CrudResource $resource, FieldContract $field)
     {
+        abort_unless(
+            $field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview(),
+            403
+        );
+
         try {
             $resource->save(
                 $resource->getCaster()->cast(
