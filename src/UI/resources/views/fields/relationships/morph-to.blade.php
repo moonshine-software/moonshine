@@ -14,7 +14,7 @@
     'settings' => [],
     'plugins' => [],
 ])
-<div x-data="{morphType: '{{ $typeValue }}'}"
+<div x-data="{morphType: @js($typeValue)}"
      class="flex items-center gap-x-2"
 >
     <div class="sm:w-1/4 w-full">

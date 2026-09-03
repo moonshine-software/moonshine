@@ -15,8 +15,8 @@
 ])
 <div class="js-cards-builder-container">
     <div x-data="cardsBuilder(
-    {{ (int) $async }},
-    '{{ $asyncUrl }}'
+    @js((int) $async),
+    @js($asyncUrl)
 )"
          @defineEventWhen($async, 'cards_updated', $name, 'asyncRequest')
         {{ $attributes }}

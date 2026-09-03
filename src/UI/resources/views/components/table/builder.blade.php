@@ -30,11 +30,11 @@
     <div
         class="js-table-builder-wrapper"
         x-data="tableBuilder(
-            {{ (int) $creatable }},
-            {{ (int) $reorderable }},
-            {{ (int) $reindex }},
-            {{ (int) $async }},
-            '{{ $asyncUrl }}'
+            @js((int) $creatable),
+            @js((int) $reorderable),
+            @js((int) $reindex),
+            @js((int) $async),
+            @js($asyncUrl)
         )"
         @defineEvent('table_empty_row_added', $name, 'add(true)')
         @defineEvent('table_reindex', $name, 'resolveReindex')

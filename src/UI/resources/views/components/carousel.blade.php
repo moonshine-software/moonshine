@@ -16,7 +16,7 @@
         <a @click.prevent="previous" href="javascript:void(0);" class="carousel-navigation-next" x-show="activeSlide !== 0">
             <x-moonshine::icon icon="chevron-left" />
         </a>
-        <a @click.prevent="next" href="javascript:void(0);" class="carousel-navigation-prev" x-show="activeSlide !== {{ count($items) - 1 }}">
+        <a @click.prevent="next" href="javascript:void(0);" class="carousel-navigation-prev" x-show="activeSlide !== @js(count($items) - 1)">
             <x-moonshine::icon icon="chevron-right" />
         </a>
     </div>

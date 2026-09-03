@@ -13,10 +13,10 @@
                  alt="{{ $value['name'] ?? $alt }}"
                  @click.stop="$dispatch('img-popup', {
                     open: true,
-                    src: '{{ $value['full_path']  }}',
-                    wide: {{ isset($value['extra']['wide']) && $value['extra']['wide'] ? 'true' : 'false'  }},
-                    auto: {{ isset($value['extra']['auto']) && $value['extra']['auto'] ? 'true' : 'false'  }},
-                    styles: '{{ $value['extra']['content_styles'] ?? ''  }}'
+                    src: @js($value['full_path']),
+                    wide: @js(isset($value['extra']['wide']) && $value['extra']['wide']),
+                    auto: @js(isset($value['extra']['auto']) && $value['extra']['auto']),
+                    styles: @js($value['extra']['content_styles'] ?? ''),
                  })"
             >
         </div>
@@ -33,10 +33,10 @@
                     alt="{{ $value['name'] ?? $alt }}"
                     @click.stop="$dispatch('img-popup', {
                         open: true,
-                        src: '{{ $value['full_path']  }}',
-                        wide: {{ isset($value['extra']['wide']) && $value['extra']['wide'] ? 'true' : 'false'  }},
-                        auto: {{ isset($value['extra']['auto']) && $value['extra']['auto'] ? 'true' : 'false'  }},
-                        styles: '{{ $value['extra']['content_styles'] ?? ''  }}'
+                        src: @js($value['full_path']),
+                        wide: @js(isset($value['extra']['wide']) && $value['extra']['wide']),
+                        auto: @js(isset($value['extra']['auto']) && $value['extra']['auto']),
+                        styles: @js($value['extra']['content_styles'] ?? ''),
                     })"
                 />
             </div>

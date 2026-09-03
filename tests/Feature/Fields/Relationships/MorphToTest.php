@@ -58,6 +58,7 @@ it('show field on pages', function () {
         ->assertOk()
         ->assertSee('Imageable')
         ->assertSee($this->image->imageable->name)
+        ->assertSee("x-data=\"{morphType: 'MoonShine\\\\Tests\\\\Fixtures\\\\Models\\\\Item'}\"", false)
     ;
 });
 

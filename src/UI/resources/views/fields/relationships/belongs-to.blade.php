@@ -20,7 +20,7 @@
 
 @fragment($relationName)
 <div
-    x-data="fragment('{{ $fragmentUrl }}')"
+    x-data="fragment(@js($fragmentUrl))"
     @defineEvent('fragment_updated', $relationName, 'fragmentUpdate')
 >
 @endif

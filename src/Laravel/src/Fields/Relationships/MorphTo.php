@@ -186,7 +186,7 @@ class MorphTo extends BelongsTo
         return [
             ...parent::viewData(),
             'types' => $this->getTypes()->toArray(),
-            'typeValue' => addslashes($this->getTypeValue()),
+            'typeValue' => $this->getTypeValue(),
             'column' => $this->getColumn(),
             'morphType' => $this->getMorphType(),
             'morphTypeName' => Str::of($this->getNameAttribute())->replace($this->getColumn(), $this->getMorphType()),

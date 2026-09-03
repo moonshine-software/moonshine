@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support\Traits;
 
 use Closure;
+use Illuminate\Support\Js;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -143,7 +144,7 @@ trait WithComponentAttributes
     {
         if (\is_array($value)) {
             try {
-                $value = str_replace('"', "'", json_encode($value, JSON_THROW_ON_ERROR));
+                $value = Js::from($value)->toHtml();
             } catch (Throwable) {
                 $value = null;
             }
@@ -170,7 +171,9 @@ trait WithComponentAttributes
         $data = [];
 
         foreach ($parameters as $parameter) {
-            $data[] = Str::of($parameter ?? '')->isJson() ? $parameter : "`$parameter`";
+            $data[] = Str::of($parameter ?? '')->isJson()
+                ? $parameter
+                : Js::from($parameter ?? '')->toHtml();
         }
 
         $data = implode(",", $data);
