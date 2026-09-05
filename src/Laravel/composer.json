@@ -38,7 +38,7 @@
         "moonshine/ui": "^5.0"
     },
     "require-dev": {
-        "moonshine/import-export": "^2.1"
+        "moonshine/import-export": "3.x-dev"
     },
     "autoload": {
         "psr-4": {

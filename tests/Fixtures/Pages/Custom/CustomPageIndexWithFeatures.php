@@ -7,6 +7,7 @@ namespace MoonShine\Tests\Fixtures\Pages\Custom;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Support\ListOf;
@@ -15,6 +16,13 @@ use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 
 class CustomPageIndexWithFeatures extends IndexPage
 {
+    protected function queryTags(): array
+    {
+        return [
+            QueryTag::make('Item #1 Query Tag', static fn ($query) => $query->where('id', 1)),
+        ];
+    }
+
     protected function buttons(): ListOf
     {
         return parent::buttons()->add(

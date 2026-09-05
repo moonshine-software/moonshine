@@ -12,10 +12,12 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Crud\Collections\Fields;
+use MoonShine\Crud\Contracts\HasFiltersContract;
 use MoonShine\Support\Attributes\SearchUsingFullText;
 use MoonShine\Support\Enums\SortDirection;
 use MoonShine\UI\Contracts\RangeFieldContract;
@@ -439,6 +441,31 @@ trait ResourceQuery
     }
 
     /**
+     * @return array<array-key, mixed>
+     * @throws InvalidArgumentException
+     */
+    public function getFilterParams(): array
+    {
+        $default = $this->getQueryParam('filter', []);
+
+        if ($this->isSaveQueryState() && $this->hasQueryParam('filter') && ! $this->hasQueryParam('reset')) {
+            return $default;
+        }
+
+        if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
+            $cached = $this->getCore()->getCache()->get($this->getQueryCacheKey(), []);
+
+            return data_get(
+                $cached,
+                $this->getQueryParamName('filter'),
+                data_get($cached, 'filter', $default),
+            );
+        }
+
+        return $default;
+    }
+
+    /**
      * @return TFields|null
      * @throws Throwable
      */
@@ -446,11 +473,13 @@ trait ResourceQuery
     {
         $params = $this->getFilterParams();
 
-        if (blank($params)) {
+        $page = $this->getIndexPage();
+
+        if (blank($params) || ! $page instanceof HasFiltersContract) {
             return null;
         }
 
-        $filters = $this->getFilters()->onlyFields();
+        $filters = $page->getFilters()->onlyFields();
 
         foreach ($filters as $filter) {
             if ($filter instanceof RangeFieldContract) {

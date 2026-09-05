@@ -11,7 +11,7 @@ use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Crud\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
-use MoonShine\Laravel\Http\Requests\Relations\AsyncSearchRequest;
+use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Support\DBOperators;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -21,7 +21,7 @@ final class AsyncSearchController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function __invoke(AsyncSearchRequest $request): Response
+    public function __invoke(RelationModelFieldRequest $request): Response
     {
         $field = $request->getPageField();
 

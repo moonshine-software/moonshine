@@ -24,11 +24,7 @@ class TestResource extends AbstractTestingResource
 
     private array $testPages = [];
 
-    private array $testFilters = [];
-
     private array $testSearch = [];
-
-    private array $testQueryTags = [];
 
     private ?string $testUriKey = null;
 
@@ -111,13 +107,6 @@ class TestResource extends AbstractTestingResource
         return $this;
     }
 
-    public function setTestFilters(array $testFilters): static
-    {
-        $this->testFilters = $testFilters;
-
-        return $this;
-    }
-
     public function setTestSearch(array $testSearch): static
     {
         $this->testSearch = $testSearch;
@@ -128,13 +117,6 @@ class TestResource extends AbstractTestingResource
     public function setTestUriKey(string $value): static
     {
         $this->testUriKey = $value;
-
-        return $this;
-    }
-
-    public function setTestQueryTags(array $queryTags): static
-    {
-        $this->testQueryTags = $queryTags;
 
         return $this;
     }
@@ -173,20 +155,6 @@ class TestResource extends AbstractTestingResource
     protected function exportFields(): iterable
     {
         return $this->testExportFields;
-    }
-
-    protected function filters(): iterable
-    {
-        if ($this->testFilters === []) {
-            return [];
-        }
-
-        return $this->testFilters;
-    }
-
-    protected function queryTags(): array
-    {
-        return $this->testQueryTags;
     }
 
     protected function search(): array

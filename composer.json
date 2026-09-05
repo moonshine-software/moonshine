@@ -46,7 +46,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95.24",
         "larastan/larastan": "^3.11",
-        "moonshine/import-export": "^2.1",
+        "moonshine/import-export": "3.x-dev",
         "orchestra/testbench": "^9|^10|^11.2",
         "pestphp/pest": "^4.7|^5.1",
         "pestphp/pest-plugin-laravel": "^4.1|^5.0",

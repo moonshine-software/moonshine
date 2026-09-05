@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Tests\Fixtures\Resources;
 
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
-use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
@@ -40,12 +39,6 @@ class TestResourceBuilder
                 Email::make('Email'),
                 Password::make('Password'),
                 Preview::make('Badge')->setValue(1)->badge(static fn () => 'red'),
-            ])
-            ->setTestQueryTags([
-                QueryTag::make(
-                    'Item #1 Query Tag',
-                    static fn ($query) => $query->where('id', 1) // Query builder
-                ),
             ])
             ->setTestPages([
                 CustomPageIndexWithFeatures::class,
