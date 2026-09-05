@@ -262,7 +262,10 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
             if (this.$el.form) {
                 this.$el.form.addEventListener('reset', () => {
                     this.$nextTick(() => {
-                        this.selectInstance.sync()
+                        this.selectInstance.setValue(
+                            Array.from(this.$el.selectedOptions, option => option.value),
+                            true,
+                        )
                     })
                 })
             }

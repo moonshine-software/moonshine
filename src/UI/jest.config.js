@@ -1,6 +1,8 @@
 export default {
   testEnvironment: 'jsdom',
-  transform: {},
+  transform: {'^.+\\.ts$': '<rootDir>/jest.transform.js'},
+  extensionsToTreatAsEsm: ['.ts'],
+  transformIgnorePatterns: ['/node_modules/(?!tom-select/src/)'],
   testPathIgnorePatterns: [
     '/coverage/',
     '/resources/js/__tests__/setup.js',
