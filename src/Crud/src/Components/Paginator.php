@@ -49,12 +49,12 @@ final class Paginator extends MoonShineComponent
 
         $pageName = method_exists($data, 'getPageName') ? $data->getPageName() : 'page';
 
-        $paginator = (new PaginatorCaster(
+        $paginator = new PaginatorCaster(
             $data->appends(
                 $this->getCore()->getRequest()->getExcept($pageName)
             )->toArray(),
             $data->items()
-        ))->cast();
+        )->cast();
 
         /**
          * @var array<string, mixed>

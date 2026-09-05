@@ -313,7 +313,7 @@ abstract class Core implements CoreContract, StatefulContract
     {
         /** @var list<PageContract> $pages */
         $pages = $this->resolveInstances(
-            (new Collection($this->pages))->except('error')
+            new Collection($this->pages)->except('error')
         );
 
         return Pages::make($pages);

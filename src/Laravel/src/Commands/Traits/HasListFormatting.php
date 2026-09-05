@@ -19,7 +19,7 @@ trait HasListFormatting
 {
     protected function getTerminalWidth(): int
     {
-        return (new Terminal())->getWidth();
+        return new Terminal()->getWidth();
     }
 
     /**

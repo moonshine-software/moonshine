@@ -24,6 +24,6 @@ trait WithUriKey
 
     public function getUriKey(): string
     {
-        return $this->getAlias() ?? (new UriKey(static::class))->generate();
+        return $this->getAlias() ?? new UriKey(static::class)->generate();
     }
 }

@@ -19,9 +19,9 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "illuminate/support": "^10|^11|^12|^13",
-        "moonshine/contracts": "^4.0"
+        "php": "^8.4",
+        "illuminate/support": "^11|^12|^13",
+        "moonshine/contracts": "^5.0"
     },
     "autoload": {
         "psr-4": {

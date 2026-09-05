@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-    <a href="https://laravel.com"><img alt="Laravel 10+" src="https://img.shields.io/badge/Laravel-10+-FF2D20?style=for-the-badge&logo=laravel"></a>
-    <a href="https://laravel.com"><img alt="PHP 8.2+" src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php"></a>
+    <a href="https://laravel.com"><img alt="Laravel 11+" src="https://img.shields.io/badge/Laravel-11+-FF2D20?style=for-the-badge&logo=laravel"></a>
+    <a href="https://laravel.com"><img alt="PHP 8.4+" src="https://img.shields.io/badge/PHP-8.4+-777BB4?style=for-the-badge&logo=php"></a>
 </p>
 
 [![Meta Storm Plugin](https://img.shields.io/static/v1?&label=Better+with&message=Meta+Storm+Plugin&logo=phpstorm&color=aa55ee)](https://github.com/xepozz/meta-storm-idea-plugin)

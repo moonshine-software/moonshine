@@ -135,7 +135,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
              * @var Collection<array-key, PSMenuItem|PSMenuGroupWithItems> $collection
              * @var array<string, PSMenuItem|PSMenuGroupWithItems> $items
              */
-            $collection = (new Collection($items))->values();
+            $collection = new Collection($items)->values();
 
             /** @phpstan-ignore return.type */
             return $collection

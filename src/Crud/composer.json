@@ -19,19 +19,19 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-json": "*",
-        "symfony/http-foundation": "^6.2|^7.1|^7.2|^7.3|^8.0",
-        "moonshine/ui": "^4.0",
-        "moonshine/asset-manager": "^4.0",
-        "moonshine/contracts": "^4.0",
-        "moonshine/core": "^4.0",
-        "moonshine/support": "^4.0",
-        "illuminate/view": "^10|^11|^12|^13",
-        "illuminate/support": "^10|^11|^12|^13",
-        "illuminate/contracts": "^10|^11|^12|^13",
+        "symfony/http-foundation": "^7.4|^8.1",
+        "moonshine/ui": "^5.0",
+        "moonshine/asset-manager": "^5.0",
+        "moonshine/contracts": "^5.0",
+        "moonshine/core": "^5.0",
+        "moonshine/support": "^5.0",
+        "illuminate/view": "^11|^12|^13",
+        "illuminate/support": "^11|^12|^13",
+        "illuminate/contracts": "^11|^12|^13",
         "psr/simple-cache": "^3.0",
-        "lee-to/fast-attributes": "^0.3"
+        "lee-to/fast-attributes": "^0.3.0"
     },
     "autoload": {
         "psr-4": {

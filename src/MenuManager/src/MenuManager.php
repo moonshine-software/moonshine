@@ -40,7 +40,7 @@ final class MenuManager implements MenuManagerContract
     public function remove(Closure $condition): static
     {
         /** @var list<MenuElementContract> $items */
-        $items = (new Collection($this->items))
+        $items = new Collection($this->items)
             ->reject($condition)
             ->toArray();
 

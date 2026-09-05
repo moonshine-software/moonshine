@@ -36,9 +36,6 @@ describe('load function', () => {
       <div>Loaded Content</div>
       <script id="test-script" src="https://example.com/test.js">console.log('Test');</script>
     `
-    const originalLocation = window.location
-    delete window.location
-    window.location = {...originalLocation, origin: 'https://example.com'}
     axios.get.mockResolvedValue({data: mockData, status: 200})
 
     await load('https://example.com/test-url', 'test-container')
@@ -47,7 +44,6 @@ describe('load function', () => {
     expect(scriptElement).not.toBeNull()
     expect(scriptElement.src).toBe('https://example.com/test.js')
     expect(scriptElement.text).toBe("console.log('Test');")
-    window.location = originalLocation
   })
 
   it('should not insert content if the request fails', async () => {

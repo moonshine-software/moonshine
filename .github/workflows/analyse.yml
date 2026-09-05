@@ -2,7 +2,7 @@ name: phpstan
 
 on:
   push:
-    branches: [ '4.x' ]
+    branches: [ '5.x' ]
   pull_request:
     types:
       - opened
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer:v2
           coverage: none
       - uses: actions/checkout@v4

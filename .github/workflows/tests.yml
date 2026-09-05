@@ -2,7 +2,7 @@ name: tests
 
 on:
   push:
-    branches: [ '4.x' ]
+    branches: [ '5.x' ]
   pull_request:
     types:
       - opened
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3, 8.4, 8.5]
+        php: [8.4, 8.5]
         laravel: [11, 12, 13]
 
     steps:
@@ -46,7 +46,9 @@ jobs:
         run: php -r "file_exists('phpunit.xml.dist') || copy('phpunit-example.xml.dist', 'phpunit.xml.dist');"
 
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: |
+          composer require --dev "laravel/framework:^${{ matrix.laravel }}" --no-update --no-interaction
+          composer update --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Execute tests via PEST(PHPUnit)
         env:

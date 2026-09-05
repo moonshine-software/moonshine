@@ -20,25 +20,25 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-curl": "*",
         "ext-json": "*",
-        "lee-to/laravel-package-command": "^0.9",
-        "lee-to/fast-attributes": "^0.3",
-        "illuminate/filesystem": "^10|^11|^12|^13",
-        "symfony/psr-http-message-bridge": "^6.2|^7.1|^7.2|^7.3|^8.0",
-        "nyholm/psr7": "^1.8",
-        "moonshine/contracts": "^4.0",
-        "moonshine/asset-manager": "^4.0",
-        "moonshine/color-manager": "^4.0",
-        "moonshine/core": "^4.0",
-        "moonshine/crud": "^4.0",
-        "moonshine/menu-manager": "^4.0",
-        "moonshine/support": "^4.0",
-        "moonshine/ui": "^4.0"
+        "lee-to/laravel-package-command": "^0.9.2",
+        "lee-to/fast-attributes": "^0.3.0",
+        "illuminate/filesystem": "^11|^12|^13",
+        "symfony/psr-http-message-bridge": "^7.4|^8.1",
+        "nyholm/psr7": "^1.8.2",
+        "moonshine/contracts": "^5.0",
+        "moonshine/asset-manager": "^5.0",
+        "moonshine/color-manager": "^5.0",
+        "moonshine/core": "^5.0",
+        "moonshine/crud": "^5.0",
+        "moonshine/menu-manager": "^5.0",
+        "moonshine/support": "^5.0",
+        "moonshine/ui": "^5.0"
     },
     "require-dev": {
-        "moonshine/import-export": "^2.0"
+        "moonshine/import-export": "^2.1"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +50,7 @@
         ]
     },
     "conflict": {
-        "laravel/framework": "<10.48.0"
+        "laravel/framework": "<11.0"
     },
     "extra": {
         "laravel": {

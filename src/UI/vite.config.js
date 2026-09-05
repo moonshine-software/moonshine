@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import laravel from 'laravel-vite-plugin'
-import moonShineBuildPlugin from "./resources/js/moonshine-build";
+import moonShineBuildPlugin from "./resources/js/moonshine-build.js";
 import tailwindcss from "@tailwindcss/vite";
 import path from 'path';
 
@@ -11,7 +11,7 @@ export default defineConfig(({mode}) => {
     base: '/vendor/moonshine/',
     resolve: {
       alias: {
-        '@moonshine-resources': path.resolve(__dirname, '/resources'),
+        '@moonshine-resources': path.resolve(import.meta.dirname, '/resources'),
       }
     },
     plugins: [

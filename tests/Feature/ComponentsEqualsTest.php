@@ -5,10 +5,12 @@ declare(strict_types=1);
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Alert;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Boolean;
+use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Carousel;
 use MoonShine\UI\Components\Color;
@@ -330,6 +332,12 @@ describe('Metrics', function () {
 });
 
 describe('Basic', function () {
+    it('renders enum breadcrumb titles', function () {
+        $html = (string) Breadcrumbs::make(['/' => TestEnumColor::Red, '/next' => 'Next'])->render();
+
+        expect(preg_replace('/\s+/', ' ', trim(strip_tags($html))))->toBe('R Next');
+    });
+
     it('action-group', function () {
         compare(
             ActionGroup::make(),

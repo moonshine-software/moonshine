@@ -2,7 +2,7 @@ name: Node.js Tests
 
 on:
   push:
-    branches: [ '4.x' ]
+    branches: [ '5.x' ]
   pull_request:
     types:
       - opened

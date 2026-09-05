@@ -33,7 +33,7 @@ class MakePolicyCommand extends MoonShineCommand
 
         $className = $this->argument('className') ?? suggest(
             label: 'Model',
-            options: Collection::make((new Finder())->files()->depth(0)->in($modelPath))
+            options: Collection::make(new Finder()->files()->depth(0)->in($modelPath))
                 ->map(static fn ($file) => $file->getBasename('.php'))
                 ->values()
                 ->all(),

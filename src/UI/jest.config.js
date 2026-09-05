@@ -1,5 +1,8 @@
 export default {
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    url: 'https://example.com',
+  },
   transform: {},
   testPathIgnorePatterns: [
     '/coverage/',

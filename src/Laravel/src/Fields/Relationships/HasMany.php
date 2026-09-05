@@ -492,13 +492,13 @@ class HasMany extends ModelRelationField implements
 
     public function withoutActions(Action ...$actions): static
     {
-        $this->activeActions = (new ListOf(Action::class, [
+        $this->activeActions = new ListOf(Action::class, [
             Action::CREATE,
             Action::VIEW,
             Action::UPDATE,
             Action::DELETE,
             Action::MASS_DELETE,
-        ]))->except(...$actions);
+        ])->except(...$actions);
 
         return $this;
     }

@@ -75,10 +75,6 @@ describe('request function', () => {
   })
 
   it('should handle redirects in response', async () => {
-    const origWindowLocation = window.location
-    delete window.location
-    window.location = {assign: jest.fn()}
-
     // Mock $nextTick to execute callback immediately
     const nextTickMock = jest.fn(callback => {
       callback()
@@ -88,13 +84,13 @@ describe('request function', () => {
     t.$nextTick = nextTickMock
 
     const componentRequestData = new ComponentRequestData()
-    mockAxios.onGet('/test-url').reply(200, {redirect: '/new-location'})
+    mockAxios.onGet('/test-url').reply(200, {redirect: '#new-location'})
 
     await request(t, '/test-url', 'get', {}, {}, componentRequestData)
 
     expect(nextTickMock).toHaveBeenCalled()
-    expect(window.location.assign).toHaveBeenCalledWith('/new-location')
-    window.location = origWindowLocation
+    expect(window.location.hash).toBe('#new-location')
+    window.history.replaceState(null, '', '/')
   })
 
   it('should handle attachments in response', async () => {
@@ -376,14 +372,9 @@ describe('url function', () => {
   it('should append query parameters to the URL, when starts with /', () => {
     const baseUrl = '/api'
     const append = 'param1=value1&param2=value2'
-    const originalLocation = window.location
-    delete window.location
-    window.location = {...originalLocation, origin: 'https://example.com'}
-
     const result = urlWithQuery(baseUrl, append)
 
     expect(result).toBe('https://example.com/api?param1=value1&param2=value2')
-    window.location = originalLocation
   })
 
   it('should call the callback if provided', () => {

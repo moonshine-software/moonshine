@@ -278,8 +278,8 @@ class PublishCommand extends MoonShineCommand
         $tmpNamespace = str_replace('/', '\\', $outputDir);
         $outputNamespace = $this->getNamespace("\\$tmpNamespace");
 
-        (new Filesystem())->makeDirectory($this->getDirectory($outputDir), recursive: true, force: true);
-        (new Filesystem())->put(
+        new Filesystem()->makeDirectory($this->getDirectory($outputDir), recursive: true, force: true);
+        new Filesystem()->put(
             $outputClassPath,
             file_get_contents($targetClassPath),
         );

@@ -83,7 +83,7 @@ trait WithQuickFormElementAttributes
     {
         return Str::of('')
             ->pipe(static function (Stringable $str) use ($values) {
-                foreach ((new Collection($values))->filter() as $value) {
+                foreach (new Collection($values)->filter() as $value) {
                     $str = $str->append(".$value");
                 }
 

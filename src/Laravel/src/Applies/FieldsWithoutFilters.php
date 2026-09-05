@@ -22,7 +22,7 @@ use MoonShine\UI\Fields\Preview;
 
 final class FieldsWithoutFilters
 {
-    public const LIST = [
+    public const array LIST = [
         HiddenIds::class,
         Position::class,
         File::class,

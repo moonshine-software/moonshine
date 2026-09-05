@@ -611,7 +611,7 @@ class BelongsToMany extends ModelRelationField implements
             }
         }
 
-        $result = (new Collection($applyValues))->mapWithKeys(fn (array $value, int $index): array => $this->isDeduplicate() ? [
+        $result = new Collection($applyValues)->mapWithKeys(fn (array $value, int $index): array => $this->isDeduplicate() ? [
             $value[$this->getRelatedKeyName()] => data_forget($value, $this->getRelatedKeyName()),
         ] : [$index => $value]);
 

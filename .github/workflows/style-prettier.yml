@@ -2,7 +2,7 @@ name: Style Prettier
 
 on:
   push:
-    branches: ['4.x']
+    branches: ['5.x']
 
 jobs:
   style:

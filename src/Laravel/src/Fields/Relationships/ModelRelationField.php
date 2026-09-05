@@ -231,9 +231,9 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
             $value = data_get($value, $this->getResource()?->getColumn());
         }
 
-        return (new EnumToString(
+        return new EnumToString(
             $this->formattedValue ?? $value
-        ))->convert();
+        )->convert();
     }
 
     public function isOutsideComponent(): bool
