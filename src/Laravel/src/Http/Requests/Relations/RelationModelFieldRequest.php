@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
@@ -69,11 +70,12 @@ class RelationModelFieldRequest extends FormRequest
     }
 
     /**
+     * @param class-string<ModelRelationField>|null $fieldClass
      * @throws Throwable
      */
-    public function getPageField(): ?ModelRelationField
+    public function getPageField(?string $fieldClass = null): ?ModelRelationField
     {
-        return memoize(function () {
+        return memoize(function () use ($fieldClass) {
             /**
              * @var Fields $fields
              * @phpstan-ignore-next-line
@@ -99,6 +101,7 @@ class RelationModelFieldRequest extends FormRequest
 
             return $fields
                 ->onlyFields()
+                ->filter(static fn (FieldContract $field): bool => $fieldClass === null || $field instanceof $fieldClass)
                 ->findByRelation($this->getRelationName());
         });
     }

@@ -37,7 +37,7 @@ final class BelongsToManyPivotController extends MoonShineController
         $parent = $request->getResource()?->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
-        $field = $request->getPageField();
+        $field = $request->getPageField(BelongsToMany::class);
 
         if ($field === null) {
             throw ModelRelationFieldException::notFound();
@@ -193,7 +193,7 @@ final class BelongsToManyPivotController extends MoonShineController
         $parent = $request->getResource()?->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
-        $field = $request->getPageField();
+        $field = $request->getPageField(BelongsToMany::class);
 
         if ($field === null) {
             throw ModelRelationFieldException::notFound();
@@ -226,7 +226,7 @@ final class BelongsToManyPivotController extends MoonShineController
         $parent = $request->getResource()?->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
-        $field = $request->getPageField();
+        $field = $request->getPageField(BelongsToMany::class);
 
         if ($field === null) {
             throw ModelRelationFieldException::notFound();
@@ -259,7 +259,7 @@ final class BelongsToManyPivotController extends MoonShineController
         $parent = $request->getResource()?->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
-        $field = $request->getPageField();
+        $field = $request->getPageField(BelongsToMany::class);
 
         if ($field === null) {
             throw ModelRelationFieldException::notFound();
@@ -297,7 +297,7 @@ final class BelongsToManyPivotController extends MoonShineController
         $parentItem = $parentResource->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
-        $field = $request->getPageField();
+        $field = $request->getPageField(BelongsToMany::class);
 
         if ($field === null) {
             throw ModelRelationFieldException::notFound();

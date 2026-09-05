@@ -5,6 +5,7 @@ declare(strict_types=1);
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Relationships\RelationRepeater;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Support\Enums\PageType;
 use MoonShine\Tests\Fixtures\Models\Category;
@@ -124,6 +125,26 @@ it('get form component', function () {
         ->assertOk()
         ->assertSee('form')
     ;
+});
+
+it('uses has many field when a relation repeater has the same relation', function (): void {
+    $item = createItem(countComments: 1);
+
+    $resource = TestResourceBuilder::new(Item::class)
+        ->setTestFields([
+            RelationRepeater::make('Comments', 'comments', resource: TestCommentResource::class),
+            HasMany::make('Comments List', 'comments', resource: TestCommentResource::class)
+                ->creatable(),
+        ]);
+
+    asAdmin()->get($this->moonshineCore->getRouter()->to('has-many.form', [
+        'pageUri' => PageType::FORM->value,
+        'resourceUri' => $resource->getUriKey(),
+        'resourceItem' => $item->getKey(),
+        '_relation' => 'comments',
+    ]))
+        ->assertOk()
+        ->assertSee('form');
 });
 
 it('forbids relation data when update policy denies access to the parent resource', function (): void {
