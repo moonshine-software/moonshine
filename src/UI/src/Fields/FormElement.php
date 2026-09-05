@@ -17,6 +17,7 @@ use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\EnumToString;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
@@ -426,7 +427,9 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
             );
         }
 
-        return $this->formattedValue ?? $this->toValue(withDefault: false);
+        return new EnumToString(
+            $this->formattedValue ?? $this->toValue(withDefault: false)
+        )->convert();
     }
 
     protected function setRowIndex(int $index = 0): static

@@ -7,7 +7,7 @@
     {{ $attributes }}
     class="popover-trigger"
     title="{{ $title }}"
-    x-data="popover({placement: '{{ $placement }}'})"
+    x-data="popover({placement: @js($placement)})"
 >
     {!! $trigger !!}
     <div x-ignore class="hidden popover-body-content">{!! $slot !!}</div>

@@ -34,7 +34,7 @@ class Textarea extends Field implements HasDefaultValueContract, CanBeString
     protected function prepareRequestValue(mixed $value): mixed
     {
         if (\is_string($value) && static::class === self::class) {
-            return $this->isUnescape() ? $value : $this->escapeValue($value);
+            return $this->isUnescapeOnApply() ? $value : $this->escapeValue($value);
         }
 
         return $value;

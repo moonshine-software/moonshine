@@ -13,7 +13,7 @@
         @click.outside="dropdown = false"
         data-dropdown-placement="bottom-start"
     @else
-        x-data="{ dropdown: {{ $isActive ? 'true' : 'false' }} }"
+        x-data="{ dropdown: @js($isActive) }"
     @endif
     :class="dropdown && 'menu-item--opened'"
     x-ref="dropdownMenu"

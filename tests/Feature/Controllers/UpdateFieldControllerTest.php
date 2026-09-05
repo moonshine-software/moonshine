@@ -16,7 +16,9 @@ beforeEach(function () {
     $this->user = MoonshineUser::query()->find(1);
 });
 
-it('update through column', function () {
+it('does not update through column without update on preview', function () {
+    $name = $this->user->name;
+
     asAdmin()->put(
         $this->moonshineCore->getRouter()->to('update-field.through-column', [
             'resourceItem' => $this->user->getKey(),
@@ -24,12 +26,12 @@ it('update through column', function () {
             'field' => 'name',
             'value' => 'New name',
         ])
-    )->assertStatus(204);
+    )->assertForbidden();
 
     $this->user->refresh();
 
     expect($this->user->name)
-        ->toBe('New name')
+        ->toBe($name)
     ;
 });
 

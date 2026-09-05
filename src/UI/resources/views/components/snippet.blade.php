@@ -13,7 +13,7 @@
     <button @click.prevent="copy()"
             class="snippet-copy"
             type="button"
-            x-data="tooltip('{{ $translates['copied'] ?? '' }}', {placement: 'top', trigger: 'click', delay: [0, 800]})"
+            x-data="tooltip(@js($translates['copied'] ?? ''), {placement: 'top', trigger: 'click', delay: [0, 800]})"
     >
         <x-moonshine::icon icon="document-duplicate" size="4" />
     </button>

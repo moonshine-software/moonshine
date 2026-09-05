@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 
 return new class () extends Migration {
     /**
@@ -14,6 +15,7 @@ return new class () extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('item_id');
+            $table->string('color')->default(TestEnumColor::Black);
             $table->boolean('active')->default(1);
             $table->text('content');
             $table->json('data')->nullable();

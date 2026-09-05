@@ -8,8 +8,8 @@
     <!-- Tabs -->
     <div {{ $attributes->class(['tabs']) }}
         x-data="tabs(
-            '{{ $active ?? array_key_first($tabs) }}',
-            {{ $isVertical ? 'true' : 'false' }}
+            @js((string) ($active ?? array_key_first($tabs))),
+            @js($isVertical)
         )"
     >
         <!-- Tabs Buttons -->

@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JsonException;
 use MoonShine\Support\Enums\ObjectFit;
+use MoonShine\Support\EnumToString;
 use UnitEnum;
 
 /**
@@ -36,7 +37,11 @@ final readonly class Options implements Arrayable
     {
         return new Collection($this->values)
             ->filter()
-            ->map(function (array|string|OptionGroup|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
+            ->map(function (array|string|OptionGroup|Option|UnitEnum $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
+                if ($labelOrValues instanceof UnitEnum) {
+                    $labelOrValues = (string) new EnumToString($labelOrValues);
+                }
+
                 if ($labelOrValues instanceof Option) {
                     return $labelOrValues;
                 }

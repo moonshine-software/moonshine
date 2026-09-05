@@ -11,7 +11,7 @@
     'toField' => $toName
 ])
 <div {{ $attributes->class(['form-group-range'])->only('class') }}>
-    <div x-data="range({{ '`'.($fromValue ?? $min).'`,`'.($toValue ?? $max).'`' }})"
+    <div x-data="range(@js($fromValue ?? $min), @js($toValue ?? $max))"
          x-init="mintrigger(); maxtrigger()"
          data-min="{{ $attributes->get('min', $min) }}"
          data-max="{{ $attributes->get('max', $max) }}"

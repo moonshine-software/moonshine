@@ -45,7 +45,7 @@
 
     @if($imageable)
         <img src="{{ $file }}"
-             @click.stop="$dispatch('img-popup', {open: true, src: '{{ $file }}' })"
+             @click.stop="$dispatch('img-popup', {open: true, src: @js($file)})"
              alt="{{ $filename ?? '' }}"
         />
     @endif

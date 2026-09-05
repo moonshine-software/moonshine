@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use MoonShine\Tests\Fixtures\Enums\TestEnumColor;
 use MoonShine\Tests\Fixtures\Factories\CommentFactory;
 
 class Comment extends Model
@@ -16,6 +17,7 @@ class Comment extends Model
 
     protected $fillable = [
         'content',
+        'color',
         'user_id',
         'item_id',
         'data',
@@ -25,6 +27,7 @@ class Comment extends Model
 
     protected $casts = [
         'data' => 'collection',
+        'color' => TestEnumColor::class,
     ];
 
     public function item(): BelongsTo

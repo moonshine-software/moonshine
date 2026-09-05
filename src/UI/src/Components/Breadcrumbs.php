@@ -7,6 +7,8 @@ namespace MoonShine\UI\Components;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
+use MoonShine\Support\EnumToString;
+use UnitEnum;
 
 /** @method static static make(array $items = []) */
 final class Breadcrumbs extends MoonShineComponent
@@ -54,12 +56,16 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = new Collection($this->items)->mapWithKeys(static fn (?string $title, string $url): array => [
-            $url => [
-                'url' => $url,
-                'title' => Str::of($title)->before(':::'),
-                'icon' => Str::of($title)->contains(':::') ? Str::of($title)->after(':::')->value() : null,
-            ],
-        ])->toArray();
+        $this->items = new Collection($this->items)->mapWithKeys(static function (null|UnitEnum|string $title, string $url): array {
+            $title = (string) new EnumToString($title);
+
+            return [
+                $url => [
+                    'url' => $url,
+                    'title' => Str::of($title)->before(':::'),
+                    'icon' => Str::of($title)->contains(':::') ? Str::of($title)->after(':::')->value() : null,
+                ],
+            ];
+        })->toArray();
     }
 }

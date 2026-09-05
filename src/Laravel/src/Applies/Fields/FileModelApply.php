@@ -73,23 +73,19 @@ final class FileModelApply implements ApplyContract
             throw FileFieldException::extensionNotAllowed($extension);
         }
 
-        if ($field->isKeepOriginalFileName()) {
-            return $file->storeAs(
-                $field->getDir(),
-                $file->getClientOriginalName(),
-                $field->getOptions(),
-            );
+        $name = match (true) {
+            $field->isKeepOriginalFileName() => $file->getClientOriginalName(),
+            ! \is_null($field->getCustomName()) => \call_user_func($field->getCustomName(), $file, $field),
+            default => $file->hashName(),
+        };
+
+        $storedExtension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+        if (! $field->isAllowedExtension($storedExtension)) {
+            throw FileFieldException::extensionNotAllowed($storedExtension);
         }
 
-        if (! \is_null($field->getCustomName())) {
-            return $file->storeAs(
-                $field->getDir(),
-                \call_user_func($field->getCustomName(), $file, $field),
-                $field->getOptions(),
-            );
-        }
-
-        if (! $result = $file->store($field->getDir(), $field->getOptions())) {
+        if (! $result = $file->storeAs($field->getDir(), $name, $field->getOptions())) {
             throw FileFieldException::failedSave();
         }
 

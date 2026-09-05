@@ -9,9 +9,11 @@
 ])
 <div
     x-data="{
-         {{ $fromColumn }}: '{{ $fromValue ?? '' }}',
-         {{ $toColumn }}: '{{ $toValue ?? '' }}'
-     }"
+        [@js($fromColumn)]: @js($fromValue ?? ''),
+        [@js($toColumn)]: @js($toValue ?? ''),
+    }"
+    data-range-from-column="{{ $fromColumn }}"
+    data-range-to-column="{{ $toColumn }}"
     {{ $attributes
         ->only('class')
         ->merge(['class' => 'form-group form-group-inline']) }}
@@ -20,15 +22,15 @@
 >
     <x-moonshine::form.input
         :attributes="$fromAttributes"
-        x-bind:max="{{ $toColumn }}"
-        x-model="{{ $fromColumn }}"
+        x-bind:max="$data[$root.dataset.rangeToColumn]"
+        x-model="$data[$root.dataset.rangeFromColumn]"
         value="{{ $fromValue ?? '' }}"
     />
 
     <x-moonshine::form.input
         :attributes="$toAttributes"
-        x-bind:min="{{ $fromColumn }}"
-        x-model="{{ $toColumn }}"
+        x-bind:min="$data[$root.dataset.rangeFromColumn]"
+        x-model="$data[$root.dataset.rangeToColumn]"
         value="{{ $toValue ?? '' }}"
     />
 </div>

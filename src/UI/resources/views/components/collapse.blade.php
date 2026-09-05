@@ -10,9 +10,9 @@
     {{ $attributes->class(['accordion']) }}
     x-data="
         @if($persist)
-            collapse($persist({{ $open ? 'true' : 'false' }}).as($id('collapse')))
+            collapse($persist(@js($open)).as($id('collapse')))
         @else
-            collapse({{ $open ? 'true' : 'false' }})
+            collapse(@js($open))
         @endif
     "
 >
@@ -51,4 +51,3 @@
         </div>
     </div>
 </div>
-
