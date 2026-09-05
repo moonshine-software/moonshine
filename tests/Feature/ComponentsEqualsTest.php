@@ -145,6 +145,14 @@ describe('Layouts', function () {
 
     it('burger', function () {
         compare(Burger::make());
+
+        $html = (string) Burger::make()
+            ->customAttributes(['@click.prevent' => 'customToggle()'])
+            ->render();
+
+        expect($html)
+            ->toContain('@click.prevent="customToggle()"')
+            ->not->toContain('@click.prevent="$store.menu');
     });
 
     it('column', function () {
@@ -484,6 +492,44 @@ describe('Basic', function () {
         );
     });
 
+    it('escapes values embedded in Alpine expressions', function () {
+        $payload = "x'});alert(document.domain);//</script>";
+        $toast = Blade::render('<x-moonshine::toast :content="$content" />', ['content' => $payload]);
+        $modal = Blade::render(
+            '<x-moonshine::modal :async="true" :async-url="$url" />',
+            ['url' => $payload],
+        );
+        $offCanvas = Blade::render(
+            '<x-moonshine::off-canvas :async="true" :async-url="$url" />',
+            ['url' => $payload],
+        );
+        $wrapper = Blade::render(
+            '<x-moonshine::form.wrapper label="Label" :form-name="$name" />',
+            ['name' => $payload],
+        );
+        $html = [
+            $toast,
+            $modal,
+            $offCanvas,
+            $wrapper,
+            (string) Div::make()->xData(['value' => $payload])->render(),
+            (string) Div::make()->xDataMethod('tooltip', $payload)->render(),
+        ];
+
+        expect($toast)->toContain('x-init="$nextTick')
+            ->and($modal)->toContain('x-data="modal(')
+            ->and($offCanvas)->toContain('x-data="offCanvas(')
+            ->and($wrapper)->not->toContain('@js(');
+
+        expect($html)
+            ->each(
+                fn ($value) => $value
+                    ->not->toContain($payload)
+                    ->toContain('\\u0027')
+                    ->not->toContain('</script>')
+            );
+    });
+
     it('progress-bar', function () {
         compare(
             ProgressBar::make(80, 'sm', 'red')->radial(),
@@ -515,6 +561,16 @@ describe('Basic', function () {
             ['items' => ['Tab 1' => 'Content 1']],
         );
     })->skip('unique ids different');
+
+    it('keeps numeric tab identifiers as strings in Alpine state', function () {
+        $tabs = Tabs::make([
+            Tab::make('Tab', [FlexibleRender::make('Content')])->setId('2002'),
+        ]);
+        $html = (string) value($tabs->render(), $tabs);
+
+        expect($tabs->toArray()['active'])->toBeNull()
+            ->and($html)->toContain("            '2002',");
+    });
 
     it('thumbnails', function () {
         compare(
@@ -606,8 +662,12 @@ describe('Form', function () {
 
     it('select', function () {
         $blade = renderBlade('moonshine::form.select', ['options' => 'option 1 option 2'], attributes: ['class' => 'test-class'], slot: 'Content');
+        $custom = renderBlade('moonshine::form.select', attributes: ['x-data' => 'customSelect']);
 
-        expect($blade)->toContain('<select', 'test-class', 'option 1', 'option 2');
+        expect($blade)->toContain('<select', 'test-class', 'option 1', 'option 2')
+            ->and($custom)
+            ->toContain('x-data="customSelect"')
+            ->not->toContain('x-data="select(');
     });
 
     it('slide-range', function () {

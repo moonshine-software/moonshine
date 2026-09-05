@@ -1,7 +1,13 @@
 @props([
-    'required' => false
+    'required' => false,
+    'forName' => null,
 ])
-<label {{ $attributes->merge(['class' => 'form-label']) }}>
+<label
+    @if($forName !== null)
+        :for="$id('field-' + @js($forName))"
+    @endif
+    {{ $attributes->merge(['class' => 'form-label']) }}
+>
     {{ $slot ?? ''  }}
 
     @if($required)

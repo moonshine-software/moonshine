@@ -12,9 +12,9 @@
     'togglerButton' => false,
 ])
 <div x-data="offCanvas(
-    `{{ $open }}`,
-    `{{ $async ? str_replace('&amp;', '&', $asyncUrl) : ''}}`,
-    `{{ $autoClose }}`
+    @js((string) $open),
+    @js($async ? str_replace('&amp;', '&', $asyncUrl) : ''),
+    @js((string) $autoClose)
 )"
     {{ $attributes }}
 >

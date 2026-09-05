@@ -10,13 +10,14 @@
 ])
 
 <select
+        @if(!$native && !$attributes->has('x-data'))
+            x-data="select(@js((string) $asyncRoute), @js($settings), @js($plugins))"
+        @endif
         {{ $attributes->merge([
             'class' => $native ? 'form-select' : null,
             'data-search-enabled' => $searchable,
             'data-remove-item-button' => $attributes->get('multiple', false) || $nullable
-        ])->when(!$native, fn($a) => $a->merge([
-            'x-data' => "select('$asyncRoute', ". json_encode($settings) .", ". json_encode($plugins) .")",
-        ]))->when($nullable && !$native && $attributes->get('placeholder') === null, fn($a) => $a->merge(['placeholder' => '-'])) }}
+        ])->when($nullable && !$native && $attributes->get('placeholder') === null, fn($a) => $a->merge(['placeholder' => '-'])) }}
 >
     @if($options ?? false)
         {!! $options !!}

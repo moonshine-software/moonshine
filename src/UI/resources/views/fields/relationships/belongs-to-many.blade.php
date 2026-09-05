@@ -33,7 +33,7 @@
         <x-moonshine::layout.divider />
 
         @fragment($relationName)
-            <div x-data="fragment('{{ $fragmentUrl }}')"
+            <div x-data="fragment(@js($fragmentUrl))"
                  @defineEvent('fragment_updated', $relationName, 'fragmentUpdate')
             >
         @endif
@@ -62,11 +62,11 @@
                 </div>
             @else
                 @if($isAsyncSearch)
-                    <div x-data="belongsToMany">
+                    <div x-data="belongsToMany" data-async-search-url="{{ $asyncSearchUrl }}">
                         <div class="dropdown">
                             <x-moonshine::form.input
                                 x-model="query"
-                                @input.debounce="search('{{ $asyncSearchUrl }}')"
+                                @input.debounce="search($root.dataset.asyncSearchUrl)"
                                 :placeholder="$translates['search']"
                             />
                             <div class="dropdown-body mt-1" :class="{ 'pointer-events-auto visible opacity-100': query.length && match.length }">
@@ -76,7 +76,7 @@
                                             <li class="dropdown-item">
                                                 <a href="javascript:void(0);"
                                                    class="dropdown-menu-link flex gap-x-2 items-center"
-                                                   @click.prevent="select(item, {{ $isDeduplicate ? 1 : 0}})"
+                                                   @click.prevent="select(item, @js((int) $isDeduplicate))"
                                                 >
                                                     <template x-if="item?.properties?.image">
                                                         <div

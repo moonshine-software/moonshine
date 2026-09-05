@@ -47,6 +47,8 @@ it('show field on pages', function () {
         ->assertSee('range')
         ->assertSee('start_point')
         ->assertSee('end_point')
+        ->assertSee('data-range-from-column="range_from_', false)
+        ->assertSee('x-model="$data[$root.dataset.rangeFromColumn]"', false)
     ;
 });
 
