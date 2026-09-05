@@ -9,6 +9,7 @@ use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\FormElement;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 
@@ -69,6 +70,36 @@ it('apply', function (): void {
         ->toBe($data['field_name'])
     ;
 });
+
+it('conditionally escapes on apply without affecting preview', function (string $fieldClass, ?bool $condition, string $expected): void {
+    $value = '<script>alert(1)</script> &';
+    $field = $fieldClass::make('Field name');
+
+    if (! \is_null($condition)) {
+        $field->escapeOnApply(fn (): bool => $condition);
+    }
+
+    fakeRequest(parameters: ['field_name' => $value]);
+
+    expect($field->apply(
+        TestResourceBuilder::new()->fieldApply($field),
+        new class () extends Model {
+            protected $fillable = ['field_name'];
+        }
+    ))
+        ->field_name
+        ->toBe($expected)
+        ->and((string) $field->fill($value)->previewMode()->render())
+        ->not->toContain($value)
+        ->toContain('&lt;script&gt;');
+})->with([
+    [Text::class, null, '&lt;script&gt;alert(1)&lt;/script&gt; &amp;'],
+    [Text::class, true, '&lt;script&gt;alert(1)&lt;/script&gt; &amp;'],
+    [Text::class, false, '<script>alert(1)</script> &'],
+    [Textarea::class, null, '&lt;script&gt;alert(1)&lt;/script&gt; &amp;'],
+    [Textarea::class, true, '&lt;script&gt;alert(1)&lt;/script&gt; &amp;'],
+    [Textarea::class, false, '<script>alert(1)</script> &'],
+]);
 
 it('visual states', function () {
     $field = Text::make('Field name')->fill('<p>Hello world</p>');
