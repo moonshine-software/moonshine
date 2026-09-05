@@ -127,7 +127,7 @@ class RelationRepeater extends ModelRelationField implements
         }
 
         if (! \is_null($this->modifyCreateButton)) {
-            $button = value($this->modifyCreateButton, $button, $this);
+            return value($this->modifyCreateButton, $button, $this);
         }
 
         return $button;

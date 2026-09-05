@@ -19,13 +19,13 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "illuminate/support": "^10|^11|^12|^13",
-        "moonshine/contracts": "^4.0",
-        "moonshine/core": "^4.0",
-        "moonshine/support": "^4.0",
-        "moonshine/ui": "^4.0",
-        "lee-to/fast-attributes": "^0.3"
+        "php": "^8.4",
+        "illuminate/support": "^11|^12|^13",
+        "moonshine/contracts": "^5.0",
+        "moonshine/core": "^5.0",
+        "moonshine/support": "^5.0",
+        "moonshine/ui": "^5.0",
+        "lee-to/fast-attributes": "^0.3.0"
     },
     "autoload": {
         "psr-4": {

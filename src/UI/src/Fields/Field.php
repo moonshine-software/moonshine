@@ -487,10 +487,10 @@ abstract class Field extends FormElement implements FieldContract
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string
     {
         if (! $this->isPreviewMode() && $this->hasWrapper()) {
-            return (new FieldContainer(
+            return new FieldContainer(
                 field: $this,
                 slot: $view,
-            ))->render();
+            )->render();
         }
 
         return $view;

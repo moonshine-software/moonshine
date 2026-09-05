@@ -154,9 +154,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
     {
         $url = $this->url instanceof Closure ? \call_user_func($this->url) : $this->url;
 
-        if (\is_null($url)) {
-            $url = '';
-        }
+        $url ??= '';
 
         if ($url instanceof MenuFillerContract) {
             return $url->getUrl();

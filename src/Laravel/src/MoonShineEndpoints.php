@@ -63,7 +63,7 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
 
             $pageUri = $page instanceof PageContract
                 ? $page->getUriKey()
-                : (new UriKey($page))->generate();
+                : new UriKey($page)->generate();
 
             /**
              * Because from the resource we call the method with default CRUD pages, which can be replaced with custom ones

@@ -22,19 +22,19 @@ final class Thumbnails extends MoonShineComponent
         parent::__construct();
 
         if (\is_array($this->items)) {
-            $this->items = (new Collection($this->items))
+            $this->items = new Collection($this->items)
                 ->mapWithKeys(
                     static fn (string|array|FileItem $value, int $index): array => [
                         $index => $value instanceof FileItem
                             ? $value->toArray()
-                            : (new FileItem(
+                            : new FileItem(
                                 $value['full_path'] ?? $value,
                                 $value['raw_value'] ?? $value['full_path'] ?? $value,
                                 $value['name'] ?? '',
                                 isset($value['attributes']) && $value['attributes'] instanceof MoonShineComponentAttributeBag
                                     ? $value['attributes']
                                     : new MoonShineComponentAttributeBag($value['attributes'] ?? []),
-                            ))->toArray(),
+                            )->toArray(),
                     ]
                 )->toArray();
         }

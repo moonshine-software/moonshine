@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodingStyle\Rector\ArrowFunction\ArrowFunctionDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\Closure\ClosureDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
@@ -31,7 +30,6 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/src/UI/resources',
         // Laravel
         __DIR__ . '/src/Laravel/stubs',
-        ExplicitBoolCompareRector::class,
         FunctionFirstClassCallableRector::class,
         ClosureDelegatingCallToFirstClassCallableRector::class,
         ArrowFunctionDelegatingCallToFirstClassCallableRector::class,
@@ -51,7 +49,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector::class);
 
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_84,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::TYPE_DECLARATION,

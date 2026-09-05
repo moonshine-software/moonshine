@@ -63,15 +63,13 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
 
         parent::__construct($label, $relationName, $formatted);
 
-        if (\is_null($relationName)) {
-            $relationName = Str::of($this->getLabel())
-                ->camel()
-                ->when(
-                    $this->isToOne(),
-                    static fn (Stringable $str): Stringable => $str->singular(),
-                    static fn (Stringable $str): Stringable => $str->plural(),
-                )->value();
-        }
+        $relationName ??= Str::of($this->getLabel())
+            ->camel()
+            ->when(
+                $this->isToOne(),
+                static fn (Stringable $str): Stringable => $str->singular(),
+                static fn (Stringable $str): Stringable => $str->plural(),
+            )->value();
 
         $this->setRelationName($relationName);
 

@@ -44,9 +44,7 @@ trait WithModal
         ?Closure $builder = null,
         iterable $components = []
     ): static {
-        if (\is_null($name)) {
-            $name = static fn (mixed $data, ActionButtonContract $ctx): string => Str::random(6) . $ctx->getData()?->getKey();
-        }
+        $name ??= static fn (mixed $data, ActionButtonContract $ctx): string => Str::random(6) . $ctx->getData()?->getKey();
 
         $async = $this->purgeAsyncTap();
 

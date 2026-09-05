@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: ['4.x']
+    branches: ['5.x']
 name: Check & fix styling
 jobs:
     php-cs-fixer:

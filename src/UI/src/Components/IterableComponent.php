@@ -122,6 +122,6 @@ abstract class IterableComponent extends MoonShineComponent implements
 
         return $this->items = $this->items instanceof LazyCollection
             ? $this->items
-            : (new Collection($this->items))->filter();
+            : new Collection($this->items)->filter();
     }
 }

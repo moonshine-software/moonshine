@@ -29,7 +29,7 @@ trait HasMetrics
      */
     public function getMetrics(): array
     {
-        return (new Collection($this->metrics()))
+        return new Collection($this->metrics())
             ->ensure(Metric::class)
             ->toArray();
     }

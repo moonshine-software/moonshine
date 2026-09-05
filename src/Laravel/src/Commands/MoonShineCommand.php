@@ -243,9 +243,7 @@ abstract class MoonShineCommand extends Command
             $baseNamespace = $toNamespace($baseDir);
         }
 
-        if ($namespace === null) {
-            $namespace = $toNamespace($dir);
-        }
+        $namespace ??= $toNamespace($dir);
 
         $baseDir = $baseDir ? trim($baseDir, '/') : $baseDir;
         $baseNamespace = $baseNamespace ? $toNamespace($baseNamespace) : $baseNamespace;

@@ -23,7 +23,7 @@ final class FiltersButton
         CrudResourceContract $resource
     ): ActionButtonContract {
         $count = Collection::make($resource->getFilterParams())
-            ->filter(fn ($value): bool => (new self())->withoutEmptyFilter($value))
+            ->filter(fn ($value): bool => new self()->withoutEmptyFilter($value))
             ->count();
 
         return ActionButton::make($label)

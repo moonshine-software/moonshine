@@ -158,7 +158,7 @@ final class TableBuilder extends IterableComponent implements
     public function getTrAttributes(?DataWrapperContract $data, int $row): array
     {
         /** @var array<array-key, array<string, mixed>> */
-        return (new Collection($this->trAttributes))
+        return new Collection($this->trAttributes)
             ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $this))
             ->toArray();
     }
@@ -180,7 +180,7 @@ final class TableBuilder extends IterableComponent implements
     public function getTdAttributes(?DataWrapperContract $data, int $row, int $cell): array
     {
         /** @var array<array-key, array<string, mixed>> */
-        return (new Collection($this->tdAttributes))
+        return new Collection($this->tdAttributes)
             ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $cell, $this))
             ->toArray();
     }

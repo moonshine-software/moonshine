@@ -22,18 +22,18 @@ final class Files extends MoonShineComponent
     ) {
         parent::__construct();
 
-        $this->files = (new Collection($this->files))
+        $this->files = new Collection($this->files)
             ->mapWithKeys(
                 static fn (string|FileItem|array $value, int $index): array
                     => [
                     $index => $value instanceof FileItem
                         ? $value->toArray()
-                        : (new FileItem(
+                        : new FileItem(
                             $value['full_path'] ?? $value,
                             $value['raw_value'] ?? $value,
                             $value['name'] ?? $value,
                             $value['attributes'] ?? new MoonShineComponentAttributeBag(),
-                        ))->toArray(),
+                        )->toArray(),
                 ],
             )->toArray();
     }

@@ -55,7 +55,7 @@ final class ListOf
      */
     public function except(object|string ...$data): self
     {
-        $condition = static fn (object $item): bool => (new Collection($data))->every(
+        $condition = static fn (object $item): bool => new Collection($data)->every(
             fn (object|string $i): bool => match (true) {
                 \is_string($i) => $item::class !== $i,
                 \is_callable($i) => ! $i($item),
@@ -81,7 +81,7 @@ final class ListOf
      */
     public function only(object|string ...$data): self
     {
-        $condition = static fn (object $item): bool => (new Collection($data))->contains(
+        $condition = static fn (object $item): bool => new Collection($data)->contains(
             fn (object|string|callable $i): bool => match (true) {
                 \is_string($i) => $item::class === $i,
                 \is_callable($i) => (bool) $i($item),

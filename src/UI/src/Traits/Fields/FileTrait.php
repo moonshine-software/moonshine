@@ -61,7 +61,7 @@ trait FileTrait
         );
 
         if (! $attributes->has('x-data')) {
-            $attributes = $attributes->merge([
+            return $attributes->merge([
                 'x-data' => 'sortable',
                 'data-handle' => '.dropzone-item',
             ]);

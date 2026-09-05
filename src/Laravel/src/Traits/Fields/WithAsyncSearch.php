@@ -158,9 +158,7 @@ trait WithAsyncSearch
     {
         $searchColumn ??= $this->getAsyncSearchColumn();
 
-        if (\is_null($searchColumn)) {
-            $searchColumn = '';
-        }
+        $searchColumn ??= '';
 
         return new Option(
             label: \is_null($this->getAsyncSearchValueCallback())

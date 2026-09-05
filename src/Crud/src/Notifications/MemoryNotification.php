@@ -31,7 +31,7 @@ final class MemoryNotification implements MoonShineNotificationContract
         string|Color|null $color = null,
         ?string $icon = null
     ): void {
-        (new self())->notify($message, $button, $ids, $color, $icon);
+        new self()->notify($message, $button, $ids, $color, $icon);
     }
 
     /**

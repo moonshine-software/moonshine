@@ -16,7 +16,7 @@ final class HandlerController extends MoonShineController
     {
         $resource = $request->getResource();
 
-        if (!$resource instanceof CrudResourceContract) {
+        if (! $resource instanceof CrudResourceContract) {
             throw ResourceException::required();
         }
 

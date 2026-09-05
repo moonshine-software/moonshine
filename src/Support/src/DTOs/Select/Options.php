@@ -34,7 +34,7 @@ final readonly class Options implements Arrayable
      */
     public function getValues(): Collection
     {
-        return (new Collection($this->values))
+        return new Collection($this->values)
             ->filter()
             ->map(function (array|string|OptionGroup|Option $labelOrValues, int|string $valueOrLabel): OptionGroup|Option {
                 if ($labelOrValues instanceof Option) {
@@ -153,13 +153,13 @@ final readonly class Options implements Arrayable
 
         $options = $values->mapWithKeys(function (Option|OptionGroup $option): array {
             if ($option instanceof OptionGroup) {
-                return [$option->getLabel() => (new Collection($option->getValues()->toArray()))->pluck('label', 'value')->toArray()];
+                return [$option->getLabel() => new Collection($option->getValues()->toArray())->pluck('label', 'value')->toArray()];
             }
 
             return [$option->getValue() => $option->getLabel()];
         })->toArray();
 
-        $properties = (new Collection($this->flatten()))->pluck('properties', 'value')->toArray();
+        $properties = new Collection($this->flatten())->pluck('properties', 'value')->toArray();
 
         return [
             'options' => $options,

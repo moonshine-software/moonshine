@@ -20,15 +20,15 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "ext-json": "*",
-        "illuminate/view": "^10|^11|^12|^13",
-        "illuminate/support": "^10|^11|^12|^13",
-        "illuminate/contracts": "^10|^11|^12|^13",
-        "moonshine/asset-manager": "^4.0",
-        "moonshine/contracts": "^4.0",
-        "moonshine/core": "^4.0",
-        "moonshine/support": "^4.0"
+        "illuminate/view": "^11|^12|^13",
+        "illuminate/support": "^11|^12|^13",
+        "illuminate/contracts": "^11|^12|^13",
+        "moonshine/asset-manager": "^5.0",
+        "moonshine/contracts": "^5.0",
+        "moonshine/core": "^5.0",
+        "moonshine/support": "^5.0"
     },
     "autoload": {
         "psr-4": {
