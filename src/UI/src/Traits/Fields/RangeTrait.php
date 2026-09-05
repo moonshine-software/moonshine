@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Stringify;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\Rating;
 
@@ -42,10 +43,7 @@ trait RangeTrait
         $this->fromAttributes = $this->getAttributes()
                 ->except(array_keys($attributes))
                 ->merge($attributes)
-                ->when(
-                    $this->fromAttributes,
-                    fn (ComponentAttributesBagContract $attributes) => $attributes->merge($this->fromAttributes->getAttributes())
-                )
+                ->merge($this->fromAttributes?->getAttributes() ?? [])
         ;
 
         return $this;
@@ -57,14 +55,15 @@ trait RangeTrait
     ): ComponentAttributesBagContract {
         $dataName = $this->getAttribute('data-name');
 
-        return ($attributes ?? $this->getAttributes())
-            ->except(['data-name'])
-            ->when(
-                $dataName,
-                static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
-                    'data-name' => Str::of($dataName)->replaceLast('[]', "[$name]"),
-                ])
-            );
+        $attributes = ($attributes ?? $this->getAttributes())->except(['data-name']);
+
+        if ($dataName) {
+            $attributes = $attributes->merge([
+                'data-name' => Str::of(Stringify::value($dataName))->replaceLast('[]', "[$name]"),
+            ]);
+        }
+
+        return $attributes;
     }
 
     public function getFromAttributes(): ComponentAttributesBagContract
@@ -80,10 +79,7 @@ trait RangeTrait
         $this->toAttributes = $this->getAttributes()
             ->except(array_keys($attributes))
             ->merge($attributes)
-            ->when(
-                $this->toAttributes,
-                fn (ComponentAttributesBagContract $attributes) => $attributes->merge($this->toAttributes->getAttributes())
-            )
+            ->merge($this->toAttributes?->getAttributes() ?? [])
         ;
 
         return $this;
@@ -114,7 +110,7 @@ trait RangeTrait
 
     protected function reformatFilledValue(mixed $data): mixed
     {
-        return $this->extractFromTo($data);
+        return $this->extractFromTo(\is_array($data) ? $data : []);
     }
 
     /**
@@ -132,7 +128,7 @@ trait RangeTrait
                 : $raw;
         }
 
-        if (empty($values[$this->getFromField()]) && empty($values[$this->getToField()])) {
+        if (! \is_array($values) || (empty($values[$this->getFromField()]) && empty($values[$this->getToField()]))) {
             return new FieldEmptyValue();
         }
 
@@ -140,9 +136,9 @@ trait RangeTrait
     }
 
     /**
-     * @param  array<string, int|string>  $data
+     * @param  array<array-key, mixed>  $data
      *
-     * @return array<string, int|string>
+     * @return array<string, mixed>
      */
     protected function extractFromTo(array $data): array
     {
@@ -174,25 +170,25 @@ trait RangeTrait
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isNullRange(formatted: true)) {
+        if (! \is_array($value) || $this->isNullRange(formatted: true)) {
             return '';
         }
 
-        $from = $value[$this->getFromField()] ?? $this->min;
-        $to = $value[$this->getToField()] ?? $this->max;
+        $from = Stringify::value($value[$this->getFromField()] ?? $this->min);
+        $to = Stringify::value($value[$this->getToField()] ?? $this->max);
 
         if ($this->isRawMode()) {
             return "$from - $to";
         }
 
         if ($this->isWithStars()) {
-            $from = Rating::make(
+            $from = (string) Rating::make(
                 (int) $from
-            )->render();
+            );
 
-            $to = Rating::make(
+            $to = (string) Rating::make(
                 (int) $to
-            )->render();
+            );
         }
 
         return "$from - $to";
@@ -203,18 +199,18 @@ trait RangeTrait
         return function ($item) {
             $values = $this->getRequestValue();
 
-            if ($values === false) {
+            if (! \is_array($values)) {
                 return $item;
             }
 
-            if (\is_array($values) && array_filter($values) === [] && $this->isNullable()) {
+            if (array_filter($values) === [] && $this->isNullable()) {
                 data_set($item, $this->getFromField(), null);
                 data_set($item, $this->getToField(), null);
 
                 return $item;
             }
 
-            if (\is_array($values) && array_filter($values) === []) {
+            if (array_filter($values) === []) {
                 return $item;
             }
 
@@ -277,8 +273,8 @@ trait RangeTrait
         return [
             ...$errors,
             $this->getNameDot() => [
-                ...(data_get($errors->undot()->toArray(), $this->getNameDotFrom()) ?? []),
-                ...(data_get($errors->undot()->toArray(), $this->getNameDotTo()) ?? []),
+                ...Arr::wrap(data_get($errors->undot()->toArray(), $this->getNameDotFrom())),
+                ...Arr::wrap(data_get($errors->undot()->toArray(), $this->getNameDotTo())),
             ],
         ];
     }

@@ -67,8 +67,10 @@ final class MoonShineNotification implements MoonShineNotificationContract
         );
     }
 
+    /** @return DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> */
     private function getUnreadNotifications(): DatabaseNotificationCollection
     {
+        /** @var DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> */
         return MoonShineAuth::getGuard()->user()->unreadNotifications ?? DatabaseNotificationCollection::make();
     }
 

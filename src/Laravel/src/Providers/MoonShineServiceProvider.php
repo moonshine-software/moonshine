@@ -103,6 +103,7 @@ use Psr\SimpleCache\CacheInterface;
 
 final class MoonShineServiceProvider extends ServiceProvider
 {
+    /** @var list<class-string<\Illuminate\Console\Command>> */
     protected array $commands = [
         InstallCommand::class,
         MakeResourceCommand::class,
@@ -163,7 +164,7 @@ final class MoonShineServiceProvider extends ServiceProvider
 
         $this->app->{app()->runningUnitTests() ? 'bind' : 'singleton'}(
             CrudRequestContract::class,
-            static fn ($app): MoonShineRequest => MoonShineRequest::createFrom($app['request'])
+            static fn (Application $app): MoonShineRequest => MoonShineRequest::createFrom($app->make('request'))
         );
 
         $this->app->singleton(MenuManagerContract::class, MenuManager::class);
@@ -189,15 +190,17 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(RequestContract::class, Request::class);
         $this->app->bind(
             CacheInterface::class,
-            static fn (Application $app): CacheInterface => $app->get('cache')->store(
-                $app->get(ConfiguratorContract::class)->getCacheDriver()
+            static fn (Application $app): CacheInterface => $app->make(\Illuminate\Cache\CacheManager::class)->store(
+                moonshineConfig()->getCacheDriver()
             )
         );
 
-        $this->app->bind(StorageContract::class, static fn (Application $app, array $parameters): LaravelStorage => new LaravelStorage(
-            $parameters['disk'] ?? $parameters[0] ?? 'public',
-            $app->get('filesystem')
-        ));
+        $this->app->bind(StorageContract::class, static function (Application $app, array $parameters): LaravelStorage {
+            /** @var string $disk */
+            $disk = $parameters['disk'] ?? $parameters[0] ?? 'public';
+
+            return new LaravelStorage($disk, $app->make(\Illuminate\Contracts\Filesystem\Factory::class));
+        });
 
         $this->app->scoped(ColorManagerContract::class, ColorManager::class);
 
@@ -213,12 +216,12 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->callAfterResolving('blade.compiler', static function (BladeCompiler $blade): void {
             $blade->directive(
                 'defineEvent',
-                static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
+                static fn (string $e): string => "<?php echo MoonShine\Support\AlpineJs::eventBlade($e); ?>"
             );
 
             $blade->directive(
                 'defineEventWhen',
-                static fn ($e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
+                static fn (string $e): string => "<?php echo MoonShine\Support\AlpineJs::eventBladeWhen($e); ?>"
             );
         });
 
@@ -227,7 +230,7 @@ final class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerMacros(): self
     {
-        \Illuminate\Http\Request::macro('getScalar', function (string $key, mixed $default = null): mixed {
+        \Illuminate\Http\Request::macro('getScalar', function (string $key, mixed $default = null): string|int|float|bool|null {
             $value = request()->input($key, $default);
             $default = \is_scalar($default) ? $default : null;
 
@@ -243,11 +246,14 @@ final class MoonShineServiceProvider extends ServiceProvider
                 bool $withAuthenticate = false,
                 ?array $groupParameters = null,
             ): Router {
+                /** @var Router $router */
+                $router = $this;
+                /** @var array<string, mixed> $groupParameters */
                 $groupParameters ??= moonshineConfig()->getDefaultRouteGroup();
 
-                return $this->group(
+                return $router->group(
                     $groupParameters,
-                    function () use ($callback, $withResource, $withPage, $withAuthenticate, $groupParameters): void {
+                    function () use ($router, $callback, $withResource, $withPage, $withAuthenticate, $groupParameters): void {
                         $parameters = [];
 
                         if ($withResource) {
@@ -261,12 +267,13 @@ final class MoonShineServiceProvider extends ServiceProvider
                         $middleware = $withAuthenticate ? moonshineConfig()->getAuthMiddleware() : null;
 
                         if ($groupParameters['middleware'] ?? false) {
+                            /** @var string|array<string> $middleware */
                             $middleware = $groupParameters['middleware'];
                         }
 
-                        Router::group(
+                        $router->group(
                             $parameters,
-                            fn () => $callback($this, app(DefaultRoutes::class))
+                            fn () => $callback($router, app(DefaultRoutes::class))
                         )->middleware($middleware);
                     }
                 );
@@ -278,6 +285,7 @@ final class MoonShineServiceProvider extends ServiceProvider
 
     protected function registerApplies(): self
     {
+        /** @var AppliesRegister $appliesRegister */
         $appliesRegister = $this->app->get(AppliesRegisterContract::class);
 
         $appliesRegister->defaultFor(ModelResource::class);
@@ -348,6 +356,8 @@ final class MoonShineServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
 
+            // Laravel 11.0–11.20 do not provide this API.
+            // @phpstan-ignore function.alreadyNarrowedType (Required for the supported older Laravel releases.)
             if (method_exists($this, 'optimizes')) {
                 $this->optimizes(
                     optimize: 'moonshine:optimize',
@@ -367,7 +377,7 @@ final class MoonShineServiceProvider extends ServiceProvider
             ->registerAuth()
             ->registerApplies();
 
-        tap($this->app['events'], static function ($event): void {
+        tap($this->app->make(\Illuminate\Contracts\Events\Dispatcher::class), static function (\Illuminate\Contracts\Events\Dispatcher $event): void {
             $event->listen(
                 RequestHandled::class,
                 static fn () => moonshine()->flushState()

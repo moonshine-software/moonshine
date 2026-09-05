@@ -31,8 +31,8 @@ final class HasManyController extends MoonShineController
      */
     public function formComponent(RelationModelFieldRequest $request): string
     {
-        /** @var Model|null $parent */
-        $parent = $request->getResource()?->getItemOrInstance();
+        /** @var Model $parent */
+        $parent = $request->getResourceOrFail()->getItemOrInstance();
 
         /** @var null|HasMany|MorphMany $field */
         $field = $request->getPageField(HasMany::class);
@@ -42,20 +42,20 @@ final class HasManyController extends MoonShineController
         }
 
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResourceOrFail();
 
         $item = $resource
             ->stopGettingItemFromUrl()
-            ->setItemID($request->input('_key', false))
+            ->setItemID($request->has('_key') ? $request->string('_key')->value() : false)
             ->getItemOrInstance();
 
         $update = $item->getKey() !== null;
-        $relation = $parent?->{$field->getRelationName()}();
+        $relation = $field->getRelationFor($parent);
 
-        $field->fillCast($parent, $request->getResource()?->getCaster());
+        $field->fillCast($parent, $request->getResourceOrFail()->getCaster());
 
         $action = $update
-            ? static fn (Model $data) => $resource->getRoute('crud.update', $data->getKey())
+            ? static fn (Model $data) => $resource->getRoute('crud.update', $resource->getCaster()->cast($data))
             : static fn (?Model $data) => $resource->getRoute('crud.store');
 
         $isAsync = $field->isAsync();
@@ -81,13 +81,11 @@ final class HasManyController extends MoonShineController
 
             $relation = $field->getRelation();
 
+            if ($relation instanceof MorphOneOrMany) {
+                $fields->push(Hidden::make($relation->getMorphType())->setValue($parent::class));
+            }
+
             return $fields->when(
-                $relation instanceof MorphOneOrMany,
-                static fn (Fields $f) => $f->push(
-                    /** @phpstan-ignore-next-line  */
-                    Hidden::make($relation?->getMorphType())->setValue($parent::class)
-                )
-            )->when(
                 $update,
                 static fn (Fields $f) => $f->push(
                     Hidden::make('_method')->setValue('PUT'),
@@ -101,14 +99,15 @@ final class HasManyController extends MoonShineController
                     Hidden::make('_relation_name')
                         ->setValue($field->getRelationName())
                 )
-                ->toArray();
+                ->all();
         };
 
-        $formName = "{$resource->getUriKey()}-unique-" . ($item->getKey() ?? "create");
+        /** @var int|string|null $itemKey */
+        $itemKey = $item->getKey();
+        $formName = "{$resource->getUriKey()}-unique-" . ($itemKey ?? "create");
         $redirectRoute = $field->getRedirectAfter($parent);
 
         return (string) FormBuilder::make($action($item))
-            /** @phpstan-ignore-next-line  */
             ->fields($getFields)
             ->reactiveUrl(
                 static fn (): string => moonshineRouter()
@@ -160,11 +159,11 @@ final class HasManyController extends MoonShineController
     public function listComponent(RelationModelFieldRequest $request): string
     {
         /* @var \MoonShine\Laravel\Resources\ModelResource $parentResource */
-        $parentResource = $request->getResource();
+        $parentResource = $request->getResourceOrFail();
 
-        $parentResource->setQueryParams(
-            $request->only($parentResource->getQueryParamsKeys())
-        );
+        /** @var array<string, mixed> $params */
+        $params = $request->only($parentResource->getQueryParamsKeys());
+        $parentResource->setQueryParams($params);
 
         $parentItem = $parentResource->getItemOrInstance();
 
@@ -188,6 +187,6 @@ final class HasManyController extends MoonShineController
             return (string) $this->responseWithTable($value, $field->getResource());
         }
 
-        return (string) $value->render();
+        return (string) $value;
     }
 }

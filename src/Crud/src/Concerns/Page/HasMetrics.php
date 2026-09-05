@@ -29,9 +29,9 @@ trait HasMetrics
      */
     public function getMetrics(): array
     {
-        return new Collection($this->metrics())
+        return array_values(new Collection($this->metrics())
             ->ensure(Metric::class)
-            ->toArray();
+            ->all());
     }
 
     /**

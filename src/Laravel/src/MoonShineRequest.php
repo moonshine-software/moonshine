@@ -15,6 +15,9 @@ class MoonShineRequest extends Request implements CrudRequestContract
 {
     /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
+    /**
+     * @use HasPageRequest<\MoonShine\Contracts\Core\PageContract>
+     */
     use HasPageRequest;
 
     public function getItemID(): int|string|null
@@ -27,7 +30,9 @@ class MoonShineRequest extends Request implements CrudRequestContract
 
     public function getParentResourceId(): ?string
     {
-        return request()->getScalar('_parentId');
+        $value = request()->getScalar('_parentId');
+
+        return $value === null ? null : (string) $value;
     }
 
     public function getParentRelationName(): ?string
@@ -63,7 +68,9 @@ class MoonShineRequest extends Request implements CrudRequestContract
 
     public function getFragmentLoad(): ?string
     {
-        return request()->getScalar('_fragment-load');
+        $value = request()->getScalar('_fragment-load');
+
+        return $value === null ? null : (string) $value;
     }
 
     public function isFragmentLoad(?string $name = null): bool

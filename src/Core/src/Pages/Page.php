@@ -186,7 +186,7 @@ abstract class Page implements PageContract
         }
 
         return [
-            $this->getResource()?->getUrl() ?? '' => $this->getResource()?->getTitle() ?? '',
+            $this->getResource()->getUrl() => $this->getResource()->getTitle(),
         ];
     }
 
@@ -359,7 +359,7 @@ abstract class Page implements PageContract
         if ($this->hasResource()) {
             $assets = [
                 ...$assets,
-                ...$this->getResource()?->getAssets() ?? [],
+                ...$this->getResource()->getAssets(),
             ];
         }
 
@@ -396,7 +396,7 @@ abstract class Page implements PageContract
     protected function prepareBeforeRender(): void
     {
         if ($this->hasResource()) {
-            $this->getResource()?->loaded();
+            $this->getResource()->loaded();
         }
 
         $this->loaded();

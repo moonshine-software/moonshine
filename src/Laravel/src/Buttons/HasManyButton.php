@@ -27,33 +27,35 @@ final class HasManyButton
         ?ActionButtonContract $button = null,
     ): ActionButtonContract {
         /** @var ModelResource $resource */
-        $resource = $field->getResource()->stopGettingItemFromUrl();
-        /** @var ?CrudResourceContract $parentResource */
-        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResource();
+        $resource = $field->getResourceOrFail()->stopGettingItemFromUrl();
+        /** @var CrudResourceContract $parentResource */
+        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResourceOrFail();
         $parentPage = $field->getNowOnPage() ?? moonshineRequest()->getPage();
+        /** @var int|string|null $itemID */
         $itemID = data_get($field->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
 
         if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
         }
 
-        $action = static fn (?Model $data) => $parentResource->getRoute(
+        $action = static fn (mixed $data) => $parentResource->getRoute(
             'has-many.form',
             $itemID,
             [
                 'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
-                '_key' => $data?->getKey(),
+                '_key' => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null),
             ]
         );
 
         if ($field->isWithoutModals()) {
-            $action = static fn (?Model $data) => $resource->getFormPageUrl($data?->getKey());
+            $action = static fn (mixed $data) => $resource->getFormPageUrl(($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null));
         }
 
         $authorize = $update
-            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
+            ? static fn (mixed $item, ?DataWrapperContract $data): bool => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null)
                 && $resource->hasAction(Action::UPDATE)
+                && $item instanceof Model
                 && $resource->setItem($item)->can(Ability::UPDATE)
             : static fn (): bool => $resource->hasAction(Action::CREATE)
                 && $resource->can(Ability::CREATE);
@@ -74,7 +76,7 @@ final class HasManyButton
                 ->inModal(
                     title: static fn (): array|string => __($update ? 'moonshine::ui.edit' : 'moonshine::ui.create'),
                     content: '',
-                    name: static fn (?Model $data): string => "has-many-modal-{$field->getResource()->getUriKey()}-{$field->getRelationName()}-" . ($update ? $data->getKey() : 'create'),
+                    name: static fn (mixed $data): string => "has-many-modal-{$field->getResourceOrFail()->getUriKey()}-{$field->getRelationName()}-" . ($update ? ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null) : 'create'),
                     builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
                 );
         }

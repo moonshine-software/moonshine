@@ -12,7 +12,7 @@ use MoonShine\Laravel\Support\DBOperators;
 use MoonShine\UI\Fields\Text;
 
 /**
- * @implements ApplyContract<Text>
+ * @implements ApplyContract<Text, Builder>
  */
 class TextModelApply implements ApplyContract
 {
@@ -20,7 +20,9 @@ class TextModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $query->where($field->getColumn(), DBOperators::byModel($query->getModel())->like(), "%{$field->getRequestValue()}%");
+            /** @var string|int|float|bool|null $value */
+            $value = $field->getRequestValue();
+            $query->where($field->getColumn(), DBOperators::byModel($query->getModel())->like(), "%{$value}%");
         };
     }
 }

@@ -28,14 +28,14 @@ final class MethodController extends MoonShineController
     {
         $toast = [
             'type' => 'info',
-            'message' => $request->input('message', ''),
+            'message' => $request->string('message')->value(),
         ];
 
         try {
-            $method = $request->input('method');
+            $method = $request->string('method')->value();
             $page = $crudRequest->getPage();
             $pageOrResource = $crudRequest->hasResource()
-                ? $crudRequest->getResource()
+                ? ($crudRequest->getResource() ?? $page)
                 : $page;
 
             $target = method_exists($page, $method) ? $page : $pageOrResource;
@@ -44,8 +44,15 @@ final class MethodController extends MoonShineController
                 throw new RuntimeException("$method does not exist");
             }
 
-            $result = $container->call([$target, $method]);
+            $callback = [$target, $method];
 
+            if (! \is_callable($callback)) {
+                throw new RuntimeException("$method is not callable");
+            }
+
+            $result = $container->call($callback);
+
+            /** @var array{type: string, message: string} $toast */
             $toast = $request->session()->get('toast', $toast);
         } catch (Throwable $e) {
             report($e);

@@ -13,6 +13,8 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\ModalContract;
+use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
@@ -32,7 +34,7 @@ use MoonShine\UI\Traits\WithLabel;
  *
  * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null)
  *
- * @implements ActionButtonContract<TData, TWrapper, Modal, OffCanvas>
+ * @implements ActionButtonContract<TData, TWrapper, ModalContract, OffCanvasContract>
  */
 class ActionButton extends MoonShineComponent implements
     ActionButtonContract,
@@ -73,16 +75,21 @@ class ActionButton extends MoonShineComponent implements
 
     protected ?string $asyncMethod = null;
 
+    /** @var null|((Closure(null|TWrapper, ActionButtonContract): ?TWrapper)) */
     protected ?Closure $onBeforeSetCallback = null;
 
+    /** @var null|(Closure(null|TWrapper, ActionButtonContract): void) */
     protected ?Closure $onAfterSetCallback = null;
 
     protected ?ComponentContract $resolvedComponent = null;
 
+    /**
+     * @param (Closure(TData, TWrapper|null, static): string)|string $url
+     * @param TWrapper|null $data
+     */
     public function __construct(
         Closure|string $label = '',
         protected Closure|string $url = 'javascript:void(0);',
-        /** @param null|TWrapper $data */
         protected ?DataWrapperContract $data = null,
     ) {
         parent::__construct();
@@ -268,6 +275,7 @@ class ActionButton extends MoonShineComponent implements
         ]);
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function withoutLoading(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -487,6 +495,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->raw;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function primary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -496,6 +505,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-primary');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function secondary(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -505,6 +515,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-secondary');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function success(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -514,6 +525,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-success');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function warning(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -523,6 +535,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-warning');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function info(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -532,6 +545,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-info');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function error(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {
@@ -541,6 +555,7 @@ class ActionButton extends MoonShineComponent implements
         return $this->removeClasses()->class('btn-error');
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function square(Closure|bool|null $condition = null): static
     {
         if (! (value($condition, $this) ?? true)) {

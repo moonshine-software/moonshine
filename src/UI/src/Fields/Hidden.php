@@ -25,7 +25,7 @@ class Hidden extends Field implements HasDefaultValueContract, CanBeString
 
     public function __construct(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
     {
-        parent::__construct($label, $column ?? $label, $formatted);
+        parent::__construct($label, $column ?? (\is_string($label) ? $label : null), $formatted);
     }
 
     public function hasWrapper(): bool

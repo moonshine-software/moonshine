@@ -16,5 +16,8 @@ use MoonShine\Contracts\UI\TableRowContract;
  */
 interface TableRowsContract extends Enumerable
 {
+    /**
+     * @param (Closure(TableRowContract): (TableRowContract|null))|null $builder
+     */
     public function pushRow(TableCellsContract $cells, int|string|null $key = null, ?Closure $builder = null): self;
 }

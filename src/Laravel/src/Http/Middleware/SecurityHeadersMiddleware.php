@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityHeadersMiddleware
 {
+    /**
+     * @var list<string>
+     */
     protected array $removeHeaders = [
         'X-Powered-By',
         'x-powered-by',
@@ -17,6 +20,9 @@ class SecurityHeadersMiddleware
         'server',
     ];
 
+    /**
+     * @var array<string, string>
+     */
     protected array $addHeaders = [
         'Referrer-Policy' => 'no-referrer-when-downgrade',
         'X-Content-Type-Options' => 'nosniff',

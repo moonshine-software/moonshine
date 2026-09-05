@@ -30,6 +30,7 @@ trait HasPivotModalModeConcern
     protected ?Closure $modifyDeleteButton = null;
 
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function pivotModalMode(Closure|bool|null $condition = null): static
     {
         $this->isPivotModalMode = \is_null($condition) || value($condition, $this);
@@ -37,6 +38,7 @@ trait HasPivotModalModeConcern
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function pivotCardsMode(Closure|bool|null $condition = null): static
     {
         $this->pivotModalMode($condition);
@@ -85,9 +87,12 @@ trait HasPivotModalModeConcern
                     ->withoutWrapper()
             );
 
+        /** @var int|string|null $parentId */
+        $parentId = $this->getRelatedModel()?->getKey();
+
         $asyncUrl = $this->getCore()->getRouter()->getEndpoints()->withRelation(
             'belongs-to-many-pivot.list',
-            resourceItem: $this->getRelatedModel()?->getKey(),
+            resourceItem: $parentId,
             relation: $this->getRelationName(),
             resourceUri: $this->getNowOnResource()?->getUriKey(),
             pageUri: $this->getNowOnPage()?->getUriKey()
@@ -122,11 +127,11 @@ trait HasPivotModalModeConcern
             ->name($this->getTableComponentName())
             ->customAttributes($this->getAttributes()->jsonSerialize())
             ->fields($fields)
-            ->cast($this->getResource()->getCaster())
-            ->buttons([
+            ->cast($this->getResourceOrFail()->getCaster())
+            ->buttons(array_values([
                 ...$this->getButtons(),
                 ...$buttons,
-            ])
+            ]))
             ->when(
                 ! \is_null($this->modifyTable),
                 fn (ComponentContract $table) => value($this->modifyTable, $table, false)

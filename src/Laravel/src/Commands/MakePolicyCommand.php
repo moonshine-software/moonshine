@@ -45,6 +45,7 @@ class MakePolicyCommand extends MoonShineCommand
             ->remove('policy', false)
             ->value();
 
+        /** @var string $model */
         $model = $this->qualifyModel($className);
         $className = class_basename($model) . 'Policy';
 

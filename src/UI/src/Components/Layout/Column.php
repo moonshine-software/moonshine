@@ -8,7 +8,7 @@ use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 
 /**
- * @method static static make(iterable $components = [], int $colSpan = 12, int $adaptiveColSpan = 12)
+ * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [], int $colSpan = 12, int $adaptiveColSpan = 12)
  */
 class Column extends AbstractWithComponents
 {

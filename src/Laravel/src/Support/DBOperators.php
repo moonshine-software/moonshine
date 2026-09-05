@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Support;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 final class DBOperators
 {
@@ -19,7 +18,7 @@ final class DBOperators
 
     public static function byModel(Model $model): self
     {
-        $modelDriver = $model->getConnection()->getConfig('driver');
+        $modelDriver = $model->getConnection()->getDriverName();
 
         return new self(
             $modelDriver
@@ -36,8 +35,10 @@ final class DBOperators
 
     public static function getDefaultDriver(): string
     {
+        /** @var string $defaultConnection */
         $defaultConnection = config('database.default');
 
-        return Arr::get(config('database.connections'), "$defaultConnection.driver", 'mysql');
+        /** @var string */
+        return config("database.connections.$defaultConnection.driver", 'mysql');
     }
 }

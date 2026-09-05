@@ -10,8 +10,10 @@ trait WithLink
 {
     protected bool $isLink = false;
 
+    /** @var string|(Closure(mixed, static): string) */
     protected string|Closure $linkValue = '';
 
+    /** @var string|(Closure(mixed, static): string) */
     protected string|Closure $linkName = '';
 
     protected ?string $linkIcon = null;
@@ -27,12 +29,16 @@ trait WithLink
 
     public function getLinkValue(mixed $value = null): string
     {
-        return (string) value($this->linkValue, $value ?? $this->toValue(withDefault: false), $this);
+        return $this->linkValue instanceof Closure
+            ? ($this->linkValue)($value ?? $this->toValue(withDefault: false), $this)
+            : $this->linkValue;
     }
 
     public function getLinkName(mixed $value = null): string
     {
-        return value($this->linkName, $value ?? $this->toValue(withDefault: false), $this);
+        return $this->linkName instanceof Closure
+            ? ($this->linkName)($value ?? $this->toValue(withDefault: false), $this)
+            : $this->linkName;
     }
 
     public function getLinkIcon(): ?string
@@ -51,8 +57,8 @@ trait WithLink
     }
 
     /**
-     * @param  string|(Closure(string $value, static $ctx): string)  $link
-     * @param  string|(Closure(string $value, static $ctx): string)  $name
+     * @param  string|(Closure(mixed $value, static $ctx): string)  $link
+     * @param  string|(Closure(mixed $value, static $ctx): string)  $name
      */
     public function link(
         string|Closure $link,

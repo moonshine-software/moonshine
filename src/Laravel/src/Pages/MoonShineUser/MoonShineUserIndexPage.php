@@ -43,8 +43,8 @@ final class MoonShineUserIndexPage extends IndexPage
             Text::make(__('moonshine::ui.resource.name'), 'name'),
 
             Image::make(__('moonshine::ui.resource.avatar'), 'avatar')->modifyRawValue(fn (
-                ?string $raw
-            ): string => $raw ?? ''),
+                mixed $raw
+            ): mixed => $raw ?? ''),
 
             Date::make(__('moonshine::ui.resource.created_at'), 'created_at')
                 ->format("d.m.Y")

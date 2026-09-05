@@ -12,11 +12,12 @@ use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionGroup;
 use MoonShine\Support\DTOs\Select\OptionProperty;
 use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\Support\Stringify;
 
 trait SelectTrait
 {
     /**
-     * @var array<int|string,string|Option|OptionGroup|array<int|string,string>>|Closure|Options
+     * @var array<int|string,string|Option|OptionGroup|array<int|string,string>>|(Closure(static): array<int|string,string|Option|OptionGroup|array<int|string,string>>)|Options
      */
     protected array|Closure|Options $options = [];
 
@@ -26,7 +27,7 @@ trait SelectTrait
     protected array|Closure $optionProperties = [];
 
     /**
-     * @param  Closure|array<int|string,string|Option|OptionGroup|array<int|string,string>>|Options  $data
+     * @param  (Closure(static): array<int|string,string|Option|OptionGroup|array<int|string,string>>)|array<int|string,string|Option|OptionGroup|array<int|string,string>>|Options  $data
      */
     public function options(Closure|array|Options $data): static
     {
@@ -78,13 +79,13 @@ trait SelectTrait
             : $value;
 
         /** @var Collection<array-key, int|string> $collection */
-        $collection = new Collection($value);
+        $collection = Collection::wrap($value);
 
         return $collection
             ->when(
                 ! $this->isRawMode(),
                 fn (Collection $collect): Collection => $collect->map(
-                    fn (int|string $v): string => (string)data_get($this->getValues()->flatten(), "$v.label", $v),
+                    fn (int|string $v): string => Stringify::value(data_get($this->getValues()->flatten(), "$v.label", $v)),
                 ),
             )
             ->implode($separator);

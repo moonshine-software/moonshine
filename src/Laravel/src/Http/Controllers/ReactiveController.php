@@ -38,7 +38,9 @@ final class ReactiveController extends MoonShineController
         $casted = null;
         $except = [];
 
-        $values = $request->collect('values')->map(
+        /** @var \Illuminate\Support\Collection<string, mixed> $input */
+        $input = $request->collect('values');
+        $values = $input->map(
             function (mixed $value, string $column) use ($fields, &$casted, &$except) {
                 $field = $fields->findByColumn($column);
 
@@ -51,22 +53,23 @@ final class ReactiveController extends MoonShineController
         );
 
         $fields->fill(
-            $values->toArray(),
-            $casted ? new ModelDataWrapper($casted->forceFill($values->except($except)->toArray())) : null,
+            $values->all(),
+            $casted instanceof \Illuminate\Database\Eloquent\Model ? new ModelDataWrapper($casted->forceFill($values->except($except)->all())) : null,
         );
 
+        /** @var array<string, mixed> $additionally */
         $additionally = $request->collect('additionally')->all();
 
         foreach ($fields as $field) {
             $fields = $field->formName($form->getName())->getReactiveCallback(
                 $fields,
                 data_get($values, $field->getColumn()),
-                $values->toArray(),
+                $values->all(),
                 $additionally,
             );
         }
 
-        $values = $fields
+        $values = new \Illuminate\Support\Collection($fields->all())
             ->mapWithKeys(
                 static fn (FieldContract $field): array => [$field->getColumn() => $field->getReactiveValue()],
             );
@@ -74,17 +77,17 @@ final class ReactiveController extends MoonShineController
         $currentColumn = $request->input('current');
 
         $skipRender = static fn (FieldContract $field): bool
-            => $field->isSilentReactive(data_get($values, $field->getColumn()), $values->toArray())
+            => $field->isSilentReactive(data_get($values, $field->getColumn()), $values->all())
                || ($field->isSilentSelfReactive(
                    data_get($values, $field->getColumn()),
-                   $values->toArray(),
+                   $values->all(),
                ) && $currentColumn === $field->getColumn());
 
         $fields = $fields->mapWithKeys(
             static fn (FieldContract $field): array => $skipRender($field)
                 ? []
                 : [
-                    $field->getColumn() => (string)FieldsGroup::make([$field])->render(),
+                    $field->getColumn() => (string)FieldsGroup::make([$field]),
                 ],
         );
 

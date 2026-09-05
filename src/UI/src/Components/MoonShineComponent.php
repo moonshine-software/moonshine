@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\View\Component;
+use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Core\Traits\WithAssets;
 use MoonShine\Core\Traits\WithCore;
@@ -15,6 +18,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Traits\HasCanSee;
+use Stringable;
 
 abstract class MoonShineComponent extends Component implements
     ComponentContract
@@ -27,6 +31,9 @@ abstract class MoonShineComponent extends Component implements
     use HasCanSee;
     use WithComponentAttributes;
     use WithAssets;
+
+    /** @var ComponentAttributeBag&ComponentAttributesBagContract */
+    public $attributes;
 
     protected static bool $consoleMode = false;
 
@@ -77,7 +84,6 @@ abstract class MoonShineComponent extends Component implements
      */
     public function withAttributes(array $attributes): static
     {
-        /** @phpstan-ignore-next-line */
         $this->attributes = $this->attributes ?: $this->newAttributeBag();
         $this->attributes->setAttributes(
             array_merge($this->attributes->jsonSerialize(), $attributes),
@@ -93,6 +99,7 @@ abstract class MoonShineComponent extends Component implements
      */
     public function data(): array
     {
+        /** @var array<string, mixed> */
         return array_merge($this->extractPublicProperties(), [
             'attributes' => $this->getAttributes(),
             'name' => $this->getName(),
@@ -116,5 +123,21 @@ abstract class MoonShineComponent extends Component implements
     protected function onClone(): void
     {
         //
+    }
+    protected function stringifySlotContent(mixed $content): string
+    {
+        if ($content instanceof Stringable) {
+            return (string) $content;
+        }
+
+        if ($content instanceof Renderable) {
+            return $content->render();
+        }
+
+        if (\is_scalar($content) || $content === null) {
+            return (string) $content;
+        }
+
+        return '';
     }
 }

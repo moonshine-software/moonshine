@@ -21,6 +21,9 @@ class MoonShineFormRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return [];
@@ -55,11 +58,15 @@ class MoonShineFormRequest extends FormRequest
         parent::failedValidation($validator);
     }
 
+    /**
+     * @return array<string, string|array<string>>
+     */
     public function messages(): array
     {
         $page = $this->getResource()?->getFormPage();
 
         if ($page instanceof FormPageContract && $this->getResource() instanceof CrudResource) {
+            /** @var array<string, string>|string $messages */
             $messages = __('moonshine::validation');
 
             return array_merge(
@@ -78,17 +85,24 @@ class MoonShineFormRequest extends FormRequest
     {
         return $this->hasResource()
             ? $this->getResource()
-                ?->getFormFields()
-                ?->onlyFields()
-                ?->extractLabels()
+                ->getFormFields()
+                ->onlyFields()
+                ->extractLabels()
             : [];
     }
 
     public function getResource(): ?CrudResource
     {
+        /** @var CrudResource|null */
         return moonshineRequest()->getResource();
     }
 
+    public function getResourceOrFail(): CrudResource
+    {
+        return $this->getResource() ?? throw ResourceException::notDeclared();
+    }
+
+    /** @phpstan-assert-if-true CrudResource $this->getResource() */
     public function hasResource(): bool
     {
         return ! \is_null($this->getResource());

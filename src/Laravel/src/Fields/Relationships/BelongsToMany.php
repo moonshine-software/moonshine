@@ -31,6 +31,7 @@ use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
@@ -49,8 +50,9 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model, covariant \Illuminate\Database\Eloquent\Relations\Pivot> = \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model>
  *
+ * @implements HasAsyncSearchContract<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, \MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest>
  * @extends ModelRelationField<R>
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements FieldWithComponentContract<TableBuilderContract|ComponentContract|ActionButtonContract>
@@ -90,6 +92,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $inLine = false;
 
+    /** @var null|(Closure(TableBuilderContract, bool): TableBuilderContract) */
     protected ?Closure $modifyTable = null;
 
     /**
@@ -106,6 +109,9 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $selectMode = false;
 
+    /**
+     * @var list<ActionButtonContract>
+     */
     protected array $buttons = [];
 
     protected ?string $columnLabel = null;
@@ -114,6 +120,7 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $isDeduplicate = true;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function deduplication(Closure|bool|null $condition = null): static
     {
         $this->isDeduplicate = value($condition, $this) ?? true;
@@ -159,6 +166,9 @@ class BelongsToMany extends ModelRelationField implements
         return $this->selectMode;
     }
 
+    /**
+     * @param list<ActionButtonContract> $buttons
+     */
     public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
@@ -220,23 +230,31 @@ class BelongsToMany extends ModelRelationField implements
         return $this->getRelation()?->getRelated()?->getKeyName() ?? 'id';
     }
 
+    /**
+     * @return EloquentCollection<array-key, mixed>
+     */
+    // @phpstan-ignore generics.notSubtype (The legacy collection also carries raw filter IDs, not only models.)
     public function getCollectionValue(): EloquentCollection
     {
-        return new EloquentCollection($this->getValue() ?? []);
+        return EloquentCollection::wrap($this->getValue() ?? []);
     }
 
+    /**
+     * @return array<array-key, int|string>
+     */
     public function getSelectedValue(): string|array
     {
         $selected = $this->isValueWithModels()
             ? $this->getCollectionValue()->pluck($this->getRelatedKeyName())
             : $this->getCollectionValue();
 
-        return $selected->toArray();
+        /** @var array<array-key, int|string> */
+        return $selected->all();
     }
 
     protected function isValueWithModels(mixed $data = null): bool
     {
-        $data = new Collection($data ?? $this->toValue());
+        $data = Collection::wrap($data ?? $this->toValue());
 
         if ($data->isEmpty()) {
             return false;
@@ -254,7 +272,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function getResourceColumnLabel(): string
     {
-        return $this->columnLabel ?? $this->getResource()->getTitle();
+        return $this->columnLabel ?? $this->getResourceOrFail()->getTitle();
     }
 
     public function getPivotName(): string
@@ -282,7 +300,7 @@ class BelongsToMany extends ModelRelationField implements
         $values = parent::prepareFill($raw, $casted);
 
         if (! $values instanceof EloquentCollection) {
-            return EloquentCollection::make($values);
+            return EloquentCollection::wrap($values);
         }
 
         return $values;
@@ -317,7 +335,8 @@ class BelongsToMany extends ModelRelationField implements
             return $this->getKeys();
         }
 
-        $values = $this->memoizeValues ?? ($this->isAsyncSearch() ? $this->toValue() : $this->resolveValuesQuery()->get());
+        /** @var Collection<array-key, Model> $values */
+        $values = $this->memoizeValues ?? ($this->isAsyncSearch() ? Collection::wrap($this->toValue()) : $this->resolveValuesQuery()->get());
 
         return $values->map(function ($value) {
             if (! $this->isValueWithModels()) {
@@ -331,9 +350,9 @@ class BelongsToMany extends ModelRelationField implements
                 return $value;
             }
 
-            $checked = $this
-                ->toValue()
-                ->first(static fn ($item): bool => $item->getKey() === $value->getKey());
+            /** @var Model|null $checked */
+            $checked = Collection::wrap($this->toValue())
+                ->first(static fn (mixed $item): bool => $item instanceof Model && $item->getKey() === $value->getKey());
 
             return $value
                 ->setRelations($checked?->getRelations() ?? $value->getRelations());
@@ -350,6 +369,7 @@ class BelongsToMany extends ModelRelationField implements
             return $this->resolvedComponent = $this->getPivotModalTable();
         }
 
+        /** @var Collection<array-key, Model> $values */
         $values = $this->getAvailableValues();
 
         if ($this->isRelatedLink()) {
@@ -359,7 +379,7 @@ class BelongsToMany extends ModelRelationField implements
         $removeAfterClone = false;
 
         if (! $this->isPreviewMode() && $this->isAsyncSearch() && blank($values)) {
-            $values->push($this->getResource()->getDataInstance());
+            $values->push($this->getResourceOrFail()->getDataInstance());
             $removeAfterClone = true;
         }
 
@@ -398,7 +418,7 @@ class BelongsToMany extends ModelRelationField implements
                 $removeAfterClone,
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->removeAfterClone(),
             )
-            ->cast($this->getResource()->getCaster())
+            ->cast($this->getResourceOrFail()->getCaster())
             ->simple()
             ->editable()
             ->reindex(prepared: true)
@@ -412,6 +432,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function getColumnOrFormattedValue(Model $item, string|int $default): string|int
     {
         if (! \is_null($this->getFormattedValueCallback())) {
+            /** @var string|int */
             return \call_user_func(
                 $this->getFormattedValueCallback(),
                 $item,
@@ -430,19 +451,25 @@ class BelongsToMany extends ModelRelationField implements
             return $this->toValue();
         }
 
+        /** @var array<array-key, array<string, mixed>> $oldPivot */
         $oldPivot = $this->getCore()->getRequest()->getOld($this->getPivotName());
 
-        return Collection::make($old)
-            ->map(fn (int|string|null $key): Model => clone $this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()))
+        /** @var Collection<array-key, int|string|null> $keys */
+        $keys = Collection::wrap($old);
+
+        return $keys
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
             ->values();
     }
 
     protected function resolveValue(): mixed
     {
         if (\is_array($this->toValue())) {
+            /** @var Collection<array-key, int|string|null> $keys */
+            $keys = Collection::wrap($this->toValue());
             $this->setValue(
-                Collection::make($this->toValue())
-                    ->map(fn (int|string|null $key): Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
+                $keys
+                    ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
                     ->values()
             );
         }
@@ -453,7 +480,7 @@ class BelongsToMany extends ModelRelationField implements
     protected function resolveRawValue(): mixed
     {
         return $this->getCollectionValue()
-            ->map(static fn (Model $item) => $item->getKey())
+            ->map(static fn (mixed $item): mixed => $item instanceof Model ? $item->getKey() : $item)
             ->toJson();
     }
 
@@ -462,6 +489,7 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolvePreview(): Renderable|string
     {
+        /** @var EloquentCollection<array-key, Model> $values */
         $values = $this->getCollectionValue();
         $column = $this->getResourceColumn();
 
@@ -475,7 +503,7 @@ class BelongsToMany extends ModelRelationField implements
 
         if ($this->inLine) {
             return $values->implode(function (Model $item) use ($column) {
-                $value = $this->getColumnOrFormattedValue($item, data_get($item, $column, '') ?? null);
+                $value = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, '')));
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
@@ -485,12 +513,11 @@ class BelongsToMany extends ModelRelationField implements
                         ? $linkValue
                         : Link::make(
                             $linkValue,
-                            $value,
+                            (string) $value,
                         );
                 }
 
                 /** @var Badge|bool $badgeValue */
-                /** @phpstan-ignore-next-line  */
                 $badgeValue = value($this->inLineBadge, $item, $value, $this);
 
                 if ($badgeValue !== false) {
@@ -498,7 +525,7 @@ class BelongsToMany extends ModelRelationField implements
                         ? $badgeValue
                         : Badge::make((string) $value, Color::PRIMARY);
 
-                    return $badge->customAttributes(['class' => 'm-1'])->render();
+                    return (string) $badge->customAttributes(['class' => 'm-1']);
                 }
 
                 return $value;
@@ -509,20 +536,23 @@ class BelongsToMany extends ModelRelationField implements
             ->prepend(Text::make($this->getResourceColumnLabel(), $column, $this->getFormattedValueCallback()))
             ->prepend(ID::make());
 
-        return TableBuilder::make($fields, $values)
+        return (string) TableBuilder::make($fields, $values)
             ->preview()
             ->simple()
-            ->cast($this->getResource()->getCaster())
+            ->cast($this->getResourceOrFail()->getCaster())
             ->when(
                 ! \is_null($this->modifyTable),
                 fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false),
-            )
-            ->render();
+            );
     }
 
+    /**
+     * @return Collection<array-key, int|string>
+     */
     public function getCheckedKeys(): Collection
     {
-        $requestValues = new Collection($this->getRequestValue() ?: []);
+        /** @var Collection<array-key, int|string> $requestValues */
+        $requestValues = Collection::wrap($this->getRequestValue() ?: []);
 
         if ($this->isSelectMode() || $this->isTree() || $this->isHorizontalMode()) {
             return $requestValues;
@@ -536,6 +566,9 @@ class BelongsToMany extends ModelRelationField implements
 
     }
 
+    /**
+     * @return array<array-key, int|string>
+     */
     public function getKeys(): array
     {
         if (\is_null($this->getValue())) {
@@ -543,10 +576,11 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->isValueWithModels()) {
+            /** @var array<array-key, int|string> */
             return $this->getCollectionValue()->modelKeys();
         }
 
-        return $this->getCollectionValue()->keys()->toArray();
+        return $this->getCollectionValue()->keys()->all();
     }
 
     protected function resolveOnApply(): ?Closure
@@ -563,7 +597,7 @@ class BelongsToMany extends ModelRelationField implements
             return $data;
         }
 
-        /* @var Model $item */
+        /** @var Model $item */
         $item = $data;
 
         $checkedKeys = $this->getCheckedKeys();
@@ -576,7 +610,7 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($simpleSync && self::$silentApply === false) {
-            $item->{$this->getRelationName()}()->sync($checkedKeys);
+            $this->getRelationFor($item)->sync($checkedKeys);
 
             return $item;
         }
@@ -600,32 +634,39 @@ class BelongsToMany extends ModelRelationField implements
                     $values,
                 );
 
-                $applyValues[$index][$this->getRelatedKeyName()] = $key;
+                $row = $applyValues[$index] ?? [];
+                $row[$this->getRelatedKeyName()] = $key;
 
                 data_set(
-                    /** @phpstan-ignore-next-line  */
-                    $applyValues[$index],
+                    $row,
                     str_replace($this->getPivotAs() . '.', '', $field->getColumn()),
                     data_get($apply, $field->getColumn()),
                 );
+                /** @var array<string, mixed> $row */
+                $applyValues[$index] = $row;
             }
         }
 
-        $result = new Collection($applyValues)->mapWithKeys(fn (array $value, int $index): array => $this->isDeduplicate() ? [
-            $value[$this->getRelatedKeyName()] => data_forget($value, $this->getRelatedKeyName()),
-        ] : [$index => $value]);
+        $result = new Collection($applyValues)->mapWithKeys(function (array $value, int|string $index): array {
+            /** @var int|string $key */
+            $key = $value[$this->getRelatedKeyName()];
+
+            return $this->isDeduplicate()
+                ? [$key => \Illuminate\Support\Arr::except($value, $this->getRelatedKeyName())]
+                : [$index => $value];
+        });
 
         if (self::$silentApply) {
             data_set($item, $this->getRelationName(), $result->toArray());
         } elseif ($this->isDeduplicate() === false) {
-            $item->{$this->getRelationName()}()->sync([]);
+            $this->getRelationFor($item)->sync([]);
 
-            $result->each(fn (array $value) => $item->{$this->getRelationName()}()->attach(
+            $result->each(fn (array $value) => $this->getRelationFor($item)->attach(
                 $value[$this->getRelatedKeyName()],
-                data_forget($value, $this->getRelatedKeyName())
+                \Illuminate\Support\Arr::except($value, $this->getRelatedKeyName())
             ));
         } else {
-            $item->{$this->getRelationName()}()->sync($result);
+            $this->getRelationFor($item)->sync($result);
         }
 
         return $item;
@@ -652,13 +693,13 @@ class BelongsToMany extends ModelRelationField implements
      */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        if (! $this->getResource()->isDeleteRelationships()) {
+        if (! $this->getResourceOrFail()->isDeleteRelationships()) {
             return $data;
         }
 
         $values = $this->toValue(withDefault: false);
 
-        if (filled($values)) {
+        if (is_iterable($values) && filled($values)) {
             foreach ($values as $value) {
                 $this->getFields()
                     ->onlyFields()
@@ -676,8 +717,10 @@ class BelongsToMany extends ModelRelationField implements
     public function prepareReactivityValue(mixed $value, mixed &$casted, array &$except): mixed
     {
         $casted = $this->getRelatedModel();
-        $value = Collection::make($value)
-            ->map(fn (int|string|null $key): Model => clone $this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()))
+        /** @var Collection<array-key, int|string|null> $keys */
+        $keys = Collection::wrap($value);
+        $value = $keys
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
             ->values();
 
         $casted?->setRelation($this->getRelationName(), $value);

@@ -41,7 +41,7 @@ class OptimizeCommand extends MoonShineCommand
     }
 
     /**
-     * @return array<class-string, array>
+     * @return array<class-string, array<array-key, mixed>>
      */
     protected function getFreshSources(OptimizerCollectionContract $optimizer, MenuAutoloaderContract $menuAutoloader, CacheAttributesContract $cacheAttributes): array
     {
@@ -55,7 +55,7 @@ class OptimizeCommand extends MoonShineCommand
     /**
      * @param  Filesystem  $storage
      * @param  string  $cachePath
-     * @param  array<class-string, array>  $sources
+     * @param  array<class-string, array<array-key, mixed>>  $sources
      *
      * @return void
      */

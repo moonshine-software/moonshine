@@ -43,7 +43,8 @@ class ResourcesCommand extends Command
     }
 
     /**
-     * @return Collection<int, array{type: string, class: string, url: string}>
+     * @return Collection<int, array{type: string, class: class-string, url: string}>
+     * @param iterable<array-key, ResourceContract> $resources
      */
     protected function getRows(iterable $resources): Collection
     {
@@ -70,6 +71,9 @@ class ResourcesCommand extends Command
         return $rows;
     }
 
+    /**
+     * @param Collection<int, array{type: string, class: class-string, url: string}> $rows
+     */
     protected function asJson(Collection $rows): string
     {
         $result = [];
@@ -97,11 +101,12 @@ class ResourcesCommand extends Command
             $result[] = $currentResource;
         }
 
-        return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 
     /**
      * @return list<string>
+     * @param Collection<int, array{type: string, class: class-string, url: string}> $rows
      */
     protected function forCli(Collection $rows): array
     {
@@ -110,7 +115,7 @@ class ResourcesCommand extends Command
         $resourceCount = $rows->where('type', 'resource')->count();
         $pageCount = $rows->where('type', 'page')->count();
 
-        return $rows->map(fn (array $row): string => $row['type'] === 'resource'
+        return array_values($rows->map(fn (array $row): string => $row['type'] === 'resource'
                 ? $this->formatResourceLine($row, $terminalWidth)
                 : $this->formatPageLine($row, $terminalWidth))
             ->prepend('')
@@ -120,9 +125,12 @@ class ResourcesCommand extends Command
                 $terminalWidth
             ))
             ->push('')
-            ->toArray();
+            ->all());
     }
 
+    /**
+     * @param array{type: string, class: class-string, url: string} $row
+     */
     protected function formatResourceLine(array $row, int $terminalWidth): string
     {
         return $this->formatLine(
@@ -134,6 +142,9 @@ class ResourcesCommand extends Command
         );
     }
 
+    /**
+     * @param array{type: string, class: class-string, url: string} $row
+     */
     protected function formatPageLine(array $row, int $terminalWidth): string
     {
         return $this->formatLine(

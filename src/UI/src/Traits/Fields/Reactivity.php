@@ -18,8 +18,10 @@ use MoonShine\UI\Exceptions\FieldException;
  */
 trait Reactivity
 {
+    /** @var (Closure(FieldsContract, mixed, static, array<string, mixed>, array<string, mixed>): FieldsContract)|null */
     protected ?Closure $reactiveCallback = null;
 
+    /** @var (Closure(string, string): array<string, string>)|null */
     protected ?Closure $reactiveAttributes = null;
 
     protected bool $isReactive = false;
@@ -139,7 +141,7 @@ trait Reactivity
      */
     public function getReactiveAttributes(?string $dot = null, ?string $class = null): array
     {
-        if (! $this->isReactive()) {
+        if (! $this->isReactive() || $this->reactiveAttributes === null) {
             return [];
         }
 

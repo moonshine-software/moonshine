@@ -18,6 +18,7 @@ use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\EnumToString;
+use MoonShine\Support\Stringify;
 use MoonShine\Support\VO\FieldEmptyValue;
 use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Contracts\FieldsWrapperContract;
@@ -63,6 +64,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
 
     protected mixed $rawValue = null;
 
+    /** @var null|(Closure(mixed, mixed, static): mixed) */
     protected ?Closure $rawValueCallback = null;
 
     protected mixed $formattedValue = null;
@@ -70,19 +72,22 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     /** @var null|Closure(mixed, int, static): mixed */
     protected ?Closure $formattedValueCallback = null;
 
+    /** @var null|(Closure(mixed, static): mixed) */
     protected ?Closure $fromRaw = null;
 
+    /** @var null|(Closure(mixed, static): mixed) */
     protected ?Closure $fillCallback = null;
 
     /** @var null|Closure(static): static */
     protected ?Closure $afterFillCallback = null;
 
-    protected mixed $data = null;
+    protected ?DataWrapperContract $data = null;
 
     protected int $rowIndex = 0;
 
     protected static ?Closure $requestValueResolver = null;
 
+    /** @var null|(Closure(mixed, string, mixed, static): mixed) */
     protected ?Closure $onRequestValue = null;
 
     protected ?string $requestKeyPrefix = null;
@@ -289,11 +294,13 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
     {
         $wrapper = $this instanceof WrapperWithApplyContract || $this instanceof FieldsWrapperContract;
         $empty = [];
+        /** @var array<string, mixed> $raw */
+        $raw = $wrapper
+            ? (\is_array($value) ? $value : [])
+            : data_set($empty, $this->getColumn(), $value);
 
         return $this->resolveFill(
-            $wrapper
-                ? $value
-                : data_set($empty, $this->getColumn(), $value),
+            $raw,
             $casted,
             $index
         );
@@ -464,11 +471,13 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return $this;
     }
 
+    /** @phpstan-assert-if-true Closure $this->fillCallback */
     public function isFillChanged(): bool
     {
         return ! \is_null($this->fillCallback);
     }
 
+    /** @phpstan-assert-if-true Closure $this->rawValueCallback */
     public function isRawValueModified(): bool
     {
         return ! \is_null($this->rawValueCallback);
@@ -549,7 +558,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         $this->getWrapperAttributes()->remove('class');
 
         $this->wrapperAttributes = $this->wrapperAttributes->class(
-            trim((string) preg_replace("/(?<=\s|^)$pattern(?=\s|$)/", '', (string) $before))
+            trim((string) preg_replace("/(?<=\s|^)$pattern(?=\s|$)/", '', Stringify::value($before)))
         );
 
         return $this;

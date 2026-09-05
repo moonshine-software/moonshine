@@ -16,6 +16,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\TextWrap;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Traits\Fields\Reactivity;
@@ -43,12 +44,16 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $rawMode = false;
 
+    /** @var null|(Closure(mixed, static): mixed) */
     protected ?Closure $previewCallback = null;
 
+    /** @var null|(Closure(mixed, static): (ComponentContract|FieldContract|Renderable|string)) */
     protected ?Closure $renderCallback = null;
 
+    /** @var null|(Closure(static): (Renderable|string)) */
     protected ?Closure $beforeRender = null;
 
+    /** @var null|(Closure(static): (Renderable|string)) */
     protected ?Closure $afterRender = null;
 
     protected bool $withWrapper = true;
@@ -65,6 +70,7 @@ abstract class Field extends FormElement implements FieldContract
 
     protected bool $isInsideLabel = false;
 
+    /** @var null|(Closure(?DataWrapperContract, mixed, static): (string|null)) */
     protected ?Closure $onChangeUrl = null;
 
     protected ?TextWrap $textWrap = null;
@@ -115,6 +121,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
+    /** @phpstan-assert-if-true Closure $this->previewCallback */
     public function isPreviewChanged(): bool
     {
         return ! \is_null($this->previewCallback);
@@ -151,6 +158,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this->stickyColumn;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function nullable(Closure|bool|null $condition = null): static
     {
         $this->nullable = value($condition, $this) ?? true;
@@ -170,6 +178,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function withoutWrapper(Closure|bool|null $condition = null): static
     {
         $result = value($condition, $this) ?? true;
@@ -208,6 +217,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this->isBeforeLabel;
     }
 
+    /** @param array<string, mixed>|Closure(mixed): array<string, mixed> $params */
     public function onChangeMethod(
         string $method,
         array|Closure $params = [],
@@ -238,7 +248,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(mixed $data, mixed $value, static $field): string  $url
+     * @param  Closure(?DataWrapperContract $data, mixed $value, static $field): (string|null)  $url
      * @param  string[]  $events
      */
     public function onChangeUrl(
@@ -321,7 +331,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(static $ctx): mixed  $callback
+     * @param  Closure(static $ctx): (Renderable|string)  $callback
      */
     public function beforeRender(Closure $callback): static
     {
@@ -338,7 +348,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(static $ctx): mixed  $callback
+     * @param  Closure(static $ctx): (Renderable|string)  $callback
      */
     public function afterRender(Closure $callback): static
     {
@@ -386,6 +396,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
+    /** @phpstan-assert-if-true Closure $this->renderCallback */
     public function isRenderChanged(): bool
     {
         return ! \is_null($this->renderCallback);
@@ -403,6 +414,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this->textWrap;
     }
 
+    /** @phpstan-assert-if-true TextWrap $this->textWrap */
     public function hasTextWrap(): bool
     {
         return $this->textWrap instanceof TextWrap;
@@ -418,15 +430,15 @@ abstract class Field extends FormElement implements FieldContract
     public function preview(): Renderable|string
     {
         if ($this->isRawMode()) {
-            return (string) ($this->toRawValue() ?? '');
+            return Stringify::value($this->toRawValue() ?? '');
         }
 
         if ($this->isPreviewChanged()) {
-            return (string) \call_user_func(
+            return Stringify::value(\call_user_func(
                 $this->previewCallback,
                 $this->toValue(),
                 $this,
-            );
+            ));
         }
 
         $preview = $this->resolvePreview();
@@ -435,7 +447,7 @@ abstract class Field extends FormElement implements FieldContract
         if ($this->hasTextWrap()) {
             return Str::wrap(
                 (string) $decorated,
-                '<div class="text-' . $this->getTextWrap()->value . '">',
+                '<div class="text-' . $this->textWrap->value . '">',
                 '</div>'
             );
         }
@@ -445,10 +457,10 @@ abstract class Field extends FormElement implements FieldContract
 
     protected function resolvePreview(): Renderable|string
     {
-        return (string) ($this->toFormattedValue() ?? '');
+        return Stringify::value($this->toFormattedValue() ?? '');
     }
 
-    private function previewDecoration(Renderable|string $value): Renderable|string
+    private function previewDecoration(Renderable|string $value): string
     {
         if ($value instanceof Renderable) {
             return $value->render();
@@ -463,22 +475,20 @@ abstract class Field extends FormElement implements FieldContract
             )
                 ->when(
                     ! $this->isWithoutIcon() && $this->getLinkIcon() !== null,
-                    fn (Link $ctx): Link => $ctx->icon($this->getLinkIcon())
+                    fn (Link $ctx): Link => $ctx->icon($this->getLinkIcon() ?? '')
                 )
                 ->when(
                     $this->isLinkBlank(),
                     fn (Link $ctx): Link => $ctx->blank()
-                )
-                ->render();
+                );
         }
 
         if ($value !== '' && $this->isBadge()) {
-            return Badge::make(
+            return (string) Badge::make(
                 (string) $value,
                 $this->getBadgeColor($this->toValue()),
                 $this->getBadgeIcon($this->toValue()),
-            )
-                ->render();
+            );
         }
 
         return $value;
@@ -533,14 +543,14 @@ abstract class Field extends FormElement implements FieldContract
             }
 
             if ($render instanceof ComponentContract) {
-                return (string) $render->render();
+                return (string) $render;
             }
 
             return $render;
         }
 
         if ($this->getView() === '') {
-            return $this->toValue();
+            return $this->stringifySlotContent($this->toValue());
         }
 
         return $this->renderView();

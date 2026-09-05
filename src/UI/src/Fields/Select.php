@@ -7,7 +7,9 @@ namespace MoonShine\UI\Fields;
 use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\UI\HasAsyncContract;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
@@ -56,13 +58,13 @@ class Select extends Field implements
 
         if ($this->isBadge() && $this->isMultiple()) {
             /** @var Collection<array-key, string|int> $collection */
-            $collection = new Collection($value);
-            $values = $collection->map(fn (string|int $v): string => (string) Badge::make($v, $this->getBadgeColor($v), $this->getBadgeIcon($v)));
+            $collection = Collection::wrap($value);
+            $values = $collection->map(fn (string|int $v): string => (string) Badge::make((string) $v, $this->getBadgeColor($v), $this->getBadgeIcon($v)));
 
             $this->isBadge = false;
 
             return (string) Flex::make([
-                $this->getMultiplePreview($values, ''),
+                FlexibleRender::make($this->getMultiplePreview($values, '')),
             ])->unwrap()->withoutSpace()->class('gap-1');
         }
 
@@ -74,7 +76,7 @@ class Select extends Field implements
             return '';
         }
 
-        return (string)data_get($this->getValues()->flatten(), "$value.label", '');
+        return Stringify::value(data_get($this->getValues()->flatten(), Stringify::value($value) . '.label', ''));
     }
 
     public function asyncOnInit(bool $whenOpen = true, bool $withLoading = false): static

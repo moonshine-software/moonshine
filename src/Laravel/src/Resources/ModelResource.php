@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -38,13 +39,13 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template TData of Model
- * @template-covariant TIndexPage of null|IndexPageContract = null
- * @template-covariant TFormPage of null|FormPageContract = null
- * @template-covariant TDetailPage of null|DetailPageContract = null
+ * @template TData of Model = Model
+ * @template-covariant TIndexPage of null|IndexPageContract = IndexPageContract
+ * @template-covariant TFormPage of null|FormPageContract = FormPageContract
+ * @template-covariant TDetailPage of null|DetailPageContract = DetailPageContract
  *
  * @extends CrudResource<MoonShine, TData, TIndexPage, TFormPage, TDetailPage, ModelNotFoundException<TData>, Fields>
- * @implements WithQueryBuilderContract<Builder>
+ * @implements WithQueryBuilderContract<Builder<TData>|\Illuminate\Database\Eloquent\Relations\Relation<TData, Model, mixed>>
  *
  * @use ResourceWithFields<Fields>
  */
@@ -59,6 +60,30 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
     protected string $model;
 
     protected string $column = '';
+
+    /**
+     * @return TIndexPage|null
+     */
+    public function getIndexPage(): ?PageContract
+    {
+        return parent::getIndexPage();
+    }
+
+    /**
+     * @return TFormPage|null
+     */
+    public function getFormPage(): ?PageContract
+    {
+        return parent::getFormPage();
+    }
+
+    /**
+     * @return TDetailPage|null
+     */
+    public function getDetailPage(): ?PageContract
+    {
+        return parent::getDetailPage();
+    }
 
     public function flushState(): void
     {
@@ -116,7 +141,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
         $checkCustomRules = moonshineConfig()
             ->getAuthorizationRules()
-            ->every(fn ($rule) => $rule($this, $user, $ability, $item));
+            ->every(fn (Closure $rule): bool => $rule($this, $user, $ability, $item));
 
         if (! $checkCustomRules) {
             return false;
@@ -141,23 +166,27 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
      */
     public function massDelete(array $ids): void
     {
-        if ($handler = Attributes::for($this, MassDestroyHandler::class)->first()) {
+        $handler = Attributes::for($this, MassDestroyHandler::class)->first();
+
+        if ($handler instanceof MassDestroyHandler) {
             $service = $this->getCore()->getContainer($handler->service);
 
-            $handler->method === null
-                ? $service($ids)
-                : $service->{$handler->method}($ids);
+            /** @var callable(array<array-key, int|string>): void $callback */
+            $callback = $handler->method === null ? $service : [$service, $handler->method];
+            $callback($ids);
 
             return;
         }
 
         $this->beforeMassDeleting($ids);
 
-        $this->getDataInstance()
-            ->newModelQuery()
+        /** @var Builder<TData> $query */
+        $query = $this->getDataInstance()->newModelQuery();
+        /** @var \Illuminate\Database\Eloquent\Collection<int, TData> $items */
+        $items = $query
             ->whereIn($this->getDataInstance()->getKeyName(), $ids)
-            ->get()
-            ->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
+            ->get();
+        $items->each(fn ($item): bool => $this->delete($this->getCaster()->cast($item)));
 
         $this->afterMassDeleted($ids);
     }
@@ -173,12 +202,15 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
         $fields->fill($item->toArray(), $item);
 
-        if ($handler = Attributes::for($this, DestroyHandler::class)->first()) {
+        $handler = Attributes::for($this, DestroyHandler::class)->first();
+
+        if ($handler instanceof DestroyHandler) {
             $service = $this->getCore()->getContainer($handler->service);
 
-            return $handler->method === null
-                ? $service($item->getOriginal())
-                : $service->{$handler->method}($item->getOriginal());
+            /** @var callable(TData): bool $callback */
+            $callback = $handler->method === null ? $service : [$service, $handler->method];
+
+            return $callback($item->getOriginal());
         }
 
         $item = $this->beforeDeleting($item);
@@ -188,7 +220,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
             ! $field->isToOne() ?: $relationItems = new Collection([$relationItems]);
 
-            $relationItems->each(
+            Collection::wrap($relationItems)->each(
                 static fn (mixed $relationItem): mixed => $field->afterDestroy($relationItem),
             );
         };
@@ -228,11 +260,13 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
         $fields->fill($item->toArray(), $item);
 
-        if ($handler = Attributes::for($this, SaveHandler::class)->first()) {
+        $handler = Attributes::for($this, SaveHandler::class)->first();
+
+        if ($handler instanceof SaveHandler) {
             $result = $this->resolveSaveHandler($handler, $item, $fields);
             $this->setItem($result);
 
-            return $this->getCastedData();
+            return $this->getCastedData() ?? $this->getCaster()->cast($result);
         }
 
         try {
@@ -281,9 +315,10 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
             return $item->toArray();
         });
 
-        return $handler->method === null
-            ? $service($initial->getOriginal(), $data)
-            : $service->{$handler->method}($initial->getOriginal(), $data);
+        /** @var callable(TData, array<string, mixed>): TData $callback */
+        $callback = $handler->method === null ? $service : [$service, $handler->method];
+
+        return $callback($initial->getOriginal(), $data);
     }
 
     public function fieldApply(FieldContract $field): Closure

@@ -41,6 +41,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
      */
     protected array $events = [];
 
+    /** @var null|(Closure(ActionButtonContract, self): ActionButtonContract) */
     protected ?Closure $modifyButton = null;
 
     public function __construct(
@@ -75,6 +76,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
         return Str::of($this->getLabel())->slug()->value();
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function default(Closure|bool|null $condition = null): self
     {
         $this->isDefault = value($condition, $this) ?? true;
@@ -163,7 +165,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
                 fn (ActionButtonContract $btn): ActionButtonContract => $btn->showInDropdown()
             )->when(
                 ! \is_null($this->modifyButton),
-                fn (ActionButtonContract $btn): ActionButtonContract => \call_user_func($this->modifyButton, $btn, $this)
+                fn (ActionButtonContract $btn): ActionButtonContract => $this->modifyButton === null ? $btn : ($this->modifyButton)($btn, $this)
             )->when(
                 $this->events !== [],
                 fn (ActionButtonContract $btn): ActionButtonContract => $btn->customAttributes([

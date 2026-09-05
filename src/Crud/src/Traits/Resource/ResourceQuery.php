@@ -62,12 +62,12 @@ trait ResourceQuery
     protected string $queryParamPrefix = '';
 
     /**
-     * @return iterable<T>|Collection<array-key, T>|LazyCollection<array-key, T>|CursorPaginator<array-key, T>|Paginator<array-key, T>
+     * @return iterable<array-key, T>
      */
     abstract public function getItems(): iterable|Collection|LazyCollection|CursorPaginator|Paginator;
 
     /**
-     * @return null|DataWrapperContract<T>
+     * @return ($orFail is true ? DataWrapperContract<T> : DataWrapperContract<T>|null)
      */
     abstract public function findItem(bool $orFail = false): ?DataWrapperContract;
 
@@ -109,7 +109,8 @@ trait ResourceQuery
     }
 
     /**
-     * @return null|T
+     * @param Closure(): (T|null) $callback
+     * @return T|null
      */
     protected function itemOr(Closure $callback): mixed
     {
@@ -168,9 +169,7 @@ trait ResourceQuery
             return $this->getDataInstance();
         }
 
-        return $this->itemOr(
-            fn () => $this->findItem()?->getOriginal() ?? $this->getDataInstance(),
-        );
+        return $this->item = $this->findItem()?->getOriginal() ?? $this->getDataInstance();
     }
 
     /**
@@ -183,16 +182,15 @@ trait ResourceQuery
             return $this->item;
         }
 
-        return $this->itemOr(
-            fn () => $this->findItem(orFail: true)->getOriginal(),
-        );
+        return $this->item = $this->findItem(orFail: true)->getOriginal();
     }
 
     protected function withSearch(string $queryKey): static
     {
         $term = data_get($this->getQueryParams(), $queryKey);
 
-        if ($this->hasSearch() && filled($term)) {
+        if ($this->hasSearch() && \is_string($term) && filled($term)) {
+            /** @var iterable<string>|null $fullTextColumns */
             $fullTextColumns = $this->getCore()->getAttributes()->get(
                 default: fn (): mixed => Attributes::for($this)
                     ->attribute(SearchUsingFullText::class)
@@ -215,7 +213,7 @@ trait ResourceQuery
     }
 
     /**
-     * @param  iterable<string, string>|null  $fullTextColumns
+     * @param  iterable<string>|null  $fullTextColumns
      */
     protected function resolveSearch(string $terms, ?iterable $fullTextColumns = null): static
     {
@@ -229,13 +227,14 @@ trait ResourceQuery
         return $this->sortColumn;
     }
 
+    /** @return 'asc'|'desc' */
     public function getSortDirection(): string
     {
         return $this->sortDirection->value;
     }
 
     /**
-     * @return array<array-key, mixed>
+     * @return array{string, 'asc'|'desc', Closure|null}
      * @throws Throwable
      */
     protected function prepareOrder(): array
@@ -316,14 +315,19 @@ trait ResourceQuery
 
     protected function getPaginatorPage(): int
     {
-        $page = $this->paginatorPage ?? (int)$this->getQueryParam('page');
+        /** @var scalar|null $requestedPage */
+        $requestedPage = $this->getQueryParam('page');
+        $page = $this->paginatorPage ?? (int) $requestedPage;
 
         if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
-            return (int)data_get(
+            /** @var scalar|null $cachedPage */
+            $cachedPage = data_get(
                 $this->getCore()->getCache()->get($this->getQueryCacheKey(), []),
                 'page',
                 $page,
             );
+
+            return (int) $cachedPage;
         }
 
         return $page;
@@ -425,14 +429,15 @@ trait ResourceQuery
             && ! $this->hasQueryParam('reset')
             && ! $this->getQueryParams()->hasAny($this->getCachedRequestKeys())
         ) {
-            /** @var Collection<string, mixed> $collection */
-            $collection = new Collection($this->getCore()->getCache()->get($this->getQueryCacheKey(), []));
+            /** @var Collection<string, mixed>|array{} $cached */
+            $cached = $this->getCore()->getCache()->get($this->getQueryCacheKey(), []);
+            $collection = new Collection($cached);
 
             $this->setQueryParams(
                 $this->getQueryParams()->merge(
                     $collection->filter(
                         fn (mixed $value, string $key): bool => ! $this->hasQueryParam($key),
-                    )->toArray(),
+                    )->all(),
                 ),
             );
         }
@@ -447,6 +452,7 @@ trait ResourceQuery
     public function getFilterParams(): array
     {
         $default = $this->getQueryParam('filter', []);
+        $default = \is_array($default) ? $default : [];
 
         if ($this->isSaveQueryState() && $this->hasQueryParam('filter') && ! $this->hasQueryParam('reset')) {
             return $default;
@@ -455,11 +461,13 @@ trait ResourceQuery
         if ($this->isSaveQueryState() && ! $this->hasQueryParam('reset')) {
             $cached = $this->getCore()->getCache()->get($this->getQueryCacheKey(), []);
 
-            return data_get(
+            $filters = data_get(
                 $cached,
                 $this->getQueryParamName('filter'),
                 data_get($cached, 'filter', $default),
             );
+
+            return \is_array($filters) ? $filters : $default;
         }
 
         return $default;
@@ -483,15 +491,17 @@ trait ResourceQuery
 
         foreach ($filters as $filter) {
             if ($filter instanceof RangeFieldContract) {
-                data_forget($params, $filter->getColumn());
+                \Illuminate\Support\Arr::forget($params, $filter->getColumn());
             }
         }
 
+        /** @var array<string, mixed> $params */
         $filters->fill(
             $params,
             $this->getCaster()->cast($params),
         );
 
+        /** @var TFields */
         return $filters;
     }
 }

@@ -36,6 +36,9 @@ final class QuickPage extends Page
         return [];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function setContentView(string $path, array $data = []): self
     {
         $this->setComponents([

@@ -24,9 +24,12 @@ interface HasQuickFormElementAttributesContract
 
     public function setId(string $id): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function required(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function disabled(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function readonly(Closure|bool|null $condition = null): static;
 }

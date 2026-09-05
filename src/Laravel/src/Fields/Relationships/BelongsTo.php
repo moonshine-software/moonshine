@@ -13,6 +13,7 @@ use MoonShine\Laravel\Traits\Fields\BelongsToOrManyCreatable;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
 use MoonShine\Support\Enums\Action;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\ConfigurableSelect;
@@ -23,8 +24,9 @@ use MoonShine\UI\Traits\Fields\WithEscapedValue;
 use Throwable;
 
 /**
- * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsTo
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model> = \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model>
  *
+ * @implements HasAsyncSearchContract<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, \MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest>
  * @extends ModelRelationField<R>
  */
 class BelongsTo extends ModelRelationField implements
@@ -51,39 +53,40 @@ class BelongsTo extends ModelRelationField implements
      */
     protected function resolvePreview(): string
     {
-        if (! $this->getResource()->hasAnyAction(Action::VIEW, Action::UPDATE)) {
+        if (! $this->getResourceOrFail()->hasAnyAction(Action::VIEW, Action::UPDATE)) {
             return $this->isUnescape()
-                ? parent::resolvePreview()
-                : $this->escapeValue((string)parent::resolvePreview());
+                ? $this->stringifySlotContent(parent::resolvePreview())
+                : $this->escapeValue($this->stringifySlotContent(parent::resolvePreview()));
         }
 
         if (! $this->hasLink() && $this->toValue()) {
-            $page = $this->getResource()->hasAction(Action::UPDATE)
-                ? $this->getResource()->getFormPage()
-                : $this->getResource()->getDetailPage();
+            $page = $this->getResourceOrFail()->hasAction(Action::UPDATE)
+                ? $this->getResourceOrFail()->getFormPage()
+                : $this->getResourceOrFail()->getDetailPage();
 
             if (\is_null($page)) {
                 throw PageException::required();
             }
 
             $this->link(
-                $this->getResource()->getPageUrl($page, ['resourceItem' => $this->getValue()]),
+                $this->getResourceOrFail()->getPageUrl($page, ['resourceItem' => Stringify::value($this->getValue())]),
                 withoutIcon: true,
             );
         }
 
         return $this->isUnescape()
-            ? parent::resolvePreview()
-            : $this->escapeValue((string)parent::resolvePreview());
+            ? $this->stringifySlotContent(parent::resolvePreview())
+            : $this->escapeValue($this->stringifySlotContent(parent::resolvePreview()));
     }
 
     protected function resolveValue(): mixed
     {
-        if (\is_scalar($this->toValue())) {
-            return $this->toValue();
+        $value = $this->toValue();
+        if (\is_scalar($value)) {
+            return $value;
         }
 
-        return $this->toValue()?->getKey();
+        return $value instanceof Model ? $value->getKey() : null;
     }
 
     public function isSelected(string $value): bool
@@ -92,12 +95,13 @@ class BelongsTo extends ModelRelationField implements
             return false;
         }
 
-        return (string)$this->toValue()->getKey() === $value;
+        return Stringify::value($this->resolveValue()) === $value;
     }
 
     protected function resolveOnApply(): ?Closure
     {
         return function (Model $item): Model {
+            /** @var Model|int|string|false|null $value */
             $value = $this->getRequestValue();
 
             if ($value === false && ! $this->isNullable()) {
@@ -105,21 +109,16 @@ class BelongsTo extends ModelRelationField implements
             }
 
             if (self::$silentApply) {
-                data_set($item, $this->getColumn(), $value);
+                $item->setAttribute($this->getColumn(), $value);
 
                 return $item;
             }
 
-            if ($value === false && $this->isNullable()) {
-                return $item
-                    ->{$this
-                        ->getRelationName()}()
-                    ->dissociate();
+            if ($value === false) {
+                return $this->getRelationFor($item)->dissociate();
             }
 
-            return $item->{$this
-                ->getRelationName()}()
-                ->associate($value);
+            return $this->getRelationFor($item)->associate($value);
         };
     }
 
@@ -131,7 +130,8 @@ class BelongsTo extends ModelRelationField implements
             $options = $this->getValues();
             $values = $options->getValues();
 
-            $value = $values->count() ? $values->first()->getValue() : null;
+            $option = $values->first();
+            $value = $option instanceof \MoonShine\Support\DTOs\Select\Option ? $option->getValue() : null;
         }
 
         return $value;
@@ -139,6 +139,7 @@ class BelongsTo extends ModelRelationField implements
 
     public function prepareReactivityValue(mixed $value, mixed &$casted, array &$except): ?Model
     {
+        /** @var int|string|null $value */
         $value = data_get($value, 'value', $value);
 
         $casted = $this->getRelatedModel();

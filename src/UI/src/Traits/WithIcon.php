@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
-use Closure;
-use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Icon;
 use Throwable;
@@ -30,7 +28,7 @@ trait WithIcon
     /**
      * @param  int  $size
      * @param  Color|string  $color
-     * @param  string[]  $attributes
+     * @param  array<string, mixed>  $attributes
      *
      * @return string
      */
@@ -54,16 +52,11 @@ trait WithIcon
             $icon->custom();
         }
 
-        $rescueIcon = static function (Closure $callback): Closure|Renderable|string {
-            try {
-                return $callback();
-            } catch (Throwable) {
-            }
-
+        try {
+            return (string) $icon;
+        } catch (Throwable) {
             return '';
-        };
-
-        return (string) $rescueIcon(static fn () => $icon->render());
+        }
     }
 
     public function isCustomIcon(): bool

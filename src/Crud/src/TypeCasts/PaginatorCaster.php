@@ -56,6 +56,7 @@ final readonly class PaginatorCaster implements PaginatorCasterContract
         $data['to'] ??= 1;
         $data['pageName'] ??= $this->pageName;
 
+        /** @var array{path: string, links: iterable<string, mixed>, data: iterable<array-key, mixed>, originalData: iterable<array-key, mixed>, currentPage: int, from: int|null, to: int|null, perPage: int, simple?: bool, total?: int|null, lastPage?: int|null, firstPageUrl?: string|null, prevPageUrl?: string|null, lastPageUrl?: string|null, nextPageUrl?: string|null, pageName: string, translates: array<string, string>} $data */
         return new Paginator(...$data);
     }
 }

@@ -22,16 +22,19 @@ final class DatabaseNotification extends Notification
         $this->color = $this->color instanceof Color ? $this->color->value : $this->color;
     }
 
-    public function via($notifiable): array
+    /**
+     * @return list<string>
+     */
+    public function via(mixed $notifiable): array
     {
         return ['database'];
     }
 
 
     /**
-     * @return array{message: string, button: array, color: ?string}
+     * @return array{message: string, button: array<string, mixed>, color: string|Color|null, icon: ?string}
      */
-    public function toArray($notifiable): array
+    public function toArray(mixed $notifiable): array
     {
         return [
             'message' => $this->message,

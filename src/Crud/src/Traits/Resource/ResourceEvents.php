@@ -77,7 +77,7 @@ trait ResourceEvents
     }
 
     /**
-     * @param  list<int>  $ids
+     * @param  array<array-key, int|string>  $ids
      */
     protected function beforeMassDeleting(array $ids): void
     {
@@ -85,7 +85,7 @@ trait ResourceEvents
     }
 
     /**
-     * @param  list<int>  $ids
+     * @param  array<array-key, int|string>  $ids
      */
     protected function afterMassDeleted(array $ids): void
     {

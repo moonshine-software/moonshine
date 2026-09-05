@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 
 /**
- * @implements ApplyContract<MorphTo>
+ * @implements ApplyContract<MorphTo, Builder>
  */
 class MorphToModelApply implements ApplyContract
 {

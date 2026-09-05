@@ -48,12 +48,13 @@ final class TableCells extends Collection implements TableCellsContract
 
     public function pushCell(Closure|string $content, ?int $index = null, ?Closure $builder = null, array $attributes = []): self
     {
-        return $this->push(
-            TableTd::make($content, $index)->when(
-                ! \is_null($builder),
-                static fn (TableCellContract $td) => $builder($td)
-            )->customAttributes($attributes)
-        );
+        $cell = TableTd::make($content, $index);
+
+        if ($builder !== null) {
+            $cell = $builder($cell) ?? $cell;
+        }
+
+        return $this->push($cell->customAttributes($attributes));
     }
 
     public function pushWhen(Closure|bool $condition, Closure $value): self

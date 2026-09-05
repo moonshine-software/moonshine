@@ -6,16 +6,12 @@ namespace MoonShine\Contracts\UI;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\TextWrap;
 
-/**
- * @mixin Conditionable
- */
 interface FieldContract extends
     FormElementContract,
     SortableFieldContract,
@@ -50,12 +46,14 @@ interface FieldContract extends
 
     public function isStickyColumn(): bool;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function nullable(Closure|bool|null $condition = null): static;
 
     public function isNullable(): bool;
 
     public function horizontal(): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function withoutWrapper(Closure|bool|null $condition = null): static;
 
     public function hasWrapper(): bool;

@@ -13,7 +13,7 @@ interface RequestContract
 
     public function get(string $key, mixed $default = null): mixed;
 
-    public function getScalar(string $key, mixed $default = null): mixed;
+    public function getScalar(string $key, mixed $default = null): string|int|float|bool|null;
 
     public function has(string $key): bool;
 
@@ -34,14 +34,14 @@ interface RequestContract
     public function getOld(string $key, mixed $default = null): mixed;
 
     /**
-     * @param  array<string, mixed>|string  $keys
+     * @param  array<string>|string  $keys
      *
      * @return array<string, mixed>
      */
     public function getOnly(array|string $keys): array;
 
     /**
-     * @param  array<string, mixed>|string  $keys
+     * @param  array<string>|string  $keys
      *
      * @return array<string, mixed>
      */
@@ -59,7 +59,7 @@ interface RequestContract
     public function urlIs(...$patterns): bool;
 
     /**
-     * @param  array<string, string|int|float|null> $query
+     * @param  array<string, string|int|float|bool|null> $query
      */
     public function getUrlWithQuery(array $query): string;
 

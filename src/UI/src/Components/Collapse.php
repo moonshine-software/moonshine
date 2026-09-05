@@ -12,7 +12,7 @@ use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label = '', iterable $components = [])
+ * @method static static make(Closure|string $label = '', iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [])
  */
 class Collapse extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {
@@ -32,6 +32,7 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
         parent::__construct($components);
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function open(Closure|bool|null $condition = null): static
     {
         $this->open = value($condition, $this) ?? true;
@@ -44,6 +45,7 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
         return $this->open;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function persist(Closure|bool|null $condition = null): static
     {
         $this->persist = value($condition, $this) ?? true;

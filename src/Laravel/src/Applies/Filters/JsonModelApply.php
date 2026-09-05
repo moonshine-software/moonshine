@@ -12,7 +12,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Json;
 
 /**
- * @implements ApplyContract<Json>
+ * @implements ApplyContract<Json, Builder>
  */
 class JsonModelApply implements ApplyContract
 {
@@ -20,11 +20,15 @@ class JsonModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $values = Collection::make($field->getRequestValue())->filter();
+            /** @var array<array-key, array<string, mixed>>|false $requestValues */
+            $requestValues = $field->getRequestValue();
+            $values = Collection::make($requestValues ?: [])->filter();
 
             if ($values->isNotEmpty()) {
                 $query->where(static function (Builder $q) use ($values, $field): void {
-                    $data = array_filter($values->first());
+                    $data = array_filter($values->first() ?? []);
+                    /** @var string|int $key */
+                    $key = $data['key'] ?? '*';
                     $column = str_replace('.', '->', $field->getColumn());
 
                     if (filled($data)) {
@@ -36,7 +40,7 @@ class JsonModelApply implements ApplyContract
                             ->when(
                                 $field->isKeyValue(),
                                 static fn (Builder $qq) => $qq->where(
-                                    $column . '->' . ($data['key'] ?? '*'),
+                                    $column . '->' . $key,
                                     $data['value'] ?? ''
                                 )
                             )

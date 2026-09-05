@@ -14,7 +14,7 @@ use Throwable;
 trait WithComponents
 {
     /**
-     * @var iterable<ComponentContract>
+     * @var iterable<array-key, ComponentContract>
      */
     protected iterable $components = [];
 

@@ -6,7 +6,6 @@ namespace MoonShine\UI\Traits\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
-use Stringable;
 
 trait WithSlotContent
 {
@@ -26,16 +25,5 @@ trait WithSlotContent
         );
     }
 
-    private function stringifySlotContent(mixed $content): string
-    {
-        if ($content instanceof Stringable) {
-            return (string) $content;
-        }
 
-        if (\is_scalar($content) || $content === null) {
-            return (string) $content;
-        }
-
-        return '';
-    }
 }

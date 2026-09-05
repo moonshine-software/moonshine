@@ -34,6 +34,7 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
         array $extra = [],
     ): string|RedirectResponse {
         $redirect = $extra['redirect'] ?? false;
+        /** @var string|array<array-key, string>|null $fragment */
         $fragment = $extra['fragment'] ?? null;
 
         if (\is_array($fragment)) {
@@ -58,7 +59,7 @@ final readonly class MoonShineEndpoints extends AbstractEndpoints
                 : moonshine()->getResources()->findByClass($resource);
 
             if (\is_null($page)) {
-                return $targetResource->getUrl();
+                return ($targetResource ?? throw EndpointException::pageOrResourceRequired())->getUrl();
             }
 
             $pageUri = $page instanceof PageContract

@@ -26,6 +26,9 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
 
     protected bool $isFilled = false;
 
+    /**
+     * @param (Closure(static): string)|string $href
+     */
     public function __construct(
         protected Closure|string $href,
         Closure|string $label = '',
@@ -85,7 +88,7 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
     {
         return [
             'slot' => new ComponentSlot(
-                $this->getLabel() ?: $this->href,
+                $this->getLabel() ?: value($this->href, $this),
             ),
             'icon' => new ComponentSlot(
                 $this->getIcon(4),

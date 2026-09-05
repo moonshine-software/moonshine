@@ -14,6 +14,7 @@ trait HasVerticalMode
 
     protected int $verticalValueSpan = 12;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function vertical(Closure|bool|null $condition = null, int $titleSpan = 12, int $valueSpan = 12): static
     {
         $this->isVertical = value($condition, $this) ?? true;

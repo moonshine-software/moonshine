@@ -11,6 +11,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 use Throwable;
 
 /**
+ * @template TFields of FieldsContract = FieldsContract
  * @mixin ComponentContract
  */
 trait WithFields
@@ -20,6 +21,7 @@ trait WithFields
      */
     protected iterable|Closure $fields = [];
 
+    /** @var TFields|null */
     protected ?FieldsContract $preparedFields = null;
 
     public function resetPreparedFields(): static
@@ -31,6 +33,7 @@ trait WithFields
 
     /**
      * @throws Throwable
+     * @return TFields
      */
     public function getPreparedFields(): FieldsContract
     {
@@ -41,13 +44,20 @@ trait WithFields
         return $this->preparedFields = $this->prepareFields();
     }
 
+    /**
+     * @return TFields
+     */
     protected function prepareFields(): FieldsContract
     {
         return $this->getFields();
     }
 
+    /**
+     * @return TFields
+     */
     public function getFields(): FieldsContract
     {
+        /** @var TFields */
         return $this->getCore()->getFieldsCollection(
             $this->getRawFields()
         );
@@ -73,12 +83,12 @@ trait WithFields
     {
         if ($this->getCore()->runningInConsole()) {
             $fields = $this->getCore()->getFieldsCollection(value($fields, $this));
-            $fields = $fields->map(static fn (object $field): object => clone $field)
-                ->toArray();
+            $fields = $fields->map(static fn (ComponentContract $field): ComponentContract => clone $field)
+                ->all();
         }
 
         $this->fields = $fields instanceof FieldsContract
-            ? $fields->toArray()
+            ? $fields->all()
             : $fields;
 
         return $this;

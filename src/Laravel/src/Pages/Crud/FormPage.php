@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Contracts\Fields\HasModalModeContract;
@@ -31,9 +32,25 @@ class FormPage extends CrudFormPage
 {
     use OverrideCrudPage;
 
+    /**
+     * @return TResource|null
+     */
+    public function getResource(): ?ResourceContract
+    {
+        return parent::getResource();
+    }
+
+    /**
+     * @return TResource
+     */
+    public function getResourceOrFail(): ResourceContract
+    {
+        return parent::getResourceOrFail();
+    }
+
     protected function getFormAction(): string
     {
-        $resource = $this->getResource();
+        $resource = $this->getResourceOrFail();
         $item = $resource->getCastedData();
 
         return $resource->getRoute(
@@ -55,7 +72,7 @@ class FormPage extends CrudFormPage
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getOutsideFields()->formFields();
+        $outsideFields = $this->getResourceOrFail()->getOutsideFields()->formFields();
 
         if ($outsideFields->isEmpty()) {
             return array_merge($components, $this->getEmptyModals());

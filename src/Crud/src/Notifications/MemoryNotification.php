@@ -73,7 +73,7 @@ final class MemoryNotification implements MoonShineNotificationContract
 
     public function markAsRead(int|string $id): void
     {
-        data_forget($this->messages, $id);
+        unset($this->messages[$id]);
     }
 
     public function getReadAllRoute(): string

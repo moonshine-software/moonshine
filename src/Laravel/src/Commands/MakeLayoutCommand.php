@@ -44,7 +44,7 @@ class MakeLayoutCommand extends MoonShineCommand
         $extendClassName = 'AppLayout';
         $extends = "MoonShine\Laravel\Layouts\\$extendClassName";
 
-        $palette = $this->option('palette') ?: select('Select a palette', $this->findPalettes(), PurplePalette::class);
+        $palette = $this->option('palette') ?: (string) select('Select a palette', $this->findPalettes(), PurplePalette::class);
 
         $this->copyStub('Layout', $stubsPath->getPath(), [
             '{namespace}' => $stubsPath->namespace,
@@ -72,9 +72,17 @@ class MakeLayoutCommand extends MoonShineCommand
         return self::SUCCESS;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function findPalettes(): array
     {
-        $paletteInstance = static fn (string $name): PaletteContract => new ('MoonShine\ColorManager\Palettes\\' . $name);
+        $paletteInstance = static function (string $name): PaletteContract {
+            /** @var class-string<PaletteContract> $class */
+            $class = 'MoonShine\ColorManager\Palettes\\' . $name;
+
+            return new $class();
+        };
 
         return Collection::make(File::files(__DIR__ . '/../../../ColorManager/src/Palettes/'))
             ->mapWithKeys(
@@ -84,6 +92,6 @@ class MakeLayoutCommand extends MoonShineCommand
                 ],
             )
             ->mapWithKeys(static fn (string $description, string $title): array => [('MoonShine\ColorManager\Palettes\\' . $title) => $description])
-            ->toArray();
+            ->all();
     }
 }

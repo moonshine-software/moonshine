@@ -28,7 +28,7 @@ class Textarea extends Field implements HasDefaultValueContract, CanBeString
     {
         return $this->isUnescape()
             ? parent::resolvePreview()
-            : $this->escapeValue((string) parent::resolvePreview());
+            : $this->escapeValue($this->stringifySlotContent(parent::resolvePreview()));
     }
 
     protected function prepareRequestValue(mixed $value): mixed
@@ -44,7 +44,7 @@ class Textarea extends Field implements HasDefaultValueContract, CanBeString
     {
         if (! $this->isUnescape() && static::class === self::class) {
             return $this->escapeValue(
-                parent::resolveValue()
+                $this->stringifySlotContent(parent::resolveValue())
             );
         }
 

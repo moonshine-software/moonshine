@@ -7,6 +7,7 @@ namespace MoonShine\Crud\Traits\Resource;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Core\Exceptions\PageException;
 use MoonShine\Support\Enums\PageType;
 
 /**
@@ -29,31 +30,32 @@ trait ResourceCrudRouter
         $key = $key instanceof DataWrapperContract ? $key->getKey() : $key;
 
         return $this->getRouter()->to(
-            $name,
+            $name ?? '',
             filled($key) ? array_merge(['resourceItem' => $key], $query) : $query
         );
     }
 
     /**
      * @param class-string<PageContract>|PageContract $page
-     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, string|int|float|bool|null>  $params
      * @param  string|string[]|null  $fragment
      */
     public function getPageUrl(string|PageContract $page, array $params = [], null|string|array $fragment = null): string
     {
+        /** @var string */
         return $this->getRouter()->getEndpoints()->toPage($page, $this, params: $params, extra: [
             'fragment' => $fragment,
         ]);
     }
 
     /**
-     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, string|int|float|bool|null>  $params
      * @param  string|string[]|null  $fragment
      *
      */
     public function getIndexPageUrl(array $params = [], null|string|array $fragment = null): string
     {
-        return $this->getPageUrl($this->getIndexPage(), params: $params, fragment: $fragment);
+        return $this->getPageUrl($this->getIndexPage() ?? throw PageException::required(), params: $params, fragment: $fragment);
     }
 
     /**
@@ -68,7 +70,7 @@ trait ResourceCrudRouter
         null|string|array $fragment = null
     ): string {
         return $this->getPageUrl(
-            $this->getFormPage(),
+            $this->getFormPage() ?? throw PageException::required(),
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
@@ -79,7 +81,7 @@ trait ResourceCrudRouter
 
     /**
      * @param DataWrapperContract<T>|int|string $key
-     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, string|int|float|bool|null>  $params
      * @param  string|string[]|null  $fragment
      *
      */
@@ -89,11 +91,11 @@ trait ResourceCrudRouter
         null|string|array $fragment = null
     ): string {
         return $this->getPageUrl(
-            $this->getDetailPage(),
+            $this->getDetailPage() ?? throw PageException::required(),
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
-            ], static fn (float|int|string|null $value): bool => filled($value)),
+            ], static fn (bool|float|int|string|null $value): bool => filled($value)),
             fragment: $fragment
         );
     }
@@ -101,7 +103,7 @@ trait ResourceCrudRouter
     /**
      * @param  string|string[]  $fragment
      * @param DataWrapperContract<T>|int|string|null $key
-     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, string|int|float|bool|null>  $params
      */
     public function getFragmentLoadUrl(
         string|array $fragment,
@@ -112,17 +114,17 @@ trait ResourceCrudRouter
         $page ??= $this->getIndexPage();
 
         return $this->getPageUrl(
-            $page,
+            $page ?? throw PageException::required(),
             params: array_filter([
                 ...$params,
                 ...['resourceItem' => $key instanceof DataWrapperContract ? $key->getKey() : $key],
-            ], static fn (float|int|string|null $value): bool => filled($value)),
+            ], static fn (bool|float|int|string|null $value): bool => filled($value)),
             fragment: $fragment
         );
     }
 
     /**
-     * @param  array<string, string|int|float|null>  $params
+     * @param  array<string, string|int|float|bool|null>  $params
      */
     public function getAsyncMethodUrl(
         string $method,

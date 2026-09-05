@@ -17,14 +17,24 @@ use MoonShine\Contracts\UI\TableCellContract;
  */
 interface TableCellsContract extends Enumerable
 {
+    /**
+     * @param (Closure(TableCellContract): (TableCellContract|null))|null $builder
+     */
     public function pushFields(FieldsContract $fields, ?Closure $builder = null, int $startIndex = 0): self;
 
     /**
      * @param  array<string, mixed>  $attributes
+     * @param (Closure(TableCellContract): (TableCellContract|null))|null $builder
      */
     public function pushCell(Closure|string $content, ?int $index = null, ?Closure $builder = null, array $attributes = []): self;
 
+    /**
+     * @param Closure(): TableCellContract $value
+     */
     public function pushWhen(Closure|bool $condition, Closure $value): self;
 
+    /**
+     * @param (Closure(TableCellContract): (TableCellContract|null))|null $builder
+     */
     public function pushCellWhen(Closure|bool $condition, Closure|string $content, ?int $index = null, ?Closure $builder = null): self;
 }

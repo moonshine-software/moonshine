@@ -26,6 +26,9 @@ final class Profile extends MoonShineComponent
 
     private readonly ?Authenticatable $user;
 
+    /**
+     * @var list<ActionButtonContract>|null
+     */
     protected ?array $menu = null;
 
     protected array $translates = [
@@ -69,6 +72,7 @@ final class Profile extends MoonShineComponent
             return '';
         }
 
+        /** @var string */
         return $this->user->{$userField} ?? '';
     }
 
@@ -80,6 +84,7 @@ final class Profile extends MoonShineComponent
             return '';
         }
 
+        /** @var string */
         return $this->user->{$userField} ?? '';
     }
 
@@ -95,6 +100,7 @@ final class Profile extends MoonShineComponent
             return '';
         }
 
+        /** @var string|null $avatar */
         $avatar = $this->user?->{$userField};
 
         if ($avatar === '' || $avatar === null) {
@@ -146,6 +152,7 @@ final class Profile extends MoonShineComponent
             : value($this->avatar, $this);
 
         $rescueLogOut = static function (Closure $callback): string {
+            /** @var Closure(): string $callback */
             try {
                 return $callback();
             } catch (Throwable) {

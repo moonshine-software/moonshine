@@ -7,10 +7,8 @@ namespace MoonShine\Laravel\Http\Requests\Relations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use MoonShine\Contracts\Core\CrudPageContract;
-use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
@@ -25,7 +23,7 @@ use Throwable;
 
 class RelationModelFieldRequest extends FormRequest
 {
-    /** @use HasResourceRequest<CrudResourceContract> */
+    /** @use HasResourceRequest<ModelResource> */
     use HasResourceRequest;
     /** @use HasPageRequest<CrudPageContract<ModelResource, MoonShine, Fields>> */
     use HasPageRequest;
@@ -35,11 +33,8 @@ class RelationModelFieldRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $resource = $this->getResource();
+        $resource = $this->getResourceOrFail();
 
-        if (\is_null($resource)) {
-            throw ResourceException::notDeclared();
-        }
 
         $ability = match ($this->getPage()->getPageType()) {
             PageType::INDEX => Ability::VIEW_ANY,
@@ -66,7 +61,7 @@ class RelationModelFieldRequest extends FormRequest
 
     public function getRelationName(): string
     {
-        return request()->getScalar('_relation', '');
+        return (string) request()->getScalar('_relation', '');
     }
 
     /**
@@ -76,18 +71,14 @@ class RelationModelFieldRequest extends FormRequest
     public function getPageField(?string $fieldClass = null): ?ModelRelationField
     {
         return memoize(function () use ($fieldClass) {
-            /**
-             * @var Fields $fields
-             * @phpstan-ignore-next-line
-             */
-            $fields = $this->getPage()->getComponents();
+            $fields = Fields::make($this->getPage()->getComponents()->onlyFields()->all());
 
             if ($parentField = request()->getScalar('_parent_field')) {
                 /** @var HasFieldsContract<Fields> $parent */
                 $parent = $fields
                     ->onlyFields()
                     ->onlyHasFields()
-                    ->findByColumn($parentField);
+                    ->findByColumn((string) $parentField);
 
                 /**
                  * @var Fields $fields
@@ -113,7 +104,7 @@ class RelationModelFieldRequest extends FormRequest
     {
         return memoize(function (): ?ModelRelationField {
             /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
-            $resource = $this->getResource();
+            $resource = $this->getResourceOrFail();
 
             $fields = match ($this->getPage()->getPageType()) {
                 PageType::INDEX => $resource->getIndexFields(),
@@ -125,7 +116,6 @@ class RelationModelFieldRequest extends FormRequest
             /* @var Fields $fields */
             $fields = $fields->onlyFields();
 
-            /** @phpstan-ignore-next-line  */
             return $fields->findByRelation($this->getRelationName());
         });
     }
@@ -142,7 +132,7 @@ class RelationModelFieldRequest extends FormRequest
         }
 
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResourceOrFail();
 
         return $resource
             ->getDataInstance()

@@ -26,8 +26,8 @@ use MoonShine\UI\Fields\Field;
 use Throwable;
 
 /**
- * @template-covariant R of BelongsTo|HasOneOrMany|HasOneOrManyThrough|BelongsToMany|MorphOneOrMany
- * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, string|ModelResource|null $resource = null)
+ * @template-covariant R of BelongsTo|HasOneOrMany|HasOneOrManyThrough|BelongsToMany|MorphOneOrMany = BelongsTo|HasOneOrMany|HasOneOrManyThrough|BelongsToMany|MorphOneOrMany
+ * @method static static make(Closure|string $label, ?string $relationName = null, Closure|string|null $formatted = null, class-string<ModelResource>|ModelResource|null $resource = null)
  *
  * @implements HasResourceContract<ModelResource>
  * @implements RelationFieldContract<Model>
@@ -47,10 +47,14 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
 
     protected bool $isMorph = false;
 
+    /**
+     * @var array<string, true>
+     */
     public static array $excludeInstancing = [];
 
     /**
      * @throws Throwable
+     * @param class-string<ModelResource>|ModelResource|null $resource
      */
     public function __construct(
         Closure|string $label,
@@ -95,7 +99,7 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         // required to create field entities and load assets
         if ($this instanceof HasFieldsContract && ! $this->isExcludeInstancing() && ! $this->isMorph()) {
             $this->excludeInstancing();
-            $this->getResource()?->getFormFields();
+            $this->getResourceOrFail()->getFormFields();
         }
     }
 
@@ -139,19 +143,11 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         if (\is_null($resource) && $this->isMorph()) {
             /** @var ModelResource $resource */
             $resource = $this->getCore()->getResources()->findByUri(
-                $this->getCore()->getCrudRequest()->getResourceUri(),
+                $this->getCore()->getCrudRequest()->getResourceUri() ?? '',
             );
         }
 
-        return tap(
-            $resource,
-            function (?ModelResource $resource): void {
-                throw_if(
-                    \is_null($resource),
-                    FieldException::resourceRequired(static::class, $this->getRelationName()),
-                );
-            },
-        );
+        return $resource ?? throw FieldException::resourceRequired(static::class, $this->getRelationName());
     }
 
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
@@ -192,8 +188,11 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         $this->setRowIndex($index);
 
         if ($this->isToOne()) {
+            $relation = $this->getRelation();
             $this->setColumn(
-                $this->getRelation()?->getForeignKeyName() ?? '',
+                $relation instanceof BelongsTo || $relation instanceof HasOneOrMany
+                    ? $relation->getForeignKeyName()
+                    : '',
             );
 
             $this->setRawValue(
@@ -303,6 +302,10 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
         return $this->makeRelatedModel($key, $attributes, $relations, $related);
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     * @param array<string, mixed> $relations
+     */
     public function makeRelatedModel(
         int|string|null $key = null,
         array $attributes = [],
@@ -333,7 +336,7 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
                 return null;
             }
 
-            return $related->{$this->getRelationName()}();
+            return $this->getRelationFor($related);
         }
 
         $model = $this->getRelatedModel();
@@ -342,6 +345,13 @@ abstract class ModelRelationField extends Field implements RelationFieldContract
             return null;
         }
 
+        return $this->getRelationFor($model);
+    }
+
+    /** @return R */
+    public function getRelationFor(Model $model): Relation
+    {
+        /** @var R */
         return $model->{$this->getRelationName()}();
     }
 

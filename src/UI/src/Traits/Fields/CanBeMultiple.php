@@ -11,6 +11,7 @@ trait CanBeMultiple
 {
     protected bool $multiple = false;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function multiple(Closure|bool|null $condition = null): static
     {
         $this->multiple = value($condition, $this) ?? true;

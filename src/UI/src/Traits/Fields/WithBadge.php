@@ -15,8 +15,10 @@ trait WithBadge
 
     protected ?string $badgeIcon = null;
 
+    /** @var null|Closure(mixed, static): (string|Color) */
     protected ?Closure $badgeColorCallback = null;
 
+    /** @var null|Closure(mixed, static): string */
     protected ?Closure $badgeIconCallback = null;
 
     /**

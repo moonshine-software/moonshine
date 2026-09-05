@@ -50,7 +50,7 @@ abstract class MoonShineController extends BaseController
             ->toast($message, $messageType)
             ->when(
                 $redirect,
-                static fn (JsonResponse $response): JsonResponse => $response->redirect($redirect)
+                static fn (JsonResponse $response): JsonResponse => $response->redirect($redirect ?? '')
             );
     }
 
@@ -103,7 +103,9 @@ abstract class MoonShineController extends BaseController
         $type = ToastType::ERROR;
         $status = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-        if ($flash = session()->get('toast')) {
+        /** @var array{message?: string}|null $flash */
+        $flash = session()->get('toast');
+        if ($flash) {
             session()->forget(['toast', '_flash.old', '_flash.new']);
 
             $message = $flash['message'] ?? $message;
@@ -140,12 +142,11 @@ abstract class MoonShineController extends BaseController
             return $table;
         }
 
-        $key = request()->getScalar('_key');
+        $key = request()->string('_key')->value();
 
-        /** @var ModelCaster $cast */
-        $cast = $table->getCast();
+        $cast = $table->hasCast() ? $table->getCast() : null;
 
-        $class = $table->hasCast()
+        $class = $cast instanceof ModelCaster
             ? new ($cast->getClass())
             : null;
 
@@ -174,6 +175,6 @@ abstract class MoonShineController extends BaseController
 
         return $table->items([
             $item,
-        ])->getRows()->first();
+        ])->getRows()->first() ?? '';
     }
 }

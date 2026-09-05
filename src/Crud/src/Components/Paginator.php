@@ -11,7 +11,7 @@ use MoonShine\Crud\TypeCasts\PaginatorCaster;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(PaginatorContract|CursorPaginator $paginator)
+ * @method static static make(PaginatorContract<array-key, mixed>|CursorPaginator<array-key, mixed> $paginator)
  */
 final class Paginator extends MoonShineComponent
 {
@@ -47,6 +47,7 @@ final class Paginator extends MoonShineComponent
          */
         $data = $this->paginator;
 
+        /** @var string $pageName */
         $pageName = method_exists($data, 'getPageName') ? $data->getPageName() : 'page';
 
         $paginator = new PaginatorCaster(

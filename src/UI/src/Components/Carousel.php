@@ -7,7 +7,7 @@ namespace MoonShine\UI\Components;
 use Closure;
 
 /**
- * @method static static make(Closure|array $items = [], Closure|bool $portrait = false, Closure|string $alt = '')
+ * @method static static make((Closure(self): string[])|string[] $items = [], Closure|bool $portrait = false, Closure|string $alt = '')
  */
 final class Carousel extends MoonShineComponent
 {

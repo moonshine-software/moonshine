@@ -24,17 +24,27 @@ use Throwable;
 
 final class MoonShineConfigurator implements ConfiguratorContract
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $items;
 
+    /**
+     * @var Collection<int, Closure(ResourceContract, mixed, Ability, mixed): bool>
+     */
     private readonly Collection $authorizationRules;
 
+    /** @var null|(Closure((Closure(): Response)): Response) */
     private ?Closure $logoutUsing = null;
 
+    /** @var null|(Closure((Closure(): Response)): Response) */
     private ?Closure $authenticateUsing = null;
 
     public function __construct(Repository $repository)
     {
-        $this->items = $repository->get('moonshine', []);
+        /** @var array<string, mixed> $items */
+        $items = $repository->get('moonshine', []);
+        $this->items = $items;
         $this->authorizationRules = Collection::make();
         $this
             ->set('dir', $this->items['dir'] ?? 'app/MoonShine')
@@ -50,6 +60,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getDir(string $path = '', ?string $base = null): string
     {
+        /** @var string $base */
         $base ??= $this->get('dir');
 
         return $base . '/' . trim($path, '/');
@@ -57,6 +68,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getNamespace(string $path = '', ?string $base = null): string
     {
+        /** @var string $base */
         $base ??= $this->get('namespace');
 
         $path = str_replace('/', '\\', $path);
@@ -65,16 +77,16 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return list<class-string>
+     * @return list<string>
      */
     public function getMiddleware(): array
     {
-        return $this->get('middleware', []);
+        return array_values($this->stringArrayValue($this->get('middleware', [])));
     }
 
     public function getTitle(): string
     {
-        return $this->get('title', '');
+        return $this->stringValue($this->get('title', ''));
     }
 
     public function title(string|Closure $title): self
@@ -84,7 +96,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getLogo(bool $small = false): ?string
     {
-        return $this->get($small ? 'logo_small' : 'logo');
+        $value = $this->get($small ? 'logo_small' : 'logo');
+
+        return $value === null ? null : $this->stringValue($value);
     }
 
     public function logo(string|Closure $logo, bool $small = false): self
@@ -97,9 +111,12 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getLocales(): array
     {
-        return Collection::make($this->get('locales', []))
+        /** @var array<array-key, string> $locales */
+        $locales = $this->get('locales', []);
+
+        return Collection::make($locales)
             ->mapWithKeys(fn ($value, $key): array => [is_numeric($key) ? $value : $key => $value])
-            ->toArray();
+            ->all();
     }
 
     /**
@@ -110,6 +127,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set('locales', $locales);
     }
 
+    /**
+     * @param array<string>|string $locales
+     */
     public function addLocales(array|string $locales): self
     {
         if (\is_string($locales)) {
@@ -129,7 +149,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getLocale(): string
     {
-        return $this->get('locale', 'en');
+        return $this->stringValue($this->get('locale', 'en'));
     }
 
     public function localeKey(string $name): self
@@ -139,12 +159,12 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getLocaleKey(): string
     {
-        return $this->get('locale_key', ChangeLocale::KEY);
+        return $this->stringValue($this->get('locale_key', ChangeLocale::KEY));
     }
 
     public function getCacheDriver(): string
     {
-        return $this->get('cache', 'file');
+        return $this->stringValue($this->get('cache', 'file'));
     }
 
     public function cacheDriver(string|Closure $driver): self
@@ -157,11 +177,11 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getDisk(): string
     {
-        return $this->get('disk', 'public');
+        return $this->stringValue($this->get('disk', 'public'));
     }
 
     /**
-     * @param  string[]|Closure  $options
+     * @param  array<string, mixed>|Closure  $options
      */
     public function disk(string|Closure $disk, array|Closure $options = []): self
     {
@@ -171,16 +191,32 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function getDiskOptions(): array
     {
-        return $this->get('disk_options', []);
+        $options = $this->get('disk_options', []);
+
+        if (! \is_array($options)) {
+            throw new \TypeError('Expected an array of disk options, got ' . get_debug_type($options));
+        }
+
+        $result = [];
+
+        foreach ($options as $key => $value) {
+            if (! \is_string($key)) {
+                throw new \TypeError('Disk option names must be strings.');
+            }
+
+            $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     public function getUserAvatarsDir(): string
     {
-        return $this->get('user_avatars_dir', 'moonshine_users');
+        return $this->stringValue($this->get('user_avatars_dir', 'moonshine_users'));
     }
 
     public function userAvatarsDir(string|Closure $dir): self
@@ -190,7 +226,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isUseMigrations(): bool
     {
-        return $this->get('use_migrations', true);
+        return $this->boolValue($this->get('use_migrations', true));
     }
 
     public function useMigrations(): self
@@ -200,17 +236,17 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isUseProfile(): bool
     {
-        return $this->get('use_profile', true);
+        return $this->boolValue($this->get('use_profile', true));
     }
 
     public function isUseRoutes(): bool
     {
-        return $this->get('use_routes', true);
+        return $this->boolValue($this->get('use_routes', true));
     }
 
     public function isUseNotifications(): bool
     {
-        return $this->get('use_notifications', false);
+        return $this->boolValue($this->get('use_notifications', false));
     }
 
     public function useNotifications(): self
@@ -220,7 +256,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isUseDatabaseNotifications(): bool
     {
-        return $this->get('use_database_notifications', false);
+        return $this->boolValue($this->get('use_database_notifications', false));
     }
 
     public function useDatabaseNotifications(): self
@@ -233,9 +269,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getNotFoundException(): string
     {
-        return $this->get(
-            'not_found_exception',
-            MoonShineNotFoundException::class
+        return $this->classStringValue(
+            $this->get('not_found_exception', MoonShineNotFoundException::class),
+            Throwable::class,
         );
     }
 
@@ -256,12 +292,14 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getGuard(): string
     {
-        return $this->get('auth.guard', 'moonshine');
+        return $this->stringValue($this->get('auth.guard', 'moonshine'));
     }
 
     public function getUserField(string $field, ?string $default = null): string|false
     {
-        return $this->get("user_fields.$field", $default ?? $field);
+        $value = $this->get("user_fields.$field", $default ?? $field);
+
+        return $value === false ? false : $this->stringValue($value);
     }
 
     public function userField(string $field, string|false|Closure $value): self
@@ -271,15 +309,15 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isAuthEnabled(): bool
     {
-        return $this->get('auth.enabled', true);
+        return $this->boolValue($this->get('auth.enabled', true));
     }
 
     /**
-     * @return  list<class-string>
+     * @return  list<string>
      */
     public function getAuthPipelines(): array
     {
-        return $this->get('auth.pipelines', []);
+        return array_values($this->stringArrayValue($this->get('auth.pipelines', [])));
     }
 
     /**
@@ -291,23 +329,23 @@ final class MoonShineConfigurator implements ConfiguratorContract
     }
 
     /**
-     * @return list<class-string>
+     * @return list<string>
      */
     public function getAuthMiddleware(): array
     {
         $middleware = $this->get('auth.middleware', []);
 
-        return \is_string($middleware) ? [$middleware] : $middleware;
+        return \is_string($middleware) ? [$middleware] : array_values($this->stringArrayValue($middleware));
     }
 
     public function getPagePrefix(): string
     {
-        return $this->get('page_prefix', 'page');
+        return $this->stringValue($this->get('page_prefix', 'page'));
     }
 
     public function getResourcePrefix(): string
     {
-        return $this->get('resource_prefix', 'resource');
+        return $this->stringValue($this->get('resource_prefix', 'resource'));
     }
 
     /**
@@ -315,6 +353,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getDefaultRouteGroup(): array
     {
+        /** @var array<string, string> */
         return array_filter([
             'domain' => $this->get('domain', ''),
             'prefix' => $this->get('prefix', ''),
@@ -328,7 +367,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getLayout(): string
     {
-        return $this->get('layout', AppLayout::class);
+        return $this->classStringValue($this->get('layout', AppLayout::class), AbstractLayout::class);
     }
 
     /**
@@ -336,7 +375,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
      */
     public function getPalette(): string
     {
-        return $this->get('palette', PurplePalette::class);
+        return $this->classStringValue($this->get('palette', PurplePalette::class), PaletteContract::class);
     }
 
     /**
@@ -349,7 +388,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getHomeRoute(): string
     {
-        return $this->get('home_route', 'moonshine.index');
+        return $this->stringValue($this->get('home_route', 'moonshine.index'));
     }
 
     public function homeRoute(string|Closure $route): self
@@ -359,7 +398,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getHomeUrl(): ?string
     {
-        return $this->get('home_url');
+        $value = $this->get('home_url');
+
+        return $value === null ? null : $this->stringValue($value);
     }
 
     public function homeUrl(string|Closure $route): self
@@ -367,6 +408,9 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set('home_url', $route);
     }
 
+    /**
+     * @return Collection<int, Closure(ResourceContract, mixed, Ability, mixed): bool>
+     */
     public function getAuthorizationRules(): Collection
     {
         return $this->authorizationRules;
@@ -382,19 +426,28 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this;
     }
 
+    /**
+     * @template T of PageContract
+     * @param class-string<T> $default
+     * @return T
+     */
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract
     {
+        /** @var class-string<T> $class */
         $class = $this->get("pages.$name", $default);
 
         return moonshine()->getContainer($class, null, ...$parameters);
     }
 
     /**
-     * @return list<class-string<PageContract>>
+     * @return array<array-key, class-string<PageContract>>
      */
     public function getPages(): array
     {
-        return $this->get('pages', []);
+        return array_map(
+            fn (string $class) => $this->classStringValue($class, PageContract::class),
+            $this->stringArrayValue($this->get('pages', [])),
+        );
     }
 
     /**
@@ -415,6 +468,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract
     {
+        /** @var class-string<\MoonShine\Contracts\UI\FormContract> $class */
         $class = $this->get("forms.$name", $default);
 
         return \call_user_func(
@@ -466,6 +520,50 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $default();
     }
 
+    /** @return array<array-key, string> */
+    private function stringArrayValue(mixed $value): array
+    {
+        if (! \is_array($value)) {
+            throw new \TypeError('Expected an array configuration value, got ' . get_debug_type($value));
+        }
+
+        return array_map($this->stringValue(...), $value);
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $base
+     * @return class-string<T>
+     */
+    private function classStringValue(mixed $value, string $base): string
+    {
+        $class = $this->stringValue($value);
+
+        if (! is_a($class, $base, true)) {
+            throw new \TypeError("Configuration class $class must implement or extend $base.");
+        }
+
+        return $class;
+    }
+
+    private function stringValue(mixed $value): string
+    {
+        if (! \is_string($value)) {
+            throw new \TypeError('Expected a string configuration value, got ' . get_debug_type($value));
+        }
+
+        return $value;
+    }
+
+    private function boolValue(mixed $value): bool
+    {
+        if (! \is_bool($value)) {
+            throw new \TypeError('Expected a boolean configuration value, got ' . get_debug_type($value));
+        }
+
+        return $value;
+    }
+
     public function has(string $key): bool
     {
         return Arr::has($this->items, $key);
@@ -497,7 +595,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->set($offset, $value);
+        $this->set($offset ?? throw new \InvalidArgumentException('A configuration key is required.'), $value);
     }
 
     public function offsetUnset(mixed $offset): void

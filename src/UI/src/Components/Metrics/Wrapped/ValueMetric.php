@@ -18,6 +18,9 @@ class ValueMetric extends Metric
 
     protected bool $progress = false;
 
+    /**
+     * @param (Closure(int|float|string): string)|string $value
+     */
     public function valueFormat(string|Closure $value): static
     {
         $this->valueFormat = value($value, $this->value);
@@ -34,9 +37,9 @@ class ValueMetric extends Metric
         return $this->getSimpleValue();
     }
 
-    protected function getProgressValueResult(): float|int
+    protected function getProgressValueResult(): string|float|int
     {
-        if ($this->target <= 0 || $this->value <= 0) {
+        if (! is_numeric($this->value) || $this->target <= 0 || $this->value <= 0) {
             return $this->value;
         }
 
@@ -57,6 +60,9 @@ class ValueMetric extends Metric
         );
     }
 
+    /**
+     * @param (Closure(): (int|float|string))|int|float|string $value
+     */
     public function value(int|string|float|Closure $value): static
     {
         $this->value = value($value);
@@ -64,6 +70,9 @@ class ValueMetric extends Metric
         return $this;
     }
 
+    /**
+     * @param (Closure(int|float): (int|float))|int|float $target
+     */
     public function progress(int|float|Closure $target): static
     {
         if (\is_string($this->value)) {

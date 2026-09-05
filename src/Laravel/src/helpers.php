@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\RedirectResponse;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
@@ -15,10 +14,10 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
-use MoonShine\Laravel\MoonShineEndpoints;
 use MoonShine\Laravel\MoonShineRequest;
 use MoonShine\Support\Enums\ToastType;
 use MoonShine\UI\Applies\AppliesRegister;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 if (! \function_exists('moonshineRequest')) {
     /**
@@ -32,6 +31,7 @@ if (! \function_exists('moonshineRequest')) {
 }
 
 if (! \function_exists('moonshine')) {
+    /** @return \MoonShine\Laravel\DependencyInjection\MoonShine */
     function moonshine(): CoreContract
     {
         return app(CoreContract::class);
@@ -61,7 +61,7 @@ if (! \function_exists('moonshineMenu')) {
 
 if (! \function_exists('moonshineRouter')) {
     /**
-     * @return RouterContract<MoonShineRouter, MoonShineEndpoints>
+     * @return MoonShineRouter
      */
     function moonshineRouter(): RouterContract
     {
@@ -71,7 +71,7 @@ if (! \function_exists('moonshineRouter')) {
 
 if (! \function_exists('moonshineConfig')) {
     /**
-     * @return ConfiguratorContract<MoonShineConfigurator>
+     * @return MoonShineConfigurator
      */
     function moonshineConfig(): ConfiguratorContract
     {
@@ -81,7 +81,7 @@ if (! \function_exists('moonshineConfig')) {
 
 if (! \function_exists('appliesRegister')) {
     /**
-     * @return AppliesRegisterContract<AppliesRegister>
+     * @return AppliesRegister
      */
     function appliesRegister(): AppliesRegisterContract
     {
@@ -104,6 +104,8 @@ if (! \function_exists('toPage')) {
     /**
      * @param  class-string<PageContract>|PageContract|null  $page
      * @param  class-string<ResourceContract>|ResourceContract|null  $resource
+     * @param array<string, int|float|string|null> $params
+     * @param string|array<string>|null $fragment
      * @throws Throwable
      */
     function toPage(

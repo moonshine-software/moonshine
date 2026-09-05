@@ -9,12 +9,12 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FieldWithComponentContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FieldsGroup;
@@ -74,10 +74,13 @@ class Json extends Field implements
 
     protected bool $isFilterMode = false;
 
+    /** @var null|(Closure(TableBuilder, bool): TableBuilder) */
     protected ?Closure $modifyTable = null;
 
+    /** @var null|(Closure(ActionButtonContract, self): ActionButtonContract) */
     protected ?Closure $modifyRemoveButton = null;
 
+    /** @var null|(Closure(ActionButtonContract, self): ActionButtonContract) */
     protected ?Closure $modifyCreateButton = null;
 
     protected bool $resolveValueOnce = true;
@@ -167,6 +170,7 @@ class Json extends Field implements
         return ! $this->isObjectMode() && $this->isGroup;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function creatable(
         Closure|bool|null $condition = null,
         ?int $limit = null,
@@ -189,7 +193,7 @@ class Json extends Field implements
         $button = $this->creatableButton;
 
         if (! $button instanceof ActionButtonContract) {
-            $button = ActionButton::make($this->getCore()->getTranslator()->get('moonshine::ui.add'))
+            $button = ActionButton::make($this->getCore()->getTranslator()->getString('moonshine::ui.add'))
                 ->icon('plus-circle')
                 ->customAttributes(['@click.prevent' => 'add()', 'class' => 'w-full']);
         }
@@ -224,6 +228,7 @@ class Json extends Field implements
         return $this->isFilterMode;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function reorderable(Closure|bool|null $condition = null): static
     {
         $this->isReorderable = value($condition, $this) ?? true;
@@ -247,7 +252,7 @@ class Json extends Field implements
     }
 
     /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
      */
     public function modifyRemoveButton(Closure $callback): self
     {
@@ -257,7 +262,7 @@ class Json extends Field implements
     }
 
     /**
-     * @param  Closure(ActionButton $button, self $field): ActionButton  $callback
+     * @param  Closure(ActionButtonContract $button, self $field): ActionButtonContract  $callback
      */
     public function modifyCreateButton(Closure $callback): self
     {
@@ -346,15 +351,16 @@ class Json extends Field implements
             return json_encode($this->rawValue, JSON_THROW_ON_ERROR);
         }
 
-        return (string) $this->rawValue;
+        return Stringify::value($this->rawValue);
     }
 
     protected function resolvePreview(): Renderable|string
     {
-        return (string) $this->getComponent()
-            ->simple()
-            ->preview()
-            ->render();
+        $component = $this->getComponent();
+
+        return (string) ($component instanceof TableBuilderContract
+            ? $component->simple()->preview()
+            : $component->previewMode());
     }
 
     protected function reformatFilledValue(mixed $data): mixed
@@ -365,7 +371,7 @@ class Json extends Field implements
 
         if ($this->isKeyOrOnlyValue() && ! $this->isFilterMode()) {
             /** @var Collection<array-key, mixed> $collection */
-            $collection = new Collection($data);
+            $collection = Collection::wrap($data);
 
             return $collection->map(fn (mixed $data, int|string $key): array => $this->extractKeyValue(
                 $this->isOnlyValue() ? [$data] : [$key => $data],
@@ -378,9 +384,9 @@ class Json extends Field implements
     }
 
     /**
-     * @param  array<string, mixed>  $data
+     * @param  array<array-key, mixed>  $data
      *
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
     protected function extractKeyValue(array $data): array
     {
@@ -410,8 +416,8 @@ class Json extends Field implements
     }
 
     /**
-     * @param iterable<string, mixed> $collection
-     * @return array<string, mixed>
+     * @param iterable<array-key, mixed> $collection
+     * @return array<array-key, mixed>
      * @throws Throwable
      */
     public function prepareOnApplyRecursive(iterable $collection): array
@@ -422,7 +428,7 @@ class Json extends Field implements
             if ($field instanceof File) {
                 $column = $field->getColumn();
 
-                $collection = array_map(static fn (array $data): array => [
+                $collection = array_map(static fn (mixed $data): mixed => ! \is_array($data) ? $data : [
                     ...$data,
                     $column => $data[$field->getHiddenColumn()] ?? null,
                 ], $collection);
@@ -430,10 +436,15 @@ class Json extends Field implements
 
             if ($field instanceof self) {
                 foreach ($collection as $index => $value) {
+                    if (! \is_array($value)) {
+                        continue;
+                    }
+
                     $column = $field->getColumn();
-                    $collection[$index][$column] = $field->prepareOnApplyRecursive(
-                        $value[$column] ?? []
+                    $value[$column] = $field->prepareOnApplyRecursive(
+                        (array) ($value[$column] ?? [])
                     );
+                    $collection[$index] = $value;
                 }
             }
         }
@@ -446,7 +457,7 @@ class Json extends Field implements
      */
     protected function resolveOldValue(mixed $old): mixed
     {
-        return $this->prepareOnApplyRecursive($old);
+        return $this->prepareOnApplyRecursive((array) $old);
     }
 
     public function getComponent(): ComponentContract
@@ -461,7 +472,7 @@ class Json extends Field implements
 
 
         /** @var Collection<array-key, mixed> $values */
-        $values = new Collection(
+        $values = Collection::wrap(
             is_iterable($value)
                 ? $value
                 : [],
@@ -470,8 +481,11 @@ class Json extends Field implements
         $fields = $this->getPreparedFields();
 
         if ($this->isObjectMode() && ! $this->isPreviewMode()) {
+            /** @var array<string, mixed> $raw */
+            $raw = $values->all();
+
             return FieldsGroup::make(
-                Fields::make($fields)->fillCloned($values->toArray())
+                Fields::make($fields)->fillCloned($raw)
             )->mapFields(
                 fn (FieldContract $field): FieldContract => $field
                     ->formName($this->getFormName())
@@ -505,12 +519,7 @@ class Json extends Field implements
             ->customAttributes(
                 $this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])
-                    ->when(
-                        $reorderable,
-                        static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
-                            'data-handle' => '.handle',
-                        ]),
-                    )
+                    ->merge($reorderable ? ['data-handle' => '.handle'] : [])
                     ->jsonSerialize()
             )
             ->customAttributes(['data-validation-wrapper' => true])
@@ -523,14 +532,12 @@ class Json extends Field implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            $field->getLabel(),
+                            \MoonShine\UI\Components\FlexibleRender::make($field->getLabel()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
-                    value: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => $field->getColumn() === '__handle'
+                    value: $reorderable ? fn (FieldContract $field, ComponentContract $default): ComponentContract => $field->getColumn() === '__handle'
                         ? Column::make()->columnSpan($this->verticalValueSpan)
-                        /** @var Column $default */
-                        /** @phpstan-ignore-next-line  */
-                        : $default->columnSpan($this->verticalValueSpan)->customAttributes(['data-validation-wrapper' => true]) : null,
+                        : ($default instanceof Column ? $default->columnSpan($this->verticalValueSpan) : $default)->customAttributes(['data-validation-wrapper' => true]) : null,
                 ),
             )
             ->when(
@@ -569,9 +576,9 @@ class Json extends Field implements
         return $collection->when(
             $this->isKeyOrOnlyValue(),
             fn (Collection $data): Collection => $data->mapWithKeys(
-                fn (array $data, string|int $key): array => $this->isOnlyValue()
+                fn (mixed $data, string|int $key): array => ! \is_array($data) ? [] : ($this->isOnlyValue()
                     ? [$key => $data['value']]
-                    : [$data['key'] => $data['value']],
+                    : [Stringify::value($data['key']) => $data['value']]),
             ),
         )
             ->filter(fn ($value): bool => $this->filterEmpty($value))
@@ -601,7 +608,7 @@ class Json extends Field implements
         }
 
         if (is_iterable($value) && filled($value)) {
-            $collection = new Collection($value);
+            $collection = Collection::wrap($value);
 
             return $collection
                 ->filter(fn ($v): bool => $this->filterEmpty($v))
@@ -620,7 +627,9 @@ class Json extends Field implements
         ?Closure $response = null,
         bool $fill = false,
     ): mixed {
-        $requestValues = array_filter($this->getRequestValue() ?: []);
+        /** @var array<array-key, array<string, mixed>> $requestValues */
+        $requestValues = array_filter((array) ($this->getRequestValue() ?: []));
+        /** @var array<array-key, array<string, mixed>> $applyValues */
         $applyValues = [];
 
         if ($this->isObjectMode()) {
@@ -639,6 +648,7 @@ class Json extends Field implements
 
                 $field->when($fill, static fn (FieldContract $f): FieldContract => $f->fillData($values));
 
+                /** @var array<string, mixed> $apply */
                 $apply = $callback($field, $values, $data);
 
                 if ($field instanceof WrapperWithApplyContract) {
@@ -647,17 +657,20 @@ class Json extends Field implements
                     continue;
                 }
 
+                $row = $applyValues[$index] ?? [];
                 data_set(
-                    /** @phpstan-ignore-next-line  */
-                    $applyValues[$index],
+                    $row,
                     $field->getColumn(),
                     data_get($apply, $field->getColumn()),
                 );
+                /** @var array<string, mixed> $row */
+                $applyValues[$index] = $row;
             }
 
-            if ($this->isObjectMode()) {
-                $applyValues = $applyValues[$index] ?? [];
-            }
+        }
+
+        if ($this->isObjectMode()) {
+            $applyValues = $applyValues[0] ?? [];
         }
 
         $preparedValues = $this->prepareOnApply($applyValues);
@@ -713,7 +726,7 @@ class Json extends Field implements
     {
         $values = $this->toValue(withDefault: false);
 
-        if (! $this->isKeyOrOnlyValue() && filled($values)) {
+        if (! $this->isKeyOrOnlyValue() && is_iterable($values) && filled($values)) {
             foreach ($values as $value) {
                 $this->getFields()
                     ->onlyFields()

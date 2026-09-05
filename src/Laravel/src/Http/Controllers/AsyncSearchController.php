@@ -29,6 +29,8 @@ final class AsyncSearchController extends MoonShineController
             return response()->json();
         }
 
+        /** @var \MoonShine\Laravel\Fields\Relationships\ModelRelationField&HasAsyncSearchContract<Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, RelationModelFieldRequest> $field */
+
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $field->getResource();
 
@@ -47,7 +49,7 @@ final class AsyncSearchController extends MoonShineController
                 ? data_get($request->input($field->getWrapName(), []), $field->getMorphType())
                 : $request->input($field->getMorphType());
 
-            if (! class_exists($morphClass)) {
+            if (! \is_string($morphClass) || ! class_exists($morphClass)) {
                 return response()->json();
             }
 
@@ -66,7 +68,7 @@ final class AsyncSearchController extends MoonShineController
             $query = $model->newModelQuery();
         }
 
-        $term = $request->input('query');
+        $term = $request->string('query')->value();
 
         if (! \is_null($field->getAsyncSearchQuery())) {
             $query = value(
@@ -82,13 +84,13 @@ final class AsyncSearchController extends MoonShineController
 
         $except = \is_array($values)
             ? array_keys($values)
-            : array_filter(explode(',', (string) $values));
+            : array_filter(explode(',', $request->string($field->getColumn())->value()));
 
         if ($field instanceof BelongsToMany && ! $field->isDeduplicate()) {
             $except = [];
         }
 
-        $offset = $request->input('offset', 0);
+        $offset = $request->integer('offset');
 
         $isAssociatedTermSearch = $field->isAssociatedWith() && ! $field->getAssociatedWithSearchQuery() instanceof Closure;
         $isTermSearch = $term && ($isAssociatedTermSearch || ! $field->getAsyncSearchQuery() instanceof Closure);

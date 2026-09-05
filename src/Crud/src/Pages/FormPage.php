@@ -22,7 +22,9 @@ use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\Support\EnumToString;
 use MoonShine\Support\ListOf;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionGroup;
 use Throwable;
@@ -54,9 +56,9 @@ class FormPage extends CrudPage implements FormPageContract
             return $this->title;
         }
 
-        return $this->getResource()->getItemID()
-            ? $this->getCore()->getTranslator()->get('moonshine::ui.edit')
-            : $this->getCore()->getTranslator()->get('moonshine::ui.add');
+        return $this->getResourceOrFail()->getItemID()
+            ? $this->getCore()->getTranslator()->getString('moonshine::ui.edit')
+            : $this->getCore()->getTranslator()->getString('moonshine::ui.add');
     }
 
     /**
@@ -70,13 +72,14 @@ class FormPage extends CrudPage implements FormPageContract
 
         $breadcrumbs = parent::getBreadcrumbs();
 
-        if ($this->getResource()->getItemID()) {
-            $breadcrumbs[$this->getRoute()] = data_get(
+        if ($this->getResourceOrFail()->getItemID()) {
+            $label = data_get(
                 $this->getItem(),
-                $this->getResource()->getColumn(),
+                $this->getResourceOrFail()->getColumn(),
             );
+            $breadcrumbs[$this->getRoute()] = Stringify::value(new EnumToString($label)->convert());
         } else {
-            $breadcrumbs[$this->getRoute()] = $this->getCore()->getTranslator()->get('moonshine::ui.add');
+            $breadcrumbs[$this->getRoute()] = $this->getCore()->getTranslator()->getString('moonshine::ui.add');
         }
 
         return $breadcrumbs;
@@ -87,16 +90,16 @@ class FormPage extends CrudPage implements FormPageContract
      */
     protected function prepareBeforeRender(): void
     {
-        $ability = $this->getResource()->getItemID()
+        $ability = $this->getResourceOrFail()->getItemID()
             ? Ability::UPDATE
             : Ability::CREATE;
 
-        $action = $this->getResource()->getItemID()
+        $action = $this->getResourceOrFail()->getItemID()
             ? Action::UPDATE
             : Action::CREATE;
 
         if (
-            ! $this->getResource()->hasAction($action) || ! $this->getResource()->can($ability)
+            ! $this->getResourceOrFail()->hasAction($action) || ! $this->getResourceOrFail()->can($ability)
         ) {
             $this->throw403();
         }
@@ -112,7 +115,7 @@ class FormPage extends CrudPage implements FormPageContract
     {
         $this->validateResource();
 
-        if (! $this->isItemExists() && $this->getResource()->getItemID()) {
+        if (! $this->isItemExists() && $this->getResourceOrFail()->getItemID()) {
             $this->throw404();
         }
 
@@ -148,17 +151,18 @@ class FormPage extends CrudPage implements FormPageContract
 
     protected function getFormAction(): string
     {
-        return $this->getResource()->getRoute(
+        return $this->getResourceOrFail()->getRoute(
             $this->isItemExists() ? 'crud.update' : 'crud.store',
-            $this->getResource()->getItemID(),
+            $this->getResourceOrFail()->getItemID(),
         );
     }
 
     public function getFormComponent(bool $withoutFragment = false): ComponentContract
     {
-        $resource = $this->getResource();
+        $resource = $this->getResourceOrFail();
+        /** @var DataWrapperContract<TData>|null $item */
         $item = $resource->getCastedData();
-        $fields = $this->getResource()->getFormFields();
+        $fields = $this->getResourceOrFail()->getFormFields();
 
         $action = $this->getFormAction();
 
@@ -190,12 +194,12 @@ class FormPage extends CrudPage implements FormPageContract
      */
     protected function getItem(): mixed
     {
-        return $this->getResource()->getItem();
+        return $this->getResourceOrFail()->getItem();
     }
 
     protected function isItemExists(): bool
     {
-        return $this->getResource()->isItemExists();
+        return $this->getResourceOrFail()->isItemExists();
     }
 
     /**
@@ -236,7 +240,7 @@ class FormPage extends CrudPage implements FormPageContract
 
         return [
             ActionGroup::make($this->getButtons())
-                ->fill($this->getResource()->getCastedData())
+                ->fill($this->getResourceOrFail()->getCastedData())
                 ->class('mb-4'),
         ];
     }
@@ -250,11 +254,11 @@ class FormPage extends CrudPage implements FormPageContract
     {
         return new ListOf(ActionButtonContract::class, [
             $this->modifyDetailButton(
-                $this->getResource()->getDetailButton()
+                $this->getResourceOrFail()->getDetailButton()
             ),
             $this->modifyDeleteButton(
-                $this->getResource()->getDeleteButton(
-                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                $this->getResourceOrFail()->getDeleteButton(
+                    redirectAfterDelete: $this->getResourceOrFail()->getRedirectAfterDelete(),
                     isAsync: false,
                 )
             ),

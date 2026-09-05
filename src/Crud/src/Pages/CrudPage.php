@@ -31,7 +31,7 @@ abstract class CrudPage extends Page implements CrudPageContract
             return false;
         }
 
-        return $this->getResource()->isAsync();
+        return $this->getResourceOrFail()->isAsync();
     }
 
     /**
@@ -64,18 +64,18 @@ abstract class CrudPage extends Page implements CrudPageContract
     }
 
     /**
-     * @return list<Modal>
+     * @return list<\MoonShine\Contracts\UI\ModalContract>
      */
     public function getEmptyModals(): array
     {
         $components = [];
 
-        if ($this->getResource()->isEditInModal()) {
-            $modalName = $this->getResource()->getUriKey() . '-edit-modal';
+        if ($this->getResourceOrFail()->isEditInModal()) {
+            $modalName = $this->getResourceOrFail()->getUriKey() . '-edit-modal';
 
-            $components[] = $this->getResource()->resolveEditModal(
+            $components[] = $this->getResourceOrFail()->resolveEditModal(
                 Modal::make(
-                    $this->getCore()->getTranslator()->get('moonshine::ui.edit'),
+                    $this->getCore()->getTranslator()->getString('moonshine::ui.edit'),
                     components: [
                         Div::make()->customAttributes(['id' => $modalName]),
                     ],
@@ -83,12 +83,12 @@ abstract class CrudPage extends Page implements CrudPageContract
             );
         }
 
-        if ($this->getResource()->isDetailInModal()) {
-            $modalName = $this->getResource()->getUriKey() . '-detail-modal';
+        if ($this->getResourceOrFail()->isDetailInModal()) {
+            $modalName = $this->getResourceOrFail()->getUriKey() . '-detail-modal';
 
-            $components[] = $this->getResource()->resolveDetailModal(
+            $components[] = $this->getResourceOrFail()->resolveDetailModal(
                 Modal::make(
-                    $this->getCore()->getTranslator()->get('moonshine::ui.show'),
+                    $this->getCore()->getTranslator()->getString('moonshine::ui.show'),
                     components: [
                         Div::make()->customAttributes(['id' => $modalName]),
                     ],

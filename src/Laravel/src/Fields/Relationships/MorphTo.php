@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Exceptions\FieldException;
 
 /**
@@ -20,8 +21,14 @@ class MorphTo extends BelongsTo
 {
     protected string $view = 'moonshine::fields.relationships.morph-to';
 
+    /**
+     * @var array<class-string<Model>, string>
+     */
     protected array $types = [];
 
+    /**
+     * @var array<class-string<Model>, string>
+     */
     protected array $searchColumns = [];
 
     protected bool $isMorph = true;
@@ -32,7 +39,7 @@ class MorphTo extends BelongsTo
     }
 
     /**
-     * @param  array<class-string<Model>, string|array>  $types
+     * @param  array<class-string<Model>, string|array{string, string}>  $types
      */
     public function types(array $types): static
     {
@@ -45,7 +52,7 @@ class MorphTo extends BelongsTo
                     string $type
                 ): array => [$type => \is_array($searchColumn) ? $searchColumn[0] : $searchColumn]
             )
-            ->toArray();
+            ->all();
 
         $this->types = Collection::make($types)
             ->mapWithKeys(
@@ -54,7 +61,7 @@ class MorphTo extends BelongsTo
                     string $type
                 ): array => [$type => \is_array($searchColumn) ? $searchColumn[1] : class_basename($type)]
             )
-            ->toArray();
+            ->all();
 
         return $this;
     }
@@ -98,7 +105,7 @@ class MorphTo extends BelongsTo
 
     public function getRequestTypeValue(): string
     {
-        return request()->getScalar(
+        return (string) request()->getScalar(
             (string) Str::of($this->getNameDot())->replace(
                 $this->getColumn(),
                 $this->getMorphType()
@@ -121,7 +128,7 @@ class MorphTo extends BelongsTo
 
         if (\is_null($this->getFormattedValueCallback())) {
             $this->setFormattedValueCallback(
-                fn ($v) => $v->{$this->getSearchColumn($v::class)}
+                fn (mixed $v): mixed => $v instanceof Model ? $v->{$this->getSearchColumn($v::class)} : null
             );
         }
 
@@ -132,22 +139,22 @@ class MorphTo extends BelongsTo
     {
         $item = $this->getRelatedModel();
 
-        if ($item instanceof Model && ! $item->getKey()) {
+        if ($item === null || ! $item->getKey()) {
             return '';
         }
 
         $value = $item->{$this->getRelationName()};
 
-        if (\is_null($item) || \is_null($value)) {
+        if (! $value instanceof Model) {
             return '';
         }
 
         $column = $this->getSearchColumn($value::class);
-        $type = $item->{$this->getMorphType()};
+        $type = Stringify::value($item->{$this->getMorphType()});
 
         $preview = Str::of($this->types[$type] ?? $type)
             ->append('(')
-            ->append(data_get($value, $column))
+            ->append(Stringify::value(data_get($value, $column)))
             ->append(')')
             ->value();
 
@@ -160,20 +167,20 @@ class MorphTo extends BelongsTo
     {
         $default = Arr::first(array_keys($this->types));
 
-        return old(
+        return Stringify::value(old(
             $this->getMorphType()
-        ) ?? (string) (
+        ) ?? (
             $this->getRelatedModel()->{$this->getMorphType()} ?? $default
-        );
+        ));
     }
 
     protected function resolveValue(): string
     {
         if (\is_scalar($this->toValue())) {
-            return $this->toValue();
+            return (string) $this->toValue();
         }
 
-        return (string) $this->getRelatedModel()->{$this->getMorphKey()};
+        return Stringify::value($this->getRelatedModel()->{$this->getMorphKey()});
     }
 
     public function isReactivitySupported(): bool
@@ -194,7 +201,7 @@ class MorphTo extends BelongsTo
                 ->only(['data-level'])
                 ->merge([
                     'data-name' => (string) Str::of(
-                        $this->getAttribute('data-name', $this->getNameAttribute())
+                        Stringify::value($this->getAttribute('data-name', $this->getNameAttribute()))
                     )->replace($this->getColumn(), $this->getMorphType()),
                     'data-column' => $this->getMorphType(),
                 ]),

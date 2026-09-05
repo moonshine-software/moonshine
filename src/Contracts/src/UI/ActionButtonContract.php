@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
-use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -21,7 +20,6 @@ use MoonShine\Support\Enums\HttpMethod;
  * @extends HasModalContract<TModal>
  * @extends HasOffCanvasContract<TOffCanvas>
  *
- * @mixin Conditionable
  */
 interface ActionButtonContract extends
     ComponentContract,
@@ -143,22 +141,30 @@ interface ActionButtonContract extends
 
     public function isRaw(): bool;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function withoutLoading(Closure|bool|null $condition = null): static;
 
     public function content(Closure|string $content): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function primary(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function secondary(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function success(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function warning(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function info(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function error(Closure|bool|null $condition = null): static;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function square(Closure|bool|null $condition = null): static;
 
     /**

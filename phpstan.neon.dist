@@ -2,25 +2,16 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
+    configDirectories:
+        - src/Laravel/config
+    stubFiles:
+        - phpstan/helpers.stub
+    bootstrapFiles:
+        - phpstan/bootstrap.php
     editorUrl: 'anything'
     paths:
         - src/
-    level: 5
-    reportUnmatchedIgnoredErrors: false
+        - phpstan/traits.php
+    level: max
+    reportUnmatchedIgnoredErrors: true
     treatPhpDocTypesAsCertain: false
-
-    ignoreErrors:
-        - '#mixin contains invalid type Illuminate\\Support\\Traits\\Conditionable#'
-        - '#does not accept Illuminate\\View\\ComponentAttributeBag#'
-        - '#when\(\) expects#'
-        - '#should return MoonShine\\Contracts\\UI\\ComponentAttributesBagContract but returns Illuminate\\View\\ComponentAttributeBag#'
-        - '#getResource\(\) should return#'
-        - '#Call to an undefined method Illuminate\\Http\\Request::getScalar#'
-        - '#PHPDoc tag @method for method make\(\)#'
-        - '#PHPDoc tag @method for method .+make\(\)#'
-    excludePaths:
-        - ./src/Support/src/Traits/Makeable.php
-        - ./src/Laravel/routes/moonshine.php
-        - ./src/Laravel/src/DefaultRoutes.php
-        - ./src/Laravel/config/moonshine.php
-        - ./src/Laravel/src/Providers/MoonShineServiceProvider.php

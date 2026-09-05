@@ -22,7 +22,7 @@ trait HasFormValidation
      *
      * @param DataWrapperContract<T> $item
      *
-     * @return array<string, string[]|string|list<ValidationRule>|list<Stringable>>
+     * @return array<string, string|list<string|ValidationRule|\Illuminate\Contracts\Validation\Rule|Stringable>>
      */
     protected function rules(DataWrapperContract $item): array
     {
@@ -30,15 +30,16 @@ trait HasFormValidation
     }
 
     /**
-     * @return array<string, string[]|string|list<ValidationRule>|list<Stringable>>
+     * @return array<string, string|list<string|ValidationRule|\Illuminate\Contracts\Validation\Rule|Stringable>>
      */
     public function getRules(): array
     {
-        return $this->rules(
-            $this->getResource()->getCaster()->cast(
-                $this->getResource()->getItemOrInstance()
-            )
+        /** @var DataWrapperContract<T> $item */
+        $item = $this->getResourceOrFail()->getCaster()->cast(
+            $this->getResourceOrFail()->getItemOrInstance()
         );
+
+        return $this->rules($item);
     }
 
     /**

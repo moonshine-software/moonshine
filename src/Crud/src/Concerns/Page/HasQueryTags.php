@@ -18,9 +18,9 @@ trait HasQueryTags
      */
     public function getQueryTags(): array
     {
-        return Collection::make($this->queryTags())
-            ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($this->getResource()?->getQueryParamPrefix() ?? ''))
-            ->toArray();
+        return array_values(Collection::make($this->queryTags())
+            ->map(fn (QueryTag $queryTag): QueryTag => $queryTag->prefix($this->getResourceOrFail()->getQueryParamPrefix()))
+            ->all());
     }
 
     /**

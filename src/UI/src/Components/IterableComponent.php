@@ -39,15 +39,16 @@ abstract class IterableComponent extends MoonShineComponent implements
     use HasButtons;
 
     /**
-     * @var iterable<TData>
+     * @var iterable<array-key, TData>
      */
     protected iterable $items = [];
 
     /**
-     * @var iterable<TData>
+     * @var iterable<array-key, TData>
      */
     protected iterable $originalItems = [];
 
+    /** @var null|(Closure(iterable<array-key, TData>, static): iterable<array-key, TData>) */
     protected ?Closure $itemsResolver = null;
 
     protected bool $itemsResolved = false;
@@ -55,7 +56,7 @@ abstract class IterableComponent extends MoonShineComponent implements
     protected bool $paginatorResolved = false;
 
     /**
-     * @param  Closure(iterable<TData> $items, static $ctx): iterable<TData>  $resolver
+     * @param  Closure(iterable<array-key, TData> $items, static $ctx): iterable<array-key, TData>  $resolver
      */
     public function itemsResolver(Closure $resolver): static
     {
@@ -65,7 +66,7 @@ abstract class IterableComponent extends MoonShineComponent implements
     }
 
     /**
-     * @param  iterable<TData>  $items
+     * @param  iterable<array-key, TData>  $items
      *
      */
     public function items(iterable $items = []): static
@@ -96,7 +97,7 @@ abstract class IterableComponent extends MoonShineComponent implements
 
     /**
      * @api
-     * @return iterable<TData>
+     * @return iterable<array-key, TData>
      */
     public function getOriginalItems(): iterable
     {
@@ -115,13 +116,16 @@ abstract class IterableComponent extends MoonShineComponent implements
         }
 
         if (! \is_null($this->itemsResolver)) {
-            $this->items = \call_user_func($this->itemsResolver, $this->items, $this);
+            $this->items = ($this->itemsResolver)($this->items, $this);
         }
 
         $this->itemsResolved = true;
 
-        return $this->items = $this->items instanceof LazyCollection
+        /** @var Collection<array-key, TData>|LazyCollection<array-key, TData> $items */
+        $items = $this->items instanceof LazyCollection
             ? $this->items
-            : new Collection($this->items)->filter();
+            : new Collection($this->items)->filter(static fn (mixed $item): bool => (bool) $item);
+
+        return $this->items = $items;
     }
 }

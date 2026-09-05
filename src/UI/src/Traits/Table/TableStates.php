@@ -17,8 +17,10 @@ trait TableStates
 
     protected bool $isVertical = false;
 
+    /** @var (Closure(FieldContract, ComponentContract, static): ComponentContract)|int|null */
     protected null|Closure|int $verticalTitleCallback = null;
 
+    /** @var (Closure(FieldContract, ComponentContract, static): ComponentContract)|int|null */
     protected null|Closure|int $verticalValueCallback = null;
 
     protected bool $isEditable = false;
@@ -89,6 +91,7 @@ trait TableStates
         return $this->withLoader;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function loader(Closure|bool|null $condition = null): static
     {
         $this->withLoader = value($condition, $this) ?? true;
@@ -101,6 +104,7 @@ trait TableStates
         return $this->withSkeleton;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function skeleton(Closure|bool|null $condition = null): static
     {
         $this->withSkeleton = value($condition, $this) ?? true;
@@ -174,7 +178,7 @@ trait TableStates
         $this->isReindex = $reindex;
 
         $this->creatableButton = $button
-            ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->get('moonshine::ui.add'))
+            ?: ActionButton::make($label ?? $this->getCore()->getTranslator()->getString('moonshine::ui.add'))
                 ->icon($icon ?? 'plus-circle')
                 ->customAttributes(
                     array_merge(['@click.prevent' => 'add()', 'class' => 'w-full'], $attributes),
@@ -384,7 +388,7 @@ trait TableStates
             'lazy' => $this->isLazy(),
             'columnSelection' => $this->isColumnSelection(),
             'searchable' => $this->isSearchable(),
-            'searchValue' => $this->getCore()->getRequest()->getScalar('search', ''),
+            'searchValue' => (string) $this->getCore()->getRequest()->getScalar('search', ''),
             'skeleton' => $this->hasSkeleton(),
             'loader' => $this->hasLoader(),
         ];

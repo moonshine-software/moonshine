@@ -20,7 +20,7 @@ interface CrudResourceWithResponseModifiersContract
     public function modifyResponse(DataWrapperContract $item): Jsonable;
 
     /**
-     * @param  iterable<TData>  $items
+     * @param  iterable<array-key, TData>  $items
      */
     public function modifyCollectionResponse(iterable $items): Jsonable;
 }

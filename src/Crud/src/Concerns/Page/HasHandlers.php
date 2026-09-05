@@ -30,6 +30,6 @@ trait HasHandlers
     public function getHandlers(): Handlers
     {
         return Handlers::make($this->handlers()->toArray())
-            ->each(fn (Handler $handler): Handler => $handler->setResource($this->getResource()));
+            ->each(fn (Handler $handler): Handler => $handler->setResource($this->getResourceOrFail()));
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use Throwable;
@@ -14,7 +13,7 @@ final class ComponentController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function __invoke(CrudRequestContract $request): Renderable|string
+    public function __invoke(CrudRequestContract $request): string
     {
         $this->authorizeResourcePage($request);
 
@@ -36,6 +35,6 @@ final class ComponentController extends MoonShineController
             return '';
         }
 
-        return $component->render();
+        return (string) $component;
     }
 }

@@ -14,6 +14,9 @@ interface HasResourceContract
      */
     public function setResource(ResourceContract $resource): static;
 
+    /** @return T */
+    public function getResourceOrFail(): ResourceContract;
+
     public function hasResource(): bool;
 
     /**

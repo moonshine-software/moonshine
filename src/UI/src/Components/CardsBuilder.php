@@ -24,7 +24,7 @@ use Throwable;
  * @template TCaster of DataCasterContract<TData> = DataCasterContract
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
- * @method static static make(iterable $items = [], FieldsContract|iterable $fields = [])
+ * @method static static make(iterable<array-key, TData> $items = [], FieldsContract|iterable<array-key, FieldContract> $fields = [])
  *
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @extends IterableComponent<TData,TCaster,TWrapper>
@@ -91,8 +91,10 @@ final class CardsBuilder extends IterableComponent implements
      */
     protected array|Closure $componentAttributes = [];
 
+    /** @var null|(Closure(self): list<ComponentContract>) */
     protected ?Closure $topLeft = null;
 
+    /** @var null|(Closure(self): list<ComponentContract>) */
     protected ?Closure $topRight = null;
 
     protected bool $searchable = false;
@@ -235,32 +237,37 @@ final class CardsBuilder extends IterableComponent implements
                 ->when(
                     $buttons->isNotEmpty(),
                     static fn (Card $card): Card => $card->actions(
-                        static fn () => ActionGroup::make($buttons->toArray())
+                        static fn () => ActionGroup::make($buttons->all())
                     )
                 );
         });
     }
 
     /**
-     * @return string|array<string, string>
+     * @param 'title'|'subtitle'|'thumbnail'|'url' $column
+     * @return ($column is 'thumbnail' ? string|array<string> : string)
      */
     protected function getMapperValue(string $column, mixed $data, int $index): string|array
     {
-        return \is_string($this->{$column})
+        $value = \is_string($this->{$column})
             ? data_get($data, $this->{$column}, '')
             : value($this->{$column}, $data, $index, $this);
+
+        return $column === 'thumbnail' && \is_array($value)
+            ? array_map($this->stringifySlotContent(...), $value)
+            : $this->stringifySlotContent($value);
     }
 
     /**
      * @param  TData  $data
-     * @return array<string, mixed>
+     * @return array{title: string, subtitle: string, thumbnail: string|array<string>, url: string, overlay: bool, values: array<string, string>}
      */
     protected function getMapper(mixed $data, FieldsContract $fields, int $index): array
     {
         /** @var array<string, string> $values */
         $values = $fields
             ->values()
-            ->mapWithKeys(static fn (FieldContract $value): array => [$value->getLabel() => (string) $value->preview()]) // @phpstan-ignore argument.templateType
+            ->mapWithKeys(fn (FieldContract $value): array => [$value->getLabel() => $this->stringifySlotContent($value->preview())])
             ->toArray();
 
         return [
@@ -302,14 +309,14 @@ final class CardsBuilder extends IterableComponent implements
 
     private function getTopLeft(): Components
     {
-        $components = \is_null($this->topLeft) ? [] : \call_user_func($this->topLeft);
+        $components = \is_null($this->topLeft) ? [] : \call_user_func($this->topLeft, $this);
 
         return Components::make($components);
     }
 
     private function getTopRight(): Components
     {
-        $components = \is_null($this->topRight) ? [] : \call_user_func($this->topRight);
+        $components = \is_null($this->topRight) ? [] : \call_user_func($this->topRight, $this);
 
         return Components::make($components);
     }
@@ -333,7 +340,7 @@ final class CardsBuilder extends IterableComponent implements
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->paginator(
                 $this->getPaginator()
-                    ?->setPath($this->prepareAsyncUrlFromPaginator())
+                    ->setPath($this->prepareAsyncUrlFromPaginator())
             );
         }
 

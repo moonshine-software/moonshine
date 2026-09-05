@@ -32,11 +32,11 @@ class AuthenticateController extends MoonShineController
 
         $page = $config->getPage('login', LoginPage::class);
 
-        if ($page->isResponseModified()) {
-            return $page->getModifiedResponse();
+        if ($page->isResponseModified() && ($response = $page->getModifiedResponse()) !== null) {
+            return $response;
         }
 
-        return $page->render();
+        return (string) $page;
     }
 
     /**
@@ -48,6 +48,7 @@ class AuthenticateController extends MoonShineController
     {
         return $config->handleAuthenticate(function () use ($request, $config, $router) {
             if (filled($config->getAuthPipelines())) {
+                /** @var LoginFormRequest|JsonResponse|RedirectResponse $request */
                 $request = Pipeline::send($request)->through(
                     $config->getAuthPipelines()
                 )->thenReturn();

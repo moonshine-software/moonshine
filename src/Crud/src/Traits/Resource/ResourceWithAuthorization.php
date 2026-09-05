@@ -40,7 +40,7 @@ trait ResourceWithAuthorization
             throw CrudResourceException::abilityNotFound($abilityEnum ?? $ability);
         }
 
-        return $this->isCan($ability);
+        return $this->isCan($abilityEnum);
     }
 
     protected function isCan(Ability $ability): bool

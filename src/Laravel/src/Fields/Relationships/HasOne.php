@@ -31,6 +31,7 @@ use MoonShine\Laravel\Traits\Fields\HasModalModeConcern;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
@@ -41,7 +42,7 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of HasOneOrMany|HasOneOrManyThrough
+ * @template-covariant R of HasOneOrMany|HasOneOrManyThrough = HasOneOrMany|HasOneOrManyThrough
  * @extends ModelRelationField<R>
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements FieldWithComponentContract<FormBuilderContract>
@@ -71,10 +72,13 @@ class HasOne extends ModelRelationField implements
 
     protected bool $isAsync = true;
 
+    /** @var null|(Closure(Model|int|string|null, static): (string|null)) */
     protected ?Closure $redirectAfter = null;
 
+    /** @var null|(Closure(FormBuilderContract): FormBuilderContract) */
     protected ?Closure $modifyForm = null;
 
+    /** @var null|(Closure(TableBuilderContract): TableBuilderContract) */
     protected ?Closure $modifyTable = null;
 
     protected ?FormBuilderContract $resolvedComponent = null;
@@ -120,10 +124,10 @@ class HasOne extends ModelRelationField implements
 
         if (! $this->hasFields()) {
             $fields = $page?->getPageType() === PageType::INDEX
-                ? $this->getResource()->getIndexFields()
-                : $this->getResource()->getDetailFields();
+                ? $this->getResourceOrFail()->getIndexFields()
+                : $this->getResourceOrFail()->getDetailFields();
 
-            $this->fields($fields->toArray());
+            $this->fields($fields->all());
 
             return $this->getFields();
         }
@@ -141,7 +145,7 @@ class HasOne extends ModelRelationField implements
         $items = [$this->toValue()];
 
         return Collection::make($items)
-            ->map(fn (Model $item) => data_get($item, $this->getResourceColumn()))
+            ->map(fn (mixed $item) => data_get($item, $this->getResourceColumn()))
             ->implode(';');
     }
 
@@ -152,7 +156,7 @@ class HasOne extends ModelRelationField implements
     {
         $items = [$this->toValue()];
 
-        $resource = $this->getResource()->stopGettingItemFromUrl();
+        $resource = $this->getResourceOrFail()->stopGettingItemFromUrl();
 
         $table = TableBuilder::make(items: $items)
             ->fields($this->getFieldsOnPreview())
@@ -175,7 +179,7 @@ class HasOne extends ModelRelationField implements
                 );
         }
 
-        return $table->render();
+        return (string) $table;
     }
 
     /**
@@ -195,12 +199,12 @@ class HasOne extends ModelRelationField implements
                 $field->setParent($this);
             });
 
-            return $fields->toArray();
+            return $fields->all();
         };
     }
 
     /**
-     * @param  Closure(int $parentId, static $field): string  $callback
+     * @param  Closure(Model|int|string|null $parentId, static $field): (string|null)  $callback
      */
     public function redirectAfter(Closure $callback): static
     {
@@ -227,7 +231,7 @@ class HasOne extends ModelRelationField implements
         /** @var ?CrudResourceContract $resource */
         $resource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
-        return $resource->getFormPageUrl($parentId);
+        return $resource?->getFormPageUrl($parentId instanceof Model ? Stringify::value($parentId->getKey()) : $parentId);
     }
 
     /**
@@ -287,11 +291,12 @@ class HasOne extends ModelRelationField implements
             return $this->resolvedComponent;
         }
 
-        $resource = $this->getResource()->stopGettingItemFromUrl();
+        $resource = $this->getResourceOrFail()->stopGettingItemFromUrl();
 
         /** @var ?ModelResource $parentResource */
         $parentResource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
+        /** @var Model|null $item */
         $item = $this->toValue();
 
         // When need lazy load
@@ -302,19 +307,21 @@ class HasOne extends ModelRelationField implements
         }
 
         $parentItem = $parentResource->getItemOrInstance();
-        /** @var HasOneOrMany|MorphOneOrMany $relation */
-        $relation = $parentItem->{$this->getRelationName()}();
+        /** @var int|string|null $parentId */
+        $parentId = $parentItem->getKey();
+        /** @var HasOneOrMany<Model, Model, mixed>|MorphOneOrMany<Model, Model, mixed> $relation */
+        $relation = $this->getRelationFor($parentItem);
 
         $fields = $resource->getFormFields();
         $fields->onlyFields()->each(fn (FieldContract $field): FieldContract => $field->setParent($this));
 
         $action = $resource->getRoute(
             \is_null($item) ? 'crud.store' : 'crud.update',
-            $item?->getKey()
+            ($item === null ? null : Stringify::value($item->getKey()))
         );
 
         $redirectAfter = $this->getRedirectAfter(
-            $parentItem->getKey()
+            $parentId
         );
 
         $isAsync = ! \is_null($item) && ($this->isAsync() || $resource->isAsync());
@@ -323,7 +330,7 @@ class HasOne extends ModelRelationField implements
             ->reactiveUrl(
                 fn (): string => $this->getCore()->getRouter()
                     ->getEndpoints()
-                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => $item?->getKey()])
+                    ->reactive(page: $resource->getFormPage(), resource: $resource, extra: ['key' => ($item === null ? null : Stringify::value($item->getKey()))])
             )
             ->name($resource->getUriKey())
             ->class("form-resource-{$resource->getUriKey()}-{$this->getRelationName()}")
@@ -340,14 +347,9 @@ class HasOne extends ModelRelationField implements
                 )->push(
                     Hidden::make($relation->getForeignKeyName())
                         ->setValue($this->getRelatedModel()?->getKey())
-                )->when(
-                    $relation instanceof MorphOneOrMany,
-                    fn (Fields $f) => $f->push(
-                        /** @phpstan-ignore-next-line  */
-                        Hidden::make($relation->getMorphType())->setValue($this->getRelatedModel()::class)
-                    )
-                )
-                    ->toArray()
+                )->concat($relation instanceof MorphOneOrMany ? [
+                    Hidden::make($relation->getMorphType())->setValue($parentItem::class),
+                ] : [])->all()
             )
             ->redirect($redirectAfter)
             ->fillCast(
@@ -364,9 +366,9 @@ class HasOne extends ModelRelationField implements
                     ? []
                     : [
                     $resource->getDeleteButton(
-                        redirectAfterDelete: $this->getDefaultRedirect($parentItem->getKey()),
+                        redirectAfterDelete: $this->getDefaultRedirect($parentId),
                         isAsync: false,
-                        modalName: "has-one-{$this->getResource()->getUriKey()}-{$this->getRelationName()}",
+                        modalName: "has-one-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}",
                     ),
                 ]
             )
@@ -387,7 +389,7 @@ class HasOne extends ModelRelationField implements
      */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        $this->getResource()
+        $this->getResourceOrFail()
             ->getFormFields()
             ->onlyFields()
             ->each(fn (FieldContract $field): mixed => $field->setParent($this)->fillData($data)->afterDestroy($data));

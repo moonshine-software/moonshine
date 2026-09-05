@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 
+/** @extends Factory<MoonshineUser> */
 class MoonshineUserFactory extends Factory
 {
     protected $model = MoonshineUser::class;

@@ -24,6 +24,7 @@ trait BelongsToOrManyCreatable
 
     protected ?string $creatableFragmentUrl = null;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function creatable(
         Closure|bool|null $condition = null,
         ?ActionButtonContract $button = null,
@@ -54,8 +55,10 @@ trait BelongsToOrManyCreatable
             return null;
         }
 
+        $createButton = $this->creatableButton;
+
         if ($this instanceof BelongsToMany && $this->isPivotModalMode()) {
-            $button = BelongsToManyPivotButton::for($this, button: $this->creatableButton);
+            $button = BelongsToManyPivotButton::for($this, button: $createButton);
         } else {
             $button = BelongsToOrManyButton::for($this, button: $this->creatableButton);
         }
@@ -85,7 +88,8 @@ trait BelongsToOrManyCreatable
         $page = $this->getNowOnPage() ?? $this->getCore()->getCrudRequest()->getPage();
         $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', $this->getCore()->getCrudRequest()->getItemID());
 
-        return $this->creatableFragmentUrl ?? $this->getCore()->getRouter()->getEndpoints()->toPage(
+        /** @var string $url */
+        $url = $this->creatableFragmentUrl ?? $this->getCore()->getRouter()->getEndpoints()->toPage(
             page: $page,
             resource: $resource,
             params: ['resourceItem' => $itemID],
@@ -93,5 +97,7 @@ trait BelongsToOrManyCreatable
                 'fragment' => $this->getRelationName(),
             ]
         );
+
+        return $url;
     }
 }

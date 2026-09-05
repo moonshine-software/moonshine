@@ -24,6 +24,7 @@ trait WithAdditionalFields
      */
     protected function getAdditionalFields(): FieldsContract
     {
+        /** @var T */
         return $this->getCore()->getFieldsCollection($this->additionalFields);
     }
 

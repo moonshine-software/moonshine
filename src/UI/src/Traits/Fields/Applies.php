@@ -8,7 +8,6 @@ use Closure;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Contracts\UI\FormElementContract;
 
 trait Applies
 {
@@ -16,14 +15,19 @@ trait Applies
 
     protected ?Closure $canApply = null;
 
+    /** @var null|(Closure(mixed, mixed, static): mixed) */
     protected ?Closure $onApply = null;
 
+    /** @var null|(Closure(mixed, mixed, static): mixed) */
     protected ?Closure $onBeforeApply = null;
 
+    /** @var null|(Closure(mixed, mixed, static): mixed) */
     protected ?Closure $onAfterApply = null;
 
+    /** @var null|(Closure(mixed, mixed, static): mixed) */
     protected ?Closure $onAfterDestroy = null;
 
+    /** @var null|Closure(static): static */
     protected ?Closure $onRefreshAfterApply = null;
 
     /**
@@ -47,7 +51,7 @@ trait Applies
 
     public function refreshAfterApply(?Closure $callback = null): static
     {
-        $this->onRefreshAfterApply = $callback ?? static fn (FormElementContract $field): FormElementContract => $field;
+        $this->onRefreshAfterApply = $callback ?? fn (): static => $this;
 
         return $this;
     }
@@ -59,6 +63,7 @@ trait Applies
         return $this;
     }
 
+    /** @phpstan-assert-if-true Closure $this->onRefreshAfterApply */
     public function isOnRefreshAfterApply(): bool
     {
         return $this->onRefreshAfterApply !== null;
@@ -139,10 +144,9 @@ trait Applies
         if (\is_null($this->onApply) && ! $this->isConsoleMode()) {
             $classApply = $this->getApplyClass();
 
-            $this->when(
-                ! \is_null($classApply),
-                static fn (FieldContract $field): FieldContract => $field->onApply($classApply->apply($field))
-            );
+            if ($classApply !== null && $this instanceof FieldContract) {
+                $this->onApply($classApply->apply($this));
+            }
         }
 
         $applyFunction = $this->onApply ?? $this->resolveOnApply();
@@ -182,7 +186,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, FieldContract): mixed  $onApply
+     * @param  Closure(mixed, mixed, static): mixed  $onApply
      */
     public function onApply(Closure $onApply): static
     {
@@ -197,7 +201,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, FieldContract): static  $onBeforeApply
+     * @param  Closure(mixed, mixed, static): mixed  $onBeforeApply
      */
     public function onBeforeApply(Closure $onBeforeApply): static
     {
@@ -207,7 +211,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, FieldContract): static  $onAfterApply
+     * @param  Closure(mixed, mixed, static): mixed  $onAfterApply
      */
     public function onAfterApply(Closure $onAfterApply): static
     {
@@ -217,7 +221,7 @@ trait Applies
     }
 
     /**
-     * @param  Closure(mixed, mixed, FieldContract): static  $onAfterDestroy
+     * @param  Closure(mixed, mixed, static): mixed  $onAfterDestroy
      */
     public function onAfterDestroy(Closure $onAfterDestroy): static
     {

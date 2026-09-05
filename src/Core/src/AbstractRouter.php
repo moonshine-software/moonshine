@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Core;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\CrudResourceContract;
@@ -126,8 +127,12 @@ abstract class AbstractRouter implements RouterContract, Stringable
 
     public function forgetParam(string $key): static
     {
-        /** @phpstan-ignore-next-line  */
-        data_forget($this->params, $key);
+        $params = $this->params;
+        Arr::forget($params, $key);
+
+        // Removing keys preserves the string-keyed route parameter dictionary.
+        /** @var array<string, mixed> $params */
+        $this->params = $params;
 
         return $this;
     }

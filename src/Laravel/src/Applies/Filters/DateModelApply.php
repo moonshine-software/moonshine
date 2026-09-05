@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Date;
 
 /**
- * @implements ApplyContract<Date>
+ * @implements ApplyContract<Date, Builder>
  */
 class DateModelApply implements ApplyContract
 {
@@ -19,7 +19,9 @@ class DateModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            $query->whereDate($field->getColumn(), $field->getRequestValue());
+            /** @var string|\DateTimeInterface|null $value */
+            $value = $field->getRequestValue();
+            $query->whereDate($field->getColumn(), $value);
         };
     }
 }

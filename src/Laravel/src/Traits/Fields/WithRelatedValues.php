@@ -10,18 +10,34 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Support\DTOs\Select\Options;
+use MoonShine\Support\Stringify;
 use Throwable;
 
 trait WithRelatedValues
 {
+    /**
+     * @var array<array-key, string>
+     */
     protected array $values = [];
 
+    /**
+     * @var Collection<array-key, Model>|null
+     */
     protected ?Collection $memoizeValues = null;
 
+    /**
+     * @var (Closure(\Illuminate\Database\Eloquent\Builder<Model>, static): (\Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>))|null
+     */
     protected ?Closure $valuesQuery = null;
 
+    /**
+     * @var list<string>
+     */
     protected array $relatedColumns = [];
 
+    /**
+     * @param list<string> $relatedColumns
+     */
     protected function relatedColumns(array $relatedColumns): static
     {
         $this->relatedColumns = $relatedColumns;
@@ -29,11 +45,17 @@ trait WithRelatedValues
         return $this;
     }
 
+    /**
+     * @return Collection<array-key, Model>
+     */
     protected function getMemoizeValues(): Collection
     {
         return $this->memoizeValues ?? new Collection();
     }
 
+    /**
+     * @param Closure(\Illuminate\Database\Eloquent\Builder<Model>, static): (\Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>) $callback
+     */
     public function valuesQuery(Closure $callback): static
     {
         $this->valuesQuery = $callback;
@@ -41,6 +63,9 @@ trait WithRelatedValues
         return $this;
     }
 
+    /**
+     * @param array<array-key, string> $values
+     */
     public function setValues(array $values): void
     {
         $this->values = $values;
@@ -48,6 +73,7 @@ trait WithRelatedValues
 
     /**
      * @throws Throwable
+     * @return \Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>
      */
     public function resolveValuesQuery(): Builder
     {
@@ -67,9 +93,12 @@ trait WithRelatedValues
         return $query;
     }
 
+    /**
+     * @return string|array<array-key, int|string>
+     */
     protected function getSelectedValue(): string|array
     {
-        return (string) $this->getValue();
+        return Stringify::value($this->getValue());
     }
 
     /**
@@ -79,48 +108,38 @@ trait WithRelatedValues
     {
         $formatted = ! \is_null($this->getFormattedValueCallback());
 
-        $values = $this->memoizeValues ?? ($this->isAsyncSearch() && ! $this->isToOne() ? $this->toValue() : $this->resolveValuesQuery()->get());
+        /** @var Collection<array-key, Model> $values */
+        $values = $this->memoizeValues ?? ($this->isAsyncSearch() && ! $this->isToOne() ? Collection::wrap($this->toValue()) : $this->resolveValuesQuery()->get());
 
         if ($values === null || $values instanceof Collection) {
             $this->memoizeValues = $values;
         }
 
-        $getValue = fn (Model $item) => $formatted ? value(
+        $getValue = fn (Model $item): string => Stringify::value($formatted ? value(
             $this->getFormattedValueCallback(),
             $item,
+            $this->getRowIndex(),
             $this
-        ) : data_get($item, $this->getResourceColumn());
+        ) : data_get($item, $this->getResourceColumn()));
 
         $values = $values->mapWithKeys(
             static fn ($item): array => [
-                $item->getKey() => $getValue($item),
+                Stringify::value($item->getKey()) => $getValue($item),
             ]
         );
 
-        $toOptions = fn (array $values): Options => new Options(
-            $values,
-            $this->getSelectedValue(),
-            $this->getValuesWithProperties(onlyCustom: true)->toArray()
-        );
-
-        if ($values->isNotEmpty()) {
-            return $toOptions(
-                $values->toArray()
-            );
-        }
-
-        $value = $this->toValue();
-
-        // if the values are empty then we add the selected one
-        if ($value instanceof Model && $value->exists && $values->isEmpty()) {
+        // If the values are empty, add the selected model.
+        if ($values->isEmpty() && ($value = $this->toValue()) instanceof Model && $value->exists) {
             $values->put(
-                $value->getKey(),
+                Stringify::value($value->getKey()),
                 $getValue($value)
             );
         }
 
-        return $toOptions(
-            $values->toArray(),
+        return new Options(
+            $values->all(),
+            $this->getSelectedValue(),
+            $this->getValuesWithProperties(onlyCustom: true)->all(),
         );
     }
 }

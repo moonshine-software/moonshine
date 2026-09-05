@@ -10,6 +10,7 @@ interface RemovableContract
 {
     /**
      * @param  array<string, mixed>  $attributes
+     * @param (Closure(static): (bool|null))|bool|null $condition
      */
     public function removable(
         Closure|bool|null $condition = null,

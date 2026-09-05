@@ -8,12 +8,13 @@ use Closure;
 
 /**
  * @template T of FieldContract = FieldContract
+ * @template TData = mixed
  */
 interface ApplyContract
 {
     /**
      * @param T $field
-     * @return Closure(mixed $data): mixed
+     * @return Closure(TData $data): mixed
      */
     public function apply(FieldContract $field): Closure;
 }

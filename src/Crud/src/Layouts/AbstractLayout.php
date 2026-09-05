@@ -19,7 +19,8 @@ use MoonShine\Contracts\UI\LayoutContract;
 use MoonShine\UI\Components\Layout\{Layout};
 
 /**
- * @template TCore of CoreContract
+ * @template TCore of CoreContract = CoreContract
+ * @phpstan-import-type PSMenu from MenuAutoloaderContract
  */
 abstract class AbstractLayout implements LayoutContract
 {
@@ -43,7 +44,7 @@ abstract class AbstractLayout implements LayoutContract
         protected readonly MenuAutoloaderContract $menuAutoloader,
     ) {
         $this->getAssetManager()->add(
-            $this->assets(),
+            array_values($this->assets()),
         );
 
         $this->getMenuManager()->add(
@@ -155,11 +156,12 @@ abstract class AbstractLayout implements LayoutContract
      */
     protected function autoloadMenu(bool $onlyIcons = false): array
     {
+        /** @var PSMenu|null $data */
         $data = $this->getCore()->getOptimizer()->hasType(MenuElementContract::class)
             ? $this->getCore()->getOptimizer()->getType(MenuElementContract::class)
             : null;
 
-        return $this->menuAutoloader->resolve($data, $onlyIcons);
+        return array_values($this->menuAutoloader->resolve($data, $onlyIcons));
     }
 
     abstract public function build(): Layout;

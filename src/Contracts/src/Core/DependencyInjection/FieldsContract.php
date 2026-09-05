@@ -20,6 +20,26 @@ use MoonShine\Contracts\UI\FieldContract;
  */
 interface FieldsContract extends Enumerable, HasStructureContract
 {
+    /**
+     * @template TValue
+     * @template TReturn
+     * @param (Closure($this): TValue)|TValue|null $value
+     * @param (callable($this, TValue): TReturn)|null $callback
+     * @param (callable($this, TValue): TReturn)|null $default
+     * @return $this|TReturn
+     */
+    public function when($value = null, ?callable $callback = null, ?callable $default = null);
+
+    /**
+     * @template TValue
+     * @template TReturn
+     * @param (Closure($this): TValue)|TValue|null $value
+     * @param (callable($this, TValue): TReturn)|null $callback
+     * @param (callable($this, TValue): TReturn)|null $default
+     * @return $this|TReturn
+     */
+    public function unless($value = null, ?callable $callback = null, ?callable $default = null);
+
     public function onlyVisible(): static;
 
     /** @param Closure(ComponentContract): bool $except */

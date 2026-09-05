@@ -54,6 +54,7 @@ class Tabs extends AbstractWithComponents
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function vertical(Closure|bool|null $condition = null): static
     {
         $this->vertical = value($condition, $this) ?? true;
@@ -131,12 +132,14 @@ class Tabs extends AbstractWithComponents
                 return $this->renderView();
             }
 
+            /** @var array{items: array<string, string>, __laravel_slots: array<string, ComponentSlot>} $component */
             $tabs = [];
 
             foreach ($component['items'] as $id => $label) {
                 if ($component['__laravel_slots'][$id] ?? false) {
                     /** @var ComponentSlot $slot */
                     $slot = $component['__laravel_slots'][$id];
+                    /** @var array<string, mixed> $attributes */
                     $attributes = $slot->attributes->jsonSerialize();
 
                     $tabs[$id] = Tab::make($label, [
@@ -150,8 +153,11 @@ class Tabs extends AbstractWithComponents
 
             $component['tabs'] = $tabs;
 
+            /** @var view-string $view */
+            $view = $this->getView();
+
             return view(
-                $this->getView(),
+                $view,
                 $component
             );
         };

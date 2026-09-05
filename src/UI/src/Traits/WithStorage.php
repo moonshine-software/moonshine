@@ -12,7 +12,7 @@ trait WithStorage
     protected ?string $disk = null;
 
     /**
-     * @var string[]|null
+     * @var array<string, mixed>|null
      */
     protected ?array $options = null;
 
@@ -54,7 +54,7 @@ trait WithStorage
     }
 
     /**
-     * @param  string[]  $options
+     * @param  array<string, mixed>  $options
      */
     public function options(array $options): static
     {
@@ -64,7 +64,7 @@ trait WithStorage
     }
 
     /**
-     * @return non-empty-array<string, string>
+     * @return non-empty-array<string, mixed>
      */
     public function getOptions(): array
     {
@@ -121,7 +121,7 @@ trait WithStorage
 
     /**
      * @param string $dir
-     * @return list<SplFileInfo>
+     * @return list<SplFileInfo|string>
      */
     public function getStorageFiles(string $dir): array
     {

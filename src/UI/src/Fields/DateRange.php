@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Support\Carbon;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\RangeFieldContract;
@@ -65,17 +66,20 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
     }
 
     /**
-     * @param  array<string, int|string>  $value
+     * @param  array<array-key, mixed>  $value
      * @return array<string, string>
      */
     private function extractDates(array $value, string $format): array
     {
+        $from = $value[$this->getFromField()] ?? null;
+        $to = $value[$this->getToField()] ?? null;
+
         return [
-            $this->getFromField() => isset($value[$this->getFromField()])
-                ? Carbon::parse($value[$this->getFromField()])->format($format)
+            $this->getFromField() => $from !== null
+                ? Carbon::parse(\is_int($from) || $from instanceof \DateTimeInterface ? $from : Stringify::value($from))->format($format)
                 : '',
-            $this->getToField() => isset($value[$this->getToField()])
-                ? Carbon::parse($value[$this->getToField()])->format($format)
+            $this->getToField() => $to !== null
+                ? Carbon::parse(\is_int($to) || $to instanceof \DateTimeInterface ? $to : Stringify::value($to))->format($format)
                 : '',
         ];
     }
@@ -92,7 +96,9 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
             ];
         }
 
-        return $this->extractDates($this->toValue(), $this->getInputFormat());
+        $value = $this->toValue();
+
+        return $this->extractDates(\is_array($value) ? $value : [], $this->getInputFormat());
     }
 
     protected function resolveRawValue(): mixed
@@ -103,14 +109,16 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
 
         $value = $this->toValue(withDefault: false);
 
-        return "{$value[$this->getFromField()]} - {$value[$this->getToField()]}";
+        return \is_array($value)
+            ? Stringify::value($value[$this->getFromField()] ?? '') . ' - ' . Stringify::value($value[$this->getToField()] ?? '')
+            : '';
     }
 
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
 
-        if ($this->isNullRange(formatted: true)) {
+        if (! \is_array($value) || $this->isNullRange(formatted: true)) {
             return '';
         }
 

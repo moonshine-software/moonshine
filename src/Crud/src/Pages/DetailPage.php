@@ -20,7 +20,9 @@ use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Enums\PageType;
+use MoonShine\Support\EnumToString;
 use MoonShine\Support\ListOf;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Collections\ActionButtons;
 use MoonShine\UI\Components\ActionGroup;
 use MoonShine\UI\Components\Layout\Box;
@@ -47,7 +49,7 @@ class DetailPage extends CrudPage implements DetailPageContract
 
     public function getTitle(): string
     {
-        return $this->title ?: $this->getCore()->getTranslator()->get('moonshine::ui.show');
+        return $this->title ?: $this->getCore()->getTranslator()->getString('moonshine::ui.show');
     }
 
     /**
@@ -72,7 +74,8 @@ class DetailPage extends CrudPage implements DetailPageContract
 
         $breadcrumbs = parent::getBreadcrumbs();
 
-        $breadcrumbs[$this->getRoute()] = data_get($this->getItem(), $this->getResource()->getColumn());
+        $label = data_get($this->getItem(), $this->getResourceOrFail()->getColumn());
+        $breadcrumbs[$this->getRoute()] = Stringify::value(new EnumToString($label)->convert());
 
         return $breadcrumbs;
     }
@@ -83,8 +86,8 @@ class DetailPage extends CrudPage implements DetailPageContract
     protected function prepareBeforeRender(): void
     {
         if (
-            ! $this->getResource()->hasAction(Action::VIEW)
-            || ! $this->getResource()->can(Ability::VIEW)
+            ! $this->getResourceOrFail()->hasAction(Action::VIEW)
+            || ! $this->getResourceOrFail()->can(Ability::VIEW)
         ) {
             $this->throw403();
         }
@@ -137,17 +140,17 @@ class DetailPage extends CrudPage implements DetailPageContract
 
     protected function getItem(): mixed
     {
-        return $this->getResource()->getItem();
+        return $this->getResourceOrFail()->getItem();
     }
 
     protected function isItemExists(): bool
     {
-        return $this->getResource()->isItemExists();
+        return $this->getResourceOrFail()->isItemExists();
     }
 
     public function getDetailComponent(bool $withoutFragment = false): ComponentContract
     {
-        $resource = $this->getResource();
+        $resource = $this->getResourceOrFail();
 
         $detailComponent = $this->getCore()->getContainer(
             $this->component
@@ -171,13 +174,13 @@ class DetailPage extends CrudPage implements DetailPageContract
     {
         return new ListOf(ActionButtonContract::class, [
             $this->modifyEditButton(
-                $this->getResource()->getEditButton(
+                $this->getResourceOrFail()->getEditButton(
                     isAsync: $this->isAsync(),
                 )
             ),
             $this->modifyDeleteButton(
-                $this->getResource()->getDeleteButton(
-                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                $this->getResourceOrFail()->getDeleteButton(
+                    redirectAfterDelete: $this->getResourceOrFail()->getRedirectAfterDelete(),
                     isAsync: false,
                 )
             ),
@@ -200,7 +203,7 @@ class DetailPage extends CrudPage implements DetailPageContract
             ActionGroup::make(
                 $this->getButtons(),
             )
-                ->fill($this->getResource()->getCastedData())
+                ->fill($this->getResourceOrFail()->getCastedData())
                 ->class('justify-end'),
         ];
     }

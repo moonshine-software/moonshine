@@ -81,7 +81,7 @@ class PublishCommand extends MoonShineCommand
         if (confirm('Install modules automatically? (tailwindcss, @tailwindcss/postcss, @tailwindcss/vite, tom-select)')) {
             $this->flushNodeModules();
 
-            self::updateNodePackages(static fn ($packages): array => [
+            self::updateNodePackages(static fn (array $packages): array => [
                  'tailwindcss' => '^4',
                  '@tailwindcss/postcss' => '^4',
                  '@tailwindcss/vite' => '^4',
@@ -148,7 +148,7 @@ class PublishCommand extends MoonShineCommand
             app_path('Providers/MoonShineServiceProvider.php'),
         );
 
-        $provider = file_get_contents(app_path('Providers/MoonShineServiceProvider.php'));
+        $provider = new Filesystem()->get(app_path('Providers/MoonShineServiceProvider.php'));
 
         if (! str_contains($provider, "$targetNamespace\\$name")) {
             self::addResourceOrPageToProviderFile($name, namespace: $targetNamespace);
@@ -281,7 +281,7 @@ class PublishCommand extends MoonShineCommand
         new Filesystem()->makeDirectory($this->getDirectory($outputDir), recursive: true, force: true);
         new Filesystem()->put(
             $outputClassPath,
-            file_get_contents($targetClassPath),
+            new Filesystem()->get($targetClassPath),
         );
 
         $this->replaceInFile(

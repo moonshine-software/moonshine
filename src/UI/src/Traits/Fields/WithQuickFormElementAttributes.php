@@ -103,7 +103,7 @@ trait WithQuickFormElementAttributes
 
         return $result->isEmpty()
             ? $name
-            : (string) Str::of($result->keys()->first());
+            : (string) Str::of((string) $result->keys()->first());
     }
 
     public function setNameIndex(int|string $key, int $index = 0): static
@@ -125,6 +125,7 @@ trait WithQuickFormElementAttributes
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function required(Closure|bool|null $condition = null): static
     {
         $this->setAttribute('required', value($condition, $this) ?? true);
@@ -132,6 +133,7 @@ trait WithQuickFormElementAttributes
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function disabled(Closure|bool|null $condition = null): static
     {
         $this->setAttribute('disabled', value($condition, $this) ?? true);
@@ -139,6 +141,7 @@ trait WithQuickFormElementAttributes
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function readonly(Closure|bool|null $condition = null): static
     {
         $this->setAttribute('readonly', value($condition, $this) ?? true);

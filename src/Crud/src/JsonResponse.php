@@ -11,7 +11,7 @@ use MoonShine\Support\Traits\Makeable;
 use MoonShine\UI\Enums\HtmlMode;
 use Symfony\Component\HttpFoundation\JsonResponse as SymfonyJsonResponse;
 
-/** @method static static make(array $data = []) */
+/** @method static static make(array<string, mixed> $data = []) */
 class JsonResponse extends SymfonyJsonResponse
 {
     use Makeable;
@@ -95,7 +95,9 @@ class JsonResponse extends SymfonyJsonResponse
      */
     public function htmlData(string|array $value, ?string $selector = null, HtmlMode $mode = HtmlMode::INNER_HTML): self
     {
-        $this->jsonData['htmlData'] ??= [];
+        if (! isset($this->jsonData['htmlData']) || ! \is_array($this->jsonData['htmlData'])) {
+            $this->jsonData['htmlData'] = [];
+        }
 
         $this->jsonData['htmlData'][] = [
             'html' => $value,

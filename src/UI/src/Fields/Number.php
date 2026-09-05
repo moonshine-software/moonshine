@@ -49,9 +49,9 @@ class Number extends Field implements HasDefaultValueContract, CanBeNumeric, Has
     protected function resolvePreview(): Renderable|string
     {
         if ($this->isWithStars()) {
-            return Rating::make(
-                (int) parent::resolvePreview()
-            )->render();
+            return (string) Rating::make(
+                (int) $this->stringifySlotContent(parent::resolvePreview())
+            );
         }
 
         return parent::resolvePreview();
@@ -70,6 +70,10 @@ class Number extends Field implements HasDefaultValueContract, CanBeNumeric, Has
                 data_set($item, $this->getColumn(), null);
 
                 return $item;
+            }
+
+            if (! \is_scalar($value) && $value !== null) {
+                throw new \TypeError('Expected a scalar numeric field value, got ' . get_debug_type($value));
             }
 
             $value = \is_string($value) ? str_replace(",", ".", $value) : $value;

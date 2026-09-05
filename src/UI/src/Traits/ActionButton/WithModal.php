@@ -25,10 +25,11 @@ use MoonShine\UI\Fields\HiddenIds;
 trait WithModal
 {
     /**
-     * @var null|Closure(mixed, DataWrapperContract, static): ModalContract
+     * @var null|Closure(mixed, ?DataWrapperContract, static): ModalContract
      */
     protected ?Closure $modal = null;
 
+    /** @phpstan-assert-if-true Closure $this->modal */
     public function isInModal(): bool
     {
         return ! \is_null($this->modal);
@@ -36,6 +37,9 @@ trait WithModal
 
     /**
      * @param  ?Closure(ModalContract $modal, ActionButtonContract $ctx): ModalContract  $builder
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $title
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $content
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $name
      */
     public function inModal(
         Closure|string|null $title = null,
@@ -49,20 +53,20 @@ trait WithModal
         $async = $this->purgeAsyncTap();
 
         $this->modal = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => Modal::make(
-            title: static fn () => value($title, $item, $ctx) ?? $ctx->getLabel(),
-            content: static fn () => value($content, $item, $ctx) ?? '',
+            title: static fn () => ($title instanceof Closure ? $title($item, $ctx) : $title) ?? $ctx->getLabel(),
+            content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
             asyncUrl: $async ? static fn (): string => $ctx->getUrl($item) : null,
             components: $components
         )
-            ->name(value($name, $item, $ctx))
+            ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
             ->when(
                 ! \is_null($builder),
-                static fn (ModalContract $modal): ModalContract => $builder($modal, $ctx)
+                static fn (ModalContract $modal): ModalContract => $builder === null ? $modal : $builder($modal, $ctx)
             );
 
         return $this->onBeforeRender(
             static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleModal(
-                $ctx->getComponent()?->getName() ?? value($name, $ctx->getData()?->getOriginal(), $ctx)
+                $ctx->getComponent()?->getName() ?? ($name instanceof Closure ? $name($ctx->getData()?->getOriginal(), $ctx) : $name)
             )
         );
     }
@@ -70,6 +74,11 @@ trait WithModal
     /**
      * @param  ?Closure(FormBuilderContract $form, mixed $data): FormBuilderContract  $formBuilder
      * @param  ?Closure(ModalContract $modal, ActionButtonContract $ctx): ModalContract  $modalBuilder
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $title
+     * @param (Closure(mixed): string)|string|null $content
+     * @param (Closure(mixed): string)|string|null $button
+     * @param (Closure(mixed): list<ComponentContract>)|list<ComponentContract>|null $fields
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $name
      */
     public function withConfirm(
         Closure|string|null $title = null,
@@ -97,7 +106,7 @@ trait WithModal
         }
 
         return $this->inModal(
-            static fn (mixed $item, ActionButtonContract $ctx) => value($title, $item, $ctx) ?? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm'),
+            static fn (mixed $item, ActionButtonContract $ctx) => ($title instanceof Closure ? $title($item, $ctx) : $title) ?? $ctx->getCore()->getTranslator()->getString('moonshine::ui.confirm'),
             static fn (mixed $item, ActionButtonContract $ctx): string => (string) FormBuilder::make(
                 $ctx->getUrl($item),
                 $isDefaultMethods ? FormMethod::from($method->value) : FormMethod::POST
@@ -115,28 +124,28 @@ trait WithModal
 
                     Heading::make(
                         \is_null($content)
-                            ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm_message')
+                            ? $ctx->getCore()->getTranslator()->getString('moonshine::ui.confirm_message')
                             : value($content, $item)
                     ),
                 ])
             )->when(
                 ! \is_null($selector),
-                static fn (FormBuilderContract $form): FormBuilderContract => $form->asyncSelector($selector)
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->asyncSelector($selector ?? '')
             )->when(
                 $async,
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->async(events: $events, callback: $callback)
             )->submit(
                 button: ActionButton::make(
                     \is_null($button)
-                        ? $ctx->getCore()->getTranslator()->get('moonshine::ui.confirm')
+                        ? $ctx->getCore()->getTranslator()->getString('moonshine::ui.confirm')
                         : value($button, $item)
                 )->error()
             )->when(
                 ! \is_null($formBuilder),
-                static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder($form, $item)
+                static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder === null ? $form : $formBuilder($form, $item)
             )->when(
                 $ctx->getAttribute('data-async-response-type') !== null,
-                static fn (FormBuilder $form): FormBuilder => $form->download()
+                static fn (FormBuilderContract $form): FormBuilderContract => $form->download()
             ),
             name: $name,
             builder: $modalBuilder
@@ -160,8 +169,8 @@ trait WithModal
         return $this->onClick(
             static function (ActionButtonContract $ctx) use ($name, $asyncUrl): string {
                 $original = $ctx->getData()?->getOriginal();
-                $resolvedName = Str::lower((string) (value($name, $original, $ctx) ?? 'default'));
-                $resolvedAsyncUrl = value($asyncUrl, $original, $ctx);
+                $resolvedName = Str::lower((string) (($name instanceof Closure ? $name($original, $ctx) : $name) ?? 'default'));
+                $resolvedAsyncUrl = ($asyncUrl instanceof Closure ? $asyncUrl($original, $ctx) : $asyncUrl);
 
                 if (! \is_null($resolvedAsyncUrl) && ! \is_string($resolvedAsyncUrl)) {
                     throw new ActionButtonException(

@@ -10,7 +10,6 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Crud\JsonResponse;
-use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 use MoonShine\Laravel\Http\Requests\Relations\BelongsToManyPivotRequest;
@@ -34,7 +33,7 @@ final class BelongsToManyPivotController extends MoonShineController
      */
     public function formComponent(RelationModelFieldRequest $request): string
     {
-        $parent = $request->getResource()?->getItemOrInstance();
+        $parent = $request->getResourceOrFail()->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
         $field = $request->getPageField(BelongsToMany::class);
@@ -44,44 +43,46 @@ final class BelongsToManyPivotController extends MoonShineController
         }
 
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResourceOrFail();
 
-        $relatedKey = $request->input('_key');
+        $relatedKey = $request->string('_key')->value();
         $update = filled($relatedKey);
 
-        $field->fillCast($parent, $request->getResource()?->getCaster());
+        $field->fillCast($parent, $request->getResourceOrFail()->getCaster());
 
-        /** @var \Illuminate\Database\Eloquent\Relations\BelongsToMany $relation */
-        $relation = $parent->{$field->getRelationName()}();
+        /** @var \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model> $relation */
+        $relation = $field->getRelationFor($parent);
 
         if ($update) {
             $item = $relation
                 ->wherePivot($relation->getRelatedPivotKeyName(), $relatedKey)
                 ->firstOrFail();
 
-            $pivotData = $item->{$field->getPivotAs()}?->toArray() ?? [];
+            /** @var Model|null $pivot */
+            $pivot = $item->getRelation($field->getPivotAs());
+            $pivotData = $pivot?->toArray() ?? [];
         } else {
             $pivotData = [];
             $item = null;
         }
 
         /** @var ModelResource $parentResource */
-        $parentResource = $request->getResource();
+        $parentResource = $request->getResourceOrFail();
         $parentPage = $request->getPage();
 
         $action = $update
             ? static fn (Model $data) => $parentResource->getRoute(
                 'belongs-to-many-pivot.update',
-                $data->getKey(),
+                $parentResource->getCaster()->cast($data),
                 query: [
                 'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
                 '_key' => $relatedKey,
             ],
             )
-            : static fn (?Model $data) => $parentResource->getRoute(
+            : static fn (Model $data) => $parentResource->getRoute(
                 'belongs-to-many-pivot.store',
-                $data->getKey(),
+                $parentResource->getCaster()->cast($data),
                 query: [
                 'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
@@ -101,7 +102,7 @@ final class BelongsToManyPivotController extends MoonShineController
             return $fields
                 ->when(
                     $update,
-                    fn (Fields $ctx)
+                    fn (\MoonShine\Contracts\Core\DependencyInjection\FieldsContract $ctx)
                         => $ctx->prepend(Hidden::make('_method')->setValue('PUT'))->prepend(
                             Preview::make(
                                 $field->getResourceColumnLabel(),
@@ -109,7 +110,7 @@ final class BelongsToManyPivotController extends MoonShineController
                                 $this->getRelatedLabel($field, $item),
                             ),
                         ),
-                    fn (Fields $ctx)
+                    fn (\MoonShine\Contracts\Core\DependencyInjection\FieldsContract $ctx)
                         => $ctx->prepend(
                             $this->buildRelatedSelect($field),
                         ),
@@ -118,7 +119,7 @@ final class BelongsToManyPivotController extends MoonShineController
                     Hidden::make('_relation_name')
                         ->setValue($field->getRelationName()),
                 )
-                ->toArray();
+                ->all();
         };
 
         $formName = "pivot-form-{$resource->getUriKey()}-" . ($update ? $relatedKey : 'create');
@@ -147,7 +148,7 @@ final class BelongsToManyPivotController extends MoonShineController
     private function buildRelatedSelect(BelongsToMany $field): Select
     {
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResourceOrFail();
         $resourceColumn = $field->getResourceColumn();
         $relatedKeyName = $field->getRelatedKeyName();
 
@@ -162,10 +163,11 @@ final class BelongsToManyPivotController extends MoonShineController
             )->searchable();
         }
 
+        /** @var array<array-key, string> $options */
         $options = $resource
             ->getQuery()
             ->pluck($resourceColumn, $relatedKeyName)
-            ->toArray();
+            ->all();
 
         return $select->options($options)->searchable();
     }
@@ -179,10 +181,16 @@ final class BelongsToManyPivotController extends MoonShineController
         $callback = $field->getFormattedValueCallback();
 
         if ($callback instanceof Closure) {
-            return (string) $callback($relatedItem, 0, $field);
+            /** @var string|int|float|bool|\Stringable|null $label */
+            $label = $callback($relatedItem, 0, $field);
+
+            return (string) $label;
         }
 
-        return (string)data_get($relatedItem, $field->getResourceColumn(), '');
+        /** @var string|int|float|bool|\Stringable|null $label */
+        $label = data_get($relatedItem, $field->getResourceColumn(), '');
+
+        return (string) $label;
     }
 
     /**
@@ -190,7 +198,7 @@ final class BelongsToManyPivotController extends MoonShineController
      */
     public function store(BelongsToManyPivotRequest $request): JsonResponse
     {
-        $parent = $request->getResource()?->getItemOrInstance();
+        $parent = $request->getResourceOrFail()->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
         $field = $request->getPageField(BelongsToMany::class);
@@ -199,7 +207,7 @@ final class BelongsToManyPivotController extends MoonShineController
             throw ModelRelationFieldException::notFound();
         }
 
-        $relatedKey = $request->input('_key');
+        $relatedKey = $request->string('_key')->value();
 
         if (blank($relatedKey)) {
             return $this->json(
@@ -211,7 +219,7 @@ final class BelongsToManyPivotController extends MoonShineController
 
         $pivotData = $this->extractPivotData($request, $field);
 
-        $parent->{$field->getRelationName()}()->attach($relatedKey, $pivotData);
+        $field->getRelationFor($parent)->attach($relatedKey, $pivotData);
 
         return $this->json(
             message: __('moonshine::ui.saved'),
@@ -223,7 +231,7 @@ final class BelongsToManyPivotController extends MoonShineController
      */
     public function update(BelongsToManyPivotRequest $request): JsonResponse
     {
-        $parent = $request->getResource()?->getItemOrInstance();
+        $parent = $request->getResourceOrFail()->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
         $field = $request->getPageField(BelongsToMany::class);
@@ -232,7 +240,7 @@ final class BelongsToManyPivotController extends MoonShineController
             throw ModelRelationFieldException::notFound();
         }
 
-        $relatedKey = $request->input('_key');
+        $relatedKey = $request->string('_key')->value();
 
         if (blank($relatedKey)) {
             return $this->json(
@@ -244,7 +252,7 @@ final class BelongsToManyPivotController extends MoonShineController
 
         $pivotData = $this->extractPivotData($request, $field);
 
-        $parent->{$field->getRelationName()}()->updateExistingPivot($relatedKey, $pivotData);
+        $field->getRelationFor($parent)->updateExistingPivot($relatedKey, $pivotData);
 
         return $this->json(
             message: __('moonshine::ui.saved'),
@@ -256,7 +264,7 @@ final class BelongsToManyPivotController extends MoonShineController
      */
     public function destroy(BelongsToManyPivotRequest $request): JsonResponse
     {
-        $parent = $request->getResource()?->getItemOrInstance();
+        $parent = $request->getResourceOrFail()->getItemOrInstance();
 
         /** @var null|BelongsToMany $field */
         $field = $request->getPageField(BelongsToMany::class);
@@ -265,7 +273,7 @@ final class BelongsToManyPivotController extends MoonShineController
             throw ModelRelationFieldException::notFound();
         }
 
-        $relatedKey = $request->input('_key');
+        $relatedKey = $request->string('_key')->value();
 
         if (blank($relatedKey)) {
             return $this->json(
@@ -275,7 +283,7 @@ final class BelongsToManyPivotController extends MoonShineController
             );
         }
 
-        $parent->{$field->getRelationName()}()->detach($relatedKey);
+        $field->getRelationFor($parent)->detach($relatedKey);
 
         return $this->json(
             message: __('moonshine::ui.deleted'),
@@ -288,11 +296,11 @@ final class BelongsToManyPivotController extends MoonShineController
     public function listComponent(RelationModelFieldRequest $request): string
     {
         /** @var ModelResource $parentResource */
-        $parentResource = $request->getResource();
+        $parentResource = $request->getResourceOrFail();
 
-        $parentResource->setQueryParams(
-            $request->only($parentResource->getQueryParamsKeys()),
-        );
+        /** @var array<string, mixed> $params */
+        $params = $request->only($parentResource->getQueryParamsKeys());
+        $parentResource->setQueryParams($params);
 
         $parentItem = $parentResource->getItemOrInstance();
 
@@ -314,7 +322,7 @@ final class BelongsToManyPivotController extends MoonShineController
             return (string)$this->responseWithTable($value, $field->getResource());
         }
 
-        return (string)$value->render();
+        return (string)$value;
     }
 
     /**

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Traits\Fields;
 
 use Closure;
-use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -14,6 +16,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Support\DTOs\Select\Option;
 use MoonShine\Support\DTOs\Select\OptionProperty;
+use MoonShine\Support\Stringify;
 
 trait WithAsyncSearch
 {
@@ -25,14 +28,22 @@ trait WithAsyncSearch
 
     protected int $asyncSearchCount = 15;
 
+    /** @var null|(Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>), string, RelationModelFieldRequest, FieldContract): (EloquentBuilder<Model>|Relation<Model, Model, mixed>)) */
     protected ?Closure $asyncSearchQuery = null;
 
+    /**
+     * @var (Closure(Model, FieldContract): mixed)|null
+     */
     protected ?Closure $asyncSearchValueCallback = null;
 
+    /**
+     * @var array{column: string, disk: string, dir: string}|array{}
+     */
     protected array $withImage = [];
 
     protected ?string $associatedWith = null;
 
+    /** @var null|(Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>), string, RelationModelFieldRequest, FieldContract): (EloquentBuilder<Model>|Relation<Model, Model, mixed>)) */
     protected ?Closure $associatedWithSearchQuery = null;
 
     public function withImage(string $column, string $disk = '', string $dir = ''): static
@@ -48,6 +59,9 @@ trait WithAsyncSearch
         return $this;
     }
 
+    /**
+     * @phpstan-assert-if-true array{column: non-empty-string, disk: string, dir: string} $this->withImage
+     */
     protected function isWithImage(): bool
     {
         return ! empty($this->withImage['column']);
@@ -69,7 +83,7 @@ trait WithAsyncSearch
             $value = Arr::first($value);
         }
 
-        $value = Str::of($value)
+        $value = Str::of(Stringify::value($value))
             ->replaceFirst($this->withImage['dir'], '')
             ->trim('/')
             ->prepend($this->withImage['dir'] . '/')
@@ -78,6 +92,9 @@ trait WithAsyncSearch
         return $this->getCore()->getStorage(disk: $this->withImage['disk'])->getUrl($value);
     }
 
+    /**
+     * @return Collection<array-key, array<string, mixed>|null>
+     */
     public function getValuesWithProperties(bool $onlyCustom = false): Collection
     {
         if (! $this->isWithImage()) {
@@ -88,7 +105,7 @@ trait WithAsyncSearch
             $option = $this->getAsyncSearchOption($item);
 
             return [
-                $item->getKey() => $onlyCustom
+                Stringify::value($item->getKey()) => $onlyCustom
                     ? $option->getProperties()?->toArray()
                     : $option->toArray(),
             ];
@@ -115,16 +132,25 @@ trait WithAsyncSearch
         return $this->asyncSearchCount;
     }
 
+    /**
+     * @return (Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>), string, RelationModelFieldRequest, FieldContract): (EloquentBuilder<Model>|Relation<Model, Model, mixed>))|null
+     */
     public function getAsyncSearchQuery(): ?Closure
     {
         return $this->asyncSearchQuery;
     }
 
+    /**
+     * @return (Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>), string, RelationModelFieldRequest, FieldContract): (EloquentBuilder<Model>|Relation<Model, Model, mixed>))|null
+     */
     public function getAssociatedWithSearchQuery(): ?Closure
     {
         return $this->associatedWithSearchQuery;
     }
 
+    /**
+     * @return (Closure(Model, FieldContract): mixed)|null
+     */
     public function getAsyncSearchValueCallback(): ?Closure
     {
         return $this->asyncSearchValueCallback;
@@ -143,6 +169,7 @@ trait WithAsyncSearch
         }
 
         $resourceUri = $this->getNowOnResource()?->getUriKey() ?? $this->getCore()->getCrudRequest()->getResourceUri();
+        /** @var int|string|null $itemID */
         $itemID = data_get($this->getNowOnQueryParams(), 'resourceItem', $this->getCore()->getCrudRequest()->getItemID());
 
         return $this->getCore()->getRouter()->getEndpoints()->withRelation(
@@ -162,17 +189,17 @@ trait WithAsyncSearch
 
         return new Option(
             label: \is_null($this->getAsyncSearchValueCallback())
-                ? (string) data_get($model, $searchColumn, '')
-                : (string) \call_user_func($this->getAsyncSearchValueCallback(), $model, $this),
-            value: (string)$model->getKey(),
+                ? Stringify::value(data_get($model, $searchColumn, ''))
+                : Stringify::value(\call_user_func($this->getAsyncSearchValueCallback(), $model, $this)),
+            value: Stringify::value($model->getKey()),
             properties: new OptionProperty($this->getImageUrl($model)),
         );
     }
 
     /**
      * @param  string|null  $column
-     * @param  ?Closure(Builder $query, string $term, RelationModelFieldRequest $request, FieldContract $field): static  $searchQuery
-     * @param  ?Closure(mixed $data, FieldContract $field): static  $formatted
+     * @param  ?Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>) $query, string $term, RelationModelFieldRequest $request, FieldContract $field): (EloquentBuilder<Model>|Relation<Model, Model, mixed>)  $searchQuery
+     * @param  ?Closure(Model $data, FieldContract $field): mixed  $formatted
      */
     public function asyncSearch(
         ?string $column = null,
@@ -187,7 +214,9 @@ trait WithAsyncSearch
         $this->asyncSearchColumn = $column;
         $this->asyncSearchCount = $limit;
         $this->asyncSearchQuery = $searchQuery;
-        $this->asyncSearchValueCallback = $formatted ?? $this->getFormattedValueCallback();
+        $this->asyncSearchValueCallback = $formatted ?? ($this->getFormattedValueCallback() === null
+            ? null
+            : fn (Model $model): mixed => value($this->getFormattedValueCallback(), $model, $this->getRowIndex(), $this));
         $this->associatedWith = $associatedWith;
         $this->asyncUrl = $url;
 
@@ -199,7 +228,7 @@ trait WithAsyncSearch
 
         $this->valuesQuery = function (Builder $query) {
             if ($this->getRelatedModel()) {
-                return $this->getRelation();
+                return $this->getRelation() ?? $query->whereRaw('1=0');
             }
 
             return $query->whereRaw('1=0');
@@ -209,7 +238,7 @@ trait WithAsyncSearch
     }
 
     /**
-     * @param  ?Closure(Builder $query, string $term, RelationModelFieldRequest $request, FieldContract $field): static  $searchQuery
+     * @param  ?Closure((EloquentBuilder<Model>|Relation<Model, Model, mixed>) $query, string $term, RelationModelFieldRequest $request, FieldContract $field): (EloquentBuilder<Model>|Relation<Model, Model, mixed>)  $searchQuery
      */
     public function associatedWith(string $column, ?Closure $searchQuery = null): static
     {

@@ -11,6 +11,9 @@ use MoonShine\Crud\Contracts\Notifications\NotificationButtonContract;
 use MoonShine\Crud\Contracts\Notifications\NotificationItemContract;
 use MoonShine\Crud\Notifications\NotificationButton;
 
+/**
+ * @phpstan-type NotificationData array{color?: string|null, message?: string, icon?: string|null, button?: array{label: string, link: string, attributes?: array<string, mixed>}|array{}}
+ */
 final readonly class NotificationItem implements NotificationItemContract
 {
     public function __construct(
@@ -20,7 +23,15 @@ final readonly class NotificationItem implements NotificationItemContract
 
     public function getId(): int|string|null
     {
+        /** @var int|string|null */
         return $this->notification->getKey();
+    }
+
+    /** @return NotificationData */
+    private function getData(): array
+    {
+        /** @var NotificationData */
+        return $this->notification->data;
     }
 
     public function getReadRoute(): string
@@ -32,34 +43,39 @@ final readonly class NotificationItem implements NotificationItemContract
 
     public function getColor(): string
     {
-        return $this->notification->data['color'] ?? 'green';
+        return $this->getData()['color'] ?? 'green';
     }
 
     public function getMessage(): string
     {
-        return $this->notification->data['message'] ?? '';
+        return $this->getData()['message'] ?? '';
     }
 
     public function getDate(): DateTimeInterface
     {
-        return $this->notification->created_at ?? now();
+        /** @var DateTimeInterface|null $createdAt */
+        $createdAt = $this->notification->getAttribute('created_at');
+
+        return $createdAt ?? now();
     }
 
     public function getButton(): ?NotificationButtonContract
     {
-        if (empty($this->notification->data['button'])) {
+        $button = $this->getData()['button'] ?? [];
+
+        if ($button === []) {
             return null;
         }
 
         return new NotificationButton(
-            $this->notification->data['button']['label'],
-            $this->notification->data['button']['link'],
-            $this->notification->data['button']['attributes'] ?? [],
+            $button['label'],
+            $button['link'],
+            $button['attributes'] ?? [],
         );
     }
 
     public function getIcon(): string
     {
-        return $this->notification->data['icon'] ?? 'information-circle';
+        return $this->getData()['icon'] ?? 'information-circle';
     }
 }

@@ -18,14 +18,8 @@ final class TableRows extends Collection implements TableRowsContract
 {
     public function pushRow(TableCellsContract $cells, int|string|null $key = null, ?Closure $builder = null): self
     {
-        return $this->push(
-            TableRow::make(
-                $cells,
-                $key
-            )->when(
-                ! \is_null($builder),
-                static fn (TableRowContract $tr) => $builder($tr)
-            )
-        );
+        $row = TableRow::make($cells, $key);
+
+        return $this->push($builder === null ? $row : ($builder($row) ?? $row));
     }
 }

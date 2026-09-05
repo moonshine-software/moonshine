@@ -16,6 +16,7 @@ trait HasPageRequest
      */
     public function findPage(): ?PageContract
     {
+        /** @var TPage|null */
         return memoize(function (): ?PageContract {
             if (\is_null($this->getPageUri())) {
                 return null;
@@ -23,8 +24,8 @@ trait HasPageRequest
 
             if ($this->hasResource()) {
                 return $this->getResource()
-                    ?->getPages()
-                    ?->findByUri($this->getPageUri());
+                    ->getPages()
+                    ->findByUri($this->getPageUri());
             }
 
             return moonshine()->getPages()->findByUri(

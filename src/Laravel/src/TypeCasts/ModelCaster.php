@@ -36,15 +36,12 @@ final readonly class ModelCaster implements DataCasterContract
      */
     public function cast(mixed $data): ModelDataWrapper
     {
-        /** @phpstan-ignore-next-line  */
         if (\is_array($data)) {
-            /** @var T $model */
             $model = new ($this->getClass());
             $data = $model->forceFill($data);
             $data->exists = ! empty($data->getKey());
         }
 
-        /** @var ModelDataWrapper<T> */
         /** @noRector */
         return new ModelDataWrapper($data);
     }
@@ -55,10 +52,11 @@ final readonly class ModelCaster implements DataCasterContract
             return null;
         }
 
+        /** @var string $pageName */
         $pageName = method_exists($data, 'getPageName') ? $data->getPageName() : 'page';
 
         /**
-         * @var (Paginator|CursorPaginator)&Arrayable $data
+         * @var (Paginator<array-key, T>|CursorPaginator<array-key, T>)&Arrayable<array-key, mixed> $data
          */
         $paginator = new PaginatorCaster(
             $data->appends(

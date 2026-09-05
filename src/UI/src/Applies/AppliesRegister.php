@@ -18,12 +18,14 @@ final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
 
     private string $type = 'fields';
 
+    /** @var class-string|null */
     private ?string $for = null;
 
+    /** @var class-string */
     private string $defaultFor = ResourceContract::class;
 
     /**
-     * @var non-empty-array<string, array[]|array<class-string<FormElementContract>, class-string<ApplyContract>>>
+     * @var non-empty-array<string, array<class-string, array<class-string<FormElementContract>, class-string<ApplyContract>>>>
      */
     private array $applies = [
         'filters' => [],
@@ -164,7 +166,6 @@ final class AppliesRegister implements AppliesRegisterContract, HasCoreContract
             return $apply;
         }
 
-        /** @var class-string<ApplyContract> $apply */
         return $this->getCore()->getContainer($apply);
     }
 }

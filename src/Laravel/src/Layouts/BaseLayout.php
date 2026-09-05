@@ -111,12 +111,15 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function getProfileComponent(): Profile
     {
+        /** @var string $url */
+        $url = $this->getCore()->getRouter()->getEndpoints()->toPage(
+            $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
+        );
+
         return Profile::make()->menu([
             ActionButton::make(
-                label: $this->getCore()->getTranslator()->get('moonshine::ui.profile'),
-                url: $this->getCore()->getRouter()->getEndpoints()->toPage(
-                    $this->getCore()->getConfig()->getPage('profile', ProfilePage::class),
-                ),
+                label: $this->getCore()->getTranslator()->getString('moonshine::ui.profile'),
+                url: $url,
             )->icon('user'),
         ]);
     }
@@ -224,7 +227,7 @@ abstract class BaseLayout extends AbstractLayout
 
     protected function getHeaderComponent(): Header
     {
-        $homeLabel = $this->getCore()->getTranslator()->get('moonshine::ui.home');
+        $homeLabel = $this->getCore()->getTranslator()->getString('moonshine::ui.home');
 
         if ($homeLabel === 'moonshine::ui.home') {
             $homeLabel = 'Home';
@@ -267,6 +270,9 @@ abstract class BaseLayout extends AbstractLayout
         return Search::make();
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getFooterMenu(): array
     {
         return [
@@ -325,11 +331,11 @@ abstract class BaseLayout extends AbstractLayout
         if ($this->withTitle()) {
             $hasSubtitle = $this->withSubTitle() && $this->getPage()->getSubtitle() !== '';
 
-            return array_filter([
+            return array_values(array_filter([
                 Title::make($this->getPage()->getTitle())->class($hasSubtitle ? '' : 'mb-6'),
                 $hasSubtitle ? Heading::make($this->getPage()->getSubtitle())->class('mb-6') : null,
                 ...$components,
-            ]);
+            ]));
         }
 
         return $components;

@@ -14,7 +14,7 @@ use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $toggler = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $toggler = '', Closure|string|null $asyncUrl = '', iterable<array-key, ComponentContract> $components = [])
  */
 final class OffCanvas extends AbstractWithComponents implements OffCanvasContract
 {
@@ -55,6 +55,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         $this->name($name);
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function open(Closure|bool|null $condition = null): self
     {
         $this->open = \is_null($condition) || value($condition, $this);
@@ -62,6 +63,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function left(Closure|bool|null $condition = null): self
     {
         $this->left = \is_null($condition) || value($condition, $this);
@@ -69,6 +71,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function wide(Closure|bool|null $condition = null): self
     {
         $this->wide = \is_null($condition) || value($condition, $this);
@@ -76,6 +79,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function full(Closure|bool|null $condition = null): self
     {
         $this->full = \is_null($condition) || value($condition, $this);
@@ -83,6 +87,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function autoClose(Closure|bool|null $condition = null): self
     {
         $this->autoClose = \is_null($condition) || value($condition, $this);
@@ -153,9 +158,9 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
             'title' => value($this->title, $this),
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
-            'toggler' => new ComponentSlot($toggler, $this->togglerAttributes),
+            'toggler' => new ComponentSlot($this->stringifySlotContent($toggler), $this->togglerAttributes),
             'togglerButton' => $togglerButton,
-            'slot' => new ComponentSlot($componentsHtml),
+            'slot' => new ComponentSlot($this->stringifySlotContent($componentsHtml)),
         ];
     }
 }

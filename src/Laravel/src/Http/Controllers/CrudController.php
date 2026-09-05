@@ -44,9 +44,9 @@ final class CrudController extends MoonShineController
             abort(404, 'Resource not found');
         }
 
-        $resource->setQueryParams(
-            request()->only($resource->getQueryParamsKeys())
-        );
+        /** @var array<string, mixed> $params */
+        $params = $request->only($resource->getQueryParamsKeys());
+        $resource->setQueryParams($params);
 
         $resource->setActivePage(
             $resource->getIndexPage()
@@ -101,12 +101,13 @@ final class CrudController extends MoonShineController
     public function destroy(DeleteFormRequest $request): Response
     {
         /* @var \MoonShine\Crud\Resources\CrudResource $resource */
-        $resource = $request->getResource();
+        $resource = $request->getResourceOrFail();
 
         $resource->setActivePage(
             $resource->getIndexPage()
         );
 
+        /** @var string|null $redirectRoute */
         $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
 
         try {
@@ -126,7 +127,7 @@ final class CrudController extends MoonShineController
             return $resource->modifyDestroyResponse(
                 $this->json(
                     message: __('moonshine::ui.deleted'),
-                    redirect: $request->input('_redirect')
+                    redirect: $request->has('_redirect') ? $request->string('_redirect')->value() : null
                 )
             );
         }
@@ -136,22 +137,25 @@ final class CrudController extends MoonShineController
             ToastType::SUCCESS
         );
 
-        return redirect($redirectRoute);
+        return $redirectRoute === null ? back() : redirect($redirectRoute);
     }
 
     public function massDelete(MassDeleteFormRequest $request): Response
     {
         /* @var \MoonShine\Crud\Resources\CrudResource $resource */
-        $resource = $request->getResource();
+        $resource = $request->getResourceOrFail();
 
         $resource->setActivePage(
             $resource->getIndexPage()
         );
 
+        /** @var string|null $redirectRoute */
         $redirectRoute = $request->input('_redirect', $resource->getRedirectAfterDelete());
 
         try {
-            $resource->massDelete($request->input('ids', []));
+            /** @var array<array-key, int|string> $ids */
+            $ids = $request->input('ids', []);
+            $resource->massDelete($ids);
         } catch (Throwable $e) {
             return $resource->modifyErrorResponse(
                 $this->reportAndResponse($request->ajax(), $e, $redirectRoute),
@@ -163,7 +167,7 @@ final class CrudController extends MoonShineController
             return $resource->modifyMassDeleteResponse(
                 $this->json(
                     message: __('moonshine::ui.deleted'),
-                    redirect: $request->input('_redirect')
+                    redirect: $request->has('_redirect') ? $request->string('_redirect')->value() : null
                 )
             );
         }
@@ -173,7 +177,7 @@ final class CrudController extends MoonShineController
             ToastType::SUCCESS
         );
 
-        return redirect($redirectRoute);
+        return $redirectRoute === null ? back() : redirect($redirectRoute);
     }
 
     /**
@@ -183,7 +187,7 @@ final class CrudController extends MoonShineController
         MoonShineFormRequest $request
     ): Response {
         /* @var \MoonShine\Crud\Resources\CrudResource $resource */
-        $resource = $request->getResource();
+        $resource = $request->getResourceOrFail();
         $item = $resource->getItemOrInstance();
 
         $resource->setActivePage(
@@ -195,6 +199,7 @@ final class CrudController extends MoonShineController
                 return null;
             }
 
+            /** @var string|null $redirect */
             $redirect = $request->input('_redirect', $resource->getRedirectAfterSave());
 
             if (\is_null($redirect) && ! $resource->isCreateInModal() && $resource->isRecentlyCreated()) {
@@ -224,7 +229,7 @@ final class CrudController extends MoonShineController
             $castedData = $resource->getCastedData();
 
             $formClass = ".form-resource-{$resource->getUriKey()}"
-                         . ($request->has('_relation_name') ? "-" . $request->input('_relation_name') : '');
+                         . ($request->has('_relation_name') ? "-" . $request->string('_relation_name')->value() : '');
 
             $resource
                 ->getFormFields()
@@ -234,8 +239,7 @@ final class CrudController extends MoonShineController
                 ->each(function (FieldContract $field) use (&$data, $formClass): void {
                     $data['htmlData'][] = [
                         'html' => (string) $field
-                            ->resolveRefreshAfterApply()
-                            ->render(),
+                            ->resolveRefreshAfterApply(),
                         'selector' => "$formClass [data-field-selector='{$field->getNameDot()}']",
                         'htmlMode' => HtmlMode::OUTER_HTML->value,
                     ];

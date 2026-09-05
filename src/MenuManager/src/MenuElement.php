@@ -42,6 +42,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
         $this->attributes = new MoonShineComponentAttributeBag();
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function topMode(Closure|bool|null $condition = true): static
     {
         $this->topMode = \is_null($condition) || value($condition, $this);
@@ -54,6 +55,7 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
         return $this->topMode;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function onlyIcon(Closure|bool|null $condition = true): static
     {
         $this->onlyIcon = \is_null($condition) || value($condition, $this);

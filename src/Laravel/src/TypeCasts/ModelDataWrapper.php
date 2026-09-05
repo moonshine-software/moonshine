@@ -14,6 +14,9 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
  */
 final readonly class ModelDataWrapper implements DataWrapperContract
 {
+    /**
+     * @param T $model
+     */
     public function __construct(private Model $model)
     {
     }
@@ -25,11 +28,13 @@ final readonly class ModelDataWrapper implements DataWrapperContract
 
     public function getKey(): int|string|null
     {
+        /** @var int|string|null */
         return $this->model->getKey();
     }
 
     public function toArray(): array
     {
+        /** @var array<string, mixed> */
         return $this->model->toArray();
     }
 
@@ -38,7 +43,10 @@ final readonly class ModelDataWrapper implements DataWrapperContract
         return $this->model->{$name};
     }
 
-    public function __call(string $name, array $arguments)
+    /**
+     * @param array<array-key, mixed> $arguments
+     */
+    public function __call(string $name, array $arguments): mixed
     {
         return $this->model->{$name}($arguments);
     }

@@ -32,7 +32,7 @@ class RelationModelColumnUpdateRequest extends RelationModelFieldRequest
     protected function prepareForValidation(): void
     {
         request()->merge([
-            request()->getScalar('field') => request()->getScalar('value'),
+            (string) request()->getScalar('field') => request()->getScalar('value'),
         ]);
     }
 }

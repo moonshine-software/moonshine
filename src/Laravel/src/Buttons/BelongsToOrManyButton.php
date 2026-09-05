@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Buttons;
 
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
@@ -30,7 +29,7 @@ final class BelongsToOrManyButton
         ?ActionButtonContract $button = null
     ): ActionButtonContract {
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
+        $resource = $field->getResourceOrFail();
 
         if (! $resource->getFormPage()) {
             return ActionButton::emptyHidden();
@@ -48,7 +47,7 @@ final class BelongsToOrManyButton
                 Hidden::make('_relation_name')->setValue($field->getRelationName())
             );
 
-            return $fields->toArray();
+            return $fields->all();
         };
 
         $actionButton = $button instanceof ActionButtonContract
@@ -60,7 +59,7 @@ final class BelongsToOrManyButton
             ->canSee(static fn (): bool => $resource->hasAction(Action::CREATE) && $resource->can(Ability::CREATE))
             ->inModal(
                 title: static fn (): array|string => __('moonshine::ui.create'),
-                content: static fn (?Model $data): string => (string) FormBuilder::make($action)
+                content: static fn (mixed $data): string => (string) FormBuilder::make($action)
                     ->withoutRedirect()
                     ->reactiveUrl(
                         $field->getCore()->getRouter()->getEndpoints()->reactive($resource->getFormPage(), $resource)
@@ -76,9 +75,8 @@ final class BelongsToOrManyButton
                         $resource->getCaster()
                     )
                     ->submit(__('moonshine::ui.save'), ['class' => 'btn-primary'])
-                    /** @phpstan-ignore-next-line  */
                     ->fields($getFields),
-                name: static fn (?Model $data): string => "modal-belongs-to-or-many-{$field->getResource()->getUriKey()}-{$field->getRelationName()}",
+                name: static fn (mixed $data): string => "modal-belongs-to-or-many-{$field->getResourceOrFail()->getUriKey()}-{$field->getRelationName()}",
                 builder: static fn (Modal $modal): Modal => $modal->wide()->closeOutside(false)
             )
             ->primary()

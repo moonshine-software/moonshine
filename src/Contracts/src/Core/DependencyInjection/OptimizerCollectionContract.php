@@ -30,7 +30,7 @@ interface OptimizerCollectionContract
     public function getClassType(string $contract, ?string $namespace = null, bool $withCache = true): array;
 
     /**
-     * @return array<class-string, mixed>
+     * @return array<class-string, array<array-key, mixed>>
      */
     public function getTypes(?string $namespace = null, bool $withCache = true): array;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages\Crud;
 
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
 use MoonShine\Crud\Buttons\DeleteButton;
@@ -33,6 +34,22 @@ class DetailPage extends CrudDetailPage
     use OverrideCrudPage;
 
     /**
+     * @return TResource|null
+     */
+    public function getResource(): ?ResourceContract
+    {
+        return parent::getResource();
+    }
+
+    /**
+     * @return TResource
+     */
+    public function getResourceOrFail(): ResourceContract
+    {
+        return parent::getResourceOrFail();
+    }
+
+    /**
      * @return list<ComponentContract>
      * @throws Throwable
      */
@@ -46,7 +63,7 @@ class DetailPage extends CrudDetailPage
             return $components;
         }
 
-        $outsideFields = $this->getResource()->getDetailFields(onlyOutside: true);
+        $outsideFields = $this->getResourceOrFail()->getDetailFields(onlyOutside: true);
 
         $tabs = [];
 
@@ -73,10 +90,10 @@ class DetailPage extends CrudDetailPage
                         $field->getFormModalButton(__('moonshine::ui.edit'), $redirectBack),
 
                         DeleteButton::for(
-                            $field->getResource(),
+                            $field->getResourceOrFail(),
                             $field->getRelationName(),
-                            redirectAfterDelete: $this->getResource()->getDetailPageUrl(
-                                $this->getResource()->getItemID(),
+                            redirectAfterDelete: $this->getResourceOrFail()->getDetailPageUrl(
+                                $this->getResourceOrFail()->getItemID() ?? '',
                             ),
                             modalName: "has-one-{$field->getRelationName()}",
                         ),
@@ -90,8 +107,8 @@ class DetailPage extends CrudDetailPage
 
                 if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                     $tabs[] = Tab::make($field->getLabel(), [
-                        $field->isToOne() ? $toOneRenderer($field, $this->getResource()->getDetailPageUrl(
-                            $this->getResource()->getItemID(),
+                        $field->isToOne() ? $toOneRenderer($field, $this->getResourceOrFail()->getDetailPageUrl(
+                            $this->getResourceOrFail()->getItemID() ?? '',
                         )) : $field,
                     ])->canSee(static fn (): bool => $field->isSee());
 

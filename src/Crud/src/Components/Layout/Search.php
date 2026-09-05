@@ -139,7 +139,7 @@ final class Search extends MoonShineComponent
                         ])
                         ->icon('x-mark'),
 
-                    Div::make(['
+                    Div::make([\MoonShine\UI\Components\FlexibleRender::make('
                             <kbd
                                 class="search-button-key"
                                 :class="{ \'search-button-key--pressed\': isCtrlPressed }"
@@ -148,7 +148,7 @@ final class Search extends MoonShineComponent
                                 class="search-button-key"
                                 :class="{ \'search-button-key--pressed\': isKPressed }"
                             >K</kbd>
-                        '])
+                        ')])
                         ->class('search-button-keys')
                         ->xShow('searchValue', '==', '')
                         ->customAttributes([
