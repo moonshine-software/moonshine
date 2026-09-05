@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace MoonShine\Tests\Fixtures\Resources;
 
-use MoonShine\Crud\Handlers\Handler;
 use MoonShine\ImportExport\Contracts\HasImportExportContract;
-use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\Traits\ImportExportConcern;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Tests\Fixtures\Pages\TestIndexPage;
 
 abstract class AbstractTestingResource extends ModelResource implements HasImportExportContract
 {
     use ImportExportConcern;
 
-    protected function export(): ?Handler
+    protected function pages(): array
     {
-        return ExportHandler::make(__('moonshine::ui.export'))
-            ->csv()
-            ->filename($this->getUriKey());
+        return [TestIndexPage::class, FormPage::class, DetailPage::class];
     }
 
     public function setTestPolicy(bool $value): static

@@ -7,16 +7,16 @@ namespace MoonShine\Tests\Fixtures\Resources;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Crud\JsonResponse;
-use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Fields\Relationships\MorphMany;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Support\Attributes\AsyncMethod;
-use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Pages\TestItemIndexPage;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
-use MoonShine\UI\Fields\DateRange;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Switcher;
@@ -32,6 +32,11 @@ class TestItemResource extends AbstractTestingResource
     public array $with = ['category', 'images'];
 
     public string $column = 'name';
+
+    protected function pages(): array
+    {
+        return [TestItemIndexPage::class, FormPage::class, DetailPage::class];
+    }
 
     protected function indexFields(): iterable
     {
@@ -102,29 +107,6 @@ class TestItemResource extends AbstractTestingResource
     protected function importFields(): iterable
     {
         return $this->exportFields();
-    }
-
-    protected function filters(): iterable
-    {
-        return [
-            Box::make([
-                Text::make('Name'),
-                BelongsTo::make('Category', resource: TestCategoryResource::class)->nullable(),
-                DateRange::make('Created at'),
-            ]),
-        ];
-    }
-
-    protected function queryTags(): array
-    {
-        $maxId = Category::query()->max('id');
-
-        return [
-            QueryTag::make(
-                'Item #1 Query Tag',
-                static fn ($query) => $query->where('category_id', $maxId) // Query builder
-            ),
-        ];
     }
 
     protected function rules(DataWrapperContract $item): array

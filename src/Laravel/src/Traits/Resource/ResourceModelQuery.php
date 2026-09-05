@@ -217,16 +217,18 @@ trait ResourceModelQuery
      */
     protected function withTags(): static
     {
-        if (! $this instanceof HasQueryTagsContract) {
+        $page = $this->getIndexPage();
+
+        if (! $page instanceof HasQueryTagsContract) {
             return $this;
         }
 
-        if (! $this->hasQueryTags()) {
+        if (! $page->hasQueryTags()) {
             return $this;
         }
 
         /** @var ?QueryTag $tag */
-        $tag = Collection::make($this->getQueryTags())
+        $tag = Collection::make($page->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive(),
             );

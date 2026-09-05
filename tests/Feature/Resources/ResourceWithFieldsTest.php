@@ -45,12 +45,13 @@ beforeEach(function (): void {
                 HasOne::make('Outside', 'outside', resource:TestResource::class),
             ]),
 
-        ])
-        ->setTestFilters([
+        ]);
+
+    $this->resource->getIndexPage()->testFilters = [
             Box::make([
                 Text::make('Name title', 'name'),
             ]),
-        ]);
+    ];
 });
 
 it('index fields', function () {
@@ -96,7 +97,7 @@ it('outside fields', function () {
 });
 
 it('filters fields', function () {
-    expect($this->resource->getFilters())
+    expect($this->resource->getIndexPage()->getFilters())
         ->first()
         ->toBeInstanceOf(Box::class)
         ->onlyFields()

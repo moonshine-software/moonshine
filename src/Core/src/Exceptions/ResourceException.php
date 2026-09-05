@@ -18,6 +18,6 @@ final class ResourceException extends MoonShineException
 
     public static function handlerContractRequired(): self
     {
-        return new self('Resource with HasHandlersContract required');
+        return new self('Index page with HasHandlersContract required');
     }
 }

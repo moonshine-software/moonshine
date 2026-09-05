@@ -246,8 +246,8 @@ class IndexPage extends CrudPage implements IndexPageContract
     protected function topRightButtons(): ListOf
     {
         return new ListOf(ActionButtonContract::class, array_filter([
-            $this->getResource()->hasFilters() ? $this->getFiltersButton() : null,
-            ...$this->getResource()->getHandlers()->getButtons()->toArray(),
+            $this->hasFilters() ? $this->getFiltersButton() : null,
+            ...$this->getHandlers()->getButtons()->toArray(),
         ]));
     }
 
@@ -315,13 +315,11 @@ class IndexPage extends CrudPage implements IndexPageContract
      */
     protected function getQueryTagsButtons(): array
     {
-        $resource = $this->getResource();
-
         return [
             ActionGroup::make()->when(
-                $resource->hasQueryTags(),
-                function (ActionGroup $group) use ($resource): ActionGroup {
-                    foreach ($resource->getQueryTags() as $tag) {
+                $this->hasQueryTags(),
+                function (ActionGroup $group): ActionGroup {
+                    foreach ($this->getQueryTags() as $tag) {
                         $group->add(
                             $tag->getButton($this),
                         );

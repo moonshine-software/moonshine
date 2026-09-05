@@ -6,13 +6,13 @@ namespace MoonShine\Crud\Forms;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Contracts\UI\RelationFieldContract;
+use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
@@ -45,7 +45,7 @@ final readonly class FiltersForm implements FormContract
     {
         /** @var CrudResource $resource */
         $resource = $this->resource;
-        /** @var CrudPageContract $page */
+        /** @var IndexPageContract $page */
         $page = $resource->getIndexPage();
 
         if ($page === null) {
@@ -57,7 +57,7 @@ final readonly class FiltersForm implements FormContract
         );
 
         $values = $resource->getFilterParams();
-        $filters = $resource->getFilters();
+        $filters = $page->getFilters();
 
         $action = $page->isAsync() ? '#' : $this->getFormAction();
 

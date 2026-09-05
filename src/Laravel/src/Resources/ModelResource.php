@@ -20,7 +20,6 @@ use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Attributes\DestroyHandler;
 use MoonShine\Crud\Attributes\MassDestroyHandler;
 use MoonShine\Crud\Attributes\SaveHandler;
-use MoonShine\Crud\Concerns\Resource\HasFilters;
 use MoonShine\Crud\Contracts\Fields\HasOutsideSwitcherContract;
 use MoonShine\Crud\Contracts\Page\DetailPageContract;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
@@ -28,12 +27,10 @@ use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Crud\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Crud\Resources\CrudResource;
 use MoonShine\Crud\Traits\Resource\ResourceWithFields;
-use MoonShine\Laravel\Applies\FieldsWithoutFilters;
 use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\MoonShineAuth;
-use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Traits\Resource\ResourceModelQuery;
 use MoonShine\Laravel\TypeCasts\ModelCaster;
 use MoonShine\Support\Enums\Ability;
@@ -50,7 +47,6 @@ use Throwable;
  * @implements WithQueryBuilderContract<Builder>
  *
  * @use ResourceWithFields<Fields>
- * @use HasFilters<Fields>
  */
 abstract class ModelResource extends CrudResource implements WithQueryBuilderContract
 {
@@ -63,16 +59,6 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
     protected string $model;
 
     protected string $column = '';
-
-    /**
-     * @deprecated Will be removed in 5.0
-     * @return list<class-string<FieldContract>>
-     * @see IndexPage
-     */
-    protected function getIgnoredFields(): array
-    {
-        return FieldsWithoutFilters::LIST;
-    }
 
     public function flushState(): void
     {

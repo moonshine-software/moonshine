@@ -20,11 +20,13 @@ final class HandlerController extends MoonShineController
             throw ResourceException::required();
         }
 
-        if (! $resource instanceof HasHandlersContract) {
+        $page = $resource->getIndexPage();
+
+        if (! $page instanceof HasHandlersContract) {
             throw ResourceException::handlerContractRequired();
         }
 
-        $handler = $resource
+        $handler = $page
             ->getHandlers()
             ->findByUri($handlerUri);
 

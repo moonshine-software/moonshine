@@ -24,13 +24,7 @@ use MoonShine\Core\Resources\Resource;
 use MoonShine\Core\TypeCasts\MixedDataCaster;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Concerns\Resource\HasCrudResponseModifiers;
-use MoonShine\Crud\Concerns\Resource\HasFilters;
-use MoonShine\Crud\Concerns\Resource\HasHandlers;
 use MoonShine\Crud\Concerns\Resource\HasListComponent;
-use MoonShine\Crud\Concerns\Resource\HasQueryTags;
-use MoonShine\Crud\Contracts\HasFiltersContract;
-use MoonShine\Crud\Contracts\HasHandlersContract;
-use MoonShine\Crud\Contracts\HasQueryTagsContract;
 use MoonShine\Crud\Contracts\Page\DetailPageContract;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
@@ -55,19 +49,11 @@ use Throwable;
  *
  * @implements CrudResourceContract<TCore, TData, TIndexPage, TFormPage, TDetailPage, TException, TFields>
  * @extends Resource<CrudPageContract, TCore>
- * @implements HasFiltersContract<TFields>
  */
 abstract class CrudResource extends Resource implements
     CrudResourceContract,
-    HasQueryTagsContract,
-    HasHandlersContract,
-    HasFiltersContract,
     HasCrudResponseModifiersContract
 {
-    /** @use HasFilters<TFields> */
-    use HasFilters;
-    use HasHandlers;
-    use HasQueryTags;
     use HasCrudResponseModifiers;
 
     use HasListComponent;
