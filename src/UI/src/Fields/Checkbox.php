@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeBool;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeNumeric;
@@ -82,9 +83,9 @@ class Checkbox extends Field implements
 
     protected function resolvePreview(): Renderable|string
     {
-        return Boolean::make(
+        return (string) Boolean::make(
             (bool) parent::resolvePreview()
-        )->render();
+        );
     }
 
     protected function getOnChangeEvent(): string
@@ -101,7 +102,7 @@ class Checkbox extends Field implements
 
         if ($onChange = $this->getAttribute('x-on:change')) {
             $this->removeAttribute('x-on:change');
-            $additionally['x-on:change'] = $onChange;
+            $additionally['x-on:change'] = Stringify::value($onChange);
         }
 
         if ($url) {

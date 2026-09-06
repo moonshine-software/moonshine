@@ -11,6 +11,7 @@ final class ViewRenderer implements ViewRendererContract
 {
     public function render(string $view, array $data = []): Renderable
     {
+        /** @var view-string $view */
         return view($view, $data);
     }
 }

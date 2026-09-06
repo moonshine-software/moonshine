@@ -74,7 +74,7 @@ class Template extends Field implements HasFieldsContract
             return '';
         }
 
-        return (string)\call_user_func($this->renderCallback, $this->toValue(), $this);
+        return $this->stringifySlotContent(\call_user_func($this->renderCallback, $this->toValue(), $this));
     }
 
     protected function resolveOnApply(): ?Closure

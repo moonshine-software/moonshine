@@ -46,6 +46,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     use HasQueryTags;
     /** @use HasFilters<TFields> */
     use HasFilters;
+    /** @use HasListComponent<TFields> */
     use HasListComponent;
     use HasMetrics;
 
@@ -64,7 +65,7 @@ class IndexPage extends CrudPage implements IndexPageContract
 
     public function getTitle(): string
     {
-        return $this->title ?: $this->getResource()->getTitle();
+        return $this->title ?: $this->getResourceOrFail()->getTitle();
     }
 
     public function isLazy(): bool
@@ -89,8 +90,9 @@ class IndexPage extends CrudPage implements IndexPageContract
      */
     protected function prepareFields(FieldsContract $fields): FieldsContract
     {
-        /** @var Fields $fields */
-        return $fields->ensure([FieldContract::class, FieldsWrapperContract::class]);
+        $fields->ensure([FieldContract::class, FieldsWrapperContract::class]);
+
+        return $fields;
     }
 
     /**
@@ -98,7 +100,7 @@ class IndexPage extends CrudPage implements IndexPageContract
      */
     public function prepareBeforeRender(): void
     {
-        if (! $this->getResource()->can(Ability::VIEW_ANY)) {
+        if (! $this->getResourceOrFail()->can(Ability::VIEW_ANY)) {
             $this->throw403();
         }
 
@@ -154,7 +156,7 @@ class IndexPage extends CrudPage implements IndexPageContract
 
     protected function getMetricsComponent(): ?ComponentContract
     {
-        if ($this->getResource()->isListComponentRequest()) {
+        if ($this->getResourceOrFail()->isListComponentRequest()) {
             return null;
         }
 
@@ -196,8 +198,8 @@ class IndexPage extends CrudPage implements IndexPageContract
             return [];
         }
 
-        $this->getResource()->setQueryParams(
-            $this->getCore()->getRequest()->getOnly($this->getResource()->getQueryParamsKeys()),
+        $this->getResourceOrFail()->setQueryParams(
+            $this->getCore()->getRequest()->getOnly($this->getResourceOrFail()->getQueryParamsKeys()),
         );
 
         return [
@@ -233,7 +235,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     {
         return new ListOf(ActionButtonContract::class, [
             $this->modifyCreateButton(
-                $this->getResource()->getCreateButton(
+                $this->getResourceOrFail()->getCreateButton(
                     isAsync: $this->isAsync()
                 )
             ),
@@ -247,7 +249,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     {
         return new ListOf(ActionButtonContract::class, array_filter([
             $this->hasFilters() ? $this->getFiltersButton() : null,
-            ...$this->getHandlers()->getButtons()->toArray(),
+            ...$this->getHandlers()->getButtons()->all(),
         ]));
     }
 
@@ -258,22 +260,22 @@ class IndexPage extends CrudPage implements IndexPageContract
     {
         return new ListOf(ActionButtonContract::class, [
             $this->modifyDetailButton(
-                $this->getResource()->getDetailButton()
+                $this->getResourceOrFail()->getDetailButton()
             ),
             $this->modifyEditButton(
-                $this->getResource()->getEditButton(
+                $this->getResourceOrFail()->getEditButton(
                     isAsync: $this->isAsync(),
                 )
             ),
             $this->modifyDeleteButton(
-                $this->getResource()->getDeleteButton(
-                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                $this->getResourceOrFail()->getDeleteButton(
+                    redirectAfterDelete: $this->getResourceOrFail()->getRedirectAfterDelete(),
                     isAsync: $this->isAsync(),
                 )
             ),
             $this->modifyMassDeleteButton(
-                $this->getResource()->getMassDeleteButton(
-                    redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(),
+                $this->getResourceOrFail()->getMassDeleteButton(
+                    redirectAfterDelete: $this->getResourceOrFail()->getRedirectAfterDelete(),
                     isAsync: $this->isAsync(),
                 )
             ),
@@ -306,7 +308,7 @@ class IndexPage extends CrudPage implements IndexPageContract
     protected function getFiltersButton(): ActionButtonContract
     {
         return $this->modifyFiltersButton(
-            $this->getResource()->getFiltersButton(),
+            $this->getResourceOrFail()->getFiltersButton(),
         );
     }
 

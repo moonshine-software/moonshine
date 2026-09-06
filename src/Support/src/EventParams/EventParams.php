@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use MoonShine\Support\Traits\Makeable;
 
 /**
- * @method static static make(array $data = [])
+ * @method static static make(array<string, mixed> $data = [])
  */
 class EventParams
 {

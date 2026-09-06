@@ -34,6 +34,9 @@ class LoginFormRequest extends MoonShineFormRequest
         ];
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     private function getCredentials(): array
     {
         return [
@@ -103,7 +106,7 @@ class LoginFormRequest extends MoonShineFormRequest
     public function getThrottleKey(): string
     {
         return Str::transliterate(
-            Str::of($this->input('username') . '|' . $this->ip())
+            Str::of($this->string('username')->value() . '|' . $this->ip())
                 ->lower()
                 ->value()
         );

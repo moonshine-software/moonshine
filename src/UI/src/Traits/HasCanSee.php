@@ -10,6 +10,7 @@ trait HasCanSee
 {
     protected ?Closure $canSeeCallback = null;
 
+    /** @phpstan-assert-if-true Closure $this->canSeeCallback */
     public function hasCanSeeCallback(): bool
     {
         return $this->canSeeCallback !== null;

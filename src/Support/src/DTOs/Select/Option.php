@@ -52,6 +52,7 @@ final class Option implements Arrayable
         return $this->selected;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function disabled(Closure|bool|null $condition = null): self
     {
         return $this->customAttributes([

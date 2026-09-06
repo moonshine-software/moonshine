@@ -40,7 +40,7 @@ abstract class Page extends CorePage implements WithResponseModifierContract
     {
         parent::prepareBeforeRender();
 
-        $withoutQuery = trim(parse_url($this->getUrl(), PHP_URL_PATH), '/');
+        $withoutQuery = trim(parse_url($this->getUrl(), PHP_URL_PATH) ?: '', '/');
         $currentPath = trim($this->getCore()->getRequest()->getPath(), '/');
 
         if ($this->isCheckUrl() && ! str_contains($currentPath, $withoutQuery)) {
@@ -71,7 +71,7 @@ abstract class Page extends CorePage implements WithResponseModifierContract
         /** @var View $view */
         return $view->fragmentIf(
             $this->getCore()->getCrudRequest()->isFragmentLoad(),
-            $this->getCore()->getCrudRequest()->getFragmentLoad(),
+            $this->getCore()->getCrudRequest()->getFragmentLoad() ?? '',
         );
     }
 

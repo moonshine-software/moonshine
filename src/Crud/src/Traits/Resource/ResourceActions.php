@@ -29,7 +29,7 @@ trait ResourceActions
      */
     protected function getActiveActions(): array
     {
-        return $this->activeActions()->toArray();
+        return array_values($this->activeActions()->toArray());
     }
 
     public function hasAction(Action ...$actions): bool

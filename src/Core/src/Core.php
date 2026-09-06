@@ -181,8 +181,8 @@ abstract class Core implements CoreContract, StatefulContract
     public function getFieldsCollection(iterable $items = []): FieldsContract
     {
         /** @var TFields $collection */
-        /** @phpstan-ignore clone.nonObject */
-        $collection = clone $this->container->get(FieldsContract::class);
+        $collection = $this->container->get(FieldsContract::class);
+        $collection = clone $collection;
 
         /** @var TFields */
         return $collection->push(...$items);

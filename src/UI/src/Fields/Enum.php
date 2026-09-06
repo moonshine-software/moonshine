@@ -7,7 +7,10 @@ namespace MoonShine\UI\Fields;
 use BackedEnum;
 use Closure;
 use Illuminate\Support\Collection;
+use MoonShine\Support\Enums\Color;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeEnum;
 use Throwable;
@@ -29,9 +32,9 @@ class Enum extends Select implements CanBeEnum
         $this->options(
             $values->mapWithKeys(static fn ($value): array => [
                 $value->value => method_exists($value, 'toString')
-                    ? $value->toString()
-                    : $value->value,
-            ])->toArray()
+                    ? Stringify::value($value->toString())
+                    : (string) $value->value,
+            ])->all()
         );
 
         return $this;
@@ -52,31 +55,46 @@ class Enum extends Select implements CanBeEnum
 
         $rescueEnum = static function (Closure $callback): BackedEnum|null {
             try {
-                return $callback();
+                $enum = $callback();
+
+                return $enum instanceof BackedEnum ? $enum : null;
             } catch (Throwable) {
             }
 
             return null;
         };
 
-        if ($this->attached !== null && ! $value instanceof $this->attached) {
+        if ($this->attached !== null && (\is_int($value) || \is_string($value))) {
             $value = $rescueEnum(fn () => $this->attached::tryFrom($value)) ?? $value;
         }
 
         if ($this->isMultiple()) {
-            $badged = false;
-            $values = $value->map(function ($v) use ($rescueEnum, &$badged) {
-                $enum = $rescueEnum(fn () => $this->attached::tryFrom($v)) ?? $this->attached::tryFrom((int) $v);
-                $result = $enum ? (string) ($enum->value ?? '') : $v;
+            $enumClass = $this->attached;
 
-                if (method_exists($enum, 'toString')) {
-                    $result = (string) $enum->toString();
+            if ($enumClass === null) {
+                return parent::resolvePreview();
+            }
+
+            $badged = false;
+            $values = Collection::wrap($value)->map(function ($v) use ($enumClass, $rescueEnum, &$badged): string {
+                if (! \is_int($v) && ! \is_string($v)) {
+                    return '';
                 }
 
-                if (method_exists($enum, 'getColor')) {
+                $enum = $rescueEnum(fn () => $enumClass::tryFrom($v)) ?? $enumClass::tryFrom((int) $v);
+                $result = (string) ($enum->value ?? $v);
+
+                if ($enum !== null && method_exists($enum, 'toString')) {
+                    $result = Stringify::value($enum->toString());
+                }
+
+                if ($enum !== null && method_exists($enum, 'getColor')) {
                     $badged = true;
 
-                    return (string) Badge::make($result, $enum->getColor(), method_exists($enum, 'getIcon') ? $enum->getIcon() : null);
+                    /** @var string|Color $color */
+                    $color = $enum->getColor();
+
+                    return (string) Badge::make($result, $color, method_exists($enum, 'getIcon') ? Stringify::value($enum->getIcon()) : null);
                 }
 
                 return $result;
@@ -88,27 +106,33 @@ class Enum extends Select implements CanBeEnum
             }
 
             return (string) Flex::make([
-                $this->getMultiplePreview($values, $badged ? '' : ','),
+                FlexibleRender::make($this->getMultiplePreview($values, $badged ? '' : ',')),
             ])->unwrap()->withoutSpace()->class('gap-1');
         }
 
         if (\is_scalar($value)) {
-            return data_get(
+            return Stringify::value(data_get(
                 $this->getValues(),
-                $value,
+                (string) $value,
                 (string) $value
-            );
+            ));
+        }
+
+        if (! $value instanceof BackedEnum) {
+            return '';
         }
 
         if (method_exists($value, 'getColor')) {
+            /** @var string|Color $color */
+            $color = $value->getColor();
             $this->badge(
-                $value->getColor(),
-                method_exists($value, 'getIcon') ? $value->getIcon() : null
+                $color,
+                method_exists($value, 'getIcon') ? Stringify::value($value->getIcon()) : null
             );
         }
 
         if (method_exists($value, 'toString')) {
-            return (string) $value->toString();
+            return Stringify::value($value->toString());
         }
 
         return (string) ($value->value ?? '');

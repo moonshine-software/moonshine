@@ -17,6 +17,9 @@ class ProfileFormRequest extends MoonShineFormRequest
         return MoonShineAuth::getGuard()->check();
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function rules(): array
     {
         $name = moonshineConfig()->getUserField('name');
@@ -30,7 +33,7 @@ class ProfileFormRequest extends MoonShineFormRequest
                 'required',
                 Rule::unique(
                     MoonShineAuth::getModel()::class,
-                    moonshineConfig()->getUserField('username')
+                    (string) $username
                 )->ignore(MoonShineAuth::getGuard()->id()),
             ],
             $avatar => blank($avatar) ? null : ['sometimes', 'nullable', 'image', 'mimes:jpeg,jpg,png,gif'],

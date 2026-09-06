@@ -99,7 +99,7 @@ final readonly class FiltersForm implements FormContract
                                 ),
                             ),
                     )
-                    ->toArray(),
+                    ->all(),
             )
             ->when($page->isAsync(), function (FormBuilderContract $form) use ($resource, $page): void {
                 $events = [
@@ -122,7 +122,7 @@ final readonly class FiltersForm implements FormContract
                     ),
                 ]);
             })
-            ->submit($this->core->getTranslator()->get('moonshine::ui.search'), ['class' => 'btn-primary'])
+            ->submit($this->core->getTranslator()->getString('moonshine::ui.search'), ['class' => 'btn-primary'])
             ->when(
                 $resource->getFilterParams() !== [],
                 fn (FormBuilderContract $form): FormBuilderContract => $form->buttons([
@@ -136,7 +136,7 @@ final readonly class FiltersForm implements FormContract
     private function getResetButton(bool $async = false, bool $hide = false, string $name = 'reset'): ActionButton
     {
         $button = ActionButton::make(
-            $this->core->getTranslator()->get('moonshine::ui.reset'),
+            $this->core->getTranslator()->getString('moonshine::ui.reset'),
             $this->getFormAction(query: [$name => true]),
         )
             ->secondary()

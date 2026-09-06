@@ -48,7 +48,7 @@ use Throwable;
  * @template TCaster of DataCasterContract<TData> = DataCasterContract
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
- * @method static static make(iterable $fields = [], iterable $items = [])
+ * @method static static make(iterable<array-key, FieldContract> $fields = [], iterable<array-key, TData> $items = [])
  *
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements TableBuilderContract<TData>
@@ -69,20 +69,23 @@ final class TableBuilder extends IterableComponent implements
         'notfound' => 'moonshine::ui.notfound',
     ];
 
+    /** @var (Closure(TableRowsContract, self): TableRowsContract)|TableRowsContract|null */
     protected Closure|TableRowsContract|null $rows = null;
 
+    /** @var (Closure(TableRowContract, self): TableRowsContract)|TableRowsContract|null */
     protected Closure|TableRowsContract|null $headRows = null;
 
+    /** @var (Closure(?TableRowContract, self): TableRowsContract)|TableRowsContract|null */
     protected Closure|TableRowsContract|null $footRows = null;
 
     /**
-     * @var  array<array-key, Closure>
+     * @var list<Closure(?DataWrapperContract<TData>, int, static): array<string, mixed>>
      *
      */
     protected array $trAttributes = [];
 
     /**
-     * @var  array<array-key, Closure>
+     * @var list<Closure(?DataWrapperContract<TData>, int, int, static): array<string, string>>
      *
      */
     protected array $tdAttributes = [];
@@ -93,10 +96,13 @@ final class TableBuilder extends IterableComponent implements
 
     protected ComponentAttributesBagContract $footAttributes;
 
+    /** @var null|(Closure(Checkbox, DataWrapperContract, self): Checkbox) */
     protected ?Closure $modifyRowCheckbox = null;
 
+    /** @var null|(Closure(self): list<ComponentContract>) */
     protected ?Closure $topLeft = null;
 
+    /** @var null|(Closure(self): list<ComponentContract>) */
     protected ?Closure $topRight = null;
 
     protected bool $isWithoutKey = false;
@@ -157,9 +163,9 @@ final class TableBuilder extends IterableComponent implements
      */
     public function getTrAttributes(?DataWrapperContract $data, int $row): array
     {
-        /** @var array<array-key, array<string, mixed>> */
+        /** @var array<string, mixed> */
         return new Collection($this->trAttributes)
-            ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $this))
+            ->flatMap(fn ($callback): array => value($callback, $data, $row, $this))
             ->toArray();
     }
 
@@ -179,9 +185,9 @@ final class TableBuilder extends IterableComponent implements
      */
     public function getTdAttributes(?DataWrapperContract $data, int $row, int $cell): array
     {
-        /** @var array<array-key, array<string, mixed>> */
+        /** @var array<string, mixed> */
         return new Collection($this->tdAttributes)
-            ->flatMap(fn (Closure $callback): array => value($callback, $data, $row, $cell, $this))
+            ->flatMap(fn ($callback): array => value($callback, $data, $row, $cell, $this))
             ->toArray();
     }
 
@@ -292,11 +298,11 @@ final class TableBuilder extends IterableComponent implements
 
             $fields = $this
                 ->getFilledFields($casted->toArray(), $casted, $index, $tableFields)
-                ->onlyVisible()
-                ->when( // @phpstan-ignore argument.templateType
-                    $this->isReindex() && ! $this->isPreparedReindex(),
-                    static fn (FieldsContract $f): FieldsContract => $f->prepareReindexNames(),
-                );
+                ->onlyVisible();
+
+            if ($this->isReindex() && ! $this->isPreparedReindex()) {
+                $fields->prepareReindexNames();
+            }
 
             $key = $casted->getKey();
 
@@ -337,10 +343,10 @@ final class TableBuilder extends IterableComponent implements
                 }
 
                 if ($buttons->isNotEmpty()) {
-                    $components[] = Flex::make([
+                    $components[] = Flex::make(array_filter([
                         $hasBulk ? $this->getRowCheckbox($key, $casted) : null,
-                        ActionGroup::make($buttons->toArray()),
-                    ])->justifyAlign($hasBulk ? 'between' : 'end');
+                        ActionGroup::make($buttons->all()),
+                    ]))->justifyAlign($hasBulk ? 'between' : 'end');
                 }
 
                 $rows->pushRow(
@@ -378,7 +384,7 @@ final class TableBuilder extends IterableComponent implements
                 ->pushCellWhen(
                     $this->hasButtons() || $buttons->isNotEmpty(),
                     fn (): string => (string) Flex::make([
-                        ActionGroup::make($buttons->toArray())
+                        ActionGroup::make($buttons->all())
                             ->when(
                                 $this->isStickyButtons(),
                                 fn (ActionGroup $actionGroup): ActionGroup => $actionGroup->customAttributes(['strategy' => 'fixed'])
@@ -579,7 +585,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  TableRowsContract|Closure(TableRowContract $default): TableRowsContract  $rows
+     * @param  TableRowsContract|Closure(?TableRowContract $default): TableRowsContract  $rows
      */
     public function footRows(TableRowsContract|Closure $rows): self
     {
@@ -631,7 +637,7 @@ final class TableBuilder extends IterableComponent implements
         $cells = TableCells::make()->pushCellWhen(
             ! $this->isPreview(),
             fn (): string => (string) Flex::make([
-                ActionGroup::make($buttons->toArray()),
+                ActionGroup::make($buttons->all()),
             ])->justifyAlign('start'),
             builder: fn (TableCellContract $td): TableCellContract => $td->customAttributes([
                 'colspan' => $this->getCellsCount(),
@@ -667,7 +673,7 @@ final class TableBuilder extends IterableComponent implements
 
     private function getTopLeft(): Components
     {
-        $components = \is_null($this->topLeft) ? [] : \call_user_func($this->topLeft);
+        $components = \is_null($this->topLeft) ? [] : \call_user_func($this->topLeft, $this);
 
         return Components::make($components);
     }
@@ -677,7 +683,7 @@ final class TableBuilder extends IterableComponent implements
      */
     private function getTopRight(array $columns = []): Components
     {
-        $components = \is_null($this->topRight) ? [] : \call_user_func($this->topRight);
+        $components = \is_null($this->topRight) ? [] : \call_user_func($this->topRight, $this);
 
         if ($this->isColumnSelection()) {
             $selectionFields = [];
@@ -716,8 +722,8 @@ final class TableBuilder extends IterableComponent implements
         if ($this->isAsync() && $this->hasPaginator()) {
             $this->paginator(
                 $this->getPaginator()
-                    ?->setPageName($this->queryParamPrefix)
-                    ?->setPath($this->prepareAsyncUrlFromPaginator()),
+                    ->setPageName($this->queryParamPrefix)
+                    ->setPath($this->prepareAsyncUrlFromPaginator()),
             );
         }
 
@@ -736,7 +742,7 @@ final class TableBuilder extends IterableComponent implements
 
         if ($this->isCreatable() && ! $this->isPreview()) {
             $this->items(
-                $this->getItems()->push([null]),
+                $this->getItems()->concat([$this->castData([])->getOriginal()]),
             );
         }
 
@@ -749,11 +755,12 @@ final class TableBuilder extends IterableComponent implements
      */
     protected function viewData(): array
     {
+        /** @var array<string, string> $columns */
         $columns = $this->getFields()->onlyVisible()->flatMap(
-            static fn (FieldContract $field): ?array => $field->isColumnSelection()
+            static fn (FieldContract $field): array => $field->isColumnSelection()
                 ? [$field->getIdentity() => $field->getLabel()]
-                : null,
-        )->filter()->toArray();
+                : [],
+        )->filter()->all();
 
         return [
             'rows' => $this->getRows(),

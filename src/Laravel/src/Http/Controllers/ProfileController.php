@@ -40,16 +40,18 @@ class ProfileController extends MoonShineController
         if ($request->ajax()) {
             $data = [];
 
+            /** @var array<string, mixed> $raw */
+            $raw = $user->toArray();
+
             $form
                 ->getFields()
                 ->onlyFields()
-                ->fillCloned($user->toArray())
+                ->fillCloned($raw)
                 ->refreshFields()
                 ->each(function (FieldContract $field) use (&$data): void {
                     $data['htmlData'][] = [
                         'html' => (string) $field
-                            ->resolveRefreshAfterApply()
-                            ->render(),
+                            ->resolveRefreshAfterApply(),
                         'selector' => ".profile-form [data-field-selector='{$field->getNameDot()}']",
                         'htmlMode' => HtmlMode::OUTER_HTML->value,
                     ];

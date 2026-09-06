@@ -26,6 +26,7 @@ final class FileModelApply implements ApplyContract
         return function (mixed $item) use ($field): mixed {
             /** @var Model $item */
 
+            /** @var UploadedFile|array<UploadedFile>|false $requestValue */
             $requestValue = $field->getRequestValue();
             $remainingValues = $field->getRemainingValues();
 
@@ -37,22 +38,22 @@ final class FileModelApply implements ApplyContract
                 if ($field->isMultiple()) {
                     $paths = [];
 
-                    foreach ($requestValue as $file) {
+                    foreach (\Illuminate\Support\Arr::wrap($requestValue) as $file) {
                         $paths[] = $this->store($field, $file);
                     }
 
-                    $newValue = $newValue->merge($paths)
+                    $newValue = $remainingValues->merge($paths)
                         ->values()
                         ->unique()
-                        ->toArray();
-                } else {
+                        ->all();
+                } elseif ($requestValue instanceof UploadedFile) {
                     $newValue = $this->store($field, $requestValue);
                     $field->setRemainingValues([]);
                 }
             }
 
             if ($newValue instanceof Collection) {
-                $newValue = $newValue->toArray();
+                $newValue = $newValue->all();
             }
 
             $field->removeExcludedFiles(
@@ -67,7 +68,7 @@ final class FileModelApply implements ApplyContract
 
     public function store(File $field, UploadedFile $file): string
     {
-        $extension = $file->extension();
+        $extension = $file->extension() ?? '';
 
         if (! $field->isAllowedExtension($extension)) {
             throw FileFieldException::extensionNotAllowed($extension);

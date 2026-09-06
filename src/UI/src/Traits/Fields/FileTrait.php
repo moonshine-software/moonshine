@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\FileItemExtra;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Traits\WithStorage;
 
@@ -41,10 +42,10 @@ trait FileTrait
     /** @var null|Closure(static): array<string, mixed> */
     protected ?Closure $dropzoneAttributes = null;
 
-    /** @var null|Closure(static): Collection<array-key, mixed> */
+    /** @var null|Closure(static): Collection<array-key, string|null> */
     protected ?Closure $remainingValuesResolver = null;
 
-    /** @var Collection<array-key, string>|null */
+    /** @var Collection<array-key, string|null>|null */
     protected ?Collection $remainingValues = null;
 
     public function dropzoneAttributes(Closure $attributes): static
@@ -211,6 +212,7 @@ trait FileTrait
         return implode(',', $extensions);
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function disableDownload(Closure|bool|null $condition = null): static
     {
         $this->disableDownload = value($condition, $this) ?? true;
@@ -245,7 +247,7 @@ trait FileTrait
 
     public function getHiddenRemainingValuesKey(): string
     {
-        $column = Str::of($this->getColumn())->explode('.')->last();
+        $column = (string) Str::of($this->getColumn())->explode('.')->last();
 
         return Str::of($this->getRequestNameDot())
             ->replaceLast($column, $this->getHiddenColumn())
@@ -261,7 +263,7 @@ trait FileTrait
 
     public function getHiddenRemainingValuesName(): string
     {
-        $column = Str::of($this->getColumn())->explode('.')->last();
+        $column = (string) Str::of($this->getColumn())->explode('.')->last();
 
         return Str::of($this->getNameAttribute())
             ->replaceLast($column, $this->getHiddenColumn())
@@ -287,14 +289,14 @@ trait FileTrait
     }
 
     /**
-     * @param  iterable<array-key, string>  $values
+     * @param  iterable<array-key, string|null>  $values
      */
     public function setRemainingValues(iterable $values): void
     {
         $this->remainingValues = new Collection($values);
     }
 
-    /** @return Collection<array-key, string> */
+    /** @return Collection<array-key, string|null> */
     public function getRemainingValues(): Collection
     {
         if (! \is_null($this->remainingValues)) {
@@ -310,7 +312,8 @@ trait FileTrait
             return \call_user_func($this->remainingValuesResolver, $this);
         }
 
-        return new Collection(
+        /** @var Collection<array-key, string|null> */
+        return Collection::wrap(
             $this->getCore()->getRequest()->get(
                 $this->getHiddenRemainingValuesKey(),
             ),
@@ -334,7 +337,7 @@ trait FileTrait
     protected function resolveValue(): mixed
     {
         if ($this->isMultiple() && ! $this->toValue(false) instanceof Collection) {
-            return new Collection($this->toValue(false));
+            return Collection::wrap($this->toValue(false));
         }
 
         return parent::resolveValue();
@@ -352,24 +355,26 @@ trait FileTrait
         }
 
         if ($this->isMultiple()) {
-            $collection = new Collection($values);
+            /** @var Collection<array-key, string> $collection */
+            $collection = Collection::wrap($values);
 
             return $collection
                 ->map(fn (string $value): string => $this->getPathWithDir($value))
-                ->toArray();
+                ->all();
         }
 
-        return [$this->getPathWithDir($values)];
+        return [$this->getPathWithDir(Stringify::value($values))];
     }
 
     /**
-     * @param  string[]|string|null  $newValue
+     * @param  array<string|null>|string|null  $newValue
      *
      * @return void
      */
     public function removeExcludedFiles(null|array|string $newValue = null): void
     {
-        $values = new Collection(
+        /** @var Collection<array-key, string|null> $values */
+        $values = Collection::wrap(
             $this->toValue(withDefault: false),
         );
 

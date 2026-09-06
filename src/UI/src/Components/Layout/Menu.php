@@ -11,7 +11,7 @@ use MoonShine\Contracts\MenuManager\MenuManagerContract;
 use MoonShine\UI\Components\MoonShineComponent;
 
 /**
- * @method static static make(?iterable $elements = null, bool $top = false, bool $scrollTo = false)
+ * @method static static make(iterable<array-key, MenuElementContract>|null $elements = null, bool $top = false, bool $scrollTo = false)
  */
 class Menu extends MoonShineComponent
 {
@@ -31,7 +31,7 @@ class Menu extends MoonShineComponent
 
         $this->items = $this->getCore()
             ->getContainer(MenuManagerContract::class)
-            ->all($this->elements);
+            ->all($this->elements === null ? null : array_values(iterator_to_array($this->elements)));
     }
 
     public function top(): static

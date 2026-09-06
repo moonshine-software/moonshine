@@ -35,6 +35,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
      */
     protected Closure|bool $blank = false;
 
+    /** @var null|(Closure(string, string, static): bool) */
     protected ?Closure $whenActive = null;
 
     protected ActionButtonContract $actionButton;
@@ -98,16 +99,22 @@ class MenuItem extends MenuElement implements WithBadgeContract
         }
 
         $icon = $this->getCore()->getAttributes()->get(
-            /** @phpstan-ignore-next-line  */
-            default: fn (): ?string => Attributes::for($filler, Icon::class)->first('icon'),
+            default: static function () use ($filler): ?string {
+                $icon = Attributes::for($filler, Icon::class)->first();
+
+                return $icon instanceof Icon ? $icon->icon : null;
+            },
             target: $filler::class,
             attribute: Icon::class,
             column: [0 => 'icon']
         ) ?? $filler->getIcon();
 
         $badge = $this->getCore()->getAttributes()->get(
-            /** @phpstan-ignore-next-line  */
-            fn () => Attributes::for($filler, Badge::class)->first()?->value,
+            static function () use ($filler): ?string {
+                $badge = Attributes::for($filler, Badge::class)->first();
+
+                return $badge instanceof Badge ? $badge->value : null;
+            },
             $filler::class,
             Badge::class,
             type: Attribute::TARGET_CLASS,
@@ -115,7 +122,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
         ) ?? $filler->getBadge();
 
         if ($badge !== null) {
-            $this->badge(static fn (): mixed => $badge);
+            $this->badge(static fn (): string => $badge);
         }
 
         if (! \is_null($icon) && $this->getIconValue() === '') {
@@ -189,8 +196,8 @@ class MenuItem extends MenuElement implements WithBadgeContract
             return $filler->isActive();
         }
 
-        $path = parse_url($this->getUrl(), PHP_URL_PATH) ?? '/';
-        $host = parse_url($this->getUrl(), PHP_URL_HOST) ?? '';
+        $path = parse_url($this->getUrl(), PHP_URL_PATH) ?: '/';
+        $host = parse_url($this->getUrl(), PHP_URL_HOST) ?: '';
 
         $isActive = function ($path, $host): bool {
             $url = strtok($this->getUrl(), '?');
@@ -216,7 +223,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
 
         return \is_null($this->whenActive)
             ? $isActive($path, $host)
-            : (bool) value($this->whenActive, $path, $host, $this);
+            : ($this->whenActive)($path, $host, $this);
     }
 
     protected function prepareBeforeRender(): void

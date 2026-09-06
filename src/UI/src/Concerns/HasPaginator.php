@@ -32,6 +32,7 @@ trait HasPaginator
         return $this->paginator;
     }
 
+    /** @phpstan-assert-if-true PaginatorContract<TData> $this->getPaginator() */
     public function hasPaginator(): bool
     {
         return ! \is_null($this->paginator);

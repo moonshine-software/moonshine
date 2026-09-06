@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Fields\Checkbox;
 use Throwable;
 
@@ -20,6 +21,7 @@ trait HasHorizontalMode
 
     protected string $maxColWidth = '1fr';
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function horizontalMode(
         Closure|bool|null $condition = null,
         string $minColWidth = '200px',
@@ -56,18 +58,19 @@ trait HasHorizontalMode
 
     /**
      * @throws Throwable
+     * @param Collection<array-key, \Illuminate\Database\Eloquent\Model> $data
      */
     protected function buildList(Collection $data): string
     {
         foreach ($data as $item) {
-            $label = $this->getColumnOrFormattedValue($item, data_get($item, $this->getResourceColumn()));
+            $label = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $this->getResourceColumn())));
 
-            $element = Checkbox::make($label)
+            $element = Checkbox::make((string) $label)
                 ->formName($this->getFormName())
                 ->simpleMode()
                 ->customAttributes($this->getAttributes()->jsonSerialize())
                 ->customAttributes($this->getReactiveAttributes())
-                ->setNameAttribute($this->getNameAttribute((string)$item->getKey()))
+                ->setNameAttribute($this->getNameAttribute(Stringify::value($item->getKey())))
                 ->setValue($item->getKey());
 
             $this->listHtml .= Str::of((string)$element)->wrap("<li>", "</li>");

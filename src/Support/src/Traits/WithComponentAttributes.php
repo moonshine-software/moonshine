@@ -7,20 +7,18 @@ namespace MoonShine\Support\Traits;
 use Closure;
 use Illuminate\Support\Js;
 use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
 use Throwable;
 
-/**
- * @phpstan-ignore trait.unused
- */
 trait WithComponentAttributes
 {
     /**
      * The component attributes.
      *
-     * @var ComponentAttributesBagContract
+     * @var ComponentAttributeBag&ComponentAttributesBagContract
      */
     public $attributes;
 
@@ -130,12 +128,13 @@ trait WithComponentAttributes
         /** @var string $column */
         $column = $this->getColumn();
 
-        /** @phpstan-ignore return.type */
-        return $this->customAttributes([
+        $this->customAttributes([
             'data-name' => $this->getNameAttribute(),
             'data-column' => (string) Str::of($column)->explode('.')->last(),
             'data-level' => $level,
         ]);
+
+        return $this;
     }
 
     /** AlpineJs sugar methods */
@@ -187,8 +186,7 @@ trait WithComponentAttributes
             /** @var string $fieldColumn */
             $fieldColumn = $this->getColumn();
 
-            /** @phpstan-ignore return.type */
-            return $this->x('model', $column ?? $fieldColumn);
+            $column ??= $fieldColumn;
         }
 
         return $this->x('model', $column);
@@ -247,17 +245,18 @@ trait WithComponentAttributes
         $type = $if ? 'if' : 'show';
 
         if ($if && $this instanceof FieldContract) {
-            /** @phpstan-ignore return.type */
-            return $this
-                ->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">')
-                ->afterRender(fn (): string => '</template>'); // @phpstan-ignore method.nonObject
+            $this->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">');
+            $this->afterRender(fn (): string => '</template>');
+
+            return $this;
         }
 
         if ($this instanceof FieldContract && $wrapper) {
-            /** @phpstan-ignore return.type */
-            return $this->customWrapperAttributes([
+            $this->customWrapperAttributes([
                 "x-$type" => $variable($this),
             ]);
+
+            return $this;
         }
 
         return $this->x($type, $variable($this));

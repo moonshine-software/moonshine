@@ -8,8 +8,10 @@ use Closure;
 
 trait WithBadge
 {
-    protected Closure|string|int|float|null $badge = null;
+    /** @var Closure(static): (string|int|float|false|null)|string|int|float|false|null */
+    protected Closure|string|int|float|false|null $badge = null;
 
+    /** @param Closure(static): (string|int|float|false|null)|string|int|float|false|null $value */
     public function badge(Closure|string|int|float|false|null $value): static
     {
         $this->badge = $value;

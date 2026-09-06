@@ -14,12 +14,12 @@ interface FileableContract
     public function getDisk(): string;
 
     /**
-     * @param  string[]  $options
+     * @param  array<string, mixed>  $options
      */
     public function options(array $options): static;
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function getOptions(): array;
 

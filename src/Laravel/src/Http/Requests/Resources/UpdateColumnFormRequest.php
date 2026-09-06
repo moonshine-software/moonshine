@@ -60,12 +60,12 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
         return $fields
             ->withoutWrappers()
             ->findByColumn(
-                request()->getScalar('field')
+                (string) request()->getScalar('field')
             );
     }
 
     /**
-     * @return array{field: string[], value: string[]}
+     * @return array{field: string[], value: array<array-key, mixed>}
      */
     public function rules(): array
     {
@@ -78,13 +78,13 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
 
         $fieldRules = data_get(
             $this->getResource()->getFormPage()->getRules(),
-            request()->getScalar('field'),
+            (string) request()->getScalar('field'),
         );
 
         $valueRules = ['present'];
 
         if (\is_string($fieldRules)) {
-            $valueRules[] = $valueRules;
+            $valueRules[] = $fieldRules;
         }
 
         if (\is_array($fieldRules)) {
@@ -100,7 +100,7 @@ final class UpdateColumnFormRequest extends MoonShineFormRequest
     protected function prepareForValidation(): void
     {
         request()->merge([
-            request()->getScalar('field') => request()->getScalar('value'),
+            (string) request()->getScalar('field') => request()->getScalar('value'),
         ]);
     }
 }

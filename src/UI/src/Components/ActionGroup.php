@@ -11,7 +11,7 @@ use MoonShine\UI\Collections\ActionButtons;
 use Throwable;
 
 /**
- * @method static static make(iterable $actions = [])
+ * @method static static make(iterable<array-key, ActionButtonContract> $actions = [])
  */
 final class ActionGroup extends AbstractWithComponents
 {

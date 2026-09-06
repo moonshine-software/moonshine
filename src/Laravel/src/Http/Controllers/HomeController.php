@@ -18,10 +18,10 @@ class HomeController extends MoonShineController
     {
         $page = moonshineConfig()->getPage('dashboard', Dashboard::class);
 
-        if ($page->isResponseModified()) {
-            return $page->getModifiedResponse();
+        if ($page->isResponseModified() && ($response = $page->getModifiedResponse()) !== null) {
+            return $response;
         }
 
-        return $page->render();
+        return (string) $page;
     }
 }

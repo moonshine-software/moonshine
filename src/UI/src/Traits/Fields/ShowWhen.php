@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use MoonShine\Support\DTOs\ShowWhenCondition;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\RangeFieldContract;
 
 trait ShowWhen
@@ -47,7 +48,8 @@ trait ShowWhen
     ): static {
         $this->showWhenState = true;
         $condition = $this->makeCondition(
-            ...\func_get_args(),
+            $column,
+            ...\array_slice(\func_get_args(), 1),
         );
 
         $this->showWhenCondition[] = $condition;
@@ -63,7 +65,8 @@ trait ShowWhen
         $this->showWhenState = true;
 
         $condition = $this->makeCondition(
-            ...\func_get_args(),
+            $column,
+            ...\array_slice(\func_get_args(), 1),
         );
 
         $condition->isRowMode = true;
@@ -85,10 +88,10 @@ trait ShowWhen
         if (\is_array($value)) {
             foreach ($value as $key => $item) {
                 // Casting to Date type for JavaScript
-                $value[$key] = strtotime((string) $item) * 1000;
+                $value[$key] = strtotime(Stringify::value($item)) * 1000;
             }
         } else {
-            $value = strtotime((string) $value) * 1000;
+            $value = strtotime(Stringify::value($value)) * 1000;
         }
 
         if (\func_num_args() === 2) {

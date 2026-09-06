@@ -69,7 +69,8 @@ class PagesCommand extends Command
 
     /**
      * @param  array<class-string, true>  $resourcePageClasses
-     * @return Collection<int, array{class: string, url: string}>
+     * @return Collection<int, array{class: class-string, url: string}>
+     * @param iterable<array-key, PageContract> $pages
      */
     protected function getRows(iterable $pages, array $resourcePageClasses): Collection
     {
@@ -90,19 +91,23 @@ class PagesCommand extends Command
         return $rows;
     }
 
+    /**
+     * @param Collection<int, array{class: class-string, url: string}> $rows
+     */
     protected function asJson(Collection $rows): string
     {
-        return json_encode($rows->values()->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return json_encode($rows->values()->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 
     /**
      * @return list<string>
+     * @param Collection<int, array{class: class-string, url: string}> $rows
      */
     protected function forCli(Collection $rows): array
     {
         $terminalWidth = $this->getTerminalWidth();
 
-        return $rows->map(fn (array $row): string => $this->formatLine(
+        return array_values($rows->map(fn (array $row): string => $this->formatLine(
             left: $row['class'],
             right: $row['url'],
             prefix: '  <fg=yellow;options=bold>PAGE</> ',
@@ -116,6 +121,6 @@ class PagesCommand extends Command
                 $terminalWidth
             ))
             ->push('')
-            ->toArray();
+            ->all());
     }
 }

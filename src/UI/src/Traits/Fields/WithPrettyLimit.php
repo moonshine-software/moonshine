@@ -22,14 +22,17 @@ trait WithPrettyLimit
         null|int|Closure $limit = null,
     ): static {
         return $this->changePreview(
-            static fn (string|int|null $value, self $ctx): string => $value
-                ? (string) PrettyLimit::make(
+            static function (mixed $value, self $ctx) use ($color, $label, $limit): string {
+                $value = \is_int($value) || $value === null ? $value : $ctx->stringifySlotContent($value);
+
+                return $value ? (string) PrettyLimit::make(
                     value: (string) $value,
                     color: $color instanceof Closure ? $color($value, $ctx) : $color,
                     label: $label instanceof Closure ? $label($value, $ctx) : $label,
                     limit: $limit instanceof Closure ? $limit($value, $ctx) : $limit,
                 )
-                : (string) $value
+                : (string) $value;
+            }
         );
     }
 }

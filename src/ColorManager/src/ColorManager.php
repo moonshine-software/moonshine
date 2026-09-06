@@ -53,7 +53,7 @@ final class ColorManager implements ColorManagerContract
             return $this->setEverything($name, $value);
         }
 
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore assign.propertyType, assign.propertyType (data_set updates the palette in place; its mixed by-reference type loses the nested array shape.)
         data_set($this->{$dark ? 'darkColors' : 'colors'}, $name, $value);
 
         return $this;

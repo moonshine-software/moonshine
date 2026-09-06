@@ -131,7 +131,7 @@ final class OptimizerCollection implements OptimizerCollectionContract
     }
 
     /**
-     * @return array<class-string, list<class-string<PageContract>>>
+     * @return array<class-string, array<array-key, class-string<PageContract>>>
      */
     protected function getPages(): array
     {

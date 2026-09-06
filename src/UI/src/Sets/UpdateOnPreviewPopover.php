@@ -32,12 +32,14 @@ final readonly class UpdateOnPreviewPopover
     public function __invoke(): Popover
     {
         $name = 'update-on-preview-' . spl_object_id($this->field);
+        /** @var scalar|\Stringable|null $value */
+        $value = $this->field->toFormattedValue();
 
         return Popover::make(
             '',
             (string)Link::make(
                 'javascript:void(0);',
-                (string)$this->field->toFormattedValue(),
+                (string) $value,
             )->icon('pencil'),
         )
             ->name($name)

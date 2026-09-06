@@ -19,7 +19,7 @@ use MoonShine\UI\InputExtensions\InputPrefix;
 trait WithInputExtensions
 {
     /**
-     * @var list<InputExtension>
+     * @var array<class-string<InputExtension>, InputExtension>
      */
     protected array $extensions = [];
 
@@ -58,7 +58,7 @@ trait WithInputExtensions
     public function copy(string $value = '{{value}}'): static
     {
         $this->extension(new InputCopy($value));
-        $this->changePreview(static fn (string|int|null $value): string => $value ? (string) Snippet::make((string) $value) : (string) $value);
+        $this->changePreview(fn (mixed $value): string => $value ? (string) Snippet::make($this->stringifySlotContent($value)) : $this->stringifySlotContent($value));
 
         return $this;
     }

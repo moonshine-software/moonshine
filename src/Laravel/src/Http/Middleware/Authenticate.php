@@ -9,6 +9,9 @@ use MoonShine\Laravel\MoonShineAuth;
 
 class Authenticate extends Middleware
 {
+    /**
+     * @param array<string|null> $guards
+     */
     protected function authenticate($request, array $guards): void
     {
         if (! moonshineConfig()->isAuthEnabled()) {

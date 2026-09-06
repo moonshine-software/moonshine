@@ -20,6 +20,9 @@ use MoonShine\Laravel\Database\Factories\MoonshineUserFactory;
  */
 class MoonshineUser extends Authenticatable
 {
+    /**
+     * @use HasFactory<MoonshineUserFactory>
+     */
     use HasFactory;
     use Notifiable;
 
@@ -31,6 +34,9 @@ class MoonshineUser extends Authenticatable
         'avatar',
     ];
 
+    /**
+     * @return MoonshineUserFactory
+     */
     protected static function newFactory(): Factory
     {
         return MoonshineUserFactory::new();
@@ -41,6 +47,9 @@ class MoonshineUser extends Authenticatable
         return $this->moonshine_user_role_id === MoonshineUserRole::DEFAULT_ROLE_ID;
     }
 
+    /**
+     * @return BelongsTo<MoonshineUserRole, $this>
+     */
     public function moonshineUserRole(): BelongsTo
     {
         return $this->belongsTo(MoonshineUserRole::class);

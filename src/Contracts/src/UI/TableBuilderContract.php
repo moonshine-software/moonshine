@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
-use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\Collection\ActionButtonsContract;
@@ -14,7 +13,6 @@ use MoonShine\Support\Enums\ClickAction;
 
 /**
  * @template TData of mixed = mixed
- * @mixin Conditionable
  * @mixin HasFieldsContract
  * @mixin HasCasterContract<DataCasterContract<TData>, DataWrapperContract<TData>>
  */
@@ -194,10 +192,12 @@ interface TableBuilderContract extends
 
     public function isLazy(): bool;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function skeleton(Closure|bool|null $condition = null): static;
 
     public function hasSkeleton(): bool;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function loader(Closure|bool|null $condition = null): static;
 
     public function hasLoader(): bool;

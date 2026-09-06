@@ -12,6 +12,9 @@ final class Title extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.title';
 
+    /**
+     * @param (Closure(static): (string|null))|string|null $value
+     */
     public function __construct(
         protected Closure|string|null $value = null,
         public int $h = 1,
@@ -25,7 +28,7 @@ final class Title extends MoonShineComponent
     protected function viewData(): array
     {
         return [
-            'slot' => new ComponentSlot(value($this->value, $this)),
+            'slot' => new ComponentSlot(value($this->value, $this) ?? ''),
         ];
     }
 }

@@ -30,7 +30,7 @@ final class DefaultListComponent implements DefaultListComponentContract
         iterable $items,
         FieldsContract $fields
     ): ComponentContract {
-        $resource = $page->getResource();
+        $resource = $page->getResourceOrFail();
 
         return TableBuilder::make(items: $items)
             ->name($page->getListComponentName())
@@ -39,11 +39,14 @@ final class DefaultListComponent implements DefaultListComponentContract
             ->cast($resource->getCaster())
             ->buttons($page->getButtons())
             ->when($page->isAsync(), function (TableBuilderContract $table) use ($page): void {
+                /** @var array<string, mixed> $queryParams */
+                $queryParams = $this->getCore()->getRequest()->getRequest()->getQueryParams();
+
                 $table->async(
                     url: fn (): string
                         => $page->getRouter()->getEndpoints()->component(
                             name: $table->getName(),
-                            additionally: $this->getCore()->getRequest()->getRequest()->getQueryParams(),
+                            additionally: $queryParams,
                         ),
                 )->pushState();
             })
@@ -62,9 +65,9 @@ final class DefaultListComponent implements DefaultListComponentContract
             ->when(
                 ! \is_null($resource->getItemsResolver()),
                 function (TableBuilderContract $table) use ($resource): void {
-                    $table->itemsResolver(
-                        $resource->getItemsResolver(),
-                    );
+                    if (($resolver = $resource->getItemsResolver()) !== null) {
+                        $table->itemsResolver($resolver);
+                    }
                 },
             );
     }

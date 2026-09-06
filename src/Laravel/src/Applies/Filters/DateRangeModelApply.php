@@ -12,7 +12,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\DateRange;
 
 /**
- * @implements ApplyContract<DateRange>
+ * @implements ApplyContract<DateRange, Builder>
  */
 class DateRangeModelApply implements ApplyContract
 {
@@ -20,6 +20,7 @@ class DateRangeModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
+            /** @var array{from?: string|int|null, to?: string|int|null}|false $values */
             $values = $field->getRequestValue();
 
             $condition = $field->getAttribute('type') === 'datetime-local' ? 'where' : 'whereDate';

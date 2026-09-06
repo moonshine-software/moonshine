@@ -41,7 +41,7 @@ abstract class AbstractRequest implements RequestContract
         );
     }
 
-    public function getScalar(string $key, mixed $default = null): mixed
+    public function getScalar(string $key, mixed $default = null): string|int|float|bool|null
     {
         $value = $this->get($key, $default);
         $default = \is_scalar($default) ? $default : null;

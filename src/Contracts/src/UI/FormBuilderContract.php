@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
-use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -17,7 +16,6 @@ use MoonShine\Support\Enums\FormMethod;
 /**
  * @template TData of mixed = mixed
  *
- * @mixin Conditionable
  * @mixin HasFieldsContract
  * @mixin HasCasterContract<DataCasterContract<TData>, DataWrapperContract<TData>>
  */
@@ -40,19 +38,19 @@ interface FormBuilderContract extends
     public function getMethod(): FormMethod;
 
     /**
-     * @param  TData  $values
+     * @param  TData|array<string, mixed>  $values
      *
      */
     public function fill(mixed $values = []): static;
 
     /**
-     * @param  TData  $values
+     * @param  TData|array<string, mixed>  $values
      * @param DataCasterContract<TData> $cast
      */
     public function fillCast(mixed $values, DataCasterContract $cast): static;
 
     /**
-     * @return   TData
+     * @return   TData|array<string, mixed>
      *
      */
     public function getValues(): mixed;

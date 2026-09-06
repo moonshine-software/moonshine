@@ -27,6 +27,10 @@ trait HasResource
         return $this;
     }
 
+    /**
+     * @phpstan-assert-if-true T $this->resource
+     * @phpstan-assert-if-true T $this->getResource()
+     */
     public function hasResource(): bool
     {
         return ! \is_null($this->resource);
@@ -38,6 +42,12 @@ trait HasResource
     public function getResource(): ?ResourceContract
     {
         return $this->resource;
+    }
+
+    /** @return T */
+    public function getResourceOrFail(): ResourceContract
+    {
+        return $this->getResource() ?? throw ResourceException::required();
     }
 
     protected function validateResource(): void

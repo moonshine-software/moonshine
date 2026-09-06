@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
-use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FieldWithComponentContract;
@@ -72,16 +71,23 @@ class RelationRepeater extends ModelRelationField implements
 
     protected ?ActionButtonContract $creatableButton = null;
 
+    /**
+     * @var list<ActionButtonContract>
+     */
     protected array $buttons = [];
 
+    /** @var null|(Closure(TableBuilder, bool): TableBuilder) */
     protected ?Closure $modifyTable = null;
 
+    /** @var null|(Closure(ActionButton, self): ActionButton) */
     protected ?Closure $modifyRemoveButton = null;
 
+    /** @var null|(Closure(ActionButton, self): ActionButton) */
     protected ?Closure $modifyCreateButton = null;
 
     protected bool $isReorderable = false;
 
+    /** @var null|(Closure(static): string) */
     protected ?Closure $reorderableUrl = null;
 
     protected ?TableBuilderContract $resolvedComponent = null;
@@ -99,6 +105,7 @@ class RelationRepeater extends ModelRelationField implements
         );
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function creatable(
         Closure|bool|null $condition = null,
         ?int $limit = null,
@@ -121,7 +128,7 @@ class RelationRepeater extends ModelRelationField implements
         $button = $this->creatableButton;
 
         if (! $button instanceof ActionButtonContract) {
-            $button = ActionButton::make($this->getCore()->getTranslator()->get('moonshine::ui.add'))
+            $button = ActionButton::make($this->getCore()->getTranslator()->getString('moonshine::ui.add'))
                 ->icon('plus-circle')
                 ->customAttributes(['@click.prevent' => 'add()', 'class' => 'w-full']);
         }
@@ -145,6 +152,7 @@ class RelationRepeater extends ModelRelationField implements
 
     /**
      * @param  Closure(static): string  $url
+     * @param (Closure(static): (bool|null))|bool|null $condition
      */
     public function reorderable(Closure $url, Closure|bool|null $condition = null): static
     {
@@ -189,6 +197,9 @@ class RelationRepeater extends ModelRelationField implements
         return $this;
     }
 
+    /**
+     * @param list<ActionButtonContract> $buttons
+     */
     public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
@@ -196,6 +207,9 @@ class RelationRepeater extends ModelRelationField implements
         return $this;
     }
 
+    /**
+     * @return list<ActionButtonContract>
+     */
     public function getButtons(): array
     {
         if (array_filter($this->buttons) !== []) {
@@ -234,7 +248,7 @@ class RelationRepeater extends ModelRelationField implements
 
         $fields->onlyFields()->prepareReindexNames(parent: $this, before: function (self $parent, Field $field): void {
             if ($field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview()) {
-                $field->nowOnResource($this->getResource());
+                $field->nowOnResource($this->getResourceOrFail());
             }
 
             $field
@@ -254,11 +268,10 @@ class RelationRepeater extends ModelRelationField implements
      */
     protected function resolvePreview(): string|Renderable
     {
-        return $this
+        return (string) $this
             ->getComponent()
             ->simple()
-            ->preview()
-            ->render();
+            ->preview();
     }
 
     protected function isBlankValue(): bool
@@ -289,6 +302,7 @@ class RelationRepeater extends ModelRelationField implements
             $value = $this->getRelated();
         }
 
+        /** @var iterable<array-key, mixed>|Model|null $value */
         $values = Collection::make(
             is_iterable($value)
                 ? $value
@@ -306,27 +320,30 @@ class RelationRepeater extends ModelRelationField implements
      */
     protected function resolveOldValue(mixed $old): mixed
     {
+        /** @var array<array-key, array<string, mixed>> $oldValues */
+        $oldValues = $old;
+
         foreach ($this->getFields() as $field) {
             if ($field instanceof File) {
                 $column = $field->getColumn();
 
-                $old = array_map(static fn (array $data): array => [
+                $oldValues = array_map(static fn (array $data): array => [
                     ...$data,
                     $column => $data[$field->getHiddenColumn()] ?? null,
-                ], $old);
+                ], $oldValues);
             }
 
             if ($field instanceof Json) {
-                foreach ($old as $index => $value) {
+                foreach ($oldValues as $index => $value) {
                     $column = $field->getColumn();
-                    $old[$index][$column] = $field->prepareOnApplyRecursive(
-                        $value[$column] ?? []
-                    );
+                    /** @var iterable<array-key, mixed> $nested */
+                    $nested = is_iterable($value[$column] ?? null) ? $value[$column] : [];
+                    $oldValues[$index][$column] = $field->prepareOnApplyRecursive($nested);
                 }
             }
         }
 
-        return $old;
+        return $oldValues;
     }
 
     /**
@@ -341,7 +358,7 @@ class RelationRepeater extends ModelRelationField implements
         $fields = $this->getPreparedFields();
 
         $reorderable = ! $this->isPreviewMode() && $this->isReorderable();
-        $reorderableUrl = $reorderable ? \call_user_func($this->reorderableUrl, $this) : null;
+        $reorderableUrl = $reorderable && $this->reorderableUrl !== null ? ($this->reorderableUrl)($this) : null;
 
         if ($reorderable) {
             $fields->prepend(
@@ -352,19 +369,17 @@ class RelationRepeater extends ModelRelationField implements
             );
         }
 
-        $component = TableBuilder::make($fields, $this->getValue())
+        /** @var iterable<array-key, mixed> $items */
+        $items = $this->getValue();
+
+        $component = TableBuilder::make($fields, $items)
             ->withoutKey()
             ->name("relation_repeater_{$this->getIdentity()}")
             ->inside('field')
             ->customAttributes(
                 $this->getAttributes()
                     ->except(['class', 'data-name', 'data-column'])
-                    ->when(
-                        $reorderable,
-                        static fn (ComponentAttributesBagContract $attr): ComponentAttributesBagContract => $attr->merge([
-                            'data-handle' => '.handle',
-                        ]),
-                    )
+                    ->merge($reorderable ? ['data-handle' => '.handle'] : [])
                     ->jsonSerialize()
             )
             ->customAttributes(['data-validation-wrapper' => true])
@@ -372,20 +387,24 @@ class RelationRepeater extends ModelRelationField implements
                 $reorderable,
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->reorderable($reorderableUrl),
             )
-            ->cast($this->getResource()?->getCaster())
+            ->cast($this->getResourceOrFail()->getCaster())
             ->when(
                 $this->isVertical(),
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            $field->getLabel(),
+                            \MoonShine\UI\Components\FlexibleRender::make($field->getLabel()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
-                    value: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => $field->getColumn() === '__handle'
-                        ? Column::make()->columnSpan($this->verticalValueSpan)
-                        /** @var Column $default */
-                        /** @phpstan-ignore-next-line  */
-                        : $default->columnSpan($this->verticalValueSpan)->customAttributes(['data-validation-wrapper' => true]) : null,
+                    value: $reorderable ? function (FieldContract $field, ComponentContract $default): ComponentContract {
+                        if ($field->getColumn() === '__handle') {
+                            return Column::make()->columnSpan($this->verticalValueSpan);
+                        }
+
+                        return $default instanceof Column
+                            ? $default->columnSpan($this->verticalValueSpan)->customAttributes(['data-validation-wrapper' => true])
+                            : $default;
+                    } : null,
                 ),
             )
             ->when(
@@ -420,7 +439,9 @@ class RelationRepeater extends ModelRelationField implements
         ?Closure $response = null,
         bool $fill = false
     ): mixed {
-        $requestValues = array_filter($this->getRequestValue() ?: []);
+        /** @var array<array-key, array<string, mixed>> $requestValues */
+        $requestValues = $this->getRequestValue() ?: [];
+        $requestValues = array_filter($requestValues);
 
         $applyValues = [];
 
@@ -440,7 +461,7 @@ class RelationRepeater extends ModelRelationField implements
 
                 $field->when($fill, fn (FieldContract $f): FieldContract => $f->fillCast(
                     $values,
-                    $this->getResource()->getCaster()
+                    $this->getResourceOrFail()->getCaster()
                 ));
 
                 $apply = $callback($field, $values, $data);
@@ -457,7 +478,6 @@ class RelationRepeater extends ModelRelationField implements
 
                 if ($field instanceof MorphTo) {
                     data_set(
-                        /** @phpstan-ignore-next-line  */
                         $applyValues[$index],
                         $field->getMorphType(),
                         data_get($apply, $field->getMorphType()),
@@ -465,7 +485,6 @@ class RelationRepeater extends ModelRelationField implements
                 }
 
                 data_set(
-                    /** @phpstan-ignore-next-line  */
                     $applyValues[$index],
                     $field->getColumn(),
                     data_get($apply, $field->getColumn()),
@@ -487,7 +506,7 @@ class RelationRepeater extends ModelRelationField implements
         return fn ($item): mixed => $this->resolveAppliesCallback(
             data: $item,
             callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
+                static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn(), '')),
                 $values
             ),
             response: static fn (array $values, mixed $data): mixed => $data
@@ -514,27 +533,32 @@ class RelationRepeater extends ModelRelationField implements
         return $this->resolveAppliesCallback(
             data: $data,
             callback: static fn (FieldContract $field, mixed $values): mixed => $field->apply(
-                static fn ($data): mixed => data_set($data, $field->getColumn(), $values[$field->getColumn()] ?? ''),
+                static fn ($data): mixed => data_set($data, $field->getColumn(), data_get($values, $field->getColumn(), '')),
                 $values
             ),
-            response: fn (array $values, mixed $data): Model => $this->saveRelation($values, $data),
+            response: function (array $values, Model $data): Model {
+                /** @var array<array-key, array<string, mixed>> $values */
+                return $this->saveRelation($values, $data);
+            },
             fill: true,
         );
     }
 
+    /**
+     * @param array<array-key, array<string, mixed>> $items
+     */
     private function saveRelation(array $items, Model $model): Model
     {
         $collection = new Collection($items);
 
         if (self::$silentApply) {
-            data_set($model, $this->getRelationName(), $collection);
+            $model->setAttribute($this->getRelationName(), $collection);
 
             return $model;
         }
 
-        $relationName = $this->getColumn();
-
-        $related = $model->{$relationName}()->getRelated();
+        $relation = $this->getRelationFor($model);
+        $related = $relation->getRelated();
 
         $relatedKeyName = $related->getKeyName();
         $relatedQualifiedKeyName = $related->getQualifiedKeyName();
@@ -544,7 +568,7 @@ class RelationRepeater extends ModelRelationField implements
             ->filter()
             ->toArray();
 
-        $model->{$relationName}()->when(
+        $this->getRelationFor($model)->when(
             ! empty($ids),
             static fn (Builder $q) => $q->whereNotIn(
                 $relatedQualifiedKeyName,
@@ -556,9 +580,9 @@ class RelationRepeater extends ModelRelationField implements
         foreach ($collection as $item) {
             if (empty($item[$relatedKeyName])) {
                 unset($item[$relatedKeyName]);
-                $model->{$relationName}()->create($item);
+                $this->getRelationFor($model)->create($item);
             } else {
-                $model->{$relationName}()->where($relatedKeyName, $item[$relatedKeyName])->update($item);
+                $this->getRelationFor($model)->where($relatedKeyName, $item[$relatedKeyName])->update($item);
             }
         }
 
@@ -576,7 +600,7 @@ class RelationRepeater extends ModelRelationField implements
 
         $values = $this->toValue(withDefault: false);
 
-        if (filled($values)) {
+        if (is_iterable($values) && filled($values)) {
             foreach ($values as $value) {
                 $this->getFields()
                     ->onlyFields()

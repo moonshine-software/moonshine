@@ -30,7 +30,7 @@ trait ResourceWithButtons
         $modalName ??= ($resource ?? $this)->getUriKey() . '-create-modal';
 
         /** @var string $label */
-        $label = $this->getCore()->getTranslator()->get('moonshine::ui.create');
+        $label = $this->getCore()->getTranslator()->getString('moonshine::ui.create');
 
         return CreateButton::for(
             $label,
@@ -69,7 +69,7 @@ trait ResourceWithButtons
         $modalName ??= ($resource ?? $this)->getUriKey() . '-detail-modal';
 
         return DetailButton::for(
-            $this->getCore()->getTranslator()->get('moonshine::ui.show'),
+            $this->getCore()->getTranslator()->getString('moonshine::ui.show'),
             $resource ?? $this,
             $modalName,
             $isSeparateModal,
@@ -103,7 +103,7 @@ trait ResourceWithButtons
         $form = $this->getCore()->getConfig()->getForm('filters', FiltersForm::class, resource: $resource ?? $this, core: $this->getCore());
 
         return FiltersButton::for(
-            label: $this->getCore()->getTranslator()->get('moonshine::ui.filters'),
+            label: $this->getCore()->getTranslator()->getString('moonshine::ui.filters'),
             form: $form,
             resource: $resource ?? $this,
         );

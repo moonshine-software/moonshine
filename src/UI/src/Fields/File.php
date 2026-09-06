@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Support\DTOs\FileItem;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Files;
 use MoonShine\UI\Contracts\FileableContract;
 use MoonShine\UI\Contracts\RemovableContract;
@@ -62,10 +63,10 @@ class File extends Field implements FileableContract, RemovableContract
 
     protected function resolvePreview(): Renderable|string
     {
-        return Files::make(
-            $this->getFiles()->toArray(),
+        return (string) Files::make(
+            array_values($this->getFiles()->all()),
             download: $this->canDownload(),
-        )->render();
+        );
     }
 
     protected function resolveAfterDestroy(mixed $data): mixed
@@ -77,7 +78,7 @@ class File extends Field implements FileableContract, RemovableContract
         /**
          * @var Collection<array-key, string> $collection
          */
-        $collection = new Collection($this->isMultiple() ? $this->toValue() : [$this->toValue()]);
+        $collection = Collection::wrap($this->isMultiple() ? $this->toValue() : [$this->toValue()]);
         $collection->each(fn (string $file): bool => $this->deleteFile($file));
 
         $this->deleteDir();
@@ -97,7 +98,7 @@ class File extends Field implements FileableContract, RemovableContract
             ->mapWithKeys(fn (string $path, int $index): array => [
                 $index => new FileItem(
                     fullPath: $path,
-                    rawValue: data_get($this->toValue(), $index, $this->toValue()) ?? $path,
+                    rawValue: Stringify::value(data_get($this->toValue(), $index, $this->toValue()) ?? $path),
                     name: \call_user_func($this->resolveNames(), $path, $index, $this),
                     attributes: \call_user_func($this->resolveItemAttributes(), $path, $index, $this),
                     extra: \call_user_func($this->resolveExtraAttributes(), $path, $index, $this),

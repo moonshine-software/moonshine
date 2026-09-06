@@ -20,6 +20,9 @@ abstract class MoonShineCommand extends Command
 {
     protected string $stubsDir = __DIR__ . '/../../stubs';
 
+    /**
+     * @var list<array<string, mixed>>
+     */
     protected static array $jsonOutput = [];
 
     protected function getDirectory(string $path = '', ?string $base = null): string
@@ -49,6 +52,7 @@ abstract class MoonShineCommand extends Command
             class: "$namespace\\$class",
             to: app_path('Providers/MoonShineServiceProvider.php'),
             between: static fn (Stringable $content): Stringable => $content->betweenFirst("->$method([", ']'),
+            /** @param Closure(int=): string $tab */
             replace: static function (Stringable $content, Closure $tab) use ($class): Stringable {
                 $prefixTab = 1;
 
@@ -70,11 +74,12 @@ abstract class MoonShineCommand extends Command
 
         self::addResourceOrPageTo(
             class: "$namespace\\$class",
-            to: $reflector->getFileName(),
+            to: $reflector->getFileName() ?: throw new \RuntimeException('Layout source file was not found.'),
             between: static fn (Stringable $content): Stringable => $content->betweenFirst(
                 "protected function menu(): array",
                 '}',
             ),
+            /** @param Closure(int=): string $tab */
             replace: static function (Stringable $content, Closure $tab) use ($title, $class): Stringable {
                 if (! $content->rtrim()->squish()->remove(' ')->endsWith('),];')) {
                     $lines = explode("\n", $content->value());
@@ -100,7 +105,7 @@ abstract class MoonShineCommand extends Command
 
     /**
      * @param  Closure(Stringable $content): Stringable  $between
-     * @param  Closure(Stringable $content, Closure $tab): Stringable  $replace
+     * @param  Closure(Stringable $content, Closure(int=): string $tab): Stringable  $replace
      */
     private static function addResourceOrPageTo(
         string $class,
@@ -116,7 +121,7 @@ abstract class MoonShineCommand extends Command
         $basename = class_basename($class);
         $namespace = $class;
 
-        $content = Str::of(file_get_contents($to));
+        $content = Str::of(new \Illuminate\Filesystem\Filesystem()->get($to));
 
         if ($content->contains('->autoload(') || $content->contains('->autoloadMenu(')) {
             return;
@@ -165,7 +170,7 @@ abstract class MoonShineCommand extends Command
             config_path('moonshine.php'),
             preg_replace([
                 $pattern,
-            ], $replace, file_get_contents(config_path('moonshine.php'))),
+            ], $replace, new \Illuminate\Filesystem\Filesystem()->get(config_path('moonshine.php'))),
         );
     }
 
@@ -182,7 +187,8 @@ abstract class MoonShineCommand extends Command
             )
             ->value();
 
-        $view = $this->option('view') ?? text(
+        /** @var string $view */
+        $view = ($this->options()['view'] ?? null) ?? text(
             'Path to view',
             $suggestView,
             default: $suggestView,
@@ -208,7 +214,8 @@ abstract class MoonShineCommand extends Command
 
     protected function fastCreateFromStub(string $stub, string $dir): void
     {
-        $className = $this->argument('className') ?? text(
+        /** @var string $className */
+        $className = ($this->arguments()['className'] ?? null) ?? text(
             'Class name',
             required: true,
         );
@@ -227,8 +234,10 @@ abstract class MoonShineCommand extends Command
 
     protected function qualifyStubsDir(StubsPath $stubsPath, string $dir, ?string $namespace = null): StubsPath
     {
-        $baseDir = $this->hasOption('base-dir') ? $this->option('base-dir') : null;
-        $baseNamespace = $this->hasOption('base-namespace') ? $this->option('base-namespace') : null;
+        /** @var string|null $baseDir */
+        $baseDir = $this->options()['base-dir'] ?? null;
+        /** @var string|null $baseNamespace */
+        $baseNamespace = $this->options()['base-namespace'] ?? null;
 
         $toNamespace = static fn (string $str): string
             => Str::of($str)
@@ -263,7 +272,7 @@ abstract class MoonShineCommand extends Command
 
         $name = $stubsPath instanceof StubsPath ? $stubsPath->name : class_basename($stubsPath);
 
-        if ($this->hasOption('json') && $this->option('json')) {
+        if ($this->options()['json'] ?? false) {
             static::$jsonOutput[] = [
                 'name' => $name,
                 'path' => $path,
@@ -279,11 +288,11 @@ abstract class MoonShineCommand extends Command
      */
     protected function formatOutput(): void
     {
-        if ($this->hasOption('without-output') && $this->option('without-output')) {
+        if ($this->options()['without-output'] ?? false) {
             return;
         }
 
-        if ($this->hasOption('json') && $this->option('json')) {
+        if ($this->options()['json'] ?? false) {
             $this->line(
                 json_encode(
                     static::$jsonOutput,

@@ -73,7 +73,7 @@ trait HasFilters
 
         $filters = $collection
             ->withoutOutside()
-            ->wrapNames($this->getResource()->getQueryParamName('filter'));
+            ->wrapNames($this->getResourceOrFail()->getQueryParamName('filter'));
 
         $filters->each(function ($filter): void {
             if (\in_array($filter::class, $this->getIgnoredFields(), true)) {
@@ -89,6 +89,6 @@ trait HasFilters
      */
     public function getFilterParams(): array
     {
-        return $this->getResource()->getFilterParams();
+        return $this->getResourceOrFail()->getFilterParams();
     }
 }

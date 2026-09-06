@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
 
 /**
- * @method static static make(Closure|Renderable|string $content, Closure|array $additionalData = [])
+ * @method static static make(Closure|Renderable|string $content, (Closure():array<string, mixed>)|array<string, mixed> $additionalData = [])
  */
 final class FlexibleRender extends MoonShineComponent
 {
@@ -31,7 +31,7 @@ final class FlexibleRender extends MoonShineComponent
         parent::prepareBeforeRender();
 
         if ($this->content instanceof Closure) {
-            $this->content = \call_user_func($this->content, $this->additionalData, $this);
+            $this->content = \call_user_func($this->content, value($this->additionalData), $this);
         }
 
         if ($this->content instanceof View) {

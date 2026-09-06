@@ -15,7 +15,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
+ * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [])
  */
 class Box extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {

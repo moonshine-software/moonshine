@@ -18,7 +18,7 @@ final class DefaultDetailComponent implements DefaultDetailComponentContract
         ?DataWrapperContract $item,
         FieldsContract $fields,
     ): ComponentContract {
-        $resource = $page->getResource();
+        $resource = $page->getResourceOrFail();
 
         return TableBuilder::make($fields)
             ->cast($resource->getCaster())

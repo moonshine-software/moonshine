@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Checkbox;
 
 /**
- * @implements ApplyContract<Checkbox>
+ * @implements ApplyContract<Checkbox, Builder>
  */
 class CheckboxModelApply implements ApplyContract
 {

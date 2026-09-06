@@ -8,8 +8,11 @@ use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
@@ -26,7 +29,7 @@ use MoonShine\Laravel\Support\DBOperators;
 use Throwable;
 
 /**
- * @template-covariant T
+ * @template T of Model
  * @mixin ResourceQuery
  */
 trait ResourceModelQuery
@@ -36,18 +39,21 @@ trait ResourceModelQuery
      */
     protected array $with = [];
 
+    /** @var EloquentBuilder<T>|Relation<T, Model, mixed>|null */
     protected ?Builder $queryBuilder = null;
 
+    /** @var EloquentBuilder<T>|Relation<T, Model, mixed>|null */
     protected ?Builder $customQueryBuilder = null;
 
     protected bool $disableQueryFeatures = false;
 
     /**
-     * @return iterable<T>|Collection<array-key, T>|LazyCollection<array-key, T>|CursorPaginator<array-key, T>|Paginator<array-key, T>
+     * @return iterable<array-key, T>
      * @throws Throwable
      */
     public function getItems(): iterable|Collection|LazyCollection|CursorPaginator|Paginator
     {
+        /** @var iterable<array-key, T> */
         return $this->isPaginationUsed()
             ? $this->paginate()
             : $this->getQuery()->get();
@@ -55,6 +61,7 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
+     * @return (Paginator<array-key, T>|CursorPaginator<array-key, T>)&iterable<array-key, T>
      */
     protected function paginate(): Paginator|CursorPaginator
     {
@@ -81,32 +88,39 @@ trait ResourceModelQuery
 
         $params = $this->getQueryParams()->except($this->getQueryParamName('page'))->toArray();
 
+        /** @var (Paginator<array-key, T>|CursorPaginator<array-key, T>)&iterable<array-key, T> */
         return $paginate->appends($params);
     }
 
     /**
      * @param  bool  $orFail
      *
-     * @return DataWrapperContract
+     * @return ($orFail is true ? DataWrapperContract<T> : DataWrapperContract<T>|null)
      * @throws ModelNotFoundException<T>
      */
     public function findItem(bool $orFail = false): ?DataWrapperContract
     {
-        $builder = $this->modifyItemQueryBuilder(
-            $this->getModel()->newQuery(),
-        );
+        /** @var EloquentBuilder<T> $query */
+        $query = $this->getModel()->newQuery();
+        $builder = $this->modifyItemQueryBuilder($query);
 
         if ($orFail) {
-            return $this->getCaster()->cast(
-                $builder->findOrFail($this->getItemID())
-            );
+            /** @var T $item */
+            $item = $builder->findOrFail($this->getItemID());
+
+            return $this->getCaster()->cast($item);
         }
 
+        /** @var T|null $item */
         $item = $builder->find($this->getItemID());
 
         return $item !== null ? $this->getCaster()->cast($item) : null;
     }
 
+    /**
+     * @param EloquentBuilder<T>|Relation<T, Model, mixed> $builder
+     * @return EloquentBuilder<T>|Relation<T, Model, mixed>
+     */
     protected function modifyItemQueryBuilder(Builder $builder): Builder
     {
         return $builder;
@@ -114,7 +128,7 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
-     * @return Builder
+     * @return EloquentBuilder<T>|Relation<T, Model, mixed>
      */
     public function newQuery(): mixed
     {
@@ -122,7 +136,9 @@ trait ResourceModelQuery
             return $this->queryBuilder;
         }
 
-        $this->queryBuilder = $this->customQueryBuilder ?? $this->getModel()->newQuery();
+        /** @var EloquentBuilder<T>|Relation<T, Model, mixed> $query */
+        $query = $this->customQueryBuilder ?? $this->getModel()->newQuery();
+        $this->queryBuilder = $query;
 
         if ($this->hasWith()) {
             $this->queryBuilder->with($this->getWith());
@@ -133,7 +149,7 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
-     * @return Builder
+     * @return EloquentBuilder<T>|Relation<T, Model, mixed>
      */
     public function getQuery(): mixed
     {
@@ -142,13 +158,17 @@ trait ResourceModelQuery
         return $this->newQuery();
     }
 
+    /**
+     * @param EloquentBuilder<T>|Relation<T, Model, mixed> $builder
+     * @return EloquentBuilder<T>|Relation<T, Model, mixed>
+     */
     protected function modifyQueryBuilder(Builder $builder): Builder
     {
         return $builder;
     }
 
     /**
-     * @param  Builder  $builder
+     * @param EloquentBuilder<T>|Relation<T, Model, mixed> $builder
      *
      */
     public function customQueryBuilder(mixed $builder): static
@@ -227,7 +247,7 @@ trait ResourceModelQuery
             return $this;
         }
 
-        /** @var ?QueryTag $tag */
+        /** @var QueryTag<EloquentBuilder<T>|Relation<T, Model, mixed>>|null $tag */
         $tag = Collection::make($page->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive(),
@@ -247,7 +267,7 @@ trait ResourceModelQuery
     protected function resolveSearch(string $terms, ?iterable $fullTextColumns = null): static
     {
         if (! \is_null($fullTextColumns)) {
-            $this->newQuery()->whereFullText($fullTextColumns, $terms);
+            $this->newQuery()->whereFullText(iterator_to_array($fullTextColumns), $terms);
         } else {
             $this->searchQuery($terms);
         }
@@ -267,7 +287,7 @@ trait ResourceModelQuery
                         })
                         ->slice(-1)
                         ->values()
-                        ->toArray();
+                        ->all();
                 }
 
                 if (\is_array($column)) {
@@ -284,7 +304,9 @@ trait ResourceModelQuery
                             )),
                         ),
                         static fn (Builder $query) => Collection::make($column)->each(static fn ($item) => $query->orWhere(
-                            static fn (Builder $qq) => $qq->orWhereJsonContains($key, [$item => $terms]),
+                            static function (Builder $qq) use ($key, $item, $terms): void {
+                                $qq->orWhereJsonContains($key, [$item => $terms]);
+                            },
                         )),
                     );
                 } else {
@@ -354,20 +376,21 @@ trait ResourceModelQuery
             throw CrudResourceException::relationNotFound($relationName);
         }
 
+        /** @var BelongsToMany<Model, Model>|\Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model>|\Illuminate\Database\Eloquent\Relations\HasOneOrMany<Model, Model, mixed> $relation */
         $relation = $this->getDataInstance()->{$relationName}();
 
-        $this->newQuery()->when(
-            $relation instanceof BelongsToMany,
-            static fn (Builder $q) => $q->whereRelation(
+        if ($relation instanceof BelongsToMany) {
+            $this->newQuery()->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
                 $parentId,
-            ),
-            static fn (Builder $q) => $q->where(
+            );
+        } else {
+            $this->newQuery()->where(
                 $relation->getForeignKeyName(),
                 $parentId,
-            ),
-        );
+            );
+        }
 
         return $this;
     }
@@ -384,6 +407,7 @@ trait ResourceModelQuery
 
     /**
      * @throws Throwable
+     * @param 'asc'|'desc' $direction
      */
     protected function resolveOrder(string $column, string $direction, ?Closure $callback): static
     {

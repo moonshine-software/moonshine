@@ -11,6 +11,7 @@ use MoonShine\Support\DTOs\AsyncCallback;
 
 trait HasAsync
 {
+    /** @var (Closure(static): (string|null))|string|null */
     protected Closure|string|null $asyncUrl = null;
 
     /**
@@ -36,6 +37,10 @@ trait HasAsync
         );
     }
 
+    /**
+     * @param (Closure(static): (string|null))|string|null $url
+     * @return (Closure(static): (string|null))|string|null
+     */
     protected function prepareAsyncUrl(Closure|string|null $url = null): Closure|string|null
     {
         return $url;
@@ -43,19 +48,20 @@ trait HasAsync
 
     protected function prepareAsyncUrlFromPaginator(): string
     {
-        $withoutQuery = strtok($this->getAsyncUrl(), '?');
+        $url = $this->getAsyncUrl() ?? '';
+        $withoutQuery = strtok($url, '?');
 
         if (! $withoutQuery) {
-            return $this->getAsyncUrl();
+            return $url;
         }
 
-        $query = parse_url($this->getAsyncUrl(), PHP_URL_QUERY);
+        $query = parse_url($url, PHP_URL_QUERY);
 
         parse_str((string) $query, $asyncUri);
 
         $asyncUri = array_filter(
             $asyncUri,
-            fn ($value, $key): bool => ! $this->getCore()->getRequest()->has($key),
+            fn ($value, $key): bool => ! $this->getCore()->getRequest()->has((string) $key),
             ARRAY_FILTER_USE_BOTH,
         );
 
@@ -76,6 +82,7 @@ trait HasAsync
     }
 
     /**
+     * @param (Closure(static): (string|null))|string|null $url
      * @param  string|string[]|null  $events
      */
     public function async(

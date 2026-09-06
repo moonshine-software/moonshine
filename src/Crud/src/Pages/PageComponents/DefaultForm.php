@@ -9,7 +9,6 @@ use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Core\Traits\WithCore;
-use MoonShine\Crud\Collections\Fields;
 use MoonShine\Crud\Contracts\Page\FormPageContract;
 use MoonShine\Crud\Contracts\PageComponents\DefaultFormContract;
 use MoonShine\Support\AlpineJs;
@@ -33,22 +32,16 @@ final class DefaultForm implements DefaultFormContract
         FieldsContract $fields,
         bool $isAsync = true,
     ): FormBuilderContract {
-        $resource = $page->getResource();
+        $resource = $page->getResourceOrFail();
+
+        if ($item !== null) {
+            $fields->push(Hidden::make('_method')->setValue('PUT'));
+        }
 
         return FormBuilder::make($action)
             ->cast($resource->getCaster())
             ->fill($item)
-            ->fields([
-                ...$fields
-                    ->when( // @phpstan-ignore argument.templateType
-                        ! \is_null($item),
-                        static fn (Fields $fields): Fields
-                            => $fields->push(
-                                Hidden::make('_method')->setValue('PUT'),
-                            ),
-                    )
-                    ->toArray(),
-            ])
+            ->fields($fields)
             ->when(
                 ! $page->hasErrorsAbove(),
                 fn (FormBuilderContract $form): FormBuilderContract => $form->errorsAbove($page->hasErrorsAbove()),
@@ -60,7 +53,7 @@ final class DefaultForm implements DefaultFormContract
                     ->async(
                         events: array_filter([
                             $resource->getListEventName(
-                                $this->getCore()->getRequest()->getScalar('_component_name', 'default'),
+                                (string) $this->getCore()->getRequest()->getScalar('_component_name', 'default'),
                                 $isAsync && $resource->isItemExists() ? array_filter([
                                     $resource->getQueryParamName('page') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('page')),
                                     $resource->getQueryParamName('sort') => $this->getCore()->getRequest()->getScalar($resource->getQueryParamName('sort')),
@@ -79,7 +72,7 @@ final class DefaultForm implements DefaultFormContract
             ->name($resource->getUriKey())
             ->class("form-resource-{$resource->getUriKey()}")
             ->submit(
-                $this->getCore()->getTranslator()->get('moonshine::ui.save'),
+                $this->getCore()->getTranslator()->getString('moonshine::ui.save'),
                 ['class' => 'btn-primary btn-lg'],
             )
             ->buttons($page->getFormButtons());

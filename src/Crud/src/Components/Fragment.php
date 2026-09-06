@@ -37,7 +37,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     {
         parent::__construct($components);
 
-        $this->async(function (Fragment $fragment): mixed {
+        $this->async(function (Fragment $fragment): string {
             $page = $fragment->getNowOnPage() ?? $this->getCore()->getCrudRequest()->findPage();
             $resource = $fragment->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
@@ -50,6 +50,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
             $params = $fragment->getNowOnQueryParams();
             $itemID = $params['resourceItem'] ?? $this->getCore()->getCrudRequest()->getItemID();
 
+            /** @var string */
             return $this->getCore()->getRouter()->getEndpoints()->toPage(
                 page: $fragment->getNowOnPage() ?? $this->getCore()->getCrudRequest()->getPage(),
                 resource: $fragment->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource(),

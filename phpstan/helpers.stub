@@ -1,0 +1,17 @@
+<?php
+
+// value() accepts heterogeneous arguments; Larastan infers its result from the supplied closure.
+// Laravel's single TArgs template incorrectly requires every argument to have the same type.
+/**
+ * @param mixed $value
+ * @param mixed ...$args
+ * @return mixed
+ */
+function value(mixed $value, mixed ...$args): mixed {}
+
+/**
+ * @param string|null $key
+ * @param mixed $default
+ * @return mixed
+ */
+function old($key = null, $default = null) {}

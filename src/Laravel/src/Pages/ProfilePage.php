@@ -105,6 +105,9 @@ class ProfilePage extends Page
         ];
     }
 
+    /**
+     * @return FormBuilderContract<\Illuminate\Database\Eloquent\Model>
+     */
     public function getForm(): FormBuilderContract
     {
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();

@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 
+/** @extends Factory<MoonshineUserRole> */
 class MoonshineUserRoleFactory extends Factory
 {
     protected $model = MoonshineUserRole::class;

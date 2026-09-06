@@ -20,10 +20,10 @@ class Image extends File
 
     protected function resolvePreview(): Renderable|string
     {
-        return Thumbnails::make(
+        return (string) Thumbnails::make(
             $this->isMultiple()
-                ? $this->getFiles()->toArray()
+                ? array_values($this->getFiles()->all())
                 : $this->getFiles()->first(),
-        )->render();
+        );
     }
 }

@@ -21,11 +21,13 @@ final readonly class LaravelStorage implements StorageContract
 
     public function store(string $path, mixed $file = null, array $options = []): false|string
     {
+        /** @var \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string|array<mixed>|null $file */
         return $this->filesystem->putFile($path, $file, $options);
     }
 
     public function storeAs(string $path, mixed $file, string|array|null $name = null, array $options = []): false|string
     {
+        /** @var \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string|array<mixed>|null $file */
         return $this->filesystem->putFileAs($path, $file, $name, $options);
     }
 
@@ -51,7 +53,7 @@ final readonly class LaravelStorage implements StorageContract
 
     public function getFiles(string $directory, bool $recursive = false): array
     {
-        return $this->filesystem->files($directory, $recursive);
+        return array_values($this->filesystem->files($directory, $recursive));
     }
 
     public function getDirectories(?string $directory = null, bool $recursive = false): array

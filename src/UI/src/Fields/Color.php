@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Color as ColorComponent;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
@@ -24,7 +25,6 @@ class Color extends Field implements HasDefaultValueContract, CanBeString
             return '';
         }
 
-        return ColorComponent::make($this->getValue())
-            ->render();
+        return (string) ColorComponent::make(Stringify::value($this->getValue()));
     }
 }

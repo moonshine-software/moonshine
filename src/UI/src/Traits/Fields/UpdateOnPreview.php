@@ -23,8 +23,10 @@ trait UpdateOnPreview
 
     protected ?string $updateOnPreviewParentComponent = null;
 
+    /** @var null|(Closure(?DataWrapperContract, mixed, static): (string|null)) */
     protected ?Closure $updateOnPreviewUrl = null;
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function readonly(Closure|bool|null $condition = null): static
     {
         $this->updateOnPreview(condition: false);
@@ -78,8 +80,9 @@ trait UpdateOnPreview
     }
 
     /**
-     * @param  ?Closure(mixed $data, mixed $value, static $field): string  $url
+     * @param  ?Closure(?DataWrapperContract $data, mixed $value, static $field): (string|null)  $url
      * @param string[] $events
+     * @param (Closure(static): (bool|null))|bool|null $condition
      */
     public function updateOnPreview(
         ?Closure $url = null,
@@ -115,7 +118,7 @@ trait UpdateOnPreview
     }
 
     /**
-     * @param  Closure(mixed $data, mixed $value, FieldContract $field): string  $url
+     * @param  Closure(?DataWrapperContract $data, mixed $value, static $field): (string|null)  $url
      * @param string[] $events
      */
     public function setUpdateOnPreviewUrl(Closure $url, array $events = []): static
@@ -150,7 +153,7 @@ trait UpdateOnPreview
         }
 
         if ($this->updateOnPreviewPopover && $this->updateOnPreviewParentComponent && $this->isPreviewMode()) {
-            $label = (string) $this->getCore()->getTranslator()->get('moonshine::ui.save');
+            $label = (string) $this->getCore()->getTranslator()->getString('moonshine::ui.save');
 
             return (string) \call_user_func(
                 new UpdateOnPreviewPopover(

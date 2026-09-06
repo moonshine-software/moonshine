@@ -9,7 +9,7 @@ use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Contracts\MenuManager\MenuElementsContract;
 
 /**
- * @method static static make(Closure|string $label, iterable $items, string|null $icon = null)
+ * @method static static make(Closure|string $label, iterable<MenuElementContract> $items, string|null $icon = null)
  */
 class MenuGroup extends MenuElement
 {

@@ -41,9 +41,9 @@ use Throwable;
 /**
  * @template TCore of CoreContract = CoreContract
  * @template TData of mixed = mixed
- * @template-covariant TIndexPage of null|CrudPageContract = null
- * @template-covariant TFormPage of null|CrudPageContract = null
- * @template-covariant TDetailPage of null|CrudPageContract = null
+ * @template-covariant TIndexPage of null|CrudPageContract = CrudPageContract
+ * @template-covariant TFormPage of null|CrudPageContract = CrudPageContract
+ * @template-covariant TDetailPage of null|CrudPageContract = CrudPageContract
  * @template TException of Throwable = \Throwable
  * @template TFields of Fields = Fields
  *
@@ -95,13 +95,13 @@ abstract class CrudResource extends Resource implements
     /**
      * @param bool $orFail
      *
-     * @return DataWrapperContract
+     * @return ($orFail is true ? DataWrapperContract<TData> : DataWrapperContract<TData>|null)
      * @throws Throwable
      */
     abstract public function findItem(bool $orFail = false): ?DataWrapperContract;
 
     /**
-     * @return iterable<TData>|Collection<array-key, TData>|LazyCollection<array-key, TData>|CursorPaginator<array-key, TData>|Paginator<array-key, TData>
+     * @return iterable<array-key, TData>
      */
     abstract public function getItems(): iterable|Collection|LazyCollection|CursorPaginator|Paginator;
 
@@ -234,6 +234,7 @@ abstract class CrudResource extends Resource implements
      */
     public function getIndexPage(): ?PageContract
     {
+        /** @var TIndexPage|null */
         return $this->getPages()->indexPage();
     }
 
@@ -247,6 +248,7 @@ abstract class CrudResource extends Resource implements
      */
     public function getFormPage(): ?PageContract
     {
+        /** @var TFormPage|null */
         return $this->getPages()->formPage();
     }
 
@@ -280,6 +282,7 @@ abstract class CrudResource extends Resource implements
      */
     public function getDetailPage(): ?PageContract
     {
+        /** @var TDetailPage|null */
         return $this->getPages()->detailPage();
     }
 
@@ -312,6 +315,7 @@ abstract class CrudResource extends Resource implements
      */
     public function getDataInstance(): mixed
     {
+        /** @var TData */
         return [];
     }
 
@@ -348,7 +352,7 @@ abstract class CrudResource extends Resource implements
     }
 
     /**
-     * @return null|Closure(iterable<TData> $items, TableBuilderContract $table): iterable<TData>
+     * @return null|Closure(iterable<array-key, TData> $items, TableBuilderContract $table): iterable<array-key, TData>
      */
     public function getItemsResolver(): ?Closure
     {
@@ -360,14 +364,16 @@ abstract class CrudResource extends Resource implements
      */
     public function modifyResponse(DataWrapperContract $item): Jsonable
     {
-        return $item->getOriginal();
+        return $item->getOriginal() instanceof Jsonable
+            ? $item->getOriginal()
+            : new Collection($item->toArray());
     }
 
     /**
-     * @param  iterable<TData>  $items
+     * @param  iterable<array-key, TData>  $items
      */
     public function modifyCollectionResponse(mixed $items): Jsonable
     {
-        return $items;
+        return $items instanceof Jsonable ? $items : new Collection($items);
     }
 }

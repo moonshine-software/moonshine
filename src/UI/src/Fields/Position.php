@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Support\Stringify;
 
 /**
  * @method static static make(Closure|string|null $label = null, ?string $column = null)
@@ -23,16 +24,16 @@ class Position extends Preview
 
     protected function resolveValue(): string
     {
-        return (string) $this->toFormattedValue();
+        return Stringify::value($this->toFormattedValue());
     }
 
     protected function resolveRawValue(): string
     {
-        return (string) $this->toFormattedValue();
+        return Stringify::value($this->toFormattedValue());
     }
 
     protected function resolvePreview(): Renderable|string
     {
-        return (string) $this->toFormattedValue();
+        return Stringify::value($this->toFormattedValue());
     }
 }

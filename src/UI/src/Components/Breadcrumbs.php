@@ -10,13 +10,13 @@ use Illuminate\Support\Stringable;
 use MoonShine\Support\EnumToString;
 use UnitEnum;
 
-/** @method static static make(array $items = []) */
+/** @method static static make(array<string, null|UnitEnum|string|array{url: string, title: string, icon: string|null}> $items = []) */
 final class Breadcrumbs extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.breadcrumbs';
 
     /**
-     * @param  array<string, string|array{url: string, title: string, icon: string|null}>  $items
+     * @param  array<string, null|UnitEnum|string|array{url: string, title: string, icon: string|null}>  $items
      */
     public function __construct(
         public array $items = [],
@@ -28,7 +28,7 @@ final class Breadcrumbs extends MoonShineComponent
     {
         $this->items = new Collection($this->items)
             ->prepend($this->addItem($label, $icon), $link)
-            ->toArray();
+            ->all();
 
         return $this;
     }
@@ -37,7 +37,7 @@ final class Breadcrumbs extends MoonShineComponent
     {
         $this->items = new Collection($this->items)
             ->put($link, $this->addItem($label, $icon))
-            ->toArray();
+            ->all();
 
         return $this;
     }
@@ -56,16 +56,20 @@ final class Breadcrumbs extends MoonShineComponent
     {
         parent::prepareBeforeRender();
 
-        $this->items = new Collection($this->items)->mapWithKeys(static function (null|UnitEnum|string $title, string $url): array {
+        $this->items = new Collection($this->items)->mapWithKeys(static function (array|null|UnitEnum|string $title, string $url): array {
+            if (\is_array($title)) {
+                return [$url => $title];
+            }
+
             $title = (string) new EnumToString($title);
 
             return [
                 $url => [
                     'url' => $url,
-                    'title' => Str::of($title)->before(':::'),
+                    'title' => Str::of($title)->before(':::')->value(),
                     'icon' => Str::of($title)->contains(':::') ? Str::of($title)->after(':::')->value() : null,
                 ],
             ];
-        })->toArray();
+        })->all();
     }
 }

@@ -35,6 +35,9 @@ final class StoreFormRequest extends MoonShineFormRequest
         return $resource->can(Ability::CREATE);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         if (! $this->getResource() instanceof CrudResource || ! $this->getResource()->getFormPage() instanceof FormPageContract) {

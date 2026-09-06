@@ -11,13 +11,14 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 
 /**
+ * @template TFields of \MoonShine\Crud\Collections\Fields
  * @mixin IndexPageContract
  */
 trait HasListComponent
 {
     public function getListComponentName(): string
     {
-        return "index-table-{$this->getResource()->getUriKey()}";
+        return "index-table-{$this->getResourceOrFail()->getUriKey()}";
     }
 
     public function getListEventType(): JsEvent
@@ -39,8 +40,9 @@ trait HasListComponent
 
     public function getListComponent(bool $withoutFragment = false): ComponentContract
     {
-        $items = $this->isLazy() ? [] : $this->getResource()->getItems();
-        $fields = $this->getResource()->getIndexFields();
+        $items = $this->isLazy() ? [] : $this->getResourceOrFail()->getItems();
+        /** @var TFields $fields */
+        $fields = $this->getResourceOrFail()->getIndexFields();
 
         $component = $this->getItemsComponent($items, $fields);
 

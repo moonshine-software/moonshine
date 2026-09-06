@@ -29,8 +29,7 @@ final class FieldContainer extends MoonShineComponent
     ) {
         parent::__construct();
 
-        $this->attributes = $this->field
-            ->getWrapperAttributes()
+        $this->attributes = new MoonShineComponentAttributeBag($this->field->getWrapperAttributes()->getAttributes())
             ->merge(['required' => $this->field->getAttribute('required')]);
     }
 
@@ -46,7 +45,7 @@ final class FieldContainer extends MoonShineComponent
                 ])
                 ->when(
                     $icon = $this->field->getLinkIcon(),
-                    static fn (Link $link): Link => $link->icon($icon)
+                    static fn (Link $link): Link => $link->icon($icon ?? '')
                 );
 
             $this->beforeInner = new ComponentSlot((string) $link);
@@ -70,9 +69,9 @@ final class FieldContainer extends MoonShineComponent
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
-            'before' => new ComponentSlot($this->field->getBeforeRender()),
-            'after' => new ComponentSlot($this->field->getAfterRender()),
-            'slot' => new ComponentSlot($this->stringifySlot(value($this->slot))),
+            'before' => new ComponentSlot($this->stringifySlotContent($this->field->getBeforeRender())),
+            'after' => new ComponentSlot($this->stringifySlotContent($this->field->getAfterRender())),
+            'slot' => new ComponentSlot($this->stringifySlotContent(value($this->slot))),
 
             'beforeInner' => $this->afterInner,
             'afterInner' => $this->beforeInner,
@@ -82,12 +81,4 @@ final class FieldContainer extends MoonShineComponent
         ];
     }
 
-    private function stringifySlot(Renderable|string|null $slot): string
-    {
-        if ($slot instanceof Renderable) {
-            return $slot->render();
-        }
-
-        return (string) $slot;
-    }
 }

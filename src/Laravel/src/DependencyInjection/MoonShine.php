@@ -68,6 +68,7 @@ final class MoonShine extends Core
             return app()->make($id, $parameters) ?? $default;
         }
 
+        /** @var Application */
         return $this->container;
     }
 

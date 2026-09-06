@@ -14,6 +14,9 @@ final class Assets extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.layout.assets';
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTranslates(): array
     {
         return $this->getCore()->getTranslator()->all();

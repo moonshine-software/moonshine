@@ -6,6 +6,7 @@ namespace MoonShine\Laravel\Traits\Fields;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Fields\Checkbox;
 use Throwable;
 
@@ -33,6 +34,7 @@ trait HasTreeMode
      */
     public function toTreeHtml(): string
     {
+        /** @var Collection<array-key, Collection<array-key, \Illuminate\Database\Eloquent\Model>> $data */
         $data = $this->resolveValuesQuery()
             ->get()
             ->groupBy($this->treeParentColumn)
@@ -47,19 +49,20 @@ trait HasTreeMode
 
     /**
      * @throws Throwable
+     * @param Collection<array-key, Collection<array-key, \Illuminate\Database\Eloquent\Model>> $data
      */
     protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
     {
         if ($data->has($parentKey)) {
-            foreach ($data->get($parentKey) as $item) {
-                $label = $this->getColumnOrFormattedValue($item, data_get($item, $this->getResourceColumn()));
+            foreach ($data->get($parentKey) ?? [] as $item) {
+                $label = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $this->getResourceColumn())));
 
-                $element = Checkbox::make($label)
+                $element = Checkbox::make((string) $label)
                     ->formName($this->getFormName())
                     ->simpleMode()
                     ->customAttributes($this->getAttributes()->jsonSerialize())
                     ->customAttributes($this->getReactiveAttributes())
-                    ->setNameAttribute($this->getNameAttribute((string) $item->getKey()))
+                    ->setNameAttribute($this->getNameAttribute(Stringify::value($item->getKey())))
                     ->setValue($item->getKey());
 
                 $this->treeHtml .= Str::of((string) $element)->wrap(
@@ -67,7 +70,7 @@ trait HasTreeMode
                     "</li>"
                 );
 
-                $this->buildTree($data, $item->getKey(), $offset + 1);
+                $this->buildTree($data, Stringify::value($item->getKey()), $offset + 1);
             }
         }
 

@@ -21,7 +21,7 @@ final readonly class Options implements Arrayable
     /**
      * @param  array<int|string,string|Option|OptionGroup|array<int|string,string>>  $values
      * @param  mixed|null  $value
-     * @param  array<OptionProperty>|Closure  $properties
+     * @param  array<array-key, OptionProperty|array<string, mixed>|null>|Closure(): array<array-key, OptionProperty|array<string, mixed>|null>  $properties
      */
     public function __construct(
         private array $values = [],
@@ -150,7 +150,7 @@ final readonly class Options implements Arrayable
     }
 
     /**
-     * @return array{options: array<mixed>, properties: array<mixed>}
+     * @return array{options: array<array-key, string|array<array-key, string>>, properties: array<array-key, array<string, mixed>|null>}
      */
     public function toRaw(): array
     {
@@ -158,13 +158,14 @@ final readonly class Options implements Arrayable
 
         $options = $values->mapWithKeys(function (Option|OptionGroup $option): array {
             if ($option instanceof OptionGroup) {
-                return [$option->getLabel() => new Collection($option->getValues()->toArray())->pluck('label', 'value')->toArray()];
+                return [$option->getLabel() => $option->getValues()->getValues()->mapWithKeys(static fn (Option|OptionGroup $value): array => $value instanceof Option ? [$value->getValue() => $value->getLabel()] : [])->all()];
             }
 
             return [$option->getValue() => $option->getLabel()];
-        })->toArray();
+        })->all();
 
-        $properties = new Collection($this->flatten())->pluck('properties', 'value')->toArray();
+        /** @var array<array-key, array<string, mixed>|null> $properties */
+        $properties = new Collection($this->flatten())->pluck('properties', 'value')->all();
 
         return [
             'options' => $options,

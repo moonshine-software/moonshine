@@ -29,14 +29,14 @@ class Slug extends Text
 
     public function live(bool $lazy = false): static
     {
-        return $this->reactive(function (FieldsContract $fields, ?string $value, Slug $ctx) use ($lazy): FieldsContract {
+        return $this->reactive(function (FieldsContract $fields, mixed $value, Slug $ctx) use ($lazy): FieldsContract {
             $title = $fields->findByColumn($this->getFrom());
 
             if (\is_null($title)) {
                 return $fields;
             }
 
-            $slug = (string) Str::of($title->toValue())->slug($this->getSeparator());
+            $slug = (string) Str::of($this->stringifySlotContent($title->toValue()))->slug($this->getSeparator());
 
             if ($lazy && $value !== null) {
                 return $fields;
@@ -100,11 +100,12 @@ class Slug extends Text
 
     protected function makeSlugUnique(Model $item): string
     {
-        $slug = $item->{$this->getColumn()};
+        $original = $this->stringifySlotContent($item->{$this->getColumn()});
+        $slug = $original;
         $i = 1;
 
         while (! $this->checkUnique($item, $slug)) {
-            $slug = $item->{$this->getColumn()} . $this->getSeparator() . $i++;
+            $slug = $original . $this->getSeparator() . $i++;
         }
 
         return $slug;
@@ -123,7 +124,7 @@ class Slug extends Text
         return function (Model $item): Model {
             $item->{$this->getColumn()} = $this->getRequestValue() !== false
                 ? $this->getRequestValue()
-                : $this->generateSlug($item->{$this->getFrom()});
+                : $this->generateSlug($this->stringifySlotContent($item->{$this->getFrom()}));
 
             if ($this->isUnique()) {
                 $item->{$this->getColumn()} = $this->makeSlugUnique($item);

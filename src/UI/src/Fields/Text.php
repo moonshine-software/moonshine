@@ -77,7 +77,7 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
     {
         return $this->isUnescape()
             ? parent::resolvePreview()
-            : $this->escapeValue((string) parent::resolvePreview());
+            : $this->escapeValue($this->stringifySlotContent(parent::resolvePreview()));
     }
 
     protected function viewData(): array

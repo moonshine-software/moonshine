@@ -55,7 +55,7 @@ interface ConfiguratorContract extends ArrayAccess
     public function getPage(string $name, string $default, mixed ...$parameters): PageContract;
 
     /**
-     * @return list<class-string<PageContract>>
+     * @return array<array-key, class-string<PageContract>>
      */
     public function getPages(): array;
 
@@ -74,7 +74,7 @@ interface ConfiguratorContract extends ArrayAccess
     public function getDisk(): string;
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function getDiskOptions(): array;
 

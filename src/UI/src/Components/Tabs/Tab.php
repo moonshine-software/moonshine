@@ -20,7 +20,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make(Closure|string|iterable $labelOrComponents = [], iterable $components = [])
+ * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [])
  */
 class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract
 {
@@ -74,6 +74,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         throw ComponentException::tabsAreNotRendering();
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function active(Closure|bool|null $condition = null): static
     {
         $this->active = \is_null($condition) || value($condition, $this);

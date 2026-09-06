@@ -9,7 +9,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\UI\Traits\Components\WithSlotContent;
 
 /**
- * @method static static make(Closure|string $title = '', Closure|array|string $thumbnail = '', Closure|string $url = '#', Closure|array $values = [], Closure|string|null $subtitle = null)
+ * @method static static make(Closure|string $title = '', (Closure(self): string[])|string[]|string $thumbnail = '', Closure|string $url = '#', (Closure(self): array<string, mixed>)|array<string, mixed> $values = [], Closure|string|null $subtitle = null, bool $overlay = false)
  */
 final class Card extends MoonShineComponent
 {
@@ -17,8 +17,10 @@ final class Card extends MoonShineComponent
 
     protected string $view = 'moonshine::components.card';
 
+    /** @var (Closure(self): (string|\Stringable))|string */
     protected Closure|string $header = '';
 
+    /** @var (Closure(self): (string|\Stringable))|string */
     protected Closure|string $actions = '';
 
     /**
@@ -40,6 +42,9 @@ final class Card extends MoonShineComponent
         parent::__construct();
     }
 
+    /**
+     * @param (Closure(self): (string|\Stringable))|string $value
+     */
     public function header(Closure|string $value): self
     {
         $this->header = $value;
@@ -47,6 +52,9 @@ final class Card extends MoonShineComponent
         return $this;
     }
 
+    /**
+     * @param (Closure(self): (string|\Stringable))|string $value
+     */
     public function actions(Closure|string $value): self
     {
         $this->actions = $value;
@@ -111,10 +119,10 @@ final class Card extends MoonShineComponent
             'values' => value($this->values, $this),
             'slot' => $this->getSlot(),
             'header' => new ComponentSlot(
-                value($this->header, $this),
+                (string) value($this->header, $this),
             ),
             'actions' => new ComponentSlot(
-                value($this->actions, $this),
+                (string) value($this->actions, $this),
             ),
         ];
     }

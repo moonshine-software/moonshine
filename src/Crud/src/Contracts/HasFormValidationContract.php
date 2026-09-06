@@ -10,7 +10,7 @@ use Illuminate\Support\Stringable;
 interface HasFormValidationContract
 {
     /**
-     * @return array<string, string[]|string|list<ValidationRule>|list<Stringable>>
+     * @return array<string, string|list<string|ValidationRule|\Illuminate\Contracts\Validation\Rule|Stringable>>
      */
     public function getRules(): array;
 

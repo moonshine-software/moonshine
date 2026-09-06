@@ -35,7 +35,7 @@ use Throwable;
  * @template TData of mixed = mixed
  * @template TCaster of DataCasterContract<TData> = DataCasterContract
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
- * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|iterable $fields = [], mixed $values = [])
+ * @method static static make(string $action = '', FormMethod $method = FormMethod::POST, FieldsContract|iterable<array-key, ComponentContract> $fields = [], mixed $values = [])
  *
  * @implements HasFieldsContract<TFields>
  * @implements FormBuilderContract<TData>
@@ -53,14 +53,16 @@ final class FormBuilder extends MoonShineComponent implements
      * @use WithAdditionalFields<TFields>
      */
     use WithAdditionalFields;
+    /** @use HasDataCast<TData, TCaster, TWrapper> */
     use HasDataCast;
     use HasButtons;
+    /** @use WithFields<TFields> */
     use WithFields;
 
     protected string $view = 'moonshine::components.form.builder';
 
     /**
-     * @var TData
+     * @var TData|array<string, mixed>
      */
     protected mixed $values;
 
@@ -84,8 +86,10 @@ final class FormBuilder extends MoonShineComponent implements
 
     protected ?ActionButtonContract $submit = null;
 
+    /** @var null|(Closure(FieldsContract, static): FieldsContract) */
     protected ?Closure $onBeforeFieldsRender = null;
 
+    /** @var (Closure(self): string)|string|null */
     protected Closure|string|null $reactiveUrl = null;
 
     /**
@@ -117,6 +121,10 @@ final class FormBuilder extends MoonShineComponent implements
         return $this;
     }
 
+    /**
+     * @param TData|array<string, mixed> $values
+     * @param TCaster $cast
+     */
     public function fillCast(mixed $values, DataCasterContract $cast): static
     {
         return $this
@@ -129,6 +137,9 @@ final class FormBuilder extends MoonShineComponent implements
         return $this->values ?? [];
     }
 
+    /**
+     * @return TFields
+     */
     protected function prepareFields(): FieldsContract
     {
         $fields = $this->getFields();
@@ -331,7 +342,7 @@ final class FormBuilder extends MoonShineComponent implements
     public function getSubmit(): ActionButtonContract
     {
         $submit = $this->submit ?: ActionButton::make(
-            $this->getCore()->getTranslator()->get('moonshine::ui.save'),
+            $this->getCore()->getTranslator()->getString('moonshine::ui.save'),
         );
 
         if ($this->isHideSubmit()) {
@@ -394,7 +405,7 @@ final class FormBuilder extends MoonShineComponent implements
 
     /**
      * @param Closure(TData $values, FieldsContract $fields): bool $apply
-     * @param null|Closure(FieldContract $field): void $default
+     * @param null|Closure(FieldContract $field): Closure $default
      * @param null|Closure(TData $values): TData $before
      * @param null|Closure(TData $values): void $after
      * @throws Throwable
@@ -539,7 +550,7 @@ final class FormBuilder extends MoonShineComponent implements
 
         if ($this->isAsync()) {
             $this->action(
-                $this->getAction() ?: $this->getAsyncUrl(),
+                $this->getAction() ?: ($this->getAsyncUrl() ?? ''),
             );
             $this->customAttributes([
                 'x-on:submit.prevent' => 'async(`' . $this->getAsyncEvents(

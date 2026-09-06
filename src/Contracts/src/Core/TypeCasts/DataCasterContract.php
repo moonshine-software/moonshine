@@ -12,7 +12,7 @@ use MoonShine\Contracts\Core\Paginator\PaginatorContract;
 interface DataCasterContract
 {
     /**
-     * @param T $data
+     * @param T|array<string, mixed> $data
      *
      * @return DataWrapperContract<T>
      */

@@ -29,25 +29,27 @@ final class BelongsToManyPivotButton
         ?ActionButtonContract $button = null
     ): ActionButtonContract {
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
-        /** @var ?CrudResourceContract $parentResource */
-        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResource();
+        $resource = $field->getResourceOrFail();
+        /** @var CrudResourceContract $parentResource */
+        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResourceOrFail();
         $parentPage = $field->getNowOnPage() ?? moonshineRequest()->getPage();
+        /** @var int|string|null $itemID */
         $itemID = data_get($field->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
 
-        $action = static fn (?Model $data) => $parentResource->getRoute(
+        $action = static fn (mixed $data) => $parentResource->getRoute(
             'belongs-to-many-pivot.form',
             $itemID,
             [
                 'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
-                '_key' => $update ? $data?->getKey() : null,
+                '_key' => $update ? ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null) : null,
             ]
         );
 
         $authorize = $update
-            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
+            ? static fn (mixed $item, ?DataWrapperContract $data): bool => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null)
                 && $resource->hasAction(Action::UPDATE)
+                && $item instanceof Model
                 && $resource->setItem($item)->can(Ability::UPDATE)
             : static fn (): bool => $resource->hasAction(Action::CREATE)
                 && $resource->can(Ability::CREATE);
@@ -79,21 +81,22 @@ final class BelongsToManyPivotButton
         ?ActionButtonContract $button = null
     ): ActionButtonContract {
         /** @var ModelResource $resource */
-        $resource = $field->getResource();
-        /** @var ?CrudResourceContract $parentResource */
-        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResource();
+        $resource = $field->getResourceOrFail();
+        /** @var CrudResourceContract $parentResource */
+        $parentResource = $field->getNowOnResource() ?? moonshineRequest()->getResourceOrFail();
         $parentPage = $field->getNowOnPage() ?? moonshineRequest()->getPage();
+        /** @var int|string|null $itemID */
         $itemID = data_get($field->getNowOnQueryParams(), 'resourceItem', moonshineRequest()->getItemID());
 
         $tableName = $field->getTableComponentName();
 
-        $url = static fn (?Model $data) => $parentResource->getRoute(
+        $url = static fn (mixed $data) => $parentResource->getRoute(
             'belongs-to-many-pivot.destroy',
             $itemID,
             [
                 'pageUri' => $parentPage->getUriKey(),
                 '_relation' => $field->getRelationName(),
-                '_key' => $data?->getKey(),
+                '_key' => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null),
             ]
         );
 
@@ -102,9 +105,10 @@ final class BelongsToManyPivotButton
         return $actionButton
             ->setUrl($url)
             ->canSee(
-                static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey()
+                static fn (mixed $item, ?DataWrapperContract $data): bool => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null)
                     && $resource->hasAction(Action::DELETE)
-                    && $resource->setItem($item)->can(Ability::DELETE)
+                    && $item instanceof Model
+                && $resource->setItem($item)->can(Ability::DELETE)
             )
             ->async(
                 method: HttpMethod::DELETE,

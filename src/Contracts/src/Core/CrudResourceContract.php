@@ -19,9 +19,9 @@ use Throwable;
 /**
  * @template TCore of CoreContract = CoreContract
  * @template TData of mixed = mixed
- * @template-covariant TIndexPage of null|CrudPageContract = null
- * @template-covariant TFormPage of null|CrudPageContract = null
- * @template-covariant TDetailPage of null|CrudPageContract = null
+ * @template-covariant TIndexPage of null|CrudPageContract = CrudPageContract
+ * @template-covariant TFormPage of null|CrudPageContract = CrudPageContract
+ * @template-covariant TDetailPage of null|CrudPageContract = CrudPageContract
  * @template TException of Throwable = \Throwable
  * @template TFields of FieldsContract = FieldsContract
  *
@@ -89,7 +89,7 @@ interface CrudResourceContract extends
     public function getItemOrFail(): mixed;
 
     /**
-     * @return null|Closure(iterable<TData> $items, TableBuilderContract $table): iterable<TData>
+     * @return null|Closure(iterable<array-key, TData> $items, TableBuilderContract $table): iterable<array-key, TData>
      */
     public function getItemsResolver(): ?Closure;
 
@@ -109,14 +109,14 @@ interface CrudResourceContract extends
     public function isItemExists(): bool;
 
     /**
-     * @return iterable<TData>|Collection<array-key, TData>|LazyCollection<array-key, TData>|CursorPaginator<array-key, TData>|Paginator<array-key, TData>
+     * @return iterable<array-key, TData>
      */
     public function getItems(): iterable|Collection|LazyCollection|CursorPaginator|Paginator;
 
     /**
      * @param bool $orFail
      *
-     * @return ($orFail is true ? DataWrapperContract<TData> : null|DataWrapperContract<TData>)
+     * @return ($orFail is true ? DataWrapperContract<TData> : DataWrapperContract<TData>|null)
      * @throws TException
      */
     public function findItem(bool $orFail = false): ?DataWrapperContract;

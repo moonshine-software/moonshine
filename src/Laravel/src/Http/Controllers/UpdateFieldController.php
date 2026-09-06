@@ -24,7 +24,7 @@ class UpdateFieldController extends MoonShineController
      */
     public function throughColumn(UpdateColumnFormRequest $request): Response
     {
-        return $this->save($request->getResource(), $request->getField());
+        return $this->save($request->getResourceOrFail(), $request->getField() ?? throw CrudResourceException::resourceOrFieldRequired());
     }
 
     /**
@@ -45,7 +45,7 @@ class UpdateFieldController extends MoonShineController
         $field = $relationField
             ->getFields()
             ->onlyFields()
-            ->findByColumn($request->input('field'));
+            ->findByColumn($request->string('field')->value());
 
         if (\is_null($field) || \is_null($resource)) {
             throw CrudResourceException::resourceOrFieldRequired();
@@ -54,7 +54,7 @@ class UpdateFieldController extends MoonShineController
         return $this->save($resource, $field);
     }
 
-    private function save(CrudResource $resource, FieldContract $field)
+    private function save(CrudResource $resource, FieldContract $field): Response
     {
         abort_unless(
             $field instanceof HasUpdateOnPreviewContract && $field->isUpdateOnPreview(),

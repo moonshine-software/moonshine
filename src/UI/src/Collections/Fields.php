@@ -11,7 +11,6 @@ use Illuminate\Support\Traits\Conditionable;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
@@ -33,7 +32,7 @@ class Fields extends BaseCollection implements FieldsContract
     use Conditionable;
 
     /**
-     * @param  FieldsContract|ComponentsContract|list<ComponentContract>  $elements
+     * @param  iterable<array-key, ComponentContract>  $elements
      * @param list<FieldContract> $data
      * @throws Throwable
      */
@@ -57,7 +56,7 @@ class Fields extends BaseCollection implements FieldsContract
     {
         $data = [];
 
-        $this->extractFields($this->toArray(), $data);
+        $this->extractFields($this->all(), $data);
 
         /** @var static */
         return static::make($data)->when(
@@ -245,9 +244,9 @@ class Fields extends BaseCollection implements FieldsContract
     }
 
     /**
-     * @param  ?callable(FieldContract $parent, FieldContract $field): FieldsContract  $before
-     * @param  ?callable(string, FieldContract $parent, FieldContract $field): string  $performName
-     * @param  ?Closure(FieldContract $parent, FieldContract $field): bool  $except
+     * @param  ?callable(?FieldContract $parent, FieldContract $field): FieldsContract  $before
+     * @param  ?callable(string, ?FieldContract $parent, FieldContract $field): string  $performName
+     * @param  ?Closure(?FieldContract $parent, FieldContract $field): bool  $except
      *
      * @throws Throwable
      */
@@ -354,9 +353,9 @@ class Fields extends BaseCollection implements FieldsContract
      */
     public function extractLabels(): array
     {
-        return $this->flatMap(
+        return new Collection($this->all())->flatMap(
             static fn (FieldContract $field): array => [$field->getColumn() => $field->getLabel()]
-        )->toArray();
+        )->all();
     }
 
     /**

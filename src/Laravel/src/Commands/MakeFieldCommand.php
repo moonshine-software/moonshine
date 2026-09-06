@@ -39,7 +39,7 @@ class MakeFieldCommand extends MoonShineCommand
 
         $stubsPath = $this->qualifyStubsDir($stubsPath, 'Fields');
 
-        $extends = $this->option('extends') ?? select('Extends', $this->findExtends(), Field::class);
+        $extends = $this->option('extends') ?? (string) select('Extends', $this->findExtends(), Field::class);
 
         $this->makeDir($stubsPath->dir);
 
@@ -56,6 +56,9 @@ class MakeFieldCommand extends MoonShineCommand
         return self::SUCCESS;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function findExtends(): array
     {
         return Collection::make(File::files(__DIR__ . '/../../../UI/src/Fields/'))
@@ -67,6 +70,6 @@ class MakeFieldCommand extends MoonShineCommand
             ->except(['Field', 'Fields', 'FormElement'])
             ->mapWithKeys(static fn ($file): array => [('MoonShine\UI\Fields\\' . $file) => $file])
             ->prepend('Base', Field::class)
-            ->toArray();
+            ->all();
     }
 }

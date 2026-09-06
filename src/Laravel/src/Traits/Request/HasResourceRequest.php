@@ -6,9 +6,10 @@ namespace MoonShine\Laravel\Traits\Request;
 
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\ResourceContract;
+use MoonShine\Core\Exceptions\ResourceException;
 
 /**
- * @template T of ResourceContract
+ * @template T of CrudResourceContract
  */
 trait HasResourceRequest
 {
@@ -21,11 +22,21 @@ trait HasResourceRequest
             return null;
         }
 
-        return memoize(fn (): ?ResourceContract => moonshine()->getResources()->findByUri(
+        /** @var T|null $resource */
+        $resource = memoize(fn (): ?ResourceContract => moonshine()->getResources()->findByUri(
             $this->getResourceUri()
         ));
+
+        return $resource;
     }
 
+    /** @return T */
+    public function getResourceOrFail(): CrudResourceContract
+    {
+        return $this->getResource() ?? throw ResourceException::notDeclared();
+    }
+
+    /** @phpstan-assert-if-true T $this->getResource() */
     public function hasResource(): bool
     {
         return ! \is_null($this->getResource());

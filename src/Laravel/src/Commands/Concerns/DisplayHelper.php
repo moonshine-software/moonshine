@@ -11,7 +11,7 @@ trait DisplayHelper
 {
     use Colors;
 
-    protected ?ConsoleTheme $theme = null;
+    protected ConsoleTheme $theme = ConsoleTheme::Purple;
 
     protected function initTheme(?ConsoleTheme $theme = null): void
     {

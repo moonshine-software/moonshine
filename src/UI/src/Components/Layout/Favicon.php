@@ -49,6 +49,7 @@ final class Favicon extends MoonShineComponent
 
     protected function viewData(): array
     {
+        /** @var array<string|int, string>|null $favicons */
         $favicons = $this->getCore()->getConfig()->get('favicons');
 
         return [

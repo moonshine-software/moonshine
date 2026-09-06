@@ -12,10 +12,14 @@ final class ChangeLocale
 {
     public const string KEY = '_lang';
 
+    /**
+     * @param Closure(Request): Response $next
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $key = moonshineConfig()->getLocaleKey();
 
+        /** @var string $locale */
         $locale = $request->input(
             $key,
             session($key, moonshineConfig()->getLocale())

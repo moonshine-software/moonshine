@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use MoonShine\Support\Traits\Makeable;
 
 /**
- * @method static static make(array $values = [])
+ * @method static static make(array<string, mixed> $values = [])
  *
  * @implements Arrayable<string, mixed>
  */

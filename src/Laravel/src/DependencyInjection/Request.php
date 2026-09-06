@@ -15,9 +15,13 @@ final class Request extends AbstractRequest
 
     public function getFormErrors(?string $bag = null): array
     {
-        return $this->getSession('errors')
-            ?->{$bag}
-            ?->toArray() ?? [];
+        /** @var \Illuminate\Support\ViewErrorBag|null $errors */
+        $errors = $this->getSession('errors');
+
+        /** @var array<string, mixed> $messages */
+        $messages = $errors?->getBag($bag ?? 'default')->getMessages() ?? [];
+
+        return $messages;
     }
 
     public function getFile(string $key): mixed

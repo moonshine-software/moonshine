@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
 
 /**
- * @implements ApplyContract<BelongsToMany>
+ * @implements ApplyContract<BelongsToMany, Builder>
  */
 class BelongsToManyModelApply implements ApplyContract
 {

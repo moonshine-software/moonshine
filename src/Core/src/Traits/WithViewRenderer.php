@@ -13,6 +13,7 @@ use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Support\Stringify;
 
 /**
  * @mixin WithAssets
@@ -56,7 +57,7 @@ trait WithViewRenderer
          * @var array<string, string>
          */
         return $collection
-            ->mapWithKeys(fn (string $key, string $name): array => [$name => $this->getCore()->getTranslator()->get($key)])
+            ->mapWithKeys(fn (string $key, string $name): array => [$name => $this->getCore()->getTranslator()->getString($key)])
             ->toArray();
     }
 
@@ -127,6 +128,7 @@ trait WithViewRenderer
         return $this;
     }
 
+    /** @return Renderable|Closure|string */
     public function render(): Renderable|Closure|string
     {
         if (! $this->shouldRender()) {
@@ -241,8 +243,7 @@ trait WithViewRenderer
 
     public function __toString(): string
     {
-        /** @phpstan-ignore cast.string */
-        return (string) value($this->render(), $this);
+        return Stringify::value(value($this->render(), $this));
     }
 
     /**

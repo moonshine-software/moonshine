@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -44,7 +43,7 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany)
+ * @template R of (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany) = (HasOneOrMany|HasOneOrManyThrough|MorphOneOrMany)
  * @extends ModelRelationField<R>
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements FieldWithComponentContract<TableBuilderContract|FormBuilderContract|ActionButtonContract>
@@ -85,21 +84,32 @@ class HasMany extends ModelRelationField implements
 
     protected ?ActionGroup $buttons = null;
 
+    /**
+     * @var list<ActionButtonContract>
+     */
     protected array $indexButtons = [];
 
+    /**
+     * @var list<ActionButtonContract>
+     */
     protected array $formButtons = [];
 
+    /** @var null|(Closure(TableBuilderContract, bool): TableBuilderContract) */
     protected ?Closure $modifyTable = null;
 
+    /** @var null|(Closure(ActionButtonContract, static): ActionButtonContract) */
     protected ?Closure $modifyCreateButton = null;
 
+    /** @var null|(Closure(ActionButtonContract, static): ActionButtonContract) */
     protected ?Closure $modifyEditButton = null;
 
-    /** @var null|Closure(ActionButtonContract,ActionButtonContract,ActionButtonContract,ActionButtonContract,static): array */
+    /** @var null|Closure(ActionButtonContract,ActionButtonContract,ActionButtonContract,ActionButtonContract,static): list<ActionButtonContract> */
     protected ?Closure $modifyItemButtons = null;
 
+    /** @var null|(Closure(R, self): R) */
     protected ?Closure $modifyBuilder = null;
 
+    /** @var null|(Closure(Model|int|string|null, static): string) */
     protected ?Closure $redirectAfter = null;
 
     protected bool $withoutModals = false;
@@ -131,7 +141,7 @@ class HasMany extends ModelRelationField implements
     }
 
     /**
-     * @param  Closure(int $parentId, static $field): string  $callback
+     * @param  Closure(Model|int|string|null $parentId, static $field): string  $callback
      */
     public function redirectAfter(Closure $callback): static
     {
@@ -158,7 +168,10 @@ class HasMany extends ModelRelationField implements
         /** @var ?CrudResourceContract $resource */
         $resource = $this->getNowOnResource() ?? $this->getCore()->getCrudRequest()->getResource();
 
-        return $resource->getFormPageUrl($parentId);
+        /** @var int|string|null $key */
+        $key = $parentId instanceof Model ? $parentId->getKey() : $parentId;
+
+        return $resource?->getFormPageUrl($key);
     }
 
     /**
@@ -186,6 +199,9 @@ class HasMany extends ModelRelationField implements
         return $this;
     }
 
+    /**
+     * @return list<ActionButtonContract>
+     */
     public function getIndexButtons(): array
     {
         return $this->indexButtons;
@@ -201,6 +217,9 @@ class HasMany extends ModelRelationField implements
         return $this;
     }
 
+    /**
+     * @return list<ActionButtonContract>
+     */
     public function getFormButtons(): array
     {
         return $this->formButtons;
@@ -227,7 +246,7 @@ class HasMany extends ModelRelationField implements
     }
 
     /**
-     * @param  Closure(ActionButtonContract $detail, ActionButtonContract $edit, ActionButtonContract $delete, ActionButtonContract $massDelete, static $ctx): array  $callback
+     * @param  Closure(ActionButtonContract $detail, ActionButtonContract $edit, ActionButtonContract $delete, ActionButtonContract $massDelete, static $ctx): list<ActionButtonContract>  $callback
      */
     public function modifyItemButtons(Closure $callback): static
     {
@@ -247,7 +266,7 @@ class HasMany extends ModelRelationField implements
     }
 
     /**
-     * @param  Closure(Relation $relation, self $field): Relation  $builder
+     * @param  Closure(R $relation, self $field): R  $builder
      */
     public function modifyBuilder(Closure $builder): static
     {
@@ -261,6 +280,7 @@ class HasMany extends ModelRelationField implements
         return false;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function creatable(
         Closure|bool|null $condition = null,
         ?ActionButtonContract $button = null,
@@ -283,6 +303,7 @@ class HasMany extends ModelRelationField implements
         return $this->isCreatable;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function searchable(Closure|bool|null $condition = null): static
     {
         $this->isSearchable = value($condition, $this) ?? true;
@@ -361,9 +382,9 @@ class HasMany extends ModelRelationField implements
     protected function prepareFields(): FieldsContract
     {
         if (! $this->hasFields()) {
-            $fields = $this->getResource()->getIndexFields();
+            $fields = $this->getResourceOrFail()->getIndexFields();
 
-            $this->fields($fields->toArray());
+            $this->fields($fields->all());
 
             return $this->getFields();
         }
@@ -393,7 +414,7 @@ class HasMany extends ModelRelationField implements
     protected function getTablePreview(): TableBuilderContract
     {
         /** @var ModelResource $resource */
-        $resource = clone $this->getResource()
+        $resource = clone $this->getResourceOrFail()
             ->disableSaveQueryState();
 
         // If the records are already in memory (eager load) and there is no modifier, then we take the records from memory
@@ -403,7 +424,7 @@ class HasMany extends ModelRelationField implements
             $resource->disableQueryFeatures();
 
             $casted = $this->getRelatedModel();
-            $relation = $casted?->{$this->getRelationName()}();
+            $relation = $this->getRelation() ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired();
 
             /** @var Builder $query */
             $query = \is_null($this->modifyBuilder)
@@ -428,6 +449,7 @@ class HasMany extends ModelRelationField implements
 
     /**
      * HasOne/HasMany mapper with updateOnPreview
+     * @return Closure(): array<array-key, ComponentContract>
      */
     private function getFieldsOnPreview(): Closure
     {
@@ -443,24 +465,28 @@ class HasMany extends ModelRelationField implements
                 $field->setParent($this);
             });
 
-            return $fields->toArray();
+            return $fields->all();
         };
     }
 
     /**
      * @throws Throwable
      */
-    protected function getTableValue(): TableBuilder
+    protected function getTableValue(): TableBuilderContract
     {
+        /** @var iterable<array-key, Model> $items */
         $items = $this->getValue();
-        $resource = $this->getResource()->stopGettingItemFromUrl();
+        $resource = $this->getResourceOrFail()->stopGettingItemFromUrl();
 
         // Need for assets
         $resource->getFormFields();
 
+        /** @var int|string|null $parentId */
+        $parentId = $this->getRelatedModel()?->getKey();
+
         $asyncUrl = moonshineRouter()->getEndpoints()->withRelation(
             'has-many.list',
-            resourceItem: $this->getRelatedModel()?->getKey(),
+            resourceItem: $parentId,
             relation: $this->getRelationName(),
             resourceUri: $this->getNowOnResource()?->getUriKey(),
             pageUri: $this->getNowOnPage()?->getUriKey()
@@ -469,7 +495,7 @@ class HasMany extends ModelRelationField implements
         return TableBuilder::make(items: $items)
             ->async($asyncUrl)
             ->when(
-                $this->isSearchable() && $this->getResource()->hasSearch(),
+                $this->isSearchable() && $this->getResourceOrFail()->hasSearch(),
                 static fn (TableBuilderContract $table): TableBuilderContract => $table->searchable()
             )
             ->name($this->getRelationName())
@@ -518,15 +544,16 @@ class HasMany extends ModelRelationField implements
 
     /**
      * @throws Throwable
+     * @return list<ActionButtonContract>
      */
     protected function getItemButtons(): array
     {
         /** @var ModelResource $resource */
-        $resource = $this->getResource()->stopGettingItemFromUrl();
+        $resource = $this->getResourceOrFail()->stopGettingItemFromUrl();
 
-        $redirectAfter = $this->getRedirectAfter(
-            $this->getRelatedModel()?->getKey()
-        );
+        /** @var int|string|null $parentId */
+        $parentId = $this->getRelatedModel()?->getKey();
+        $redirectAfter = $this->getRedirectAfter($parentId);
 
         $editButton = $this->editButton ?? HasManyButton::for($this, update: true);
 
@@ -535,7 +562,7 @@ class HasMany extends ModelRelationField implements
         }
 
         $detailButton = $resource->getDetailButton(
-            modalName:  "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-detail",
+            modalName:  "has-many-modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}-{$parentId}-detail",
             isSeparateModal: false
         );
 
@@ -543,14 +570,14 @@ class HasMany extends ModelRelationField implements
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
             isAsync: $this->isAsync(),
-            modalName: "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-{$this->getRelatedModel()?->getKey()}-delete"
+            modalName: "has-many-modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}-{$parentId}-delete"
         );
 
         $massDeleteButton = $resource->getMassDeleteButton(
             componentName: $this->getRelationName(),
             redirectAfterDelete: $redirectAfter,
             isAsync: $this->isAsync(),
-            modalName: "has-many-modal-{$this->getResource()->getUriKey()}-{$this->getRelationName()}-mass-delete"
+            modalName: "has-many-modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}-mass-delete"
         );
 
         if (! \is_null($this->modifyItemButtons)) {
@@ -564,13 +591,13 @@ class HasMany extends ModelRelationField implements
             );
         }
 
-        return array_filter([
+        return array_values(array_filter([
             ...$this->getIndexButtons(),
             $this->hasAction(Action::VIEW) ? $detailButton : null,
             $this->hasAction(Action::UPDATE) ? $editButton : null,
             $this->hasAction(Action::DELETE) ? $deleteButton : null,
             $this->hasAction(Action::MASS_DELETE) ? $massDeleteButton : null,
-        ]);
+        ]));
     }
 
     protected function prepareFill(array $raw = [], ?DataWrapperContract $casted = null): mixed
@@ -591,7 +618,7 @@ class HasMany extends ModelRelationField implements
     protected function resolvePreview(): Renderable|string
     {
         if ($this->isRelatedLink()) {
-            return $this->getRelatedLink()->render();
+            return (string) $this->getRelatedLink();
         }
 
         return $this->isModalMode()
@@ -600,7 +627,7 @@ class HasMany extends ModelRelationField implements
                 $this->getLabel(),
                 $this->getRelationName()
             )
-            : $this->getTablePreview()->render();
+            : (string) $this->getTablePreview();
     }
 
     /**
@@ -608,15 +635,15 @@ class HasMany extends ModelRelationField implements
      */
     protected function resolveValue(): mixed
     {
-        $resource = $this->getResource()
+        $resource = $this->getResourceOrFail()
             ->disableSaveQueryState();
 
-        $resource->setQueryParams(
-            request()->only($resource->getQueryParamsKeys())
-        );
+        /** @var array<string, mixed> $params */
+        $params = request()->only($resource->getQueryParamsKeys());
+        $resource->setQueryParams($params);
 
         $casted = $this->getRelatedModel();
-        $relation = $casted?->{$this->getRelationName()}();
+        $relation = $this->getRelation() ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired();
 
         $resource->customQueryBuilder(
             \is_null($this->modifyBuilder)
@@ -651,7 +678,7 @@ class HasMany extends ModelRelationField implements
      */
     protected function resolveAfterDestroy(mixed $data): mixed
     {
-        $this->getResource()
+        $this->getResourceOrFail()
             ->getFormFields()
             ->onlyFields()
             ->each(fn (FieldContract $field): mixed => $field->setParent($this)->fillData($data)->afterDestroy($data));
@@ -687,8 +714,8 @@ class HasMany extends ModelRelationField implements
         /** @var Components<ComponentContract> $flexComponents */
         $flexComponents = new Components();
 
-        if ($this->isCreatable()) {
-            $flexComponents->add($this->getCreateButton());
+        if ($this->isCreatable() && ($button = $this->getCreateButton()) !== null) {
+            $flexComponents->add($button);
         }
 
         if (! \is_null($this->buttons)) {

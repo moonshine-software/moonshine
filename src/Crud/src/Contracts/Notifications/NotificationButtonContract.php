@@ -8,10 +8,13 @@ use Illuminate\Contracts\Support\Arrayable;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 
 /**
- * @mixin Arrayable<string, mixed>
+ * @extends Arrayable<string, mixed>
  */
-interface NotificationButtonContract
+interface NotificationButtonContract extends Arrayable
 {
+    /** @return array<string, mixed> */
+    public function toArray(): array;
+
     public function getLink(): string;
 
     public function getLabel(): string;

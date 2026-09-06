@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 trait WithLabel
 {
+    /** @var (Closure(static): string)|string */
     protected Closure|string $label = '';
 
     protected bool $translatable = false;
@@ -25,7 +26,7 @@ trait WithLabel
         $this->label = value($this->label, $this);
 
         if ($this->translatable) {
-            return $this->getCore()->getTranslator()->get(
+            return $this->getCore()->getTranslator()->getString(
                 Str::of($this->label)->when(
                     $this->translatableKey,
                     fn ($str) => $str->prepend($this->translatableKey . '.')
@@ -36,6 +37,7 @@ trait WithLabel
         return $this->label;
     }
 
+    /** @param (Closure(static): string)|string $label */
     public function setLabel(Closure|string $label): static
     {
         $this->label = $label;

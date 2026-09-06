@@ -19,6 +19,7 @@ class Footer extends AbstractWithComponents
      * @param  array<string, string>  $menu
      *
      * @throws Throwable
+     * @param (Closure(): string)|string $copyright
      */
     public function __construct(
         iterable $components = [],
@@ -29,6 +30,9 @@ class Footer extends AbstractWithComponents
         parent::__construct($components);
     }
 
+    /**
+     * @param (Closure(): string)|string $text
+     */
     public function copyright(string|Closure $text): static
     {
         $this->copyright = $text;

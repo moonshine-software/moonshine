@@ -8,6 +8,16 @@ use Illuminate\View\ComponentAttributeBag;
 
 /**
  * @mixin ComponentAttributeBag
+ * @method self class(mixed $classList)
+ * @method self style(mixed $styleList)
+ * @method self merge(array<string, mixed> $attributeDefaults = [], bool $escape = true)
+ * @method self filter((callable(mixed, string): bool) $callback)
+ * @method self except(mixed $keys)
+ * @method self only(mixed $keys)
+ * @method self whereStartsWith(string|string[] $needles)
+ * @method self whereDoesntStartWith(string|string[] $needles)
+ * @method array<string, mixed> getAttributes()
+ * @method array<string, mixed> jsonSerialize()
  */
 interface ComponentAttributesBagContract
 {

@@ -6,6 +6,7 @@ namespace MoonShine\UI\Fields;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Components\Thumbnails;
 
@@ -23,6 +24,10 @@ class Preview extends Field
 
     protected bool $hasOld = false;
 
+    /**
+     * @param bool|Closure(static): (bool|null)|null $hideTrue
+     * @param bool|Closure(static): (bool|null)|null $hideFalse
+     */
     public function boolean(
         mixed $hideTrue = null,
         mixed $hideFalse = null
@@ -51,17 +56,18 @@ class Preview extends Field
 
             return match (true) {
                 $this->hideTrue && $value, $this->hideFalse && ! $value => '',
-                default => (string) Boolean::make($value)->render(),
+                default => (string) Boolean::make($value),
             };
         }
 
         if ($this->isImage) {
-            return Thumbnails::make(
+            /** @var \MoonShine\Support\DTOs\FileItem|string|list<\MoonShine\Support\DTOs\FileItem|string|array{full_path?: string|null, raw_value?: string|null, name?: string|null, attributes?: array<string, mixed>|\MoonShine\Support\Components\MoonShineComponentAttributeBag|null}>|null $value */
+            return (string) Thumbnails::make(
                 $value
-            )->render();
+            );
         }
 
-        return (string) $value;
+        return Stringify::value($value);
     }
 
     protected function prepareBeforeRender(): void

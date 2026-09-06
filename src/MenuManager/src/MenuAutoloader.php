@@ -137,14 +137,12 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
              */
             $collection = new Collection($items)->values();
 
-            /** @phpstan-ignore return.type */
             return $collection
                 ->sortBy(fn (array $item): mixed => $item['position'] ?? INF)
                 ->values();
         };
 
         $result = $sort($items)->map(function (array $item) use ($sort): array {
-            /** @phpstan-ignore isset.offset */
             if (isset($item['group'])) {
                 /** @var list<PSMenuItem> $innerItems */
                 $innerItems = $item['items'];

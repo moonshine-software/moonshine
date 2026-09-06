@@ -14,7 +14,7 @@ use MoonShine\Support\AlpineJs;
 use Throwable;
 
 /**
- * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable $components = [])
+ * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable<array-key, ComponentContract> $components = [])
  */
 final class Modal extends AbstractWithComponents implements ModalContract
 {
@@ -66,6 +66,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function open(Closure|bool|null $condition = null): self
     {
         $this->open = \is_null($condition) || value($condition, $this);
@@ -73,6 +74,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function closeOutside(Closure|bool|null $condition = null): self
     {
         $this->closeOutside = \is_null($condition) || value($condition, $this);
@@ -80,6 +82,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function wide(Closure|bool|null $condition = null): self
     {
         $this->wide = \is_null($condition) || value($condition, $this);
@@ -87,6 +90,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function full(Closure|bool|null $condition = null): self
     {
         $this->full = \is_null($condition) || value($condition, $this);
@@ -94,6 +98,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function auto(Closure|bool|null $condition = null): self
     {
         $this->auto = \is_null($condition) || value($condition, $this);
@@ -101,6 +106,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         return $this;
     }
 
+    /** @param (Closure(static): (bool|null))|bool|null $condition */
     public function autoClose(Closure|bool|null $condition = null): self
     {
         $this->autoClose = \is_null($condition) || value($condition, $this);
@@ -172,8 +178,8 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'title' => value($this->title, $this),
             'subtitle' => $this->subtitle,
-            'slot' => new ComponentSlot($componentsHtml),
-            'outerHtml' => new ComponentSlot($outer, $this->outerAttributes),
+            'slot' => new ComponentSlot($this->stringifySlotContent($componentsHtml)),
+            'outerHtml' => new ComponentSlot($this->stringifySlotContent($outer), $this->outerAttributes),
         ];
     }
 }

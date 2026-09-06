@@ -25,18 +25,26 @@ use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
 final readonly class DefaultRoutes
 {
     public function __construct(
+        /** @var \MoonShine\Laravel\DependencyInjection\MoonShineConfigurator */
         private ConfiguratorContract $config,
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function __invoke(Router $router, array $config = []): void
     {
         $authEnabled = data_get($config, 'auth.enabled', $this->config->isAuthEnabled());
         $profileEnabled = data_get($config, 'use_profile', $this->config->isUseProfile());
+        /** @var string|array<string>|null $authMiddleware */
         $authMiddleware = data_get($config, 'auth.middleware', $this->config->getAuthMiddleware());
 
+        /** @var string $pagePrefix */
         $pagePrefix = data_get($config, 'page_prefix', $this->config->getPagePrefix());
+        /** @var string $resourcePrefix */
         $resourcePrefix = data_get($config, 'resource_prefix', $this->config->getResourcePrefix());
+        /** @var class-string<\Throwable> $errorHandler */
         $errorHandler = data_get($config, 'not_found_exception', $this->config->getNotFoundException());
 
         if ($authEnabled) {

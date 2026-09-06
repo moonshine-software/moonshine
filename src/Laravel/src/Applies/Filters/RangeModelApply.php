@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Range;
 
 /**
- * @implements ApplyContract<Range>
+ * @implements ApplyContract<Range, Builder>
  */
 class RangeModelApply implements ApplyContract
 {
@@ -19,6 +19,7 @@ class RangeModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
+            /** @var array{from?: mixed, to?: mixed}|false $values */
             $values = $field->getRequestValue();
 
             $query->when(

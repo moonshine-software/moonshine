@@ -10,7 +10,7 @@ use MoonShine\UI\Traits\Components\WithComponents;
 use Throwable;
 
 /**
- * @method static static make(iterable $components = [])
+ * @method static static make(iterable<array-key, ComponentContract> $components = [])
  */
 abstract class AbstractWithComponents extends MoonShineComponent implements HasComponentsContract
 {

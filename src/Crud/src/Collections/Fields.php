@@ -32,7 +32,7 @@ class Fields extends BaseFields
     /**
      * @throws Throwable
      */
-    public function withoutOutside(): self
+    public function withoutOutside(): static
     {
         return $this->exceptElements(
             static fn (ComponentContract $element): bool => $element instanceof RelationFieldContract && $element->isOutsideComponent()

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use DateTimeInterface;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
@@ -38,7 +39,9 @@ class Date extends Field implements HasDefaultValueContract, CanBeString, HasUpd
             return $value->format($this->getInputFormat());
         }
 
-        return date($this->getInputFormat(), strtotime((string) $value));
+        $timestamp = strtotime(Stringify::value($value));
+
+        return date($this->getInputFormat(), $timestamp === false ? throw new \InvalidArgumentException('Invalid date value.') : $timestamp);
     }
 
     protected function resolvePreview(): string
@@ -49,9 +52,13 @@ class Date extends Field implements HasDefaultValueContract, CanBeString, HasUpd
             return $value->format($this->getFormat());
         }
 
-        return $value
-            ? date($this->getFormat(), strtotime((string) $value))
-            : '';
+        if (! $value) {
+            return '';
+        }
+
+        $timestamp = strtotime(Stringify::value($value));
+
+        return date($this->getFormat(), $timestamp === false ? throw new \InvalidArgumentException('Invalid date value.') : $timestamp);
     }
 
     protected function viewData(): array

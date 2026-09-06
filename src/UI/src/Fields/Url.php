@@ -7,6 +7,7 @@ namespace MoonShine\UI\Fields;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Support\Enums\TextWrap;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Link;
 
 class Url extends Text
@@ -35,7 +36,7 @@ class Url extends Text
 
     protected function resolvePreview(): Renderable|string
     {
-        $value = $this->toFormattedValue() ?? '';
+        $value = Stringify::value($this->toFormattedValue() ?? '');
 
         $title = $this->isUnescape()
             ? $value
@@ -45,14 +46,14 @@ class Url extends Text
             return '';
         }
 
-        return Link::make(
+        return (string) Link::make(
             href: $value,
             label: \is_null($this->titleCallback)
                 ? $title
-                : (string) \call_user_func($this->titleCallback, $title, $this),
+                : Stringify::value(\call_user_func($this->titleCallback, $title, $this)),
         )->when(
             $this->blank,
             fn (Link $ctx): Link => $ctx->blank()
-        )->icon('link')->customAttributes($this->getAttributes()->except('type')->jsonSerialize())->render();
+        )->icon('link')->customAttributes($this->getAttributes()->except('type')->jsonSerialize());
     }
 }

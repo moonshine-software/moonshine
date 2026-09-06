@@ -17,10 +17,11 @@ use MoonShine\UI\Components\OffCanvas;
 trait WithOffCanvas
 {
     /**
-     * @var null|Closure(mixed, DataWrapperContract, static): OffCanvasContract
+     * @var null|Closure(mixed, ?DataWrapperContract, static): OffCanvasContract
      */
     protected ?Closure $offCanvas = null;
 
+    /** @phpstan-assert-if-true Closure $this->offCanvas */
     public function isInOffCanvas(): bool
     {
         return ! \is_null($this->offCanvas);
@@ -28,6 +29,9 @@ trait WithOffCanvas
 
     /**
      * @param  ?Closure(OffCanvasContract $offCanvas, ActionButtonContract $ctx): OffCanvasContract  $builder
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $title
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $content
+     * @param (Closure(mixed, ActionButtonContract): string)|string|null $name
      */
     public function inOffCanvas(
         Closure|string|null $title = null,
@@ -41,20 +45,20 @@ trait WithOffCanvas
         $async = $this->purgeAsyncTap();
 
         $this->offCanvas = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => OffCanvas::make(
-            title: static fn () => value($title, $item, $ctx) ?? $ctx->getLabel(),
-            content: static fn () => value($content, $item, $ctx) ?? '',
+            title: static fn () => ($title instanceof Closure ? $title($item, $ctx) : $title) ?? $ctx->getLabel(),
+            content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
             asyncUrl: $async ? $ctx->getUrl($item) : null,
             components: $components
         )
-            ->name(value($name, $item, $ctx))
+            ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
             ->when(
                 ! \is_null($builder),
-                static fn (OffCanvasContract $offCanvas) => $builder($offCanvas, $ctx)
+                static fn (OffCanvasContract $offCanvas) => $builder === null ? $offCanvas : $builder($offCanvas, $ctx)
             );
 
         return $this->onBeforeRender(
             static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleOffCanvas(
-                $ctx->getComponent()?->getName() ?? value($name, $ctx->getData()?->getOriginal(), $ctx)
+                $ctx->getComponent()?->getName() ?? ($name instanceof Closure ? $name($ctx->getData()?->getOriginal(), $ctx) : $name)
             )
         );
     }

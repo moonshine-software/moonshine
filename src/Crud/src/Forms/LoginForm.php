@@ -30,18 +30,18 @@ final class LoginForm implements FormContract
             ->action($this->action)
             ->errorsAbove(false)
             ->fields([
-                Text::make($this->core->getTranslator()->get('moonshine::ui.login.username'), 'username')
+                Text::make($this->core->getTranslator()->getString('moonshine::ui.login.username'), 'username')
                     ->required()
                     ->customAttributes([
                         'autofocus' => true,
                         'autocomplete' => 'username',
                     ]),
 
-                Password::make($this->core->getTranslator()->get('moonshine::ui.login.password'), 'password')
+                Password::make($this->core->getTranslator()->getString('moonshine::ui.login.password'), 'password')
                     ->required(),
 
-                Switcher::make($this->core->getTranslator()->get('moonshine::ui.login.remember_me'), 'remember'),
-            ])->submit($this->core->getTranslator()->get('moonshine::ui.login.login'), [
+                Switcher::make($this->core->getTranslator()->getString('moonshine::ui.login.remember_me'), 'remember'),
+            ])->submit($this->core->getTranslator()->getString('moonshine::ui.login.login'), [
                 'class' => 'btn-primary btn-lg w-full',
             ]);
     }

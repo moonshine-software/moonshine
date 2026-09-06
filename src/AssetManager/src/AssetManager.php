@@ -132,15 +132,14 @@ final class AssetManager implements AssetManagerContract
 
     public function toHtml(): string
     {
-        return $this->getAssets()
-            ->ensure(AssetElementContract::class)
-            ->when(
-                $this->isRunningHot(),
-                fn (AssetElementsContract $assets) => $assets
-                    ->push(
-                        Raw::make($this->getViteDev($this->getHotFile()))
-                    ),
-            )
+        $assets = $this->getAssets();
+        $assets->ensure(AssetElementContract::class);
+
+        if ($this->isRunningHot()) {
+            $assets->push(Raw::make($this->getViteDev($this->getHotFile())));
+        }
+
+        return $assets
             ->resolveLinks($this->assetResolver)
             ->withVersion($this->getVersion())
             ->toHtml();

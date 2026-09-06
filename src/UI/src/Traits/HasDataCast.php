@@ -53,7 +53,7 @@ trait HasDataCast
      */
     public function getCast(): DataCasterContract
     {
-        return $this->cast;
+        return $this->cast ?? throw new \LogicException('No data caster configured.');
     }
 
     /**
@@ -65,20 +65,23 @@ trait HasDataCast
     }
 
     /**
-     * @param  TData|TWrapper  $data
+     * @param TData|TWrapper|array<string, mixed> $data
      *
      * @return TWrapper
      */
     public function castData(mixed $data): DataWrapperContract
     {
         if ($data instanceof DataWrapperContract) {
+            /** @var TWrapper */
             return $data;
         }
 
         if (! $this->hasCast()) {
+            // @phpstan-ignore argument.type (An unconfigured component falls back to the mixed caster.)
             $this->cast(new MixedDataCaster($this->getCastKeyName()));
         }
 
+        /** @var TWrapper */
         return $this->getCast()->cast($data);
     }
 }

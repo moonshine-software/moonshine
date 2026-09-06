@@ -37,6 +37,7 @@ class MakeResourceCommand extends MoonShineCommand
             ->remove('resource', false)
             ->value();
 
+        /** @var string $model */
         $model = $this->qualifyModel($this->option('model') ?? $className);
         $title = $this->option('title') ?? Str::of($className)->singular()->plural()->value();
         $force = $this->option('force') ?? false;
@@ -58,9 +59,9 @@ class MakeResourceCommand extends MoonShineCommand
 
         if ($type = $this->option('type')) {
             $keys = array_keys($types);
-            $stub = $keys[$type - 1] ?? $keys[0];
+            $stub = $keys[(int) $type - 1] ?? $keys[0];
         } else {
-            $stub = select('Type', $types, 'ModelResource');
+            $stub = (string) select('Type', $types, 'ModelResource');
         }
 
         if (! $force && file_exists($stubsPath->getPath()) && ! confirm('File ' . $stubsPath->getPath() . ' exists, override?', false)) {

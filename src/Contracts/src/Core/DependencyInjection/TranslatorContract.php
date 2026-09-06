@@ -24,5 +24,8 @@ interface TranslatorContract
      */
     public function choice(string $key, array|Countable|float|int $number, array $replace = [], ?string $locale = null): string;
 
+    /** @param array<string, string|int|float> $replace */
+    public function getString(string $key, array $replace = [], ?string $locale = null): string;
+
     public function getLocale(): string;
 }

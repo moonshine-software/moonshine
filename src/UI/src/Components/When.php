@@ -17,6 +17,11 @@ class When extends MoonShineComponent implements HasComponentsContract
 
     protected string $view = 'moonshine::components.components';
 
+    /**
+     * @param Closure(): bool $condition
+     * @param Closure(): iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components
+     * @param (Closure(): iterable<array-key, \MoonShine\Contracts\UI\ComponentContract>)|null $default
+     */
     public function __construct(
         protected Closure $condition,
         Closure $components,

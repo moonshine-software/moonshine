@@ -11,7 +11,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\AbstractWithComponents;
 
 /**
- * @method static static make(iterable $components = [])
+ * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [])
  */
 class SecondBar extends AbstractWithComponents
 {
@@ -32,6 +32,9 @@ class SecondBar extends AbstractWithComponents
         $this->collapseAttributes = new MoonShineComponentAttributeBag();
     }
 
+    /**
+     * @param (Closure(static): (bool|null))|bool $condition
+     */
     public function collapsed(Closure|bool $condition = true): static
     {
         $this->collapsed = value($condition, $this) ?? true;

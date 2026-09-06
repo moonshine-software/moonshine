@@ -11,7 +11,7 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\UI\Fields\Select;
 
 /**
- * @implements ApplyContract<Select>
+ * @implements ApplyContract<Select, Builder>
  */
 class SelectModelApply implements ApplyContract
 {
