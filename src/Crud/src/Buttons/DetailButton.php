@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Buttons;
 
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -23,7 +24,7 @@ final class DetailButton
         string $modalName = 'resource-detail-modal',
         bool $isSeparateModal = true,
     ): ActionButtonContract {
-        if (! $resource->getDetailPage()) {
+        if (!$resource->getDetailPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

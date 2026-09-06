@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use LogicException;
+use TypeError;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -64,7 +66,7 @@ trait ResourceWithParent
         $relation = $model->{$this->getParentRelationName()}();
 
         if (! $relation instanceof BelongsTo) {
-            throw new \LogicException('The parent resource relation must be a BelongsTo relation.');
+            throw new LogicException('The parent resource relation must be a BelongsTo relation.');
         }
 
         return $relation;
@@ -73,7 +75,7 @@ trait ResourceWithParent
     private function resolveParentKey(mixed $key): int|string|null
     {
         if ($key !== null && ! \is_int($key) && ! \is_string($key)) {
-            throw new \TypeError('Expected an integer or string parent key, got ' . get_debug_type($key));
+            throw new TypeError('Expected an integer or string parent key, got ' . get_debug_type($key));
         }
 
         return $key;

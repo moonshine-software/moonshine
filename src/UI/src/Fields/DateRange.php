@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use DateTimeInterface;
 use Illuminate\Support\Carbon;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeArray;
@@ -76,10 +77,10 @@ class DateRange extends Field implements HasDefaultValueContract, CanBeArray, Ra
 
         return [
             $this->getFromField() => $from !== null
-                ? Carbon::parse(\is_int($from) || $from instanceof \DateTimeInterface ? $from : Stringify::value($from))->format($format)
+                ? Carbon::parse(\is_int($from) || $from instanceof DateTimeInterface ? $from : Stringify::value($from))->format($format)
                 : '',
             $this->getToField() => $to !== null
-                ? Carbon::parse(\is_int($to) || $to instanceof \DateTimeInterface ? $to : Stringify::value($to))->format($format)
+                ? Carbon::parse(\is_int($to) || $to instanceof DateTimeInterface ? $to : Stringify::value($to))->format($format)
                 : '',
         ];
     }

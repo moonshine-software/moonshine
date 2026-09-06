@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
+use MoonShine\Contracts\Core\PageContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\CrudResourceContract;
@@ -16,7 +17,7 @@ class MoonShineRequest extends Request implements CrudRequestContract
     /** @use HasResourceRequest<CrudResourceContract> */
     use HasResourceRequest;
     /**
-     * @use HasPageRequest<\MoonShine\Contracts\Core\PageContract>
+     * @use HasPageRequest<PageContract>
      */
     use HasPageRequest;
 

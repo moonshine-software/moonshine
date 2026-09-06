@@ -446,7 +446,7 @@ abstract class Field extends FormElement implements FieldContract
 
         if ($this->hasTextWrap()) {
             return Str::wrap(
-                (string) $decorated,
+                $decorated,
                 '<div class="text-' . $this->textWrap->value . '">',
                 '</div>'
             );
@@ -485,7 +485,7 @@ abstract class Field extends FormElement implements FieldContract
 
         if ($value !== '' && $this->isBadge()) {
             return (string) Badge::make(
-                (string) $value,
+                $value,
                 $this->getBadgeColor($this->toValue()),
                 $this->getBadgeIcon($this->toValue()),
             );

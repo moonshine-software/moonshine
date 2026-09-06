@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Support\Stringify;
@@ -34,7 +35,7 @@ trait HasTreeMode
      */
     public function toTreeHtml(): string
     {
-        /** @var Collection<array-key, Collection<array-key, \Illuminate\Database\Eloquent\Model>> $data */
+        /** @var Collection<array-key, Collection<array-key, Model>> $data */
         $data = $this->resolveValuesQuery()
             ->get()
             ->groupBy($this->treeParentColumn)
@@ -49,7 +50,7 @@ trait HasTreeMode
 
     /**
      * @throws Throwable
-     * @param Collection<array-key, Collection<array-key, \Illuminate\Database\Eloquent\Model>> $data
+     * @param Collection<array-key, Collection<array-key, Model>> $data
      */
     protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
     {

@@ -53,7 +53,7 @@ trait WithOffCanvas
             ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
             ->when(
                 ! \is_null($builder),
-                static fn (OffCanvasContract $offCanvas) => $builder === null ? $offCanvas : $builder($offCanvas, $ctx)
+                static fn (OffCanvasContract $offCanvas) => $builder instanceof Closure ? $builder($offCanvas, $ctx) : $offCanvas
             );
 
         return $this->onBeforeRender(

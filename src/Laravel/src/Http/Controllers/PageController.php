@@ -25,7 +25,7 @@ class PageController extends MoonShineController
             return $this->structureResponse($page, $request);
         }
 
-        if ($page instanceof WithResponseModifierContract && $page->isResponseModified() && ($response = $page->getModifiedResponse()) !== null) {
+        if ($page instanceof WithResponseModifierContract && $page->isResponseModified() && ($response = $page->getModifiedResponse()) instanceof Response) {
             return $response;
         }
 

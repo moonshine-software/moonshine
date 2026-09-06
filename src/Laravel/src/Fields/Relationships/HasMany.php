@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
@@ -153,7 +154,7 @@ class HasMany extends ModelRelationField implements
     public function getRedirectAfter(Model|int|null|string $parentId): ?string
     {
         if (! \is_null($this->redirectAfter)) {
-            return (string) \call_user_func($this->redirectAfter, $parentId, $this);
+            return \call_user_func($this->redirectAfter, $parentId, $this);
         }
 
         if ($this->isAsync()) {
@@ -424,7 +425,7 @@ class HasMany extends ModelRelationField implements
             $resource->disableQueryFeatures();
 
             $casted = $this->getRelatedModel();
-            $relation = $this->getRelation() ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired();
+            $relation = $this->getRelation() ?? throw ModelRelationFieldException::relationRequired();
 
             /** @var Builder $query */
             $query = \is_null($this->modifyBuilder)
@@ -642,8 +643,8 @@ class HasMany extends ModelRelationField implements
         $params = request()->only($resource->getQueryParamsKeys());
         $resource->setQueryParams($params);
 
-        $casted = $this->getRelatedModel();
-        $relation = $this->getRelation() ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired();
+        $this->getRelatedModel();
+        $relation = $this->getRelation() ?? throw ModelRelationFieldException::relationRequired();
 
         $resource->customQueryBuilder(
             \is_null($this->modifyBuilder)
@@ -714,7 +715,7 @@ class HasMany extends ModelRelationField implements
         /** @var Components<ComponentContract> $flexComponents */
         $flexComponents = new Components();
 
-        if ($this->isCreatable() && ($button = $this->getCreateButton()) !== null) {
+        if ($this->isCreatable() && ($button = $this->getCreateButton()) instanceof ActionButtonContract) {
             $flexComponents->add($button);
         }
 

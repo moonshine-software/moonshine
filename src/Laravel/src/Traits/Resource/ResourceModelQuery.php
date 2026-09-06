@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -376,7 +378,7 @@ trait ResourceModelQuery
             throw CrudResourceException::relationNotFound($relationName);
         }
 
-        /** @var BelongsToMany<Model, Model>|\Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model>|\Illuminate\Database\Eloquent\Relations\HasOneOrMany<Model, Model, mixed> $relation */
+        /** @var BelongsToMany<Model, Model>|BelongsTo<Model, Model>|HasOneOrMany<Model, Model, mixed> $relation */
         $relation = $this->getDataInstance()->{$relationName}();
 
         if ($relation instanceof BelongsToMany) {

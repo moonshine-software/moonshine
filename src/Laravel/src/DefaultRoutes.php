@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use Throwable;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
@@ -25,7 +27,7 @@ use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
 final readonly class DefaultRoutes
 {
     public function __construct(
-        /** @var \MoonShine\Laravel\DependencyInjection\MoonShineConfigurator */
+        /** @var MoonShineConfigurator */
         private ConfiguratorContract $config,
     ) {
     }
@@ -44,7 +46,7 @@ final readonly class DefaultRoutes
         $pagePrefix = data_get($config, 'page_prefix', $this->config->getPagePrefix());
         /** @var string $resourcePrefix */
         $resourcePrefix = data_get($config, 'resource_prefix', $this->config->getResourcePrefix());
-        /** @var class-string<\Throwable> $errorHandler */
+        /** @var class-string<Throwable> $errorHandler */
         $errorHandler = data_get($config, 'not_found_exception', $this->config->getNotFoundException());
 
         if ($authEnabled) {

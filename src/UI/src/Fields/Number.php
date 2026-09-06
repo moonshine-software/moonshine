@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use TypeError;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Rating;
@@ -73,7 +74,7 @@ class Number extends Field implements HasDefaultValueContract, CanBeNumeric, Has
             }
 
             if (! \is_scalar($value) && $value !== null) {
-                throw new \TypeError('Expected a scalar numeric field value, got ' . get_debug_type($value));
+                throw new TypeError('Expected a scalar numeric field value, got ' . get_debug_type($value));
             }
 
             $value = \is_string($value) ? str_replace(",", ".", $value) : $value;

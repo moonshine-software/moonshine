@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\DependencyInjection;
 
+use Illuminate\Support\ViewErrorBag;
 use MoonShine\Core\AbstractRequest;
 
 final class Request extends AbstractRequest
@@ -15,7 +16,7 @@ final class Request extends AbstractRequest
 
     public function getFormErrors(?string $bag = null): array
     {
-        /** @var \Illuminate\Support\ViewErrorBag|null $errors */
+        /** @var ViewErrorBag|null $errors */
         $errors = $this->getSession('errors');
 
         /** @var array<string, mixed> $messages */

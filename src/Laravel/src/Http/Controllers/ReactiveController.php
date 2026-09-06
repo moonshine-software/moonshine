@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
 use MoonShine\Contracts\UI\FieldContract;
@@ -38,7 +40,7 @@ final class ReactiveController extends MoonShineController
         $casted = null;
         $except = [];
 
-        /** @var \Illuminate\Support\Collection<string, mixed> $input */
+        /** @var Collection<string, mixed> $input */
         $input = $request->collect('values');
         $values = $input->map(
             function (mixed $value, string $column) use ($fields, &$casted, &$except) {
@@ -54,7 +56,7 @@ final class ReactiveController extends MoonShineController
 
         $fields->fill(
             $values->all(),
-            $casted instanceof \Illuminate\Database\Eloquent\Model ? new ModelDataWrapper($casted->forceFill($values->except($except)->all())) : null,
+            $casted instanceof Model ? new ModelDataWrapper($casted->forceFill($values->except($except)->all())) : null,
         );
 
         /** @var array<string, mixed> $additionally */
@@ -69,7 +71,7 @@ final class ReactiveController extends MoonShineController
             );
         }
 
-        $values = new \Illuminate\Support\Collection($fields->all())
+        $values = new Collection($fields->all())
             ->mapWithKeys(
                 static fn (FieldContract $field): array => [$field->getColumn() => $field->getReactiveValue()],
             );

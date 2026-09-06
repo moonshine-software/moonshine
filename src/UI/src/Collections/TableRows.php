@@ -20,6 +20,6 @@ final class TableRows extends Collection implements TableRowsContract
     {
         $row = TableRow::make($cells, $key);
 
-        return $this->push($builder === null ? $row : ($builder($row) ?? $row));
+        return $this->push($builder instanceof Closure ? $builder($row) ?? $row : ($row));
     }
 }

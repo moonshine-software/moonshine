@@ -165,7 +165,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
                 fn (ActionButtonContract $btn): ActionButtonContract => $btn->showInDropdown()
             )->when(
                 ! \is_null($this->modifyButton),
-                fn (ActionButtonContract $btn): ActionButtonContract => $this->modifyButton === null ? $btn : ($this->modifyButton)($btn, $this)
+                fn (ActionButtonContract $btn): ActionButtonContract => $this->modifyButton instanceof Closure ? ($this->modifyButton)($btn, $this) : $btn
             )->when(
                 $this->events !== [],
                 fn (ActionButtonContract $btn): ActionButtonContract => $btn->customAttributes([

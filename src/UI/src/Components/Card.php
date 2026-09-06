@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use Stringable;
 use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\UI\Traits\Components\WithSlotContent;
@@ -17,10 +18,10 @@ final class Card extends MoonShineComponent
 
     protected string $view = 'moonshine::components.card';
 
-    /** @var (Closure(self): (string|\Stringable))|string */
+    /** @var Closure(self):((string|Stringable))|string */
     protected Closure|string $header = '';
 
-    /** @var (Closure(self): (string|\Stringable))|string */
+    /** @var Closure(self):((string|Stringable))|string */
     protected Closure|string $actions = '';
 
     /**
@@ -43,7 +44,7 @@ final class Card extends MoonShineComponent
     }
 
     /**
-     * @param (Closure(self): (string|\Stringable))|string $value
+     * @param Closure(self):((string|Stringable))|string $value
      */
     public function header(Closure|string $value): self
     {
@@ -53,7 +54,7 @@ final class Card extends MoonShineComponent
     }
 
     /**
-     * @param (Closure(self): (string|\Stringable))|string $value
+     * @param Closure(self):((string|Stringable))|string $value
      */
     public function actions(Closure|string $value): self
     {

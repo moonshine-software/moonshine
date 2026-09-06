@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Sets;
 
+use Stringable;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
@@ -32,7 +33,7 @@ final readonly class UpdateOnPreviewPopover
     public function __invoke(): Popover
     {
         $name = 'update-on-preview-' . spl_object_id($this->field);
-        /** @var scalar|\Stringable|null $value */
+        /** @var scalar|Stringable|null $value */
         $value = $this->field->toFormattedValue();
 
         return Popover::make(

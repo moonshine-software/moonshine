@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
+use Stringable;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\FieldContract;
@@ -102,7 +104,7 @@ final class BelongsToManyPivotController extends MoonShineController
             return $fields
                 ->when(
                     $update,
-                    fn (\MoonShine\Contracts\Core\DependencyInjection\FieldsContract $ctx)
+                    fn (FieldsContract $ctx)
                         => $ctx->prepend(Hidden::make('_method')->setValue('PUT'))->prepend(
                             Preview::make(
                                 $field->getResourceColumnLabel(),
@@ -110,7 +112,7 @@ final class BelongsToManyPivotController extends MoonShineController
                                 $this->getRelatedLabel($field, $item),
                             ),
                         ),
-                    fn (\MoonShine\Contracts\Core\DependencyInjection\FieldsContract $ctx)
+                    fn (FieldsContract $ctx)
                         => $ctx->prepend(
                             $this->buildRelatedSelect($field),
                         ),
@@ -181,13 +183,13 @@ final class BelongsToManyPivotController extends MoonShineController
         $callback = $field->getFormattedValueCallback();
 
         if ($callback instanceof Closure) {
-            /** @var string|int|float|bool|\Stringable|null $label */
+            /** @var string|int|float|bool|Stringable|null $label */
             $label = $callback($relatedItem, 0, $field);
 
             return (string) $label;
         }
 
-        /** @var string|int|float|bool|\Stringable|null $label */
+        /** @var string|int|float|bool|Stringable|null $label */
         $label = data_get($relatedItem, $field->getResourceColumn(), '');
 
         return (string) $label;

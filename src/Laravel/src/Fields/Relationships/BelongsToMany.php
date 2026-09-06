@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
+use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -50,9 +56,9 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model, covariant \Illuminate\Database\Eloquent\Relations\Pivot> = \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model>
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model, covariant Pivot>
  *
- * @implements HasAsyncSearchContract<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, \MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest>
+ * @implements HasAsyncSearchContract<Model, Builder<Model>|Relation<Model, Model, mixed>, RelationModelFieldRequest>
  * @extends ModelRelationField<R>
  * @implements HasFieldsContract<Fields|FieldsContract>
  * @implements FieldWithComponentContract<TableBuilderContract|ComponentContract|ActionButtonContract>
@@ -458,7 +464,7 @@ class BelongsToMany extends ModelRelationField implements
         $keys = Collection::wrap($old);
 
         return $keys
-            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
             ->values();
     }
 
@@ -469,7 +475,7 @@ class BelongsToMany extends ModelRelationField implements
             $keys = Collection::wrap($this->toValue());
             $this->setValue(
                 $keys
-                    ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
+                    ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
                     ->values()
             );
         }
@@ -652,7 +658,7 @@ class BelongsToMany extends ModelRelationField implements
             $key = $value[$this->getRelatedKeyName()];
 
             return $this->isDeduplicate()
-                ? [$key => \Illuminate\Support\Arr::except($value, $this->getRelatedKeyName())]
+                ? [$key => Arr::except($value, $this->getRelatedKeyName())]
                 : [$index => $value];
         });
 
@@ -663,7 +669,7 @@ class BelongsToMany extends ModelRelationField implements
 
             $result->each(fn (array $value) => $this->getRelationFor($item)->attach(
                 $value[$this->getRelatedKeyName()],
-                \Illuminate\Support\Arr::except($value, $this->getRelatedKeyName())
+                Arr::except($value, $this->getRelatedKeyName())
             ));
         } else {
             $this->getRelationFor($item)->sync($result);
@@ -720,7 +726,7 @@ class BelongsToMany extends ModelRelationField implements
         /** @var Collection<array-key, int|string|null> $keys */
         $keys = Collection::wrap($value);
         $value = $keys
-            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw \MoonShine\Laravel\Exceptions\ModelRelationFieldException::relationRequired()))
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
             ->values();
 
         $casted?->setRelation($this->getRelationName(), $value);

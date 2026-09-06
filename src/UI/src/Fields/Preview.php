@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use MoonShine\Support\DTOs\FileItem;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Support\Stringify;
@@ -61,7 +63,7 @@ class Preview extends Field
         }
 
         if ($this->isImage) {
-            /** @var \MoonShine\Support\DTOs\FileItem|string|list<\MoonShine\Support\DTOs\FileItem|string|array{full_path?: string|null, raw_value?: string|null, name?: string|null, attributes?: array<string, mixed>|\MoonShine\Support\Components\MoonShineComponentAttributeBag|null}>|null $value */
+            /** @var FileItem|string|list<FileItem|string|array{full_path?: string|null, raw_value?: string|null, name?: string|null, attributes?: array<string, mixed>|MoonShineComponentAttributeBag|null}>|null $value */
             return (string) Thumbnails::make(
                 $value
             );

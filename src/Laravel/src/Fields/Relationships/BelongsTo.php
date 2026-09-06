@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use MoonShine\Support\DTOs\Select\Option;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Core\Exceptions\PageException;
@@ -26,7 +30,7 @@ use Throwable;
 /**
  * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model> = \Illuminate\Database\Eloquent\Relations\BelongsTo<Model, Model>
  *
- * @implements HasAsyncSearchContract<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, \MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest>
+ * @implements HasAsyncSearchContract<Model, Builder<Model>|Relation<Model, Model, mixed>, RelationModelFieldRequest>
  * @extends ModelRelationField<R>
  */
 class BelongsTo extends ModelRelationField implements
@@ -131,7 +135,7 @@ class BelongsTo extends ModelRelationField implements
             $values = $options->getValues();
 
             $option = $values->first();
-            $value = $option instanceof \MoonShine\Support\DTOs\Select\Option ? $option->getValue() : null;
+            $value = $option instanceof Option ? $option->getValue() : null;
         }
 
         return $value;

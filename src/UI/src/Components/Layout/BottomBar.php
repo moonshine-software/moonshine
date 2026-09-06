@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
 
 /**
- * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [])
+ * @method static static make(iterable<array-key, ComponentContract> $components = [])
  */
 class BottomBar extends AbstractWithComponents
 {

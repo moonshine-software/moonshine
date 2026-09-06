@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Filters;
 
+use DateTimeInterface;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Contracts\UI\ApplyContract;
@@ -19,7 +20,7 @@ class DateModelApply implements ApplyContract
     public function apply(FieldContract $field): Closure
     {
         return static function (Builder $query) use ($field): void {
-            /** @var string|\DateTimeInterface|null $value */
+            /** @var string|DateTimeInterface|null $value */
             $value = $field->getRequestValue();
             $query->whereDate($field->getColumn(), $value);
         };

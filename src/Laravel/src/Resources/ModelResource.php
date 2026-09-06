@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +46,7 @@ use Throwable;
  * @template-covariant TDetailPage of null|DetailPageContract = DetailPageContract
  *
  * @extends CrudResource<MoonShine, TData, TIndexPage, TFormPage, TDetailPage, ModelNotFoundException<TData>, Fields>
- * @implements WithQueryBuilderContract<Builder<TData>|\Illuminate\Database\Eloquent\Relations\Relation<TData, Model, mixed>>
+ * @implements WithQueryBuilderContract<Builder<TData>|Relation<TData, Model, mixed>>
  *
  * @use ResourceWithFields<Fields>
  */

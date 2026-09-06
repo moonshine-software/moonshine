@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
+use LogicException;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Core\TypeCasts\MixedDataCaster;
@@ -53,7 +54,7 @@ trait HasDataCast
      */
     public function getCast(): DataCasterContract
     {
-        return $this->cast ?? throw new \LogicException('No data caster configured.');
+        return $this->cast ?? throw new LogicException('No data caster configured.');
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Concerns\Page;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use Stringable;
@@ -22,7 +23,7 @@ trait HasFormValidation
      *
      * @param DataWrapperContract<T> $item
      *
-     * @return array<string, string|list<string|ValidationRule|\Illuminate\Contracts\Validation\Rule|Stringable>>
+     * @return array<string, string|list<string|ValidationRule|Rule|Stringable>>
      */
     protected function rules(DataWrapperContract $item): array
     {
@@ -30,7 +31,7 @@ trait HasFormValidation
     }
 
     /**
-     * @return array<string, string|list<string|ValidationRule|\Illuminate\Contracts\Validation\Rule|Stringable>>
+     * @return array<string, string|list<string|ValidationRule|Rule|Stringable>>
      */
     public function getRules(): array
     {

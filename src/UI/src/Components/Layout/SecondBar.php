@@ -11,7 +11,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\AbstractWithComponents;
 
 /**
- * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [])
+ * @method static static make(iterable<array-key, ComponentContract> $components = [])
  */
 class SecondBar extends AbstractWithComponents
 {

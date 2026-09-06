@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Providers;
 
+use Illuminate\Cache\CacheManager;
+use Illuminate\Contracts\Filesystem\Factory;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Console\Command;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Events\RequestHandled;
@@ -103,7 +107,7 @@ use Psr\SimpleCache\CacheInterface;
 
 final class MoonShineServiceProvider extends ServiceProvider
 {
-    /** @var list<class-string<\Illuminate\Console\Command>> */
+    /** @var list<class-string<Command>> */
     protected array $commands = [
         InstallCommand::class,
         MakeResourceCommand::class,
@@ -190,7 +194,7 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(RequestContract::class, Request::class);
         $this->app->bind(
             CacheInterface::class,
-            static fn (Application $app): CacheInterface => $app->make(\Illuminate\Cache\CacheManager::class)->store(
+            static fn (Application $app): CacheInterface => $app->make(CacheManager::class)->store(
                 moonshineConfig()->getCacheDriver()
             )
         );
@@ -199,7 +203,7 @@ final class MoonShineServiceProvider extends ServiceProvider
             /** @var string $disk */
             $disk = $parameters['disk'] ?? $parameters[0] ?? 'public';
 
-            return new LaravelStorage($disk, $app->make(\Illuminate\Contracts\Filesystem\Factory::class));
+            return new LaravelStorage($disk, $app->make(Factory::class));
         });
 
         $this->app->scoped(ColorManagerContract::class, ColorManager::class);
@@ -377,7 +381,7 @@ final class MoonShineServiceProvider extends ServiceProvider
             ->registerAuth()
             ->registerApplies();
 
-        tap($this->app->make(\Illuminate\Contracts\Events\Dispatcher::class), static function (\Illuminate\Contracts\Events\Dispatcher $event): void {
+        tap($this->app->make(Dispatcher::class), static function (Dispatcher $event): void {
             $event->listen(
                 RequestHandled::class,
                 static fn () => moonshine()->flushState()

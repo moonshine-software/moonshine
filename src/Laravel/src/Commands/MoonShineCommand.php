@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use RuntimeException;
+use Illuminate\Filesystem\Filesystem;
 use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
@@ -74,7 +76,7 @@ abstract class MoonShineCommand extends Command
 
         self::addResourceOrPageTo(
             class: "$namespace\\$class",
-            to: $reflector->getFileName() ?: throw new \RuntimeException('Layout source file was not found.'),
+            to: $reflector->getFileName() ?: throw new RuntimeException('Layout source file was not found.'),
             between: static fn (Stringable $content): Stringable => $content->betweenFirst(
                 "protected function menu(): array",
                 '}',
@@ -121,7 +123,7 @@ abstract class MoonShineCommand extends Command
         $basename = class_basename($class);
         $namespace = $class;
 
-        $content = Str::of(new \Illuminate\Filesystem\Filesystem()->get($to));
+        $content = Str::of(new Filesystem()->get($to));
 
         if ($content->contains('->autoload(') || $content->contains('->autoloadMenu(')) {
             return;
@@ -170,7 +172,7 @@ abstract class MoonShineCommand extends Command
             config_path('moonshine.php'),
             preg_replace([
                 $pattern,
-            ], $replace, new \Illuminate\Filesystem\Filesystem()->get(config_path('moonshine.php'))),
+            ], $replace, new Filesystem()->get(config_path('moonshine.php'))),
         );
     }
 

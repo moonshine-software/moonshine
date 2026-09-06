@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
+use MoonShine\UI\Components\FlexibleRender;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
@@ -358,7 +359,7 @@ class RelationRepeater extends ModelRelationField implements
         $fields = $this->getPreparedFields();
 
         $reorderable = ! $this->isPreviewMode() && $this->isReorderable();
-        $reorderableUrl = $reorderable && $this->reorderableUrl !== null ? ($this->reorderableUrl)($this) : null;
+        $reorderableUrl = $reorderable && $this->reorderableUrl instanceof Closure ? ($this->reorderableUrl)($this) : null;
 
         if ($reorderable) {
             $fields->prepend(
@@ -393,7 +394,7 @@ class RelationRepeater extends ModelRelationField implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            \MoonShine\UI\Components\FlexibleRender::make($field->getLabel()),
+                            FlexibleRender::make($field->getLabel()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
                     value: $reorderable ? function (FieldContract $field, ComponentContract $default): ComponentContract {

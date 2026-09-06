@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Pages;
 
+use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -106,7 +107,7 @@ class ProfilePage extends Page
     }
 
     /**
-     * @return FormBuilderContract<\Illuminate\Database\Eloquent\Model>
+     * @return FormBuilderContract<Model>
      */
     public function getForm(): FormBuilderContract
     {

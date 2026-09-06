@@ -58,7 +58,7 @@ trait RangeTrait
         $attributes = ($attributes ?? $this->getAttributes())->except(['data-name']);
 
         if ($dataName) {
-            $attributes = $attributes->merge([
+            return $attributes->merge([
                 'data-name' => Str::of(Stringify::value($dataName))->replaceLast('[]', "[$name]"),
             ]);
         }

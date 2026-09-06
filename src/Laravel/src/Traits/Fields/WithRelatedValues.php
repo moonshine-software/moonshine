@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +27,7 @@ trait WithRelatedValues
     protected ?Collection $memoizeValues = null;
 
     /**
-     * @var (Closure(\Illuminate\Database\Eloquent\Builder<Model>, static): (\Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>))|null
+     * @var Closure(\Illuminate\Database\Eloquent\Builder<Model>, static):((\Illuminate\Database\Eloquent\Builder<Model>|Relation<Model, Model, covariant mixed>))|null
      */
     protected ?Closure $valuesQuery = null;
 
@@ -54,7 +55,7 @@ trait WithRelatedValues
     }
 
     /**
-     * @param Closure(\Illuminate\Database\Eloquent\Builder<Model>, static): (\Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>) $callback
+     * @param Closure(\Illuminate\Database\Eloquent\Builder<Model>, static):((\Illuminate\Database\Eloquent\Builder<Model>|Relation<Model, Model, covariant mixed>)) $callback
      */
     public function valuesQuery(Closure $callback): static
     {
@@ -73,7 +74,7 @@ trait WithRelatedValues
 
     /**
      * @throws Throwable
-     * @return \Illuminate\Database\Eloquent\Builder<Model>|\Illuminate\Database\Eloquent\Relations\Relation<Model, Model, covariant mixed>
+     * @return \Illuminate\Database\Eloquent\Builder<Model>|Relation<Model, Model, covariant mixed>
      */
     public function resolveValuesQuery(): Builder
     {

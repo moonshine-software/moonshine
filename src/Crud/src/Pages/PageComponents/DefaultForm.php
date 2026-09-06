@@ -34,7 +34,7 @@ final class DefaultForm implements DefaultFormContract
     ): FormBuilderContract {
         $resource = $page->getResourceOrFail();
 
-        if ($item !== null) {
+        if ($item instanceof DataWrapperContract) {
             $fields->push(Hidden::make('_method')->setValue('PUT'));
         }
 

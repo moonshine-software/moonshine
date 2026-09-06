@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\DependencyInjection;
 
+use TypeError;
+use InvalidArgumentException;
+use MoonShine\Contracts\UI\FormContract;
 use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
@@ -198,14 +201,14 @@ final class MoonShineConfigurator implements ConfiguratorContract
         $options = $this->get('disk_options', []);
 
         if (! \is_array($options)) {
-            throw new \TypeError('Expected an array of disk options, got ' . get_debug_type($options));
+            throw new TypeError('Expected an array of disk options, got ' . get_debug_type($options));
         }
 
         $result = [];
 
         foreach ($options as $key => $value) {
             if (! \is_string($key)) {
-                throw new \TypeError('Disk option names must be strings.');
+                throw new TypeError('Disk option names must be strings.');
             }
 
             $result[$key] = $value;
@@ -445,7 +448,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     public function getPages(): array
     {
         return array_map(
-            fn (string $class) => $this->classStringValue($class, PageContract::class),
+            fn (string $class): string => $this->classStringValue($class, PageContract::class),
             $this->stringArrayValue($this->get('pages', [])),
         );
     }
@@ -468,7 +471,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function getForm(string $name, string $default, mixed ...$parameters): FormBuilderContract
     {
-        /** @var class-string<\MoonShine\Contracts\UI\FormContract> $class */
+        /** @var class-string<FormContract> $class */
         $class = $this->get("forms.$name", $default);
 
         return \call_user_func(
@@ -524,7 +527,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     private function stringArrayValue(mixed $value): array
     {
         if (! \is_array($value)) {
-            throw new \TypeError('Expected an array configuration value, got ' . get_debug_type($value));
+            throw new TypeError('Expected an array configuration value, got ' . get_debug_type($value));
         }
 
         return array_map($this->stringValue(...), $value);
@@ -540,7 +543,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
         $class = $this->stringValue($value);
 
         if (! is_a($class, $base, true)) {
-            throw new \TypeError("Configuration class $class must implement or extend $base.");
+            throw new TypeError("Configuration class $class must implement or extend $base.");
         }
 
         return $class;
@@ -549,7 +552,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     private function stringValue(mixed $value): string
     {
         if (! \is_string($value)) {
-            throw new \TypeError('Expected a string configuration value, got ' . get_debug_type($value));
+            throw new TypeError('Expected a string configuration value, got ' . get_debug_type($value));
         }
 
         return $value;
@@ -558,7 +561,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     private function boolValue(mixed $value): bool
     {
         if (! \is_bool($value)) {
-            throw new \TypeError('Expected a boolean configuration value, got ' . get_debug_type($value));
+            throw new TypeError('Expected a boolean configuration value, got ' . get_debug_type($value));
         }
 
         return $value;
@@ -595,7 +598,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->set($offset ?? throw new \InvalidArgumentException('A configuration key is required.'), $value);
+        $this->set($offset ?? throw new InvalidArgumentException('A configuration key is required.'), $value);
     }
 
     public function offsetUnset(mixed $offset): void

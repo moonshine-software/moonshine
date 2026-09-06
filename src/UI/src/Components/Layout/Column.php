@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 
 /**
- * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [], int $colSpan = 12, int $adaptiveColSpan = 12)
+ * @method static static make(iterable<array-key, ComponentContract> $components = [], int $colSpan = 12, int $adaptiveColSpan = 12)
  */
 class Column extends AbstractWithComponents
 {

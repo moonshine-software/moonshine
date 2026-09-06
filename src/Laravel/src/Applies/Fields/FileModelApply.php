@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Fields;
 
+use Illuminate\Support\Arr;
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ApplyContract;
@@ -38,7 +38,7 @@ final class FileModelApply implements ApplyContract
                 if ($field->isMultiple()) {
                     $paths = [];
 
-                    foreach (\Illuminate\Support\Arr::wrap($requestValue) as $file) {
+                    foreach (Arr::wrap($requestValue) as $file) {
                         $paths[] = $this->store($field, $file);
                     }
 

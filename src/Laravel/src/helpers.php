@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
@@ -31,7 +32,7 @@ if (! \function_exists('moonshineRequest')) {
 }
 
 if (! \function_exists('moonshine')) {
-    /** @return \MoonShine\Laravel\DependencyInjection\MoonShine */
+    /** @return MoonShine */
     function moonshine(): CoreContract
     {
         return app(CoreContract::class);

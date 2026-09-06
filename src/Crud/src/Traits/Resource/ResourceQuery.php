@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Traits\Resource;
 
+use Illuminate\Support\Arr;
 use Attribute;
 use Closure;
 use DateInterval;
@@ -491,7 +492,7 @@ trait ResourceQuery
 
         foreach ($filters as $filter) {
             if ($filter instanceof RangeFieldContract) {
-                \Illuminate\Support\Arr::forget($params, $filter->getColumn());
+                Arr::forget($params, $filter->getColumn());
             }
         }
 

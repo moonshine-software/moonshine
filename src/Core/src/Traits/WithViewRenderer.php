@@ -128,7 +128,6 @@ trait WithViewRenderer
         return $this;
     }
 
-    /** @return Renderable|Closure|string */
     public function render(): Renderable|Closure|string
     {
         if (! $this->shouldRender()) {

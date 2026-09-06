@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
+use InvalidArgumentException;
 use Illuminate\Support\Facades\Hash;
 
 use function Laravel\Prompts\{error, info, password, text};
@@ -55,7 +56,7 @@ class MakeUserCommand extends MoonShineCommand
 
             $exists = MoonShineAuth::getModel()::query()
                 ->where(
-                    moonshineConfig()->getUserField('username', 'email') ?: throw new \InvalidArgumentException('The username field must be configured.'),
+                    moonshineConfig()->getUserField('username', 'email') ?: throw new InvalidArgumentException('The username field must be configured.'),
                     $username,
                 )
                 ->exists();

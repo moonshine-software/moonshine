@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Model;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -41,10 +42,10 @@ trait WithRelatedLink
         return $this;
     }
 
-    /** @return Collection<array-key, \Illuminate\Database\Eloquent\Model> */
+    /** @return Collection<array-key, Model> */
     public function toRelatedCollection(): Collection
     {
-        /** @var Collection<array-key, \Illuminate\Database\Eloquent\Model> */
+        /** @var Collection<array-key, Model> */
         return $this->getRelatedModel()->{$this->getRelationName()} ?? new Collection();
     }
 

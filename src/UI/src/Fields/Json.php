@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
+use MoonShine\UI\Components\FlexibleRender;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
@@ -532,7 +533,7 @@ class Json extends Field implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            \MoonShine\UI\Components\FlexibleRender::make($field->getLabel()),
+                            FlexibleRender::make($field->getLabel()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
                     value: $reorderable ? fn (FieldContract $field, ComponentContract $default): ComponentContract => $field->getColumn() === '__handle'

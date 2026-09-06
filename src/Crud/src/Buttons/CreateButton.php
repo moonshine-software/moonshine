@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Buttons;
 
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ModalContract;
@@ -24,7 +25,7 @@ final class CreateButton
         bool $isAsync = true,
         string $modalName = 'resource-create-modal',
     ): ActionButtonContract {
-        if (! $resource->getFormPage()) {
+        if (!$resource->getFormPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

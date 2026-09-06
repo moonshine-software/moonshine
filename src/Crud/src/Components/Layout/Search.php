@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components\Layout;
 
+use MoonShine\UI\Components\FlexibleRender;
 use Closure;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Components\ActionButton;
@@ -139,7 +140,7 @@ final class Search extends MoonShineComponent
                         ])
                         ->icon('x-mark'),
 
-                    Div::make([\MoonShine\UI\Components\FlexibleRender::make('
+                    Div::make([FlexibleRender::make('
                             <kbd
                                 class="search-button-key"
                                 :class="{ \'search-button-key--pressed\': isCtrlPressed }"

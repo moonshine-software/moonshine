@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -29,8 +31,7 @@ final class AsyncSearchController extends MoonShineController
             return response()->json();
         }
 
-        /** @var \MoonShine\Laravel\Fields\Relationships\ModelRelationField&HasAsyncSearchContract<Model, \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>|\Illuminate\Database\Eloquent\Relations\Relation<\Illuminate\Database\Eloquent\Model, \Illuminate\Database\Eloquent\Model, mixed>, RelationModelFieldRequest> $field */
-
+        /** @var ModelRelationField&HasAsyncSearchContract<Model, \Illuminate\Database\Eloquent\Builder<Model>|Relation<Model, Model, mixed>, RelationModelFieldRequest> $field */
         /* @var \MoonShine\Laravel\Resources\ModelResource $resource */
         $resource = $field->getResource();
 

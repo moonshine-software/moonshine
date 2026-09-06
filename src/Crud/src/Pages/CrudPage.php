@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Pages;
 
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
@@ -64,7 +65,7 @@ abstract class CrudPage extends Page implements CrudPageContract
     }
 
     /**
-     * @return list<\MoonShine\Contracts\UI\ModalContract>
+     * @return list<ModalContract>
      */
     public function getEmptyModals(): array
     {

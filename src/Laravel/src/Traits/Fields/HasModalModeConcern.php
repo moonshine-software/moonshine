@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
+use MoonShine\Contracts\UI\ModalContract;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -21,13 +22,13 @@ trait HasModalModeConcern
     /** @var (Closure(ActionButtonContract, static): ActionButtonContract)|null */
     protected ?Closure $modifyModalModeButton = null;
 
-    /** @var (Closure(\MoonShine\Contracts\UI\ModalContract): \MoonShine\Contracts\UI\ModalContract)|null */
+    /** @var Closure(ModalContract):ModalContract|null */
     protected ?Closure $modifyModalModeModal = null;
 
     /**
      * @param (Closure(static): (bool|null))|bool|null $condition
      * @param (Closure(ActionButtonContract, static): ActionButtonContract)|null $modifyButton
-     * @param (Closure(\MoonShine\Contracts\UI\ModalContract): \MoonShine\Contracts\UI\ModalContract)|null $modifyModal
+     * @param Closure(ModalContract):ModalContract|null $modifyModal
      */
     public function modalMode(
         Closure|bool|null $condition = null,
@@ -57,7 +58,7 @@ trait HasModalModeConcern
             title: $label,
             content: (string) Fragment::make($components)->name($fragmentName),
             name: "modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}",
-            builder: $this->modifyModalModeModal ?? static fn (\MoonShine\Contracts\UI\ModalContract $modal): \MoonShine\Contracts\UI\ModalContract => $modal->wide()
+            builder: $this->modifyModalModeModal ?? static fn (ModalContract $modal): ModalContract => $modal->wide()
         );
 
         if (! \is_null($this->modifyModalModeButton)) {

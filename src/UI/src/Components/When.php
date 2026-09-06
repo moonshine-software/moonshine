@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use Closure;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\UI\Traits\Components\WithComponents;
@@ -19,8 +20,8 @@ class When extends MoonShineComponent implements HasComponentsContract
 
     /**
      * @param Closure(): bool $condition
-     * @param Closure(): iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components
-     * @param (Closure(): iterable<array-key, \MoonShine\Contracts\UI\ComponentContract>)|null $default
+     * @param Closure():iterable<array-key, ComponentContract> $components
+     * @param Closure():iterable<array-key, ComponentContract>|null $default
      */
     public function __construct(
         protected Closure $condition,

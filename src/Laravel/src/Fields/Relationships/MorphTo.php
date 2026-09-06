@@ -139,7 +139,7 @@ class MorphTo extends BelongsTo
     {
         $item = $this->getRelatedModel();
 
-        if ($item === null || ! $item->getKey()) {
+        if (!$item instanceof Model || ! $item->getKey()) {
             return '';
         }
 

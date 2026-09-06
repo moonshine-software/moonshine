@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Models;
 
+use MoonShine\Laravel\Database\Factories\MoonshineUserRoleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MoonshineUserRole extends Model
 {
     /**
-     * @use HasFactory<\MoonShine\Laravel\Database\Factories\MoonshineUserRoleFactory>
+     * @use HasFactory<MoonshineUserRoleFactory>
      */
     use HasFactory;
 

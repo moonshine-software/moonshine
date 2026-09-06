@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
+use Illuminate\Database\Eloquent\Model;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -58,7 +59,7 @@ trait HasHorizontalMode
 
     /**
      * @throws Throwable
-     * @param Collection<array-key, \Illuminate\Database\Eloquent\Model> $data
+     * @param Collection<array-key, Model> $data
      */
     protected function buildList(Collection $data): string
     {

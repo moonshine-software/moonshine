@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Storage;
 
+use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use MoonShine\Contracts\Core\DependencyInjection\StorageContract;
@@ -21,13 +23,13 @@ final readonly class LaravelStorage implements StorageContract
 
     public function store(string $path, mixed $file = null, array $options = []): false|string
     {
-        /** @var \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string|array<mixed>|null $file */
+        /** @var File|UploadedFile|string|array<mixed>|null $file */
         return $this->filesystem->putFile($path, $file, $options);
     }
 
     public function storeAs(string $path, mixed $file, string|array|null $name = null, array $options = []): false|string
     {
-        /** @var \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string|array<mixed>|null $file */
+        /** @var File|UploadedFile|string|array<mixed>|null $file */
         return $this->filesystem->putFileAs($path, $file, $name, $options);
     }
 

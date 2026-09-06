@@ -61,7 +61,7 @@ trait WithModal
             ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
             ->when(
                 ! \is_null($builder),
-                static fn (ModalContract $modal): ModalContract => $builder === null ? $modal : $builder($modal, $ctx)
+                static fn (ModalContract $modal): ModalContract => $builder instanceof Closure ? $builder($modal, $ctx) : $modal
             );
 
         return $this->onBeforeRender(
@@ -142,7 +142,7 @@ trait WithModal
                 )->error()
             )->when(
                 ! \is_null($formBuilder),
-                static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder === null ? $form : $formBuilder($form, $item)
+                static fn (FormBuilderContract $form): FormBuilderContract => $formBuilder instanceof Closure ? $formBuilder($form, $item) : $form
             )->when(
                 $ctx->getAttribute('data-async-response-type') !== null,
                 static fn (FormBuilderContract $form): FormBuilderContract => $form->download()

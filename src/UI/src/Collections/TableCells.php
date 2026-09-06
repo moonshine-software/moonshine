@@ -50,7 +50,7 @@ final class TableCells extends Collection implements TableCellsContract
     {
         $cell = TableTd::make($content, $index);
 
-        if ($builder !== null) {
+        if ($builder instanceof Closure) {
             $cell = $builder($cell) ?? $cell;
         }
 

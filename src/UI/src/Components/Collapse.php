@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\HasIconContract;
@@ -12,7 +13,7 @@ use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label = '', iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [])
+ * @method static static make(Closure|string $label = '', iterable<array-key, ComponentContract> $components = [])
  */
 class Collapse extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {

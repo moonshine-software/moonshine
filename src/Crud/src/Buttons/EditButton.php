@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Buttons;
 
+use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
@@ -27,7 +28,7 @@ final class EditButton
         string $modalName = 'resource-edit-modal',
         array $query = []
     ): ActionButtonContract {
-        if (! $resource->getFormPage()) {
+        if (!$resource->getFormPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

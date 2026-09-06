@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components\Layout;
 
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
 
 /**
- * @method static static make(iterable<array-key, \MoonShine\Contracts\UI\ComponentContract> $components = [], int $gap = 6)
+ * @method static static make(iterable<array-key, ComponentContract> $components = [], int $gap = 6)
  */
 class Grid extends AbstractWithComponents
 {
