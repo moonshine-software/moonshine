@@ -1,6 +1,7 @@
 @props([
     'name',
     'interval' => null,
+    'updateOnLoad' => null,
     'components' => [],
 ])
 @fragment($name)
@@ -12,6 +13,14 @@
         {{ $slot ?? '' }}
     </div>
 @endfragment
+
+@if($updateOnLoad)
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dispatchEvent(new CustomEvent("fragment_updated:" + @js($name)))
+        });
+    </script>
+@endif
 
 @if($interval)
     <script>
