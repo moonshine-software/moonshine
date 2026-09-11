@@ -10,6 +10,7 @@ use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
@@ -232,9 +233,11 @@ trait ResourceModelQuery
             );
 
         if ($tag) {
+            $query = $this->newQuery();
+
             $this->customQueryBuilder(
                 $tag->apply(
-                    $this->newQuery(),
+                    $query instanceof Relation ? $query->getQuery() : $query,
                 ),
             );
         }

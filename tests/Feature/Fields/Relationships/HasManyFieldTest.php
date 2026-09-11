@@ -5,13 +5,17 @@ declare(strict_types=1);
 uses()->group('model-relation-fields');
 uses()->group('has-many-field');
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Models\Comment;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
+use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
@@ -199,3 +203,58 @@ it('modify builder', function () {
         ->assertDontSee($commentLast->content)
     ;
 });
+
+it('applies a default query tag with an eloquent builder to has many items', function (string $page, bool $async): void {
+    $this->withoutExceptionHandling();
+
+    $item = createItem(countComments: 2);
+    $otherItem = createItem(countComments: 1);
+
+    $item->comments[0]->update(['content' => 'Visible related comment']);
+    $item->comments[1]->update(['content' => 'Filtered related comment']);
+    $otherItem->comments[0]->update(['content' => 'Visible unrelated comment']);
+
+    $commentResource = app(TestResource::class)
+        ->setTestModel(Comment::class)
+        ->setTestUriKey('query-tag-comments')
+        ->setTestFields([
+            ID::make(),
+            Text::make('Content'),
+        ])
+        ->setTestQueryTags([
+            QueryTag::make(
+                'Visible comments',
+                static fn (Builder $query): Builder => $query->where('content', 'like', 'Visible%')
+            )->default(static fn (): bool => true),
+        ]);
+
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([
+        ID::make(),
+        HasMany::make('Comments', 'comments', resource: $commentResource),
+    ]);
+
+    $url = $async
+        ? $this->moonshineCore->getRouter()->to('has-many.list', [
+            'pageUri' => $resource->getPages()->findByClass($page)->getUriKey(),
+            'resourceUri' => $resource->getUriKey(),
+            'resourceItem' => $item->getKey(),
+            '_relation' => 'comments',
+        ])
+        : $this->moonshineCore->getRouter()->getEndpoints()->toPage(
+            page: $page,
+            resource: $resource,
+            params: ['resourceItem' => $item->getKey()]
+        );
+
+    asAdmin()->get($url)
+        ->assertOk()
+        ->assertSee('Visible related comment')
+        ->assertDontSee('Filtered related comment')
+        ->assertDontSee('Visible unrelated comment');
+})->with([
+    'detail page' => DetailPage::class,
+    'form page' => FormPage::class,
+])->with([
+    'initial render' => false,
+    'async list' => true,
+]);
