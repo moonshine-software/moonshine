@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Support\DTOs\Select\Options;

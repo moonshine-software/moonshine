@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Resources;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;

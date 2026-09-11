@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\DependencyInjection;
 
-use TypeError;
-use InvalidArgumentException;
-use MoonShine\Contracts\UI\FormContract;
 use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\FormContract;
 use MoonShine\Crud\Layouts\AbstractLayout;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
@@ -24,6 +23,7 @@ use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\Support\Enums\Ability;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use TypeError;
 
 final class MoonShineConfigurator implements ConfiguratorContract
 {

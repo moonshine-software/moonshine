@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use InvalidArgumentException;
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
 
 use function Laravel\Prompts\{error, info, password, text};
 

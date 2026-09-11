@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Sets;
 
-use Stringable;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
@@ -16,6 +15,7 @@ use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Popover;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Fields\Hidden;
+use Stringable;
 
 final readonly class UpdateOnPreviewPopover
 {

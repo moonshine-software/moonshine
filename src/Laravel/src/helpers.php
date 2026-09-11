@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Contracts\AssetManager\AssetManagerContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
 use MoonShine\Contracts\Core\DependencyInjection\AppliesRegisterContract;
@@ -13,6 +12,7 @@ use MoonShine\Contracts\Core\DependencyInjection\RouterContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\Laravel\DependencyInjection\MoonShineRouter;
 use MoonShine\Laravel\MoonShineRequest;

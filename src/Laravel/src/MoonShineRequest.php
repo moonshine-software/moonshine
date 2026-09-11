@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
-use MoonShine\Contracts\Core\PageContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
+use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\Laravel\Traits\Request\HasResourceRequest;
 

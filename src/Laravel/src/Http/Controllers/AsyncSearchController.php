@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use MoonShine\Crud\Contracts\Fields\HasAsyncSearchContract;
 use MoonShine\Crud\Contracts\Resource\WithQueryBuilderContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Fields\Relationships\ModelRelationField;
 use MoonShine\Laravel\Fields\Relationships\MorphTo;
 use MoonShine\Laravel\Http\Requests\Relations\RelationModelFieldRequest;
 use MoonShine\Laravel\Support\DBOperators;

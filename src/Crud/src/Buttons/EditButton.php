@@ -28,7 +28,7 @@ final class EditButton
         string $modalName = 'resource-edit-modal',
         array $query = []
     ): ActionButtonContract {
-        if (!$resource->getFormPage() instanceof CrudPageContract) {
+        if (! $resource->getFormPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

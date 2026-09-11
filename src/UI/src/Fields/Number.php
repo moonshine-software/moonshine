@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use TypeError;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\UI\Components\Rating;
@@ -17,6 +16,7 @@ use MoonShine\UI\Traits\Fields\NumberTrait;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Fields\WithInputExtensions;
+use TypeError;
 
 class Number extends Field implements HasDefaultValueContract, CanBeNumeric, HasUpdateOnPreviewContract
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components\Layout;
 
-use MoonShine\UI\Components\FlexibleRender;
 use Closure;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\MoonShineComponent;

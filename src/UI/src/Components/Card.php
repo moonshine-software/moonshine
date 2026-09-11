@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use Stringable;
 use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\UI\Traits\Components\WithSlotContent;
+use Stringable;
 
 /**
  * @method static static make(Closure|string $title = '', (Closure(self): string[])|string[]|string $thumbnail = '', Closure|string $url = '#', (Closure(self): array<string, mixed>)|array<string, mixed> $values = [], Closure|string|null $subtitle = null, bool $overlay = false)

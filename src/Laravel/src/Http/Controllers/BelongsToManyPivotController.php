@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Http\Controllers;
 
-use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
-use Stringable;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\TableBuilderContract;
@@ -25,6 +24,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Select;
+use Stringable;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 

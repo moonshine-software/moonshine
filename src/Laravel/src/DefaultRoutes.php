@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel;
 
-use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
-use Throwable;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\Laravel\Http\Controllers\AsyncSearchController;
 use MoonShine\Laravel\Http\Controllers\AuthenticateController;
 use MoonShine\Laravel\Http\Controllers\BelongsToManyPivotController;
@@ -23,6 +22,7 @@ use MoonShine\Laravel\Http\Controllers\PageController;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\Http\Controllers\ReactiveController;
 use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
+use Throwable;
 
 final readonly class DefaultRoutes
 {

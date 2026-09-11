@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use MoonShine\UI\Components\FlexibleRender;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
@@ -19,6 +18,7 @@ use MoonShine\Support\Stringify;
 use MoonShine\UI\Collections\Fields;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FieldsGroup;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Icon;
 use MoonShine\UI\Components\Layout\Column;
 use MoonShine\UI\Components\Layout\Div;

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Commands;
 
-use RuntimeException;
-use Illuminate\Filesystem\Filesystem;
 use Closure;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use JsonException;
@@ -17,6 +16,7 @@ use Leeto\PackageCommand\Command;
 use MoonShine\Laravel\Support\StubsPath;
 use MoonShine\MenuManager\MenuItem;
 use ReflectionClass;
+use RuntimeException;
 
 abstract class MoonShineCommand extends Command
 {

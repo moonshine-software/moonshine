@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Pages;
 
-use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\Core\CrudPageContract;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Modal;

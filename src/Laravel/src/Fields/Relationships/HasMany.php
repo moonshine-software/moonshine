@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Fields\Relationships;
 
-use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Renderable;
@@ -29,6 +28,7 @@ use MoonShine\Crud\Contracts\Fields\HasOutsideSwitcherContract;
 use MoonShine\Crud\Contracts\Fields\HasTabModeContract;
 use MoonShine\Laravel\Buttons\HasManyButton;
 use MoonShine\Laravel\Collections\Fields;
+use MoonShine\Laravel\Exceptions\ModelRelationFieldException;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Traits\Fields\HasModalModeConcern;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;

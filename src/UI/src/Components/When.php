@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Contracts\UI\ComponentContract;
 use Closure;
 use MoonShine\Contracts\Core\HasComponentsContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Traits\Components\WithComponents;
 
 /**

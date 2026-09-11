@@ -24,7 +24,7 @@ final class DetailButton
         string $modalName = 'resource-detail-modal',
         bool $isSeparateModal = true,
     ): ActionButtonContract {
-        if (!$resource->getDetailPage() instanceof CrudPageContract) {
+        if (! $resource->getDetailPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

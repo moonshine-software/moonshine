@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use LogicException;
-use TypeError;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use LogicException;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Laravel\Resources\ModelResource;
+use TypeError;
 
 /** @phpstan-require-extends ModelResource */
 trait ResourceWithParent

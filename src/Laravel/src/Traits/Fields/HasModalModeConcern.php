@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Fields;
 
-use MoonShine\Contracts\UI\ModalContract;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
+use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;

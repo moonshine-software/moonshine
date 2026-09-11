@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
-use MoonShine\Contracts\UI\ComponentContract;
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\UI\Traits\WithIcon;

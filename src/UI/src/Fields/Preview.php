@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Fields;
 
-use MoonShine\Support\DTOs\FileItem;
-use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\Support\DTOs\FileItem;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Components\Thumbnails;

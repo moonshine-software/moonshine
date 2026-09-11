@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Traits\Resource;
 
-use Illuminate\Support\Arr;
 use Attribute;
 use Closure;
 use DateInterval;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;

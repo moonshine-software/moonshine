@@ -25,7 +25,7 @@ final class CreateButton
         bool $isAsync = true,
         string $modalName = 'resource-create-modal',
     ): ActionButtonContract {
-        if (!$resource->getFormPage() instanceof CrudPageContract) {
+        if (! $resource->getFormPage() instanceof CrudPageContract) {
             return ActionButton::emptyHidden();
         }
 

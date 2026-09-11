@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Applies\Fields;
 
-use Illuminate\Support\Arr;
 use Closure;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
