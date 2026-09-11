@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MoonShine\Laravel\Traits\Resource;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -13,7 +11,9 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -249,16 +249,18 @@ trait ResourceModelQuery
             return $this;
         }
 
-        /** @var QueryTag<EloquentBuilder<T>|Relation<T, Model, mixed>>|null $tag */
+        /** @var QueryTag<EloquentBuilder<T>>|null $tag */
         $tag = Collection::make($page->getQueryTags())
             ->first(
                 static fn (QueryTag $tag): bool => $tag->isActive(),
             );
 
         if ($tag) {
+            $query = $this->newQuery();
+
             $this->customQueryBuilder(
                 $tag->apply(
-                    $this->newQuery(),
+                    $query instanceof Relation ? $query->getQuery() : $query,
                 ),
             );
         }
