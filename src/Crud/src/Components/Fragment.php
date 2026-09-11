@@ -17,6 +17,7 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\HasAsync;
+use Closure;
 use Throwable;
 
 class Fragment extends AbstractWithComponents implements HasAsyncContract
@@ -27,6 +28,8 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     protected string $view = 'moonshine::components.fragment';
 
     protected ?int $interval = null;
+    
+    protected bool $updateOnLoad = false;
 
     /**
      * @param  iterable<array-key, ComponentContract>  $components
@@ -109,6 +112,13 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         );
     }
 
+    public function updateOnLoad(Closure|bool|null $condition = null): static
+    {
+        $this->updateOnLoad = value($condition, $this) ?? true;
+
+        return $this;
+    }
+
     public function autoUpdate(int $ms): static
     {
         if ($ms <= 0) {
@@ -141,6 +151,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     {
         return [
             'interval' => $this->interval,
+            'updateOnLoad' => $this->updateOnLoad,
         ];
     }
 }
