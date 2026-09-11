@@ -128,6 +128,11 @@ trait WithViewRenderer
         return $this;
     }
 
+    /**
+     * Override Laravel Component's narrower PHPDoc for custom renderers.
+     *
+     * @phpstan-return Renderable|Closure|string
+     */
     public function render(): Renderable|Closure|string
     {
         if (! $this->shouldRender()) {

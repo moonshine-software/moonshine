@@ -56,7 +56,7 @@ use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
 /**
- * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model, covariant Pivot>
+ * @template-covariant R of \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model, covariant Pivot> = \Illuminate\Database\Eloquent\Relations\BelongsToMany<Model, Model>
  *
  * @implements HasAsyncSearchContract<Model, Builder<Model>|Relation<Model, Model, mixed>, RelationModelFieldRequest>
  * @extends ModelRelationField<R>
