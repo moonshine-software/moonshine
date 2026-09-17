@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'title' => '',
     'icon' => '',
     'progress' => false,
@@ -24,6 +25,6 @@
 
     <div class="report-card-body">
         <div class="report-card-value">{!! $simpleValue !== '' ? $simpleValue : $value !!}</div>
-        <h5 class="report-card-title">{!! $title !!}</h5>
+        <h5 class="report-card-title">{!! $escapeLabel ? e($title) : $title !!}</h5>
     </div>
 </div>

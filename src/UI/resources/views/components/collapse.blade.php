@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'components' => [],
     'persist' => false,
     'open' => false,
@@ -25,7 +26,7 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                {!! $title !!}
+                {!! $escapeLabel ? e($title) : $title !!}
             </div>
 
             @if($button ?? false)

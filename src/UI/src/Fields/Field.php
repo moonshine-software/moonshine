@@ -38,6 +38,44 @@ abstract class Field extends FormElement implements FieldContract
     use WithBadge;
     use Reactivity;
 
+    protected ?bool $escapeBeforeRender = null;
+
+    protected ?bool $escapeAfterRender = null;
+
+    public function escapeBeforeRender(bool $escape = true): static
+    {
+        $this->escapeBeforeRender = $escape;
+
+        return $this;
+    }
+
+    public function unescapeBeforeRender(): static
+    {
+        return $this->escapeBeforeRender(false);
+    }
+
+    public function isEscapeBeforeRender(): bool
+    {
+        return $this->escapeBeforeRender ?? $this->getCore()->getConfig()->isEscapeBeforeRender();
+    }
+
+    public function escapeAfterRender(bool $escape = true): static
+    {
+        $this->escapeAfterRender = $escape;
+
+        return $this;
+    }
+
+    public function unescapeAfterRender(): static
+    {
+        return $this->escapeAfterRender(false);
+    }
+
+    public function isEscapeAfterRender(): bool
+    {
+        return $this->escapeAfterRender ?? $this->getCore()->getConfig()->isEscapeAfterRender();
+    }
+
     protected bool $defaultMode = false;
 
     protected bool $previewMode = false;
@@ -468,11 +506,13 @@ abstract class Field extends FormElement implements FieldContract
 
         if ($this->hasLink()) {
             $href = $this->getLinkValue($value);
+            $label = $this->getLinkName($value);
 
             $value = (string) Link::make(
                 href: $href,
-                label: $this->getLinkName($value) ?: $value,
+                label: $label ?: $value,
             )
+                ->escapeLabel($label ? $this->isEscapeLabel() : false)
                 ->when(
                     ! $this->isWithoutIcon() && $this->getLinkIcon() !== null,
                     fn (Link $ctx): Link => $ctx->icon($this->getLinkIcon() ?? '')

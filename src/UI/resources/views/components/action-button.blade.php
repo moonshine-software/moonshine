@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'inDropdown' => false,
     'hasComponent' => false,
     'url' => 'javascript:void(0);',
@@ -17,7 +18,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        {!! $escapeLabel ? e($label) : $label !!}
 
         @if($badge !== false)
             <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
@@ -34,7 +35,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        {!! $escapeLabel ? e($label) : $label !!}
     </x-moonshine::link-button>
 @endif
 

@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'tabs' => [],
     'active' => null,
     'justifyAlign' => 'start',
@@ -20,7 +21,7 @@
                             type="button"
                     >
                         {!! $tab['icon'] !!}
-                        {!! $tab['label'] !!}
+                        {!! ($tab['escapeLabel'] ?? $escapeLabel) ? e($tab['label']) : $tab['label'] !!}
                     </button>
                 </li>
             @endforeach

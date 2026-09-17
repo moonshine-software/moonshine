@@ -36,6 +36,7 @@ class Heading extends MoonShineComponent
         return [
             'tag' => $this->getTag(),
             'label' => $this->getLabel(),
+            'escapeLabel' => $this->isEscapeLabel(),
         ];
     }
 }

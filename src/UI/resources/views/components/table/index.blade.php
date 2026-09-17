@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'simple' => false,
     'values' => false,
     'columns' => false,
@@ -26,7 +27,7 @@
                     <tr>
                         @foreach($columns as $index => $label)
                             <th>
-                                {!! $label !!}
+                                {!! $escapeLabel ? e($label) : $label !!}
                             </th>
                         @endforeach
                     </tr>

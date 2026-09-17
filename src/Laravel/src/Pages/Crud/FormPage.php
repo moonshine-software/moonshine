@@ -95,7 +95,7 @@ class FormPage extends CrudFormPage
                 : Fragment::make(array_filter([
                     $field instanceof HasTabModeContract && $field->isTabMode()
                         ? null
-                        : Heading::make($field->getLabel()),
+                        : Heading::make($field->getLabel())->escapeLabel($field->isEscapeLabel()),
 
                     $field->fillCast(
                         $item,
@@ -106,7 +106,7 @@ class FormPage extends CrudFormPage
             if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                 $tabs[] = Tab::make($field->getLabel(), [
                     $fieldComponent,
-                ])->canSee(static fn (): bool => $field->isSee());
+                ])->escapeLabel($field->isEscapeLabel())->canSee(static fn (): bool => $field->isSee());
 
                 continue;
             }

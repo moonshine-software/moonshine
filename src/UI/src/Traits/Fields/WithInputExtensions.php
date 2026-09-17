@@ -18,6 +18,44 @@ use MoonShine\UI\InputExtensions\InputPrefix;
 
 trait WithInputExtensions
 {
+    protected ?bool $escapePrefix = null;
+
+    protected ?bool $escapeSuffix = null;
+
+    public function escapePrefix(bool $escape = true): static
+    {
+        $this->escapePrefix = $escape;
+
+        return $this;
+    }
+
+    public function unescapePrefix(): static
+    {
+        return $this->escapePrefix(false);
+    }
+
+    public function isEscapePrefix(): bool
+    {
+        return $this->escapePrefix ?? $this->getCore()->getConfig()->isEscapePrefix();
+    }
+
+    public function escapeSuffix(bool $escape = true): static
+    {
+        $this->escapeSuffix = $escape;
+
+        return $this;
+    }
+
+    public function unescapeSuffix(): static
+    {
+        return $this->escapeSuffix(false);
+    }
+
+    public function isEscapeSuffix(): bool
+    {
+        return $this->escapeSuffix ?? $this->getCore()->getConfig()->isEscapeSuffix();
+    }
+
     /**
      * @var array<class-string<InputExtension>, InputExtension>
      */
@@ -28,7 +66,18 @@ trait WithInputExtensions
      */
     public function getExtensions(): Collection
     {
-        return new Collection($this->extensions);
+        return new Collection($this->extensions)->map(function (InputExtension $extension): InputExtension {
+            if ($extension instanceof InputPrefix || $extension instanceof InputExt) {
+                $escape = $extension instanceof InputPrefix ? $this->escapePrefix : $this->escapeSuffix;
+
+                if ($escape !== null) {
+                    $extension = clone $extension;
+                    $extension->escape($escape);
+                }
+            }
+
+            return $extension;
+        });
     }
 
     public function getExtensionsAttributes(): ComponentAttributesBagContract

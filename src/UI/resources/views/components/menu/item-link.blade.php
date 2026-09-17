@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'label' => '',
     'previewLabel' => '',
     'url' => 'javascript:void(0);',
@@ -27,7 +28,7 @@
         </div>
     @endif
 
-    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
+    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{!! $escapeLabel ? e($label) : $label !!}</span>
 
     @if($badge !== false)
         <span class="menu-badge">{{ $badge }}</span>

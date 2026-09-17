@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'label' => '',
     'previewLabel' => '',
     'icon' => '',
@@ -39,7 +40,7 @@
             </div>
         @endif
 
-        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
+        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{!! $escapeLabel ? e($label) : $label !!}</span>
         <span class="menu-arrow">
             <x-moonshine::icon
                 icon="chevron-down"

@@ -5,6 +5,8 @@
     'thumbnail' => '',
     'overlay' => false,
     'values' => [],
+    'escapeValueLabels' => [],
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'header' => null,
     'actions' => null,
 ])
@@ -52,7 +54,7 @@
             <tbody>
                 @foreach($values as $label => $value)
                     <tr>
-                        <th width="40%">{{ $label }}:</th>
+                        <th width="40%">{!! ($escapeValueLabels[$label] ?? $escapeLabel) ? e($label) : $label !!}:</th>
                         <td width="60%">{!! $value !!}</td>
                     </tr>
                 @endforeach

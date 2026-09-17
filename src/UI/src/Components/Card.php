@@ -18,6 +18,17 @@ final class Card extends MoonShineComponent
 
     protected string $view = 'moonshine::components.card';
 
+    /** @var array<array-key, bool> */
+    protected array $escapeValueLabels = [];
+
+    /** @param array<array-key, bool> $labels */
+    public function escapeValueLabels(array $labels): self
+    {
+        $this->escapeValueLabels = $labels;
+
+        return $this;
+    }
+
     /** @var Closure(self):((string|Stringable))|string */
     protected Closure|string $header = '';
 
@@ -118,6 +129,7 @@ final class Card extends MoonShineComponent
             'overlay' => $this->overlay,
             'subtitle' => value($this->subtitle, $this),
             'values' => value($this->values, $this),
+            'escapeValueLabels' => $this->escapeValueLabels,
             'slot' => $this->getSlot(),
             'header' => new ComponentSlot(
                 (string) value($this->header, $this),

@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'label' => '',
     'formName' => '',
     'fieldErrors' => [],
@@ -20,7 +21,7 @@
             :for-name="$formName"
         >
             {{ $beforeLabel && $insideLabel ? $slot : '' }}
-            {!! $label !!}
+            {!! $escapeLabel ? e($label) : $label !!}
             {{ !$beforeLabel && $insideLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

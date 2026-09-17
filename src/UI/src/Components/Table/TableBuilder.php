@@ -323,7 +323,7 @@ final class TableBuilder extends IterableComponent implements
                 foreach ($fields as $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
                     $title = Column::make([
-                        Div::make([FlexibleRender::make($field->getLabel())])->class('form-label'),
+                        Div::make([FlexibleRender::make($field->getLabelHtml())])->class('form-label'),
                     ])->columnSpan(\is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2);
 
                     $value = Column::make([
@@ -527,6 +527,7 @@ final class TableBuilder extends IterableComponent implements
                         $field->getSortQuery($this->getAsyncUrl()),
                         $field->getLabel(),
                     )
+                        ->escapeLabel($field->isEscapeLabel())
                         ->when(
                             $field->isSortActive(),
                             static fn (Link $link): Link => $link->icon(
@@ -538,7 +539,7 @@ final class TableBuilder extends IterableComponent implements
                             'class' => $field->isSortActive() ? 'text-primary' : '',
                             '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
                         ])
-                    : $field->getLabel();
+                    : $field->getLabelHtml();
 
                 $cells->push(
                     TableTh::make($thContent, $index)

@@ -1,8 +1,9 @@
 @props([
+    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
     'label' => '',
 ])
 <fieldset {{ $attributes }}>
-    <legend>{!! $label !!}</legend>
+    <legend>{!! $escapeLabel ? e($label) : $label !!}</legend>
 
     {{ $slot }}
 </fieldset>

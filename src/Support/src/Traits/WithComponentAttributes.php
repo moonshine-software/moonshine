@@ -246,7 +246,9 @@ trait WithComponentAttributes
 
         if ($if && $this instanceof FieldContract) {
             $this->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">');
+            $this->unescapeBeforeRender();
             $this->afterRender(fn (): string => '</template>');
+            $this->unescapeAfterRender();
 
             return $this;
         }
