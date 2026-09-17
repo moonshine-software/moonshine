@@ -9,13 +9,13 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\EventParams\ListRowEventParams;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Popover;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Fields\Hidden;
-use Stringable;
 
 final readonly class UpdateOnPreviewPopover
 {
@@ -33,14 +33,13 @@ final readonly class UpdateOnPreviewPopover
     public function __invoke(): Popover
     {
         $name = 'update-on-preview-' . spl_object_id($this->field);
-        /** @var scalar|Stringable|null $value */
-        $value = $this->field->toFormattedValue();
+        $value = Stringify::value($this->field->toFormattedValue());
 
         return Popover::make(
             '',
             (string)Link::make(
                 'javascript:void(0);',
-                (string) $value,
+                $value,
             )->icon('pencil'),
         )
             ->name($name)

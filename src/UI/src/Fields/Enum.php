@@ -40,6 +40,11 @@ class Enum extends Select implements CanBeEnum
         return $this;
     }
 
+    protected function resolveFormattedValue(): mixed
+    {
+        return $this->formattedValue ?? $this->toValue(withDefault: false);
+    }
+
     protected function resolveRawValue(): mixed
     {
         return $this->resolvePreview();
