@@ -217,6 +217,24 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $result;
     }
 
+    /**
+     * @param string[]|'*'|Closure(): (string[]|'*') $allowedExtensions
+     */
+    public function allowedExtensions(array|string|Closure $allowedExtensions): self
+    {
+        return $this->set('allowed_extensions', $allowedExtensions);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedExtensions(): array
+    {
+        $extensions = $this->get('allowed_extensions', []);
+
+        return $extensions === '*' ? ['*'] : $this->stringArrayValue($extensions);
+    }
+
     public function getUserAvatarsDir(): string
     {
         return $this->stringValue($this->get('user_avatars_dir', 'moonshine_users'));

@@ -43,6 +43,8 @@ class File extends Field implements FileableContract, RemovableContract
     {
         parent::booted();
 
+        $this->accept = $this->getAcceptExtension() ?: $this->accept;
+
         $this->refreshAfterApply();
     }
 
