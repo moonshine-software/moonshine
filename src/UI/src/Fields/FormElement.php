@@ -427,10 +427,14 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
             );
         }
 
+        return $this->resolveFormattedValue();
+    }
+
+    protected function resolveFormattedValue(): mixed
+    {
         return (new EnumToString(
             $this->formattedValue ?? $this->toValue(withDefault: false)
-        )
-        )->convert();
+        ))->convert();
     }
 
     protected function setRowIndex(int $index = 0): static
