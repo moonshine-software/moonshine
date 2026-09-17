@@ -227,6 +227,26 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $this->set('user_avatars_dir', $dir);
     }
 
+    public function escape(bool|Closure $escape = true): self
+    {
+        return $this->set('escape', $escape);
+    }
+
+    public function isEscape(): bool
+    {
+        return $this->boolValue($this->get('escape', true));
+    }
+
+    public function escapeOnApply(bool|Closure $escape = true): self
+    {
+        return $this->set('escape_on_apply', $escape);
+    }
+
+    public function isEscapeOnApply(): bool
+    {
+        return $this->boolValue($this->get('escape_on_apply', true));
+    }
+
     public function isUseMigrations(): bool
     {
         return $this->boolValue($this->get('use_migrations', true));
