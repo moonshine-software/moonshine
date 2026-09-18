@@ -10,6 +10,7 @@ use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\Crud\TestCommentCrudResource;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
+use MoonShine\Tests\Fixtures\Resources\TestReadOnlyResource;
 use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Components\When;
@@ -173,6 +174,32 @@ describe('without special fields', function () {
         )
             ->assertRedirect($this->itemResource->getIndexPageUrl());
     });
+
+    it('rejects deletion of a read-only resource without policies', function (string $route): void {
+        $resource = app(TestReadOnlyResource::class)
+            ->setTestModel(Item::class)
+            ->setTestPolicy(false);
+
+        $this->moonshineCore->resources([$resource]);
+
+        createItem(3, 0);
+
+        $ids = Item::query()->pluck('id')->all();
+
+        asAdmin()->delete(
+            $route === 'crud.destroy'
+                ? $resource->getRoute($route, $ids[0])
+                : $resource->getRoute($route),
+            ['ids' => $ids],
+        )->assertForbidden();
+
+        foreach ($ids as $id) {
+            $this->assertDatabaseHas('items', ['id' => $id]);
+        }
+    })->with([
+        'single delete' => 'crud.destroy',
+        'mass delete' => 'crud.massDelete',
+    ]);
 
     it('crud mass delete', function () {
         createItem(3);
