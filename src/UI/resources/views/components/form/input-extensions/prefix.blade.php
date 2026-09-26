@@ -4,5 +4,5 @@
 ])
 
 <span {{ $attributes->class(['expansion', 'expansion--prefix']) }}>
-    <x-moonshine::display-text :value="$value" :escape="$escapePrefix" type="prefix" />
+    <x-moonshine::display-text :value="$value" :escape="$escapePrefix" :type="\MoonShine\UI\Enums\DisplayTextType::PREFIX" />
 </span>

@@ -22,6 +22,7 @@ it('preserves global and local display preferences in direct Blade components', 
     }
 })->with([
     'fieldset' => ['<x-moonshine::form.fieldset :label="$markup" :escape-label="$local" />', 'escapeLabel'],
+    'hint text' => ['<x-moonshine::display-text :value="$markup" :escape="$local" :type="\MoonShine\UI\Enums\DisplayTextType::HINT" />', 'escapeHint'],
     'prefix' => ['<x-moonshine::form.input-extensions.prefix :value="$markup" :escape-prefix="$local" />', 'escapePrefix'],
     'suffix' => ['<x-moonshine::form.input-extensions.ext :value="$markup" :escape-suffix="$local" />', 'escapeSuffix'],
     'table' => ['<x-moonshine::table :columns="[\'name\' => $markup]" :values="[[\'name\' => \'Value\']]" :escape-label="$local" />', 'escapeLabel'],

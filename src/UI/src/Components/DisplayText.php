@@ -7,6 +7,7 @@ namespace MoonShine\UI\Components;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Stringify;
+use MoonShine\UI\Enums\DisplayTextType;
 
 /**
  * Prepares display text for both PHP and anonymous Blade components.
@@ -17,11 +18,10 @@ final class DisplayText extends MoonShineComponent
 {
     protected string $view = 'moonshine::components.flexible-render';
 
-    /** @param 'label'|'hint'|'prefix'|'suffix' $type */
     public function __construct(
         protected mixed $value = '',
         protected ?bool $escape = null,
-        protected string $type = 'label',
+        protected DisplayTextType $type = DisplayTextType::LABEL,
         protected mixed $fallback = '',
     ) {
         parent::__construct();
@@ -36,10 +36,10 @@ final class DisplayText extends MoonShineComponent
         $value = $value instanceof Htmlable ? $value : Stringify::value($value);
         $config = $this->getCore()->getConfig();
         $escape = $this->escape ?? match ($this->type) {
-            'hint' => $config->isEscapeHint(),
-            'prefix' => $config->isEscapePrefix(),
-            'suffix' => $config->isEscapeSuffix(),
-            default => $config->isEscapeLabel(),
+            DisplayTextType::LABEL => $config->isEscapeLabel(),
+            DisplayTextType::HINT => $config->isEscapeHint(),
+            DisplayTextType::PREFIX => $config->isEscapePrefix(),
+            DisplayTextType::SUFFIX => $config->isEscapeSuffix(),
         };
 
         return [
