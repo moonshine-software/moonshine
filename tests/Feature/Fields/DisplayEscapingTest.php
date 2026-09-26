@@ -231,6 +231,40 @@ it('does not double escape URL field previews', function () {
     expect((string) $field->preview())->toContain('a=1&amp;b=2')->not->toContain('&amp;amp;');
 });
 
+it('preserves text returned by preview link name callbacks', function (string $value): void {
+    $field = Text::make('Title', 'title')->setValue($value)
+        ->link('/test', name: static fn (string $preview): string => 'Open ' . $preview);
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $field->preview());
+
+    expect(trim($document->getElementsByTagName('a')->item(0)->textContent))->toBe('Open ' . $value);
+    expect($document->getElementsByTagName('b')->length)->toBe(0);
+})->with(['A & B', '<b>A & B</b>', 'A &amp; B', '"A" & \'B\'']);
+
+it('escapes markup introduced by preview link names according to label preferences', function (bool $callback, bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $field = Text::make('Title', 'title')->setValue('A & B')->escapeLabel($escape)
+        ->link('/test', name: $callback
+            ? static fn (string $preview): string => '<strong>Open ' . $preview . '</strong>'
+            : '<strong>Open A & B</strong>');
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $field->preview());
+
+    expect($document->getElementsByTagName('strong')->length)->toBe($escape ? 0 : 1);
+    expect(trim($document->getElementsByTagName('a')->item(0)->textContent))
+        ->toBe($escape ? '<strong>Open A & B</strong>' : 'Open A & B');
+})->with([true, false])->with([true, false]);
+
+it('preserves literal entities in static preview link names', function (): void {
+    $field = Text::make('Title', 'title')->setValue('Value')->link('/test', name: 'A &amp; B');
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $field->preview());
+
+    expect(trim($document->getElementsByTagName('a')->item(0)->textContent))->toBe('A &amp; B');
+});
+
 it('escapes footer menu labels by default', function () {
     $footer = MoonShine\UI\Components\Layout\Footer::make()->menu(['/help' => '<b>Help</b>']);
 

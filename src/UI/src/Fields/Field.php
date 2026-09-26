@@ -508,11 +508,16 @@ abstract class Field extends FormElement implements FieldContract
             $href = $this->getLinkValue($value);
             $label = $this->getLinkName($value);
 
+            if ($label && $this->isEscapeLabel()) {
+                // Name callbacks receive the preview, which may already contain escaped entities.
+                $label = e($label, doubleEncode: ! ($this->linkName instanceof Closure));
+            }
+
             $value = (string) Link::make(
                 href: $href,
                 label: $label ?: $value,
             )
-                ->escapeLabel($label ? $this->isEscapeLabel() : false)
+                ->unescapeLabel()
                 ->when(
                     ! $this->isWithoutIcon() && $this->getLinkIcon() !== null,
                     fn (Link $ctx): Link => $ctx->icon($this->getLinkIcon() ?? '')
