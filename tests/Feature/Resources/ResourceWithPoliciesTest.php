@@ -6,6 +6,7 @@ use MoonShine\Crud\Buttons\CreateButton;
 use MoonShine\Crud\Buttons\MassDeleteButton;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Tests\Fixtures\Models\Comment;
 use MoonShine\Tests\Fixtures\Models\Item;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
@@ -46,6 +47,32 @@ it('policies in index', function () {
     ;
 
 });
+
+it('mass delete respects the resource policy', function (bool $allowed): void {
+    if (! $allowed) {
+        $role = MoonshineUserRole::query()->create(['name' => 'Without delete permission']);
+
+        MoonshineUser::query()->where('id', 1)->update([
+            'moonshine_user_role_id' => $role->getKey(),
+        ]);
+    }
+
+    $response = asAdmin()->delete(
+        $this->resource->getRoute('crud.massDelete'),
+        ['ids' => [$this->item->getKey()]],
+    );
+
+    if ($allowed) {
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('items', ['id' => $this->item->getKey()]);
+    } else {
+        $response->assertForbidden();
+        $this->assertDatabaseHas('items', ['id' => $this->item->getKey()]);
+    }
+})->with([
+    'allowed' => true,
+    'denied' => false,
+]);
 
 it('policy in has many', function () {
     $comment = Comment::query()->first();
