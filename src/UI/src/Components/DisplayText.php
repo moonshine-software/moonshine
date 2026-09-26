@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Stringify;
 
 /**
@@ -28,7 +29,10 @@ final class DisplayText extends MoonShineComponent
 
     protected function viewData(): array
     {
-        $value = $this->value === '' ? $this->fallback : $this->value;
+        $value = $this->value;
+        if ($value === '' || ($value instanceof ComponentSlot && $value->isEmpty())) {
+            $value = $this->fallback;
+        }
         $value = $value instanceof Htmlable ? $value : Stringify::value($value);
         $config = $this->getCore()->getConfig();
         $escape = $this->escape ?? match ($this->type) {

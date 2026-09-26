@@ -14,7 +14,7 @@ use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label)
+ * @method static static make(Closure|string $label, ?bool $escapeLabel = null)
  */
 abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract
 {
@@ -24,8 +24,10 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
 
     protected Color $iconColor = Color::PRIMARY;
 
-    final public function __construct(Closure|string $label)
+    final public function __construct(Closure|string $label, ?bool $escapeLabel = null)
     {
+        $this->escapeLabel = $escapeLabel;
+
         parent::__construct();
 
         $this->setLabel($label);

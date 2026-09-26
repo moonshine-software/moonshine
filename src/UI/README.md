@@ -46,3 +46,5 @@ Relation `modalMode()` buttons inherit the field's label preference; `modifyButt
 Table column-selection toggles inherit each field's label preference. Handler buttons inherit the handler's label preference before `modifyButton` runs, so that callback can override it.
 
 Display escaping is prepared in PHP. Anonymous Blade views delegate text rendering to the internal `DisplayText` component, whose `viewData()` resolves the preference and prepares the content. Card value labels and tab labels are prepared alongside their raw data in `viewData()`. Templates do not read escaping configuration or select escaping policies. Raw labels and value keys remain available for serialization and attributes.
+
+Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`.

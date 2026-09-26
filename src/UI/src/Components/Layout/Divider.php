@@ -9,7 +9,7 @@ use MoonShine\UI\Components\MoonShineComponent;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label = '', bool $centered = false)
+ * @method static static make(Closure|string $label = '', bool $centered = false, ?bool $escapeLabel = null)
  */
 class Divider extends MoonShineComponent
 {
@@ -19,8 +19,11 @@ class Divider extends MoonShineComponent
 
     public function __construct(
         Closure|string $label = '',
-        protected bool $isCentered = false
+        protected bool $isCentered = false,
+        ?bool $escapeLabel = null,
     ) {
+        $this->escapeLabel = $escapeLabel;
+
         parent::__construct();
 
         $this->setLabel($label);

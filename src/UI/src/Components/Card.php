@@ -122,12 +122,18 @@ final class Card extends MoonShineComponent
      */
     protected function viewData(): array
     {
-        $values = value($this->values, $this);
-        $escapeLabel = $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
+        $customViewData = $this->getCustomViewData();
+        $values = \is_array($customViewData['values'] ?? null)
+            ? $customViewData['values']
+            : value($this->values, $this);
+        $escapeLabel = $customViewData['escapeLabel'] ?? $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
+        $escapeValueLabels = \is_array($customViewData['escapeValueLabels'] ?? null)
+            ? $customViewData['escapeValueLabels']
+            : $this->escapeValueLabels;
         $valueLabelsHtml = [];
 
         foreach ($values as $label => $value) {
-            $valueLabelsHtml[$label] = ($this->escapeValueLabels[$label] ?? $escapeLabel) ? e($label) : $label;
+            $valueLabelsHtml[$label] = ($escapeValueLabels[$label] ?? $escapeLabel) ? e($label) : $label;
         }
 
         return [
