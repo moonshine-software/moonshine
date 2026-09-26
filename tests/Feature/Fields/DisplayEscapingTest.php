@@ -165,6 +165,41 @@ it('escapes component labels and supports local opt out', function (string $kind
         ->not->toContain('&amp;lt;b');
 })->with(['button', 'link', 'collapse', 'box', 'heading', 'divider', 'fieldset', 'textarea', 'tab'])->with([true, false]);
 
+it('preserves field label preferences in column selection', function (bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $field = Text::make('<b>Column label</b>', 'name')->escapeLabel($escape);
+    $table = TableBuilder::make([$field], [['name' => 'Value']])->columnSelection();
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $table);
+    $xpath = new DOMXPath($document);
+    $labels = $xpath->query('//div[contains(@class, "dropdown-body--column-selection")]//label[contains(@class, "form-label")]');
+
+    expect($labels->length)->toBe(1);
+    expect($xpath->query('.//b', $labels->item(0))->length)->toBe($escape ? 0 : 1);
+    expect(trim($labels->item(0)->textContent))->toBe($escape ? '<b>Column label</b>' : 'Column label');
+    expect($xpath->query('//th/b')->length)->toBe($escape ? 0 : 2);
+})->with([true, false]);
+
+it('keeps serialized column labels raw and excludes unavailable selections', function (): void {
+    $table = TableBuilder::make([
+        Text::make('<b>Name</b>', 'name')->unescapeLabel(),
+        Text::make('Hidden', 'hidden')->canSee(static fn (): bool => false),
+        Text::make('Disabled', 'disabled')->columnSelection(false),
+        Text::make('', 'empty'),
+    ], [['name' => 'Value']])->columnSelection();
+
+    expect($table->toArray()['columns'])->toBe(['name' => '<b>Name</b>']);
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $table);
+    $xpath = new DOMXPath($document);
+    $inputs = $xpath->query('//input[@data-column-selection-checker]');
+
+    expect($inputs->length)->toBe(1);
+    expect($inputs->item(0)->getAttribute('data-column'))->toBe('name');
+});
+
 it('escapes plain labels passed directly to Blade components', function () {
     $html = $this->blade('<x-moonshine::form.wrapper :label="$label" />', ['label' => '<b>Direct</b>']);
 

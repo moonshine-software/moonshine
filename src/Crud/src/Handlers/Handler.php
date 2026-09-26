@@ -75,6 +75,8 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
 
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
+        $button->escapeLabel($this->isEscapeLabel());
+
         if (! \is_null($this->modifyButton)) {
             return \call_user_func($this->modifyButton, $button, $this);
         }
