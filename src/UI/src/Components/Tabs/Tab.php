@@ -124,6 +124,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         return [
             'icon' => $this->getIcon(6),
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'escapeLabel' => $this->isEscapeLabel(),
             'labelAttributes' => $this->labelAttributes,
             'id' => $this->getId(),

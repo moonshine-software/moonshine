@@ -44,3 +44,5 @@ These settings control display text. `getLabel()` and `getHint()` still return t
 Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. Preview link name callbacks still receive the prepared preview value, and its escaped entities are preserved when escaping the callback result. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
 
 Table column-selection toggles inherit each field's label preference. Handler buttons inherit the handler's label preference before `modifyButton` runs, so that callback can override it.
+
+Display escaping is prepared in PHP. Anonymous Blade views delegate text rendering to the internal `DisplayText` component, whose `viewData()` resolves the preference and prepares the content. Card value labels and tab labels are prepared alongside their raw data in `viewData()`. Templates do not read escaping configuration or select escaping policies. Raw labels and value keys remain available for serialization and attributes.

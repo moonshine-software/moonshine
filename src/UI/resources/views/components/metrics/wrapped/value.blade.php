@@ -1,5 +1,5 @@
 @props([
-    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
+    'escapeLabel' => null,
     'label' => '',
     'icon' => '',
     'columnSpanValue' => 12,

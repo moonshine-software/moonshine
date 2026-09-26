@@ -1,9 +1,9 @@
 @props([
-    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
+    'escapeLabel' => null,
     'label',
 ])
 <li {{ $attributes->class('menu-divider') }}>
     @if($label)
-        <span>{!! $escapeLabel ? e($label) : $label !!}</span>
+        <span><x-moonshine::display-text :value="$label" :escape="$escapeLabel" /></span>
     @endif
 </li>

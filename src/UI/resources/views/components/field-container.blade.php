@@ -1,6 +1,6 @@
 {{-- @internal --}}
 @props([
-    'escapeLabel' => moonshine()->getConfig()->isEscapeLabel(),
+    'escapeLabel' => null,
     'label' => '',
     'formName' => '',
     'errors' => [],

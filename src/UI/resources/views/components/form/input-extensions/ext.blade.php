@@ -1,5 +1,5 @@
 @props([
-    'escapeSuffix' => moonshine()->getConfig()->isEscapeSuffix(),
+    'escapeSuffix' => null,
     'value'
 ])
-<span {{ $attributes->class(['expansion']) }}>{!! $escapeSuffix ? e($value) : $value !!}</span>
+<span {{ $attributes->class(['expansion']) }}><x-moonshine::display-text :value="$value" :escape="$escapeSuffix" type="suffix" /></span>

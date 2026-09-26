@@ -1,2 +1,2 @@
-@props(['escapeHint' => moonshine()->getConfig()->isEscapeHint()])
-<div {{ $attributes->class(['form-hint']) }}>{!! $escapeHint ? e($slot ?? '') : ($slot ?? '') !!}</div>
+@props(['escapeHint' => null])
+<div {{ $attributes->class(['form-hint']) }}><x-moonshine::display-text :value="$slot ?? ''" :escape="$escapeHint" type="hint" /></div>
