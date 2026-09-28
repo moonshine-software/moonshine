@@ -42,6 +42,10 @@ return [
     'use_routes' => true,
     'use_profile' => true,
 
+    // Field escaping (individual field settings take precedence)
+    'escape' => true,
+    'escape_on_apply' => true,
+
     // Routing
     'domain' => env('MOONSHINE_DOMAIN'),
     'prefix' => env('MOONSHINE_ROUTE_PREFIX', 'admin'),
