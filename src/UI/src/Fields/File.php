@@ -36,14 +36,11 @@ class File extends Field implements FileableContract, RemovableContract
      */
     protected array $propertyAttributes = [
         'type',
-        'accept',
     ];
 
     protected function booted(): void
     {
         parent::booted();
-
-        $this->accept = $this->getAcceptExtension() ?: $this->accept;
 
         $this->refreshAfterApply();
     }
@@ -54,6 +51,16 @@ class File extends Field implements FileableContract, RemovableContract
         $this->setAttribute('accept', $value);
 
         return $this;
+    }
+
+    protected function systemViewData(): array
+    {
+        $data = parent::systemViewData();
+        $data['attributes'] = $this->getAttributes()->merge([
+            'accept' => $this->getAcceptExtension() ?: $this->accept,
+        ]);
+
+        return $data;
     }
 
     protected function resolveRawValue(): mixed

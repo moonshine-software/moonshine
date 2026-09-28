@@ -10,6 +10,7 @@ use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Image;
+use Symfony\Component\Process\Process;
 
 uses()->group('fields', 'file-field');
 
@@ -187,3 +188,70 @@ it('applies global extensions through the resource upload endpoint', function (s
     expect($multiple ? $item->files->all() : $item->file)->toBe($multiple ? [$path] : $path);
     Storage::disk('public')->assertExists($path);
 })->with(['file' => [File::class], 'image' => [Image::class]])->with([false, true]);
+
+it('constructs file fields in console mode without initializing Core', function (string $fieldClass): void {
+    $autoload = var_export(\dirname(__DIR__, 3) . '/vendor/autoload.php', true);
+    $class = var_export($fieldClass, true);
+    $process = new Process([PHP_BINARY, '-r', <<<PHP
+        require {$autoload};
+        \$class = {$class};
+        \$class::consoleMode();
+        \$field = \$class::make('Upload')->allowedExtensions(['png']);
+        echo \$field->getColumn() . ' ' . \$field->getAttribute('accept');
+        PHP]);
+
+    $process->mustRun();
+
+    expect($process->getOutput())->toBe('upload .png');
+})->with([File::class, Image::class]);
+
+it('uses the current deferred extensions for rendering and serialization', function (string $fieldClass, bool $serialize): void {
+    $extensions = ['gif'];
+    $this->moonshineCore->getConfig()->allowedExtensions(function () use (&$extensions): array {
+        return $extensions;
+    });
+    $field = $fieldClass::make('Upload');
+
+    foreach ([['png'], ['jpg'], []] as $extensions) {
+        $field->flushRenderCache();
+        $expected = $extensions === [] ? '*/*' : '.' . $extensions[0];
+        $output = $serialize ? (string) $field->toArray()['attributes'] : (string) $field->render();
+
+        expect($output)->toContain('accept="' . $expected . '"')
+            ->and($field->getAllowedExtensions())->toBe($extensions);
+    }
+
+    $extensions = ['png'];
+    $upload = UploadedFile::fake()->image('photo.png');
+    expect(app(FileModelApply::class)->store($field, $upload))->toBe($upload->hashName());
+    Storage::disk('public')->assertExists($upload->hashName());
+})->with([File::class, Image::class])->with([false, true]);
+
+it('preserves explicit accept attributes when global extensions change', function (string $fieldClass, string $method): void {
+    $this->moonshineCore->getConfig()->allowedExtensions(['gif']);
+    $field = $fieldClass::make('Upload');
+
+    match ($method) {
+        'accept' => $field->accept('*/*'),
+        'attribute' => $field->setAttribute('accept', '*/*'),
+        'custom attributes' => $field->customAttributes(['accept' => '*/*']),
+        'local empty list' => $field->allowedExtensions([]),
+        'local wildcard' => $field->allowedExtensions('*'),
+    };
+
+    $this->moonshineCore->getConfig()->allowedExtensions(['png']);
+
+    expect((string) $field->render())->toContain('accept="*/*"')
+        ->and((string) $field->toArray()['attributes'])->toContain('accept="*/*"');
+})->with([File::class, Image::class])->with([
+    'accept', 'attribute', 'custom attributes', 'local empty list', 'local wildcard',
+]);
+
+it('preserves a local extension list when global extensions change', function (string $fieldClass): void {
+    $this->moonshineCore->getConfig()->allowedExtensions(['gif']);
+    $field = $fieldClass::make('Upload')->allowedExtensions(['pdf']);
+    $this->moonshineCore->getConfig()->allowedExtensions(['png']);
+
+    expect((string) $field->render())->toContain('accept=".pdf"')
+        ->and($field->getAllowedExtensions())->toBe(['pdf']);
+})->with([File::class, Image::class]);
