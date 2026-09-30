@@ -39,7 +39,7 @@ trait WithEscapedValue
      */
     public function escapeOnApply(?Closure $condition = null): static
     {
-        $this->escapeOnApply = $condition;
+        $this->escapeOnApply = $condition ?? static fn (): bool => true;
 
         return $this;
     }
@@ -47,7 +47,7 @@ trait WithEscapedValue
     public function isUnescapeOnApply(): bool
     {
         if ($this->escapeOnApply === null) {
-            return false;
+            return $this->isUnescape();
         }
 
         return ! \call_user_func($this->escapeOnApply, $this);
