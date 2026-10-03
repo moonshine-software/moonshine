@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Blade;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Tabs;
@@ -22,7 +23,7 @@ it('preserves global and local display preferences in direct Blade components', 
     }
 })->with([
     'fieldset' => ['<x-moonshine::form.fieldset :label="$markup" :escape-label="$local" />', 'escapeLabel'],
-    'hint text' => ['<x-moonshine::display-text :value="$markup" :escape="$local" :type="\MoonShine\UI\Enums\DisplayTextType::HINT" />', 'escapeHint'],
+    'hint text' => ['<x-moonshine::display-text :value="$markup" :escape="$local" :display-type="\MoonShine\UI\Enums\DisplayTextType::HINT" />', 'escapeHint'],
     'prefix' => ['<x-moonshine::form.input-extensions.prefix :value="$markup" :escape-prefix="$local" />', 'escapePrefix'],
     'suffix' => ['<x-moonshine::form.input-extensions.ext :value="$markup" :escape-suffix="$local" />', 'escapeSuffix'],
     'table' => ['<x-moonshine::table :columns="[\'name\' => $markup]" :values="[[\'name\' => \'Value\']]" :escape-label="$local" />', 'escapeLabel'],
@@ -111,3 +112,17 @@ it('preserves raw tab labels in serialized state and prepares their display sepa
     expect($data['label'])->toBe($label);
     expect((string) Tabs::make([$tab]))->toContain($escape ? '&lt;b&gt;A &amp;amp; B&lt;/b&gt;' : $label);
 })->with([true, false]);
+
+it('keeps HTML button types separate from display text types', function (string $type, bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $label = '<b>A & B</b>';
+    $expected = $escape ? '&lt;b&gt;A &amp; B&lt;/b&gt;' : $label;
+
+    expect((string) ActionButton::make($label)->customAttributes(['type' => $type])->escapeLabel($escape))
+        ->toContain('type="' . $type . '"', $expected);
+    expect(Blade::render('<x-moonshine::action-button :label="$label" :type="$type" :escape-label="$escape" />', [
+        'label' => $label,
+        'type' => $type,
+        'escape' => $escape,
+    ]))->toContain('type="' . $type . '"', $expected);
+})->with(['submit', 'button', 'reset'])->with([true, false]);

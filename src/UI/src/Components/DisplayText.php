@@ -21,7 +21,7 @@ final class DisplayText extends MoonShineComponent
     public function __construct(
         protected mixed $value = '',
         protected ?bool $escape = null,
-        protected DisplayTextType $type = DisplayTextType::LABEL,
+        protected DisplayTextType $displayType = DisplayTextType::LABEL,
         protected mixed $fallback = '',
     ) {
         parent::__construct();
@@ -35,7 +35,7 @@ final class DisplayText extends MoonShineComponent
         }
         $value = $value instanceof Htmlable ? $value : Stringify::value($value);
         $config = $this->getCore()->getConfig();
-        $escape = $this->escape ?? match ($this->type) {
+        $escape = $this->escape ?? match ($this->displayType) {
             DisplayTextType::LABEL => $config->isEscapeLabel(),
             DisplayTextType::HINT => $config->isEscapeHint(),
             DisplayTextType::PREFIX => $config->isEscapePrefix(),
