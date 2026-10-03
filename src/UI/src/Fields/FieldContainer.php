@@ -40,6 +40,7 @@ final class FieldContainer extends MoonShineComponent
                 $this->field->getLinkValue(),
                 $this->field->getLinkName(),
             )
+                ->escapeLabel($this->field->isEscapeLabel())
                 ->customAttributes([
                     'target' => $this->field->isLinkBlank() ? '_blank' : '_self',
                 ])
@@ -56,21 +57,30 @@ final class FieldContainer extends MoonShineComponent
                 $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
                     'slot' => $hint,
+                    'escapeHint' => $this->field->isEscapeHint(),
                 ])->render()
             );
         }
+    }
+
+    private function renderDecoration(Renderable|string $content, bool $escape): ComponentSlot
+    {
+        return new ComponentSlot(
+            $escape && \is_string($content) ? e($content) : $this->stringifySlotContent($content),
+        );
     }
 
     protected function viewData(): array
     {
         return [
             'label' => $this->field->getLabel(),
+            'escapeLabel' => $this->field->isEscapeLabel(),
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
-            'before' => new ComponentSlot($this->stringifySlotContent($this->field->getBeforeRender())),
-            'after' => new ComponentSlot($this->stringifySlotContent($this->field->getAfterRender())),
+            'before' => $this->renderDecoration($this->field->getBeforeRender(), $this->field->isEscapeBeforeRender()),
+            'after' => $this->renderDecoration($this->field->getAfterRender(), $this->field->isEscapeAfterRender()),
             'slot' => new ComponentSlot($this->stringifySlotContent(value($this->slot))),
 
             'beforeInner' => $this->afterInner,

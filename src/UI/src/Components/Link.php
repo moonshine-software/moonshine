@@ -14,7 +14,7 @@ use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $href, Closure|string $label = '')
+ * @method static static make(Closure|string $href, Closure|string $label = '', ?bool $escapeLabel = null)
  */
 final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract, WithBadgeContract
 {
@@ -32,7 +32,10 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
     public function __construct(
         protected Closure|string $href,
         Closure|string $label = '',
+        ?bool $escapeLabel = null,
     ) {
+        $this->escapeLabel = $escapeLabel;
+
         parent::__construct();
 
         $this->setLabel($label);
@@ -86,9 +89,13 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
      */
     protected function viewData(): array
     {
+        $label = $this->getLabel() ?: value($this->href, $this);
+
         return [
+            'label' => $label,
+            'escapeLabel' => $this->isEscapeLabel(),
             'slot' => new ComponentSlot(
-                $this->getLabel() ?: value($this->href, $this),
+                $this->isEscapeLabel() ? e($label) : $label,
             ),
             'icon' => new ComponentSlot(
                 $this->getIcon(4),

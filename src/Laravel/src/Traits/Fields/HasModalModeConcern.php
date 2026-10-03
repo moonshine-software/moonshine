@@ -59,7 +59,7 @@ trait HasModalModeConcern
             content: (string) Fragment::make($components)->name($fragmentName),
             name: "modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}",
             builder: $this->modifyModalModeModal ?? static fn (ModalContract $modal): ModalContract => $modal->wide()
-        );
+        )->escapeLabel($this->isEscapeLabel());
 
         if (! \is_null($this->modifyModalModeButton)) {
             $button = value($this->modifyModalModeButton, $button, $this);

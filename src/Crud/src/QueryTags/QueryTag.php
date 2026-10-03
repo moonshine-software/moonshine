@@ -135,6 +135,7 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
             $this->getLabel(),
             $page->getRoute([$this->prefix . 'query-tag' => $this->getUri()])
         )
+            ->escapeLabel($this->isEscapeLabel())
             ->name("query-tag-{$this->getUri()}-button")
             ->showInLine()
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())

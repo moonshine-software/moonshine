@@ -231,6 +231,9 @@ final class CardsBuilder extends IterableComponent implements
             $buttons = $this->getButtons($casted);
 
             return Card::make(...$this->getMapper($data, $fields, $index))
+                ->escapeValueLabels($fields->mapWithKeys(static fn (FieldContract $field): array => [
+                    $field->getLabel() => $field->isEscapeLabel(),
+                ])->all())
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))

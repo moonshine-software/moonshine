@@ -394,7 +394,7 @@ class RelationRepeater extends ModelRelationField implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            FlexibleRender::make($field->getLabel()),
+                            FlexibleRender::make($field->getLabelHtml()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
                     value: $reorderable ? function (FieldContract $field, ComponentContract $default): ComponentContract {

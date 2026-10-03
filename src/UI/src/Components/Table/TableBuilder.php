@@ -323,7 +323,7 @@ final class TableBuilder extends IterableComponent implements
                 foreach ($fields as $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
                     $title = Column::make([
-                        Div::make([FlexibleRender::make($field->getLabel())])->class('form-label'),
+                        Div::make([FlexibleRender::make($field->getLabelHtml())])->class('form-label'),
                     ])->columnSpan(\is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2);
 
                     $value = Column::make([
@@ -527,6 +527,7 @@ final class TableBuilder extends IterableComponent implements
                         $field->getSortQuery($this->getAsyncUrl()),
                         $field->getLabel(),
                     )
+                        ->escapeLabel($field->isEscapeLabel())
                         ->when(
                             $field->isSortActive(),
                             static fn (Link $link): Link => $link->icon(
@@ -538,7 +539,7 @@ final class TableBuilder extends IterableComponent implements
                             'class' => $field->isSortActive() ? 'text-primary' : '',
                             '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
                         ])
-                    : $field->getLabel();
+                    : $field->getLabelHtml();
 
                 $cells->push(
                     TableTh::make($thContent, $index)
@@ -679,7 +680,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  array<string, string>  $columns
+     * @param  array<string, array{label: string, escapeLabel: bool}>  $columns
      */
     private function getTopRight(array $columns = []): Components
     {
@@ -688,12 +689,14 @@ final class TableBuilder extends IterableComponent implements
         if ($this->isColumnSelection()) {
             $selectionFields = [];
 
-            foreach ($columns as $column => $label) {
-                $selectionFields[] = Switcher::make($label, $column)->customAttributes([
-                    'data-column-selection-checker' => true,
-                    'data-column' => $column,
-                    '@change' => "columnSelection()",
-                ]);
+            foreach ($columns as $column => $options) {
+                $selectionFields[] = Switcher::make($options['label'], $column)
+                    ->escapeLabel($options['escapeLabel'])
+                    ->customAttributes([
+                        'data-column-selection-checker' => true,
+                        'data-column' => $column,
+                        '@change' => "columnSelection()",
+                    ]);
             }
 
             $components[] = Dropdown::make()
@@ -755,17 +758,21 @@ final class TableBuilder extends IterableComponent implements
      */
     protected function viewData(): array
     {
-        /** @var array<string, string> $columns */
-        $columns = $this->getFields()->onlyVisible()->flatMap(
-            static fn (FieldContract $field): array => $field->isColumnSelection()
-                ? [$field->getIdentity() => $field->getLabel()]
-                : [],
-        )->filter()->all();
+        $columns = new Collection($this->getFields()->onlyVisible()->all())
+            ->filter(static fn (FieldContract $field): bool => $field->isColumnSelection())
+            ->mapWithKeys(static fn (FieldContract $field): array => [
+                $field->getIdentity() => [
+                    'label' => $field->getLabel(),
+                    'escapeLabel' => $field->isEscapeLabel(),
+                ],
+            ])
+            ->filter(static fn (array $column): bool => (bool) $column['label'])
+            ->all();
 
         return [
             'rows' => $this->getRows(),
             'headRows' => $this->getHeadRows(),
-            'columns' => $columns,
+            'columns' => array_map(static fn (array $column): string => $column['label'], $columns),
             'footRows' => $this->getFootRows(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),

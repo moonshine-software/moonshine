@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => null,
     'label' => '',
     'icon' => '',
     'columnSpanValue' => 12,
@@ -16,6 +17,7 @@
         <x-moonshine::metrics.value
             :attributes="$attributes"
             :title="$label"
+            :escape-label="$escapeLabel"
             :icon="$icon"
             :progress="$isProgress"
             :value="$valueResult"

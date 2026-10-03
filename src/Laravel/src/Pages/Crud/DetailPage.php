@@ -103,14 +103,14 @@ class DetailPage extends CrudDetailPage
                     ! $field->toValue() && $field instanceof HasOne
                         ? $field->getFormModalButton(__('moonshine::ui.add'), $redirectBack)
                         : null,
-                ]));
+                ]))->escapeLabel($field->isEscapeLabel());
 
                 if ($field instanceof HasTabModeContract && $field->isTabMode()) {
                     $tabs[] = Tab::make($field->getLabel(), [
                         $field->isToOne() ? $toOneRenderer($field, $this->getResourceOrFail()->getDetailPageUrl(
                             $this->getResourceOrFail()->getItemID() ?? '',
                         )) : $field,
-                    ])->canSee(static fn (): bool => $field->isSee());
+                    ])->escapeLabel($field->isEscapeLabel())->canSee(static fn (): bool => $field->isSee());
 
                     continue;
                 }
@@ -119,7 +119,7 @@ class DetailPage extends CrudDetailPage
 
                 $blocks = $field->isToOne()
                     ? [$toOneRenderer($field)]
-                    : [Heading::make($field->getLabel()), $field];
+                    : [Heading::make($field->getLabel())->escapeLabel($field->isEscapeLabel()), $field];
 
                 $components[] = Fragment::make($blocks)
                     ->canSee(static fn (): bool => $field->isSee())

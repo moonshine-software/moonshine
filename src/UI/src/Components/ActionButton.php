@@ -32,7 +32,7 @@ use MoonShine\UI\Traits\WithLabel;
  * @template TData of mixed = mixed
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
- * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null)
+ * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null, ?bool $escapeLabel = null)
  *
  * @implements ActionButtonContract<TData, TWrapper, ModalContract, OffCanvasContract>
  */
@@ -91,7 +91,10 @@ class ActionButton extends MoonShineComponent implements
         Closure|string $label = '',
         protected Closure|string $url = 'javascript:void(0);',
         protected ?DataWrapperContract $data = null,
+        ?bool $escapeLabel = null,
     ) {
+        $this->escapeLabel = $escapeLabel;
+
         parent::__construct();
 
         $this->setLabel($label);
@@ -591,6 +594,7 @@ class ActionButton extends MoonShineComponent implements
             'hasComponent' => $this->hasComponent(),
             'component' => $this->hasComponent() ? $this->getComponent() : '',
             'label' => $this->getLabel(),
+            'escapeLabel' => $this->isEscapeLabel(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(),
             'badge' => $this->hasBadge() ? $this->getBadge() : false,
