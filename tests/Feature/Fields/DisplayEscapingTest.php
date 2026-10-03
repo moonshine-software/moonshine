@@ -84,10 +84,18 @@ it('can restore local escaping after disabling it', function (string $part) {
 
 it('loads every escaping flag from the config repository', function (string $part) {
     $key = Illuminate\Support\Str::snake($part);
-    $config = new MoonShineConfigurator(new Repository(['moonshine' => ["escape_$key" => false]]));
+    $flags = array_fill_keys(['label', 'hint', 'prefix', 'suffix', 'before_render', 'after_render'], false);
+    $config = new MoonShineConfigurator(new Repository(['moonshine' => ['escapes' => $flags]]));
 
     expect($config->{"isEscape$part"}())->toBeFalse();
     $config->{"escape$part"}();
+    expect($config->{"isEscape$part"}())->toBeTrue();
+    expect($config->get("escapes.$key"))->toBeTrue();
+})->with('display parts');
+
+it('keeps omitted nested escaping settings enabled', function (string $part) {
+    $config = new MoonShineConfigurator(new Repository(['moonshine' => ['escapes' => []]]));
+
     expect($config->{"isEscape$part"}())->toBeTrue();
 })->with('display parts');
 

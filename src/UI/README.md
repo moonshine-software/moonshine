@@ -29,12 +29,14 @@ Each `unescape…()` method has an `escape…(bool $escape = true)` counterpart.
 In Laravel, configure the defaults in `config/moonshine.php`:
 
 ```php
-'escape_label' => true,
-'escape_hint' => true,
-'escape_prefix' => true,
-'escape_suffix' => true,
-'escape_before_render' => true,
-'escape_after_render' => true,
+'escapes' => [
+    'label' => true,
+    'hint' => true,
+    'prefix' => true,
+    'suffix' => true,
+    'before_render' => true,
+    'after_render' => true,
+],
 ```
 
 The corresponding `MoonShineConfigurator` methods are `escapeLabel()`, `escapeHint()`, `escapePrefix()`, `escapeSuffix()`, `escapeBeforeRender()` and `escapeAfterRender()`. Pass `false` to disable a default.
