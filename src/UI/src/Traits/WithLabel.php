@@ -5,34 +5,17 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use MoonShine\Support\DisplayHtml;
 
 trait WithLabel
 {
-    protected ?bool $escapeLabel = null;
+    use WithLabelEscaping;
 
-    public function escapeLabel(bool $escape = true): static
+    public function getLabelHtml(): Htmlable
     {
-        $this->escapeLabel = $escape;
-
-        return $this;
-    }
-
-    public function unescapeLabel(): static
-    {
-        return $this->escapeLabel(false);
-    }
-
-    public function isEscapeLabel(): bool
-    {
-        return $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
-    }
-
-    public function getLabelHtml(): string
-    {
-        $value = $this->getLabel();
-
-        return $this->isEscapeLabel() ? e($value) : $value;
+        return DisplayHtml::make($this->getLabel(), $this->isEscapeLabel());
     }
 
     /** @var (Closure(static): string)|string */

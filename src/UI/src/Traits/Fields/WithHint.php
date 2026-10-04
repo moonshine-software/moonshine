@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits\Fields;
 
+use Illuminate\Contracts\Support\Htmlable;
+use MoonShine\Support\DisplayHtml;
+
 trait WithHint
 {
     protected ?bool $escapeHint = null;
@@ -37,5 +40,10 @@ trait WithHint
     public function getHint(): string
     {
         return $this->hint;
+    }
+
+    public function getHintHtml(): Htmlable
+    {
+        return DisplayHtml::make($this->getHint(), $this->isEscapeHint());
     }
 }

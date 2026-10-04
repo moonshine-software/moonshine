@@ -32,4 +32,10 @@ interface OffCanvasContract extends ComponentContract
     public function toggleEvents(array $events, bool $onlyOpening = false, bool $onlyClosing = false): self;
 
     public function alwaysLoad(): self;
+
+    public function escapeTitle(bool $escape = true): static;
+
+    public function unescapeTitle(): static;
+
+    public function isEscapeTitle(): bool;
 }

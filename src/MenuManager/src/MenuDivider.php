@@ -29,7 +29,7 @@ class MenuDivider extends MenuElement
     {
         return [
             'label' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
         ];
     }
 }

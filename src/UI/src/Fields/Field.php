@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\PageContract;
@@ -88,10 +89,10 @@ abstract class Field extends FormElement implements FieldContract
     /** @var null|(Closure(mixed, static): (ComponentContract|FieldContract|Renderable|string)) */
     protected ?Closure $renderCallback = null;
 
-    /** @var null|(Closure(static): (Renderable|string)) */
+    /** @var null|(Closure(static): (Renderable|Htmlable|string)) */
     protected ?Closure $beforeRender = null;
 
-    /** @var null|(Closure(static): (Renderable|string)) */
+    /** @var null|(Closure(static): (Renderable|Htmlable|string)) */
     protected ?Closure $afterRender = null;
 
     protected bool $withWrapper = true;
@@ -369,7 +370,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(static $ctx): (Renderable|string)  $callback
+     * @param  Closure(static $ctx): (Renderable|Htmlable|string)  $callback
      */
     public function beforeRender(Closure $callback): static
     {
@@ -378,7 +379,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
-    public function getBeforeRender(): Renderable|string
+    public function getBeforeRender(): Renderable|Htmlable|string
     {
         return \is_null($this->beforeRender)
             ? ''
@@ -386,7 +387,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(static $ctx): (Renderable|string)  $callback
+     * @param  Closure(static $ctx): (Renderable|Htmlable|string)  $callback
      */
     public function afterRender(Closure $callback): static
     {
@@ -395,7 +396,7 @@ abstract class Field extends FormElement implements FieldContract
         return $this;
     }
 
-    public function getAfterRender(): Renderable|string
+    public function getAfterRender(): Renderable|Htmlable|string
     {
         return \is_null($this->afterRender)
             ? ''
@@ -508,7 +509,7 @@ abstract class Field extends FormElement implements FieldContract
             $href = $this->getLinkValue($value);
             $label = $this->getLinkName($value);
 
-            if ($label && $this->isEscapeLabel()) {
+            if ($label && $this->isEscapeLinkName()) {
                 // Name callbacks receive the preview, which may already contain escaped entities.
                 $label = e($label, doubleEncode: ! ($this->linkName instanceof Closure));
             }

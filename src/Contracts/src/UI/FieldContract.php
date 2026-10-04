@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Contracts\UI;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -106,7 +107,7 @@ interface FieldContract extends
 
     public function beforeRender(Closure $callback): static;
 
-    public function getBeforeRender(): Renderable|string;
+    public function getBeforeRender(): Renderable|Htmlable|string;
 
     public function escapeBeforeRender(bool $escape = true): static;
 
@@ -116,7 +117,7 @@ interface FieldContract extends
 
     public function afterRender(Closure $callback): static;
 
-    public function getAfterRender(): Renderable|string;
+    public function getAfterRender(): Renderable|Htmlable|string;
 
     public function escapeAfterRender(bool $escape = true): static;
 

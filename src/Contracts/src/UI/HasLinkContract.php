@@ -20,6 +20,12 @@ interface HasLinkContract
 
     public function isWithoutIcon(): bool;
 
+    public function escapeLinkName(bool $escape = true): static;
+
+    public function unescapeLinkName(): static;
+
+    public function isEscapeLinkName(): bool;
+
     /**
      * @param  string|(Closure(string $value, static $ctx): string)  $link
      * @param  string|(Closure(string $value, static $ctx): string)  $name

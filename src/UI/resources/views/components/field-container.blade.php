@@ -1,7 +1,7 @@
 {{-- @internal --}}
 @props([
-    'escapeLabel' => null,
     'label' => '',
+    'labelHtml' => null,
     'formName' => '',
     'errors' => [],
     'isBeforeLabel' => false,
@@ -14,7 +14,8 @@
 {!! $before !!}
 
 <x-moonshine::form.wrapper
-    :label="$label" :escape-label="$escapeLabel"
+    :label="$label"
+    :label-html="$labelHtml"
     :form-name="$formName"
     :attributes="$attributes"
     :beforeLabel="$isBeforeLabel"

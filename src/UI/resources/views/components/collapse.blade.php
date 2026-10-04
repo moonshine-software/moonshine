@@ -6,6 +6,7 @@
     'button' => null,
     'icon' => null,
     'title',
+    'labelHtml' => null,
 ])
 <div
     {{ $attributes->class(['accordion']) }}
@@ -26,7 +27,11 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                <x-moonshine::display-text :value="$title" :escape="$escapeLabel" />
+                @if(! is_null($labelHtml))
+                    {{ $labelHtml }}
+                @else
+                    <x-moonshine::display-text :value="$title" :escape="$escapeLabel" />
+                @endif
             </div>
 
             @if($button ?? false)

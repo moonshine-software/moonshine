@@ -22,13 +22,13 @@ trait HasModalModeConcern
     /** @var (Closure(ActionButtonContract, static): ActionButtonContract)|null */
     protected ?Closure $modifyModalModeButton = null;
 
-    /** @var Closure(ModalContract):ModalContract|null */
+    /** @var (Closure(ModalContract, ActionButtonContract): ModalContract)|null */
     protected ?Closure $modifyModalModeModal = null;
 
     /**
      * @param (Closure(static): (bool|null))|bool|null $condition
      * @param (Closure(ActionButtonContract, static): ActionButtonContract)|null $modifyButton
-     * @param Closure(ModalContract):ModalContract|null $modifyModal
+     * @param (Closure(ModalContract, ActionButtonContract): ModalContract)|null $modifyModal
      */
     public function modalMode(
         Closure|bool|null $condition = null,
@@ -58,7 +58,14 @@ trait HasModalModeConcern
             title: $label,
             content: (string) Fragment::make($components)->name($fragmentName),
             name: "modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}",
-            builder: $this->modifyModalModeModal ?? static fn (ModalContract $modal): ModalContract => $modal->wide()
+            // The modal title is the field label, so it shares the field's label preference.
+            builder: function (ModalContract $modal, ActionButtonContract $button): ModalContract {
+                $modal->escapeTitle($this->isEscapeLabel());
+
+                return \is_null($this->modifyModalModeModal)
+                    ? $modal->wide()
+                    : \call_user_func($this->modifyModalModeModal, $modal, $button);
+            }
         )->escapeLabel($this->isEscapeLabel());
 
         if (! \is_null($this->modifyModalModeButton)) {

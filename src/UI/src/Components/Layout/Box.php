@@ -73,7 +73,7 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
     {
         return [
             'label' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'dark' => $this->isDark(),
             'icon' => new ComponentSlot(
                 $this->getIcon(6)

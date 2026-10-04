@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\FieldContract;
@@ -40,7 +41,7 @@ final class FieldContainer extends MoonShineComponent
                 $this->field->getLinkValue(),
                 $this->field->getLinkName(),
             )
-                ->escapeLabel($this->field->isEscapeLabel())
+                ->escapeLabel($this->field->isEscapeLinkName())
                 ->customAttributes([
                     'target' => $this->field->isLinkBlank() ? '_blank' : '_self',
                 ])
@@ -52,29 +53,30 @@ final class FieldContainer extends MoonShineComponent
             $this->beforeInner = new ComponentSlot((string) $link);
         }
 
-        if ($hint = $this->field->getHint()) {
+        if ($this->field->getHint() !== '') {
             $this->afterInner = new ComponentSlot(
                 $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
-                    'slot' => $hint,
-                    'escapeHint' => $this->field->isEscapeHint(),
+                    'hintHtml' => $this->field->getHintHtml(),
                 ])->render()
             );
         }
     }
 
-    private function renderDecoration(Renderable|string $content, bool $escape): ComponentSlot
+    private function renderDecoration(Renderable|Htmlable|string $content, bool $escape): ComponentSlot
     {
-        return new ComponentSlot(
-            $escape && \is_string($content) ? e($content) : $this->stringifySlotContent($content),
-        );
+        return new ComponentSlot(match (true) {
+            $content instanceof Htmlable => $content->toHtml(),
+            $escape && \is_string($content) => e($content),
+            default => $this->stringifySlotContent($content),
+        });
     }
 
     protected function viewData(): array
     {
         return [
             'label' => $this->field->getLabel(),
-            'escapeLabel' => $this->field->isEscapeLabel(),
+            'labelHtml' => $this->field->getLabelHtml(),
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),

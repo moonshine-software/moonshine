@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Blade;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Heading;
+use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Components\OffCanvas;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
 
@@ -126,3 +128,58 @@ it('keeps HTML button types separate from display text types', function (string 
         'escape' => $escape,
     ]))->toContain('type="' . $type . '"', $expected);
 })->with(['submit', 'button', 'reset'])->with([true, false]);
+
+it('escapes Blade slots only when escaping is requested explicitly', function (string $template, ?bool $escape): void {
+    $html = Blade::render($template, ['escape' => $escape]);
+
+    if ($escape === true) {
+        expect($html)->toContain('&lt;strong&gt;Slot&lt;/strong&gt;')->not->toContain('<strong>Slot</strong>');
+    } else {
+        expect($html)->toContain('<strong>Slot</strong>');
+    }
+})->with([
+    'hint' => '<x-moonshine::form.hint :escape-hint="$escape"><strong>Slot</strong></x-moonshine::form.hint>',
+    'link button' => '<x-moonshine::link-button href="#" :escape-label="$escape"><strong>Slot</strong></x-moonshine::link-button>',
+    'native link' => '<x-moonshine::link-native href="#" :escape-label="$escape"><strong>Slot</strong></x-moonshine::link-native>',
+])->with([true, false, null]);
+
+it('serializes prepared labels as strings next to raw labels', function (): void {
+    $data = json_decode(json_encode(Heading::make('<b>A & B</b>'), JSON_THROW_ON_ERROR), true, flags: JSON_THROW_ON_ERROR);
+
+    expect($data['label'])->toBe('<b>A & B</b>')
+        ->and($data['labelHtml'])->toBe('&lt;b&gt;A &amp; B&lt;/b&gt;');
+});
+
+it('renders modal and off-canvas titles according to title preferences', function (string $component, ?bool $global, ?bool $local, bool $escaped): void {
+    if ($global !== null) {
+        moonshine()->getConfig()->escapeLabel($global);
+    }
+
+    $title = '<b>Title</b>';
+    $element = $component::make($title);
+
+    if ($local !== null) {
+        $element->escapeTitle($local);
+    }
+
+    expect((string) $element)->toContain($escaped ? '&lt;b&gt;Title&lt;/b&gt;' : $title);
+})->with([Modal::class, OffCanvas::class])->with([
+    'default' => [null, null, true],
+    'global disabled' => [false, null, false],
+    'local enabled' => [false, true, true],
+    'local disabled' => [true, false, false],
+]);
+
+it('derives modal and off-canvas titles from the button label preference', function (string $method, bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $button = ActionButton::make('<b>Open</b>')->escapeLabel($escape)->{$method}();
+    $component = $method === 'inModal' ? $button->getModal() : $button->getOffCanvas();
+
+    expect((string) $component)->toContain($escape ? '&lt;b&gt;Open&lt;/b&gt;' : '<b>Open</b>');
+})->with(['inModal', 'inOffCanvas'])->with([true, false]);
+
+it('keeps explicit modal titles on the title preference', function (): void {
+    $button = ActionButton::make('<b>Open</b>')->unescapeLabel()->inModal(title: static fn (): string => '<b>Record</b>');
+
+    expect((string) $button->getModal())->toContain('&lt;b&gt;Record&lt;/b&gt;')->not->toContain('<b>Record</b>');
+});

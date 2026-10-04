@@ -5,6 +5,7 @@
     'url' => 'javascript:void(0);',
     'icon' => '',
     'label' => '',
+    'labelHtml' => null,
     'component' => null,
     'badge' => false,
     'raw' => false,
@@ -18,7 +19,11 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+        @if(! is_null($labelHtml))
+            {{ $labelHtml }}
+        @else
+            <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+        @endif
 
         @if($badge !== false)
             <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
@@ -35,7 +40,11 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+        @if(! is_null($labelHtml))
+            {{ $labelHtml }}
+        @else
+            <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+        @endif
     </x-moonshine::link-button>
 @endif
 

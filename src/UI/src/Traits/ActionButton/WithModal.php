@@ -59,6 +59,11 @@ trait WithModal
             components: $components
         )
             ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
+            // A title derived from the button label follows the button's label preference.
+            ->when(
+                \is_null($title),
+                static fn (ModalContract $modal): ModalContract => $modal->escapeTitle($ctx->isEscapeLabel())
+            )
             ->when(
                 ! \is_null($builder),
                 static fn (ModalContract $modal): ModalContract => $builder instanceof Closure ? $builder($modal, $ctx) : $modal

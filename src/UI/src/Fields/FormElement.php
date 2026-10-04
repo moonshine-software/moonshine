@@ -723,7 +723,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return [
             'attributes' => $this->getAttributes(),
             'label' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'column' => $this->getColumn(),
             'value' => $this->getValue(),
             'errors' => data_get($this->getErrors(), $this->getNameDot()),

@@ -115,6 +115,8 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $selectMode = false;
 
+    protected ?bool $escapeOptionLabels = null;
+
     /**
      * @var list<ActionButtonContract>
      */
@@ -158,6 +160,27 @@ class BelongsToMany extends ModelRelationField implements
         $this->inLineLink = $link;
 
         return $this;
+    }
+
+    /**
+     * Labels of related items are built from record data,
+     * so they keep their own preference instead of following the field label.
+     */
+    public function escapeOptionLabels(bool $escape = true): static
+    {
+        $this->escapeOptionLabels = $escape;
+
+        return $this;
+    }
+
+    public function unescapeOptionLabels(): static
+    {
+        return $this->escapeOptionLabels(false);
+    }
+
+    public function isEscapeOptionLabels(): bool
+    {
+        return $this->escapeOptionLabels ?? $this->getCore()->getConfig()->isEscapeLabel();
     }
 
     public function selectMode(): static
@@ -520,7 +543,7 @@ class BelongsToMany extends ModelRelationField implements
                         : Link::make(
                             $linkValue,
                             (string) $value,
-                        );
+                        )->escapeLabel($this->isEscapeOptionLabels());
                 }
 
                 /** @var Badge|bool $badgeValue */

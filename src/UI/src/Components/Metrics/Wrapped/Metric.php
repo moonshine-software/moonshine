@@ -55,7 +55,7 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'icon' => $this->getIcon(6, $this->iconColor),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),

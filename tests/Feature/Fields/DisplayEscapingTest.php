@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 use Illuminate\Config\Repository;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use MoonShine\MenuManager\MenuDivider;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Collapse;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\Footer;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Components\Tabs;
@@ -285,9 +288,9 @@ it('preserves text returned by preview link name callbacks', function (string $v
     expect($document->getElementsByTagName('b')->length)->toBe(0);
 })->with(['A & B', '<b>A & B</b>', 'A &amp; B', '"A" & \'B\'']);
 
-it('escapes markup introduced by preview link names according to label preferences', function (bool $callback, bool $escape): void {
+it('escapes markup introduced by preview link names according to link name preferences', function (bool $callback, bool $escape): void {
     moonshine()->getConfig()->escapeLabel(! $escape);
-    $field = Text::make('Title', 'title')->setValue('A & B')->escapeLabel($escape)
+    $field = Text::make('Title', 'title')->setValue('A & B')->escapeLinkName($escape)
         ->link('/test', name: $callback
             ? static fn (string $preview): string => '<strong>Open ' . $preview . '</strong>'
             : '<strong>Open A & B</strong>');
@@ -319,4 +322,81 @@ it('escapes standalone Blade table column labels by default', function () {
         'columns' => ['name' => '<b>Name</b>'],
         'values' => [['name' => 'Example']],
     ])->assertSee('&lt;b&gt;Name&lt;/b&gt;', false)->assertDontSee('<b>Name</b>', false);
+});
+
+it('keeps link names independent from field label preferences', function (bool $preview, bool $unescapeLabel): void {
+    $field = Text::make('<b>Site</b>', 'site')
+        ->setValue('<script>alert(1)</script>')
+        ->link(static fn (): string => '/site', name: static fn (mixed $value): string => (string) $value);
+
+    if ($unescapeLabel) {
+        $field->unescapeLabel();
+    }
+
+    $html = $preview ? (string) $field->preview() : (string) $field;
+
+    expect($html)->toContain('&lt;script&gt;alert(1)&lt;/script&gt;')->not->toContain('<script>alert(1)</script>');
+
+    if (! $preview) {
+        expect($html)->toContain($unescapeLabel ? '<b>Site</b>' : '&lt;b&gt;Site&lt;/b&gt;');
+    }
+})->with([true, false])->with([true, false]);
+
+it('allows markup in link names only through the link name preference', function (bool $preview): void {
+    $field = Text::make('Site', 'site')
+        ->setValue('Value')
+        ->link('/site', name: '<strong>Open</strong>')
+        ->unescapeLinkName();
+
+    $html = $preview ? (string) $field->preview() : (string) $field;
+
+    expect($html)->toContain('<strong>Open</strong>')->not->toContain('&lt;strong&gt;');
+})->with([true, false]);
+
+it('keeps user decorations escaped after xIf', function (): void {
+    $field = Text::make('Title', 'title')->xIf('enabled', '1');
+
+    expect($field->isEscapeBeforeRender())->toBeTrue()
+        ->and($field->isEscapeAfterRender())->toBeTrue();
+
+    $field->afterRender(static fn (): string => '<b>Note</b>');
+
+    expect((string) $field)->toContain('&lt;b&gt;Note&lt;/b&gt;')->not->toContain('<b>Note</b>');
+});
+
+it('treats Htmlable decorations as prepared HTML', function (string $part): void {
+    $field = Text::make('Title', 'title')->{$part}(static fn (): HtmlString => new HtmlString('<b>Trusted</b>'));
+
+    expect((string) $field)->toContain('<b>Trusted</b>')->not->toContain('&lt;b&gt;Trusted');
+})->with(['beforeRender', 'afterRender']);
+
+it('supports local label preferences for footer menus', function (bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $menu = ['/help' => '<b>Help</b>'];
+
+    expect((string) Footer::make()->menu($menu)->escapeLabel($escape))
+        ->toContain($escape ? '&lt;b&gt;Help&lt;/b&gt;' : '<b>Help</b>');
+    expect(Blade::render('<x-moonshine::layout.footer :menu="$menu" :escape-label="$escape" />', [
+        'menu' => $menu,
+        'escape' => $escape,
+    ]))->toContain($escape ? '&lt;b&gt;Help&lt;/b&gt;' : '<b>Help</b>');
+})->with([true, false]);
+
+it('supports local label preferences for tabs created from items', function (bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $label = '<b>First</b>';
+    $expected = $escape ? '&lt;b&gt;First&lt;/b&gt;' : $label;
+
+    expect((string) Tabs::make(items: [$label => 'Content'])->escapeLabel($escape))->toContain($expected);
+    expect((string) Tabs::make(items: [$label => 'Content'], escapeLabel: $escape))->toContain($expected);
+    expect(Blade::render(
+        '<x-moonshine::tabs :items="[\'first\' => $label]" :escape-label="$escape"><x-slot:first>Content</x-slot:first></x-moonshine::tabs>',
+        ['label' => $label, 'escape' => $escape],
+    ))->toContain($expected);
+})->with([true, false]);
+
+it('keeps explicit tab preferences when tabs are configured', function (): void {
+    $tab = Tab::make('<b>Own</b>')->unescapeLabel();
+
+    expect((string) Tabs::make([$tab])->escapeLabel())->toContain('<b>Own</b>');
 });

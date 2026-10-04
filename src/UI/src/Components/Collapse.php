@@ -68,7 +68,7 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
             'persist' => $this->isPersist(),
             'open' => $this->isOpen(),
             'title' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'icon' => new ComponentSlot(
                 $this->getIcon(5)
             ),

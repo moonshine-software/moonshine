@@ -1,6 +1,7 @@
 @props([
     'escapeLabel' => null,
     'label' => '',
+    'labelHtml' => null,
     'previewLabel' => '',
     'url' => 'javascript:void(0);',
     'icon' => '',
@@ -28,7 +29,7 @@
         </div>
     @endif
 
-    <span class="menu-text @if($onlyIcon) menu-only-icon @endif"><x-moonshine::display-text :value="$label" :escape="$escapeLabel" /></span>
+    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">@if(! is_null($labelHtml)){{ $labelHtml }}@else<x-moonshine::display-text :value="$label" :escape="$escapeLabel" />@endif</span>
 
     @if($badge !== false)
         <span class="menu-badge">{{ $badge }}</span>

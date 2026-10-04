@@ -9,6 +9,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Contracts\UI\WithBadgeContract;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -93,10 +94,7 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
 
         return [
             'label' => $label,
-            'escapeLabel' => $this->isEscapeLabel(),
-            'slot' => new ComponentSlot(
-                $this->isEscapeLabel() ? e($label) : $label,
-            ),
+            'labelHtml' => DisplayHtml::make($label, $this->isEscapeLabel()),
             'icon' => new ComponentSlot(
                 $this->getIcon(4),
             ),

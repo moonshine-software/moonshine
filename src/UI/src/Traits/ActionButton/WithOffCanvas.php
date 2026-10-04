@@ -51,6 +51,11 @@ trait WithOffCanvas
             components: $components
         )
             ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
+            // A title derived from the button label follows the button's label preference.
+            ->when(
+                \is_null($title),
+                static fn (OffCanvasContract $offCanvas): OffCanvasContract => $offCanvas->escapeTitle($ctx->isEscapeLabel())
+            )
             ->when(
                 ! \is_null($builder),
                 static fn (OffCanvasContract $offCanvas) => $builder instanceof Closure ? $builder($offCanvas, $ctx) : $offCanvas

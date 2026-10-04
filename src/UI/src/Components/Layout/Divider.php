@@ -45,7 +45,7 @@ class Divider extends MoonShineComponent
     {
         return [
             'label' => $this->getLabel(),
-            'escapeLabel' => $this->isEscapeLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'centered' => $this->isCentered(),
         ];
     }
