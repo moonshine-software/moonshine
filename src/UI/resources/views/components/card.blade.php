@@ -5,6 +5,7 @@
     'thumbnail' => '',
     'overlay' => false,
     'values' => [],
+    'valueLabelsHtml' => [],
     'header' => null,
     'actions' => null,
 ])
@@ -52,7 +53,7 @@
             <tbody>
                 @foreach($values as $label => $value)
                     <tr>
-                        <th width="40%">{{ $label }}:</th>
+                        <th width="40%">{!! $valueLabelsHtml[$label] !!}:</th>
                         <td width="60%">{!! $value !!}</td>
                     </tr>
                 @endforeach

@@ -22,6 +22,8 @@ trait WithLink
 
     protected bool $withoutIcon = false;
 
+    protected ?bool $escapeLinkName = null;
+
     public function hasLink(): bool
     {
         return $this->isLink;
@@ -54,6 +56,27 @@ trait WithLink
     public function isWithoutIcon(): bool
     {
         return $this->withoutIcon;
+    }
+
+    /**
+     * Link names are often derived from field values,
+     * so they keep their own preference instead of following the field label.
+     */
+    public function escapeLinkName(bool $escape = true): static
+    {
+        $this->escapeLinkName = $escape;
+
+        return $this;
+    }
+
+    public function unescapeLinkName(): static
+    {
+        return $this->escapeLinkName(false);
+    }
+
+    public function isEscapeLinkName(): bool
+    {
+        return $this->escapeLinkName ?? $this->getCore()->getConfig()->isEscapeLabel();
     }
 
     /**

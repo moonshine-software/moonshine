@@ -12,10 +12,15 @@ use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Exceptions\ComponentException;
+use MoonShine\UI\Traits\WithLabelEscaping;
 use Throwable;
 
 class Tabs extends AbstractWithComponents
 {
+    use WithLabelEscaping {
+        escapeLabel as private setEscapeLabel;
+    }
+
     protected string $view = 'moonshine::components.tabs';
 
     protected string|int|null $active = null;
@@ -24,27 +29,54 @@ class Tabs extends AbstractWithComponents
 
     protected bool $vertical = false;
 
+    /** @var list<Tab> */
+    protected array $itemTabs = [];
+
     /**
      * @param  iterable<array-key, ComponentContract>  $components
      * @param  array<string, string>  $items
      *
      * @throws Throwable
      */
-    public function __construct(iterable $components = [], public array $items = [])
+    public function __construct(iterable $components = [], public array $items = [], ?bool $escapeLabel = null)
     {
+        $this->escapeLabel = $escapeLabel;
+
         parent::__construct($components);
 
         if ($this->items !== []) {
-            $tabs = [];
-
             foreach ($this->items as $label => $content) {
-                $tabs[] = Tab::make($label, [
+                $this->itemTabs[] = $this->makeItemTab($label, [
                     FlexibleRender::make($content),
                 ]);
             }
 
-            $this->setComponents($tabs);
+            $this->setComponents($this->itemTabs);
         }
+    }
+
+    /**
+     * Applies to tabs created from items; Tab components keep their own preferences.
+     */
+    public function escapeLabel(bool $escape = true): static
+    {
+        $this->setEscapeLabel($escape);
+
+        foreach ($this->itemTabs as $tab) {
+            $tab->escapeLabel($escape);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  iterable<array-key, ComponentContract>  $components
+     */
+    private function makeItemTab(string $label, iterable $components): Tab
+    {
+        $tab = Tab::make($label, $components);
+
+        return \is_null($this->escapeLabel) ? $tab : $tab->escapeLabel($this->escapeLabel);
     }
 
     public function active(string|int $active): static
@@ -142,7 +174,7 @@ class Tabs extends AbstractWithComponents
                     /** @var array<string, mixed> $attributes */
                     $attributes = $slot->attributes->jsonSerialize();
 
-                    $tabs[$id] = Tab::make($label, [
+                    $tabs[$id] = $this->makeItemTab($label, [
                         FlexibleRender::make($slot->toHtml()),
                     ])
                         ->setId($id)

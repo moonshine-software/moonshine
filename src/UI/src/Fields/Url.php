@@ -51,7 +51,7 @@ class Url extends Text
             label: \is_null($this->titleCallback)
                 ? $title
                 : Stringify::value(\call_user_func($this->titleCallback, $title, $this)),
-        )->when(
+        )->unescapeLabel()->when(
             $this->blank,
             fn (Link $ctx): Link => $ctx->blank()
         )->icon('link')->customAttributes($this->getAttributes()->except('type')->jsonSerialize());

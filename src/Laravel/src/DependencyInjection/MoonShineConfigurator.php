@@ -54,6 +54,66 @@ final class MoonShineConfigurator implements ConfiguratorContract
             ->set('namespace', $this->items['namespace'] ?? 'App\MoonShine');
     }
 
+    public function escapeLabel(bool $escape = true): self
+    {
+        return $this->set('escapes.label', $escape);
+    }
+
+    public function isEscapeLabel(): bool
+    {
+        return $this->boolValue($this->get('escapes.label', true));
+    }
+
+    public function escapeHint(bool $escape = true): self
+    {
+        return $this->set('escapes.hint', $escape);
+    }
+
+    public function isEscapeHint(): bool
+    {
+        return $this->boolValue($this->get('escapes.hint', true));
+    }
+
+    public function escapePrefix(bool $escape = true): self
+    {
+        return $this->set('escapes.prefix', $escape);
+    }
+
+    public function isEscapePrefix(): bool
+    {
+        return $this->boolValue($this->get('escapes.prefix', true));
+    }
+
+    public function escapeSuffix(bool $escape = true): self
+    {
+        return $this->set('escapes.suffix', $escape);
+    }
+
+    public function isEscapeSuffix(): bool
+    {
+        return $this->boolValue($this->get('escapes.suffix', true));
+    }
+
+    public function escapeBeforeRender(bool $escape = true): self
+    {
+        return $this->set('escapes.before_render', $escape);
+    }
+
+    public function isEscapeBeforeRender(): bool
+    {
+        return $this->boolValue($this->get('escapes.before_render', true));
+    }
+
+    public function escapeAfterRender(bool $escape = true): self
+    {
+        return $this->set('escapes.after_render', $escape);
+    }
+
+    public function isEscapeAfterRender(): bool
+    {
+        return $this->boolValue($this->get('escapes.after_render', true));
+    }
+
     public function dir(string $dir, string $namespace): self
     {
         return $this

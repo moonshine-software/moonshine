@@ -34,13 +34,14 @@ final readonly class UpdateOnPreviewPopover
     {
         $name = 'update-on-preview-' . spl_object_id($this->field);
         $value = Stringify::value($this->field->toFormattedValue());
+        $escapeValue = ! method_exists($this->field, 'isUnescape') || ! $this->field->isUnescape();
 
         return Popover::make(
             '',
             (string)Link::make(
                 'javascript:void(0);',
                 $value,
-            )->icon('pencil'),
+            )->escapeLabel($escapeValue)->icon('pencil'),
         )
             ->name($name)
             ->showOnClick()

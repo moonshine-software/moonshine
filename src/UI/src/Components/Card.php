@@ -18,6 +18,14 @@ final class Card extends MoonShineComponent
 
     protected string $view = 'moonshine::components.card';
 
+    /** @param array<array-key, bool> $labels */
+    public function escapeValueLabels(array $labels): self
+    {
+        $this->escapeValueLabels = $labels;
+
+        return $this;
+    }
+
     /** @var Closure(self):((string|Stringable))|string */
     protected Closure|string $header = '';
 
@@ -30,6 +38,7 @@ final class Card extends MoonShineComponent
      * @param  (Closure(self):string)|string  $url
      * @param  (Closure(self): array<string, mixed>)|array<string, mixed>  $values
      * @param  (Closure(self):string)|string|null  $subtitle
+     * @param  array<array-key, bool>  $escapeValueLabels
      * @param  bool  $overlay
      */
     public function __construct(
@@ -39,6 +48,8 @@ final class Card extends MoonShineComponent
         protected Closure|array $values = [],
         protected Closure|string|null $subtitle = null,
         protected bool $overlay = false,
+        protected array $escapeValueLabels = [],
+        protected ?bool $escapeLabel = null,
     ) {
         parent::__construct();
     }
@@ -111,13 +122,29 @@ final class Card extends MoonShineComponent
      */
     protected function viewData(): array
     {
+        $customViewData = $this->getCustomViewData();
+        $values = \is_array($customViewData['values'] ?? null)
+            ? $customViewData['values']
+            : value($this->values, $this);
+        $escapeLabel = $customViewData['escapeLabel'] ?? $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
+        $escapeValueLabels = \is_array($customViewData['escapeValueLabels'] ?? null)
+            ? $customViewData['escapeValueLabels']
+            : $this->escapeValueLabels;
+        $valueLabelsHtml = [];
+
+        foreach ($values as $label => $value) {
+            $valueLabelsHtml[$label] = ($escapeValueLabels[$label] ?? $escapeLabel) ? e($label) : $label;
+        }
+
         return [
             'title' => value($this->title, $this),
             'url' => value($this->url, $this),
             'thumbnail' => value($this->thumbnail, $this),
             'overlay' => $this->overlay,
             'subtitle' => value($this->subtitle, $this),
-            'values' => value($this->values, $this),
+            'values' => $values,
+            'valueLabelsHtml' => $valueLabelsHtml,
+            'escapeValueLabels' => $this->escapeValueLabels,
             'slot' => $this->getSlot(),
             'header' => new ComponentSlot(
                 (string) value($this->header, $this),

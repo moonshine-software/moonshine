@@ -259,6 +259,7 @@ class MenuItem extends MenuElement implements WithBadgeContract
             ->customView('moonshine::components.menu.item-link', [
                 'url' => $this->getUrl(),
                 'label' => $this->getLabel(),
+                'labelHtml' => $this->getLabelHtml(),
                 'onlyIcon' => $this->isOnlyIcon(),
                 'icon' => $this->getIcon(),
                 'top' => $this->isTopMode(),

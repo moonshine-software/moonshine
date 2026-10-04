@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\FieldContract;
@@ -40,6 +41,7 @@ final class FieldContainer extends MoonShineComponent
                 $this->field->getLinkValue(),
                 $this->field->getLinkName(),
             )
+                ->escapeLabel($this->field->isEscapeLinkName())
                 ->customAttributes([
                     'target' => $this->field->isLinkBlank() ? '_blank' : '_self',
                 ])
@@ -51,26 +53,36 @@ final class FieldContainer extends MoonShineComponent
             $this->beforeInner = new ComponentSlot((string) $link);
         }
 
-        if ($hint = $this->field->getHint()) {
+        if ($this->field->getHint() !== '') {
             $this->afterInner = new ComponentSlot(
                 $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
-                    'slot' => $hint,
+                    'hintHtml' => $this->field->getHintHtml(),
                 ])->render()
             );
         }
+    }
+
+    private function renderDecoration(Renderable|Htmlable|string $content, bool $escape): ComponentSlot
+    {
+        return new ComponentSlot(match (true) {
+            $content instanceof Htmlable => $content->toHtml(),
+            $escape && \is_string($content) => e($content),
+            default => $this->stringifySlotContent($content),
+        });
     }
 
     protected function viewData(): array
     {
         return [
             'label' => $this->field->getLabel(),
+            'labelHtml' => $this->field->getLabelHtml(),
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
-            'before' => new ComponentSlot($this->stringifySlotContent($this->field->getBeforeRender())),
-            'after' => new ComponentSlot($this->stringifySlotContent($this->field->getAfterRender())),
+            'before' => $this->renderDecoration($this->field->getBeforeRender(), $this->field->isEscapeBeforeRender()),
+            'after' => $this->renderDecoration($this->field->getAfterRender(), $this->field->isEscapeAfterRender()),
             'slot' => new ComponentSlot($this->stringifySlotContent(value($this->slot))),
 
             'beforeInner' => $this->afterInner,

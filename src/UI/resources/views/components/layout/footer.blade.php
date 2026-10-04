@@ -1,4 +1,5 @@
 @props([
+    'escapeLabel' => null,
     'components' => [],
     'copyright' => '',
     'menu' => []
@@ -21,7 +22,7 @@
                     <a href="{{ $link }}"
                        class="text-sm"
                        target="_blank">
-                        {!! $label !!}
+                        <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
                     </a>
                 @endforeach
             </nav>

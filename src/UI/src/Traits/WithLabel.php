@@ -5,10 +5,19 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use MoonShine\Support\DisplayHtml;
 
 trait WithLabel
 {
+    use WithLabelEscaping;
+
+    public function getLabelHtml(): Htmlable
+    {
+        return DisplayHtml::make($this->getLabel(), $this->isEscapeLabel());
+    }
+
     /** @var (Closure(static): string)|string */
     protected Closure|string $label = '';
 

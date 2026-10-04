@@ -6,6 +6,7 @@
     'full' => $isFull ?? false,
     'autoClose' => $isAutoClose ?? false,
     'title' => '',
+    'titleHtml' => null,
     'async' => false,
     'asyncUrl' => '',
     'toggler' => null,
@@ -68,7 +69,7 @@
                 role="dialog"
             >
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title">{{ $title }}</h5>
+                    <h5 class="offcanvas-title">{{ $titleHtml ?? $title }}</h5>
                     <button
                         type="button"
                         class="offcanvas-close btn-fit"

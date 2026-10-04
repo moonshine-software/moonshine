@@ -15,7 +15,7 @@ use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [])
+ * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [], string $title = '', bool $dark = false, ?bool $escapeLabel = null)
  */
 class Box extends AbstractWithComponents implements HasIconContract, HasLabelContract
 {
@@ -36,7 +36,10 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
         // anonymous component variables
         protected string $title = '',
         protected bool $dark = false,
+        ?bool $escapeLabel = null,
     ) {
+        $this->escapeLabel = $escapeLabel;
+
         if (is_iterable($labelOrComponents)) {
             /** @var iterable<array-key, ComponentContract> $labelOrComponents */
             $components = $labelOrComponents;
@@ -70,6 +73,7 @@ class Box extends AbstractWithComponents implements HasIconContract, HasLabelCon
     {
         return [
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'dark' => $this->isDark(),
             'icon' => new ComponentSlot(
                 $this->getIcon(6)

@@ -11,6 +11,7 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\UI\Traits\Components\WithTitleEscaping;
 use Throwable;
 
 /**
@@ -18,6 +19,8 @@ use Throwable;
  */
 final class OffCanvas extends AbstractWithComponents implements OffCanvasContract
 {
+    use WithTitleEscaping;
+
     protected string $view = 'moonshine::components.off-canvas';
 
     protected bool $left = false;
@@ -48,8 +51,11 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables
-        string $name = 'default'
+        string $name = 'default',
+        ?bool $escapeTitle = null,
     ) {
+        $this->escapeTitle = $escapeTitle;
+
         parent::__construct($components);
 
         $this->name($name);
@@ -155,7 +161,8 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
             'isFull' => $this->full,
             'isOpen' => $this->open,
             'isAutoClose' => $this->autoClose,
-            'title' => value($this->title, $this),
+            'title' => $title = value($this->title, $this),
+            'titleHtml' => $this->getTitleHtml($title),
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
             'toggler' => new ComponentSlot($this->stringifySlotContent($toggler), $this->togglerAttributes),

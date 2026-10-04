@@ -9,6 +9,7 @@
     'autoClose' => $isAutoClose ?? false,
     'closeOutside' => $isCloseOutside ?? true,
     'title' => '',
+    'titleHtml' => null,
     'subtitle' => null,
     'outerHtml' => null
 ])
@@ -44,7 +45,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <div>
-                                <h5 class="modal-title">{{ $title ?? '' }}</h5>
+                                <h5 class="modal-title">{{ $titleHtml ?? $title ?? '' }}</h5>
                                 @if (!is_null($subtitle))
                                     <p class="modal-subtitle">{{ $subtitle }}</p>
                                 @endif
