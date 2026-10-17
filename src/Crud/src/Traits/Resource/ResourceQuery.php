@@ -406,7 +406,7 @@ trait ResourceQuery
         if ($this->getQueryParams()->hasAny($this->getCachedRequestKeys())) {
             $this->getCore()->getCache()->set(
                 $this->getQueryCacheKey(),
-                $this->getQueryParams()->only($this->getCachedRequestKeys()),
+                $this->getQueryParams()->only($this->getCachedRequestKeys())->all(),
                 new DateInterval('PT2H'),
             );
         }

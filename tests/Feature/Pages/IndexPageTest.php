@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 uses()->group('pages-feature');
 
+use Illuminate\Support\Collection;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
 use MoonShine\ImportExport\Traits\ImportExportHandlersConcern;
@@ -20,6 +21,29 @@ beforeEach(function () {
     CategoryFactory::new()->count(3)->create();
 
     $this->resource = app(TestItemResource::class);
+});
+
+it('stores saved query state as a plain array', function () {
+    $resource = app(SaveQueryStateTestItemResource::class);
+
+    fakeRequest('/', parameters: [
+        'p_filter' => [
+            'name' => 'Planiglass',
+        ],
+        'p_sort' => 'id',
+    ]);
+
+    $resource->setQueryParams(
+        $this->moonshineCore->getRequest()->getOnly($resource->getQueryParamsKeys())
+    );
+
+    (new ReflectionMethod($resource, 'withCachedQueryParams'))->invoke($resource);
+
+    $cached = $this->moonshineCore->getCache()->get($resource->publicQueryCacheKey());
+
+    expect($cached)->toBeArray();
+    expect($cached)->not->toBeInstanceOf(Collection::class);
+    expect($cached['p_filter']['name'] ?? null)->toBe('Planiglass');
 });
 
 it('filters', function () {
