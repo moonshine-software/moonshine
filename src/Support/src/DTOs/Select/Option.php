@@ -31,20 +31,12 @@ final class Option implements Arrayable
 
     public function getLabel(): string
     {
-        return htmlspecialchars(
-            $this->label,
-            ENT_QUOTES | ENT_SUBSTITUTE,
-            'UTF-8',
-        );
+        return $this->label;
     }
 
     public function getValue(): string
     {
-        return htmlspecialchars(
-            $this->value,
-            ENT_QUOTES | ENT_SUBSTITUTE,
-            'UTF-8',
-        );
+        return $this->value;
     }
 
     public function isSelected(): bool
