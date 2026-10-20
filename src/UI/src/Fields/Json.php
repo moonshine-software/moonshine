@@ -391,16 +391,18 @@ class Json extends Field implements
      */
     protected function extractKeyValue(array $data): array
     {
+        $key = key($data) ?? '';
+
         if ($this->isKeyValue()) {
             return [
-                'key' => key($data) ?? '',
-                'value' => $data[key($data)] ?? '',
+                'key' => $key,
+                'value' => $data[$key] ?? '',
             ];
         }
 
         if ($this->isOnlyValue()) {
             return [
-                'value' => $data[key($data)] ?? '',
+                'value' => $data[$key] ?? '',
             ];
         }
 

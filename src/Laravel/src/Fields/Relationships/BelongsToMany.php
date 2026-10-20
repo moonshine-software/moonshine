@@ -487,7 +487,7 @@ class BelongsToMany extends ModelRelationField implements
         $keys = Collection::wrap($old);
 
         return $keys
-            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key ?? ''] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
             ->values();
     }
 
