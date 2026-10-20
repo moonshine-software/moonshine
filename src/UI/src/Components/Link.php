@@ -10,6 +10,7 @@ use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Contracts\UI\WithBadgeContract;
 use MoonShine\Support\DisplayHtml;
+use MoonShine\Support\SafeUrl;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -81,7 +82,7 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
     protected function prepareBeforeRender(): void
     {
         $this->customAttributes([
-            'href' => value($this->href, $this),
+            'href' => SafeUrl::sanitize((string) value($this->href, $this)),
         ]);
     }
 
