@@ -9,7 +9,7 @@ final class SafeUrl
     /**
      * @var list<string>
      */
-    private const ALLOWED_SCHEMES = [
+    private const array ALLOWED_SCHEMES = [
         'http',
         'https',
         'mailto',
