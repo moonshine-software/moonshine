@@ -9,10 +9,12 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
+use MoonShine\UI\Enums\DisplayTextType;
 
 trait WithOffCanvas
 {
@@ -54,7 +56,9 @@ trait WithOffCanvas
             // A title derived from the button label follows the button's label preference.
             ->when(
                 \is_null($title),
-                static fn (OffCanvasContract $offCanvas): OffCanvasContract => $offCanvas->escapeTitle($ctx->isEscapeLabel())
+                static fn (OffCanvasContract $offCanvas): OffCanvasContract => $offCanvas instanceof HasTitleEscapingContract
+                    ? $offCanvas->escapeTitle(DisplayTextType::LABEL->isEscapedFor($ctx, $ctx->getCore()->getConfig()))
+                    : $offCanvas
             )
             ->when(
                 ! \is_null($builder),

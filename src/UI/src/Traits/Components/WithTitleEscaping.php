@@ -6,16 +6,16 @@ namespace MoonShine\UI\Traits\Components;
 
 use Illuminate\Contracts\Support\Htmlable;
 use MoonShine\Support\DisplayHtml;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithTitleEscaping
 {
-    protected ?bool $escapeTitle = null;
+    use WithDisplayEscaping;
 
     public function escapeTitle(bool $escape = true): static
     {
-        $this->escapeTitle = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::TITLE, $escape);
     }
 
     public function unescapeTitle(): static
@@ -25,7 +25,7 @@ trait WithTitleEscaping
 
     public function isEscapeTitle(): bool
     {
-        return $this->escapeTitle ?? true;
+        return $this->isDisplayEscaped(DisplayTextType::TITLE);
     }
 
     protected function getTitleHtml(mixed $title): Htmlable

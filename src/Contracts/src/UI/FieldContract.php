@@ -109,21 +109,9 @@ interface FieldContract extends
 
     public function getBeforeRender(): Renderable|Htmlable|string;
 
-    public function escapeBeforeRender(bool $escape = true): static;
-
-    public function unescapeBeforeRender(): static;
-
-    public function isEscapeBeforeRender(): bool;
-
     public function afterRender(Closure $callback): static;
 
     public function getAfterRender(): Renderable|Htmlable|string;
-
-    public function escapeAfterRender(bool $escape = true): static;
-
-    public function unescapeAfterRender(): static;
-
-    public function isEscapeAfterRender(): bool;
 
     public function changeRender(Closure $callback): static;
 

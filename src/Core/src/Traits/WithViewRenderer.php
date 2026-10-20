@@ -94,6 +94,17 @@ trait WithViewRenderer
     }
 
     /**
+     * Lets view data derived from other values follow them when customView() data replaces them.
+     *
+     * @param  array<string, mixed>  $customViewData
+     * @return array<string, mixed>
+     */
+    protected function resolveCustomViewData(array $customViewData): array
+    {
+        return $customViewData;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function systemViewData(): array
@@ -231,7 +242,7 @@ trait WithViewRenderer
 
         return [
             ...$this->viewData(),
-            ...$this->getCustomViewData(),
+            ...$this->resolveCustomViewData($this->getCustomViewData()),
             ...$this->systemViewData(),
             'translates' => $this->getTranslates(),
         ];

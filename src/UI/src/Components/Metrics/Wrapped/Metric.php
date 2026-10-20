@@ -7,8 +7,10 @@ namespace MoonShine\UI\Components\Metrics\Wrapped;
 use Closure;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -16,7 +18,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label, ?bool $escapeLabel = null)
  */
-abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract
+abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract, HasLabelEscapingContract
 {
     use WithColumnSpan;
     use WithLabel;
@@ -26,7 +28,7 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
 
     final public function __construct(Closure|string $label, ?bool $escapeLabel = null)
     {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct();
 

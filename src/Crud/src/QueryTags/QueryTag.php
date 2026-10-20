@@ -11,6 +11,7 @@ use MoonShine\Contracts\Core\HasCoreContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Crud\Contracts\Page\IndexPageContract;
 use MoonShine\Support\AlpineJs;
@@ -24,7 +25,7 @@ use MoonShine\UI\Traits\WithLabel;
  * @template TBuilder of mixed = mixed
  * @method static static make(Closure|string $label, Closure $builder, string $prefix = '')
  */
-class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, HasCoreContract
+class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, HasCoreContract, HasLabelEscapingContract
 {
     use Makeable;
     use WithCore;

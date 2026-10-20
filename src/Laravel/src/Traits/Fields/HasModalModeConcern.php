@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Support\Enums\Ability;
@@ -60,7 +61,9 @@ trait HasModalModeConcern
             name: "modal-{$this->getResourceOrFail()->getUriKey()}-{$this->getRelationName()}",
             // The modal title is the field label, so it shares the field's label preference.
             builder: function (ModalContract $modal, ActionButtonContract $button): ModalContract {
-                $modal->escapeTitle($this->isEscapeLabel());
+                if ($modal instanceof HasTitleEscapingContract) {
+                    $modal->escapeTitle($this->isEscapeLabel());
+                }
 
                 return \is_null($this->modifyModalModeModal)
                     ? $modal->wide()

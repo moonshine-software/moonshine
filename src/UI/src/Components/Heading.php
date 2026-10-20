@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\HasDifferentHtmlTag;
 use MoonShine\UI\Traits\Components\WithHeadingGradation;
 use MoonShine\UI\Traits\WithLabel;
@@ -12,7 +14,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $label = '', ?int $h = null, bool $asClass = true, ?bool $escapeLabel = null)
  */
-class Heading extends MoonShineComponent
+class Heading extends MoonShineComponent implements HasLabelEscapingContract
 {
     use HasDifferentHtmlTag;
     use WithHeadingGradation;
@@ -26,7 +28,7 @@ class Heading extends MoonShineComponent
         bool $asClass = true,
         ?bool $escapeLabel = null,
     ) {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct();
 
@@ -39,7 +41,8 @@ class Heading extends MoonShineComponent
 
     public function isEscapeLabel(): bool
     {
-        return $this->escapeLabel ?? true;
+        // Headings commonly contain record data, so they ignore the global label default.
+        return $this->getDisplayEscaping(DisplayTextType::LABEL) ?? true;
     }
 
     protected function viewData(): array

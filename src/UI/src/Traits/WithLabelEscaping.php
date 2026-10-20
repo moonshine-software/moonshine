@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Traits;
 
+use MoonShine\UI\Enums\DisplayTextType;
+
 trait WithLabelEscaping
 {
-    protected ?bool $escapeLabel = null;
+    use WithDisplayEscaping;
 
     public function escapeLabel(bool $escape = true): static
     {
-        $this->escapeLabel = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::LABEL, $escape);
     }
 
     public function unescapeLabel(): static
@@ -22,11 +22,11 @@ trait WithLabelEscaping
 
     public function isEscapeLabel(): bool
     {
-        return $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
+        return $this->isDisplayEscaped(DisplayTextType::LABEL);
     }
 
     public function hasLabelEscapingOverride(): bool
     {
-        return $this->escapeLabel !== null;
+        return $this->getDisplayEscaping(DisplayTextType::LABEL) !== null;
     }
 }

@@ -16,18 +16,15 @@ use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 use MoonShine\UI\InputExtensions\InputLock;
 use MoonShine\UI\InputExtensions\InputPrefix;
+use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithInputExtensions
 {
-    protected ?bool $escapePrefix = null;
-
-    protected ?bool $escapeSuffix = null;
+    use WithDisplayEscaping;
 
     public function escapePrefix(bool $escape = true): static
     {
-        $this->escapePrefix = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::PREFIX, $escape);
     }
 
     public function unescapePrefix(): static
@@ -39,16 +36,14 @@ trait WithInputExtensions
     {
         $extension = $this->extensions[InputPrefix::class] ?? null;
 
-        return $this->escapePrefix ?? ($extension instanceof InputPrefix
+        return $this->getDisplayEscaping(DisplayTextType::PREFIX) ?? ($extension instanceof InputPrefix
             ? $extension->isEscape()
             : DisplayTextType::PREFIX->isEscapedBy($this->getCore()->getConfig()));
     }
 
     public function escapeSuffix(bool $escape = true): static
     {
-        $this->escapeSuffix = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::SUFFIX, $escape);
     }
 
     public function unescapeSuffix(): static
@@ -60,7 +55,7 @@ trait WithInputExtensions
     {
         $extension = $this->extensions[InputExt::class] ?? null;
 
-        return $this->escapeSuffix ?? ($extension instanceof InputExt
+        return $this->getDisplayEscaping(DisplayTextType::SUFFIX) ?? ($extension instanceof InputExt
             ? $extension->isEscape()
             : DisplayTextType::SUFFIX->isEscapedBy($this->getCore()->getConfig()));
     }

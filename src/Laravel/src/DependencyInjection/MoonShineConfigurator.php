@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\DisplayEscapingConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use TypeError;
 
-final class MoonShineConfigurator implements ConfiguratorContract
+final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract
 {
     /**
      * @var array<string, mixed>

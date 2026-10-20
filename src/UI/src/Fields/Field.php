@@ -13,6 +13,9 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasHintEscapingContract;
+use MoonShine\Contracts\UI\HasLinkNameEscapingContract;
+use MoonShine\Contracts\UI\HasRenderEscapingContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
@@ -20,6 +23,7 @@ use MoonShine\Support\Enums\TextWrap;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\WithBadge;
 use MoonShine\UI\Traits\Fields\WithHint;
@@ -31,7 +35,7 @@ use MoonShine\UI\Traits\Fields\WithSorts;
  *
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
-abstract class Field extends FormElement implements FieldContract
+abstract class Field extends FormElement implements FieldContract, HasHintEscapingContract, HasLinkNameEscapingContract, HasRenderEscapingContract
 {
     use WithSorts;
     use WithHint;
@@ -39,15 +43,9 @@ abstract class Field extends FormElement implements FieldContract
     use WithBadge;
     use Reactivity;
 
-    protected ?bool $escapeBeforeRender = null;
-
-    protected ?bool $escapeAfterRender = null;
-
     public function escapeBeforeRender(bool $escape = true): static
     {
-        $this->escapeBeforeRender = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::BEFORE_RENDER, $escape);
     }
 
     public function unescapeBeforeRender(): static
@@ -57,14 +55,12 @@ abstract class Field extends FormElement implements FieldContract
 
     public function isEscapeBeforeRender(): bool
     {
-        return $this->escapeBeforeRender ?? $this->getCore()->getConfig()->isEscapeBeforeRender();
+        return $this->isDisplayEscaped(DisplayTextType::BEFORE_RENDER);
     }
 
     public function escapeAfterRender(bool $escape = true): static
     {
-        $this->escapeAfterRender = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::AFTER_RENDER, $escape);
     }
 
     public function unescapeAfterRender(): static
@@ -74,7 +70,7 @@ abstract class Field extends FormElement implements FieldContract
 
     public function isEscapeAfterRender(): bool
     {
-        return $this->escapeAfterRender ?? $this->getCore()->getConfig()->isEscapeAfterRender();
+        return $this->isDisplayEscaped(DisplayTextType::AFTER_RENDER);
     }
 
     protected bool $defaultMode = false;
@@ -507,9 +503,9 @@ abstract class Field extends FormElement implements FieldContract
 
         if ($this->hasLink()) {
             $href = $this->getLinkValue($value);
-            // Escaped names are built from the raw value and escaped once; trusted names receive the prepared preview.
+            // Name callbacks receive the preview as before; escaped names get it as plain text and are escaped once.
             $label = $this->isEscapeLinkName()
-                ? e($this->getLinkName(Stringify::value($this->toFormattedValue() ?? '')))
+                ? e($this->getLinkName($this->getLinkNamePreview($value)))
                 : $this->getLinkName($value);
 
             $value = (string) Link::make(
@@ -536,6 +532,14 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         return $value;
+    }
+
+    /**
+     * Plain text of the preview passed to link name callbacks before the name is escaped.
+     */
+    protected function getLinkNamePreview(string $preview): string
+    {
+        return $preview;
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string

@@ -85,3 +85,16 @@ it('escapes related item labels independently from the field label', function (s
     'local disabled' => [false, false],
     'local enabled' => [true, true],
 ])->with([true, false]);
+
+it('passes prepared labels to inline badge callbacks', function (bool $escape): void {
+    $item = createItem(countComments: 0);
+    $item->categories()->attach(Category::factory()->create(['name' => '<img src=x onerror=alert(1)>']));
+
+    $field = BelongsToMany::make('Categories', 'categories', resource: TestCategoryResource::class)
+        ->inLine(', ', badge: static fn (mixed $category, string $value): MoonShine\UI\Components\Badge => MoonShine\UI\Components\Badge::make($value, 'red'))
+        ->escapeOptionLabels($escape);
+
+    $field->fillData($item);
+
+    expect((string) $field->preview())->toContain($escape ? '&lt;img src=x onerror=alert(1)&gt;' : '<img src=x onerror=alert(1)>');
+})->with([true, false]);

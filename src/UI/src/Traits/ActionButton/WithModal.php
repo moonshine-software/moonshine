@@ -11,6 +11,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\HttpMethod;
@@ -18,6 +19,7 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Heading;
 use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\ActionButtonException;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\HiddenIds;
@@ -62,7 +64,9 @@ trait WithModal
             // A title derived from the button label follows the button's label preference.
             ->when(
                 \is_null($title),
-                static fn (ModalContract $modal): ModalContract => $modal->escapeTitle($ctx->isEscapeLabel())
+                static fn (ModalContract $modal): ModalContract => $modal instanceof HasTitleEscapingContract
+                    ? $modal->escapeTitle(DisplayTextType::LABEL->isEscapedFor($ctx, $ctx->getCore()->getConfig()))
+                    : $modal
             )
             ->when(
                 ! \is_null($builder),

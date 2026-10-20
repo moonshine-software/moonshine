@@ -8,9 +8,11 @@ use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Contracts\UI\WithBadgeContract;
 use MoonShine\Support\DisplayHtml;
 use MoonShine\Support\SafeUrl;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -18,7 +20,7 @@ use MoonShine\UI\Traits\WithLabel;
 /**
  * @method static static make(Closure|string $href, Closure|string $label = '', ?bool $escapeLabel = null)
  */
-final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract, WithBadgeContract
+final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract, WithBadgeContract, HasLabelEscapingContract
 {
     use WithBadge;
     use WithLabel;
@@ -36,7 +38,7 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
         Closure|string $label = '',
         ?bool $escapeLabel = null,
     ) {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct();
 

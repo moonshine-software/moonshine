@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Layout;
 
 use Closure;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
  * @method static static make(Closure|string $label = '', bool $centered = false, ?bool $escapeLabel = null)
  */
-class Divider extends MoonShineComponent
+class Divider extends MoonShineComponent implements HasLabelEscapingContract
 {
     use WithLabel;
 
@@ -22,7 +24,7 @@ class Divider extends MoonShineComponent
         protected bool $isCentered = false,
         ?bool $escapeLabel = null,
     ) {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct();
 

@@ -11,6 +11,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\ComponentException;
 use MoonShine\UI\Traits\WithLabelEscaping;
 use Throwable;
@@ -40,7 +41,7 @@ class Tabs extends AbstractWithComponents
      */
     public function __construct(iterable $components = [], public array $items = [], ?bool $escapeLabel = null)
     {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct($components);
 
@@ -76,7 +77,9 @@ class Tabs extends AbstractWithComponents
     {
         $tab = Tab::make($label, $components);
 
-        return \is_null($this->escapeLabel) ? $tab : $tab->escapeLabel($this->escapeLabel);
+        $escape = $this->getDisplayEscaping(DisplayTextType::LABEL);
+
+        return \is_null($escape) ? $tab : $tab->escapeLabel($escape);
     }
 
     public function active(string|int $active): static

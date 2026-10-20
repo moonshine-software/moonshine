@@ -6,16 +6,16 @@ namespace MoonShine\UI\Traits\Fields;
 
 use Illuminate\Contracts\Support\Htmlable;
 use MoonShine\Support\DisplayHtml;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithHint
 {
-    protected ?bool $escapeHint = null;
+    use WithDisplayEscaping;
 
     public function escapeHint(bool $escape = true): static
     {
-        $this->escapeHint = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::HINT, $escape);
     }
 
     public function unescapeHint(): static
@@ -25,7 +25,7 @@ trait WithHint
 
     public function isEscapeHint(): bool
     {
-        return $this->escapeHint ?? $this->getCore()->getConfig()->isEscapeHint();
+        return $this->isDisplayEscaped(DisplayTextType::HINT);
     }
 
     protected string $hint = '';

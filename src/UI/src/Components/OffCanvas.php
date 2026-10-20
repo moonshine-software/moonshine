@@ -9,15 +9,17 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\WithTitleEscaping;
 use Throwable;
 
 /**
  * @method static static make(Closure|string $title = '', Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $toggler = '', Closure|string|null $asyncUrl = '', iterable<array-key, ComponentContract> $components = [])
  */
-final class OffCanvas extends AbstractWithComponents implements OffCanvasContract
+final class OffCanvas extends AbstractWithComponents implements OffCanvasContract, HasTitleEscapingContract
 {
     use WithTitleEscaping;
 
@@ -54,7 +56,7 @@ final class OffCanvas extends AbstractWithComponents implements OffCanvasContrac
         string $name = 'default',
         ?bool $escapeTitle = null,
     ) {
-        $this->escapeTitle = $escapeTitle;
+        $this->setDisplayEscaping(DisplayTextType::TITLE, $escapeTitle);
 
         parent::__construct($components);
 

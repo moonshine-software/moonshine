@@ -13,12 +13,14 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
@@ -38,7 +40,8 @@ use MoonShine\UI\Traits\WithLabel;
  */
 class ActionButton extends MoonShineComponent implements
     ActionButtonContract,
-    HasComponentsContract
+    HasComponentsContract,
+    HasLabelEscapingContract
 {
     use WithBadge;
     use WithLabel;
@@ -93,7 +96,7 @@ class ActionButton extends MoonShineComponent implements
         protected ?DataWrapperContract $data = null,
         ?bool $escapeLabel = null,
     ) {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct();
 

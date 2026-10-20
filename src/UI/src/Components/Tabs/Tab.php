@@ -9,6 +9,7 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
@@ -22,7 +23,7 @@ use Throwable;
 /**
  * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [])
  */
-class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract
+class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract, HasLabelEscapingContract
 {
     use WithLabel;
     use WithIcon;

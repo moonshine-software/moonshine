@@ -13,11 +13,13 @@ use MoonShine\Contracts\Core\HasUriKeyContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @implements HasResourceContract<CrudResourceContract>
  */
-abstract class Handler implements HasIconContract, HasResourceContract, HasUriKeyContract, HasLabelContract, HasCoreContract
+abstract class Handler implements HasIconContract, HasResourceContract, HasUriKeyContract, HasLabelContract, HasCoreContract, HasLabelEscapingContract
 {
     use Makeable;
     use WithQueue;
@@ -73,11 +75,26 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
         return $this;
     }
 
+    /**
+     * Passes the handler's label preference to its button unless the button has its own.
+     * Handlers::getButtons() applies it too, so it also works when getButton() skips prepareButton().
+     *
+     * @internal
+     */
+    public function applyLabelEscaping(ActionButtonContract $button): ActionButtonContract
+    {
+        $escape = $this->getDisplayEscaping(DisplayTextType::LABEL);
+
+        if (! \is_null($escape) && $button instanceof HasLabelEscapingContract && ! $button->hasLabelEscapingOverride()) {
+            $button->escapeLabel($escape);
+        }
+
+        return $button;
+    }
+
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
-        if ($this->escapeLabel !== null && ! $button->hasLabelEscapingOverride()) {
-            $button->escapeLabel($this->escapeLabel);
-        }
+        $button = $this->applyLabelEscaping($button);
 
         if (! \is_null($this->modifyButton)) {
             return \call_user_func($this->modifyButton, $button, $this);

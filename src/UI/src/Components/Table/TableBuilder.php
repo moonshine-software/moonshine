@@ -36,9 +36,11 @@ use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\Grid;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Traits\HasAsync;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 use MoonShine\UI\Traits\Table\TableStates;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -58,6 +60,7 @@ final class TableBuilder extends IterableComponent implements
     TableBuilderContract,
     HasFieldsContract
 {
+    use ResolvesDisplayEscaping;
     use WithFields;
     use TableStates;
     use HasAsync;
@@ -323,7 +326,7 @@ final class TableBuilder extends IterableComponent implements
                 foreach ($fields as $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
                     $title = Column::make([
-                        Div::make([FlexibleRender::make($field->getLabelHtml()->toHtml())])->class('form-label'),
+                        Div::make([FlexibleRender::make($this->getLabelHtmlOf($field)->toHtml())])->class('form-label'),
                     ])->columnSpan(\is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2);
 
                     $value = Column::make([
@@ -536,7 +539,7 @@ final class TableBuilder extends IterableComponent implements
                             'class' => $field->isSortActive() ? 'text-primary' : '',
                             '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
                         ])
-                    : $field->getLabelHtml()->toHtml();
+                    : $this->getLabelHtmlOf($field)->toHtml();
 
                 $cells->push(
                     TableTh::make($thContent, $index)
@@ -757,10 +760,10 @@ final class TableBuilder extends IterableComponent implements
     {
         $columns = new Collection($this->getFields()->onlyVisible()->all())
             ->filter(static fn (FieldContract $field): bool => $field->isColumnSelection())
-            ->mapWithKeys(static fn (FieldContract $field): array => [
+            ->mapWithKeys(fn (FieldContract $field): array => [
                 $field->getIdentity() => [
                     'label' => $field->getLabel(),
-                    'escapeLabel' => $field->isEscapeLabel(),
+                    'escapeLabel' => $this->isDisplayEscapedFor(DisplayTextType::LABEL, $field),
                 ],
             ])
             ->filter(static fn (array $column): bool => (bool) $column['label'])

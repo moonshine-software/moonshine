@@ -12,12 +12,16 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 
 /**
  * @internal
  */
 final class FieldContainer extends MoonShineComponent
 {
+    use ResolvesDisplayEscaping;
+
     protected string $view = 'moonshine::components.field-container';
 
     public ?ComponentSlot $beforeInner = null;
@@ -41,7 +45,7 @@ final class FieldContainer extends MoonShineComponent
                 $this->field->getLinkValue(),
                 $this->field->getLinkName(),
             )
-                ->escapeLabel($this->field->isEscapeLinkName())
+                ->escapeLabel($this->isDisplayEscapedFor(DisplayTextType::LINK_NAME, $this->field))
                 ->customAttributes([
                     'target' => $this->field->isLinkBlank() ? '_blank' : '_self',
                 ])
@@ -57,7 +61,7 @@ final class FieldContainer extends MoonShineComponent
             $this->afterInner = new ComponentSlot(
                 $this->getCore()->getRenderer()->render('moonshine::components.form.hint', [
                     'attributes' => new MoonShineComponentAttributeBag(),
-                    'hintHtml' => $this->field->getHintHtml(),
+                    'hintHtml' => $this->getHintHtmlOf($this->field),
                 ])->render()
             );
         }
@@ -76,13 +80,13 @@ final class FieldContainer extends MoonShineComponent
     {
         return [
             'label' => $this->field->getLabel(),
-            'labelHtml' => $this->field->getLabelHtml(),
+            'labelHtml' => $this->getLabelHtmlOf($this->field),
             'formName' => $this->field->getFormName(),
 
             'errors' => data_get($this->field->getErrors(), $this->field->getNameDot()),
 
-            'before' => $this->renderDecoration($this->field->getBeforeRender(), $this->field->isEscapeBeforeRender()),
-            'after' => $this->renderDecoration($this->field->getAfterRender(), $this->field->isEscapeAfterRender()),
+            'before' => $this->renderDecoration($this->field->getBeforeRender(), $this->isDisplayEscapedFor(DisplayTextType::BEFORE_RENDER, $this->field)),
+            'after' => $this->renderDecoration($this->field->getAfterRender(), $this->isDisplayEscapedFor(DisplayTextType::AFTER_RENDER, $this->field)),
             'slot' => new ComponentSlot($this->stringifySlotContent(value($this->slot))),
 
             'beforeInner' => $this->afterInner,

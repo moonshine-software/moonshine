@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithLink
 {
+    use WithDisplayEscaping;
+
     protected bool $isLink = false;
 
     /** @var string|(Closure(mixed, static): string) */
@@ -21,8 +25,6 @@ trait WithLink
     protected bool $linkBlank = false;
 
     protected bool $withoutIcon = false;
-
-    protected ?bool $escapeLinkName = null;
 
     public function hasLink(): bool
     {
@@ -64,9 +66,7 @@ trait WithLink
      */
     public function escapeLinkName(bool $escape = true): static
     {
-        $this->escapeLinkName = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::LINK_NAME, $escape);
     }
 
     public function unescapeLinkName(): static
@@ -76,7 +76,7 @@ trait WithLink
 
     public function isEscapeLinkName(): bool
     {
-        return $this->escapeLinkName ?? true;
+        return $this->isDisplayEscaped(DisplayTextType::LINK_NAME);
     }
 
     /**

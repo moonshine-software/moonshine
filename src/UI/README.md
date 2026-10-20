@@ -62,11 +62,11 @@ The global label setting applies to developer-provided labels without a local pr
 
 These settings control display text. `getLabel()` and `getHint()` still return the original text, and existing value methods `escape()`, `unescape()` and `escapeOnApply()` keep their separate purpose. Renderable views and generated component markup are rendered as HTML. When upgrading HTML supplied as a plain string, enable the appropriate `unescape…()` method explicitly.
 
-Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. While link names are escaped, `link()` name callbacks and `Url::title()` callbacks receive the raw value and their result is escaped once; after `unescapeLinkName()` they receive the prepared preview value and their result is output as trusted HTML. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
+Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. `link()` name callbacks receive the field preview as before, for example the option label of a `Select` or the formatted `Date`. While link names are escaped, fields that escape their own preview (`Text`, `Textarea`, `BelongsTo`) pass it as plain text, and the callback result is escaped once; `Url::title()` callbacks likewise receive the raw value. After `unescapeLinkName()` callbacks receive the prepared preview and their result is output as trusted HTML. Inline `BelongsToMany` badge callbacks receive the prepared label, because badges print their value as is. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
 
 To reuse a label in another component, use `labelFrom()`: it copies both the label and its escaping preference, for example `Heading::make()->labelFrom($field)`.
 
-Table column-selection toggles inherit each field's label preference. An explicit handler label preference applies only when its button has no explicit label preference of its own. `modifyButton` runs afterward and can override either preference.
+Table column-selection toggles inherit each field's label preference. An explicit handler label preference applies only when its button has no explicit label preference of its own. `Handlers::getButtons()` applies it even when a custom `getButton()` does not call `prepareButton()`. `modifyButton` runs in `prepareButton()` afterward and can override either preference.
 
 Prefix/suffix rendering uses the field's `isEscapePrefix()` / `isEscapeSuffix()` getters, including overrides in custom fields. The default getters use the explicit field preference, then an explicit extension preference, then the global default. Rendering prepares a clone of the extension, so shared extension instances keep their own preferences. Standalone extensions use the same defaults through `DisplayTextType`.
 
@@ -74,8 +74,17 @@ Display escaping is prepared in PHP. `getLabelHtml()` and `getHintHtml()` return
 
 Blade slots are template output and are not escaped by default; an explicit `:escape-label="true"` or `:escape-hint="true"` escapes slot content too.
 
-Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. `Link` still passes its prepared label as `$slot`, so published `link-native` / `link-button` views keep working. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`.
+Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. `Link` still passes its prepared label as `$slot`, so published `link-native` / `link-button` views keep working. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`. A `label` or `title` supplied through `customView()` data gets its `labelHtml` / `titleHtml` rebuilt with the component's preference, unless the prepared value is supplied too.
 
-### Upgrading custom implementations
+### Custom implementations
 
-`HasLabelContract` adds `escapeLabel(bool $escape = true): static`, `unescapeLabel(): static`, `isEscapeLabel(): bool`, `hasLabelEscapingOverride(): bool` and `getLabelHtml(): Htmlable`. Custom implementations must provide these methods; the `WithLabel` trait supplies them. `hasLabelEscapingOverride()` reports whether a local preference was set, independently of its resolved value, so defaults can be inherited without overwriting explicit choices. Keep `getLabel(): string` raw for attributes, serialization and data operations, and use `getLabelHtml()` for display. `HasHintContract` likewise adds `getHintHtml(): Htmlable` alongside its escaping methods; `WithHint` supplies the implementation.
+Existing contracts are unchanged, so custom implementations keep working after the upgrade. Escaping is described by separate contracts:
+
+- `HasLabelEscapingContract`: `escapeLabel()`, `unescapeLabel()`, `isEscapeLabel()`, `hasLabelEscapingOverride()` and `getLabelHtml(): Htmlable`, supplied by the `WithLabel` trait,
+- `HasHintEscapingContract`: `escapeHint()`, `unescapeHint()`, `isEscapeHint()` and `getHintHtml(): Htmlable`, supplied by `WithHint`,
+- `HasLinkNameEscapingContract`: `escapeLinkName()`, `unescapeLinkName()` and `isEscapeLinkName()`, supplied by `WithLink`,
+- `HasTitleEscapingContract`: `escapeTitle()`, `unescapeTitle()` and `isEscapeTitle()` for modals and off-canvas panels,
+- `HasRenderEscapingContract`: the `beforeRender()` / `afterRender()` escaping methods of fields,
+- `DisplayEscapingConfiguratorContract`: the global defaults of a configurator.
+
+Implementations without these contracts use the defaults described above: escaping stays enabled, and configurable types follow the configurator when it implements `DisplayEscapingConfiguratorContract`. `hasLabelEscapingOverride()` reports whether a local preference was set, independently of its resolved value, so defaults can be inherited without overwriting explicit choices. Keep `getLabel(): string` raw for attributes, serialization and data operations, and use `getLabelHtml()` for display.

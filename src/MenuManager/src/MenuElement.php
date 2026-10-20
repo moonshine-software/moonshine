@@ -10,16 +10,18 @@ use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\Macroable;
 use MoonShine\Contracts\Core\HasViewRendererContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithViewRenderer;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Traits\HasCanSee;
+use MoonShine\UI\Traits\WithDisplayViewData;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
-abstract class MenuElement implements MenuElementContract, HasViewRendererContract
+abstract class MenuElement implements MenuElementContract, HasViewRendererContract, HasLabelEscapingContract
 {
     use Makeable;
     use Macroable;
@@ -28,7 +30,9 @@ abstract class MenuElement implements MenuElementContract, HasViewRendererContra
     use WithIcon;
     use HasCanSee;
     use WithLabel;
-    use WithViewRenderer;
+    use WithViewRenderer, WithDisplayViewData {
+        WithDisplayViewData::resolveCustomViewData insteadof WithViewRenderer;
+    }
     use Conditionable;
 
     private bool $topMode = false;

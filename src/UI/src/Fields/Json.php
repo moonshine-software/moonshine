@@ -31,6 +31,7 @@ use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Traits\Fields\HasVerticalMode;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
@@ -45,6 +46,7 @@ class Json extends Field implements
     HasDefaultValueContract,
     CanBeArray
 {
+    use ResolvesDisplayEscaping;
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -535,7 +537,7 @@ class Json extends Field implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            FlexibleRender::make($field->getLabelHtml()->toHtml()),
+                            FlexibleRender::make($this->getLabelHtmlOf($field)->toHtml()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
                     value: $reorderable ? fn (FieldContract $field, ComponentContract $default): ComponentContract => $field->getColumn() === '__handle'

@@ -9,15 +9,17 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\WithTitleEscaping;
 use Throwable;
 
 /**
  * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable<array-key, ComponentContract> $components = [])
  */
-final class Modal extends AbstractWithComponents implements ModalContract
+final class Modal extends AbstractWithComponents implements ModalContract, HasTitleEscapingContract
 {
     use WithTitleEscaping;
 
@@ -58,7 +60,7 @@ final class Modal extends AbstractWithComponents implements ModalContract
         string $name = 'default',
         ?bool $escapeTitle = null,
     ) {
-        $this->escapeTitle = $escapeTitle;
+        $this->setDisplayEscaping(DisplayTextType::TITLE, $escapeTitle);
 
         parent::__construct($components);
 

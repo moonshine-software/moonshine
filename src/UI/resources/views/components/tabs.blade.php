@@ -20,7 +20,7 @@
                             type="button"
                     >
                         {!! $tab['icon'] !!}
-                        {{ $tab['labelHtml'] }}
+                        {{ $tab['labelHtml'] ?? $tab['label'] }}
                     </button>
                 </li>
             @endforeach

@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithLabelEscaping;
 use Throwable;
 
@@ -31,7 +32,7 @@ class Footer extends AbstractWithComponents
         protected string|Closure $copyright = '',
         ?bool $escapeLabel = null,
     ) {
-        $this->escapeLabel = $escapeLabel;
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
 
         parent::__construct($components);
     }

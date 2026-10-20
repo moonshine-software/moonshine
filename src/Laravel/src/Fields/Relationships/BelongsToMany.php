@@ -43,6 +43,7 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
@@ -115,8 +116,6 @@ class BelongsToMany extends ModelRelationField implements
 
     protected bool $selectMode = false;
 
-    protected ?bool $escapeOptionLabels = null;
-
     /**
      * @var list<ActionButtonContract>
      */
@@ -168,9 +167,7 @@ class BelongsToMany extends ModelRelationField implements
      */
     public function escapeOptionLabels(bool $escape = true): static
     {
-        $this->escapeOptionLabels = $escape;
-
-        return $this;
+        return $this->setDisplayEscaping(DisplayTextType::OPTION_LABEL, $escape);
     }
 
     public function unescapeOptionLabels(): static
@@ -180,7 +177,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function isEscapeOptionLabels(): bool
     {
-        return $this->escapeOptionLabels ?? true;
+        return $this->isDisplayEscaped(DisplayTextType::OPTION_LABEL);
     }
 
     public function selectMode(): static
@@ -549,8 +546,9 @@ class BelongsToMany extends ModelRelationField implements
                         )->unescapeLabel();
                 }
 
+                // Badges print their value as is, so the callback gets the prepared label rather than the raw value.
                 /** @var Badge|bool $badgeValue */
-                $badgeValue = value($this->inLineBadge, $item, $label instanceof Link ? $label : $value, $this);
+                $badgeValue = value($this->inLineBadge, $item, $label, $this);
 
                 if ($badgeValue !== false) {
                     $badge = $badgeValue instanceof Badge
