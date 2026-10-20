@@ -1,5 +1,7 @@
 @props([
+    'escapeLabel' => null,
     'title' => '',
+    'titleHtml' => null,
     'icon' => '',
     'progress' => false,
     'value' => 0,
@@ -24,6 +26,6 @@
 
     <div class="report-card-body">
         <div class="report-card-value">{!! $simpleValue !== '' ? $simpleValue : $value !!}</div>
-        <h5 class="report-card-title">{!! $title !!}</h5>
+        <h5 class="report-card-title"><x-moonshine::display-text :value="$titleHtml ?? $title" :escape="$escapeLabel" /></h5>
     </div>
 </div>

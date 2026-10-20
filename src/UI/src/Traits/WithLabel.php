@@ -5,10 +5,21 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Support\DisplayHtml;
+use MoonShine\UI\Enums\DisplayTextType;
 
 trait WithLabel
 {
+    use WithLabelEscaping;
+
+    public function getLabelHtml(): Htmlable
+    {
+        return DisplayHtml::make($this->getLabel(), $this->isEscapeLabel());
+    }
+
     /** @var (Closure(static): string)|string */
     protected Closure|string $label = '';
 
@@ -35,6 +46,15 @@ trait WithLabel
         }
 
         return $this->label;
+    }
+
+    /**
+     * Reuses another owner's label together with its escaping preference.
+     */
+    public function labelFrom(HasLabelContract $owner): static
+    {
+        return $this->setLabel($owner->getLabel())
+            ->escapeLabel(DisplayTextType::LABEL->isEscapedFor($owner, $this->getCore()->getConfig()));
     }
 
     /** @param (Closure(static): string)|string $label */

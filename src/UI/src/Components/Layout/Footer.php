@@ -8,10 +8,14 @@ use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\AbstractWithComponents;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\WithLabelEscaping;
 use Throwable;
 
 class Footer extends AbstractWithComponents
 {
+    use WithLabelEscaping;
+
     protected string $view = 'moonshine::components.layout.footer';
 
     /**
@@ -25,8 +29,11 @@ class Footer extends AbstractWithComponents
         iterable $components = [],
         // anonymous component variables
         protected array $menu = [],
-        protected string|Closure $copyright = ''
+        protected string|Closure $copyright = '',
+        ?bool $escapeLabel = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         parent::__construct($components);
     }
 
@@ -71,6 +78,7 @@ class Footer extends AbstractWithComponents
         return [
             'menu' => $this->getMenu(),
             'copyright' => $this->getCopyright(),
+            'escapeLabel' => $this->isEscapeLabel(),
         ];
     }
 }

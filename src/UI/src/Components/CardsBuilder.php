@@ -14,8 +14,10 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\HasAsyncContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\UI\Collections\Fields;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\HasAsync;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
 
@@ -33,6 +35,7 @@ final class CardsBuilder extends IterableComponent implements
     HasFieldsContract,
     HasAsyncContract
 {
+    use ResolvesDisplayEscaping;
     use WithFields;
     use HasAsync;
     use WithColumnSpan;
@@ -230,7 +233,13 @@ final class CardsBuilder extends IterableComponent implements
 
             $buttons = $this->getButtons($casted);
 
+            // Built from the filled fields like the card values, so labels resolved per item and duplicates match them.
+            $escapeValueLabels = $fields->mapWithKeys(fn (FieldContract $field): array => [
+                $field->getLabel() => $this->isDisplayEscapedFor(DisplayTextType::LABEL, $field),
+            ])->all();
+
             return Card::make(...$this->getMapper($data, $fields, $index))
+                ->escapeValueLabels($escapeValueLabels)
                 ->content((string) value($this->content, $data, $index, $this))
                 ->header((string) value($this->header, $data, $index, $this))
                 ->customAttributes(value($this->componentAttributes, $data, $index, $this))

@@ -1,10 +1,12 @@
 @props([
+    'escapeLabel' => null,
     'components' => [],
     'persist' => false,
     'open' => false,
     'button' => null,
     'icon' => null,
     'title',
+    'labelHtml' => null,
 ])
 <div
     {{ $attributes->class(['accordion']) }}
@@ -25,7 +27,7 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                {!! $title !!}
+                <x-moonshine::display-text :value="$labelHtml ?? $title" :escape="$escapeLabel" />
             </div>
 
             @if($button ?? false)

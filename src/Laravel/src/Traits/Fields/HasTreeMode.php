@@ -59,6 +59,7 @@ trait HasTreeMode
                 $label = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $this->getResourceColumn())));
 
                 $element = Checkbox::make((string) $label)
+                    ->escapeLabel($this->isEscapeOptionLabels())
                     ->formName($this->getFormName())
                     ->simpleMode()
                     ->customAttributes($this->getAttributes()->jsonSerialize())

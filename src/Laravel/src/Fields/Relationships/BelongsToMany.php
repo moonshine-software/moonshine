@@ -43,6 +43,7 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
@@ -158,6 +159,25 @@ class BelongsToMany extends ModelRelationField implements
         $this->inLineLink = $link;
 
         return $this;
+    }
+
+    /**
+     * Labels of related items are built from record data,
+     * so they keep their own preference instead of following the field label.
+     */
+    public function escapeOptionLabels(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::OPTION_LABEL, $escape);
+    }
+
+    public function unescapeOptionLabels(): static
+    {
+        return $this->escapeOptionLabels(false);
+    }
+
+    public function isEscapeOptionLabels(): bool
+    {
+        return $this->isDisplayEscaped(DisplayTextType::OPTION_LABEL);
     }
 
     public function selectMode(): static
@@ -464,7 +484,7 @@ class BelongsToMany extends ModelRelationField implements
         $keys = Collection::wrap($old);
 
         return $keys
-            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key ?? ''] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
             ->values();
     }
 
@@ -508,33 +528,37 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->inLine) {
-            return $values->implode(function (Model $item) use ($column) {
-                $value = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, '')));
+            return $values->implode(function (Model $item) use ($column): string {
+                $value = Stringify::value($this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, ''))));
+
+                // Every inline variant (plain, link, badge) outputs the same prepared label.
+                $label = $this->isEscapeOptionLabels() ? e($value) : $value;
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
                     $linkValue = \call_user_func($this->inLineLink, $item, $value, $this);
 
-                    $value = $linkValue instanceof Link
+                    $label = $linkValue instanceof Link
                         ? $linkValue
                         : Link::make(
                             $linkValue,
-                            (string) $value,
-                        );
+                            $label,
+                        )->unescapeLabel();
                 }
 
+                // Badges print their value as is, so the callback gets the prepared label rather than the raw value.
                 /** @var Badge|bool $badgeValue */
-                $badgeValue = value($this->inLineBadge, $item, $value, $this);
+                $badgeValue = value($this->inLineBadge, $item, $label, $this);
 
                 if ($badgeValue !== false) {
                     $badge = $badgeValue instanceof Badge
                         ? $badgeValue
-                        : Badge::make((string) $value, Color::PRIMARY);
+                        : Badge::make((string) $label, Color::PRIMARY);
 
                     return (string) $badge->customAttributes(['class' => 'm-1']);
                 }
 
-                return $value;
+                return (string) $label;
             }, $this->inLineSeparator);
         }
 

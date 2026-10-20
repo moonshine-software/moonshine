@@ -8,16 +8,19 @@ use Closure;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Contracts\UI\WithBadgeContract;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\Support\SafeUrl;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithBadge;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $href, Closure|string $label = '')
+ * @method static static make(Closure|string $href, Closure|string $label = '', ?bool $escapeLabel = null)
  */
-final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract, WithBadgeContract
+final class Link extends MoonShineComponent implements HasIconContract, HasLabelContract, WithBadgeContract, HasLabelEscapingContract
 {
     use WithBadge;
     use WithLabel;
@@ -33,7 +36,10 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
     public function __construct(
         protected Closure|string $href,
         Closure|string $label = '',
+        ?bool $escapeLabel = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         parent::__construct();
 
         $this->setLabel($label);
@@ -87,10 +93,13 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
      */
     protected function viewData(): array
     {
+        $label = $this->getLabel() ?: value($this->href, $this);
+
         return [
-            'slot' => new ComponentSlot(
-                $this->getLabel() ?: value($this->href, $this),
-            ),
+            'label' => $label,
+            'labelHtml' => $labelHtml = DisplayHtml::make($label, $this->isEscapeLabel()),
+            // Kept for custom views that output `$slot`.
+            'slot' => new ComponentSlot($labelHtml->toHtml()),
             'icon' => new ComponentSlot(
                 $this->getIcon(4),
             ),

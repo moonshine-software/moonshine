@@ -24,7 +24,8 @@ final class PublishCommandTest extends TestCase
             ->expectsQuestion('Types', ['assets', 'resources', 'forms', 'pages'])
             ->expectsQuestion('Forms', ['login', 'filters'])
             ->expectsQuestion('Pages', ['profile', 'login', 'error'])
-            ->expectsOutputToContain('moonshine/src/UI/dist')
+            // The checkout directory name differs between environments, so only the package path is checked.
+            ->expectsOutputToContain('src/UI/dist')
             ->assertSuccessful();
 
         $basePath = __DIR__ . "/../../../app/MoonShine";

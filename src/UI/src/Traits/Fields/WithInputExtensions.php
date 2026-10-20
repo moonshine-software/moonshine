@@ -9,15 +9,57 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Snippet;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\InputExtensions\InputCopy;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 use MoonShine\UI\InputExtensions\InputLock;
 use MoonShine\UI\InputExtensions\InputPrefix;
+use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithInputExtensions
 {
+    use WithDisplayEscaping;
+
+    public function escapePrefix(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::PREFIX, $escape);
+    }
+
+    public function unescapePrefix(): static
+    {
+        return $this->escapePrefix(false);
+    }
+
+    public function isEscapePrefix(): bool
+    {
+        $extension = $this->extensions[InputPrefix::class] ?? null;
+
+        return $this->getDisplayEscaping(DisplayTextType::PREFIX) ?? ($extension instanceof InputPrefix
+            ? $extension->isEscape()
+            : DisplayTextType::PREFIX->isEscapedBy($this->getCore()->getConfig()));
+    }
+
+    public function escapeSuffix(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::SUFFIX, $escape);
+    }
+
+    public function unescapeSuffix(): static
+    {
+        return $this->escapeSuffix(false);
+    }
+
+    public function isEscapeSuffix(): bool
+    {
+        $extension = $this->extensions[InputExt::class] ?? null;
+
+        return $this->getDisplayEscaping(DisplayTextType::SUFFIX) ?? ($extension instanceof InputExt
+            ? $extension->isEscape()
+            : DisplayTextType::SUFFIX->isEscapedBy($this->getCore()->getConfig()));
+    }
+
     /**
      * @var array<class-string<InputExtension>, InputExtension>
      */
@@ -28,13 +70,26 @@ trait WithInputExtensions
      */
     public function getExtensions(): Collection
     {
-        return new Collection($this->extensions);
+        return new Collection($this->extensions)->map(function (InputExtension $extension): InputExtension {
+            if ($extension instanceof InputPrefix || $extension instanceof InputExt) {
+                $extension = clone $extension;
+                $extension->escape($extension instanceof InputPrefix ? $this->isEscapePrefix() : $this->isEscapeSuffix());
+            }
+
+            return $extension;
+        });
     }
 
     public function getExtensionsAttributes(): ComponentAttributesBagContract
     {
-        $extensions = $this->getExtensions();
+        return $this->buildExtensionsAttributes($this->getExtensions());
+    }
 
+    /**
+     * @param Collection<array-key, InputExtension> $extensions
+     */
+    private function buildExtensionsAttributes(Collection $extensions): ComponentAttributesBagContract
+    {
         return new MoonShineComponentAttributeBag([
             'x-init' => trim($extensions->implode(static fn (InputExtension $extension): string => $extension->getXInit()->implode(';'), ';'), ';'),
             'x-data' => Str::of(
@@ -48,9 +103,11 @@ trait WithInputExtensions
      */
     protected function getExtensionsViewData(): array
     {
+        $extensions = $this->getExtensions();
+
         return [
-            'extensions' => $this->getExtensions(),
-            'extensionsAttributes' => $this->getExtensionsAttributes(),
+            'extensions' => $extensions,
+            'extensionsAttributes' => $this->buildExtensionsAttributes($extensions),
         ];
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Support\Traits;
 
 use Closure;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Js;
 use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
@@ -245,8 +246,9 @@ trait WithComponentAttributes
         $type = $if ? 'if' : 'show';
 
         if ($if && $this instanceof FieldContract) {
-            $this->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">');
-            $this->afterRender(fn (): string => '</template>');
+            // Only the generated wrappers are trusted; user decorations keep their escaping preference.
+            $this->beforeRender(fn (): HtmlString => new HtmlString('<template x-if="' . $variable($this) . '">'));
+            $this->afterRender(static fn (): HtmlString => new HtmlString('</template>'));
 
             return $this;
         }

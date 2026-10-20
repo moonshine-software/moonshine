@@ -9,13 +9,15 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label = '', iterable<array-key, ComponentContract> $components = [])
+ * @method static static make(Closure|string $label = '', iterable<array-key, ComponentContract> $components = [], bool $open = false, bool $persist = true, ?bool $escapeLabel = null)
  */
-class Collapse extends AbstractWithComponents implements HasIconContract, HasLabelContract
+class Collapse extends AbstractWithComponents implements HasIconContract, HasLabelContract, HasLabelEscapingContract
 {
     use WithLabel;
     use WithIcon;
@@ -27,7 +29,10 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
         iterable $components = [],
         public bool $open = false,
         public bool $persist = true,
+        ?bool $escapeLabel = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         $this->setLabel($label);
 
         parent::__construct($components);
@@ -65,6 +70,7 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
             'persist' => $this->isPersist(),
             'open' => $this->isOpen(),
             'title' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'icon' => new ComponentSlot(
                 $this->getIcon(5)
             ),
