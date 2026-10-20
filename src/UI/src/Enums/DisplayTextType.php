@@ -16,6 +16,9 @@ enum DisplayTextType: string
 
     case SUFFIX = 'suffix';
 
+    /** Text built from record data, escaped regardless of the global label default. */
+    case RECORD = 'record';
+
     public function isEscapedBy(ConfiguratorContract $config): bool
     {
         return match ($this) {
@@ -23,6 +26,7 @@ enum DisplayTextType: string
             self::HINT => $config->isEscapeHint(),
             self::PREFIX => $config->isEscapePrefix(),
             self::SUFFIX => $config->isEscapeSuffix(),
+            self::RECORD => true,
         };
     }
 }

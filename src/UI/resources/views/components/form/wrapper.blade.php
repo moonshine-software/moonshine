@@ -22,11 +22,7 @@
             :for-name="$formName"
         >
             {{ $beforeLabel && $insideLabel ? $slot : '' }}
-            @if(! is_null($labelHtml))
-                {{ $labelHtml }}
-            @else
-                <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
-            @endif
+            <x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" />
             {{ !$beforeLabel && $insideLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

@@ -36,7 +36,7 @@ Text::make('<b>Site</b>', 'site')
 
 BelongsToMany::make('Categories', 'categories', resource: CategoryResource::class)
     ->tree('parent_id')
-    ->unescapeOptionLabels();                      // tree, horizontal and inline link labels
+    ->unescapeOptionLabels();                      // tree, horizontal and all inline labels
 ```
 
 `Heading` labels, explicit `Modal` / `OffCanvas` titles, field link names and related item labels remain escaped even when global label escaping is disabled, because they commonly contain record data. Use their local `unescapeLabel()`, `unescapeTitle()`, `unescapeLinkName()` or `unescapeOptionLabels()` only for trusted HTML. A title derived from an action button label follows the button's label preference; relation headings and modal titles follow the relation field's label preference. Confirmation content and explicit confirmation titles keep escaping enabled by default.
@@ -56,13 +56,15 @@ In Laravel, configure the defaults in `config/moonshine.php`:
 ],
 ```
 
-The corresponding `MoonShineConfigurator` methods are `escapeLabel()`, `escapeHint()`, `escapePrefix()`, `escapeSuffix()`, `escapeBeforeRender()` and `escapeAfterRender()`. Pass `false` to disable a default.
+The corresponding `MoonShineConfigurator` methods are `escapeLabel()`, `escapeHint()`, `escapePrefix()`, `escapeSuffix()`, `escapeBeforeRender()` and `escapeAfterRender()`. Pass `false` to disable a default. Values from `env()` such as `'0'`, `'false'` or `'off'` are accepted; empty or unrecognized values keep escaping enabled.
 
 The global label setting applies to developer-provided labels without a local preference, including buttons, fields, boxes, dividers, menus and card value labels. Disabling it allows HTML in those labels; escape any record data included in them explicitly. The record-text contexts listed above keep their own escaping defaults. Prefer local `unescape…()` methods when only specific labels contain HTML.
 
 These settings control display text. `getLabel()` and `getHint()` still return the original text, and existing value methods `escape()`, `unescape()` and `escapeOnApply()` keep their separate purpose. Renderable views and generated component markup are rendered as HTML. When upgrading HTML supplied as a plain string, enable the appropriate `unescape…()` method explicitly.
 
-Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. Preview link name callbacks still receive the prepared preview value, and its escaped entities are preserved when escaping the callback result. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
+Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. While link names are escaped, `link()` name callbacks and `Url::title()` callbacks receive the raw value and their result is escaped once; after `unescapeLinkName()` they receive the prepared preview value and their result is output as trusted HTML. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
+
+To reuse a label in another component, use `labelFrom()`: it copies both the label and its escaping preference, for example `Heading::make()->labelFrom($field)`.
 
 Table column-selection toggles inherit each field's label preference. An explicit handler label preference applies only when its button has no explicit label preference of its own. `modifyButton` runs afterward and can override either preference.
 
@@ -72,7 +74,7 @@ Display escaping is prepared in PHP. `getLabelHtml()` and `getHintHtml()` return
 
 Blade slots are template output and are not escaped by default; an explicit `:escape-label="true"` or `:escape-hint="true"` escapes slot content too.
 
-Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`.
+Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. `Link` still passes its prepared label as `$slot`, so published `link-native` / `link-button` views keep working. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`.
 
 ### Upgrading custom implementations
 

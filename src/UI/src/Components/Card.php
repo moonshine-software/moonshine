@@ -6,6 +6,7 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\UI\Traits\Components\WithSlotContent;
 use Stringable;
 
@@ -123,7 +124,8 @@ final class Card extends MoonShineComponent
     protected function viewData(): array
     {
         $customViewData = $this->getCustomViewData();
-        $values = \is_array($customViewData['values'] ?? null)
+        /** @var iterable<array-key, mixed> $values */
+        $values = is_iterable($customViewData['values'] ?? null)
             ? $customViewData['values']
             : value($this->values, $this);
         $escapeLabel = $customViewData['escapeLabel'] ?? $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
@@ -133,7 +135,7 @@ final class Card extends MoonShineComponent
         $valueLabelsHtml = [];
 
         foreach ($values as $label => $value) {
-            $valueLabelsHtml[$label] = ($escapeValueLabels[$label] ?? $escapeLabel) ? e($label) : $label;
+            $valueLabelsHtml[$label] = DisplayHtml::make($label, (bool) ($escapeValueLabels[$label] ?? $escapeLabel));
         }
 
         return [

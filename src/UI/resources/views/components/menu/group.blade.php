@@ -41,7 +41,7 @@
             </div>
         @endif
 
-        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">@if(! is_null($labelHtml)){{ $labelHtml }}@else<x-moonshine::display-text :value="$label" :escape="$escapeLabel" />@endif</span>
+        <span class="menu-text @if($onlyIcon) menu-only-icon @endif"><x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" /></span>
         <span class="menu-arrow">
             <x-moonshine::icon
                 icon="chevron-down"

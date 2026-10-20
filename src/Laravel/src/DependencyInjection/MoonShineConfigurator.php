@@ -61,7 +61,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapeLabel(): bool
     {
-        return $this->boolValue($this->get('escapes.label', true));
+        return $this->escapeFlag('escapes.label');
     }
 
     public function escapeHint(bool $escape = true): self
@@ -71,7 +71,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapeHint(): bool
     {
-        return $this->boolValue($this->get('escapes.hint', true));
+        return $this->escapeFlag('escapes.hint');
     }
 
     public function escapePrefix(bool $escape = true): self
@@ -81,7 +81,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapePrefix(): bool
     {
-        return $this->boolValue($this->get('escapes.prefix', true));
+        return $this->escapeFlag('escapes.prefix');
     }
 
     public function escapeSuffix(bool $escape = true): self
@@ -91,7 +91,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapeSuffix(): bool
     {
-        return $this->boolValue($this->get('escapes.suffix', true));
+        return $this->escapeFlag('escapes.suffix');
     }
 
     public function escapeBeforeRender(bool $escape = true): self
@@ -101,7 +101,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapeBeforeRender(): bool
     {
-        return $this->boolValue($this->get('escapes.before_render', true));
+        return $this->escapeFlag('escapes.before_render');
     }
 
     public function escapeAfterRender(bool $escape = true): self
@@ -111,7 +111,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
 
     public function isEscapeAfterRender(): bool
     {
-        return $this->boolValue($this->get('escapes.after_render', true));
+        return $this->escapeFlag('escapes.after_render');
     }
 
     public function dir(string $dir, string $namespace): self
@@ -616,6 +616,24 @@ final class MoonShineConfigurator implements ConfiguratorContract
         }
 
         return $value;
+    }
+
+    /**
+     * Escape switches often come from env(), so string and numeric flags are accepted.
+     * Unrecognized values keep escaping enabled instead of breaking every render.
+     */
+    private function escapeFlag(string $key): bool
+    {
+        $value = $this->get($key, true);
+
+        if (\is_bool($value)) {
+            return $value;
+        }
+
+        // Empty strings come from unset env variables, so they keep the safe default.
+        return \is_scalar($value) && $value !== ''
+            ? filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true
+            : true;
     }
 
     private function boolValue(mixed $value): bool

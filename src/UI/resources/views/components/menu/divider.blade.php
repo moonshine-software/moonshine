@@ -5,6 +5,6 @@
 ])
 <li {{ $attributes->class('menu-divider') }}>
     @if($label)
-        <span>@if(! is_null($labelHtml)){{ $labelHtml }}@else<x-moonshine::display-text :value="$label" :escape="$escapeLabel" />@endif</span>
+        <span><x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" /></span>
     @endif
 </li>

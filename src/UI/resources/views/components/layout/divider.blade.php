@@ -6,11 +6,7 @@
 ])
 @if($label)
     <div {{ $attributes->class(['divider', 'divider-centered' => $centered]) }}>
-        @if(! is_null($labelHtml))
-            {{ $labelHtml }}
-        @else
-            <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
-        @endif
+        <x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" />
     </div>
 @else
     <hr {{ $attributes->class(['divider']) }} />

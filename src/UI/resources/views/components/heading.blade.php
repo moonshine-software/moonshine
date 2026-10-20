@@ -6,10 +6,6 @@
 ])
 <div class="heading">
     <{{ $tag }} {{ $attributes }}>
-        @if($label !== '' && ! is_null($labelHtml))
-            {{ $labelHtml }}
-        @else
-            <x-moonshine::display-text :value="$label" :fallback="$slot ?? ''" :escape="$escapeLabel" />
-        @endif
+        <x-moonshine::display-text :value="$labelHtml ?? $label" :fallback="$slot ?? ''" :escape="$escapeLabel" :display-type="\MoonShine\UI\Enums\DisplayTextType::RECORD" />
     </{{ $tag }}>
 </div>

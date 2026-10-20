@@ -10,7 +10,7 @@ use MoonShine\UI\Traits\Components\WithHeadingGradation;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label, ?int $h = null, bool $asClass = true, ?bool $escapeLabel = null)
+ * @method static static make(Closure|string $label = '', ?int $h = null, bool $asClass = true, ?bool $escapeLabel = null)
  */
 class Heading extends MoonShineComponent
 {
@@ -47,7 +47,8 @@ class Heading extends MoonShineComponent
         return [
             'tag' => $this->getTag(),
             'label' => $this->getLabel(),
-            'labelHtml' => $this->getLabelHtml(),
+            // Without a label the view falls back to the slot.
+            'labelHtml' => $this->hasLabel() ? $this->getLabelHtml() : null,
         ];
     }
 }

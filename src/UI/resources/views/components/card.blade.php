@@ -53,7 +53,7 @@
             <tbody>
                 @foreach($values as $label => $value)
                     <tr>
-                        <th width="40%">{!! $valueLabelsHtml[$label] !!}:</th>
+                        <th width="40%">{{ $valueLabelsHtml[$label] ?? $label }}:</th>
                         <td width="60%">{!! $value !!}</td>
                     </tr>
                 @endforeach

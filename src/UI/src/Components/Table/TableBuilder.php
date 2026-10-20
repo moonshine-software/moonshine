@@ -523,11 +523,8 @@ final class TableBuilder extends IterableComponent implements
 
                 $thContent = $field->isSortable() && ! $this->isPreview()
                     ?
-                    (string) Link::make(
-                        $field->getSortQuery($this->getAsyncUrl()),
-                        $field->getLabel(),
-                    )
-                        ->escapeLabel($field->isEscapeLabel())
+                    (string) Link::make($field->getSortQuery($this->getAsyncUrl()))
+                        ->labelFrom($field)
                         ->when(
                             $field->isSortActive(),
                             static fn (Link $link): Link => $link->icon(

@@ -63,6 +63,8 @@ it('escapes related item labels independently from the field label', function (s
         'tree' => $field->tree('category_id'),
         'horizontal' => $field->horizontalMode(),
         'inline link' => $field->inLine(link: static fn (): string => '/category'),
+        'inline' => $field->inLine(', '),
+        'inline badge' => $field->inLine(', ', badge: true),
     };
 
     if ($local !== null) {
@@ -74,11 +76,11 @@ it('escapes related item labels independently from the field label', function (s
     $html = match ($mode) {
         'tree' => $field->toTreeHtml(),
         'horizontal' => $field->toListHtml(),
-        'inline link' => (string) $field->preview(),
+        'inline link', 'inline', 'inline badge' => (string) $field->preview(),
     };
 
     expect($html)->toContain($escaped ? '&lt;b&gt;Category&lt;/b&gt;' : '<b>Category</b>');
-})->with(['tree', 'horizontal', 'inline link'])->with([
+})->with(['tree', 'horizontal', 'inline link', 'inline', 'inline badge'])->with([
     'default' => [null, true],
     'local disabled' => [false, false],
     'local enabled' => [true, true],

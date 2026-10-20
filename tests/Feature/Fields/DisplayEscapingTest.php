@@ -468,3 +468,75 @@ it('resolves decoration defaults at rendering time without mutating shared exten
     expect((string) $field)->toContain('<b>Decoration</b>');
     expect((string) $extension)->toContain('<b>Decoration</b>');
 })->with(['Prefix', 'Suffix']);
+
+it('escapes URL title callbacks according to link name preferences', function (bool $escape): void {
+    $field = MoonShine\UI\Fields\Url::make('URL')
+        ->setValue('https://example.test/?a=1&b=2')
+        ->title(static fn (string $title): string => '<b>' . $title . '</b>')
+        ->escapeLinkName($escape);
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $field->preview());
+
+    expect($document->getElementsByTagName('b')->length)->toBe($escape ? 0 : 1);
+    expect(trim($document->getElementsByTagName('a')->item(0)->textContent))
+        ->toBe($escape ? '<b>https://example.test/?a=1&b=2</b>' : 'https://example.test/?a=1&b=2');
+})->with([true, false]);
+
+it('does not decode entities returned by link name callbacks', function (): void {
+    $field = Text::make('Title', 'title')->setValue('Value')
+        ->link('/test', name: static fn (): string => 'Tom &amp; Jerry');
+
+    $document = new DOMDocument();
+    @$document->loadHTML((string) $field->preview());
+
+    expect(trim($document->getElementsByTagName('a')->item(0)->textContent))->toBe('Tom &amp; Jerry');
+});
+
+it('keeps the slot for published link views', function (bool $escape): void {
+    $directory = sys_get_temp_dir() . '/moonshine-link-view-' . uniqid();
+    mkdir($directory . '/components', recursive: true);
+    file_put_contents($directory . '/components/link-native.blade.php', '<a data-published>{{ $slot }}</a>');
+    view()->prependNamespace('moonshine', $directory);
+
+    $html = (string) Link::make('/test', '<b>Open</b>')->escapeLabel($escape);
+
+    expect($html)->toContain('data-published')
+        ->toContain($escape ? '&lt;b&gt;Open&lt;/b&gt;' : '<b>Open</b>');
+})->with([true, false]);
+
+it('reads escape flags from env strings', function (mixed $value, bool $expected): void {
+    $config = new MoonShineConfigurator(new Repository(['moonshine' => ['escapes' => ['label' => $value]]]));
+
+    expect($config->isEscapeLabel())->toBe($expected);
+})->with([
+    'string zero' => ['0', false],
+    'string false' => ['false', false],
+    'string one' => ['1', true],
+    'empty string' => ['', true],
+    'null' => [null, true],
+    'unknown' => ['maybe', true],
+]);
+
+it('renders card value labels from custom view collections', function (): void {
+    $html = (string) MoonShine\UI\Components\Card::make('Title')
+        ->customView('moonshine::components.card', ['values' => collect(['<b>Name</b>' => 'x'])]);
+
+    expect($html)->toContain('&lt;b&gt;Name&lt;/b&gt;');
+});
+
+it('escapes heading view labels when the global label default allows HTML', function (): void {
+    moonshine()->getConfig()->escapeLabel(false);
+
+    expect(view('moonshine::components.heading', ['label' => '<b>Title</b>'])->render())
+        ->toContain('&lt;b&gt;Title&lt;/b&gt;');
+    $this->blade('<x-moonshine::heading><b>Slot</b></x-moonshine::heading>')
+        ->assertSee('<b>Slot</b>', false);
+});
+
+it('reuses label preferences through labelFrom', function (bool $escape): void {
+    $field = Text::make('<b>Name</b>')->escapeLabel($escape);
+
+    expect((string) Heading::make()->labelFrom($field))
+        ->toContain($escape ? '&lt;b&gt;Name&lt;/b&gt;' : '<b>Name</b>');
+})->with([true, false]);

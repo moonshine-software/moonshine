@@ -531,33 +531,36 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->inLine) {
-            return $values->implode(function (Model $item) use ($column) {
-                $value = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, '')));
+            return $values->implode(function (Model $item) use ($column): string {
+                $value = Stringify::value($this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, ''))));
+
+                // Every inline variant (plain, link, badge) outputs the same prepared label.
+                $label = $this->isEscapeOptionLabels() ? e($value) : $value;
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
                     $linkValue = \call_user_func($this->inLineLink, $item, $value, $this);
 
-                    $value = $linkValue instanceof Link
+                    $label = $linkValue instanceof Link
                         ? $linkValue
                         : Link::make(
                             $linkValue,
-                            (string) $value,
-                        )->escapeLabel($this->isEscapeOptionLabels());
+                            $label,
+                        )->unescapeLabel();
                 }
 
                 /** @var Badge|bool $badgeValue */
-                $badgeValue = value($this->inLineBadge, $item, $value, $this);
+                $badgeValue = value($this->inLineBadge, $item, $label instanceof Link ? $label : $value, $this);
 
                 if ($badgeValue !== false) {
                     $badge = $badgeValue instanceof Badge
                         ? $badgeValue
-                        : Badge::make((string) $value, Color::PRIMARY);
+                        : Badge::make((string) $label, Color::PRIMARY);
 
                     return (string) $badge->customAttributes(['class' => 'm-1']);
                 }
 
-                return $value;
+                return (string) $label;
             }, $this->inLineSeparator);
         }
 

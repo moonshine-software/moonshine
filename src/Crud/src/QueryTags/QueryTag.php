@@ -131,11 +131,8 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
 
     public function getButton(IndexPageContract $page): ActionButtonContract
     {
-        return ActionButton::make(
-            $this->getLabel(),
-            $page->getRoute([$this->prefix . 'query-tag' => $this->getUri()])
-        )
-            ->escapeLabel($this->isEscapeLabel())
+        return ActionButton::make(url: $page->getRoute([$this->prefix . 'query-tag' => $this->getUri()]))
+            ->labelFrom($this)
             ->name("query-tag-{$this->getUri()}-button")
             ->showInLine()
             ->icon($this->getIconValue(), $this->isCustomIcon(), $this->getIconPath())

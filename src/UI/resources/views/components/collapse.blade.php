@@ -27,11 +27,7 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                @if(! is_null($labelHtml))
-                    {{ $labelHtml }}
-                @else
-                    <x-moonshine::display-text :value="$title" :escape="$escapeLabel" />
-                @endif
+                <x-moonshine::display-text :value="$labelHtml ?? $title" :escape="$escapeLabel" />
             </div>
 
             @if($button ?? false)

@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits;
 use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Support\DisplayHtml;
 
 trait WithLabel
@@ -44,6 +45,14 @@ trait WithLabel
         }
 
         return $this->label;
+    }
+
+    /**
+     * Reuses another owner's label together with its escaping preference.
+     */
+    public function labelFrom(HasLabelContract $owner): static
+    {
+        return $this->setLabel($owner->getLabel())->escapeLabel($owner->isEscapeLabel());
     }
 
     /** @param (Closure(static): string)|string $label */

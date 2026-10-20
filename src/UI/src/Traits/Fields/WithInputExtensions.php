@@ -87,8 +87,14 @@ trait WithInputExtensions
 
     public function getExtensionsAttributes(): ComponentAttributesBagContract
     {
-        $extensions = $this->getExtensions();
+        return $this->buildExtensionsAttributes($this->getExtensions());
+    }
 
+    /**
+     * @param Collection<array-key, InputExtension> $extensions
+     */
+    private function buildExtensionsAttributes(Collection $extensions): ComponentAttributesBagContract
+    {
         return new MoonShineComponentAttributeBag([
             'x-init' => trim($extensions->implode(static fn (InputExtension $extension): string => $extension->getXInit()->implode(';'), ';'), ';'),
             'x-data' => Str::of(
@@ -102,9 +108,11 @@ trait WithInputExtensions
      */
     protected function getExtensionsViewData(): array
     {
+        $extensions = $this->getExtensions();
+
         return [
-            'extensions' => $this->getExtensions(),
-            'extensionsAttributes' => $this->getExtensionsAttributes(),
+            'extensions' => $extensions,
+            'extensionsAttributes' => $this->buildExtensionsAttributes($extensions),
         ];
     }
 
