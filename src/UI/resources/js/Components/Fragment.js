@@ -47,7 +47,7 @@ export default (asyncUpdateRoute = '') => ({
 
     t.asyncUpdateRoute = mergeURLString(t.asyncUpdateRoute, bodyParams.toString())
 
-    const eventDetailQuery = getQueryString(this.$event.detail)
+    const eventDetailQuery = this.$event ? getQueryString(this.$event.detail) : null;
 
     if (eventDetailQuery) {
       t.asyncUpdateRoute = mergeURLString(t.asyncUpdateRoute, eventDetailQuery)
