@@ -52,7 +52,8 @@ it('preserves explicit relation label preferences in modal buttons', function (s
     expect($xpath->query('.//b', $titles->item(0))->length)->toBe($escape ? 0 : 1);
 })->with(['one', 'many'])->with([true, false])->with([true, false]);
 
-it('escapes related item labels independently from the field label', function (string $mode, ?bool $local, bool $escaped): void {
+it('escapes related item labels independently from the field label', function (string $mode, ?bool $local, bool $escaped, bool $global): void {
+    moonshine()->getConfig()->escapeLabel($global);
     $item = createItem(countComments: 0);
     $item->categories()->attach(Category::factory()->create(['name' => '<b>Category</b>']));
 
@@ -81,4 +82,4 @@ it('escapes related item labels independently from the field label', function (s
     'default' => [null, true],
     'local disabled' => [false, false],
     'local enabled' => [true, true],
-]);
+])->with([true, false]);

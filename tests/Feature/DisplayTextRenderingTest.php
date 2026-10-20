@@ -165,7 +165,7 @@ it('renders modal and off-canvas titles according to title preferences', functio
     expect((string) $element)->toContain($escaped ? '&lt;b&gt;Title&lt;/b&gt;' : $title);
 })->with([Modal::class, OffCanvas::class])->with([
     'default' => [null, null, true],
-    'global disabled' => [false, null, false],
+    'global disabled' => [false, null, true],
     'local enabled' => [false, true, true],
     'local disabled' => [true, false, false],
 ]);
@@ -179,7 +179,35 @@ it('derives modal and off-canvas titles from the button label preference', funct
 })->with(['inModal', 'inOffCanvas'])->with([true, false]);
 
 it('keeps explicit modal titles on the title preference', function (): void {
+    moonshine()->getConfig()->escapeLabel(false);
+
     $button = ActionButton::make('<b>Open</b>')->unescapeLabel()->inModal(title: static fn (): string => '<b>Record</b>');
 
     expect((string) $button->getModal())->toContain('&lt;b&gt;Record&lt;/b&gt;')->not->toContain('<b>Record</b>');
+});
+
+it('keeps record-derived headings escaped when global label escaping is disabled', function (): void {
+    moonshine()->getConfig()->escapeLabel(false);
+    $label = '<img src=x onerror=alert(1)> & Name';
+
+    expect((string) Heading::make($label))
+        ->toContain('&lt;img src=x onerror=alert(1)&gt; &amp; Name')
+        ->not->toContain($label);
+    expect(Blade::render('<x-moonshine::heading :label="$label" />', ['label' => $label]))
+        ->toContain('&lt;img src=x onerror=alert(1)&gt; &amp; Name')
+        ->not->toContain($label);
+    expect((string) Heading::make('<b>Trusted</b>')->unescapeLabel())->toContain('<b>Trusted</b>');
+});
+
+it('keeps confirmation record text escaped when global label escaping is disabled', function (): void {
+    moonshine()->getConfig()->escapeLabel(false);
+    $markup = '<img src=x onerror=alert(1)>';
+    $button = ActionButton::make('Delete')->withConfirm(
+        title: static fn (): string => 'Delete ' . $markup . '?',
+        content: static fn (): string => 'Really delete ' . $markup . '?',
+    );
+
+    expect((string) $button->getModal())
+        ->toContain('Delete &lt;img src=x onerror=alert(1)&gt;?', 'Really delete &lt;img src=x onerror=alert(1)&gt;?')
+        ->not->toContain($markup);
 });

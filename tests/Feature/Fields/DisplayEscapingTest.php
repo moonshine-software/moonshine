@@ -324,7 +324,8 @@ it('escapes standalone Blade table column labels by default', function () {
     ])->assertSee('&lt;b&gt;Name&lt;/b&gt;', false)->assertDontSee('<b>Name</b>', false);
 });
 
-it('keeps link names independent from field label preferences', function (bool $preview, bool $unescapeLabel): void {
+it('keeps link names independent from field label preferences', function (bool $preview, bool $unescapeLabel, bool $global): void {
+    moonshine()->getConfig()->escapeLabel($global);
     $field = Text::make('<b>Site</b>', 'site')
         ->setValue('<script>alert(1)</script>')
         ->link(static fn (): string => '/site', name: static fn (mixed $value): string => (string) $value);
@@ -338,9 +339,9 @@ it('keeps link names independent from field label preferences', function (bool $
     expect($html)->toContain('&lt;script&gt;alert(1)&lt;/script&gt;')->not->toContain('<script>alert(1)</script>');
 
     if (! $preview) {
-        expect($html)->toContain($unescapeLabel ? '<b>Site</b>' : '&lt;b&gt;Site&lt;/b&gt;');
+        expect($html)->toContain(($unescapeLabel || ! $global) ? '<b>Site</b>' : '&lt;b&gt;Site&lt;/b&gt;');
     }
-})->with([true, false])->with([true, false]);
+})->with([true, false])->with([true, false])->with([true, false]);
 
 it('allows markup in link names only through the link name preference', function (bool $preview): void {
     $field = Text::make('Site', 'site')

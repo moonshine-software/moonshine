@@ -25,7 +25,7 @@ trait WithTitleEscaping
 
     public function isEscapeTitle(): bool
     {
-        return $this->escapeTitle ?? $this->getCore()->getConfig()->isEscapeLabel();
+        return $this->escapeTitle ?? true;
     }
 
     protected function getTitleHtml(mixed $title): Htmlable

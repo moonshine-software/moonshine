@@ -76,7 +76,7 @@ trait WithLink
 
     public function isEscapeLinkName(): bool
     {
-        return $this->escapeLinkName ?? $this->getCore()->getConfig()->isEscapeLabel();
+        return $this->escapeLinkName ?? true;
     }
 
     /**

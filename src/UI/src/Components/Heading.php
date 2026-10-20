@@ -37,6 +37,11 @@ class Heading extends MoonShineComponent
         }
     }
 
+    public function isEscapeLabel(): bool
+    {
+        return $this->escapeLabel ?? true;
+    }
+
     protected function viewData(): array
     {
         return [

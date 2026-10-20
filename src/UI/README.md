@@ -39,7 +39,7 @@ BelongsToMany::make('Categories', 'categories', resource: CategoryResource::clas
     ->unescapeOptionLabels();                      // tree, horizontal and inline link labels
 ```
 
-`Modal` and `OffCanvas` titles provide `escapeTitle()` / `unescapeTitle()`. A title derived from an action button label follows the button's label preference; an explicit `title` keeps the title preference.
+`Heading` labels, explicit `Modal` / `OffCanvas` titles, field link names and related item labels remain escaped even when global label escaping is disabled, because they commonly contain record data. Use their local `unescapeLabel()`, `unescapeTitle()`, `unescapeLinkName()` or `unescapeOptionLabels()` only for trusted HTML. A title derived from an action button label follows the button's label preference; relation headings and modal titles follow the relation field's label preference. Confirmation content and explicit confirmation titles keep escaping enabled by default.
 
 `Htmlable` values, such as `HtmlString`, are treated as prepared HTML. Return one from `beforeRender()` / `afterRender()` to output trusted markup without disabling escaping for the field.
 
@@ -58,7 +58,7 @@ In Laravel, configure the defaults in `config/moonshine.php`:
 
 The corresponding `MoonShineConfigurator` methods are `escapeLabel()`, `escapeHint()`, `escapePrefix()`, `escapeSuffix()`, `escapeBeforeRender()` and `escapeAfterRender()`. Pass `false` to disable a default.
 
-The global settings apply everywhere without a local preference. Disabling `label` therefore also outputs headings, menu labels, modal titles, confirmation messages and link names as HTML, including text built from record data. Prefer local `unescape…()` methods when only specific labels contain HTML.
+The global label setting applies to developer-provided labels without a local preference, including buttons, fields, boxes, dividers, menus and card value labels. Disabling it allows HTML in those labels; escape any record data included in them explicitly. The record-text contexts listed above keep their own escaping defaults. Prefer local `unescape…()` methods when only specific labels contain HTML.
 
 These settings control display text. `getLabel()` and `getHint()` still return the original text, and existing value methods `escape()`, `unescape()` and `escapeOnApply()` keep their separate purpose. Renderable views and generated component markup are rendered as HTML. When upgrading HTML supplied as a plain string, enable the appropriate `unescape…()` method explicitly.
 
@@ -71,3 +71,7 @@ Display escaping is prepared in PHP. `getLabelHtml()` and `getHintHtml()` return
 Blade slots are template output and are not escaped by default; an explicit `:escape-label="true"` or `:escape-hint="true"` escapes slot content too.
 
 Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`.
+
+### Upgrading custom implementations
+
+`HasLabelContract` adds `escapeLabel(bool $escape = true): static`, `unescapeLabel(): static`, `isEscapeLabel(): bool` and `getLabelHtml(): Htmlable`. Custom implementations must provide these methods; the `WithLabel` trait supplies them. Keep `getLabel(): string` raw for attributes, serialization and data operations, and use `getLabelHtml()` for display. `HasHintContract` likewise adds `getHintHtml(): Htmlable` alongside its escaping methods; `WithHint` supplies the implementation.

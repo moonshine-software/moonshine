@@ -180,7 +180,7 @@ class BelongsToMany extends ModelRelationField implements
 
     public function isEscapeOptionLabels(): bool
     {
-        return $this->escapeOptionLabels ?? $this->getCore()->getConfig()->isEscapeLabel();
+        return $this->escapeOptionLabels ?? true;
     }
 
     public function selectMode(): static
