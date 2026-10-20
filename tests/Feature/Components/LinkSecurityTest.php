@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Dom\HTMLDocument;
+use Dom\HTMLElement;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Fields\Url;
@@ -35,7 +37,7 @@ it('preserves safe link schemes', function (string $url): void {
     'tel:+1234567890',
 ]);
 
-it('sanitizes dangerous URLs in field previews', function (): void {
+it('sanitizes field preview URLs while preserving their displayed value', function (): void {
     $field = Url::make('Url');
     $item = new class () extends Model {
         public string $url = 'javascript:alert(1)';
@@ -43,7 +45,12 @@ it('sanitizes dangerous URLs in field previews', function (): void {
 
     fillFromModel($field, $item);
 
-    expect((string) $field->preview())
-        ->toContain('href="#"')
-        ->not->toContain('javascript:alert(1)');
+    $document = HTMLDocument::createFromString(
+        '<!DOCTYPE html><html><head></head><body>' . $field->preview() . '</body></html>'
+    );
+    $link = $document->getElementsByTagName('a')->item(0);
+
+    expect($link)->toBeInstanceOf(HTMLElement::class)
+        ->and($link->getAttribute('href'))->toBe('#')
+        ->and($link->textContent)->toContain('javascript:alert(1)');
 });
