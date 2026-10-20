@@ -18,18 +18,18 @@ final class SafeUrl
 
     public static function sanitize(string $url): string
     {
-        $normalized = \preg_replace('/[\x00-\x20\x7F-\x9F]+/u', '', $url);
+        $normalized = preg_replace('/[\x00-\x20\x7F-\x9F]+/u', '', $url);
 
         if ($normalized === null) {
             return '#';
         }
 
         $matches = [];
-        \preg_match('/^([a-z][a-z0-9+.-]*):/i', $normalized, $matches);
+        preg_match('/^([a-z][a-z0-9+.-]*):/i', $normalized, $matches);
 
         if (
             isset($matches[1])
-            && ! \in_array(\strtolower($matches[1]), self::ALLOWED_SCHEMES, true)
+            && ! \in_array(strtolower($matches[1]), self::ALLOWED_SCHEMES, true)
         ) {
             return '#';
         }
