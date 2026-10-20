@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components;
 
+use Closure;
 use InvalidArgumentException;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
@@ -17,7 +18,6 @@ use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Traits\HasAsync;
-use Closure;
 use Throwable;
 
 class Fragment extends AbstractWithComponents implements HasAsyncContract
@@ -28,7 +28,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     protected string $view = 'moonshine::components.fragment';
 
     protected ?int $interval = null;
-    
+
     protected Closure|bool $updateOnLoad = false;
 
     /**
