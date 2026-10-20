@@ -24,4 +24,9 @@ trait WithLabelEscaping
     {
         return $this->escapeLabel ?? $this->getCore()->getConfig()->isEscapeLabel();
     }
+
+    public function hasLabelEscapingOverride(): bool
+    {
+        return $this->escapeLabel !== null;
+    }
 }

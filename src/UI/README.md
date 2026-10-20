@@ -64,7 +64,9 @@ These settings control display text. `getLabel()` and `getHint()` still return t
 
 Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. Preview link name callbacks still receive the prepared preview value, and its escaped entities are preserved when escaping the callback result. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
 
-Table column-selection toggles inherit each field's label preference. An explicit handler label preference is applied to its button before `modifyButton` runs, so that callback can override it; without one, a preference set on the button in `getButton()` is kept.
+Table column-selection toggles inherit each field's label preference. An explicit handler label preference applies only when its button has no explicit label preference of its own. `modifyButton` runs afterward and can override either preference.
+
+Prefix/suffix rendering uses the field's `isEscapePrefix()` / `isEscapeSuffix()` getters, including overrides in custom fields. The default getters use the explicit field preference, then an explicit extension preference, then the global default. Rendering prepares a clone of the extension, so shared extension instances keep their own preferences. Standalone extensions use the same defaults through `DisplayTextType`.
 
 Display escaping is prepared in PHP. `getLabelHtml()` and `getHintHtml()` return prepared `Htmlable` values, and class-backed components pass them to their views as `labelHtml`, `hintHtml`, `valueHtml` or `titleHtml` next to the raw text. Blade outputs prepared values with `{{ }}` without escaping them again; they serialize to strings. Only raw text passed directly to anonymous Blade views is prepared by the internal `DisplayText` component. Templates do not read escaping configuration or select escaping policies. Raw labels and value keys remain available for serialization and attributes.
 
@@ -74,4 +76,4 @@ Class-backed Blade components accept a local preference through `:escape-label`,
 
 ### Upgrading custom implementations
 
-`HasLabelContract` adds `escapeLabel(bool $escape = true): static`, `unescapeLabel(): static`, `isEscapeLabel(): bool` and `getLabelHtml(): Htmlable`. Custom implementations must provide these methods; the `WithLabel` trait supplies them. Keep `getLabel(): string` raw for attributes, serialization and data operations, and use `getLabelHtml()` for display. `HasHintContract` likewise adds `getHintHtml(): Htmlable` alongside its escaping methods; `WithHint` supplies the implementation.
+`HasLabelContract` adds `escapeLabel(bool $escape = true): static`, `unescapeLabel(): static`, `isEscapeLabel(): bool`, `hasLabelEscapingOverride(): bool` and `getLabelHtml(): Htmlable`. Custom implementations must provide these methods; the `WithLabel` trait supplies them. `hasLabelEscapingOverride()` reports whether a local preference was set, independently of its resolved value, so defaults can be inherited without overwriting explicit choices. Keep `getLabel(): string` raw for attributes, serialization and data operations, and use `getLabelHtml()` for display. `HasHintContract` likewise adds `getHintHtml(): Htmlable` alongside its escaping methods; `WithHint` supplies the implementation.

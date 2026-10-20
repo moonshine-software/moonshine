@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\Snippet;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\InputExtensions\InputCopy;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputExtension;
@@ -36,7 +37,11 @@ trait WithInputExtensions
 
     public function isEscapePrefix(): bool
     {
-        return $this->escapePrefix ?? $this->getCore()->getConfig()->isEscapePrefix();
+        $extension = $this->extensions[InputPrefix::class] ?? null;
+
+        return $this->escapePrefix ?? ($extension instanceof InputPrefix
+            ? $extension->isEscape()
+            : DisplayTextType::PREFIX->isEscapedBy($this->getCore()->getConfig()));
     }
 
     public function escapeSuffix(bool $escape = true): static
@@ -53,7 +58,11 @@ trait WithInputExtensions
 
     public function isEscapeSuffix(): bool
     {
-        return $this->escapeSuffix ?? $this->getCore()->getConfig()->isEscapeSuffix();
+        $extension = $this->extensions[InputExt::class] ?? null;
+
+        return $this->escapeSuffix ?? ($extension instanceof InputExt
+            ? $extension->isEscape()
+            : DisplayTextType::SUFFIX->isEscapedBy($this->getCore()->getConfig()));
     }
 
     /**
@@ -68,12 +77,8 @@ trait WithInputExtensions
     {
         return new Collection($this->extensions)->map(function (InputExtension $extension): InputExtension {
             if ($extension instanceof InputPrefix || $extension instanceof InputExt) {
-                $escape = $extension instanceof InputPrefix ? $this->escapePrefix : $this->escapeSuffix;
-
-                if ($escape !== null) {
-                    $extension = clone $extension;
-                    $extension->escape($escape);
-                }
+                $extension = clone $extension;
+                $extension->escape($extension instanceof InputPrefix ? $this->isEscapePrefix() : $this->isEscapeSuffix());
             }
 
             return $extension;

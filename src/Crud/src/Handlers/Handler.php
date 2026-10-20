@@ -75,8 +75,7 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
 
     protected function prepareButton(ActionButtonContract $button): ActionButtonContract
     {
-        // An implicit handler default must not override a preference set on the generated button.
-        if ($this->escapeLabel !== null) {
+        if ($this->escapeLabel !== null && ! $button->hasLabelEscapingOverride()) {
             $button->escapeLabel($this->escapeLabel);
         }
 

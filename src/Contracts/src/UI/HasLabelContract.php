@@ -15,6 +15,8 @@ interface HasLabelContract
 
     public function isEscapeLabel(): bool;
 
+    public function hasLabelEscapingOverride(): bool;
+
     public function getLabelHtml(): Htmlable;
 
     public function hasLabel(): bool;

@@ -20,6 +20,8 @@ use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use MoonShine\UI\InputExtensions\InputExt;
+use MoonShine\UI\InputExtensions\InputPrefix;
 
 uses()->group('fields');
 
@@ -401,3 +403,68 @@ it('keeps explicit tab preferences when tabs are configured', function (): void 
 
     expect((string) Tabs::make([$tab])->escapeLabel())->toContain('<b>Own</b>');
 });
+
+it('renders input decorations using overridden field getters', function (string $part, bool $escape): void {
+    moonshine()->getConfig()->{"escape$part"}(! $escape);
+    $field = new class ('Title', 'title') extends Text {
+        public bool $escapeDecoration = true;
+
+        public function isEscapePrefix(): bool
+        {
+            return $this->escapeDecoration;
+        }
+
+        public function isEscapeSuffix(): bool
+        {
+            return $this->escapeDecoration;
+        }
+    };
+    $field->escapeDecoration = $escape;
+    $field->{strtolower($part)}('<b>Decoration</b>');
+
+    expect((string) $field)->toContain($escape ? '&lt;b&gt;Decoration&lt;/b&gt;' : '<b>Decoration</b>');
+
+    $field->escapeDecoration = ! $escape;
+    $field->flushRenderCache();
+
+    expect((string) $field)->toContain($escape ? '<b>Decoration</b>' : '&lt;b&gt;Decoration&lt;/b&gt;');
+})->with(['Prefix', 'Suffix'])->with([true, false]);
+
+it('keeps field decoration getters consistent with explicit extension preferences', function (
+    string $part,
+    bool $escape,
+): void {
+    moonshine()->getConfig()->{"escape$part"}(! $escape);
+    $extension = $part === 'Prefix' ? new InputPrefix('<b>Decoration</b>') : new InputExt('<b>Decoration</b>');
+    $extension->escape($escape);
+    $field = Text::make('Title', 'title')->extension($extension);
+
+    expect($field->{"isEscape$part"}())->toBe($escape);
+    expect((string) $field)->toContain($escape ? '&lt;b&gt;Decoration&lt;/b&gt;' : '<b>Decoration</b>');
+
+    $field->{"escape$part"}(! $escape);
+    $field->flushRenderCache();
+
+    expect($field->{"isEscape$part"}())->toBe(! $escape);
+    expect((string) $field)->toContain($escape ? '<b>Decoration</b>' : '&lt;b&gt;Decoration&lt;/b&gt;');
+    expect((string) $extension)->toContain($escape ? '&lt;b&gt;Decoration&lt;/b&gt;' : '<b>Decoration</b>');
+})->with(['Prefix', 'Suffix'])->with([true, false]);
+
+it('resolves decoration defaults at rendering time without mutating shared extensions', function (string $part): void {
+    $extension = $part === 'Prefix' ? new InputPrefix('<b>Decoration</b>') : new InputExt('<b>Decoration</b>');
+    $field = Text::make('Title', 'title')->extension($extension);
+    $rawField = Text::make('Raw', 'raw')->extension($extension)->{"escape$part"}(false);
+
+    moonshine()->getConfig()->{"escape$part"}(true);
+
+    expect((string) $rawField)->toContain('<b>Decoration</b>');
+    expect((string) $field)->toContain('&lt;b&gt;Decoration&lt;/b&gt;');
+    expect((string) $extension)->toContain('&lt;b&gt;Decoration&lt;/b&gt;');
+
+    moonshine()->getConfig()->{"escape$part"}(false);
+    $field->flushRenderCache();
+    $extension->flushRenderCache();
+
+    expect((string) $field)->toContain('<b>Decoration</b>');
+    expect((string) $extension)->toContain('<b>Decoration</b>');
+})->with(['Prefix', 'Suffix']);

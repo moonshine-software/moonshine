@@ -33,9 +33,16 @@ it('preserves handler label preferences in generated buttons', function (string 
     expect(trim($buttons->item(0)->textContent))->toBe($expectedEscape ? '<b>Handler label</b>' : 'Handler label');
 })->with([ExportHandler::class, ImportHandler::class])->with([true, false])->with([true, false]);
 
-it('keeps explicit preferences of buttons prepared by custom handlers', function (?bool $handlerEscape, bool $buttonEscape, bool $expectedEscape): void {
+it('keeps explicit preferences of buttons prepared by custom handlers', function (
+    ?bool $handlerEscape,
+    ?bool $buttonEscape,
+    bool $globalEscape,
+    bool $expectedEscape,
+): void {
+    moonshine()->getConfig()->escapeLabel($globalEscape);
+
     $handler = new class ('<b>Custom</b>') extends Handler {
-        public bool $buttonEscape = true;
+        public ?bool $buttonEscape = null;
 
         public function handle(): Response
         {
@@ -44,9 +51,13 @@ it('keeps explicit preferences of buttons prepared by custom handlers', function
 
         public function getButton(): ActionButtonContract
         {
-            return $this->prepareButton(
-                ActionButton::make($this->getLabel())->escapeLabel($this->buttonEscape)
-            );
+            $button = ActionButton::make($this->getLabel());
+
+            if ($this->buttonEscape !== null) {
+                $button->escapeLabel($this->buttonEscape);
+            }
+
+            return $this->prepareButton($button);
         }
     };
     $handler->buttonEscape = $buttonEscape;
@@ -58,7 +69,14 @@ it('keeps explicit preferences of buttons prepared by custom handlers', function
     expect((string) $handler->getButton())
         ->toContain($expectedEscape ? '&lt;b&gt;Custom&lt;/b&gt;' : '<b>Custom</b>');
 })->with([
-    'button opt out without handler preference' => [null, false, false],
-    'button opt in without handler preference' => [null, true, true],
-    'explicit handler preference' => [true, false, true],
+    'global enabled' => [null, null, true, true],
+    'global disabled' => [null, null, false, false],
+    'button opt out without handler preference' => [null, false, true, false],
+    'button opt in without handler preference' => [null, true, false, true],
+    'handler opt in without button preference' => [true, null, false, true],
+    'handler opt out without button preference' => [false, null, true, false],
+    'button opt out overrides handler opt in' => [true, false, true, false],
+    'button opt in overrides handler opt out' => [false, true, false, true],
+    'matching opt in' => [true, true, false, true],
+    'matching opt out' => [false, false, true, false],
 ]);
