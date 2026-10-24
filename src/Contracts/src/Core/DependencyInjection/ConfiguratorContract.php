@@ -78,6 +78,11 @@ interface ConfiguratorContract extends ArrayAccess
      */
     public function getDiskOptions(): array;
 
+    /**
+     * @return string[]
+     */
+    public function getAllowedExtensions(): array;
+
     public function has(string $key): bool;
 
     public function get(string $key, mixed $default = null): mixed;

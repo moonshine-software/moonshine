@@ -68,6 +68,7 @@ return [
     // Storage
     'disk' => 'public',
     'disk_options' => [],
+    'allowed_extensions' => [], // File/Image extensions; [] or '*' allows all.
     'cache' => 'file',
 
     // Authentication and profile
