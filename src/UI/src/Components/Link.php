@@ -98,7 +98,6 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
         return [
             'label' => $label,
             'labelHtml' => $labelHtml = DisplayHtml::make($label, $this->isEscapeLabel()),
-            // Kept for custom views that output `$slot`.
             'slot' => new ComponentSlot($labelHtml->toHtml()),
             'icon' => new ComponentSlot(
                 $this->getIcon(4),

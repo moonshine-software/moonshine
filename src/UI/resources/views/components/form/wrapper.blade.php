@@ -1,5 +1,4 @@
 @props([
-    'escapeLabel' => null,
     'label' => '',
     'labelHtml' => null,
     'formName' => '',
@@ -22,7 +21,7 @@
             :for-name="$formName"
         >
             {{ $beforeLabel && $insideLabel ? $slot : '' }}
-            <x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" />
+            {{ $labelHtml ?? $label }}
             {{ !$beforeLabel && $insideLabel ? $slot : '' }}
         </x-moonshine::form.label>
     @endif

@@ -1,5 +1,4 @@
 @props([
-    'escapeLabel' => null,
     'simple' => false,
     'values' => false,
     'columns' => false,
@@ -27,7 +26,7 @@
                     <tr>
                         @foreach($columns as $index => $label)
                             <th>
-                                <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+                                {{ $label }}
                             </th>
                         @endforeach
                     </tr>

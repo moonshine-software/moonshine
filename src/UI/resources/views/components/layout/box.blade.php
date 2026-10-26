@@ -1,5 +1,4 @@
 @props([
-    'escapeLabel' => null,
     'components' => [],
     'label' => false,
     'labelHtml' => null,
@@ -7,7 +6,7 @@
     'icon' => null,
 ])
 <div {{ $attributes->class(['box space-elements', 'box--dark' => $dark]) }}>
-    @if($label || $icon->isNotEmpty()) <h2 class="box-title">{{ $icon ?? '' }}<x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" /></h2> @endif
+    @if($label || $icon->isNotEmpty()) <h2 class="box-title">{{ $icon ?? '' }}{{ $labelHtml ?? $label }}</h2> @endif
 
     @foreach($components as $component)
         {!! $component !!}

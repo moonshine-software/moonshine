@@ -7,6 +7,7 @@ namespace MoonShine\UI\Components\Layout;
 use Closure;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithLabelEscaping;
@@ -77,8 +78,10 @@ class Footer extends AbstractWithComponents
     {
         return [
             'menu' => $this->getMenu(),
+            'menuLabelsHtml' => $this->getMenu()->map(
+                fn (string $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
+            ),
             'copyright' => $this->getCopyright(),
-            'escapeLabel' => $this->isEscapeLabel(),
         ];
     }
 }

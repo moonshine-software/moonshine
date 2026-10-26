@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Heading;
@@ -11,32 +12,38 @@ use MoonShine\UI\Components\OffCanvas;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
 
-it('preserves global and local display preferences in direct Blade components', function (string $template, string $setting, ?bool $global, ?bool $local, bool $escaped): void {
+it('escapes plain strings and outputs prepared HTML in direct anonymous Blade components', function (string $template, ?bool $global, bool $prepared): void {
     if ($global !== null) {
-        moonshine()->getConfig()->{$setting}($global);
+        moonshine()->getConfig()->escapeLabel($global);
+        moonshine()->getConfig()->escapeHint($global);
+        moonshine()->getConfig()->escapePrefix($global);
+        moonshine()->getConfig()->escapeSuffix($global);
     }
 
     $markup = '<b data-probe="display">A &amp; B</b>';
-    $html = Blade::render($template, ['markup' => $markup, 'local' => $local]);
+    $html = Blade::render($template, ['markup' => $prepared ? new HtmlString($markup) : $markup]);
 
-    expect($html)->toContain($escaped ? '&lt;b data-probe=&quot;display&quot;&gt;A &amp;amp; B&lt;/b&gt;' : $markup);
-    if ($escaped) {
-        expect($html)->not->toContain($markup);
+    if ($prepared) {
+        expect($html)->toContain($markup);
+    } else {
+        expect($html)->toContain('&lt;b data-probe=&quot;display&quot;&gt;A &amp;amp; B&lt;/b&gt;')->not->toContain($markup);
     }
 })->with([
-    'fieldset' => ['<x-moonshine::form.fieldset :label="$markup" :escape-label="$local" />', 'escapeLabel'],
-    'hint text' => ['<x-moonshine::display-text :value="$markup" :escape="$local" :display-type="\MoonShine\UI\Enums\DisplayTextType::HINT" />', 'escapeHint'],
-    'prefix' => ['<x-moonshine::form.input-extensions.prefix :value="$markup" :escape-prefix="$local" />', 'escapePrefix'],
-    'suffix' => ['<x-moonshine::form.input-extensions.ext :value="$markup" :escape-suffix="$local" />', 'escapeSuffix'],
-    'table' => ['<x-moonshine::table :columns="[\'name\' => $markup]" :values="[[\'name\' => \'Value\']]" :escape-label="$local" />', 'escapeLabel'],
-    'menu divider' => ['<x-moonshine::menu.divider :label="$markup" :escape-label="$local" />', 'escapeLabel'],
-    'metric' => ['<x-moonshine::metrics.value :title="$markup" :escape-label="$local" />', 'escapeLabel'],
+    'fieldset' => '<x-moonshine::form.fieldset :label="$markup" />',
+    'wrapper' => '<x-moonshine::form.wrapper :label="$markup" />',
+    'hint' => '<x-moonshine::form.hint :hint-html="$markup" />',
+    'prefix' => '<x-moonshine::form.input-extensions.prefix :value="$markup" />',
+    'suffix' => '<x-moonshine::form.input-extensions.ext :value="$markup" />',
+    'table' => '<x-moonshine::table :columns="[\'name\' => $markup]" :values="[[\'name\' => \'Value\']]" />',
+    'menu divider' => '<x-moonshine::menu.divider :label="$markup" />',
+    'metric' => '<x-moonshine::metrics.value :title="$markup" />',
 ])->with([
-    'default' => [null, null, true],
-    'global enabled' => [true, null, true],
-    'global disabled' => [false, null, false],
-    'local enabled' => [false, true, true],
-    'local disabled' => [true, false, false],
+    'default' => [null],
+    'global enabled' => [true],
+    'global disabled' => [false],
+])->with([
+    'plain string' => false,
+    'prepared HTML' => true,
 ]);
 
 it('honors local label preferences in class-backed Blade components', function (string $template, bool $escape): void {
@@ -129,19 +136,13 @@ it('keeps HTML button types separate from display text types', function (string 
     ]))->toContain('type="' . $type . '"', $expected);
 })->with(['submit', 'button', 'reset'])->with([true, false]);
 
-it('escapes Blade slots only when escaping is requested explicitly', function (string $template, ?bool $escape): void {
-    $html = Blade::render($template, ['escape' => $escape]);
-
-    if ($escape === true) {
-        expect($html)->toContain('&lt;strong&gt;Slot&lt;/strong&gt;')->not->toContain('<strong>Slot</strong>');
-    } else {
-        expect($html)->toContain('<strong>Slot</strong>');
-    }
+it('outputs Blade slots as trusted template output', function (string $template): void {
+    expect(Blade::render($template))->toContain('<strong>Slot</strong>');
 })->with([
-    'hint' => '<x-moonshine::form.hint :escape-hint="$escape"><strong>Slot</strong></x-moonshine::form.hint>',
-    'link button' => '<x-moonshine::link-button href="#" :escape-label="$escape"><strong>Slot</strong></x-moonshine::link-button>',
-    'native link' => '<x-moonshine::link-native href="#" :escape-label="$escape"><strong>Slot</strong></x-moonshine::link-native>',
-])->with([true, false, null]);
+    'hint' => '<x-moonshine::form.hint><strong>Slot</strong></x-moonshine::form.hint>',
+    'link button' => '<x-moonshine::link-button href="#"><strong>Slot</strong></x-moonshine::link-button>',
+    'native link' => '<x-moonshine::link-native href="#"><strong>Slot</strong></x-moonshine::link-native>',
+]);
 
 it('serializes prepared labels as strings next to raw labels', function (): void {
     $data = json_decode(json_encode(Heading::make('<b>A & B</b>'), JSON_THROW_ON_ERROR), true, flags: JSON_THROW_ON_ERROR);

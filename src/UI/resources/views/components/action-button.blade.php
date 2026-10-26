@@ -1,5 +1,4 @@
 @props([
-    'escapeLabel' => null,
     'inDropdown' => false,
     'hasComponent' => false,
     'url' => 'javascript:void(0);',
@@ -19,7 +18,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        <x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" />
+        {{ $labelHtml ?? $label }}
 
         @if($badge !== false)
             <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
@@ -36,7 +35,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        <x-moonshine::display-text :value="$labelHtml ?? $label" :escape="$escapeLabel" />
+        {{ $labelHtml ?? $label }}
     </x-moonshine::link-button>
 @endif
 

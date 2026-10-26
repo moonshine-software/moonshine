@@ -1,5 +1,4 @@
 @props([
-    'escapeLabel' => null,
     'components' => [],
     'persist' => false,
     'open' => false,
@@ -27,7 +26,7 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                <x-moonshine::display-text :value="$labelHtml ?? $title" :escape="$escapeLabel" />
+                {{ $labelHtml ?? $title }}
             </div>
 
             @if($button ?? false)

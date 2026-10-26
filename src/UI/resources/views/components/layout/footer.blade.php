@@ -1,8 +1,8 @@
 @props([
-    'escapeLabel' => null,
     'components' => [],
     'copyright' => '',
-    'menu' => []
+    'menu' => [],
+    'menuLabelsHtml' => [],
 ])
 <footer {{ $attributes->merge(['class' => 'layout-footer']) }}>
     <div class="flex flex-col flex-wrap items-center justify-between gap-y-4 gap-x-8 md:flex-row">
@@ -22,7 +22,7 @@
                     <a href="{{ $link }}"
                        class="text-sm"
                        target="_blank">
-                        <x-moonshine::display-text :value="$label" :escape="$escapeLabel" />
+                        {{ $menuLabelsHtml[$link] ?? $label }}
                     </a>
                 @endforeach
             </nav>
