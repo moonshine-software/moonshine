@@ -118,7 +118,9 @@ trait WithViewRenderer
     protected function refreshPreparedViewData(): void
     {
         if ($this->cachedRender instanceof View) {
-            $this->cachedRender->with($this->prepareViewData($this->cachedRender->getData()));
+            $this->cachedRender->with($this->prepareViewData(
+                array_filter($this->cachedRender->getData(), \is_string(...), ARRAY_FILTER_USE_KEY)
+            ));
         }
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
-use Illuminate\View\ComponentAttributeBag;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -13,6 +12,7 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -597,7 +597,7 @@ final class FormBuilder extends MoonShineComponent implements
     /**
      * Builds the attributes the form Blade component produced, so the view renders the form directly.
      */
-    private function getFormAttributes(): ComponentAttributeBag
+    private function getFormAttributes(): ComponentAttributesBagContract
     {
         // Props declared by form.builder and form are not rendered as attributes.
         return $this->getAttributes()

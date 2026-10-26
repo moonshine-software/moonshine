@@ -54,13 +54,15 @@ final class Icon extends MoonShineComponent
 
     protected function prepareViewData(array $data): array
     {
+        $color = $this->color instanceof Color ? $this->color->value : $this->color;
+
         return [
             'wrapperAttributes' => $this->getAttributes()
                 ->except(['path', 'icon', 'size', 'color'])
                 ->class(array_filter([
                     'icon-wrapper',
                     $this->size ? "size-$this->size" : null,
-                    empty($this->color) ? 'text-current' : "text-$this->color",
+                    $color === '' ? 'text-current' : "text-$color",
                 ])),
         ];
     }

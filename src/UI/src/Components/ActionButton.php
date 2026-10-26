@@ -6,7 +6,6 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Support\Str;
-use Illuminate\View\ComponentAttributeBag;
 use Illuminate\View\Compilers\BladeCompiler;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\PageContract;
@@ -14,11 +13,13 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Core\Collections\Components;
 use MoonShine\Support\AlpineJs;
+use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
@@ -616,7 +617,7 @@ class ActionButton extends MoonShineComponent implements
      * Builds the attributes the form.button or link-button Blade component produced,
      * so the view renders the element without nesting those components.
      */
-    private function getTagAttributes(bool $isButton, string $url, bool $raw): ComponentAttributeBag
+    private function getTagAttributes(bool $isButton, string $url, bool $raw): ComponentAttributesBagContract
     {
         $classes = $raw ? [] : ['btn'];
 
@@ -631,7 +632,7 @@ class ActionButton extends MoonShineComponent implements
             return $attributes->class($classes)->merge(['type' => 'button']);
         }
 
-        return new ComponentAttributeBag([
+        return new MoonShineComponentAttributeBag([
             'href' => BladeCompiler::sanitizeComponentAttribute($url),
             ...$attributes->getAttributes(),
         ])->class($classes);
