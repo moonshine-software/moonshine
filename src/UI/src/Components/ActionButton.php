@@ -6,6 +6,8 @@ namespace MoonShine\UI\Components;
 
 use Closure;
 use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
+use Illuminate\View\Compilers\BladeCompiler;
 use MoonShine\Contracts\Core\HasComponentsContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -594,8 +596,44 @@ class ActionButton extends MoonShineComponent implements
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(),
             'badge' => $this->hasBadge() ? $this->getBadge() : false,
+            'hasBadge' => $this->hasBadge(),
             'raw' => $this->isRaw(),
             'slot' => $this->getSlot(),
         ];
+    }
+
+    protected function prepareViewData(array $data): array
+    {
+        $isButton = $this->getAttributes()->has('type');
+
+        return [
+            'isButton' => $isButton,
+            'tagAttributes' => $this->getTagAttributes($isButton, $this->getUrl(), $this->isRaw()),
+        ];
+    }
+
+    /**
+     * Builds the attributes the form.button or link-button Blade component produced,
+     * so the view renders the element without nesting those components.
+     */
+    private function getTagAttributes(bool $isButton, string $url, bool $raw): ComponentAttributeBag
+    {
+        $classes = $raw ? [] : ['btn'];
+
+        // Props declared by action-button and the nested component are not rendered as attributes.
+        $attributes = $this->getAttributes()->except([
+            'inDropdown', 'in-dropdown', 'hasComponent', 'has-component',
+            'url', 'icon', 'label', 'component', 'badge', 'raw',
+            ...($isButton ? [] : ['filled']),
+        ]);
+
+        if ($isButton) {
+            return $attributes->class($classes)->merge(['type' => 'button']);
+        }
+
+        return new ComponentAttributeBag([
+            'href' => BladeCompiler::sanitizeComponentAttribute($url),
+            ...$attributes->getAttributes(),
+        ])->class($classes);
     }
 }

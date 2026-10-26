@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\View\ComponentAttributeBag;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -22,6 +23,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Concerns\HasButtons;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
@@ -562,17 +564,50 @@ final class FormBuilder extends MoonShineComponent implements
             $fields = value($this->onBeforeFieldsRender, $fields, $this);
         }
 
+        $buttons = $this->getButtons($this->castData($this->getValues()));
+        $errors = $this->getCore()->getRequest()->getFormErrors($this->getName());
+
         return [
             'fields' => $fields,
             'precognitive' => $this->isPrecognitive(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
-            'buttons' => $this->getButtons($this->castData($this->getValues())),
+            'buttons' => $buttons,
             'hideSubmit' => $this->isHideSubmit(),
             'submit' => $this->getSubmit(),
-            'errors' => $this->getCore()->getRequest()->getFormErrors($this->getName()),
+            'errors' => $errors,
             'errorsAbove' => $this->hasErrorsAbove(),
             'raw' => $this->isRaw(),
+            'hasErrorsAbove' => $this->hasErrorsAbove() && $errors !== [],
+            'actionGroup' => $buttons->isNotEmpty() ? ActionGroup::make($buttons) : null,
         ];
+    }
+
+    protected function prepareViewData(array $data): array
+    {
+        $formAttributes = $this->getFormAttributes();
+
+        return [
+            'formAttributes' => $formAttributes,
+            'hasAutoId' => empty($formAttributes->get('id')),
+            'hasCsrf' => strtolower(Stringify::value($formAttributes->get('method', ''))) !== 'get',
+        ];
+    }
+
+    /**
+     * Builds the attributes the form Blade component produced, so the view renders the form directly.
+     */
+    private function getFormAttributes(): ComponentAttributeBag
+    {
+        // Props declared by form.builder and form are not rendered as attributes.
+        return $this->getAttributes()
+            ->except([
+                'name', 'precognitive', 'hideSubmit', 'hide-submit', 'raw', 'fields',
+                'submit', 'buttons', 'errors', 'errorsAbove', 'errors-above',
+            ])
+            ->merge([
+                'class' => $this->isRaw() ? '' : 'form space-elements',
+                'method' => 'POST',
+            ]);
     }
 }

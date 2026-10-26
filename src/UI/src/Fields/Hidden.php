@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\View\ComponentAttributeBag;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
@@ -50,5 +52,31 @@ class Hidden extends Field implements HasDefaultValueContract, CanBeString
         return [
             'isShowValue' => $this->isShowValue(),
         ];
+    }
+
+    protected function prepareViewData(array $data): array
+    {
+        return [
+            'inputAttributes' => $this->getInputAttributes($this->getAttributes(), $data['value'] ?? null),
+        ];
+    }
+
+    /**
+     * Builds the attributes the form.input Blade component produced, so the view renders the input directly.
+     */
+    private function getInputAttributes(ComponentAttributeBag $attributes, mixed $value): ComponentAttributeBag
+    {
+        $attributes = $attributes
+            ->except(['value', 'isShowValue', 'is-show-value'])
+            ->merge(['value' => Stringify::value($value)]);
+
+        $type = $attributes->get('type');
+
+        return $attributes->merge([
+            'class' => \in_array($type, ['checkbox', 'radio', 'color', 'range', 'hidden'], true)
+                ? 'form-' . Stringify::value($attributes->get('type', 'input'))
+                : 'form-input',
+            'type' => 'text',
+        ]);
     }
 }

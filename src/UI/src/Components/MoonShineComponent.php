@@ -89,6 +89,8 @@ abstract class MoonShineComponent extends Component implements
             array_merge($this->attributes->jsonSerialize(), $attributes),
         );
 
+        $this->refreshPreparedViewData();
+
         return $this;
     }
 

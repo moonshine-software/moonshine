@@ -6,6 +6,7 @@ namespace MoonShine\Core\Traits;
 
 use Closure;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\HasCanSeeContract;
@@ -99,6 +100,26 @@ trait WithViewRenderer
     protected function systemViewData(): array
     {
         return [];
+    }
+
+    /**
+     * Prepares view data derived from the final component state, such as attributes,
+     * so the view only outputs it. Blade component tags add their attributes after
+     * the view is resolved, therefore this runs again then and must not change the component.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function prepareViewData(array $data): array
+    {
+        return [];
+    }
+
+    protected function refreshPreparedViewData(): void
+    {
+        if ($this->cachedRender instanceof View) {
+            $this->cachedRender->with($this->prepareViewData($this->cachedRender->getData()));
+        }
     }
 
     protected function prepareBeforeRender(): void
@@ -229,11 +250,16 @@ trait WithViewRenderer
     {
         $this->prepareBeforeSerialize();
 
-        return [
+        $data = [
             ...$this->viewData(),
             ...$this->getCustomViewData(),
             ...$this->systemViewData(),
             'translates' => $this->getTranslates(),
+        ];
+
+        return [
+            ...$data,
+            ...$this->prepareViewData($data),
         ];
     }
 

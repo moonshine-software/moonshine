@@ -43,8 +43,25 @@ final class Icon extends MoonShineComponent
 
     protected function viewData(): array
     {
+        $slot = new ComponentSlot($this->isCustom() ? $this->icon : '');
+
         return [
-            'slot' => new ComponentSlot($this->isCustom() ? $this->icon : ''),
+            'slot' => $slot,
+            'hasSlot' => $slot->isNotEmpty(),
+            'iconView' => $this->icon !== '' ? "$this->path.$this->icon" : null,
+        ];
+    }
+
+    protected function prepareViewData(array $data): array
+    {
+        return [
+            'wrapperAttributes' => $this->getAttributes()
+                ->except(['path', 'icon', 'size', 'color'])
+                ->class(array_filter([
+                    'icon-wrapper',
+                    $this->size ? "size-$this->size" : null,
+                    empty($this->color) ? 'text-current' : "text-$this->color",
+                ])),
         ];
     }
 }
