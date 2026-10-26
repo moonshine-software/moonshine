@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Blade;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
@@ -89,4 +91,29 @@ it('renders the skeleton only for async tables', function (): void {
         ->not->toContain('data-skeleton')
         ->and($async)
         ->toContain('data-skeleton');
+});
+
+it('renders vertical table fields in one view with the configured spans', function (): void {
+    $html = (string) TableBuilder::make([Text::make('Title')], [['title' => 'First']])
+        ->vertical(title: 3, value: 9);
+
+    expect($html)
+        ->toContain('<div class="grid grid-cols-12 gap-2">')
+        ->toContain('<div class="col-span-12 xl:col-span-3 space-elements">')
+        ->toContain('<div class="col-span-12 xl:col-span-9 space-elements">')
+        ->toContain('<div class="form-label">')
+        ->toContain('First');
+});
+
+it('passes vertical title and value components to their callbacks', function (): void {
+    $html = (string) TableBuilder::make([Text::make('Title')], [['title' => 'First']])
+        ->vertical(
+            title: static fn (FieldContract $field, ComponentContract $title): ComponentContract => $title->class('custom-title'),
+            value: static fn (FieldContract $field, ComponentContract $value): ComponentContract => $value->class('custom-value'),
+        );
+
+    expect($html)
+        ->toContain('custom-title')
+        ->toContain('custom-value')
+        ->toContain('First');
 });
