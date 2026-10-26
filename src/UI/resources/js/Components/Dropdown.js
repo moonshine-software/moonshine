@@ -19,7 +19,10 @@ export default () => ({
       this.dropdownItems = this.$el.querySelectorAll('.dropdown-menu-item')
       this.$watch('dropdownSearch', value => this.search(value))
     }
+  },
 
+  // Created on first open: creating a popper reads computed styles of every scroll parent and forces a layout
+  createPopperInstance() {
     const dropdownPlacement = this.$root.dataset.dropdownPlacement
     const dropdownStrategy = this.$root.dataset.dropdownStrategy
 
@@ -59,7 +62,12 @@ export default () => ({
   toggleDropdown() {
     this.open = !this.open
     this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
-    this.popperInstance.update()
+
+    if (this.popperInstance === null) {
+      this.createPopperInstance()
+    } else {
+      this.popperInstance.update()
+    }
   },
 
   closeDropdown() {
