@@ -191,7 +191,12 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(FieldsContract::class, Fields::class);
         $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
-        $this->app->bind(RequestContract::class, Request::class);
+        // Building the PSR request copies headers, body and files, so share it until the request changes.
+        $this->app->scoped(RequestContract::class, Request::class);
+        $this->app->rebinding(
+            'request',
+            static fn (Application $app) => $app->forgetInstance(RequestContract::class)
+        );
         $this->app->bind(
             CacheInterface::class,
             static fn (Application $app): CacheInterface => $app->make(CacheManager::class)->store(

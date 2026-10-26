@@ -34,6 +34,26 @@ it('interacts with request methods', function () {
     ;
 });
 
+it('shares the request wrapper until the request changes', function (): void {
+    $this->get($this->resource->getIndexPageUrl(['foo' => 'first']));
+
+    $first = $this->moonshineCore->getRequest();
+
+    expect($this->moonshineCore->getRequest())
+        ->toBe($first)
+        ->and($first->get('foo'))
+        ->toBe('first');
+
+    $this->get($this->resource->getIndexPageUrl(['foo' => 'second']));
+
+    $second = $this->moonshineCore->getRequest();
+
+    expect($second)
+        ->not->toBe($first)
+        ->and($second->get('foo'))
+        ->toBe('second');
+});
+
 it('find resource', function (): void {
     asAdmin()
         ->get(
