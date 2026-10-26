@@ -12,12 +12,19 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
  *
  * @implements DataWrapperContract<T>
  */
-final readonly class ModelDataWrapper implements DataWrapperContract
+final class ModelDataWrapper implements DataWrapperContract
 {
+    /**
+     * Every filled field reads the same row, so the serialized model is shared between them.
+     *
+     * @var array<string, mixed>|null
+     */
+    private ?array $array = null;
+
     /**
      * @param T $model
      */
-    public function __construct(private Model $model)
+    public function __construct(private readonly Model $model)
     {
     }
 
@@ -35,7 +42,7 @@ final readonly class ModelDataWrapper implements DataWrapperContract
     public function toArray(): array
     {
         /** @var array<string, mixed> */
-        return $this->model->toArray();
+        return $this->array ??= $this->model->toArray();
     }
 
     public function __get(string $name): mixed
@@ -48,12 +55,15 @@ final readonly class ModelDataWrapper implements DataWrapperContract
      */
     public function __call(string $name, array $arguments): mixed
     {
+        $this->array = null;
+
         return $this->model->{$name}($arguments);
     }
 
     public function __set(string $name, mixed $value): void
     {
         $this->model->{$name} = $value;
+        $this->array = null;
     }
 
     public function __isset(string $name): bool
