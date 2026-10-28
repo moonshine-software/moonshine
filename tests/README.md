@@ -6,6 +6,8 @@ Run from the MoonShine repository root, using PHP 8.4+ with PCOV or Xdebug cover
 composer test:mutation
 ```
 
+When resolving dependencies on a feature branch, set `COMPOSER_ROOT_VERSION=5.x-dev` so the monorepo's `self.version` replacements satisfy import/export's MoonShine 5 requirement. The mutation workflow sets this automatically.
+
 The command uses existing Pest tests marked with `mutates()` or `covers()`. The initial scope includes CRUD authorization, safe URLs, Text escaping, and BelongsToMany persistence. Add `mutates(Target::class)` to the feature test exercising a new target; use `mutates()` when coverage-report filtering is unnecessary.
 
 Only executed lines are mutated (`--covered-only`), so this score measures assertion strength within covered code, not overall code coverage. Inspect surviving mutations and strengthen observable assertions, including database state after denied writes. Some mutations preserve behavior; review them before adding tests or exclusions solely to increase the score.

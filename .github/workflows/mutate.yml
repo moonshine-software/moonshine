@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
+    env:
+      COMPOSER_ROOT_VERSION: 5.x-dev
+
     strategy:
       fail-fast: true
       matrix:
