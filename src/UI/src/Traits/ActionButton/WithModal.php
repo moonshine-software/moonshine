@@ -54,24 +54,28 @@ trait WithModal
 
         $async = $this->purgeAsyncTap();
 
-        $this->modal = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => Modal::make(
-            title: static fn () => ($title instanceof Closure ? $title($item, $ctx) : $title) ?? $ctx->getLabel(),
-            content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
-            asyncUrl: $async ? static fn (): string => $ctx->getUrl($item) : null,
-            components: $components
-        )
-            ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
-            // A title derived from the button label follows the button's label preference.
-            ->when(
-                \is_null($title),
-                static fn (ModalContract $modal): ModalContract => $modal instanceof HasTitleEscapingContract
-                    ? $modal->escapeTitle(DisplayTextType::LABEL->isEscapedFor($ctx, $ctx->getCore()->getConfig()))
-                    : $modal
+        $this->modal = static function (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) use ($title, $content, $name, $builder, $components, $async): ModalContract {
+            $resolvedTitle = $title instanceof Closure ? $title($item, $ctx) : $title;
+
+            return Modal::make(
+                title: $resolvedTitle ?? $ctx->getLabel(),
+                content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
+                asyncUrl: $async ? static fn (): string => $ctx->getUrl($item) : null,
+                components: $components
             )
-            ->when(
-                ! \is_null($builder),
-                static fn (ModalContract $modal): ModalContract => $builder instanceof Closure ? $builder($modal, $ctx) : $modal
-            );
+                ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
+                // A title derived from the button label follows the button's label preference.
+                ->when(
+                    \is_null($resolvedTitle),
+                    static fn (ModalContract $modal): ModalContract => $modal instanceof HasTitleEscapingContract
+                        ? $modal->escapeTitle(DisplayTextType::LABEL->isEscapedFor($ctx, $ctx->getCore()->getConfig()))
+                        : $modal
+                )
+                ->when(
+                    ! \is_null($builder),
+                    static fn (ModalContract $modal): ModalContract => $builder instanceof Closure ? $builder($modal, $ctx) : $modal
+                );
+        };
 
         return $this->onBeforeRender(
             static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleModal(

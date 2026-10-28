@@ -26,9 +26,6 @@ enum DisplayTextType: string
 
     case AFTER_RENDER = 'after_render';
 
-    /** Text built from record data, escaped regardless of the global label default. */
-    case RECORD = 'record';
-
     /** Modal and off-canvas titles. */
     case TITLE = 'title';
 

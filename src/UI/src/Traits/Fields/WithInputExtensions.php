@@ -16,6 +16,7 @@ use MoonShine\UI\InputExtensions\InputExtension;
 use MoonShine\UI\InputExtensions\InputEye;
 use MoonShine\UI\InputExtensions\InputLock;
 use MoonShine\UI\InputExtensions\InputPrefix;
+use MoonShine\UI\InputExtensions\InputTextExtension;
 use MoonShine\UI\Traits\WithDisplayEscaping;
 
 trait WithInputExtensions
@@ -34,11 +35,7 @@ trait WithInputExtensions
 
     public function isEscapePrefix(): bool
     {
-        $extension = $this->extensions[InputPrefix::class] ?? null;
-
-        return $this->getDisplayEscaping(DisplayTextType::PREFIX) ?? ($extension instanceof InputPrefix
-            ? $extension->isEscape()
-            : DisplayTextType::PREFIX->isEscapedBy($this->getCore()->getConfig()));
+        return $this->isEscapeExtensionText(DisplayTextType::PREFIX, InputPrefix::class);
     }
 
     public function escapeSuffix(bool $escape = true): static
@@ -53,11 +50,20 @@ trait WithInputExtensions
 
     public function isEscapeSuffix(): bool
     {
-        $extension = $this->extensions[InputExt::class] ?? null;
+        return $this->isEscapeExtensionText(DisplayTextType::SUFFIX, InputExt::class);
+    }
 
-        return $this->getDisplayEscaping(DisplayTextType::SUFFIX) ?? ($extension instanceof InputExt
-            ? $extension->isEscape()
-            : DisplayTextType::SUFFIX->isEscapedBy($this->getCore()->getConfig()));
+    /**
+     * The field preference wins, then an explicit extension preference, then the global default.
+     *
+     * @param class-string<InputTextExtension> $extension
+     */
+    private function isEscapeExtensionText(DisplayTextType $type, string $extension): bool
+    {
+        $extension = $this->extensions[$extension] ?? null;
+
+        return $this->getDisplayEscaping($type)
+            ?? ($extension instanceof InputTextExtension ? $extension->isEscape() : $type->isEscapedBy($this->getCore()->getConfig()));
     }
 
     /**
@@ -70,14 +76,7 @@ trait WithInputExtensions
      */
     public function getExtensions(): Collection
     {
-        return new Collection($this->extensions)->map(function (InputExtension $extension): InputExtension {
-            if ($extension instanceof InputPrefix || $extension instanceof InputExt) {
-                $extension = clone $extension;
-                $extension->escape($extension instanceof InputPrefix ? $this->isEscapePrefix() : $this->isEscapeSuffix());
-            }
-
-            return $extension;
-        });
+        return new Collection($this->extensions);
     }
 
     public function getExtensionsAttributes(): ComponentAttributesBagContract
@@ -97,8 +96,13 @@ trait WithInputExtensions
      */
     protected function getExtensionsViewData(): array
     {
+        // Rendering uses clones, so shared extension instances keep their own preferences.
         return [
-            'extensions' => $this->getExtensions(),
+            'extensions' => $this->getExtensions()->map(fn (InputExtension $extension): InputExtension => match (true) {
+                $extension instanceof InputPrefix => (clone $extension)->escape($this->isEscapePrefix()),
+                $extension instanceof InputExt => (clone $extension)->escape($this->isEscapeSuffix()),
+                default => $extension,
+            }),
             'extensionsAttributes' => $this->getExtensionsAttributes(),
         ];
     }

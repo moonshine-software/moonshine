@@ -8,9 +8,12 @@ use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Collapse;
 use MoonShine\UI\Components\Layout\Footer;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\InputExtensions\InputExt;
+use MoonShine\UI\InputExtensions\InputPrefix;
 
 it('renders link views with string and prepared slots', function (string $view, string $slotType): void {
     $markup = '<b>A & B</b>';
@@ -127,3 +130,24 @@ it('preserves an explicit prepared footer menu label', function (): void {
 
     expect((string) $footer)->toContain('<b>Prepared help</b>')->not->toContain('Old help', 'New help');
 });
+
+it('returns stored input extensions so callers can configure them', function (string $extension): void {
+    $field = Text::make('Title', 'title')->extension(new $extension('<b>Decoration</b>'));
+
+    $field->getExtensions()->get($extension)->escape(false);
+
+    expect($field->getExtensions()->get($extension)->isEscape())->toBeFalse();
+    expect((string) $field)->toContain('<b>Decoration</b>');
+})->with([InputPrefix::class, InputExt::class]);
+
+it('applies the button label preference to titles falling back to the label', function (string $container, bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+
+    $button = ActionButton::make('<b>Edit</b>', '/edit')->escapeLabel($escape);
+    $button = $container === 'modal'
+        ? $button->inModal(title: static fn (): ?string => null)
+        : $button->inOffCanvas(title: static fn (): ?string => null);
+    $component = $container === 'modal' ? $button->getModal() : $button->getOffCanvas();
+
+    expect((string) $component)->toContain($escape ? '&lt;b&gt;Edit&lt;/b&gt;' : '<b>Edit</b>');
+})->with(['modal', 'offcanvas'])->with([true, false]);

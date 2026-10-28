@@ -12,6 +12,7 @@ use MoonShine\Tests\Fixtures\Resources\TestCategoryResource;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Components\Link;
 
 uses()->group('model-relation-fields');
 
@@ -63,6 +64,8 @@ it('escapes related item labels independently from the field label', function (s
         'tree' => $field->tree('category_id'),
         'horizontal' => $field->horizontalMode(),
         'inline link' => $field->inLine(link: static fn (): string => '/category'),
+        'inline link component' => $field->inLine(link: static fn (mixed $category, string $value): Link => Link::make('/category', $value)),
+        'table' => $field,
         'inline' => $field->inLine(', '),
         'inline badge' => $field->inLine(', ', badge: true),
     };
@@ -76,11 +79,12 @@ it('escapes related item labels independently from the field label', function (s
     $html = match ($mode) {
         'tree' => $field->toTreeHtml(),
         'horizontal' => $field->toListHtml(),
-        'inline link', 'inline', 'inline badge' => (string) $field->preview(),
+        'inline link', 'inline link component', 'inline', 'inline badge' => (string) $field->preview(),
+        'table' => (string) $field->getComponent(),
     };
 
     expect($html)->toContain($escaped ? '&lt;b&gt;Category&lt;/b&gt;' : '<b>Category</b>');
-})->with(['tree', 'horizontal', 'inline link', 'inline', 'inline badge'])->with([
+})->with(['tree', 'horizontal', 'inline link', 'inline link component', 'table', 'inline', 'inline badge'])->with([
     'default' => [null, true],
     'local disabled' => [false, false],
     'local enabled' => [true, true],
@@ -98,3 +102,36 @@ it('passes prepared labels to inline badge callbacks', function (bool $escape): 
 
     expect((string) $field->preview())->toContain($escape ? '&lt;img src=x onerror=alert(1)&gt;' : '<img src=x onerror=alert(1)>');
 })->with([true, false]);
+
+it('keeps explicit label preferences of links returned by inline link callbacks', function (bool $escape): void {
+    $item = createItem(countComments: 0);
+    $item->categories()->attach(Category::factory()->create(['name' => '<b>Category</b>']));
+
+    $field = BelongsToMany::make('Categories', 'categories', resource: TestCategoryResource::class)
+        ->inLine(link: static fn (mixed $category, string $value): Link => Link::make('/category', $value)->escapeLabel($escape))
+        ->escapeOptionLabels(! $escape);
+
+    $field->fillData($item);
+
+    expect((string) $field->preview())->toContain($escape ? '&lt;b&gt;Category&lt;/b&gt;' : '<b>Category</b>');
+})->with([true, false]);
+
+it('passes the option label preference to async search selection', function (?bool $local, string $expected): void {
+    $item = createItem(countComments: 0);
+
+    $field = BelongsToMany::make('Categories', 'categories', resource: TestCategoryResource::class)->asyncSearch();
+
+    if ($local !== null) {
+        $field->escapeOptionLabels($local);
+    }
+
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([$field]);
+
+    asAdmin()->get($resource->getFormPageUrl($item->getKey()))
+        ->assertOk()
+        ->assertSee('data-escape-labels="' . $expected . '"', false);
+})->with([
+    'default' => [null, 'true'],
+    'local disabled' => [false, 'false'],
+    'local enabled' => [true, 'true'],
+]);

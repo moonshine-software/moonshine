@@ -36,7 +36,7 @@ Text::make('<b>Site</b>', 'site')
 
 BelongsToMany::make('Categories', 'categories', resource: CategoryResource::class)
     ->tree('parent_id')
-    ->unescapeOptionLabels();                      // tree, horizontal and all inline labels
+    ->unescapeOptionLabels();                      // checkbox table, tree, horizontal and inline labels
 ```
 
 `Heading` labels, explicit `Modal` / `OffCanvas` titles, field link names and related item labels remain escaped even when global label escaping is disabled, because they commonly contain record data. Use their local `unescapeLabel()`, `unescapeTitle()`, `unescapeLinkName()` or `unescapeOptionLabels()` only for trusted HTML. A title derived from an action button label follows the button's label preference; relation headings and modal titles follow the relation field's label preference. Confirmation content and explicit confirmation titles keep escaping enabled by default.
@@ -62,7 +62,7 @@ The global label setting applies to developer-provided labels without a local pr
 
 These settings control display text. `getLabel()` and `getHint()` still return the original text, and existing value methods `escape()`, `unescape()` and `escapeOnApply()` keep their separate purpose. Renderable views and generated component markup are rendered as HTML. When upgrading HTML supplied as a plain string, enable the appropriate `unescape…()` method explicitly.
 
-Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. `link()` name callbacks receive the field preview as before, for example the option label of a `Select` or the formatted `Date`. While link names are escaped, fields that escape their own preview (`Text`, `Textarea`, `BelongsTo`) pass it as plain text, and the callback result is escaped once; `Url::title()` callbacks likewise receive the raw value. After `unescapeLinkName()` callbacks receive the prepared preview and their result is output as trusted HTML. Inline `BelongsToMany` badge callbacks receive the prepared label, because badges print their value as is. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
+Relation `modalMode()` buttons inherit the field's label preference; `modifyButton` can override it. `link()` name callbacks receive the field preview as before, for example the option label of a `Select` or the formatted `Date`. While link names are escaped, fields that escape their own preview (`Text`, `Textarea`, `BelongsTo`) pass it as plain text, and the callback result is escaped once; `Url::title()` callbacks likewise receive the raw value. After `unescapeLinkName()` callbacks receive the prepared preview and their result is output as trusted HTML. Inline `BelongsToMany` badge callbacks receive the prepared label, because badges print their value as is. A `Link` returned by its inline link callback follows the option label preference unless it sets its own label preference. Async search results selected into the checkbox table are inserted as text unless the field calls `unescapeOptionLabels()`. Popover editing uses the field's value `escape()` / `unescape()` preference independently of global or local label settings.
 
 To reuse a label in another component, use `labelFrom()`: it copies both the label and its escaping preference, for example `Heading::make()->labelFrom($field)`.
 

@@ -38,7 +38,6 @@ trait WithDisplayEscaping
 
     protected function isDisplayEscaped(DisplayTextType $type): bool
     {
-        return $this->getDisplayEscaping($type)
-            ?? ($type->isConfigurable() ? $type->isEscapedBy($this->getCore()->getConfig()) : true);
+        return $this->getDisplayEscaping($type) ?? $type->isEscapedBy($this->getCore()->getConfig());
     }
 }
