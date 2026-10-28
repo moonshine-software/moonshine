@@ -10,6 +10,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
 use MoonShine\Contracts\UI\HasLabelEscapingContract;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
@@ -62,6 +63,19 @@ class Collapse extends AbstractWithComponents implements HasIconContract, HasLab
     public function isPersist(): bool
     {
         return $this->persist;
+    }
+
+    /**
+     * @param  array<string, mixed>  $customViewData
+     * @return array<string, mixed>
+     */
+    protected function resolveCustomViewData(array $customViewData): array
+    {
+        if (\array_key_exists('title', $customViewData) && ! \array_key_exists('labelHtml', $customViewData)) {
+            $customViewData['labelHtml'] = DisplayHtml::make($customViewData['title'], $this->isEscapeLabel());
+        }
+
+        return parent::resolveCustomViewData($customViewData);
     }
 
     protected function viewData(): array

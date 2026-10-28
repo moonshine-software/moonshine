@@ -76,6 +76,8 @@ Anonymous Blade components used directly follow the standard Laravel idiom: plai
 
 Class-backed Blade components accept a local preference through `:escape-label`, for example `<x-moonshine::action-button :label="$label" :escape-label="false" />`. The constructor receives this preference before view data is prepared. A direct Blade `Link` displays its label when its slot is empty; an explicit slot takes precedence. `Link` passes its prepared label as `$slot`, so published `link-native` / `link-button` views keep working. Card labels also respect `values`, `escapeLabel`, and `escapeValueLabels` supplied through `customView()`. A `label` or `title` supplied through `customView()` data gets its `labelHtml` / `titleHtml` rebuilt with the component's preference, unless the prepared value is supplied too.
 
+The Laravel view composer prepares the slot of `link-native` / `link-button` before Blade renders it. Direct view rendering accepts plain strings, `Htmlable` values and Blade slots; an absent or empty slot falls back to the prepared label. `Collapse` titles and `Footer` menu labels replaced through `customView()` also follow the component's escaping preference, while explicit `labelHtml` / `menuLabelsHtml` values take precedence. Custom fields can override `getExtensionsAttributes()` to add extension attributes during rendering.
+
 ### Custom implementations
 
 Existing contracts are unchanged, so custom implementations keep working after the upgrade. Escaping is described by separate contracts:

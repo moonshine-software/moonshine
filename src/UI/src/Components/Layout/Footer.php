@@ -72,13 +72,37 @@ class Footer extends AbstractWithComponents
     }
 
     /**
+     * @param  array<string, mixed>  $customViewData
+     * @return array<string, mixed>
+     */
+    protected function resolveCustomViewData(array $customViewData): array
+    {
+        $menu = $customViewData['menu'] ?? null;
+
+        if (is_iterable($menu) && ! \array_key_exists('menuLabelsHtml', $customViewData)) {
+            $labels = iterator_to_array($menu);
+            $customViewData['menuLabelsHtml'] = new Collection($labels)->map(
+                fn (mixed $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
+            );
+
+            if (! \is_array($menu) && ! $menu instanceof Collection) {
+                $customViewData['menu'] = $labels;
+            }
+        }
+
+        return parent::resolveCustomViewData($customViewData);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
     {
+        $menu = $this->getMenu();
+
         return [
-            'menu' => $this->getMenu(),
-            'menuLabelsHtml' => $this->getMenu()->map(
+            'menu' => $menu,
+            'menuLabelsHtml' => $menu->map(
                 fn (string $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
             ),
             'copyright' => $this->getCopyright(),
