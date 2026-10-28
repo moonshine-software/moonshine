@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace MoonShine\UI\Components;
 
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\Enums\Color;
+use MoonShine\Support\Stringify;
 
 /** @method static static make(string $icon, ?int $size = null, string|Color $color = '', ?string $path = null) */
 final class Icon extends MoonShineComponent
@@ -47,7 +49,6 @@ final class Icon extends MoonShineComponent
 
         return [
             'slot' => $slot,
-            'hasSlot' => $slot->isNotEmpty(),
             'iconView' => $this->icon !== '' ? "$this->path.$this->icon" : null,
         ];
     }
@@ -55,8 +56,10 @@ final class Icon extends MoonShineComponent
     protected function prepareViewData(array $data): array
     {
         $color = $this->color instanceof Color ? $this->color->value : $this->color;
+        $slot = $data['slot'] ?? '';
 
         return [
+            'hasSlot' => trim($slot instanceof Htmlable ? $slot->toHtml() : Stringify::value($slot)) !== '',
             'wrapperAttributes' => $this->getAttributes()
                 ->except(['path', 'icon', 'size', 'color'])
                 ->class(array_filter([

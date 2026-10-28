@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\CrudRequestContract;
+use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Pages\Custom\NormalizedFormPage;
+use MoonShine\Tests\Fixtures\Pages\TestIndexPage;
 use MoonShine\Tests\Fixtures\Resources\TestImageResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
+use MoonShine\UI\Fields\Text;
+use Psr\Http\Message\ServerRequestInterface;
 
 uses()->group('core');
 
@@ -52,6 +59,53 @@ it('shares the request wrapper until the request changes', function (): void {
         ->not->toBe($first)
         ->and($second->get('foo'))
         ->toBe('second');
+});
+
+it('persists values normalized after reading the request in the form page', function (): void {
+    $item = createItem();
+    $resource = $this->resource->setTestModel(Item::class)
+        ->setTestFields([Text::make('Name')])
+        ->setTestPages([TestIndexPage::class, NormalizedFormPage::class, DetailPage::class]);
+
+    asAdmin()->put($resource->getRoute('crud.update', $item->getKey()), ['name' => 'normalized'])
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect($item->fresh()->name)->toBe('NORMALIZED');
+});
+
+it('does not create a PSR request when only reading form errors', function (): void {
+    app()->forgetInstance(RequestContract::class);
+    $resolved = 0;
+    app()->resolving(ServerRequestInterface::class, static function () use (&$resolved): void {
+        $resolved++;
+    });
+
+    $request = $this->moonshineCore->getRequest();
+
+    expect($request->getFormErrors())->toBe([])
+        ->and($resolved)->toBe(0);
+
+    $request->getAll();
+
+    expect($resolved)->toBe(1);
+});
+
+it('reads body and query mutations through the shared request', function (): void {
+    app()->instance('request', Illuminate\Http\Request::create(
+        uri: '/?query=before',
+        method: 'POST',
+        parameters: ['name' => 'Before'],
+    ));
+    $request = $this->moonshineCore->getRequest();
+    expect($request->get('name'))->toBe('Before');
+
+    request()->merge(['name' => 'After']);
+    request()->query->set('query', 'after');
+
+    expect($request->get('name'))->toBe('After')
+        ->and($request->get('query'))->toBe('after')
+        ->and($request->getRequest()->getParsedBody()['name'])->toBe('After');
 });
 
 it('find resource', function (): void {
