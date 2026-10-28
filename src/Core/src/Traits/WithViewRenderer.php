@@ -106,6 +106,7 @@ trait WithViewRenderer
      * Prepares view data derived from the final component state, such as attributes,
      * so the view only outputs it. Blade component tags add their attributes after
      * the view is resolved, therefore this runs again then and must not change the component.
+     * The result is passed only to the view, not to toArray() or the component structure.
      *
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
@@ -204,9 +205,11 @@ trait WithViewRenderer
 
     protected function renderView(): Renderable|Closure|string
     {
+        $data = $this->toArray();
+
         return $this->getCore()->getRenderer()->render(
             $this->getView(),
-            $this->toArray(),
+            [...$data, ...$this->prepareViewData($data)],
         );
     }
 
@@ -252,16 +255,11 @@ trait WithViewRenderer
     {
         $this->prepareBeforeSerialize();
 
-        $data = [
+        return [
             ...$this->viewData(),
             ...$this->getCustomViewData(),
             ...$this->systemViewData(),
             'translates' => $this->getTranslates(),
-        ];
-
-        return [
-            ...$data,
-            ...$this->prepareViewData($data),
         ];
     }
 

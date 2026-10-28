@@ -17,10 +17,7 @@ final class Rating extends MoonShineComponent
         parent::__construct();
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    protected function viewData(): array
+    protected function prepareViewData(array $data): array
     {
         $filled = null;
         $empty = null;
@@ -35,12 +32,6 @@ final class Rating extends MoonShineComponent
 
         return [
             'stars' => $stars,
-        ];
-    }
-
-    protected function prepareViewData(array $data): array
-    {
-        return [
             'wrapperAttributes' => $this->getAttributes()
                 ->except(['value', 'min', 'max'])
                 ->merge(['class' => 'flex items-center gap-x-1']),
