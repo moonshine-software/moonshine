@@ -11,14 +11,12 @@ on:
       - synchronize
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   moonshine-tests:
-    if: >
-      github.event_name == 'push' ||
-      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository)
-
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     strategy:
       fail-fast: true
@@ -31,7 +29,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2
-          coverage: xdebug
+          coverage: pcov
       - uses: actions/checkout@v4
 
       - name: Set up MySQL
@@ -50,7 +48,7 @@ jobs:
           composer require --dev "laravel/framework:^${{ matrix.laravel }}" --no-update --no-interaction
           composer update --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Execute tests via PEST(PHPUnit)
+      - name: Execute mutation tests
         env:
           DB_PASSWORD: root
-        run: ./vendor/bin/pest --bail --mutate
+        run: composer test:mutation

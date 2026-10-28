@@ -51,7 +51,7 @@ trait Applies
 
     public function refreshAfterApply(?Closure $callback = null): static
     {
-        $this->onRefreshAfterApply = $callback ?? fn (): static => $this;
+        $this->onRefreshAfterApply = $callback ?? static fn ($field) => $field;
 
         return $this;
     }
