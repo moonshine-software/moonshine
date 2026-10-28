@@ -15,6 +15,9 @@ export default () => ({
     this.dropdownBtn = this.$root.querySelector('.dropdown-btn')
     this.dropdownBody = this.$root.querySelector('.dropdown-body')
 
+    // An unpositioned absolute menu can widen the document even while visibility is hidden.
+    this.dropdownBody.hidden = true
+
     if (this.$root.dataset.searchable) {
       this.dropdownItems = this.$el.querySelectorAll('.dropdown-menu-item')
       this.$watch('dropdownSearch', value => this.search(value))
@@ -61,6 +64,7 @@ export default () => ({
 
   toggleDropdown() {
     this.open = !this.open
+    this.dropdownBody.hidden = false
     this.visibilityClasses.forEach(cssClass => this.dropdownBody.classList.toggle(cssClass))
 
     if (this.popperInstance === null) {

@@ -42,3 +42,28 @@ test('creates the popper on first open and updates it afterwards', () => {
   expect(createPopper).toHaveBeenCalledTimes(1)
   expect(update).toHaveBeenCalledTimes(2)
 })
+
+test('hides an unpositioned menu until first open without hiding the closing animation', () => {
+  document.body.innerHTML = `<div class="dropdown">
+    <button class="dropdown-btn">Open</button>
+    <div class="dropdown-body">Menu</div>
+  </div>`
+
+  const component = dropdown()
+  component.$root = document.querySelector('.dropdown')
+  component.$el = component.$root
+  component.init()
+
+  expect(component.dropdownBody.hidden).toBe(true)
+  expect(createPopper).not.toHaveBeenCalled()
+
+  component.toggleDropdown()
+
+  expect(component.dropdownBody.hidden).toBe(false)
+  expect(component.dropdownBody.classList.contains('_is-active')).toBe(true)
+
+  component.closeDropdown()
+
+  expect(component.dropdownBody.hidden).toBe(false)
+  expect(component.dropdownBody.classList.contains('_is-active')).toBe(false)
+})
