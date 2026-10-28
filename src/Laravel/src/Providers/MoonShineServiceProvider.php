@@ -360,7 +360,7 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../UI/resources/views', 'moonshine');
 
-        View::composer('moonshine::components.icon', IconComposer::class);
+        View::composer('moonshine::components.icon', new IconComposer()->compose(...));
 
         $this->publishes([
             MoonShine::UIPath('/dist') => public_path('vendor/moonshine'),
