@@ -89,6 +89,26 @@ final class Link extends MoonShineComponent implements HasIconContract, HasLabel
     }
 
     /**
+     * @param  array<string, mixed>  $customViewData
+     * @return array<string, mixed>
+     */
+    protected function resolveCustomViewData(array $customViewData): array
+    {
+        $customViewData = parent::resolveCustomViewData($customViewData);
+
+        if (
+            ! \array_key_exists('slot', $customViewData)
+            && (isset($customViewData['labelHtml']) || \array_key_exists('label', $customViewData))
+        ) {
+            $customViewData['slot'] = new ComponentSlot(
+                DisplayHtml::make($customViewData['labelHtml'] ?? $customViewData['label'] ?? '', escape: true)->toHtml(),
+            );
+        }
+
+        return $customViewData;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     protected function viewData(): array
