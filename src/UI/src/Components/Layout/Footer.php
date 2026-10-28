@@ -79,15 +79,21 @@ class Footer extends AbstractWithComponents
     {
         $menu = $customViewData['menu'] ?? null;
 
+        if (is_iterable($menu) && ! \is_array($menu) && ! $menu instanceof Collection) {
+            $menu = iterator_to_array($menu);
+            $customViewData['menu'] = $menu;
+
+            // Serialization may run before rendering, so retain one-shot iterator contents.
+            if (\is_array($this->customViewData)) {
+                $this->customViewData['menu'] = $menu;
+            }
+        }
+
         if (is_iterable($menu) && ! \array_key_exists('menuLabelsHtml', $customViewData)) {
             $labels = iterator_to_array($menu);
             $customViewData['menuLabelsHtml'] = new Collection($labels)->map(
                 fn (mixed $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
             );
-
-            if (! \is_array($menu) && ! $menu instanceof Collection) {
-                $customViewData['menu'] = $labels;
-            }
         }
 
         return parent::resolveCustomViewData($customViewData);

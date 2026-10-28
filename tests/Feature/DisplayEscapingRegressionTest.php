@@ -9,6 +9,7 @@ use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Collapse;
 use MoonShine\UI\Components\Layout\Footer;
 use MoonShine\UI\Fields\Text;
@@ -116,10 +117,34 @@ it('prepares footer menu labels replaced through custom view data', function (bo
         ->escapeLabel($escape)
         ->customView(view: 'moonshine::components.layout.footer', data: ['menu' => $customMenu]);
 
+    $footer->toArray();
+    json_encode($footer, JSON_THROW_ON_ERROR);
+
     expect((string) $footer)
         ->toContain($escape ? '&lt;b&gt;New &amp; help&lt;/b&gt;' : '<b>New & help</b>')
         ->not->toContain('Old help');
 })->with([true, false])->with(['array', 'collection', 'generator']);
+
+it('preserves custom card iterator values across serialization and rendering', function (bool $escape): void {
+    $values = (static function (): Generator {
+        yield '<b>Name</b>' => 'Alice';
+    })();
+    $card = Card::make()
+        ->customView(view: 'moonshine::components.card', data: [
+            'values' => $values,
+            'escapeLabel' => $escape,
+        ]);
+
+    expect($card->toArray()['values'])->toBe(['<b>Name</b>' => 'Alice']);
+    json_encode($card, JSON_THROW_ON_ERROR);
+
+    expect((string) $card)->toContain($escape ? '&lt;b&gt;Name&lt;/b&gt;:' : '<b>Name</b>:', 'Alice');
+    expect((string) (clone $card))->toContain('Alice');
+
+    $card->flushRenderCache()->customView(view: 'moonshine::components.card', data: ['values' => ['New' => 'Bob']]);
+
+    expect((string) $card)->toContain('New:', 'Bob')->not->toContain('Alice');
+})->with([true, false]);
 
 it('preserves an explicit prepared footer menu label', function (): void {
     $footer = Footer::make(menu: ['/help' => 'Old help'])

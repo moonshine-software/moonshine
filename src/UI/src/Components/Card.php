@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Support\DisplayHtml;
 use MoonShine\UI\Enums\DisplayTextType;
@@ -117,6 +118,23 @@ final class Card extends MoonShineComponent
         $this->overlay = true;
 
         return $this;
+    }
+
+    public function getCustomViewData(): array
+    {
+        $data = parent::getCustomViewData();
+        $values = $data['values'] ?? null;
+
+        if (is_iterable($values) && ! \is_array($values) && ! $values instanceof Collection) {
+            $data['values'] = iterator_to_array($values);
+
+            // Both label preparation and subsequent renders must use the same materialized values.
+            if (\is_array($this->customViewData)) {
+                $this->customViewData['values'] = $data['values'];
+            }
+        }
+
+        return $data;
     }
 
     /**
