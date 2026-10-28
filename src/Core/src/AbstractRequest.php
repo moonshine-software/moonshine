@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Core;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\DependencyInjection\RequestContract;
@@ -14,14 +15,15 @@ abstract class AbstractRequest implements RequestContract
 {
     use InteractsWithRequest;
 
+    /** @param ServerRequestInterface|(Closure(): ServerRequestInterface) $request */
     public function __construct(
-        protected readonly ServerRequestInterface $request,
+        protected readonly ServerRequestInterface|Closure $request,
     ) {
     }
 
     public function getRequest(): ServerRequestInterface
     {
-        return $this->request;
+        return value($this->request);
     }
 
     abstract public function getSession(string $key, mixed $default = null): mixed;
@@ -56,13 +58,14 @@ abstract class AbstractRequest implements RequestContract
 
     public function getAll(): Collection
     {
-        $body = $this->request->getParsedBody();
+        $request = $this->getRequest();
+        $body = $request->getParsedBody();
 
         return new Collection(
             array_replace_recursive(
                 \is_array($body) ? $body : [],
-                $this->request->getUploadedFiles(),
-                $this->request->getQueryParams()
+                $request->getUploadedFiles(),
+                $request->getQueryParams()
             )
         );
     }

@@ -14,6 +14,7 @@ use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use MoonShine\AssetManager\AssetManager;
@@ -91,6 +92,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
+use MoonShine\Laravel\ViewComposers\IconComposer;
 use MoonShine\MenuManager\MenuAutoloader;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\UI\Applies\AppliesRegister;
@@ -103,6 +105,7 @@ use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\SimpleCache\CacheInterface;
 
 final class MoonShineServiceProvider extends ServiceProvider
@@ -191,8 +194,13 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(FieldsContract::class, Fields::class);
         $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
-        // Building the PSR request copies headers, body and files, so share it until the request changes.
-        $this->app->scoped(RequestContract::class, Request::class);
+        // Share the wrapper, but resolve the PSR request only when reading its current input.
+        $this->app->scoped(
+            RequestContract::class,
+            static fn (Application $app): Request => new Request(
+                static fn (): ServerRequestInterface => $app->make(ServerRequestInterface::class)
+            )
+        );
         $this->app->rebinding(
             'request',
             static fn (Application $app) => $app->forgetInstance(RequestContract::class)
@@ -351,6 +359,8 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../UI/resources/views', 'moonshine');
+
+        View::composer('moonshine::components.icon', IconComposer::class);
 
         $this->publishes([
             MoonShine::UIPath('/dist') => public_path('vendor/moonshine'),

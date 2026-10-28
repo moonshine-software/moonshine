@@ -22,6 +22,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
@@ -597,7 +598,6 @@ class ActionButton extends MoonShineComponent implements
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(),
             'badge' => $this->hasBadge() ? $this->getBadge() : false,
-            'hasBadge' => $this->hasBadge(),
             'raw' => $this->isRaw(),
             'slot' => $this->getSlot(),
         ];
@@ -609,7 +609,12 @@ class ActionButton extends MoonShineComponent implements
 
         return [
             'isButton' => $isButton,
-            'tagAttributes' => $this->getTagAttributes($isButton, $this->getUrl(), $this->isRaw()),
+            'hasBadge' => $data['badge'] !== false,
+            'tagAttributes' => $this->getTagAttributes(
+                $isButton,
+                Stringify::value($data['url']),
+                ! empty($data['raw']),
+            ),
         ];
     }
 
@@ -619,7 +624,10 @@ class ActionButton extends MoonShineComponent implements
      */
     private function getTagAttributes(bool $isButton, string $url, bool $raw): ComponentAttributesBagContract
     {
-        $classes = $raw ? [] : ['btn'];
+        $classes = $raw ? [] : [
+            'btn',
+            'btn-primary' => ! $isButton && $this->getAttributes()->get('filled', false),
+        ];
 
         // Props declared by action-button and the nested component are not rendered as attributes.
         $attributes = $this->getAttributes()->except([

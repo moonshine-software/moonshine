@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -578,16 +579,18 @@ final class FormBuilder extends MoonShineComponent implements
             'errors' => $errors,
             'errorsAbove' => $this->hasErrorsAbove(),
             'raw' => $this->isRaw(),
-            'hasErrorsAbove' => $this->hasErrorsAbove() && $errors !== [],
-            'actionGroup' => $buttons->isNotEmpty() ? ActionGroup::make($buttons) : null,
         ];
     }
 
     protected function prepareViewData(array $data): array
     {
-        $formAttributes = $this->getFormAttributes();
+        $formAttributes = $this->getFormAttributes(! empty($data['raw']));
+        $buttons = Collection::wrap($data['buttons'])
+            ->filter(static fn (mixed $button): bool => $button instanceof ActionButtonContract);
 
         return [
+            'hasErrorsAbove' => $data['errorsAbove'] && $data['errors'] !== [],
+            'actionGroup' => $buttons->isNotEmpty() ? ActionGroup::make($buttons) : null,
             'formAttributes' => $formAttributes,
             'hasAutoId' => empty($formAttributes->get('id')),
             'hasCsrf' => strtolower(Stringify::value($formAttributes->get('method', ''))) !== 'get',
@@ -597,7 +600,7 @@ final class FormBuilder extends MoonShineComponent implements
     /**
      * Builds the attributes the form Blade component produced, so the view renders the form directly.
      */
-    private function getFormAttributes(): ComponentAttributesBagContract
+    private function getFormAttributes(bool $raw): ComponentAttributesBagContract
     {
         // Props declared by form.builder and form are not rendered as attributes.
         return $this->getAttributes()
@@ -606,7 +609,7 @@ final class FormBuilder extends MoonShineComponent implements
                 'submit', 'buttons', 'errors', 'errorsAbove', 'errors-above',
             ])
             ->merge([
-                'class' => $this->isRaw() ? '' : 'form space-elements',
+                'class' => $raw ? '' : 'form space-elements',
                 'method' => 'POST',
             ]);
     }
