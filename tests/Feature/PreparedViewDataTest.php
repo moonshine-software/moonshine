@@ -11,6 +11,7 @@ use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Icon;
+use MoonShine\UI\Components\Rating;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Fields\Text;
@@ -198,4 +199,38 @@ it('renders the skeleton only for async tables', function (): void {
         ->not->toContain('data-skeleton')
         ->and($async)
         ->toContain('data-skeleton');
+});
+
+it('keeps prepared view data out of the component structure', function (): void {
+    $components = [
+        ActionButton::make('Open', '/items')->badge(3),
+        FormBuilder::make('/save', FormMethod::POST, [Text::make('Title'), Hidden::make('Token')])
+            ->buttons([ActionButton::make('Cancel', '/cancel')]),
+        Icon::make('users'),
+        Rating::make(3),
+    ];
+
+    $prepared = [
+        'isButton', 'hasBadge', 'tagAttributes',
+        'hasErrorsAbove', 'actionGroup', 'formAttributes', 'hasAutoId', 'hasCsrf',
+        'hasSlot', 'wrapperAttributes', 'stars', 'inputAttributes',
+    ];
+
+    foreach ($components as $component) {
+        $structure = $component->toStructure();
+
+        expect(array_intersect(array_keys($component->toArray()), $prepared))
+            ->toBe([])
+            ->and(array_intersect(array_keys($structure['states']), $prepared))
+            ->toBe([]);
+
+        foreach ($structure['states']['fields'] ?? [] as $field) {
+            expect(array_intersect(array_keys($field['states']), $prepared))->toBe([]);
+        }
+    }
+
+    expect((string) Rating::make(3))
+        ->toContain('class="flex items-center gap-x-1"')
+        ->and(substr_count((string) Rating::make(3), 'text-primary'))
+        ->toBe(3);
 });
