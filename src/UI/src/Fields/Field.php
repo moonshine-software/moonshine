@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Fields;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\PageContract;
@@ -12,13 +13,18 @@ use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\HasHintEscapingContract;
+use MoonShine\Contracts\UI\HasLinkNameEscapingContract;
+use MoonShine\Contracts\UI\HasRenderEscapingContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Enums\TextWrap;
+use MoonShine\Support\RenderableHtml;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Fields\Reactivity;
 use MoonShine\UI\Traits\Fields\WithBadge;
 use MoonShine\UI\Traits\Fields\WithHint;
@@ -30,13 +36,43 @@ use MoonShine\UI\Traits\Fields\WithSorts;
  *
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
-abstract class Field extends FormElement implements FieldContract
+abstract class Field extends FormElement implements FieldContract, HasHintEscapingContract, HasLinkNameEscapingContract, HasRenderEscapingContract
 {
     use WithSorts;
     use WithHint;
     use WithLink;
     use WithBadge;
     use Reactivity;
+
+    public function escapeBeforeRender(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::BEFORE_RENDER, $escape);
+    }
+
+    public function unescapeBeforeRender(): static
+    {
+        return $this->escapeBeforeRender(false);
+    }
+
+    public function isEscapeBeforeRender(): bool
+    {
+        return $this->isDisplayEscaped(DisplayTextType::BEFORE_RENDER);
+    }
+
+    public function escapeAfterRender(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::AFTER_RENDER, $escape);
+    }
+
+    public function unescapeAfterRender(): static
+    {
+        return $this->escapeAfterRender(false);
+    }
+
+    public function isEscapeAfterRender(): bool
+    {
+        return $this->isDisplayEscaped(DisplayTextType::AFTER_RENDER);
+    }
 
     protected bool $defaultMode = false;
 
@@ -50,10 +86,10 @@ abstract class Field extends FormElement implements FieldContract
     /** @var null|(Closure(mixed, static): (ComponentContract|FieldContract|Renderable|string)) */
     protected ?Closure $renderCallback = null;
 
-    /** @var null|(Closure(static): (Renderable|string)) */
+    /** @var null|(Closure(static): (Renderable|Htmlable|string)) */
     protected ?Closure $beforeRender = null;
 
-    /** @var null|(Closure(static): (Renderable|string)) */
+    /** @var null|(Closure(static): (Renderable|Htmlable|string)) */
     protected ?Closure $afterRender = null;
 
     protected bool $withWrapper = true;
@@ -331,7 +367,7 @@ abstract class Field extends FormElement implements FieldContract
     }
 
     /**
-     * @param  Closure(static $ctx): (Renderable|string)  $callback
+     * @param  Closure(static $ctx): (Renderable|Htmlable|string)  $callback
      */
     public function beforeRender(Closure $callback): static
     {
@@ -342,13 +378,14 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getBeforeRender(): Renderable|string
     {
+        // Htmlable results are trusted markup; they are wrapped to keep the Renderable|string contract.
         return \is_null($this->beforeRender)
             ? ''
-            : \call_user_func($this->beforeRender, $this);
+            : RenderableHtml::wrap(\call_user_func($this->beforeRender, $this));
     }
 
     /**
-     * @param  Closure(static $ctx): (Renderable|string)  $callback
+     * @param  Closure(static $ctx): (Renderable|Htmlable|string)  $callback
      */
     public function afterRender(Closure $callback): static
     {
@@ -359,9 +396,10 @@ abstract class Field extends FormElement implements FieldContract
 
     public function getAfterRender(): Renderable|string
     {
+        // Htmlable results are trusted markup; they are wrapped to keep the Renderable|string contract.
         return \is_null($this->afterRender)
             ? ''
-            : \call_user_func($this->afterRender, $this);
+            : RenderableHtml::wrap(\call_user_func($this->afterRender, $this));
     }
 
     protected function prepareBeforeRender(): void
@@ -468,11 +506,16 @@ abstract class Field extends FormElement implements FieldContract
 
         if ($this->hasLink()) {
             $href = $this->getLinkValue($value);
+            // Name callbacks receive the preview as before; escaped names get it as plain text and are escaped once.
+            $label = $this->isEscapeLinkName()
+                ? $this->getEscapedLinkName($value)
+                : $this->getLinkName($value);
 
             $value = (string) Link::make(
                 href: $href,
-                label: $this->getLinkName($value) ?: $value,
+                label: $label ?: $value,
             )
+                ->unescapeLabel()
                 ->when(
                     ! $this->isWithoutIcon() && $this->getLinkIcon() !== null,
                     fn (Link $ctx): Link => $ctx->icon($this->getLinkIcon() ?? '')
@@ -492,6 +535,34 @@ abstract class Field extends FormElement implements FieldContract
         }
 
         return $value;
+    }
+
+    /**
+     * Plain text of the preview passed to link name callbacks before the name is escaped.
+     */
+    protected function getLinkNamePreview(string $preview): string
+    {
+        return $preview;
+    }
+
+    /**
+     * Whether the preview is markup generated by the field, such as Boolean or Badge components,
+     * rather than text from data. Escaped link names keep such a preview in its prepared form.
+     */
+    protected function isPreviewMarkup(): bool
+    {
+        return false;
+    }
+
+    private function getEscapedLinkName(string $preview): string
+    {
+        $name = e($this->getLinkName($this->getLinkNamePreview($preview)));
+
+        if ($preview === '' || ! $this->isPreviewMarkup()) {
+            return $name;
+        }
+
+        return str_replace(e($preview), $preview, $name);
     }
 
     protected function prepareRender(Renderable|Closure|string $view): Renderable|Closure|string

@@ -18,6 +18,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithComponentAttributes;
 use MoonShine\UI\Traits\HasCanSee;
+use MoonShine\UI\Traits\WithDisplayViewData;
 use Stringable;
 
 abstract class MoonShineComponent extends Component implements
@@ -27,7 +28,9 @@ abstract class MoonShineComponent extends Component implements
     use Macroable;
     use Makeable;
     use WithCore;
-    use WithViewRenderer;
+    use WithViewRenderer, WithDisplayViewData {
+        WithDisplayViewData::resolveCustomViewData insteadof WithViewRenderer;
+    }
     use HasCanSee;
     use WithComponentAttributes;
     use WithAssets;

@@ -35,6 +35,7 @@ use MoonShine\Laravel\Traits\Fields\HasTreeMode;
 use MoonShine\Laravel\Traits\Fields\WithAsyncSearch;
 use MoonShine\Laravel\Traits\Fields\WithRelatedLink;
 use MoonShine\Laravel\Traits\Fields\WithRelatedValues;
+use MoonShine\Support\DisplayHtml;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Stringify;
@@ -43,6 +44,7 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Table\TableBuilder;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\FieldException;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Field;
@@ -158,6 +160,25 @@ class BelongsToMany extends ModelRelationField implements
         $this->inLineLink = $link;
 
         return $this;
+    }
+
+    /**
+     * Labels of related items are built from record data,
+     * so they keep their own preference instead of following the field label.
+     */
+    public function escapeOptionLabels(bool $escape = true): static
+    {
+        return $this->setDisplayEscaping(DisplayTextType::OPTION_LABEL, $escape);
+    }
+
+    public function unescapeOptionLabels(): static
+    {
+        return $this->escapeOptionLabels(false);
+    }
+
+    public function isEscapeOptionLabels(): bool
+    {
+        return $this->isDisplayEscaped(DisplayTextType::OPTION_LABEL);
     }
 
     public function selectMode(): static
@@ -403,9 +424,16 @@ class BelongsToMany extends ModelRelationField implements
             ->formName($this->getFormName())
             ->iterableAttributes();
 
+        $escapeTitles = $this->isEscapeOptionLabels();
+
         $fields = $this->getPreparedFields()
             ->prepend(
                 Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->getFormattedValueCallback())
+                    // Preview outputs its value as is, so related titles are prepared here.
+                    ->changePreview(static fn (mixed $value, Preview $ctx): string => DisplayHtml::make(
+                        $ctx->toFormattedValue(),
+                        $escapeTitles,
+                    )->toHtml())
                     ->withoutWrapper()
                     ->formName($this->getFormName())
                     ->class('js-pivot-title'),
@@ -464,7 +492,7 @@ class BelongsToMany extends ModelRelationField implements
         $keys = Collection::wrap($old);
 
         return $keys
-            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
+            ->map(fn (int|string|null $key): Model => clone ($this->makeRelatedModel($key, relations: $oldPivot[$key ?? ''] ?? [], related: $this->getRelation()?->getRelated()) ?? throw ModelRelationFieldException::relationRequired()))
             ->values();
     }
 
@@ -508,33 +536,39 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->inLine) {
-            return $values->implode(function (Model $item) use ($column) {
-                $value = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, '')));
+            $escapeLabels = $this->isEscapeOptionLabels();
+
+            return $values->implode(function (Model $item) use ($column, $escapeLabels): string {
+                $value = Stringify::value($this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, ''))));
+
+                // Every inline variant (plain, link, badge) outputs the same prepared label.
+                $label = $escapeLabels ? e($value) : $value;
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
                     $linkValue = \call_user_func($this->inLineLink, $item, $value, $this);
 
-                    $value = $linkValue instanceof Link
-                        ? $linkValue
-                        : Link::make(
-                            $linkValue,
-                            (string) $value,
-                        );
+                    $label = match (true) {
+                        ! $linkValue instanceof Link => Link::make($linkValue, $label)->unescapeLabel(),
+                        // The callback gets the raw value, so its link follows the option label preference unless set locally.
+                        $linkValue->hasLabelEscapingOverride() => $linkValue,
+                        default => $linkValue->escapeLabel($escapeLabels),
+                    };
                 }
 
+                // Badges print their value as is, so the callback gets the prepared label rather than the raw value.
                 /** @var Badge|bool $badgeValue */
-                $badgeValue = value($this->inLineBadge, $item, $value, $this);
+                $badgeValue = value($this->inLineBadge, $item, $label, $this);
 
                 if ($badgeValue !== false) {
                     $badge = $badgeValue instanceof Badge
                         ? $badgeValue
-                        : Badge::make((string) $value, Color::PRIMARY);
+                        : Badge::make((string) $label, Color::PRIMARY);
 
                     return (string) $badge->customAttributes(['class' => 'm-1']);
                 }
 
-                return $value;
+                return (string) $label;
             }, $this->inLineSeparator);
         }
 
@@ -831,6 +865,7 @@ class BelongsToMany extends ModelRelationField implements
             'component' => $this->getComponent(),
             'componentName' => $this->getComponent()->getName(),
             'buttons' => $this->getButtons(),
+            'escapeOptionLabels' => $this->isEscapeOptionLabels(),
         ];
     }
 }

@@ -9,20 +9,22 @@ use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\AbstractWithComponents;
 use MoonShine\UI\Components\Components;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Exceptions\ComponentException;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 use Throwable;
 
 /**
- * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [])
+ * @method static static make((Closure(static): string)|string|iterable<array-key, ComponentContract> $labelOrComponents = [], iterable<array-key, ComponentContract> $components = [], ?bool $escapeLabel = null)
  */
-class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract
+class Tab extends AbstractWithComponents implements HasLabelContract, HasIconContract, HasLabelEscapingContract
 {
     use WithLabel;
     use WithIcon;
@@ -42,7 +44,10 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
     public function __construct(
         Closure|string|iterable $labelOrComponents = [],
         iterable $components = [],
+        ?bool $escapeLabel = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         if (is_iterable($labelOrComponents)) {
             /** @var iterable<array-key, ComponentContract> $labelOrComponents */
             $components = $labelOrComponents;
@@ -124,6 +129,7 @@ class Tab extends AbstractWithComponents implements HasLabelContract, HasIconCon
         return [
             'icon' => $this->getIcon(6),
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'labelAttributes' => $this->labelAttributes,
             'id' => $this->getId(),
             'content' => Components::make(

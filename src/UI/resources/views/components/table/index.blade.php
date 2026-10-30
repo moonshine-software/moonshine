@@ -26,7 +26,7 @@
                     <tr>
                         @foreach($columns as $index => $label)
                             <th>
-                                {!! $label !!}
+                                {{ $label }}
                             </th>
                         @endforeach
                     </tr>

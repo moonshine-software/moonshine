@@ -55,10 +55,13 @@ trait HasTreeMode
     protected function buildTree(Collection $data, int|string $parentKey = 0, int $offset = 0): string
     {
         if ($data->has($parentKey)) {
+            $escapeLabels = $this->isEscapeOptionLabels();
+
             foreach ($data->get($parentKey) ?? [] as $item) {
                 $label = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $this->getResourceColumn())));
 
                 $element = Checkbox::make((string) $label)
+                    ->escapeLabel($escapeLabels)
                     ->formName($this->getFormName())
                     ->simpleMode()
                     ->customAttributes($this->getAttributes()->jsonSerialize())
