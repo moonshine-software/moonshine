@@ -92,6 +92,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
+use MoonShine\Laravel\ViewComposers\IconComposer;
 use MoonShine\Laravel\ViewComposers\LinkComposer;
 use MoonShine\MenuManager\MenuAutoloader;
 use MoonShine\MenuManager\MenuManager;
@@ -105,6 +106,7 @@ use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\SimpleCache\CacheInterface;
 
 final class MoonShineServiceProvider extends ServiceProvider
@@ -193,7 +195,17 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->app->bind(FieldsContract::class, Fields::class);
         $this->app->bind(ViewRendererContract::class, ViewRenderer::class);
 
-        $this->app->bind(RequestContract::class, Request::class);
+        // Share the wrapper, but resolve the PSR request only when reading its current input.
+        $this->app->scoped(
+            RequestContract::class,
+            static fn (Application $app): Request => new Request(
+                static fn (): ServerRequestInterface => $app->make(ServerRequestInterface::class)
+            )
+        );
+        $this->app->rebinding(
+            'request',
+            static fn (Application $app) => $app->forgetInstance(RequestContract::class)
+        );
         $this->app->bind(
             CacheInterface::class,
             static fn (Application $app): CacheInterface => $app->make(CacheManager::class)->store(
@@ -353,6 +365,7 @@ final class MoonShineServiceProvider extends ServiceProvider
             'moonshine::components.link-native',
             'moonshine::components.link-button',
         ], LinkComposer::class);
+        View::composer('moonshine::components.icon', new IconComposer()->compose(...));
 
         $this->publishes([
             MoonShine::UIPath('/dist') => public_path('vendor/moonshine'),

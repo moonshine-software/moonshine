@@ -191,7 +191,8 @@ it('preserves field label preferences in column selection', function (bool $esca
     expect($labels->length)->toBe(1);
     expect($xpath->query('.//b', $labels->item(0))->length)->toBe($escape ? 0 : 1);
     expect(trim($labels->item(0)->textContent))->toBe($escape ? '<b>Column label</b>' : 'Column label');
-    expect($xpath->query('//th/b')->length)->toBe($escape ? 0 : 2);
+    // Synchronous tables do not render the skeleton table, which repeated the headers.
+    expect($xpath->query('//table[not(@data-skeleton)]//th/b')->length)->toBe($escape ? 0 : 1);
 })->with([true, false]);
 
 it('keeps serialized column labels raw and excludes unavailable selections', function (): void {

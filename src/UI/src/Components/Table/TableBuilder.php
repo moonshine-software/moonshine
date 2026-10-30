@@ -789,6 +789,9 @@ final class TableBuilder extends IterableComponent implements
             'topLeft' => $this->getTopLeft(),
             'topRight' => $this->getTopRight($columns),
             ...$this->statesToArray(),
+            // Only async requests switch the table into the loading state that shows them.
+            'skeleton' => $this->isAsync() && $this->hasSkeleton(),
+            'loader' => $this->isAsync() && $this->hasLoader(),
         ];
     }
 }
