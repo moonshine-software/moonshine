@@ -93,13 +93,14 @@ export default (
   initCellWidth() {
     if (!this.table || !this.table.classList.contains('table-list')) return
 
-    const cells = this.table.querySelectorAll('th, td')
+    const cells = Array.from(this.table.querySelectorAll('th, td')).filter(
+      cell => cell.closest('table') === this.table,
+    )
 
-    cells.forEach(cell => {
-      if (cell.closest('table') === this.table) {
-        this.updateCellWidth(cell)
-      }
-    })
+    // Measure every cell before changing classes: alternating reads and writes force a reflow per cell
+    const fits = cells.map(cell => cell.scrollWidth <= cell.clientWidth)
+
+    cells.forEach((cell, index) => cell.classList.add(fits[index] ? 'fit-content' : 'min-content'))
   },
   updateCellWidth(cell) {
     if (!cell) return
