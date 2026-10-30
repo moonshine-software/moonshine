@@ -215,6 +215,18 @@ it('renders vertical table fields in one view with the configured spans', functi
         ->toContain('First');
 });
 
+it('escapes vertical table labels in the single view unless unescaped', function (): void {
+    $html = (string) TableBuilder::make([
+        Text::make('<img src=x onerror=alert(1)>', 'title'),
+        Text::make('<b>Raw</b>', 'body')->unescapeLabel(),
+    ], [['title' => 'First', 'body' => 'Second']])->vertical();
+
+    expect($html)
+        ->toContain('&lt;img src=x onerror=alert(1)&gt;')
+        ->not->toContain('<img src=x onerror=alert(1)>')
+        ->toContain('<b>Raw</b>');
+});
+
 it('passes vertical title and value components to their callbacks', function (): void {
     $html = (string) TableBuilder::make([Text::make('Title')], [['title' => 'First']])
         ->vertical(

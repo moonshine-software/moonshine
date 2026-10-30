@@ -436,7 +436,7 @@ final class TableBuilder extends IterableComponent implements
         $valueSpan = \is_int($this->verticalValueCallback) ? $this->verticalValueCallback : 10;
 
         return $this->getCore()->getRenderer()->render('moonshine::components.table.vertical-field', [
-            'label' => $field->getLabel(),
+            'label' => $this->getLabelHtmlOf($field)->toHtml(),
             'field' => $field,
             'titleAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$titleSpan", 'space-elements']),
             'valueAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$valueSpan", 'space-elements']),
