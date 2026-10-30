@@ -83,7 +83,7 @@ class DetailPage extends CrudDetailPage
                         ->previewMode();
                 }
 
-                $toOneRenderer = fn (ModelRelationField $field, ?string $redirectBack = null) => Box::make($field->getLabel(), array_filter([
+                $toOneRenderer = fn (ModelRelationField $field, ?string $redirectBack = null) => Box::make(array_filter([
                     $field instanceof HasOne
                         ? $field->modifyTable(
                             fn (TableBuilderContract $table): TableBuilderContract => $table->buttons([
@@ -103,14 +103,14 @@ class DetailPage extends CrudDetailPage
                     ! $field->toValue() && $field instanceof HasOne
                         ? $field->getFormModalButton(__('moonshine::ui.add'), $redirectBack)
                         : null,
-                ]));
+                ]))->labelFrom($field);
 
                 if ($field instanceof HasTabModeContract && $field->isTabMode()) {
-                    $tabs[] = Tab::make($field->getLabel(), [
+                    $tabs[] = Tab::make([
                         $field->isToOne() ? $toOneRenderer($field, $this->getResourceOrFail()->getDetailPageUrl(
                             $this->getResourceOrFail()->getItemID() ?? '',
                         )) : $field,
-                    ])->canSee(static fn (): bool => $field->isSee());
+                    ])->labelFrom($field)->canSee(static fn (): bool => $field->isSee());
 
                     continue;
                 }
@@ -119,7 +119,7 @@ class DetailPage extends CrudDetailPage
 
                 $blocks = $field->isToOne()
                     ? [$toOneRenderer($field)]
-                    : [Heading::make($field->getLabel()), $field];
+                    : [Heading::make()->labelFrom($field), $field];
 
                 $components[] = Fragment::make($blocks)
                     ->canSee(static fn (): bool => $field->isSee())

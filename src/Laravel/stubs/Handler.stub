@@ -43,6 +43,8 @@ class DummyClass extends Handler
 
     public function getButton(): ActionButtonContract
     {
-        return ActionButton::make($this->getLabel(), $this->getUrl());
+        return $this->prepareButton(
+            ActionButton::make($this->getLabel(), $this->getUrl())
+        );
     }
 }

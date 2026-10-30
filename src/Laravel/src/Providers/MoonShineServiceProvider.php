@@ -93,6 +93,7 @@ use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
 use MoonShine\Laravel\ViewComposers\IconComposer;
+use MoonShine\Laravel\ViewComposers\LinkComposer;
 use MoonShine\MenuManager\MenuAutoloader;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\UI\Applies\AppliesRegister;
@@ -360,6 +361,10 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../UI/resources/views', 'moonshine');
 
+        View::composer([
+            'moonshine::components.link-native',
+            'moonshine::components.link-button',
+        ], LinkComposer::class);
         View::composer('moonshine::components.icon', new IconComposer()->compose(...));
 
         $this->publishes([

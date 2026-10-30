@@ -11,6 +11,7 @@ use MoonShine\ImportExport\Traits\ImportExportHandlersConcern;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -95,6 +96,21 @@ it('query tags', function () {
         ->assertSee($item->name)
         ->assertDontSee($other->name)
     ;
+});
+
+it('treats an empty query tag as the default one', function () {
+    $default = QueryTag::make('Default', static fn ($query) => $query)->alias('default')->default();
+    $other = QueryTag::make('Other', static fn ($query) => $query)->alias('other');
+
+    fakeRequest('/', parameters: ['query-tag' => '']);
+
+    expect($default->isActive())->toBeTrue()
+        ->and($other->isActive())->toBeFalse();
+
+    fakeRequest('/', parameters: ['query-tag' => 'other']);
+
+    expect($default->isActive())->toBeFalse()
+        ->and($other->isActive())->toBeTrue();
 });
 
 it('prefers current filter params over cached query state', function () {

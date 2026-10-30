@@ -75,7 +75,15 @@ export class Iterable {
           name = name.replace(key, value)
         })
 
-        fieldOrBlock.setAttribute('name', name)
+        const hasShowWhenColumn = fieldOrBlock.hasAttribute('data-show-when-column')
+
+        if (hasShowWhenColumn) {
+          fieldOrBlock.setAttribute('data-show-when-column', name)
+        }
+
+        if (fieldOrBlock.hasAttribute('name') || !hasShowWhenColumn) {
+          fieldOrBlock.setAttribute('name', name)
+        }
         fieldOrBlock.setAttribute('data-r-index', _key)
 
         if (fieldOrBlock.dataset?.incrementPosition) {

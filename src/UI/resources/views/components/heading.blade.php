@@ -1,9 +1,10 @@
 @props([
     'label' => '',
+    'labelHtml' => null,
     'tag' => 'h1',
 ])
 <div class="heading">
     <{{ $tag }} {{ $attributes }}>
-        {{ $label !== '' ? $label : ($slot ?? '') }}
+        {{ $labelHtml ?? ($label !== '' ? $label : ($slot ?? '')) }}
     </{{ $tag }}>
 </div>
