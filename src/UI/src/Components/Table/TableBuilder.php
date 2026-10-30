@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
@@ -325,6 +326,13 @@ final class TableBuilder extends IterableComponent implements
 
                 foreach ($fields as $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
+
+                    if (! $this->verticalTitleCallback instanceof Closure && ! $this->verticalValueCallback instanceof Closure) {
+                        $components[] = $this->getVerticalField($field, $attributes);
+
+                        continue;
+                    }
+
                     $title = Column::make([
                         Div::make([FlexibleRender::make($this->getLabelHtmlOf($field)->toHtml())])->class('form-label'),
                     ])->columnSpan(\is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2);
@@ -356,7 +364,7 @@ final class TableBuilder extends IterableComponent implements
                     TableCells::make([
                         TableTd::make(
                             static fn (): string => Collection::make($components)
-                                ->map(static fn (ComponentContract $component): string => (string) $component)
+                                ->map(static fn (ComponentContract|Renderable $component): string => $component instanceof Renderable ? $component->render() : (string) $component)
                                 ->implode(''),
                         )->class(['space-elements', 'table-grid'])->when(
                             true,
@@ -414,6 +422,26 @@ final class TableBuilder extends IterableComponent implements
             $this->isVertical(),
             static fn (TableRowsContract $rows) => $rows->flatten(),
         );
+    }
+
+    /**
+     * Renders the label and value of a vertical row in one view instead of
+     * the Grid, Column, Div and FlexibleRender components it is made of.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    private function getVerticalField(FieldContract $field, array $attributes): Renderable
+    {
+        $titleSpan = \is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2;
+        $valueSpan = \is_int($this->verticalValueCallback) ? $this->verticalValueCallback : 10;
+
+        return $this->getCore()->getRenderer()->render('moonshine::components.table.vertical-field', [
+            'label' => $this->getLabelHtmlOf($field)->toHtml(),
+            'field' => $field,
+            'titleAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$titleSpan", 'space-elements']),
+            'valueAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$valueSpan", 'space-elements']),
+            'fieldAttributes' => new MoonShineComponentAttributeBag()->merge($attributes),
+        ]);
     }
 
     /**

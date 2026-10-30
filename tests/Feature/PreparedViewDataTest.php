@@ -7,6 +7,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\View\ComponentSlot;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
@@ -199,6 +201,43 @@ it('renders the skeleton only for async tables', function (): void {
         ->not->toContain('data-skeleton')
         ->and($async)
         ->toContain('data-skeleton');
+});
+
+it('renders vertical table fields in one view with the configured spans', function (): void {
+    $html = (string) TableBuilder::make([Text::make('Title')], [['title' => 'First']])
+        ->vertical(title: 3, value: 9);
+
+    expect($html)
+        ->toContain('<div class="grid grid-cols-12 gap-2">')
+        ->toContain('<div class="col-span-12 xl:col-span-3 space-elements">')
+        ->toContain('<div class="col-span-12 xl:col-span-9 space-elements">')
+        ->toContain('<div class="form-label">')
+        ->toContain('First');
+});
+
+it('escapes vertical table labels in the single view unless unescaped', function (): void {
+    $html = (string) TableBuilder::make([
+        Text::make('<img src=x onerror=alert(1)>', 'title'),
+        Text::make('<b>Raw</b>', 'body')->unescapeLabel(),
+    ], [['title' => 'First', 'body' => 'Second']])->vertical();
+
+    expect($html)
+        ->toContain('&lt;img src=x onerror=alert(1)&gt;')
+        ->not->toContain('<img src=x onerror=alert(1)>')
+        ->toContain('<b>Raw</b>');
+});
+
+it('passes vertical title and value components to their callbacks', function (): void {
+    $html = (string) TableBuilder::make([Text::make('Title')], [['title' => 'First']])
+        ->vertical(
+            title: static fn (FieldContract $field, ComponentContract $title): ComponentContract => $title->class('custom-title'),
+            value: static fn (FieldContract $field, ComponentContract $value): ComponentContract => $value->class('custom-value'),
+        );
+
+    expect($html)
+        ->toContain('custom-title')
+        ->toContain('custom-value')
+        ->toContain('First');
 });
 
 it('keeps prepared view data out of the component structure', function (): void {
