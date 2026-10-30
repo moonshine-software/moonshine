@@ -271,9 +271,10 @@ class BelongsToMany extends ModelRelationField implements
      */
     public function getSelectedValue(): string|array
     {
-        $selected = $this->isValueWithModels()
-            ? $this->getCollectionValue()->pluck($this->getRelatedKeyName())
-            : $this->getCollectionValue();
+        $values = $this->getCollectionValue();
+        $selected = $this->isValueWithModels($values)
+            ? $values->pluck($this->getRelatedKeyName())
+            : $values;
 
         /** @var array<array-key, int|string> */
         return $selected->all();
