@@ -283,6 +283,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
 
     if (form.dataset.reset) {
       formData = new FormData()
+      formData.set(`${prefix}reset`, '1')
       exclude = '*'
     }
 

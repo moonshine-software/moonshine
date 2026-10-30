@@ -1,7 +1,8 @@
 @props([
     'value' => '',
+    'valueHtml' => null,
 ])
 
 <span {{ $attributes->class(['expansion', 'expansion--prefix']) }}>
-    {!! $value !!}
+    {{ $valueHtml ?? $value }}
 </span>

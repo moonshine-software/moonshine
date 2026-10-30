@@ -47,6 +47,11 @@ class Number extends Field implements HasDefaultValueContract, CanBeNumeric, Has
         return $this;
     }
 
+    protected function isPreviewMarkup(): bool
+    {
+        return $this->isWithStars();
+    }
+
     protected function resolvePreview(): Renderable|string
     {
         if ($this->isWithStars()) {

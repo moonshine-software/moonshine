@@ -14,6 +14,7 @@ use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use MoonShine\AssetManager\AssetManager;
@@ -91,6 +92,7 @@ use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Storage\LaravelStorage;
+use MoonShine\Laravel\ViewComposers\LinkComposer;
 use MoonShine\MenuManager\MenuAutoloader;
 use MoonShine\MenuManager\MenuManager;
 use MoonShine\UI\Applies\AppliesRegister;
@@ -346,6 +348,11 @@ final class MoonShineServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(MoonShine::path('/lang'), 'moonshine');
         $this->loadRoutesFrom(MoonShine::path('/routes/moonshine.php'));
         $this->loadViewsFrom(__DIR__ . '/../../../UI/resources/views', 'moonshine');
+
+        View::composer([
+            'moonshine::components.link-native',
+            'moonshine::components.link-button',
+        ], LinkComposer::class);
 
         $this->publishes([
             MoonShine::UIPath('/dist') => public_path('vendor/moonshine'),

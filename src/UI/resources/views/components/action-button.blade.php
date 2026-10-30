@@ -4,6 +4,7 @@
     'url' => 'javascript:void(0);',
     'icon' => '',
     'label' => '',
+    'labelHtml' => null,
     'component' => null,
     'badge' => false,
     'raw' => false,
@@ -17,7 +18,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        {{ $labelHtml ?? $label }}
 
         @if($badge !== false)
             <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
@@ -34,7 +35,7 @@
 
         <x-slot:icon>{!! $icon !!}</x-slot:icon>
 
-        {!! $label !!}
+        {{ $labelHtml ?? $label }}
     </x-moonshine::link-button>
 @endif
 

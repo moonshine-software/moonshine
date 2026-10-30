@@ -38,6 +38,7 @@ use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Traits\Fields\HasVerticalMode;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 use MoonShine\UI\Traits\WithFields;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -55,6 +56,7 @@ class RelationRepeater extends ModelRelationField implements
     CanBeArray,
     CanBeObject
 {
+    use ResolvesDisplayEscaping;
     use WithFields;
     use Removable;
     use WithDefaultValue;
@@ -394,7 +396,7 @@ class RelationRepeater extends ModelRelationField implements
                 fn (TableBuilderContract $table): TableBuilderContract => $table->vertical(
                     title: $reorderable ? fn (FieldContract $field, ComponentContract $default): Column => Column::make([
                         $field->getColumn() === '__handle' ? $field : Div::make([
-                            FlexibleRender::make($field->getLabel()),
+                            FlexibleRender::make($this->getLabelHtmlOf($field)->toHtml()),
                         ]),
                     ])->columnSpan($this->verticalTitleSpan) : null,
                     value: $reorderable ? function (FieldContract $field, ComponentContract $default): ComponentContract {
