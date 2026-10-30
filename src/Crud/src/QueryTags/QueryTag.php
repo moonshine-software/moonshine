@@ -90,9 +90,10 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
     public function isActive(): bool
     {
         $current = $this->getCore()->getRequest()->getScalar($this->prefix . 'query-tag');
+        $isEmpty = $current === null || $current === '';
 
         // A click on the active tag sends `query-tag=`: the same as no tag, so the default one applies
-        if ($this->isDefault() && ($current === null || $current === '')) {
+        if ($this->isDefault() && $isEmpty) {
             return true;
         }
 

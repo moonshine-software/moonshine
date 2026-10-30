@@ -147,7 +147,7 @@ final class OptimizerCollection implements OptimizerCollectionContract
          * @var array<class-string, array<mixed>>
          */
         return (new Collection(ClassLoader::getRegisteredLoaders()))
-            ->map(
+            ->flatMap(
                 fn (ClassLoader $loader) => (new Collection($loader->getClassMap()))
                     ->when($namespace, static fn (Collection $items) => $items->filter(
                         static fn (string $path, string $class): bool => str_starts_with($class, (string) $namespace)
@@ -160,7 +160,6 @@ final class OptimizerCollection implements OptimizerCollectionContract
                                && $this->isNotAbstract($class);
                     })
             )
-            ->collapse()
             ->groupBy(function (string $class): string {
                 /** @var class-string $class */
                 return $this->getGroupName($class);
