@@ -89,11 +89,14 @@ class QueryTag implements HasCanSeeContract, HasIconContract, HasLabelContract, 
 
     public function isActive(): bool
     {
-        if ($this->isDefault() && ! $this->getCore()->getRequest()->has($this->prefix . 'query-tag')) {
+        $current = $this->getCore()->getRequest()->getScalar($this->prefix . 'query-tag');
+
+        // A click on the active tag sends `query-tag=`: the same as no tag, so the default one applies
+        if ($this->isDefault() && ($current === null || $current === '')) {
             return true;
         }
 
-        return $this->getCore()->getRequest()->getScalar($this->prefix . 'query-tag') === $this->getUri();
+        return $current === $this->getUri();
     }
 
     /**
