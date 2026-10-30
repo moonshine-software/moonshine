@@ -46,6 +46,9 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     /** @var null|Closure(ActionButtonContract, static): ActionButtonContract */
     protected ?Closure $modifyButton = null;
 
+    /** Result of the last prepareButton() call, whose label preference is already final. */
+    private ?ActionButtonContract $preparedButton = null;
+
     /**
      * @var array<array-key, string|int>|(Closure(static): array<array-key, string|int>)
      */
@@ -76,12 +79,22 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
     }
 
     /**
-     * Passes the handler's label preference to its button unless the button has its own.
-     * Handlers::getButtons() applies it too, so it also works when getButton() skips prepareButton().
+     * The button with the handler's label preference, also when getButton() skips prepareButton().
+     * A button returned by prepareButton() is kept as is, so modifyButton has the last word.
      *
      * @internal
      */
-    public function applyLabelEscaping(ActionButtonContract $button): ActionButtonContract
+    public function getButtonWithLabelEscaping(): ActionButtonContract
+    {
+        $button = $this->getButton();
+
+        return $button === $this->preparedButton ? $button : $this->applyLabelEscaping($button);
+    }
+
+    /**
+     * Passes the handler's label preference to its button unless the button has its own.
+     */
+    protected function applyLabelEscaping(ActionButtonContract $button): ActionButtonContract
     {
         $escape = $this->getDisplayEscaping(DisplayTextType::LABEL);
 
@@ -97,10 +110,10 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
         $button = $this->applyLabelEscaping($button);
 
         if (! \is_null($this->modifyButton)) {
-            return \call_user_func($this->modifyButton, $button, $this);
+            $button = \call_user_func($this->modifyButton, $button, $this);
         }
 
-        return $button;
+        return $this->preparedButton = $button;
     }
 
     /**

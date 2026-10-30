@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Layout;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Support\DisplayHtml;
@@ -21,7 +22,7 @@ class Footer extends AbstractWithComponents
 
     /**
      * @param  iterable<array-key, ComponentContract>  $components
-     * @param  array<string, string>  $menu
+     * @param  array<string, string|Htmlable>  $menu
      *
      * @throws Throwable
      * @param (Closure(): string)|string $copyright
@@ -54,7 +55,7 @@ class Footer extends AbstractWithComponents
     }
 
     /**
-     * @param  array<string, string>  $data
+     * @param  array<string, string|Htmlable>  $data
      */
     public function menu(array $data): static
     {
@@ -64,7 +65,7 @@ class Footer extends AbstractWithComponents
     }
 
     /**
-     * @return Collection<string, string>
+     * @return Collection<string, string|Htmlable>
      */
     public function getMenu(): Collection
     {
@@ -109,7 +110,7 @@ class Footer extends AbstractWithComponents
         return [
             'menu' => $menu,
             'menuLabelsHtml' => $menu->map(
-                fn (string $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
+                fn (string|Htmlable $label): DisplayHtml => DisplayHtml::make($label, $this->isEscapeLabel())
             ),
             'copyright' => $this->getCopyright(),
         ];

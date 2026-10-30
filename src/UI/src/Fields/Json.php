@@ -357,6 +357,11 @@ class Json extends Field implements
         return Stringify::value($this->rawValue);
     }
 
+    protected function isPreviewMarkup(): bool
+    {
+        return true;
+    }
+
     protected function resolvePreview(): Renderable|string
     {
         $component = $this->getComponent();

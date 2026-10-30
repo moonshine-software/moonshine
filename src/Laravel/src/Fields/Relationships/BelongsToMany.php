@@ -424,20 +424,16 @@ class BelongsToMany extends ModelRelationField implements
             ->formName($this->getFormName())
             ->iterableAttributes();
 
-        $formatted = $this->getFormattedValueCallback();
         $escapeTitles = $this->isEscapeOptionLabels();
 
         $fields = $this->getPreparedFields()
             ->prepend(
-                // Preview outputs its value as is, so related titles are prepared here.
-                Preview::make(
-                    $this->getResourceColumnLabel(),
-                    $titleColumn,
-                    fn (mixed $item, int $index): DisplayHtml => DisplayHtml::make(
-                        \is_null($formatted) ? data_get($item, $titleColumn) : $formatted($item, $index, $this),
+                Preview::make($this->getResourceColumnLabel(), $titleColumn, $this->getFormattedValueCallback())
+                    // Preview outputs its value as is, so related titles are prepared here.
+                    ->changePreview(static fn (mixed $value, Preview $ctx): string => DisplayHtml::make(
+                        $ctx->toFormattedValue(),
                         $escapeTitles,
-                    ),
-                )
+                    )->toHtml())
                     ->withoutWrapper()
                     ->formName($this->getFormName())
                     ->class('js-pivot-title'),
@@ -540,11 +536,13 @@ class BelongsToMany extends ModelRelationField implements
         }
 
         if ($this->inLine) {
-            return $values->implode(function (Model $item) use ($column): string {
+            $escapeLabels = $this->isEscapeOptionLabels();
+
+            return $values->implode(function (Model $item) use ($column, $escapeLabels): string {
                 $value = Stringify::value($this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $column, ''))));
 
                 // Every inline variant (plain, link, badge) outputs the same prepared label.
-                $label = $this->isEscapeOptionLabels() ? e($value) : $value;
+                $label = $escapeLabels ? e($value) : $value;
 
                 if (! \is_null($this->inLineLink)) {
                     /** @var Link|string $linkValue */
@@ -554,7 +552,7 @@ class BelongsToMany extends ModelRelationField implements
                         ! $linkValue instanceof Link => Link::make($linkValue, $label)->unescapeLabel(),
                         // The callback gets the raw value, so its link follows the option label preference unless set locally.
                         $linkValue->hasLabelEscapingOverride() => $linkValue,
-                        default => $linkValue->escapeLabel($this->isEscapeOptionLabels()),
+                        default => $linkValue->escapeLabel($escapeLabels),
                     };
                 }
 

@@ -14,6 +14,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Link;
 use MoonShine\UI\Components\Popover;
+use MoonShine\UI\Contracts\HasEscapedValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Fields\Hidden;
 
@@ -34,7 +35,7 @@ final readonly class UpdateOnPreviewPopover
     {
         $name = 'update-on-preview-' . spl_object_id($this->field);
         $value = Stringify::value($this->field->toFormattedValue());
-        $escapeValue = ! method_exists($this->field, 'isUnescape') || ! $this->field->isUnescape();
+        $escapeValue = ! $this->field instanceof HasEscapedValueContract || ! $this->field->isUnescape();
 
         return Popover::make(
             '',

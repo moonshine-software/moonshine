@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\ComponentSlot;
@@ -12,6 +13,9 @@ use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Card;
 use MoonShine\UI\Components\Collapse;
 use MoonShine\UI\Components\Layout\Footer;
+use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Fields\Checkbox;
+use MoonShine\UI\Fields\Color;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\InputExtensions\InputExt;
 use MoonShine\UI\InputExtensions\InputPrefix;
@@ -176,3 +180,78 @@ it('applies the button label preference to titles falling back to the label', fu
 
     expect((string) $component)->toContain($escape ? '&lt;b&gt;Edit&lt;/b&gt;' : '<b>Edit</b>');
 })->with(['modal', 'offcanvas'])->with([true, false]);
+
+it('renders link views without a slot when no composer prepares it', function (string $view): void {
+    $template = file_get_contents(__DIR__ . '/../../src/UI/resources/views/components/' . $view . '.blade.php');
+
+    expect(Blade::render($template, ['attributes' => new MoonShineComponentAttributeBag(attributes: ['href' => '/help'])]))
+        ->toContain('href="/help"');
+})->with(['link-native', 'link-button']);
+
+it('keeps prepared preview markup in escaped link names', function (Closure $make): void {
+    $preview = (string) $make()->preview();
+    $field = $make()->link('/state', name: static fn (mixed $value): string => '<i>State</i> ' . $value);
+
+    expect($preview)->toContain('<div');
+    expect((string) $field->preview())->toContain('&lt;i&gt;State&lt;/i&gt; ' . $preview);
+})->with([
+    'checkbox' => [static fn (): Checkbox => Checkbox::make('Active', 'active')->setValue(true)],
+    'color' => [static fn (): Color => Color::make('Color', 'color')->setValue('#ff0000')],
+]);
+
+it('returns Htmlable render decorations through the Renderable contract', function (string $type): void {
+    $field = Text::make('Title', 'title');
+
+    match ($type) {
+        'callback' => $field
+            ->beforeRender(static fn (): HtmlString => new HtmlString('<b>Before</b>'))
+            ->afterRender(static fn (): HtmlString => new HtmlString('<b>After</b>')),
+        'xIf' => $field->xIf('type', '=', '1'),
+    };
+
+    $before = $field->getBeforeRender();
+    $after = $field->getAfterRender();
+
+    expect($before)->toBeInstanceOf(Renderable::class)->and($after)->toBeInstanceOf(Renderable::class);
+    expect((string) $field)->toContain($before->render(), $after->render());
+
+    if ($type === 'xIf') {
+        expect($before->render())->toStartWith('<template x-if=')->and($after->render())->toBe('</template>');
+    }
+})->with(['callback', 'xIf']);
+
+it('outputs prepared footer menu labels', function (string $source): void {
+    $menu = ['/docs' => new HtmlString('<b>Docs</b>')];
+    $footer = $source === 'constructor' ? Footer::make(menu: $menu) : Footer::make()->menu($menu);
+
+    expect((string) $footer)->toContain('<b>Docs</b>');
+})->with(['constructor', 'menu']);
+
+it('accepts a tab label preference in the constructor', function (bool $escape): void {
+    moonshine()->getConfig()->escapeLabel(! $escape);
+    $tab = Tab::make('<b>A</b>', [], escapeLabel: $escape);
+
+    expect($tab->isEscapeLabel())->toBe($escape)
+        ->and($tab->getLabelHtml()->toHtml())->toBe($escape ? '&lt;b&gt;A&lt;/b&gt;' : '<b>A</b>');
+})->with([true, false]);
+
+it('resolves escaping defaults again after configuration changes', function (): void {
+    $config = moonshine()->getConfig();
+
+    expect($config->isEscapeLabel())->toBeTrue();
+
+    $config->escapeLabel(false);
+    expect($config->isEscapeLabel())->toBeFalse();
+
+    $config['escapes.label'] = 'on';
+    expect($config->isEscapeLabel())->toBeTrue();
+
+    $escape = false;
+    $config->set('escapes.label', static function () use (&$escape): bool {
+        return $escape;
+    });
+    expect($config->isEscapeLabel())->toBeFalse();
+
+    $escape = true;
+    expect($config->isEscapeLabel())->toBeTrue();
+});

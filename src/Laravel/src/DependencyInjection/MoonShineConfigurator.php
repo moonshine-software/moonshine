@@ -38,6 +38,13 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
      */
     private readonly Collection $authorizationRules;
 
+    /**
+     * Resolved escaping defaults, read for every displayed label.
+     *
+     * @var array<string, bool>
+     */
+    private array $escapeFlags = [];
+
     /** @var null|(Closure((Closure(): Response)): Response) */
     private ?Closure $logoutUsing = null;
 
@@ -625,16 +632,26 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
      */
     private function escapeFlag(string $key): bool
     {
-        $value = $this->get($key, true);
-
-        if (\is_bool($value)) {
-            return $value;
+        if (isset($this->escapeFlags[$key])) {
+            return $this->escapeFlags[$key];
         }
 
+        $raw = Arr::get($this->items, $key, true);
+        $value = value($raw);
+
         // Empty strings come from unset env variables, so they keep the safe default.
-        return \is_scalar($value) && $value !== ''
-            ? filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true
-            : true;
+        $flag = match (true) {
+            \is_bool($value) => $value,
+            \is_scalar($value) && $value !== '' => filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
+            default => true,
+        };
+
+        // Closures may resolve differently on every call.
+        if (! $raw instanceof Closure) {
+            $this->escapeFlags[$key] = $flag;
+        }
+
+        return $flag;
     }
 
     private function boolValue(mixed $value): bool
@@ -661,6 +678,7 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
     public function set(string $key, mixed $value): self
     {
         $this->items[$key] = $value;
+        $this->escapeFlags = [];
 
         return $this;
     }

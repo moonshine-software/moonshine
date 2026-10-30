@@ -13,6 +13,7 @@ use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
 use MoonShine\Tests\Fixtures\Resources\TestFileResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Fields\Preview;
 
 uses()->group('model-relation-fields');
 
@@ -135,3 +136,24 @@ it('passes the option label preference to async search selection', function (?bo
     'local disabled' => [false, 'false'],
     'local enabled' => [true, 'true'],
 ]);
+
+it('passes the title preview field to formatted callbacks of the checkbox table', function (): void {
+    $item = createItem(countComments: 0);
+    $item->categories()->attach(Category::factory()->create(['name' => 'Category']));
+    $contexts = [];
+
+    $field = BelongsToMany::make(
+        'Categories',
+        'categories',
+        static function (Category $category, int $index, Preview $ctx) use (&$contexts): string {
+            $contexts[] = $ctx->getColumn();
+
+            return 'Formatted ' . $category->name;
+        },
+        resource: TestCategoryResource::class,
+    );
+    $field->fillData($item);
+
+    expect((string) $field->getComponent())->toContain('Formatted Category');
+    expect($contexts)->not->toBeEmpty()->each->toBe($field->getResourceColumn());
+});

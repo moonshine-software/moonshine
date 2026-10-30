@@ -52,3 +52,25 @@ it('escapes popover values of fields without a value escape override', function 
     expect($xpath->query('.//b', $links->item(0))->length)->toBe(0);
     expect(trim($links->item(0)->textContent))->toBe('<b>123</b>');
 })->with([true, false]);
+
+it('ignores unrelated isUnescape methods of fields without the value escaping contract', function (): void {
+    createItem(countComments: 0);
+
+    $field = new class ('Points', 'start_point', static fn (): string => '<b>123</b>') extends Number {
+        public function isUnescape(): bool
+        {
+            return true;
+        }
+    };
+    $field->updateInPopover('index');
+
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([$field]);
+    $response = asAdmin()->get($resource->getIndexPageUrl())->assertOk();
+
+    $document = new DOMDocument();
+    @$document->loadHTML($response->getContent());
+    $links = new DOMXPath($document)->query('//span[contains(@class, "popover-trigger")]/a');
+
+    expect($links->length)->toBeGreaterThan(0);
+    expect(trim($links->item(0)->textContent))->toBe('<b>123</b>');
+});

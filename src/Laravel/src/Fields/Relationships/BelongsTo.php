@@ -20,6 +20,7 @@ use MoonShine\Support\Enums\Action;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeObject;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasEscapedValueContract;
 use MoonShine\UI\Traits\Fields\ConfigurableSelect;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\Searchable;
@@ -37,6 +38,7 @@ class BelongsTo extends ModelRelationField implements
     HasAsyncSearchContract,
     HasRelatedValuesContact,
     HasDefaultValueContract,
+    HasEscapedValueContract,
     CanBeObject
 {
     use WithRelatedValues;

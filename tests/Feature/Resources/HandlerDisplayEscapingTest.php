@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Crud\Handlers\Handler;
+use MoonShine\Crud\Handlers\Handlers;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -80,3 +81,14 @@ it('keeps explicit preferences of buttons prepared by custom handlers', function
     'matching opt in' => [true, true, false, true],
     'matching opt out' => [false, false, true, false],
 ]);
+
+it('uses buttons returned by modifyButton as is', function (bool $global): void {
+    moonshine()->getConfig()->escapeLabel($global);
+    $handler = ImportHandler::make('Import')
+        ->setResource(TestResourceBuilder::new(Item::class))
+        ->escapeLabel(! $global)
+        ->modifyButton(static fn (): ActionButtonContract => ActionButton::make('<b>Replaced</b>'));
+
+    expect((string) Handlers::make([$handler])->getButtons()->first())
+        ->toContain($global ? '&lt;b&gt;Replaced&lt;/b&gt;' : '<b>Replaced</b>');
+})->with([true, false]);

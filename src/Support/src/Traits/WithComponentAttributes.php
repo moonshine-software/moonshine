@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace MoonShine\Support\Traits;
 
 use Closure;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Js;
 use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
+use MoonShine\Support\RenderableHtml;
 use Throwable;
 
 trait WithComponentAttributes
@@ -247,8 +247,8 @@ trait WithComponentAttributes
 
         if ($if && $this instanceof FieldContract) {
             // Only the generated wrappers are trusted; user decorations keep their escaping preference.
-            $this->beforeRender(fn (): HtmlString => new HtmlString('<template x-if="' . $variable($this) . '">'));
-            $this->afterRender(static fn (): HtmlString => new HtmlString('</template>'));
+            $this->beforeRender(fn (): RenderableHtml => new RenderableHtml('<template x-if="' . $variable($this) . '">'));
+            $this->afterRender(static fn (): RenderableHtml => new RenderableHtml('</template>'));
 
             return $this;
         }
