@@ -164,7 +164,7 @@ it('renders modal and off-canvas titles according to title preferences', functio
     }
 
     expect((string) $element)->toContain($escaped ? '&lt;b&gt;Title&lt;/b&gt;' : $title);
-})->with([Modal::class, OffCanvas::class])->with([
+})->with(['modal' => Modal::class, 'off-canvas' => OffCanvas::class])->with([
     'default' => [null, null, true],
     'global disabled' => [false, null, true],
     'local enabled' => [false, true, true],

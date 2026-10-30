@@ -167,7 +167,7 @@ it('returns stored input extensions so callers can configure them', function (st
 
     expect($field->getExtensions()->get($extension)->isEscape())->toBeFalse();
     expect((string) $field)->toContain('<b>Decoration</b>');
-})->with([InputPrefix::class, InputExt::class]);
+})->with(['prefix' => InputPrefix::class, 'ext' => InputExt::class]);
 
 it('applies the button label preference to titles falling back to the label', function (string $container, bool $escape): void {
     moonshine()->getConfig()->escapeLabel(! $escape);
