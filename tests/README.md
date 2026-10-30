@@ -26,4 +26,4 @@ Tests use MySQL configured in `phpunit.xml.dist`. To avoid another test session'
 DB_DATABASE=moonshine_tests_mutation composer test:mutation
 ```
 
-The command runs sequentially. Do not run another suite against the same database at the same time. The GitHub Actions mutation workflow also runs on same-repository pull requests, daily schedules, and manual dispatches.
+The command runs sequentially. Do not run another suite against the same database at the same time. The GitHub Actions mutation workflow also runs on same-repository pull requests and manual dispatches.

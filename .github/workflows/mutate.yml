@@ -9,9 +9,10 @@ on:
       - ready_for_review
       - reopened
       - synchronize
-  schedule:
-    - cron: '0 0 * * *'
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   moonshine-tests:
