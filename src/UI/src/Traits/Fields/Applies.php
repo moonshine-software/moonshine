@@ -30,6 +30,8 @@ trait Applies
     /** @var null|Closure(static): static */
     protected ?Closure $onRefreshAfterApply = null;
 
+    protected bool $refreshAfterApply = false;
+
     /**
      * Using a field without side effects (for example, maintaining relationships)
      *
@@ -51,27 +53,28 @@ trait Applies
 
     public function refreshAfterApply(?Closure $callback = null): static
     {
-        $this->onRefreshAfterApply = $callback ?? static fn ($field) => $field;
+        $this->refreshAfterApply = true;
+        $this->onRefreshAfterApply = $callback;
 
         return $this;
     }
 
     public function disableRefreshAfterApply(): static
     {
+        $this->refreshAfterApply = false;
         $this->onRefreshAfterApply = null;
 
         return $this;
     }
 
-    /** @phpstan-assert-if-true Closure $this->onRefreshAfterApply */
     public function isOnRefreshAfterApply(): bool
     {
-        return $this->onRefreshAfterApply !== null;
+        return $this->refreshAfterApply;
     }
 
     public function resolveRefreshAfterApply(): static
     {
-        if (! $this->isOnRefreshAfterApply()) {
+        if (! $this->isOnRefreshAfterApply() || $this->onRefreshAfterApply === null) {
             return $this;
         }
 

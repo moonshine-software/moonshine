@@ -102,3 +102,18 @@ it('renders text input extensions with the field value', function (): void {
 
     expect($html)->toContain('USD')->toContain('net')->toContain('value="12"');
 });
+
+it('refreshes after apply with the filled clone, a custom callback or not at all', function (): void {
+    $field = Text::make('Name', 'name')->refreshAfterApply();
+    $filled = (clone $field)->setValue('Saved');
+
+    expect($field->isOnRefreshAfterApply())->toBeTrue()
+        ->and($filled->resolveRefreshAfterApply())->toBe($filled)
+        ->and($field->disableRefreshAfterApply()->isOnRefreshAfterApply())->toBeFalse()
+        ->and($field->resolveRefreshAfterApply())->toBe($field);
+
+    $custom = Text::make('Name', 'name')
+        ->refreshAfterApply(static fn (Text $field): Text => (clone $field)->setValue('Custom'));
+
+    expect((clone $custom)->resolveRefreshAfterApply()->toValue())->toBe('Custom');
+});
