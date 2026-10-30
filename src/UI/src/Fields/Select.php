@@ -44,6 +44,9 @@ class Select extends Field implements
 
     protected string $view = 'moonshine::fields.select';
 
+    /** Whether the last preview was generated markup, such as multiple badges. */
+    protected bool $hasMarkupPreview = false;
+
     protected function resolveRawValue(): mixed
     {
         return $this->resolvePreview();
@@ -52,9 +55,15 @@ class Select extends Field implements
     /**
      * @throws JsonException
      */
+    protected function isPreviewMarkup(): bool
+    {
+        return $this->hasMarkupPreview;
+    }
+
     protected function resolvePreview(): string
     {
         $value = $this->toValue();
+        $this->hasMarkupPreview = false;
 
         if ($this->isBadge() && $this->isMultiple()) {
             /** @var Collection<array-key, string|int> $collection */
@@ -62,6 +71,7 @@ class Select extends Field implements
             $values = $collection->map(fn (string|int $v): string => (string) Badge::make((string) $v, $this->getBadgeColor($v), $this->getBadgeIcon($v)));
 
             $this->isBadge = false;
+            $this->hasMarkupPreview = true;
 
             return (string) Flex::make([
                 FlexibleRender::make($this->getMultiplePreview($values, '')),

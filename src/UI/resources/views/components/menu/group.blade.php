@@ -1,5 +1,6 @@
 @props([
     'label' => '',
+    'labelHtml' => null,
     'previewLabel' => '',
     'icon' => '',
     'onlyIcon' => false,
@@ -39,7 +40,7 @@
             </div>
         @endif
 
-        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
+        <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $labelHtml ?? $label }}</span>
         <span class="menu-arrow">
             <x-moonshine::icon
                 icon="chevron-down"

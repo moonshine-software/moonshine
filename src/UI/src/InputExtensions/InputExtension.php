@@ -47,7 +47,7 @@ abstract class InputExtension extends MoonShineComponent
 
     protected function prepareBeforeRender(): void
     {
-        $view = str_contains('components.', $this->getView())
+        $view = str_contains($this->getView(), 'components.')
             ? $this->getView()
             : str_replace(
                 'moonshine::',

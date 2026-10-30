@@ -1,5 +1,6 @@
 @props([
     'label' => '',
+    'labelHtml' => null,
     'icon' => '',
     'columnSpanValue' => 12,
     'adaptiveColumnSpanValue' => 12,
@@ -16,6 +17,7 @@
         <x-moonshine::metrics.value
             :attributes="$attributes"
             :title="$label"
+            :title-html="$labelHtml"
             :icon="$icon"
             :progress="$isProgress"
             :value="$valueResult"

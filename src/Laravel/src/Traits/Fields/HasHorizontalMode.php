@@ -63,10 +63,13 @@ trait HasHorizontalMode
      */
     protected function buildList(Collection $data): string
     {
+        $escapeLabels = $this->isEscapeOptionLabels();
+
         foreach ($data as $item) {
             $label = $this->getColumnOrFormattedValue($item, Stringify::value(data_get($item, $this->getResourceColumn())));
 
             $element = Checkbox::make((string) $label)
+                ->escapeLabel($escapeLabels)
                 ->formName($this->getFormName())
                 ->simpleMode()
                 ->customAttributes($this->getAttributes()->jsonSerialize())

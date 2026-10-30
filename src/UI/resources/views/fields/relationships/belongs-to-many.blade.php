@@ -14,6 +14,7 @@
     'treeHtml' => '',
     'listHtml' => '',
     'asyncSearchUrl' => '',
+    'escapeOptionLabels' => true,
     'isCreatable' => false,
     'createButton' => '',
     'fragmentUrl' => '',
@@ -104,6 +105,7 @@
                              x-init='pivot(@json($keys))'
                              class="js-pivot-table"
                              data-table-name="{{ $componentName }}"
+                             data-escape-labels="@json($escapeOptionLabels)"
                         >
                             <x-moonshine::action-group
                                 class="mb-4"

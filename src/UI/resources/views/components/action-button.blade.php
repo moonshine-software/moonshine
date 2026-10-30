@@ -2,7 +2,7 @@
     <button {{ $tagAttributes }}>
         {!! $icon !!}
         {!! $slot !!}
-        {!! $label !!}
+        {{ $labelHtml ?? $label }}
         @if($hasBadge)
             <span class="badge">{{ $badge }}</span>
         @endif
@@ -11,7 +11,7 @@
     <a {{ $tagAttributes }}>
         {!! $icon !!}
         {!! $slot !!}
-        {!! $label !!}
+        {{ $labelHtml ?? $label }}
         @if($hasBadge)
             <span class="badge">{{ $badge }}</span>
         @endif

@@ -14,6 +14,7 @@ use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FormElementContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Core\TypeCasts\MixedDataWrapper;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
@@ -30,7 +31,7 @@ use MoonShine\UI\Traits\Fields\WithQuickFormElementAttributes;
 use MoonShine\UI\Traits\WithLabel;
 use WeakReference;
 
-abstract class FormElement extends MoonShineComponent implements FormElementContract
+abstract class FormElement extends MoonShineComponent implements FormElementContract, HasLabelEscapingContract
 {
     use WithLabel;
     use ShowWhen;
@@ -723,6 +724,7 @@ abstract class FormElement extends MoonShineComponent implements FormElementCont
         return [
             'attributes' => $this->getAttributes(),
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'column' => $this->getColumn(),
             'value' => $this->getValue(),
             'errors' => data_get($this->getErrors(), $this->getNameDot()),

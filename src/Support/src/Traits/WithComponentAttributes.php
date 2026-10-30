@@ -11,6 +11,7 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormElementContract;
+use MoonShine\Support\RenderableHtml;
 use Throwable;
 
 trait WithComponentAttributes
@@ -245,8 +246,9 @@ trait WithComponentAttributes
         $type = $if ? 'if' : 'show';
 
         if ($if && $this instanceof FieldContract) {
-            $this->beforeRender(fn (): string => '<template x-if="' . $variable($this) . '">');
-            $this->afterRender(fn (): string => '</template>');
+            // Only the generated wrappers are trusted; user decorations keep their escaping preference.
+            $this->beforeRender(fn (): RenderableHtml => new RenderableHtml('<template x-if="' . $variable($this) . '">'));
+            $this->afterRender(static fn (): RenderableHtml => new RenderableHtml('</template>'));
 
             return $this;
         }

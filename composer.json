@@ -111,6 +111,10 @@
         "rector:dry": "vendor/bin/rector process --clear-cache --dry-run",
         "test": "vendor/bin/pest",
         "test:bail": "vendor/bin/pest --bail",
+        "test:mutation": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/pest --mutate --covered-only --min=85"
+        ],
         "test:fresh": [
             "rm -rf vendor/orchestra",
             "composer install",

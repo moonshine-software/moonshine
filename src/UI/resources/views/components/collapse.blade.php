@@ -5,6 +5,7 @@
     'button' => null,
     'icon' => null,
     'title',
+    'labelHtml' => null,
 ])
 <div
     {{ $attributes->class(['accordion']) }}
@@ -25,7 +26,7 @@
         >
             <div class="flex gap-2 items-center">
                 {{ $icon ?? '' }}
-                {!! $title !!}
+                {{ $labelHtml ?? $title }}
             </div>
 
             @if($button ?? false)

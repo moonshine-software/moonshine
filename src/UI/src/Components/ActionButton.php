@@ -15,6 +15,7 @@ use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Core\Collections\Components;
@@ -23,6 +24,7 @@ use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\Support\Stringify;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
 use MoonShine\UI\Traits\ActionButton\WithModal;
 use MoonShine\UI\Traits\ActionButton\WithOffCanvas;
@@ -36,13 +38,14 @@ use MoonShine\UI\Traits\WithLabel;
  * @template TData of mixed = mixed
  * @template TWrapper of DataWrapperContract<TData> = DataWrapperContract
  *
- * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null)
+ * @method static static make(Closure|string $label = '', Closure|string $url = 'javascript:void(0);', ?DataWrapperContract $data = null, ?bool $escapeLabel = null)
  *
  * @implements ActionButtonContract<TData, TWrapper, ModalContract, OffCanvasContract>
  */
 class ActionButton extends MoonShineComponent implements
     ActionButtonContract,
-    HasComponentsContract
+    HasComponentsContract,
+    HasLabelEscapingContract
 {
     use WithBadge;
     use WithLabel;
@@ -95,7 +98,10 @@ class ActionButton extends MoonShineComponent implements
         Closure|string $label = '',
         protected Closure|string $url = 'javascript:void(0);',
         protected ?DataWrapperContract $data = null,
+        ?bool $escapeLabel = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         parent::__construct();
 
         $this->setLabel($label);
@@ -595,6 +601,7 @@ class ActionButton extends MoonShineComponent implements
             'hasComponent' => $this->hasComponent(),
             'component' => $this->hasComponent() ? $this->getComponent() : '',
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'url' => $this->getUrl(),
             'icon' => $this->getIcon(),
             'badge' => $this->hasBadge() ? $this->getBadge() : false,
@@ -632,7 +639,7 @@ class ActionButton extends MoonShineComponent implements
         // Props declared by action-button and the nested component are not rendered as attributes.
         $attributes = $this->getAttributes()->except([
             'inDropdown', 'in-dropdown', 'hasComponent', 'has-component',
-            'url', 'icon', 'label', 'component', 'badge', 'raw',
+            'url', 'icon', 'label', 'labelHtml', 'label-html', 'component', 'badge', 'raw',
             ...($isButton ? [] : ['filled']),
         ]);
 

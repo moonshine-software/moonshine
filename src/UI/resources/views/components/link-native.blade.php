@@ -1,4 +1,6 @@
 @props([
+    'label' => '',
+    'labelHtml' => null,
     'icon' => null,
     'filled' => false,
     'badge' => false,

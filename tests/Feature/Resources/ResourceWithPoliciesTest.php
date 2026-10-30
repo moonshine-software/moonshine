@@ -5,17 +5,26 @@ declare(strict_types=1);
 use MoonShine\Crud\Buttons\CreateButton;
 use MoonShine\Crud\Buttons\MassDeleteButton;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Http\Requests\Resources\DeleteFormRequest;
+use MoonShine\Laravel\Http\Requests\Resources\MassDeleteFormRequest;
+use MoonShine\Laravel\Http\Requests\Resources\UpdateFormRequest;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Tests\Fixtures\Models\Comment;
 use MoonShine\Tests\Fixtures\Models\Item;
+use MoonShine\Tests\Fixtures\Pages\TestIndexPage;
+use MoonShine\Tests\Fixtures\Pages\TestValidationFormPage;
 use MoonShine\Tests\Fixtures\Resources\TestCommentResource;
+use MoonShine\Tests\Fixtures\Resources\TestReadOnlyResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 
 uses()->group('resources-feature');
 uses()->group('resources-policies');
+
+mutates(DeleteFormRequest::class, MassDeleteFormRequest::class, UpdateFormRequest::class);
 
 beforeEach(function (): void {
 
@@ -74,6 +83,55 @@ it('mass delete respects the resource policy', function (bool $allowed): void {
     'denied' => false,
 ]);
 
+it('single delete respects the resource policy', function (bool $allowed): void {
+    if (! $allowed) {
+        $role = MoonshineUserRole::query()->create(['name' => 'Without delete permission']);
+        MoonshineUser::query()->whereKey(1)->update(['moonshine_user_role_id' => $role->getKey()]);
+    }
+
+    $response = asAdmin()->delete($this->resource->getRoute('crud.destroy', $this->item->getKey()));
+
+    if ($allowed) {
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('items', ['id' => $this->item->getKey()]);
+    } else {
+        $response->assertForbidden();
+        $this->assertDatabaseHas('items', ['id' => $this->item->getKey()]);
+    }
+})->with(['allowed' => true, 'denied' => false]);
+
+it('update respects the resource policy', function (bool $allowed): void {
+    $originalName = $this->item->name;
+
+    if (! $allowed) {
+        MoonshineUser::query()->whereKey(1)->update(['name' => 'Policies test']);
+    }
+
+    $response = asAdmin()->put($this->resource->getRoute('crud.update', $this->item->getKey()), [
+        'name' => 'Updated through policy',
+    ]);
+
+    if ($allowed) {
+        $response->assertRedirect();
+    } else {
+        $response->assertForbidden();
+    }
+
+    expect($this->item->refresh()->name)->toBe($allowed ? 'Updated through policy' : $originalName);
+})->with(['allowed' => true, 'denied' => false]);
+
+it('rejects update when the resource action is disabled without a policy', function (): void {
+    $originalName = $this->item->name;
+    $resource = app(TestReadOnlyResource::class)->setTestModel(Item::class)->setTestPolicy(false);
+    $this->moonshineCore->resources([$resource]);
+
+    asAdmin()->put($resource->getRoute('crud.update', $this->item->getKey()), [
+        'name' => 'Forbidden update',
+    ])->assertForbidden();
+
+    expect($this->item->refresh()->name)->toBe($originalName);
+});
+
 it('policy in has many', function () {
     $comment = Comment::query()->first();
 
@@ -121,3 +179,26 @@ it('policy denied detail is forbidden by crud json endpoint', function () {
         ->get($this->resource->getRoute('crud.show', $this->item->id))
         ->assertForbidden();
 });
+
+it('rejects invalid updates before writing to the database', function (): void {
+    $originalName = $this->item->name;
+    $this->resource->setTestPages([TestIndexPage::class, TestValidationFormPage::class, DetailPage::class]);
+
+    asAdmin()->putJson($this->resource->getRoute('crud.update', $this->item->getKey()), [
+        'name' => 'This value exceeds the configured maximum',
+    ])->assertUnprocessable()->assertJsonValidationErrors('name');
+
+    expect($this->item->refresh()->name)->toBe($originalName);
+});
+
+it('rejects malformed mass delete selections without deleting records', function (array $payload): void {
+    asAdmin()->deleteJson($this->resource->getRoute('crud.massDelete'), $payload)
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('ids');
+
+    $this->assertDatabaseHas('items', ['id' => $this->item->getKey()]);
+})->with([
+    'missing' => [[]],
+    'empty' => [['ids' => []]],
+    'not an array' => [['ids' => 'invalid']],
+]);

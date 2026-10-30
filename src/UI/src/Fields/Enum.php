@@ -53,6 +53,7 @@ class Enum extends Select implements CanBeEnum
     protected function resolvePreview(): string
     {
         $value = $this->toFormattedValue();
+        $this->hasMarkupPreview = false;
 
         if (\is_null($value)) {
             return '';
@@ -109,6 +110,8 @@ class Enum extends Select implements CanBeEnum
             if ($badged) {
                 $this->isBadge = false;
             }
+
+            $this->hasMarkupPreview = true;
 
             return (string) Flex::make([
                 FlexibleRender::make($this->getMultiplePreview($values, $badged ? '' : ',')),
