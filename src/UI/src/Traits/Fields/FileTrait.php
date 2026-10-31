@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\FileExtensionsConfiguratorContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\FileItemExtra;
@@ -338,7 +339,14 @@ trait FileTrait
      */
     public function getAllowedExtensions(): array
     {
-        return $this->allowedExtensions ?? $this->getCore()->getConfig()->getAllowedExtensions();
+        if ($this->allowedExtensions !== null) {
+            return $this->allowedExtensions;
+        }
+
+        $config = $this->getCore()->getConfig();
+
+        // Configurators without file extension settings keep uploads unrestricted.
+        return $config instanceof FileExtensionsConfiguratorContract ? $config->getAllowedExtensions() : [];
     }
 
     protected function resolveValue(): mixed

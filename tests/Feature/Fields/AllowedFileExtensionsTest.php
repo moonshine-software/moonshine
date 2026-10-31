@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Illuminate\Config\Repository;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Contracts\Core\DependencyInjection\FileExtensionsConfiguratorContract;
 use MoonShine\Crud\Exceptions\FileFieldException;
 use MoonShine\Laravel\Applies\Fields\FileModelApply;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
@@ -45,6 +48,29 @@ it('allows uploads by default and when the published configuration has no extens
 
     Storage::disk('public')->assertExists($upload->hashName());
 });
+
+it('keeps the configurator contract free of file extension methods', function (): void {
+    expect((new ReflectionClass(ConfiguratorContract::class))->hasMethod('getAllowedExtensions'))->toBeFalse()
+        ->and(moonshineConfig())->toBeInstanceOf(FileExtensionsConfiguratorContract::class);
+});
+
+it('allows all extensions when the configurator has no file extension settings', function (string $fieldClass): void {
+    $this->moonshineCore->getConfig()->allowedExtensions(['gif']);
+
+    $core = Mockery::mock(CoreContract::class);
+    $core->shouldReceive('getConfig')->andReturn(Mockery::mock(ConfiguratorContract::class));
+
+    $field = $fieldClass::make('Upload')->disk('public')->options([]);
+    $field->setCore($core);
+    $upload = UploadedFile::fake()->create('document.pdf');
+
+    expect($field->getAllowedExtensions())->toBe([])
+        ->and($field->getAcceptExtension())->toBe('')
+        ->and($field->isAllowedExtension('pdf'))->toBeTrue()
+        ->and(app(FileModelApply::class)->store($field, $upload))->toBe($upload->hashName());
+
+    Storage::disk('public')->assertExists($upload->hashName());
+})->with(['file' => File::class, 'image' => Image::class]);
 
 it('supports deferred configuration of allowed extensions', function (): void {
     $configurator = $this->moonshineCore->getConfig();
@@ -203,7 +229,7 @@ it('constructs file fields in console mode without initializing Core', function 
     $process->mustRun();
 
     expect($process->getOutput())->toBe('upload .png');
-})->with([File::class, Image::class]);
+})->with(['file' => File::class, 'image' => Image::class]);
 
 it('uses the current deferred extensions for rendering and serialization', function (string $fieldClass, bool $serialize): void {
     $extensions = ['gif'];
@@ -225,7 +251,7 @@ it('uses the current deferred extensions for rendering and serialization', funct
     $upload = UploadedFile::fake()->image('photo.png');
     expect(app(FileModelApply::class)->store($field, $upload))->toBe($upload->hashName());
     Storage::disk('public')->assertExists($upload->hashName());
-})->with([File::class, Image::class])->with([false, true]);
+})->with(['file' => File::class, 'image' => Image::class])->with([false, true]);
 
 it('preserves explicit accept attributes when global extensions change', function (string $fieldClass, string $method): void {
     $this->moonshineCore->getConfig()->allowedExtensions(['gif']);
@@ -243,7 +269,7 @@ it('preserves explicit accept attributes when global extensions change', functio
 
     expect((string) $field->render())->toContain('accept="*/*"')
         ->and((string) $field->toArray()['attributes'])->toContain('accept="*/*"');
-})->with([File::class, Image::class])->with([
+})->with(['file' => File::class, 'image' => Image::class])->with([
     'accept', 'attribute', 'custom attributes', 'local empty list', 'local wildcard',
 ]);
 
@@ -254,4 +280,4 @@ it('preserves a local extension list when global extensions change', function (s
 
     expect((string) $field->render())->toContain('accept=".pdf"')
         ->and($field->getAllowedExtensions())->toBe(['pdf']);
-})->with([File::class, Image::class]);
+})->with(['file' => File::class, 'image' => Image::class]);
