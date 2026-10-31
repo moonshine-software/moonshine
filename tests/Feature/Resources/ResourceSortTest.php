@@ -106,11 +106,13 @@ it('lists the index page in the default order for a column without a field', fun
     expect(
         collect(DB::getQueryLog())
             ->pluck('query')
-            ->filter(static fn (string $query): bool => str_starts_with($query, 'select * from "items"'))
+            // identifier quotes differ per driver (" on sqlite/pgsql, ` on mysql)
+            ->map(static fn (string $query): string => str_replace(['"', '`'], '', $query))
+            ->filter(static fn (string $query): bool => str_starts_with($query, 'select * from items '))
             ->map(static fn (string $query): string => Str::between($query, 'order by ', ' limit'))
             ->values()
             ->all()
-    )->toBe(['"id" desc']);
+    )->toBe(['id desc']);
 });
 
 function relationSortOrders(array $params): array
@@ -139,18 +141,20 @@ function relationSortOrders(array $params): array
 
     return collect(DB::getQueryLog())
         ->pluck('query')
-        ->filter(static fn (string $query): bool => str_starts_with($query, 'select * from "comments"'))
+        // identifier quotes differ per driver (" on sqlite/pgsql, ` on mysql)
+        ->map(static fn (string $query): string => str_replace(['"', '`'], '', $query))
+        ->filter(static fn (string $query): bool => str_starts_with($query, 'select * from comments '))
         ->map(static fn (string $query): string => Str::between($query, 'order by ', ' limit'))
         ->values()
         ->all();
 }
 
 it('sorts a relation table by its own sortable fields', function () {
-    expect(relationSortOrders(['sort' => '-user_id']))->toBe(['"user_id" desc']);
+    expect(relationSortOrders(['sort' => '-user_id']))->toBe(['user_id desc']);
 });
 
 it('falls back to the default sort for a relation table field that is not sortable', function () {
-    expect(relationSortOrders(['sort' => 'content']))->toBe(['"id" desc']);
+    expect(relationSortOrders(['sort' => 'content']))->toBe(['id desc']);
 });
 
 final class PrefixedSortTestResource extends TestResource
