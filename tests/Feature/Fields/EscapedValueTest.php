@@ -16,32 +16,48 @@ uses()->group('fields');
 it('loads escaping defaults and overrides from the configuration repository', function (): void {
     $defaults = require __DIR__ . '/../../../src/Laravel/config/moonshine.php';
 
-    expect($defaults['escape'])->toBeTrue()
-        ->and($defaults['escape_on_apply'])->toBeTrue();
+    expect($defaults['escapes']['value'])->toBeTrue()
+        ->and($defaults['escapes']['value_on_apply'])->toBeTrue();
 
-    foreach ([[], $defaults, ['escape' => false, 'escape_on_apply' => false]] as $values) {
+    foreach ([[], $defaults, ['escapes' => ['value' => false, 'value_on_apply' => false]]] as $values) {
         $config = new MoonShineConfigurator(new Repository(['moonshine' => $values]));
 
-        expect($config->isEscape())->toBe($values['escape'] ?? true)
-            ->and($config->isEscapeOnApply())->toBe($values['escape_on_apply'] ?? true);
+        expect($config->isEscapeValue())->toBe($values['escapes']['value'] ?? true)
+            ->and($config->isEscapeValueOnApply())->toBe($values['escapes']['value_on_apply'] ?? true);
     }
 });
 
-it('supports fluent boolean and closure escaping settings', function (): void {
+it('reads environment strings like the display escaping settings', function (mixed $value, bool $expected): void {
+    $config = new MoonShineConfigurator(new Repository(['moonshine' => [
+        'escapes' => ['value' => $value, 'value_on_apply' => $value],
+    ]]));
+
+    expect($config->isEscapeValue())->toBe($expected)
+        ->and($config->isEscapeValueOnApply())->toBe($expected);
+})->with([
+    'unset variable' => [null, true],
+    'empty string' => ['', true],
+    'zero' => ['0', false],
+    'false string' => ['false', false],
+    'one' => ['1', true],
+]);
+
+it('supports fluent and closure value escaping settings independently of labels', function (): void {
     $config = moonshine()->getConfig();
 
-    expect($config->escape(false)->escapeOnApply(false))->toBe($config)
-        ->and($config->isEscape())->toBeFalse()
-        ->and($config->isEscapeOnApply())->toBeFalse()
-        ->and($config->escape()->escapeOnApply())->toBe($config)
-        ->and($config->isEscape())->toBeTrue()
-        ->and($config->isEscapeOnApply())->toBeTrue();
+    expect($config->escapeValue(false)->escapeValueOnApply(false))->toBe($config)
+        ->and($config->isEscapeValue())->toBeFalse()
+        ->and($config->isEscapeValueOnApply())->toBeFalse()
+        ->and($config->escapeValue()->escapeValueOnApply())->toBe($config)
+        ->and($config->isEscapeValue())->toBeTrue()
+        ->and($config->isEscapeValueOnApply())->toBeTrue()
+        ->and($config->isEscapeLabel())->toBeTrue();
 
-    $config->escape(static fn (): bool => false)
-        ->escapeOnApply(static fn (): bool => false);
+    $config->set('escapes.value', static fn (): bool => false)
+        ->set('escapes.value_on_apply', static fn (): bool => false);
 
-    expect($config->isEscape())->toBeFalse()
-        ->and($config->isEscapeOnApply())->toBeFalse();
+    expect($config->isEscapeValue())->toBeFalse()
+        ->and($config->isEscapeValueOnApply())->toBeFalse();
 });
 
 it('uses independent global defaults and field overrides when rendering and saving', function (
@@ -74,11 +90,11 @@ it('uses independent global defaults and field overrides when rendering and savi
 
     // Configure after creating the field to verify that defaults are resolved lazily.
     if ($escape !== null) {
-        moonshine()->getConfig()->escape($escape);
+        moonshine()->getConfig()->escapeValue($escape);
     }
 
     if ($escapeOnApply !== null) {
-        moonshine()->getConfig()->escapeOnApply($escapeOnApply);
+        moonshine()->getConfig()->escapeValueOnApply($escapeOnApply);
     }
 
     $preview = (string) (clone $field)->fill($value)->previewMode()->render();

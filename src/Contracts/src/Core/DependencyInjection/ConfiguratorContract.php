@@ -24,10 +24,6 @@ interface ConfiguratorContract extends ArrayAccess
 
     public function getLogo(bool $small = false): ?string;
 
-    public function isEscape(): bool;
-
-    public function isEscapeOnApply(): bool;
-
     public function isUseProfile(): bool;
 
     public function isUseNotifications(): bool;

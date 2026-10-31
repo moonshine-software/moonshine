@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Traits\Fields;
 
 use Closure;
+use MoonShine\Contracts\Core\DependencyInjection\ValueEscapingConfiguratorContract;
 
 trait WithEscapedValue
 {
@@ -31,7 +32,14 @@ trait WithEscapedValue
 
     public function isUnescape(): bool
     {
-        return $this->unescape ?? ! $this->getCore()->getConfig()->isEscape();
+        if ($this->unescape !== null) {
+            return $this->unescape;
+        }
+
+        $config = $this->getCore()->getConfig();
+
+        // Configurators without value escaping settings keep the safe default.
+        return $config instanceof ValueEscapingConfiguratorContract && ! $config->isEscapeValue();
     }
 
     /**
@@ -47,7 +55,9 @@ trait WithEscapedValue
     public function isUnescapeOnApply(): bool
     {
         if ($this->escapeOnApply === null) {
-            return ! $this->getCore()->getConfig()->isEscapeOnApply();
+            $config = $this->getCore()->getConfig();
+
+            return $config instanceof ValueEscapingConfiguratorContract && ! $config->isEscapeValueOnApply();
         }
 
         return ! \call_user_func($this->escapeOnApply, $this);
