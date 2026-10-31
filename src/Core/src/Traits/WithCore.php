@@ -36,4 +36,12 @@ trait WithCore
         /** @var TCore */
         return Core::getInstance();
     }
+
+    /**
+     * Whether getCore() can resolve a Core, for code that can also run without one, such as fields in console mode.
+     */
+    protected function hasCore(): bool
+    {
+        return ! \is_null($this->core) || Core::hasInstance();
+    }
 }

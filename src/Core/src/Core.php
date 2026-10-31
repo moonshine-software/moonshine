@@ -95,6 +95,14 @@ abstract class Core implements CoreContract, StatefulContract
     }
 
     /**
+     * Whether an instance was set, for code that can also run without Core, such as fields in console mode.
+     */
+    public static function hasInstance(): bool
+    {
+        return isset(static::$instance);
+    }
+
+    /**
      * @return CoreContract<TConfig>
      */
     public static function getInstance(): CoreContract
