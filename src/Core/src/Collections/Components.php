@@ -18,7 +18,7 @@ use Throwable;
 
 /**
  * @template T of ComponentContract = ComponentContract
- * @template TFields of FieldsContract = FieldsContract<\MoonShine\Contracts\UI\FieldContract>
+ * @template TFields of FieldsContract = FieldsContract<FieldContract>
  *
  * @implements ComponentsContract<T, TFields>
  * @extends BaseCollection<T>

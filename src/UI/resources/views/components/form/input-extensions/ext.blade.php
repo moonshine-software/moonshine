@@ -1,4 +1,5 @@
 @props([
-    'value'
+    'value',
+    'valueHtml' => null,
 ])
-<span {{ $attributes->class(['expansion']) }}>{{ $value }}</span>
+<span {{ $attributes->class(['expansion']) }}>{{ $valueHtml ?? $value }}</span>

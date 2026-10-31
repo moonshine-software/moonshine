@@ -27,7 +27,7 @@ class Handlers extends Collection
     public function getButtons(): ActionButtonsContract
     {
         return ActionButtons::make(
-            $this->map(static fn (Handler $handler): ActionButtonContract => $handler->getButton())
+            $this->map(static fn (Handler $handler): ActionButtonContract => $handler->getButtonWithLabelEscaping())
         );
     }
 }

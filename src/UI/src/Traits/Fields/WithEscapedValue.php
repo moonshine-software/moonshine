@@ -53,6 +53,15 @@ trait WithEscapedValue
         return ! \call_user_func($this->escapeOnApply, $this);
     }
 
+    /**
+     * Fields with this trait escape their own preview, so link names get it decoded
+     * and are escaped once afterwards instead of twice.
+     */
+    protected function getLinkNamePreview(string $preview): string
+    {
+        return $this->isUnescape() ? $preview : htmlspecialchars_decode($preview, ENT_QUOTES);
+    }
+
     protected function escapeValue(?string $value = null, bool $doubleEncode = true): string
     {
         return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', $doubleEncode);

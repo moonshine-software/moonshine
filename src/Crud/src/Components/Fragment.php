@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MoonShine\Crud\Components;
 
+use Closure;
 use InvalidArgumentException;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
@@ -27,6 +28,8 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     protected string $view = 'moonshine::components.fragment';
 
     protected ?int $interval = null;
+
+    protected Closure|bool $updateOnLoad = false;
 
     /**
      * @param  iterable<array-key, ComponentContract>  $components
@@ -110,6 +113,16 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         );
     }
 
+    /**
+     * @param  (Closure(static): bool)|bool  $condition
+     */
+    public function updateOnLoad(Closure|bool $condition = true): static
+    {
+        $this->updateOnLoad = $condition;
+
+        return $this;
+    }
+
     public function autoUpdate(int $ms): static
     {
         if ($ms <= 0) {
@@ -142,6 +155,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
     {
         return [
             'interval' => $this->interval,
+            'updateOnLoad' => value($this->updateOnLoad, $this),
         ];
     }
 }

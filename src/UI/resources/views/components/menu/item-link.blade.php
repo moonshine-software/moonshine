@@ -1,5 +1,6 @@
 @props([
     'label' => '',
+    'labelHtml' => null,
     'previewLabel' => '',
     'url' => 'javascript:void(0);',
     'icon' => '',
@@ -27,7 +28,7 @@
         </div>
     @endif
 
-    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $label }}</span>
+    <span class="menu-text @if($onlyIcon) menu-only-icon @endif">{{ $labelHtml ?? $label }}</span>
 
     @if($badge !== false)
         <span class="menu-badge">{{ $badge }}</span>

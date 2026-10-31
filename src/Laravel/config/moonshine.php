@@ -42,6 +42,16 @@ return [
     'use_routes' => true,
     'use_profile' => true,
 
+    // Display escaping (individual field/component settings take precedence)
+    'escapes' => [
+        'label' => true,
+        'hint' => true,
+        'prefix' => true,
+        'suffix' => true,
+        'before_render' => true,
+        'after_render' => true,
+    ],
+
     // Field escaping (individual field settings take precedence)
     'escape' => true,
     'escape_on_apply' => true,

@@ -1,8 +1,9 @@
 @props([
     'label' => '',
+    'labelHtml' => null,
 ])
 <fieldset {{ $attributes }}>
-    <legend>{!! $label !!}</legend>
+    <legend>{{ $labelHtml ?? $label }}</legend>
 
     {{ $slot }}
 </fieldset>

@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\DisplayEscapingConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use TypeError;
 
-final class MoonShineConfigurator implements ConfiguratorContract
+final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract
 {
     /**
      * @var array<string, mixed>
@@ -36,6 +37,13 @@ final class MoonShineConfigurator implements ConfiguratorContract
      * @var Collection<int, Closure(ResourceContract, mixed, Ability, mixed): bool>
      */
     private readonly Collection $authorizationRules;
+
+    /**
+     * Resolved escaping defaults, read for every displayed label.
+     *
+     * @var array<string, bool>
+     */
+    private array $escapeFlags = [];
 
     /** @var null|(Closure((Closure(): Response)): Response) */
     private ?Closure $logoutUsing = null;
@@ -52,6 +60,66 @@ final class MoonShineConfigurator implements ConfiguratorContract
         $this
             ->set('dir', $this->items['dir'] ?? 'app/MoonShine')
             ->set('namespace', $this->items['namespace'] ?? 'App\MoonShine');
+    }
+
+    public function escapeLabel(bool $escape = true): self
+    {
+        return $this->set('escapes.label', $escape);
+    }
+
+    public function isEscapeLabel(): bool
+    {
+        return $this->escapeFlag('escapes.label');
+    }
+
+    public function escapeHint(bool $escape = true): self
+    {
+        return $this->set('escapes.hint', $escape);
+    }
+
+    public function isEscapeHint(): bool
+    {
+        return $this->escapeFlag('escapes.hint');
+    }
+
+    public function escapePrefix(bool $escape = true): self
+    {
+        return $this->set('escapes.prefix', $escape);
+    }
+
+    public function isEscapePrefix(): bool
+    {
+        return $this->escapeFlag('escapes.prefix');
+    }
+
+    public function escapeSuffix(bool $escape = true): self
+    {
+        return $this->set('escapes.suffix', $escape);
+    }
+
+    public function isEscapeSuffix(): bool
+    {
+        return $this->escapeFlag('escapes.suffix');
+    }
+
+    public function escapeBeforeRender(bool $escape = true): self
+    {
+        return $this->set('escapes.before_render', $escape);
+    }
+
+    public function isEscapeBeforeRender(): bool
+    {
+        return $this->escapeFlag('escapes.before_render');
+    }
+
+    public function escapeAfterRender(bool $escape = true): self
+    {
+        return $this->set('escapes.after_render', $escape);
+    }
+
+    public function isEscapeAfterRender(): bool
+    {
+        return $this->escapeFlag('escapes.after_render');
     }
 
     public function dir(string $dir, string $namespace): self
@@ -578,6 +646,34 @@ final class MoonShineConfigurator implements ConfiguratorContract
         return $value;
     }
 
+    /**
+     * Escape switches often come from env(), so string and numeric flags are accepted.
+     * Unrecognized values keep escaping enabled instead of breaking every render.
+     */
+    private function escapeFlag(string $key): bool
+    {
+        if (isset($this->escapeFlags[$key])) {
+            return $this->escapeFlags[$key];
+        }
+
+        $raw = Arr::get($this->items, $key, true);
+        $value = value($raw);
+
+        // Empty strings come from unset env variables, so they keep the safe default.
+        $flag = match (true) {
+            \is_bool($value) => $value,
+            \is_scalar($value) && $value !== '' => filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
+            default => true,
+        };
+
+        // Closures may resolve differently on every call.
+        if (! $raw instanceof Closure) {
+            $this->escapeFlags[$key] = $flag;
+        }
+
+        return $flag;
+    }
+
     private function boolValue(mixed $value): bool
     {
         if (! \is_bool($value)) {
@@ -602,6 +698,7 @@ final class MoonShineConfigurator implements ConfiguratorContract
     public function set(string $key, mixed $value): self
     {
         $this->items[$key] = $value;
+        $this->escapeFlags = [];
 
         return $this;
     }

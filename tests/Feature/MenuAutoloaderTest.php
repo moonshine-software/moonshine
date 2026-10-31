@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuAutoloaderContract;
 use MoonShine\Contracts\MenuManager\MenuElementContract;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
@@ -71,4 +72,22 @@ it('to array', function () {
     expect($group)
         ->toMatchArray($snapshot)
     ;
+});
+
+it('uses registered resource instances for menu items', function () {
+    $resources = $this->moonshineCore->getResources();
+    $builtResources = 0;
+
+    app()->resolving(static function (mixed $object) use (&$builtResources): void {
+        if ($object instanceof ResourceContract) {
+            $builtResources++;
+        }
+    });
+
+    $filler = app(MenuAutoloaderContract::class)->resolve()[0]->getItems()[0]->getFiller();
+
+    expect($builtResources)
+        ->toBe(0)
+        ->and($filler)
+        ->toBe($resources->findByUri(app(MoonShineUserResource::class)->getUriKey()));
 });

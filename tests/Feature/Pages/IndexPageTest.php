@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 uses()->group('pages-feature');
 
+use Illuminate\Support\Collection;
 use MoonShine\ImportExport\ExportHandler;
 use MoonShine\ImportExport\ImportHandler;
 use MoonShine\ImportExport\Traits\ImportExportHandlersConcern;
 use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\Tests\Fixtures\Factories\CategoryFactory;
 use MoonShine\Tests\Fixtures\Models\Category;
 use MoonShine\Tests\Fixtures\Models\Item;
@@ -20,6 +22,29 @@ beforeEach(function () {
     CategoryFactory::new()->count(3)->create();
 
     $this->resource = app(TestItemResource::class);
+});
+
+it('stores saved query state as a plain array', function () {
+    $resource = app(SaveQueryStateTestItemResource::class);
+
+    fakeRequest('/', parameters: [
+        'p_filter' => [
+            'name' => 'Planiglass',
+        ],
+        'p_sort' => 'id',
+    ]);
+
+    $resource->setQueryParams(
+        $this->moonshineCore->getRequest()->getOnly($resource->getQueryParamsKeys())
+    );
+
+    (new ReflectionMethod($resource, 'withCachedQueryParams'))->invoke($resource);
+
+    $cached = $this->moonshineCore->getCache()->get($resource->publicQueryCacheKey());
+
+    expect($cached)->toBeArray();
+    expect($cached)->not->toBeInstanceOf(Collection::class);
+    expect($cached['p_filter']['name'] ?? null)->toBe('Planiglass');
 });
 
 it('filters', function () {
@@ -71,6 +96,21 @@ it('query tags', function () {
         ->assertSee($item->name)
         ->assertDontSee($other->name)
     ;
+});
+
+it('treats an empty query tag as the default one', function () {
+    $default = QueryTag::make('Default', static fn ($query) => $query)->alias('default')->default();
+    $other = QueryTag::make('Other', static fn ($query) => $query)->alias('other');
+
+    fakeRequest('/', parameters: ['query-tag' => '']);
+
+    expect($default->isActive())->toBeTrue()
+        ->and($other->isActive())->toBeFalse();
+
+    fakeRequest('/', parameters: ['query-tag' => 'other']);
+
+    expect($default->isActive())->toBeFalse()
+        ->and($other->isActive())->toBeTrue();
 });
 
 it('prefers current filter params over cached query state', function () {

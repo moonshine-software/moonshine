@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components\Table;
 
 use Closure;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
@@ -36,9 +37,11 @@ use MoonShine\UI\Components\Layout\Div;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Layout\Grid;
 use MoonShine\UI\Components\Link;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Fields\Checkbox;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Traits\HasAsync;
+use MoonShine\UI\Traits\ResolvesDisplayEscaping;
 use MoonShine\UI\Traits\Table\TableStates;
 use MoonShine\UI\Traits\WithFields;
 use Throwable;
@@ -58,6 +61,7 @@ final class TableBuilder extends IterableComponent implements
     TableBuilderContract,
     HasFieldsContract
 {
+    use ResolvesDisplayEscaping;
     use WithFields;
     use TableStates;
     use HasAsync;
@@ -322,8 +326,15 @@ final class TableBuilder extends IterableComponent implements
 
                 foreach ($fields as $field) {
                     $attributes = $field->getWrapperAttributes()->jsonSerialize();
+
+                    if (! $this->verticalTitleCallback instanceof Closure && ! $this->verticalValueCallback instanceof Closure) {
+                        $components[] = $this->getVerticalField($field, $attributes);
+
+                        continue;
+                    }
+
                     $title = Column::make([
-                        Div::make([FlexibleRender::make($field->getLabel())])->class('form-label'),
+                        Div::make([FlexibleRender::make($this->getLabelHtmlOf($field)->toHtml())])->class('form-label'),
                     ])->columnSpan(\is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2);
 
                     $value = Column::make([
@@ -353,7 +364,7 @@ final class TableBuilder extends IterableComponent implements
                     TableCells::make([
                         TableTd::make(
                             static fn (): string => Collection::make($components)
-                                ->map(static fn (ComponentContract $component): string => (string) $component)
+                                ->map(static fn (ComponentContract|Renderable $component): string => $component instanceof Renderable ? $component->render() : (string) $component)
                                 ->implode(''),
                         )->class(['space-elements', 'table-grid'])->when(
                             true,
@@ -411,6 +422,26 @@ final class TableBuilder extends IterableComponent implements
             $this->isVertical(),
             static fn (TableRowsContract $rows) => $rows->flatten(),
         );
+    }
+
+    /**
+     * Renders the label and value of a vertical row in one view instead of
+     * the Grid, Column, Div and FlexibleRender components it is made of.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    private function getVerticalField(FieldContract $field, array $attributes): Renderable
+    {
+        $titleSpan = \is_int($this->verticalTitleCallback) ? $this->verticalTitleCallback : 2;
+        $valueSpan = \is_int($this->verticalValueCallback) ? $this->verticalValueCallback : 10;
+
+        return $this->getCore()->getRenderer()->render('moonshine::components.table.vertical-field', [
+            'label' => $this->getLabelHtmlOf($field)->toHtml(),
+            'field' => $field,
+            'titleAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$titleSpan", 'space-elements']),
+            'valueAttributes' => new MoonShineComponentAttributeBag()->class(['col-span-12', "xl:col-span-$valueSpan", 'space-elements']),
+            'fieldAttributes' => new MoonShineComponentAttributeBag()->merge($attributes),
+        ]);
     }
 
     /**
@@ -523,10 +554,8 @@ final class TableBuilder extends IterableComponent implements
 
                 $thContent = $field->isSortable() && ! $this->isPreview()
                     ?
-                    (string) Link::make(
-                        $field->getSortQuery($this->getAsyncUrl()),
-                        $field->getLabel(),
-                    )
+                    (string) Link::make($field->getSortQuery($this->getAsyncUrl()))
+                        ->labelFrom($field)
                         ->when(
                             $field->isSortActive(),
                             static fn (Link $link): Link => $link->icon(
@@ -538,7 +567,7 @@ final class TableBuilder extends IterableComponent implements
                             'class' => $field->isSortActive() ? 'text-primary' : '',
                             '@click.prevent' => $this->isAsync() ? 'asyncRequest' : null,
                         ])
-                    : $field->getLabel();
+                    : $this->getLabelHtmlOf($field)->toHtml();
 
                 $cells->push(
                     TableTh::make($thContent, $index)
@@ -679,7 +708,7 @@ final class TableBuilder extends IterableComponent implements
     }
 
     /**
-     * @param  array<string, string>  $columns
+     * @param  array<string, array{label: string, escapeLabel: bool}>  $columns
      */
     private function getTopRight(array $columns = []): Components
     {
@@ -688,12 +717,14 @@ final class TableBuilder extends IterableComponent implements
         if ($this->isColumnSelection()) {
             $selectionFields = [];
 
-            foreach ($columns as $column => $label) {
-                $selectionFields[] = Switcher::make($label, $column)->customAttributes([
-                    'data-column-selection-checker' => true,
-                    'data-column' => $column,
-                    '@change' => "columnSelection()",
-                ]);
+            foreach ($columns as $column => $options) {
+                $selectionFields[] = Switcher::make($options['label'], $column)
+                    ->escapeLabel($options['escapeLabel'])
+                    ->customAttributes([
+                        'data-column-selection-checker' => true,
+                        'data-column' => $column,
+                        '@change' => "columnSelection()",
+                    ]);
             }
 
             $components[] = Dropdown::make()
@@ -755,17 +786,21 @@ final class TableBuilder extends IterableComponent implements
      */
     protected function viewData(): array
     {
-        /** @var array<string, string> $columns */
-        $columns = $this->getFields()->onlyVisible()->flatMap(
-            static fn (FieldContract $field): array => $field->isColumnSelection()
-                ? [$field->getIdentity() => $field->getLabel()]
-                : [],
-        )->filter()->all();
+        $columns = new Collection($this->getFields()->onlyVisible()->all())
+            ->filter(static fn (FieldContract $field): bool => $field->isColumnSelection())
+            ->mapWithKeys(fn (FieldContract $field): array => [
+                $field->getIdentity() => [
+                    'label' => $field->getLabel(),
+                    'escapeLabel' => $this->isDisplayEscapedFor(DisplayTextType::LABEL, $field),
+                ],
+            ])
+            ->filter(static fn (array $column): bool => (bool) $column['label'])
+            ->all();
 
         return [
             'rows' => $this->getRows(),
             'headRows' => $this->getHeadRows(),
-            'columns' => $columns,
+            'columns' => array_map(static fn (array $column): string => $column['label'], $columns),
             'footRows' => $this->getFootRows(),
             'name' => $this->getName(),
             'hasPaginator' => $this->hasPaginator(),
@@ -782,6 +817,9 @@ final class TableBuilder extends IterableComponent implements
             'topLeft' => $this->getTopLeft(),
             'topRight' => $this->getTopRight($columns),
             ...$this->statesToArray(),
+            // Only async requests switch the table into the loading state that shows them.
+            'skeleton' => $this->isAsync() && $this->hasSkeleton(),
+            'loader' => $this->isAsync() && $this->hasLoader(),
         ];
     }
 }

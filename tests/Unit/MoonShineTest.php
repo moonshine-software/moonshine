@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\MenuManager\MenuManagerContract;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 
@@ -29,4 +31,20 @@ it('menu', function (): void {
         ->and($last->getLabel())
         ->toBe('Resource')
     ;
+});
+
+it('flushes resolved resources without building them again', function (): void {
+    $this->moonshineCore->resources([MoonShineUserResource::class]);
+    $this->moonshineCore->getResources();
+    $builtResources = 0;
+
+    app()->resolving(static function (mixed $object) use (&$builtResources): void {
+        if ($object instanceof ResourceContract) {
+            $builtResources++;
+        }
+    });
+
+    $this->moonshineCore->flushState();
+
+    expect($builtResources)->toBe(0);
 });

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\UI\Components;
 
 use Closure;
+use Illuminate\Support\Collection;
 use JsonException;
 use MoonShine\Contracts\Core\CrudResourceContract;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
@@ -12,6 +13,7 @@ use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\TypeCasts\DataCasterContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
+use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -22,6 +24,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\FormMethod;
 use MoonShine\Support\Enums\JsEvent;
+use MoonShine\Support\Stringify;
 use MoonShine\UI\Concerns\HasButtons;
 use MoonShine\UI\Fields\Hidden;
 use MoonShine\UI\Traits\Fields\WithAdditionalFields;
@@ -562,17 +565,52 @@ final class FormBuilder extends MoonShineComponent implements
             $fields = value($this->onBeforeFieldsRender, $fields, $this);
         }
 
+        $buttons = $this->getButtons($this->castData($this->getValues()));
+        $errors = $this->getCore()->getRequest()->getFormErrors($this->getName());
+
         return [
             'fields' => $fields,
             'precognitive' => $this->isPrecognitive(),
             'async' => $this->isAsync(),
             'asyncUrl' => $this->getAsyncUrl(),
-            'buttons' => $this->getButtons($this->castData($this->getValues())),
+            'buttons' => $buttons,
             'hideSubmit' => $this->isHideSubmit(),
             'submit' => $this->getSubmit(),
-            'errors' => $this->getCore()->getRequest()->getFormErrors($this->getName()),
+            'errors' => $errors,
             'errorsAbove' => $this->hasErrorsAbove(),
             'raw' => $this->isRaw(),
         ];
+    }
+
+    protected function prepareViewData(array $data): array
+    {
+        $formAttributes = $this->getFormAttributes(! empty($data['raw']));
+        $buttons = Collection::wrap($data['buttons'])
+            ->filter(static fn (mixed $button): bool => $button instanceof ActionButtonContract);
+
+        return [
+            'hasErrorsAbove' => $data['errorsAbove'] && $data['errors'] !== [],
+            'actionGroup' => $buttons->isNotEmpty() ? ActionGroup::make($buttons) : null,
+            'formAttributes' => $formAttributes,
+            'hasAutoId' => empty($formAttributes->get('id')),
+            'hasCsrf' => strtolower(Stringify::value($formAttributes->get('method', ''))) !== 'get',
+        ];
+    }
+
+    /**
+     * Builds the attributes the form Blade component produced, so the view renders the form directly.
+     */
+    private function getFormAttributes(bool $raw): ComponentAttributesBagContract
+    {
+        // Props declared by form.builder and form are not rendered as attributes.
+        return $this->getAttributes()
+            ->except([
+                'name', 'precognitive', 'hideSubmit', 'hide-submit', 'raw', 'fields',
+                'submit', 'buttons', 'errors', 'errorsAbove', 'errors-above',
+            ])
+            ->merge([
+                'class' => $raw ? '' : 'form space-elements',
+                'method' => 'POST',
+            ]);
     }
 }

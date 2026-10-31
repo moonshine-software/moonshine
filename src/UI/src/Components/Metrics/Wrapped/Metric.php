@@ -7,16 +7,18 @@ namespace MoonShine\UI\Components\Metrics\Wrapped;
 use Closure;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\MoonShineComponent;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\Components\WithColumnSpan;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 
 /**
- * @method static static make(Closure|string $label)
+ * @method static static make(Closure|string $label, ?bool $escapeLabel = null)
  */
-abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract
+abstract class Metric extends MoonShineComponent implements HasIconContract, HasLabelContract, HasLabelEscapingContract
 {
     use WithColumnSpan;
     use WithLabel;
@@ -24,8 +26,10 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
 
     protected Color $iconColor = Color::PRIMARY;
 
-    final public function __construct(Closure|string $label)
+    final public function __construct(Closure|string $label, ?bool $escapeLabel = null)
     {
+        $this->setDisplayEscaping(DisplayTextType::LABEL, $escapeLabel);
+
         parent::__construct();
 
         $this->setLabel($label);
@@ -53,6 +57,7 @@ abstract class Metric extends MoonShineComponent implements HasIconContract, Has
         return [
             ...parent::systemViewData(),
             'label' => $this->getLabel(),
+            'labelHtml' => $this->getLabelHtml(),
             'icon' => $this->getIcon(6, $this->iconColor),
             'columnSpanValue' => $this->getColumnSpanValue(),
             'adaptiveColumnSpanValue' => $this->getAdaptiveColumnSpanValue(),

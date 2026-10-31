@@ -1,6 +1,9 @@
 @props([
     'label',
+    'labelHtml' => null,
 ])
 <li {{ $attributes->class('menu-divider') }}>
-    {!! $label? "<span>$label</span>" : '' !!}
+    @if($label)
+        <span>{{ $labelHtml ?? $label }}</span>
+    @endif
 </li>

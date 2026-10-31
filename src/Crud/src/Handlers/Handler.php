@@ -13,11 +13,13 @@ use MoonShine\Contracts\Core\HasUriKeyContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\HasIconContract;
 use MoonShine\Contracts\UI\HasLabelContract;
+use MoonShine\Contracts\UI\HasLabelEscapingContract;
 use MoonShine\Core\Traits\HasResource;
 use MoonShine\Core\Traits\WithCore;
 use MoonShine\Core\Traits\WithUriKey;
 use MoonShine\Support\Traits\Makeable;
 use MoonShine\Support\Traits\WithQueue;
+use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\WithIcon;
 use MoonShine\UI\Traits\WithLabel;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @implements HasResourceContract<CrudResourceContract>
  */
-abstract class Handler implements HasIconContract, HasResourceContract, HasUriKeyContract, HasLabelContract, HasCoreContract
+abstract class Handler implements HasIconContract, HasResourceContract, HasUriKeyContract, HasLabelContract, HasCoreContract, HasLabelEscapingContract
 {
     use Makeable;
     use WithQueue;
@@ -43,6 +45,9 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
 
     /** @var null|Closure(ActionButtonContract, static): ActionButtonContract */
     protected ?Closure $modifyButton = null;
+
+    /** Result of the last prepareButton() call, whose label preference is already final. */
+    private ?ActionButtonContract $preparedButton = null;
 
     /**
      * @var array<array-key, string|int>|(Closure(static): array<array-key, string|int>)
@@ -73,13 +78,42 @@ abstract class Handler implements HasIconContract, HasResourceContract, HasUriKe
         return $this;
     }
 
-    protected function prepareButton(ActionButtonContract $button): ActionButtonContract
+    /**
+     * The button with the handler's label preference, also when getButton() skips prepareButton().
+     * A button returned by prepareButton() is kept as is, so modifyButton has the last word.
+     *
+     * @internal
+     */
+    public function getButtonWithLabelEscaping(): ActionButtonContract
     {
-        if (! \is_null($this->modifyButton)) {
-            return \call_user_func($this->modifyButton, $button, $this);
+        $button = $this->getButton();
+
+        return $button === $this->preparedButton ? $button : $this->applyLabelEscaping($button);
+    }
+
+    /**
+     * Passes the handler's label preference to its button unless the button has its own.
+     */
+    protected function applyLabelEscaping(ActionButtonContract $button): ActionButtonContract
+    {
+        $escape = $this->getDisplayEscaping(DisplayTextType::LABEL);
+
+        if (! \is_null($escape) && $button instanceof HasLabelEscapingContract && ! $button->hasLabelEscapingOverride()) {
+            $button->escapeLabel($escape);
         }
 
         return $button;
+    }
+
+    protected function prepareButton(ActionButtonContract $button): ActionButtonContract
+    {
+        $button = $this->applyLabelEscaping($button);
+
+        if (! \is_null($this->modifyButton)) {
+            $button = \call_user_func($this->modifyButton, $button, $this);
+        }
+
+        return $this->preparedButton = $button;
     }
 
     /**

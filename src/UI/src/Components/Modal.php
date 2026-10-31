@@ -9,15 +9,20 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\View\ComponentSlot;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\ModalContract;
 use MoonShine\Support\AlpineJs;
+use MoonShine\UI\Enums\DisplayTextType;
+use MoonShine\UI\Traits\Components\WithTitleEscaping;
 use Throwable;
 
 /**
  * @method static static make(Closure|string $title, Closure|Renderable|string $content = '', Closure|Renderable|ActionButtonContract|string $outer = '', Closure|string|null $asyncUrl = '', iterable<array-key, ComponentContract> $components = [])
  */
-final class Modal extends AbstractWithComponents implements ModalContract
+final class Modal extends AbstractWithComponents implements ModalContract, HasTitleEscapingContract
 {
+    use WithTitleEscaping;
+
     protected string $view = 'moonshine::components.modal';
 
     protected bool $open = false;
@@ -52,8 +57,11 @@ final class Modal extends AbstractWithComponents implements ModalContract
         protected Closure|string|null $asyncUrl = null,
         iterable $components = [],
         // anonymous component variables
-        string $name = 'default'
+        string $name = 'default',
+        ?bool $escapeTitle = null,
     ) {
+        $this->setDisplayEscaping(DisplayTextType::TITLE, $escapeTitle);
+
         parent::__construct($components);
 
         $this->name($name);
@@ -176,7 +184,8 @@ final class Modal extends AbstractWithComponents implements ModalContract
             'isCloseOutside' => $this->closeOutside,
             'async' => ! empty($this->asyncUrl),
             'asyncUrl' => value($this->asyncUrl, $this) ?? '',
-            'title' => value($this->title, $this),
+            'title' => $title = value($this->title, $this),
+            'titleHtml' => $this->getTitleHtml($title),
             'subtitle' => $this->subtitle,
             'slot' => new ComponentSlot($this->stringifySlotContent($componentsHtml)),
             'outerHtml' => new ComponentSlot($this->stringifySlotContent($outer), $this->outerAttributes),

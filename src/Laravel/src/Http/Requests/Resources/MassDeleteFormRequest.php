@@ -7,6 +7,7 @@ namespace MoonShine\Laravel\Http\Requests\Resources;
 use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Laravel\Http\Requests\MoonShineFormRequest;
 use MoonShine\Support\Enums\Ability;
+use MoonShine\Support\Enums\Action;
 use Throwable;
 
 final class MassDeleteFormRequest extends MoonShineFormRequest
@@ -19,7 +20,17 @@ final class MassDeleteFormRequest extends MoonShineFormRequest
     {
         $this->beforeResourceAuthorization();
 
-        return $this->getResource()?->can(Ability::MASS_DELETE) ?? false;
+        $resource = $this->getResource();
+
+        if (\is_null($resource)) {
+            return false;
+        }
+
+        if (! $resource->hasAction(Action::MASS_DELETE)) {
+            return false;
+        }
+
+        return $resource->can(Ability::MASS_DELETE);
     }
 
     /**
