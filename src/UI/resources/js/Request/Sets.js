@@ -3,6 +3,10 @@ import request, {prepareUrl, urlWithQuery} from './Core.js'
 import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import {getQueryString, prepareFormQueryString} from '../Support/Forms.js'
 
+// The latest list request of each component root. A response replaces the root, so a request
+// sent while another is in flight would otherwise act on a detached root and lose its result.
+const activeListRequests = new WeakMap()
+
 export function listRowRequest(component, key = null, index = null, type = 'change') {
   const body = component.table.querySelector('tbody')
   const isChange = type === 'change'
@@ -58,6 +62,14 @@ export function listComponentRequest(component, pushState = false, after = null,
   let url = component.$el.href ? component.$el.href : component.asyncUrl
 
   component.loading = true
+
+  activeListRequests.get(component.$root)?.abort()
+
+  const controller = new AbortController()
+
+  if (component.$root) {
+    activeListRequests.set(component.$root, controller)
+  }
 
   let eventData = component.$event.detail
 
@@ -167,9 +179,10 @@ export function listComponentRequest(component, pushState = false, after = null,
     })
     .withEvents(events)
     .withErrorCallback(stopLoading)
+    .withSignal(controller.signal)
 
   request(component, url, 'get', {}, {}, componentRequestData).then(() => {
-    if (typeof after === 'function') {
+    if (!controller.signal.aborted && typeof after === 'function') {
       after()
     }
   })

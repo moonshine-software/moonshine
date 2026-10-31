@@ -14,6 +14,18 @@ export class ComponentRequestData {
     this._errorCallback = null
 
     this._extraProperties = {}
+
+    this._signal = null
+  }
+
+  get signal() {
+    return this._signal
+  }
+
+  withSignal(value) {
+    this._signal = value
+
+    return this
   }
 
   get events() {
