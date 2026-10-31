@@ -7,6 +7,7 @@ uses()->group('has-many-field');
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Gate;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
@@ -19,6 +20,29 @@ use MoonShine\Tests\Fixtures\Resources\TestResource;
 use MoonShine\Tests\Fixtures\Resources\TestResourceBuilder;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
+
+it('renders the has many edit action only when the child update policy allows it', function (bool $allowed): void {
+    $item = createItem(countComments: 1);
+    $comment = $item->comments->firstOrFail();
+    $child = app(TestCommentResource::class)->setTestPolicy(true);
+    $resource = TestResourceBuilder::new(Item::class)->setTestFields([
+        HasMany::make('Comments', resource: $child),
+    ]);
+
+    if (! $allowed) {
+        Gate::before(static fn (mixed $user, string $ability): ?bool => $ability === 'update' ? false : null);
+    }
+
+    $response = asAdmin()->get($resource->getFormPageUrl($item->getKey()))->assertOk();
+    $document = Dom\HTMLDocument::createFromString($response->getContent(), LIBXML_NOERROR);
+    $links = array_filter(
+        iterator_to_array($document->getElementsByTagName('a')),
+        static fn (Dom\Element $link): bool => str_contains($link->getAttribute('href'), '/has-many/form/')
+            && str_contains($link->getAttribute('href'), '_key=' . $comment->getKey()),
+    );
+
+    expect($links)->toHaveCount($allowed ? 1 : 0);
+})->with([true, false]);
 
 it('relatedLink preview', function () {
     createItem(countComments: 6);

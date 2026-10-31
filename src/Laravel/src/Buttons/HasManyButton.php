@@ -53,7 +53,7 @@ final class HasManyButton
         }
 
         $authorize = $update
-            ? static fn (mixed $item, ?DataWrapperContract $data): bool => ($data instanceof Model ? $resource->getCaster()->cast($data)->getKey() : null)
+            ? static fn (mixed $item, ?DataWrapperContract $data): bool => $data?->getKey() !== null
                 && $resource->hasAction(Action::UPDATE)
                 && $item instanceof Model
                 && $resource->setItem($item)->can(Ability::UPDATE)

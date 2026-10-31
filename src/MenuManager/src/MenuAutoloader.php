@@ -205,9 +205,9 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
     private function toMenuItem(string $filler, string $canSee): MenuItem
     {
         /** @var MenuFillerContract $resolved */
-        $resolved = $this->core->getContainer($filler);
+        $resolved = $this->core->getInstances($filler);
 
-        return MenuItem::make($filler)
+        return MenuItem::make($resolved)
             ->when($canSee, fn (MenuItem $item): MenuItem => $item->canSee($this->canSee($resolved, $canSee)));
     }
 
@@ -217,7 +217,7 @@ final readonly class MenuAutoloader implements MenuAutoloaderContract
      */
     private function canSee(string|MenuFillerContract $filler, string $method): Closure
     {
-        $resolved = \is_string($filler) ? $this->core->getContainer($filler) : $filler;
+        $resolved = \is_string($filler) ? $this->core->getInstances($filler) : $filler;
 
         return static fn (): bool => (bool) $resolved->{$method}();
     }

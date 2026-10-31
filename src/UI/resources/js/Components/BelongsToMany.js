@@ -35,7 +35,14 @@ export default () => ({
       this.$dispatch('table_empty_row_added:' + tableName)
 
       const tr = pivot.querySelector('table:not([data-skeleton]) > tbody > tr:last-child')
-      tr.querySelector('.js-pivot-title').innerHTML = item.label
+      const title = tr.querySelector('.js-pivot-title')
+
+      // Search labels are raw record data, so they are output as text unless the field unescapes its option labels.
+      if (pivot.dataset.escapeLabels === 'false') {
+        title.innerHTML = item.label
+      } else {
+        title.textContent = item.label
+      }
 
       if (tr.dataset.rowKey || deduplicate) {
         tr.dataset.rowKey = item.value

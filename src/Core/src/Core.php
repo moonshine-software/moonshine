@@ -190,19 +190,24 @@ abstract class Core implements CoreContract, StatefulContract
 
     public function flushState(): void
     {
+        // Flush only what this request created: resolving every registered class here would build them again.
+        $registered = array_filter(
+            [...$this->resources, ...$this->pages],
+            static fn (mixed $item): bool => $item instanceof ResourceContract || $item instanceof PageContract,
+        );
+
+        $flushed = [];
+
+        foreach ([...array_values($this->instances), ...$registered] as $instance) {
+            if (isset($flushed[spl_object_id($instance)])) {
+                continue;
+            }
+
+            $flushed[spl_object_id($instance)] = true;
+            $instance->flushState();
+        }
+
         $this->instances = [];
-
-        $this->getResources()->transform(static function (ResourceContract $resource): ResourceContract {
-            $resource->flushState();
-
-            return $resource;
-        });
-
-        $this->getPages()->transform(static function (PageContract $page): PageContract {
-            $page->flushState();
-
-            return $page;
-        });
 
         $this->getRouter()->flushState();
 
@@ -247,8 +252,19 @@ abstract class Core implements CoreContract, StatefulContract
      */
     public function getInstances(string $class): mixed
     {
-        /** @var T|null */
-        return $this->instances[$class] ?? $this->getContainer($class);
+        if (isset($this->instances[$class])) {
+            /** @var T */
+            return $this->instances[$class];
+        }
+
+        /** @var T|null $instance */
+        $instance = $this->getContainer($class);
+
+        if ($instance instanceof ResourceContract || $instance instanceof PageContract) {
+            $this->instances[$class] = $instance;
+        }
+
+        return $instance;
     }
 
     /**

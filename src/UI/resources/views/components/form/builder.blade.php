@@ -1,36 +1,38 @@
-@props([
-    'name' => '',
-    'precognitive' => false,
-    'hideSubmit' => false,
-    'raw' => false,
-    'fields' => [],
-    'submit' => '',
-    'buttons' => [],
-    'errors' => [],
-    'errorsAbove' => true,
-])
-@if($errorsAbove)
+@if($hasErrorsAbove)
     <x-moonshine::form.all-errors :errors="$errors" />
 @endif
 
-<x-moonshine::form
-    :attributes="$attributes"
-    :name="$name"
-    :precognitive="$precognitive"
-    :errors="$errors"
-    :raw="$raw"
+<form
+    {{ $formAttributes }}
+    @if($hasAutoId)
+        x-id="['form']" :id="$id('form')"
+    @endif
 >
-    <x-moonshine::fields-group
-        :components="$fields"
-    />
+    @if($hasCsrf)
+        @csrf
+    @endif
 
-    <x-slot:buttons>
-        {!! $submit !!}
+    @foreach($fields as $field)
+        {!! $field !!}
+    @endforeach
 
-        @if($buttons->isNotEmpty())
-            <x-moonshine::action-group
-                :actions="$buttons"
-            />
-        @endif
-    </x-slot:buttons>
-</x-moonshine::form>
+    @unless($raw)
+        <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 xl:col-span-12 space-elements">
+                <div class="mt-3 flex w-full flex-wrap justify-start gap-2">
+                    {!! $submit !!}
+
+                    @if($actionGroup)
+                        {!! $actionGroup !!}
+                    @endif
+                </div>
+            </div>
+
+            @if($precognitive)
+                <div class="col-span-12 xl:col-span-12 space-elements">
+                    <div class="js-precognition-errors mb-6"></div>
+                </div>
+            @endif
+        </div>
+    @endunless
+</form>

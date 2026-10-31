@@ -9,10 +9,12 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\HasTitleEscapingContract;
 use MoonShine\Contracts\UI\OffCanvasContract;
 use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\OffCanvas;
+use MoonShine\UI\Enums\DisplayTextType;
 
 trait WithOffCanvas
 {
@@ -44,17 +46,28 @@ trait WithOffCanvas
 
         $async = $this->purgeAsyncTap();
 
-        $this->offCanvas = static fn (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) => OffCanvas::make(
-            title: static fn () => ($title instanceof Closure ? $title($item, $ctx) : $title) ?? $ctx->getLabel(),
-            content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
-            asyncUrl: $async ? $ctx->getUrl($item) : null,
-            components: $components
-        )
-            ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
-            ->when(
-                ! \is_null($builder),
-                static fn (OffCanvasContract $offCanvas) => $builder instanceof Closure ? $builder($offCanvas, $ctx) : $offCanvas
-            );
+        $this->offCanvas = static function (mixed $item, ?DataWrapperContract $data, ActionButtonContract $ctx) use ($title, $content, $name, $builder, $components, $async): OffCanvasContract {
+            $resolvedTitle = $title instanceof Closure ? $title($item, $ctx) : $title;
+
+            return OffCanvas::make(
+                title: $resolvedTitle ?? $ctx->getLabel(),
+                content: static fn () => ($content instanceof Closure ? $content($item, $ctx) : $content) ?? '',
+                asyncUrl: $async ? $ctx->getUrl($item) : null,
+                components: $components
+            )
+                ->name(($name instanceof Closure ? $name($item, $ctx) : $name))
+                // A title derived from the button label follows the button's label preference.
+                ->when(
+                    \is_null($resolvedTitle),
+                    static fn (OffCanvasContract $offCanvas): OffCanvasContract => $offCanvas instanceof HasTitleEscapingContract
+                        ? $offCanvas->escapeTitle(DisplayTextType::LABEL->isEscapedFor($ctx, $ctx->getCore()->getConfig()))
+                        : $offCanvas
+                )
+                ->when(
+                    ! \is_null($builder),
+                    static fn (OffCanvasContract $offCanvas) => $builder instanceof Closure ? $builder($offCanvas, $ctx) : $offCanvas
+                );
+        };
 
         return $this->onBeforeRender(
             static fn (ActionButtonContract $ctx): ActionButtonContract => $ctx->toggleOffCanvas(

@@ -46,12 +46,17 @@ class Url extends Text
             return '';
         }
 
+        // Escaped titles are built from the raw value and escaped once; trusted titles receive the prepared value.
+        $label = match (true) {
+            \is_null($this->titleCallback) => $title,
+            $this->isEscapeLinkName() => e(Stringify::value(\call_user_func($this->titleCallback, $value, $this))),
+            default => Stringify::value(\call_user_func($this->titleCallback, $title, $this)),
+        };
+
         return (string) Link::make(
             href: $value,
-            label: \is_null($this->titleCallback)
-                ? $title
-                : Stringify::value(\call_user_func($this->titleCallback, $title, $this)),
-        )->when(
+            label: $label,
+        )->unescapeLabel()->when(
             $this->blank,
             fn (Link $ctx): Link => $ctx->blank()
         )->icon('link')->customAttributes($this->getAttributes()->except('type')->jsonSerialize());

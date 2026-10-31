@@ -70,6 +70,11 @@ class File extends Field implements FileableContract, RemovableContract
         return implode(';', array_filter($values));
     }
 
+    protected function isPreviewMarkup(): bool
+    {
+        return true;
+    }
+
     protected function resolvePreview(): Renderable|string
     {
         return (string) Files::make(

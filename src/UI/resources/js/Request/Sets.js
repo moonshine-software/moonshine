@@ -159,7 +159,8 @@ export function listComponentRequest(component, pushState = false, after = null,
           },
         })
       } else {
-        t.$root.outerHTML = tempElement.firstElementChild.innerHTML
+        // Move the parsed nodes instead of serializing them and parsing the markup again
+        t.$root.replaceWith(...tempElement.firstElementChild.childNodes)
       }
 
       t.loading = false

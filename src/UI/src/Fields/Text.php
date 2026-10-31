@@ -9,6 +9,7 @@ use JsonException;
 use MoonShine\Support\Enums\TextWrap;
 use MoonShine\UI\Contracts\DefaultValueTypes\CanBeString;
 use MoonShine\UI\Contracts\HasDefaultValueContract;
+use MoonShine\UI\Contracts\HasEscapedValueContract;
 use MoonShine\UI\Contracts\HasUpdateOnPreviewContract;
 use MoonShine\UI\Traits\Fields\HasPlaceholder;
 use MoonShine\UI\Traits\Fields\UpdateOnPreview;
@@ -18,7 +19,7 @@ use MoonShine\UI\Traits\Fields\WithInputExtensions;
 use MoonShine\UI\Traits\Fields\WithMask;
 use MoonShine\UI\Traits\Fields\WithPrettyLimit;
 
-class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract
+class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpdateOnPreviewContract, HasEscapedValueContract
 {
     use WithInputExtensions;
     use WithMask;

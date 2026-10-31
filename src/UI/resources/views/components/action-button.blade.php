@@ -1,41 +1,21 @@
-@props([
-    'inDropdown' => false,
-    'hasComponent' => false,
-    'url' => 'javascript:void(0);',
-    'icon' => '',
-    'label' => '',
-    'component' => null,
-    'badge' => false,
-    'raw' => false,
-])
-@if($attributes->has('type'))
-    <x-moonshine::form.button
-        :attributes="$attributes"
-        :raw="$raw"
-    >
+@if($isButton)
+    <button {{ $tagAttributes }}>
+        {!! $icon !!}
         {!! $slot !!}
-
-        <x-slot:icon>{!! $icon !!}</x-slot:icon>
-
-        {!! $label !!}
-
-        @if($badge !== false)
-            <x-moonshine::badge color="">{{ $badge }}</x-moonshine::badge>
+        {{ $labelHtml ?? $label }}
+        @if($hasBadge)
+            <span class="badge">{{ $badge }}</span>
         @endif
-    </x-moonshine::form.button>
+    </button>
 @else
-    <x-moonshine::link-button
-        :attributes="$attributes"
-        :href="$url"
-        :badge="$badge"
-        :raw="$raw"
-    >
+    <a {{ $tagAttributes }}>
+        {!! $icon !!}
         {!! $slot !!}
-
-        <x-slot:icon>{!! $icon !!}</x-slot:icon>
-
-        {!! $label !!}
-    </x-moonshine::link-button>
+        {{ $labelHtml ?? $label }}
+        @if($hasBadge)
+            <span class="badge">{{ $badge }}</span>
+        @endif
+    </a>
 @endif
 
 @if($hasComponent)
@@ -43,4 +23,3 @@
         {!! $component !!}
     </template>
 @endif
-

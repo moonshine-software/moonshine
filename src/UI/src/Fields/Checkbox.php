@@ -81,6 +81,11 @@ class Checkbox extends Field implements
             : $this->offValue);
     }
 
+    protected function isPreviewMarkup(): bool
+    {
+        return true;
+    }
+
     protected function resolvePreview(): Renderable|string
     {
         return (string) Boolean::make(
