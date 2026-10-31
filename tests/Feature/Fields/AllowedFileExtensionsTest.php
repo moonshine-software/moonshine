@@ -231,6 +231,22 @@ it('constructs file fields in console mode without initializing Core', function 
     expect($process->getOutput())->toBe('upload .png');
 })->with(['file' => File::class, 'image' => Image::class]);
 
+it('keeps uploads unrestricted in console mode without Core', function (string $fieldClass): void {
+    $autoload = var_export(\dirname(__DIR__, 3) . '/vendor/autoload.php', true);
+    $class = var_export($fieldClass, true);
+    $process = new Process([PHP_BINARY, '-r', <<<PHP
+        require {$autoload};
+        \$class = {$class};
+        \$class::consoleMode();
+        \$field = \$class::make('Upload');
+        echo json_encode([\$field->getAllowedExtensions(), \$field->isAllowedExtension('png')]);
+        PHP]);
+
+    $process->mustRun();
+
+    expect($process->getOutput())->toBe('[[],true]');
+})->with(['file' => File::class, 'image' => Image::class]);
+
 it('uses the current deferred extensions for rendering and serialization', function (string $fieldClass, bool $serialize): void {
     $extensions = ['gif'];
     $this->moonshineCore->getConfig()->allowedExtensions(function () use (&$extensions): array {

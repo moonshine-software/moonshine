@@ -343,9 +343,14 @@ trait FileTrait
             return $this->allowedExtensions;
         }
 
+        // Without Core, for example in console mode, and with configurators lacking file extension settings,
+        // uploads stay unrestricted as before.
+        if (! $this->hasCore()) {
+            return [];
+        }
+
         $config = $this->getCore()->getConfig();
 
-        // Configurators without file extension settings keep uploads unrestricted.
         return $config instanceof FileExtensionsConfiguratorContract ? $config->getAllowedExtensions() : [];
     }
 
