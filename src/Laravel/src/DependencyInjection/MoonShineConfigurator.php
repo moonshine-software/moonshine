@@ -14,6 +14,7 @@ use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\DisplayEscapingConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\FileExtensionsConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\ValueEscapingConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
@@ -27,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use TypeError;
 
-final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract, FileExtensionsConfiguratorContract
+final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract, FileExtensionsConfiguratorContract, ValueEscapingConfiguratorContract
 {
     /**
      * @var array<string, mixed>
@@ -121,6 +122,26 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
     public function isEscapeAfterRender(): bool
     {
         return $this->escapeFlag('escapes.after_render');
+    }
+
+    public function escapeValue(bool $escape = true): self
+    {
+        return $this->set('escapes.value', $escape);
+    }
+
+    public function isEscapeValue(): bool
+    {
+        return $this->escapeFlag('escapes.value');
+    }
+
+    public function escapeValueOnApply(bool $escape = true): self
+    {
+        return $this->set('escapes.value_on_apply', $escape);
+    }
+
+    public function isEscapeValueOnApply(): bool
+    {
+        return $this->escapeFlag('escapes.value_on_apply');
     }
 
     public function dir(string $dir, string $namespace): self

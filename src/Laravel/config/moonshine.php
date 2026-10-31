@@ -42,7 +42,7 @@ return [
     'use_routes' => true,
     'use_profile' => true,
 
-    // Display escaping (individual field/component settings take precedence)
+    // Escaping defaults (individual field/component settings take precedence)
     'escapes' => [
         'label' => true,
         'hint' => true,
@@ -50,6 +50,9 @@ return [
         'suffix' => true,
         'before_render' => true,
         'after_render' => true,
+        // Field values, independent of the display text settings above
+        'value' => true,
+        'value_on_apply' => true,
     ],
 
     // Routing
