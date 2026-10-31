@@ -7,6 +7,7 @@ namespace MoonShine\UI\Traits\Fields;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use MoonShine\Contracts\Core\DependencyInjection\FileExtensionsConfiguratorContract;
 use MoonShine\Contracts\UI\ComponentAttributesBagContract;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\FileItemExtra;
@@ -19,9 +20,9 @@ trait FileTrait
     use WithStorage;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    protected array $allowedExtensions = [];
+    protected ?array $allowedExtensions = null;
 
     protected bool $disableDownload = false;
 
@@ -189,24 +190,28 @@ trait FileTrait
     }
 
     /**
-     * @param  string[]  $allowedExtensions
+     * @param  string[]|'*'  $allowedExtensions
      */
-    public function allowedExtensions(array $allowedExtensions): static
+    public function allowedExtensions(array|string $allowedExtensions): static
     {
-        $this->allowedExtensions = $allowedExtensions;
+        $this->allowedExtensions = \is_string($allowedExtensions) ? [$allowedExtensions] : $allowedExtensions;
 
-        if ($allowedExtensions !== []) {
-            $this->setAttribute('accept', $this->getAcceptExtension());
-        }
+        $this->setAttribute('accept', $this->getAcceptExtension() ?: '*/*');
 
         return $this;
     }
 
     public function getAcceptExtension(): string
     {
+        $allowedExtensions = $this->getAllowedExtensions();
+
+        if (\in_array('*', $allowedExtensions, true)) {
+            return '*/*';
+        }
+
         $extensions = array_map(
             static fn ($val): string => '.' . $val,
-            $this->allowedExtensions,
+            $allowedExtensions,
         );
 
         return implode(',', $extensions);
@@ -322,8 +327,11 @@ trait FileTrait
 
     public function isAllowedExtension(string $extension): bool
     {
-        return empty($this->getAllowedExtensions())
-               || \in_array($extension, $this->getAllowedExtensions(), true);
+        $allowedExtensions = $this->getAllowedExtensions();
+
+        return empty($allowedExtensions)
+               || \in_array('*', $allowedExtensions, true)
+               || \in_array($extension, $allowedExtensions, true);
     }
 
     /**
@@ -331,7 +339,19 @@ trait FileTrait
      */
     public function getAllowedExtensions(): array
     {
-        return $this->allowedExtensions;
+        if ($this->allowedExtensions !== null) {
+            return $this->allowedExtensions;
+        }
+
+        // Without Core, for example in console mode, and with configurators lacking file extension settings,
+        // uploads stay unrestricted as before.
+        if (! $this->hasCore()) {
+            return [];
+        }
+
+        $config = $this->getCore()->getConfig();
+
+        return $config instanceof FileExtensionsConfiguratorContract ? $config->getAllowedExtensions() : [];
     }
 
     protected function resolveValue(): mixed

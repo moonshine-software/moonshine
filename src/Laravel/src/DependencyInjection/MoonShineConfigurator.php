@@ -13,6 +13,7 @@ use MoonShine\ColorManager\Palettes\PurplePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\DisplayEscapingConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\FileExtensionsConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\ValueEscapingConfiguratorContract;
 use MoonShine\Contracts\Core\PageContract;
 use MoonShine\Contracts\Core\ResourceContract;
@@ -27,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use TypeError;
 
-final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract, ValueEscapingConfiguratorContract
+final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapingConfiguratorContract, FileExtensionsConfiguratorContract, ValueEscapingConfiguratorContract
 {
     /**
      * @var array<string, mixed>
@@ -304,6 +305,24 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
         }
 
         return $result;
+    }
+
+    /**
+     * @param string[]|'*'|Closure(): (string[]|'*') $allowedExtensions
+     */
+    public function allowedExtensions(array|string|Closure $allowedExtensions): self
+    {
+        return $this->set('allowed_extensions', $allowedExtensions);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedExtensions(): array
+    {
+        $extensions = $this->get('allowed_extensions', []);
+
+        return $extensions === '*' ? ['*'] : $this->stringArrayValue($extensions);
     }
 
     public function getUserAvatarsDir(): string

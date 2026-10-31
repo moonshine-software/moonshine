@@ -34,9 +34,9 @@ interface FileableContract
     public function getDir(): string;
 
     /**
-     * @param  string[]  $allowedExtensions
+     * @param  string[]|'*'  $allowedExtensions
      */
-    public function allowedExtensions(array $allowedExtensions): static;
+    public function allowedExtensions(array|string $allowedExtensions): static;
 
     /**
      * @return   string[]
