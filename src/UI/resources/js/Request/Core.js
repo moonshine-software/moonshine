@@ -32,6 +32,7 @@ export default async function request(
       data: body,
       headers: headers,
       responseType: componentRequestData.responseType,
+      signal: componentRequestData.signal ?? undefined,
     }).then(async function (response) {
       t.loading = false
 
@@ -102,6 +103,11 @@ export default async function request(
       }
     })
   } catch (errorResponse) {
+    // A request cancelled by a newer one: the newer one owns the loading state and the DOM
+    if (axios.isCancel(errorResponse)) {
+      return
+    }
+
     t.loading = false
 
     if (componentRequestData.hasResponseHandler()) {

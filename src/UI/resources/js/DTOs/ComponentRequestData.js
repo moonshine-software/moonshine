@@ -13,6 +13,8 @@ export class ComponentRequestData {
 
     this._errorCallback = null
 
+    this._signal = null
+
     this._extraProperties = {}
   }
 
@@ -106,6 +108,16 @@ export class ComponentRequestData {
 
   withErrorCallback(value) {
     this._errorCallback = value
+
+    return this
+  }
+
+  get signal() {
+    return this._signal
+  }
+
+  withSignal(value) {
+    this._signal = value
 
     return this
   }
