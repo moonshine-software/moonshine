@@ -315,6 +315,42 @@ describe('request function', () => {
     expect(testFn).toHaveBeenCalledWith({message: 'Server Error'}, t)
   })
 
+  it('should call errorCallback on a network error', async () => {
+    const testFn = jest.fn()
+    const componentRequestData = new ComponentRequestData().withErrorCallback(testFn)
+    mockAxios.onGet('/test-url').networkError()
+
+    await request(t, '/test-url', 'get', {}, {}, componentRequestData)
+
+    expect(testFn).toHaveBeenCalledWith({}, t)
+    expect(MoonShine.ui.toast).toHaveBeenCalledWith('Unknown Error', 'error')
+  })
+
+  it('should call errorCallback on a timeout', async () => {
+    const testFn = jest.fn()
+    const componentRequestData = new ComponentRequestData().withErrorCallback(testFn)
+    mockAxios.onGet('/test-url').timeout()
+
+    await request(t, '/test-url', 'get', {}, {}, componentRequestData)
+
+    expect(testFn).toHaveBeenCalledWith({}, t)
+    expect(MoonShine.ui.toast).toHaveBeenCalledWith('Unknown Error', 'error')
+  })
+
+  it('should call errorCallback when a blob error body is not JSON', async () => {
+    const testFn = jest.fn()
+    const componentRequestData = new ComponentRequestData()
+      .withResponseType('blob')
+      .withErrorCallback(testFn)
+    mockAxios.onGet('/test-url').reply(500, new Blob(['<html>Bad Gateway</html>']))
+
+    await request(t, '/test-url', 'get', {}, {}, componentRequestData)
+
+    expect(testFn).toHaveBeenCalledWith({}, t)
+    expect(MoonShine.ui.toast).toHaveBeenCalledTimes(1)
+    expect(MoonShine.ui.toast).toHaveBeenCalledWith('Unknown Error', 'error')
+  })
+
   it('should handle unknown errors', async () => {
     const componentRequestData = new ComponentRequestData()
     mockAxios.onGet('/test-url').reply(500)

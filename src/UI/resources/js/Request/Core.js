@@ -124,13 +124,17 @@ export default async function request(
       } catch (e) {
         console.error(e.message)
 
-        MoonShine.ui.toast('Unknown Error', 'error')
-        return
+        data = null
       }
     }
 
     if (!data) {
       console.error(errorResponse.message)
+
+      // Still let the caller recover (e.g. re-enable a form's submit button)
+      if (componentRequestData.hasErrorCallback()) {
+        componentRequestData.errorCallback({}, t)
+      }
 
       MoonShine.ui.toast('Unknown Error', 'error')
       return
