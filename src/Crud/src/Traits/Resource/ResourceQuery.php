@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Leeto\FastAttributes\Attributes;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Crud\Collections\Fields;
 use MoonShine\Support\Attributes\SearchUsingFullText;
 use MoonShine\Support\Enums\SortDirection;
@@ -58,6 +59,8 @@ trait ResourceQuery
     protected iterable $queryParams = [];
 
     protected string $queryParamPrefix = '';
+
+    protected ?FieldsContract $sortableFields = null;
 
     /**
      * @return iterable<T>|Collection<array-key, T>|LazyCollection<array-key, T>|CursorPaginator<array-key, T>|Paginator<array-key, T>
@@ -240,13 +243,21 @@ trait ResourceQuery
     {
         $column = $this->getSortColumn();
         $direction = $this->getSortDirection();
+        $fields = ($this->sortableFields ?? $this->getIndexFields())->onlyFields(withWrappers: true);
 
         if (($sort = $this->getQueryParam('sort')) && \is_string($sort)) {
-            $column = ltrim($sort, '-');
-            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+            $requested = ltrim($sort, '-');
+
+            // only the default column or a sortable field of the list, so a request cannot order by hidden or unknown columns
+            if ($requested === $column || $fields->contains(
+                static fn (FieldContract $field): bool => $field->isSortable() && $field->getColumn() === $requested
+            )) {
+                $column = $requested;
+                $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+            }
         }
 
-        $field = $this->getIndexFields()->findByColumn($column);
+        $field = $fields->findByColumn($column);
 
         $callback = $field?->getSortableCallback();
 
@@ -256,6 +267,16 @@ trait ResourceQuery
         }
 
         return [$column, $direction, $callback];
+    }
+
+    /**
+     * The fields a request may sort the list by, when the list is not shown with the index fields (a relation table)
+     */
+    public function setSortableFields(?FieldsContract $fields): static
+    {
+        $this->sortableFields = $fields;
+
+        return $this;
     }
 
     /**

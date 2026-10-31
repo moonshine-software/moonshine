@@ -613,6 +613,8 @@ class HasMany extends ModelRelationField implements
 
         $resource->setQueryParams(
             request()->only($resource->getQueryParamsKeys())
+        )->setSortableFields(
+            $this->hasFields() ? $this->getFields() : null
         );
 
         $casted = $this->getRelatedModel();
