@@ -60,7 +60,7 @@ trait ResourceQuery
 
     protected string $queryParamPrefix = '';
 
-    protected ?FieldsContract $sortableFields = null;
+    protected ?FieldsContract $listFields = null;
 
     /**
      * @return iterable<T>|Collection<array-key, T>|LazyCollection<array-key, T>|CursorPaginator<array-key, T>|Paginator<array-key, T>
@@ -243,21 +243,21 @@ trait ResourceQuery
     {
         $column = $this->getSortColumn();
         $direction = $this->getSortDirection();
-        $fields = ($this->sortableFields ?? $this->getIndexFields())->onlyFields(withWrappers: true);
+        $listFields = $this->getListFields();
 
         if (($sort = $this->getQueryParam('sort')) && \is_string($sort)) {
             $requested = ltrim($sort, '-');
 
-            // only the default column or a sortable field of the list, so a request cannot order by hidden or unknown columns
-            if ($requested === $column || $fields->contains(
-                static fn (FieldContract $field): bool => $field->isSortable() && $field->getColumn() === $requested
-            )) {
+            // a request cannot order by hidden or unknown columns
+            if ($this->isSortableColumn($requested, $listFields)) {
                 $column = $requested;
                 $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
             }
         }
 
-        $field = $fields->findByColumn($column);
+        // the resource's own fields still map the default column when the list shows other fields
+        $field = $this->findSortableField($column, $listFields)
+            ?? $this->getIndexFields()->onlyFields(withWrappers: true)->findByColumn($column);
 
         $callback = $field?->getSortableCallback();
 
@@ -270,11 +270,39 @@ trait ResourceQuery
     }
 
     /**
-     * The fields a request may sort the list by, when the list is not shown with the index fields (a relation table)
+     * Whether a request may sort the list by the column: the default one, or a visible sortable field of the list.
+     * Override it to allow columns the list has no header for (custom list components, API clients)
      */
-    public function setSortableFields(?FieldsContract $fields): static
+    protected function isSortableColumn(string $column, FieldsContract $listFields): bool
     {
-        $this->sortableFields = $fields;
+        return $column === $this->getSortColumn()
+            || $this->findSortableField($column, $listFields) instanceof FieldContract;
+    }
+
+    protected function findSortableField(string $column, FieldsContract $listFields): ?FieldContract
+    {
+        return $listFields->first(
+            static fn (FieldContract $field): bool => $field->isSortable() && $field->getColumn() === $column
+        );
+    }
+
+    /**
+     * The visible fields of the list, flattened with their wrappers, as the table builds its sortable headers
+     */
+    protected function getListFields(): FieldsContract
+    {
+        return ($this->listFields ?? $this->getIndexFields())
+            ->onlyVisible()
+            ->onlyFields(withWrappers: true)
+            ->onlyVisible();
+    }
+
+    /**
+     * The fields the list is shown with, when they are not the index fields (a relation table)
+     */
+    public function setListFields(?FieldsContract $fields): static
+    {
+        $this->listFields = $fields;
 
         return $this;
     }

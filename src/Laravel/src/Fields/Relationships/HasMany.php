@@ -613,8 +613,8 @@ class HasMany extends ModelRelationField implements
 
         $resource->setQueryParams(
             request()->only($resource->getQueryParamsKeys())
-        )->setSortableFields(
-            $this->hasFields() ? $this->getFields() : null
+        )->setListFields(
+            $this->getTableFields()
         );
 
         $casted = $this->getRelatedModel();
@@ -627,6 +627,22 @@ class HasMany extends ModelRelationField implements
         );
 
         return $resource->getItems();
+    }
+
+    /**
+     * The columns the relation table shows, modifyTable() included, so a request may sort only by them
+     *
+     * @throws Throwable
+     */
+    protected function getTableFields(): FieldsContract
+    {
+        return TableBuilder::make()
+            ->fields($this->getFieldsOnPreview())
+            ->when(
+                ! \is_null($this->modifyTable),
+                fn (TableBuilderContract $tableBuilder) => value($this->modifyTable, $tableBuilder, false)
+            )
+            ->getFields();
     }
 
     /**
