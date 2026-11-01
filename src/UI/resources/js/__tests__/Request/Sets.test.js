@@ -16,61 +16,68 @@ afterEach(() => {
   mockAxios.restore()
 })
 
-const component = (asyncUrl = '/list') => ({
+// Lets the mocked responses and their handlers run to the end
+const settled = () => new Promise(resolve => setTimeout(resolve))
+
+const listComponent = (asyncUrl = '/list') => ({
   $event: {preventDefault: jest.fn(), detail: {}},
   $el: {href: null},
   $root: document.getElementById('list'),
   asyncUrl: asyncUrl,
   loading: false,
+  listRequestController: null,
 })
 
 it('should call preventDefault and set loading to true', () => {
-  const c = component('/example')
+  const list = listComponent('/example')
 
-  listComponentRequest(c)
+  listComponentRequest(list)
 
-  expect(c.$event.preventDefault).toHaveBeenCalled()
-  expect(c.loading).toBe(true)
+  expect(list.$event.preventDefault).toHaveBeenCalled()
+  expect(list.loading).toBe(true)
 })
 
 describe('listComponentRequest race', () => {
   it('should abort the previous request of the same component', () => {
-    const c = component()
+    const list = listComponent()
 
-    listComponentRequest(c)
-    const first = c.listRequestController
+    listComponentRequest(list)
+    const first = list.listRequestController
 
-    c.$event.detail = {}
-    listComponentRequest(c)
+    list.$event.detail = {}
+    listComponentRequest(list)
 
     expect(first.signal.aborted).toBe(true)
-    expect(c.listRequestController.signal.aborted).toBe(false)
+    expect(list.listRequestController.signal.aborted).toBe(false)
   })
 
-  it('should render only the latest response when an earlier one is slower', async () => {
+  it('should render and push only the latest response when an earlier one is slower', async () => {
+    let releaseSlow
+    const slowResponse = new Promise(resolve => {
+      releaseSlow = () => resolve([200, '<div><div id="list">slow</div></div>'])
+    })
+
     mockAxios.reset()
-    mockAxios
-      .onGet(/query-tag=slow/)
-      .reply(
-        () =>
-          new Promise(resolve =>
-            setTimeout(() => resolve([200, '<div><div id="list">slow</div></div>']), 50),
-          ),
-      )
+    mockAxios.onGet(/query-tag=slow/).reply(() => slowResponse)
     mockAxios.onGet(/query-tag=fast/).reply(200, '<div><div id="list">fast</div></div>')
 
-    const c = component()
+    history.replaceState({}, '', '/')
+
+    const list = listComponent()
     const after = jest.fn()
 
-    c.$event.detail = {queryTag: 'query-tag=slow'}
-    listComponentRequest(c, false, after)
+    list.$event.detail = {queryTag: 'query-tag=slow'}
+    listComponentRequest(list, true, after)
 
-    c.$event.detail = {queryTag: 'query-tag=fast'}
-    listComponentRequest(c, false, after)
+    list.$event.detail = {queryTag: 'query-tag=fast'}
+    listComponentRequest(list, true, after)
 
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await settled()
+    releaseSlow()
+    await settled()
 
     expect(document.body.textContent).toBe('fast')
+    expect(location.search).toBe('?query-tag=fast')
     expect(after).toHaveBeenCalledTimes(1)
     expect(MoonShine.ui.toast).not.toHaveBeenCalled()
   })
