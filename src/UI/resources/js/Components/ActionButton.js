@@ -79,8 +79,7 @@ export default () => ({
   request() {
     this.url = this.$el.href
 
-    // data-without-loading buttons never set loading, so repeat clicks are held off by inFlight
-    if (this.loading || this.inFlight || this.$el.dataset?.stopAsync) {
+    if (this.inFlight || this.$el.dataset?.stopAsync) {
       return
     }
 
@@ -124,7 +123,7 @@ export default () => ({
 
     this.inFlight = true
 
-    request(this, this.url, this.method, body, {}, componentRequestData).finally(() => {
+    return request(this, this.url, this.method, body, {}, componentRequestData).finally(() => {
       this.inFlight = false
     })
   },

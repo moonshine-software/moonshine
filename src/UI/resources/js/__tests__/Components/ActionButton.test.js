@@ -7,7 +7,8 @@ let mockAxios
 let toggled
 
 const onToggle = () => toggled++
-const flush = () => new Promise(resolve => setTimeout(resolve, 10))
+// dispatchEvents() fires response events on a zero-delay timer, after request() settles
+const dispatched = () => new Promise(resolve => setTimeout(resolve))
 
 beforeEach(() => {
   mockAxios = new MockAdapter(axios)
@@ -42,9 +43,8 @@ test('a double click on an async modal button sends one request and toggles the 
   mockAxios.onGet('http://localhost/resource/item/1/edit').reply(200, '<form>Item 1</form>')
   const button = makeButton()
 
-  button.request()
-  button.request()
-  await flush()
+  await Promise.all([button.request(), button.request()])
+  await dispatched()
 
   expect(mockAxios.history.get.length).toBe(1)
   expect(toggled).toBe(1)
@@ -55,10 +55,9 @@ test('an async button accepts a new click once its request has finished', async 
   mockAxios.onGet('http://localhost/resource/item/1/edit').reply(200, '<form>Item 1</form>')
   const button = makeButton()
 
-  button.request()
-  await flush()
-  button.request()
-  await flush()
+  await button.request()
+  await button.request()
+  await dispatched()
 
   expect(mockAxios.history.get.length).toBe(2)
   expect(toggled).toBe(2)
@@ -68,12 +67,11 @@ test('an async button accepts a new click after a failed request', async () => {
   mockAxios.onGet('http://localhost/resource/item/1/edit').networkErrorOnce()
   const button = makeButton()
 
-  button.request()
-  await flush()
+  await button.request()
 
   mockAxios.onGet('http://localhost/resource/item/1/edit').reply(200, '<form>Item 1</form>')
-  button.request()
-  await flush()
+  await button.request()
+  await dispatched()
 
   expect(mockAxios.history.get.length).toBe(2)
   expect(toggled).toBe(1)
