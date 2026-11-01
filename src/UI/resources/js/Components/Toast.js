@@ -27,14 +27,11 @@ export default () => ({
   },
 
   remove(id) {
-    const toast = this.visible.find(toast => toast.id == id)
-    const index = this.visible.indexOf(toast)
+    const index = this.visible.findIndex(toast => toast.id === id)
 
     // Already closed by a click: splice(-1) would remove the newest toast instead
-    if (index === -1) {
-      return
+    if (index !== -1) {
+      this.visible.splice(index, 1)
     }
-
-    this.visible.splice(index, 1)
   },
 })
