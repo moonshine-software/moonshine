@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -152,6 +153,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
     /**
      * @param  array<int|string>  $ids
+     * @throws AuthorizationException
      */
     public function massDelete(array $ids): void
     {
@@ -165,13 +167,25 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
             return;
         }
 
+        $items = $this->modifyItemQueryBuilder($this->getModel()->newQuery())
+            ->whereKey($ids)
+            ->get();
+
+        $current = $this->item;
+
+        try {
+            $denied = $items->contains(fn (Model $item): bool => ! $this->setItem($item)->can(Ability::DELETE));
+        } finally {
+            $this->setItem($current);
+        }
+
+        if ($denied) {
+            throw new AuthorizationException();
+        }
+
         $this->beforeMassDeleting($ids);
 
-        $this->getDataInstance()
-            ->newModelQuery()
-            ->whereIn($this->getDataInstance()->getKeyName(), $ids)
-            ->get()
-            ->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
+        $items->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
 
         $this->afterMassDeleted($ids);
     }
