@@ -6,6 +6,8 @@ namespace MoonShine\Laravel\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Http\Kernel as KernelContract;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Async methods may change state for any HTTP verb, but the framework's
  * request-forgery middleware exempts GET, HEAD and OPTIONS. For those verbs
  * this middleware runs the request-forgery middleware already configured for
- * the route once more, as if the request used an unsafe verb. Configured
+ * the route or globally once more, as if the request used an unsafe verb. Configured
  * exclusions, custom token checks and origin verification therefore apply
  * unchanged, and routes without request-forgery protection (for example a
  * session-less API setup) are left alone.
@@ -41,7 +43,11 @@ final readonly class VerifyAsyncMethodCsrfToken
         }
 
         foreach ($this->getForgeryMiddleware($route) as $middleware) {
-            $this->verify($middleware, $request);
+            $rejection = $this->verify($middleware, $request);
+
+            if ($rejection !== null) {
+                return $rejection;
+            }
         }
 
         return $next($request);
@@ -56,7 +62,7 @@ final readonly class VerifyAsyncMethodCsrfToken
         $base = class_exists(PreventRequestForgery::class) ? PreventRequestForgery::class : VerifyCsrfToken::class;
         $middleware = [];
 
-        foreach ($this->router->gatherRouteMiddleware($route) as $name) {
+        foreach ([...$this->getGlobalMiddleware(), ...$this->router->gatherRouteMiddleware($route)] as $name) {
             if (! \is_string($name)) {
                 continue;
             }
@@ -72,9 +78,27 @@ final readonly class VerifyAsyncMethodCsrfToken
     }
 
     /**
+     * Request-forgery protection may also be registered in the global HTTP middleware stack.
+     *
+     * @return array<array-key, mixed>
+     */
+    private function getGlobalMiddleware(): array
+    {
+        $kernel = $this->container->make(KernelContract::class);
+
+        if (! $kernel instanceof Kernel) {
+            return [];
+        }
+
+        return $this->router->resolveMiddleware($kernel->getGlobalMiddleware());
+    }
+
+    /**
+     * Returns the middleware's own response when it rejects the request without throwing.
+     *
      * @param  class-string  $middleware
      */
-    private function verify(string $middleware, Request $request): void
+    private function verify(string $middleware, Request $request): mixed
     {
         // PUT is not subject to method overriding, unlike POST, so `_method` cannot turn the check back into a read.
         $verification = clone $request;
@@ -83,9 +107,21 @@ final readonly class VerifyAsyncMethodCsrfToken
         $instance = $this->container->make($middleware);
 
         if (! \is_object($instance) || ! method_exists($instance, 'handle')) {
-            return;
+            return null;
         }
 
-        $instance->handle($verification, static fn (): Response => new Response());
+        $passed = false;
+
+        $response = $instance->handle($verification, static function () use (&$passed): Response {
+            $passed = true;
+
+            return new Response();
+        });
+
+        if ($passed) {
+            return null;
+        }
+
+        return $response ?? new Response(status: 419);
     }
 }

@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Session\TokenMismatchException;
 use MoonShine\Support\Attributes\AsyncMethod;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 
@@ -25,6 +27,22 @@ class AsyncMethodCsrfResource extends TestItemResource
 class AsyncMethodCsrfExceptMiddleware extends VerifyCsrfToken
 {
     protected $except = ['*/method/*'];
+}
+
+class AsyncMethodCsrfRespondingMiddleware extends VerifyCsrfToken
+{
+    public function handle($request, Closure $next)
+    {
+        try {
+            return parent::handle($request, $next);
+        } catch (TokenMismatchException) {
+            return response('Page expired', 419);
+        }
+    }
+}
+
+class AsyncMethodGlobalCsrfMiddleware extends VerifyCsrfToken
+{
 }
 
 beforeEach(function (): void {
@@ -109,3 +127,32 @@ it('accepts a same-origin read request without a token', function (): void {
 
     expect(AsyncMethodCsrfResource::$calls)->toBe(1);
 })->skip(! class_exists(PreventRequestForgery::class), 'Origin verification requires Laravel 13.');
+
+it('returns the rejection of a request-forgery middleware that responds instead of throwing', function (): void {
+    $this->app->bind(VerifyCsrfToken::class, AsyncMethodCsrfRespondingMiddleware::class);
+
+    asAdmin()->withSession(['_token' => 'valid-session-token'])
+        ->call('GET', $this->methodUrl, server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'cross-site',
+            'HTTP_X_CSRF_TOKEN' => 'invalid-token',
+        ])
+        ->assertStatus(419)
+        ->assertSee('Page expired');
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(0);
+});
+
+it('verifies read requests against global request-forgery middleware', function (): void {
+    $this->app->make(Kernel::class)->pushMiddleware(AsyncMethodGlobalCsrfMiddleware::class);
+
+    asAdmin()->withSession(['_token' => 'valid-session-token'])
+        ->withoutMiddleware(VerifyCsrfToken::class)
+        ->call('GET', $this->methodUrl, server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'cross-site',
+        ])
+        ->assertStatus(419);
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(0);
+});
