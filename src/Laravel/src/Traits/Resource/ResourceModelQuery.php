@@ -26,8 +26,11 @@ use MoonShine\Crud\Contracts\HasQueryTagsContract;
 use MoonShine\Crud\Exceptions\CrudResourceException;
 use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Crud\Traits\Resource\ResourceQuery;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Throwable;
 
 /**
@@ -376,12 +379,18 @@ trait ResourceModelQuery
             return $this;
         }
 
-        if (! method_exists($this->getDataInstance(), $relationName)) {
+        if (! $this->isParentRelation($relationName)) {
             throw CrudResourceException::relationNotFound($relationName);
         }
 
-        /** @var BelongsToMany<Model, Model>|BelongsTo<Model, Model>|HasOneOrMany<Model, Model, mixed> $relation */
         $relation = $this->getDataInstance()->{$relationName}();
+
+        if (! $relation instanceof BelongsToMany
+            && ! $relation instanceof BelongsTo
+            && ! $relation instanceof HasOneOrMany
+        ) {
+            throw CrudResourceException::relationNotFound($relationName);
+        }
 
         if ($relation instanceof BelongsToMany) {
             $this->newQuery()->whereRelation(
@@ -397,6 +406,36 @@ trait ResourceModelQuery
         }
 
         return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function isParentRelation(string $relationName): bool
+    {
+        if (! method_exists($this->getDataInstance(), $relationName)) {
+            return false;
+        }
+
+        $method = new ReflectionMethod($this->getDataInstance(), $relationName);
+
+        if (! $method->isPublic() || $method->isStatic() || $method->getNumberOfRequiredParameters() > 0) {
+            return false;
+        }
+
+        $type = $method->getReturnType();
+
+        if ($type instanceof ReflectionNamedType && ! $type->isBuiltin() && is_a($type->getName(), Relation::class, true)) {
+            return true;
+        }
+
+        return Collection::make([
+            $this->getIndexFields(),
+            $this->getFormFields(withOutside: true),
+            $this->getDetailFields(withOutside: true),
+        ])->contains(
+            static fn (Fields $fields): bool => $fields->onlyFields()->findByRelation($relationName) !== null,
+        );
     }
 
     /**
