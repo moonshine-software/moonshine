@@ -12,6 +12,7 @@ export default () => ({
   withQueryParams: false,
   withFormData: false,
   loading: false,
+  inFlight: false,
   btnText: '',
 
   init() {
@@ -78,7 +79,7 @@ export default () => ({
   request() {
     this.url = this.$el.href
 
-    if (this.loading || this.$el.dataset?.stopAsync) {
+    if (this.inFlight || this.$el.dataset?.stopAsync) {
       return
     }
 
@@ -120,7 +121,11 @@ export default () => ({
       .withBeforeHandleResponse(stopLoading)
       .withErrorCallback(stopLoading)
 
-    request(this, this.url, this.method, body, {}, componentRequestData)
+    this.inFlight = true
+
+    return request(this, this.url, this.method, body, {}, componentRequestData).finally(() => {
+      this.inFlight = false
+    })
   },
   _hotKey(event, hotKeys) {
     const normalizedHotkey = hotKeys.map(k => k.toLowerCase())
