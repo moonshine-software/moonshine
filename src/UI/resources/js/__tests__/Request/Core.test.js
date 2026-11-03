@@ -165,6 +165,22 @@ describe('request function', () => {
     expect(MoonShine.ui.toast).toHaveBeenCalledWith('Error', 'error')
   })
 
+  it('should stay silent when the request is aborted', async () => {
+    const controller = new AbortController()
+    const errorCallback = jest.fn()
+    const componentRequestData = new ComponentRequestData()
+      .withSignal(controller.signal)
+      .withErrorCallback(errorCallback)
+    mockAxios.onGet('/test-url').reply(200, {message: 'Success'})
+
+    controller.abort()
+    await request(t, '/test-url', 'get', {}, {}, componentRequestData)
+
+    expect(t.loading).toBe(true)
+    expect(errorCallback).not.toHaveBeenCalled()
+    expect(MoonShine.ui.toast).not.toHaveBeenCalled()
+  })
+
   it('should display "Unknown Error" if no error message is present', async () => {
     mockAxios.onGet('/test-url').networkError()
 

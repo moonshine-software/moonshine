@@ -101,6 +101,11 @@ export function listComponentRequest(component, pushState = false, after = null,
     delete eventData.events
   }
 
+  // Fast clicks (query tags, pages, sort) reuse this component: only the last request may render
+  component.listRequestController?.abort()
+  const controller = new AbortController()
+  component.listRequestController = controller
+
   const originalUrl = url
 
   url = urlWithQuery(url, getQueryString(eventData))
@@ -166,8 +171,13 @@ export function listComponentRequest(component, pushState = false, after = null,
     })
     .withEvents(events)
     .withErrorCallback(stopLoading)
+    .withSignal(controller.signal)
 
   request(component, url, 'get', {}, {}, componentRequestData).then(() => {
+    if (controller.signal.aborted) {
+      return
+    }
+
     if (typeof after === 'function') {
       after()
     }

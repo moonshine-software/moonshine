@@ -7,6 +7,8 @@ export default (async = false, asyncUrl = '') => ({
   async: async,
   asyncUrl: asyncUrl,
   loading: false,
+  // Set by listComponentRequest(): aborted when a newer list request starts
+  listRequestController: null,
   init() {},
   asyncRequest() {
     listComponentRequest(this, this.$root?.dataset?.pushState)

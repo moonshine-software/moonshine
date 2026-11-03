@@ -23,6 +23,8 @@ export default (
   creatable: creatable,
   reindex: reindex,
   loading: false,
+  // Set by listComponentRequest(): aborted when a newer list request starts
+  listRequestController: null,
   stickyColClass: 'sticky-col',
   init() {
     this.block = this.$root
