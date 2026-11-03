@@ -9,7 +9,9 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -22,8 +24,11 @@ use MoonShine\Crud\Contracts\HasQueryTagsContract;
 use MoonShine\Crud\Exceptions\CrudResourceException;
 use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Crud\Traits\Resource\ResourceQuery;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Throwable;
 
 /**
@@ -351,26 +356,63 @@ trait ResourceModelQuery
             return $this;
         }
 
-        if (! method_exists($this->getDataInstance(), $relationName)) {
+        if (! $this->isParentRelation($relationName)) {
             throw CrudResourceException::relationNotFound($relationName);
         }
 
         $relation = $this->getDataInstance()->{$relationName}();
 
-        $this->newQuery()->when(
-            $relation instanceof BelongsToMany,
-            static fn (Builder $q) => $q->whereRelation(
+        if (! $relation instanceof BelongsToMany
+            && ! $relation instanceof BelongsTo
+            && ! $relation instanceof HasOneOrMany
+        ) {
+            throw CrudResourceException::relationNotFound($relationName);
+        }
+
+        if ($relation instanceof BelongsToMany) {
+            $this->newQuery()->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
                 $parentId,
-            ),
-            static fn (Builder $q) => $q->where(
+            );
+        } else {
+            $this->newQuery()->where(
                 $relation->getForeignKeyName(),
                 $parentId,
-            ),
-        );
+            );
+        }
 
         return $this;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function isParentRelation(string $relationName): bool
+    {
+        if (! method_exists($this->getDataInstance(), $relationName)) {
+            return false;
+        }
+
+        $method = new ReflectionMethod($this->getDataInstance(), $relationName);
+
+        if (! $method->isPublic() || $method->isStatic() || $method->getNumberOfRequiredParameters() > 0) {
+            return false;
+        }
+
+        $type = $method->getReturnType();
+
+        if ($type instanceof ReflectionNamedType && ! $type->isBuiltin() && is_a($type->getName(), Relation::class, true)) {
+            return true;
+        }
+
+        return Collection::make([
+            $this->getIndexFields(),
+            $this->getFormFields(withOutside: true),
+            $this->getDetailFields(withOutside: true),
+        ])->contains(
+            static fn (Fields $fields): bool => $fields->onlyFields()->findByRelation($relationName) !== null,
+        );
     }
 
     /**
