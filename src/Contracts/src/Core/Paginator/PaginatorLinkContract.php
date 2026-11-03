@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
 /**
- * @extends Arrayable<string, array<string|bool>>
+ * @extends Arrayable<string, string|bool>
  */
 interface PaginatorLinkContract extends Arrayable, JsonSerializable
 {

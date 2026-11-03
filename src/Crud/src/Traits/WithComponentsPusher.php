@@ -14,7 +14,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 trait WithComponentsPusher
 {
     /**
-     * @var array<string, Closure|ComponentContract>
+     * @var list<Closure|ComponentContract>
      */
     protected static array $pushedComponents = [];
 
@@ -28,12 +28,12 @@ trait WithComponentsPusher
      */
     protected function getPushedComponents(): array
     {
-        return Collection::make(static::$pushedComponents)
+        return array_values(Collection::make(static::$pushedComponents)
             ->map(
                 fn (Closure|ComponentContract $component) => $component instanceof Closure
                 ? value($component, $this)
                 : $component
             )
-            ->toArray();
+            ->toArray());
     }
 }
