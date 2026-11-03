@@ -240,15 +240,22 @@ trait ResourceQuery
      */
     protected function prepareOrder(): array
     {
+        $fields = $this->getIndexFields();
         $column = $this->getSortColumn();
         $direction = $this->getSortDirection();
 
-        if (($sort = $this->getQueryParam('sort')) && \is_string($sort)) {
-            $column = ltrim($sort, '-');
+        $sort = $this->getQueryParam('sort');
+        $sort = \is_string($sort) ? $sort : '';
+        $requested = ltrim($sort, '-');
+        $field = $fields->findByColumn($requested);
+
+        // A request may sort only by the default column or by a visible sortable index field
+        if ($requested === $column || ($field?->isSortable() && $field->isSee())) {
+            $column = $requested;
             $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         }
 
-        $field = $this->getIndexFields()->findByColumn($column);
+        $field = $fields->findByColumn($column);
 
         $callback = $field?->getSortableCallback();
 
