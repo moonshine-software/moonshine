@@ -199,11 +199,15 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
             throw new AuthorizationException();
         }
 
-        $this->beforeMassDeleting($ids);
+        // Hooks receive only the keys that passed the item query, not the raw request input.
+        /** @var array<int, int|string> $keys */
+        $keys = $items->modelKeys();
+
+        $this->beforeMassDeleting($keys);
 
         $items->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
 
-        $this->afterMassDeleted($ids);
+        $this->afterMassDeleted($keys);
     }
 
     /**

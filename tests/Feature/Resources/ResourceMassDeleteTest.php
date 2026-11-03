@@ -34,6 +34,27 @@ class MassDeleteItemQueryResource extends TestItemResource
     }
 }
 
+class MassDeleteHookResource extends TestItemResource
+{
+    /** @var list<array<array-key, int|string>> */
+    public static array $hookIds = [];
+
+    protected function modifyItemQueryBuilder(Builder $builder): Builder
+    {
+        return $builder->where('name', '!=', 'Hidden');
+    }
+
+    protected function beforeMassDeleting(array $ids): void
+    {
+        self::$hookIds[] = $ids;
+    }
+
+    protected function afterMassDeleted(array $ids): void
+    {
+        self::$hookIds[] = $ids;
+    }
+}
+
 class MassDeleteItemPolicy
 {
     public function massDelete(MoonshineUser $user): bool
@@ -108,4 +129,19 @@ it('restores the resource item after a denied mass delete', function (): void {
         ->toThrow(AuthorizationException::class);
     expect($resource->getItem())->toBe($initial);
     $this->assertDatabaseHas('items', ['id' => $protected->getKey()]);
+});
+
+it('passes only the keys of deleted items to the mass delete hooks', function (): void {
+    MassDeleteHookResource::$hookIds = [];
+    $visible = createItem(1, 0);
+    $hidden = createItem(1, 0);
+    $hidden->update(['name' => 'Hidden']);
+    $this->moonshineCore->resources([MassDeleteHookResource::class]);
+    $resource = $this->moonshineCore->getResources()->findByClass(MassDeleteHookResource::class);
+
+    asAdmin()->delete($resource->getRoute('crud.massDelete'), ['ids' => [$visible->getKey(), $hidden->getKey(), 999999]])
+        ->assertRedirect();
+
+    expect(MassDeleteHookResource::$hookIds)->toBe([[$visible->getKey()], [$visible->getKey()]]);
+    $this->assertDatabaseHas('items', ['id' => $hidden->getKey()]);
 });
