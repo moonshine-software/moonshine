@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use MoonShine\Support\Attributes\AsyncMethod;
 use MoonShine\Tests\Fixtures\Resources\TestItemResource;
 
@@ -18,6 +20,11 @@ class AsyncMethodCsrfResource extends TestItemResource
 
         return 'Method executed';
     }
+}
+
+class AsyncMethodCsrfExceptMiddleware extends VerifyCsrfToken
+{
+    protected $except = ['*/method/*'];
 }
 
 beforeEach(function (): void {
@@ -56,3 +63,49 @@ it('executes an async method with a valid token for every supported verb', funct
 
     expect(AsyncMethodCsrfResource::$calls)->toBe(1);
 })->with(['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']);
+
+it('ignores a method override in the query string of a read request', function (): void {
+    asAdmin()->withSession(['_token' => 'valid-session-token'])
+        ->call('GET', $this->methodUrl . '&_method=GET', server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'cross-site',
+        ])
+        ->assertStatus(419);
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(0);
+});
+
+it('respects exclusions of the configured request-forgery middleware', function (): void {
+    $this->app->bind(VerifyCsrfToken::class, AsyncMethodCsrfExceptMiddleware::class);
+
+    asAdmin()->withSession(['_token' => 'valid-session-token'])
+        ->call('GET', $this->methodUrl, server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'cross-site',
+        ])
+        ->assertOk();
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(1);
+});
+
+it('leaves routes without request-forgery middleware alone', function (string $verb): void {
+    asAdmin()->withoutMiddleware(VerifyCsrfToken::class)
+        ->call($verb, $this->methodUrl, server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'cross-site',
+        ])
+        ->assertOk();
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(1);
+})->with(['GET', 'POST']);
+
+it('accepts a same-origin read request without a token', function (): void {
+    asAdmin()->withSession(['_token' => 'valid-session-token'])
+        ->call('GET', $this->methodUrl, server: [
+            'HTTP_ACCEPT' => 'application/json',
+            'HTTP_SEC_FETCH_SITE' => 'same-origin',
+        ])
+        ->assertOk();
+
+    expect(AsyncMethodCsrfResource::$calls)->toBe(1);
+})->skip(! class_exists(PreventRequestForgery::class), 'Origin verification requires Laravel 13.');
