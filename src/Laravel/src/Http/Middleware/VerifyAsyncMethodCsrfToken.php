@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Http\Kernel as KernelContract;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
@@ -12,9 +14,9 @@ use ReflectionProperty;
 
 /**
  * Async methods may change state for any HTTP verb, so this middleware also
- * verifies GET, HEAD and OPTIONS requests. It applies only when the route is
- * already protected by a request-forgery middleware (for example, not in a
- * session-less API setup) and reuses that middleware's exclusions.
+ * verifies GET, HEAD and OPTIONS requests. It applies only when the route or
+ * the global middleware stack already has a request-forgery middleware (for
+ * example, not in a session-less API setup) and reuses its exclusions.
  */
 final class VerifyAsyncMethodCsrfToken extends VerifyCsrfToken
 {
@@ -45,16 +47,17 @@ final class VerifyAsyncMethodCsrfToken extends VerifyCsrfToken
      */
     private function getConfiguredMiddleware(Route $route): array
     {
+        $router = $this->app->make(Router::class);
         $middleware = [];
 
-        foreach ($this->app->make(Router::class)->gatherRouteMiddleware($route) as $name) {
+        foreach ([...$router->resolveMiddleware($this->getGlobalMiddleware()), ...$router->gatherRouteMiddleware($route)] as $name) {
             if (! \is_string($name)) {
                 continue;
             }
 
             $class = explode(':', $name, 2)[0];
 
-            if ($class === self::class || ! class_exists($class) || ! is_a($class, VerifyCsrfToken::class, true)) {
+            if ($class === self::class || isset($middleware[$class]) || ! class_exists($class) || ! is_a($class, VerifyCsrfToken::class, true)) {
                 continue;
             }
 
@@ -62,11 +65,34 @@ final class VerifyAsyncMethodCsrfToken extends VerifyCsrfToken
 
             // A configured class may be rebound to another implementation, e.g. to disable verification.
             if ($instance instanceof VerifyCsrfToken) {
-                $middleware[] = $instance;
+                $middleware[$class] = $instance;
             }
         }
 
-        return $middleware;
+        return array_values($middleware);
+    }
+
+    /**
+     * Request-forgery protection may also be registered in the global HTTP middleware stack.
+     *
+     * @return array<array-key, mixed>
+     */
+    private function getGlobalMiddleware(): array
+    {
+        $kernel = $this->app->make(KernelContract::class);
+
+        if (! $kernel instanceof Kernel) {
+            return [];
+        }
+
+        // getGlobalMiddleware() is not available on Laravel 10.
+        if (method_exists($kernel, 'getGlobalMiddleware')) { // @phpstan-ignore function.alreadyNarrowedType
+            return $kernel->getGlobalMiddleware();
+        }
+
+        $middleware = (new ReflectionProperty($kernel, 'middleware'))->getValue($kernel);
+
+        return \is_array($middleware) ? $middleware : [];
     }
 
     /**
