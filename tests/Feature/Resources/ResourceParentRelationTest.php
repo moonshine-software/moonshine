@@ -71,6 +71,17 @@ class ParentRelationTestResource extends TestItemResource
     }
 }
 
+class ParentRelationItemDetailResource extends ParentRelationTestResource
+{
+    protected function detailFields(): iterable
+    {
+        // Detail fields may depend on the current item, which an index request does not have.
+        $this->getItemOrFail();
+
+        return parent::detailFields();
+    }
+}
+
 beforeEach(function (): void {
     ParentRelationTestItem::$methodCalled = false;
     ParentRelationTestItem::$untypedCalled = false;
@@ -119,3 +130,14 @@ it('filters by a declared parent relation', function (string $relation): void {
         ->assertSee('Included parent relation item')
         ->assertDontSee('Excluded parent relation item');
 })->with(['category', 'otherCategory', 'unionCategory', 'legacyCategory']);
+
+it('does not build detail fields when the relation is declared in index fields', function (): void {
+    $this->moonshineCore->resources([ParentRelationItemDetailResource::class]);
+    $resource = $this->moonshineCore->getResources()->findByClass(ParentRelationItemDetailResource::class);
+    $item = createItem(1, 0);
+    $item->update(['name' => 'Index relation item', 'category_id' => Category::factory()->create()->getKey()]);
+
+    asAdmin()->getJson($resource->getRoute('crud.index') . '?_parentId=legacyCategory-' . $item->category_id)
+        ->assertOk()
+        ->assertSee('Index relation item');
+});

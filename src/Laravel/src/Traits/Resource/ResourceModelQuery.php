@@ -440,12 +440,13 @@ trait ResourceModelQuery
             return true;
         }
 
+        // Build each field set only when the previous one has no match: detail or form fields may need the current item.
         return Collection::make([
-            $this->getIndexFields(),
-            $this->getFormFields(withOutside: true),
-            $this->getDetailFields(withOutside: true),
+            fn (): Fields => $this->getIndexFields(),
+            fn (): Fields => $this->getFormFields(withOutside: true),
+            fn (): Fields => $this->getDetailFields(withOutside: true),
         ])->contains(
-            static fn (Fields $fields): bool => $fields->onlyFields()->findByRelation($relationName) !== null,
+            static fn (Closure $fields): bool => $fields()->onlyFields()->findByRelation($relationName) !== null,
         );
     }
 
