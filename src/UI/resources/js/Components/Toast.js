@@ -1,11 +1,14 @@
 /* Toasts (notices) */
 
+// Date.now() repeats for toasts added in the same millisecond
+let lastId = 0
+
 export default () => ({
   toasts: [],
   visible: [],
 
   add(toast) {
-    toast.id = Date.now()
+    toast.id = ++lastId
     this.toasts.push(toast)
     this.fire(toast.id)
   },
@@ -24,8 +27,11 @@ export default () => ({
   },
 
   remove(id) {
-    const toast = this.visible.find(toast => toast.id == id)
-    const index = this.visible.indexOf(toast)
-    this.visible.splice(index, 1)
+    const index = this.visible.findIndex(toast => toast.id === id)
+
+    // Already closed by a click: splice(-1) would remove the newest toast instead
+    if (index !== -1) {
+      this.visible.splice(index, 1)
+    }
   },
 })
