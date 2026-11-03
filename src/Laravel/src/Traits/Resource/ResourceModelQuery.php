@@ -19,7 +19,6 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\HasQueryTagsContract;
 use MoonShine\Crud\Exceptions\CrudResourceException;
 use MoonShine\Crud\QueryTags\QueryTag;
@@ -29,6 +28,9 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 /**
@@ -345,7 +347,8 @@ trait ResourceModelQuery
     }
 
     /**
-     * @throws ResourceException
+     * @throws NotFoundHttpException
+     * @throws Throwable
      */
     protected function withParentResource(): static
     {
@@ -357,7 +360,7 @@ trait ResourceModelQuery
         }
 
         if (! $this->isParentRelation($relationName)) {
-            throw CrudResourceException::relationNotFound($relationName);
+            throw $this->parentRelationNotFound($relationName);
         }
 
         $relation = $this->getDataInstance()->{$relationName}();
@@ -366,7 +369,7 @@ trait ResourceModelQuery
             && ! $relation instanceof BelongsTo
             && ! $relation instanceof HasOneOrMany
         ) {
-            throw CrudResourceException::relationNotFound($relationName);
+            throw $this->parentRelationNotFound($relationName);
         }
 
         if ($relation instanceof BelongsToMany) {
@@ -386,6 +389,16 @@ trait ResourceModelQuery
     }
 
     /**
+     * The parent relation comes from the request, so an unknown name is a missing page, not a server error.
+     */
+    protected function parentRelationNotFound(string $relationName): NotFoundHttpException
+    {
+        $exception = CrudResourceException::relationNotFound($relationName);
+
+        return new NotFoundHttpException($exception->getMessage(), $exception);
+    }
+
+    /**
      * @throws Throwable
      */
     protected function isParentRelation(string $relationName): bool
@@ -400,9 +413,7 @@ trait ResourceModelQuery
             return false;
         }
 
-        $type = $method->getReturnType();
-
-        if ($type instanceof ReflectionNamedType && ! $type->isBuiltin() && is_a($type->getName(), Relation::class, true)) {
+        if ($this->isRelationReturnType($method->getReturnType())) {
             return true;
         }
 
@@ -413,6 +424,26 @@ trait ResourceModelQuery
         ])->contains(
             static fn (Fields $fields): bool => $fields->onlyFields()->findByRelation($relationName) !== null,
         );
+    }
+
+    /**
+     * Accepts a relation type, a nullable relation type, or a union of relation types.
+     */
+    protected function isRelationReturnType(?ReflectionType $type): bool
+    {
+        $isRelation = static fn (ReflectionType $type): bool => $type instanceof ReflectionNamedType
+            && ! $type->isBuiltin()
+            && is_a($type->getName(), Relation::class, true);
+
+        if ($type instanceof ReflectionUnionType) {
+            $types = Collection::make($type->getTypes())->reject(
+                static fn (ReflectionType $type): bool => $type instanceof ReflectionNamedType && $type->getName() === 'null',
+            );
+
+            return $types->isNotEmpty() && $types->every($isRelation);
+        }
+
+        return $type !== null && $isRelation($type);
     }
 
     /**
