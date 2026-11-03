@@ -130,20 +130,19 @@ export default async function request(
       } catch (e) {
         console.error(e.message)
 
-        MoonShine.ui.toast('Unknown Error', 'error')
-        return
+        data = null
       }
+    }
+
+    // Runs without a response too, so the caller can recover (e.g. re-enable a form's submit button)
+    if (componentRequestData.hasErrorCallback()) {
+      componentRequestData.errorCallback(data || {}, t)
     }
 
     if (!data) {
       console.error(errorResponse.message)
-
       MoonShine.ui.toast('Unknown Error', 'error')
       return
-    }
-
-    if (componentRequestData.hasErrorCallback()) {
-      componentRequestData.errorCallback(data, t)
     }
 
     if (t.$el?.dataset?.withoutErrorToast === undefined) {
