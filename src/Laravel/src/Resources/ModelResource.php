@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Resources;
 
 use Closure;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -152,6 +153,7 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
 
     /**
      * @param  array<int|string>  $ids
+     * @throws AuthorizationException
      */
     public function massDelete(array $ids): void
     {
@@ -165,15 +167,31 @@ abstract class ModelResource extends CrudResource implements WithQueryBuilderCon
             return;
         }
 
-        $this->beforeMassDeleting($ids);
+        $items = $this->modifyItemQueryBuilder($this->getModel()->newQuery())
+            ->whereKey($ids)
+            ->get();
 
-        $this->getDataInstance()
-            ->newModelQuery()
-            ->whereIn($this->getDataInstance()->getKeyName(), $ids)
-            ->get()
-            ->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
+        $current = $this->item;
 
-        $this->afterMassDeleted($ids);
+        try {
+            $denied = $items->contains(fn (Model $item): bool => ! $this->setItem($item)->can(Ability::DELETE));
+        } finally {
+            $this->setItem($current);
+        }
+
+        if ($denied) {
+            throw new AuthorizationException();
+        }
+
+        // Hooks receive only the keys that passed the item query, not the raw request input.
+        /** @var array<int, int|string> $keys */
+        $keys = $items->modelKeys();
+
+        $this->beforeMassDeleting($keys);
+
+        $items->each(fn (Model $item): bool => $this->delete($this->getCaster()->cast($item)));
+
+        $this->afterMassDeleted($keys);
     }
 
     /**
