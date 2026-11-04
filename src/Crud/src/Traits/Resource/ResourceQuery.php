@@ -247,7 +247,7 @@ trait ResourceQuery
         $sort = $this->getQueryParam('sort');
         $sort = \is_string($sort) ? $sort : '';
         $requested = ltrim($sort, '-');
-        $field = $fields->findByColumn($requested);
+        $field = $requested === '' ? null : $fields->findByColumn($requested);
 
         // A request may sort only by the default column or by a visible sortable index field
         if ($requested === $column || ($field?->isSortable() && $field->isSee())) {
