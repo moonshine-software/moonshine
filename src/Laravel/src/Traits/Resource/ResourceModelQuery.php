@@ -467,7 +467,7 @@ trait ResourceModelQuery
             return $types->isNotEmpty() && $types->every($isRelation);
         }
 
-        return $type !== null && $isRelation($type);
+        return $type instanceof ReflectionType && $isRelation($type);
     }
 
     /**
