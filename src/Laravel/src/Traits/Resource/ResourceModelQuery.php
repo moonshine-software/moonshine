@@ -9,7 +9,9 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -17,13 +19,18 @@ use Illuminate\Support\Str;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Contracts\UI\ApplyContract;
 use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Core\Exceptions\ResourceException;
 use MoonShine\Crud\Contracts\HasQueryTagsContract;
 use MoonShine\Crud\Exceptions\CrudResourceException;
 use MoonShine\Crud\QueryTags\QueryTag;
 use MoonShine\Crud\Traits\Resource\ResourceQuery;
+use MoonShine\Laravel\Collections\Fields;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Laravel\Support\DBOperators;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 /**
@@ -340,7 +347,8 @@ trait ResourceModelQuery
     }
 
     /**
-     * @throws ResourceException
+     * @throws NotFoundHttpException
+     * @throws Throwable
      */
     protected function withParentResource(): static
     {
@@ -351,26 +359,92 @@ trait ResourceModelQuery
             return $this;
         }
 
-        if (! method_exists($this->getDataInstance(), $relationName)) {
-            throw CrudResourceException::relationNotFound($relationName);
+        if (! $this->isParentRelation($relationName)) {
+            throw $this->parentRelationNotFound($relationName);
         }
 
         $relation = $this->getDataInstance()->{$relationName}();
 
-        $this->newQuery()->when(
-            $relation instanceof BelongsToMany,
-            static fn (Builder $q) => $q->whereRelation(
+        if (! $relation instanceof BelongsToMany
+            && ! $relation instanceof BelongsTo
+            && ! $relation instanceof HasOneOrMany
+        ) {
+            throw $this->parentRelationNotFound($relationName);
+        }
+
+        if ($relation instanceof BelongsToMany) {
+            $this->newQuery()->whereRelation(
                 $relationName,
                 $relation->getQualifiedRelatedKeyName(),
                 $parentId,
-            ),
-            static fn (Builder $q) => $q->where(
+            );
+        } else {
+            $this->newQuery()->where(
                 $relation->getForeignKeyName(),
                 $parentId,
-            ),
-        );
+            );
+        }
 
         return $this;
+    }
+
+    /**
+     * The parent relation comes from the request, so an unknown name is a missing page, not a server error.
+     */
+    protected function parentRelationNotFound(string $relationName): NotFoundHttpException
+    {
+        $exception = CrudResourceException::relationNotFound($relationName);
+
+        return new NotFoundHttpException($exception->getMessage(), $exception);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function isParentRelation(string $relationName): bool
+    {
+        if (! method_exists($this->getDataInstance(), $relationName)) {
+            return false;
+        }
+
+        $method = new ReflectionMethod($this->getDataInstance(), $relationName);
+
+        if (! $method->isPublic() || $method->isStatic() || $method->getNumberOfRequiredParameters() > 0) {
+            return false;
+        }
+
+        if ($this->isRelationReturnType($method->getReturnType())) {
+            return true;
+        }
+
+        // Build each field set only when the previous one has no match: detail or form fields may need the current item.
+        return Collection::make([
+            fn (): Fields => $this->getIndexFields(),
+            fn (): Fields => $this->getFormFields(withOutside: true),
+            fn (): Fields => $this->getDetailFields(withOutside: true),
+        ])->contains(
+            static fn (Closure $fields): bool => $fields()->onlyFields()->findByRelation($relationName) !== null,
+        );
+    }
+
+    /**
+     * Accepts a relation type, a nullable relation type, or a union of relation types.
+     */
+    protected function isRelationReturnType(?ReflectionType $type): bool
+    {
+        $isRelation = static fn (ReflectionType $type): bool => $type instanceof ReflectionNamedType
+            && ! $type->isBuiltin()
+            && is_a($type->getName(), Relation::class, true);
+
+        if ($type instanceof ReflectionUnionType) {
+            $types = Collection::make($type->getTypes())->reject(
+                static fn (ReflectionType $type): bool => $type instanceof ReflectionNamedType && $type->getName() === 'null',
+            );
+
+            return $types->isNotEmpty() && $types->every($isRelation);
+        }
+
+        return $type !== null && $isRelation($type);
     }
 
     /**
