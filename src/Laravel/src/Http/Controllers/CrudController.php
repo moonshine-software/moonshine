@@ -156,6 +156,8 @@ final class CrudController extends MoonShineController
             /** @var array<array-key, int|string> $ids */
             $ids = $request->input('ids', []);
             $resource->massDelete($ids);
+        } catch (AuthorizationException $e) {
+            throw $e;
         } catch (Throwable $e) {
             return $resource->modifyErrorResponse(
                 $this->reportAndResponse($request->ajax(), $e, $redirectRoute),
