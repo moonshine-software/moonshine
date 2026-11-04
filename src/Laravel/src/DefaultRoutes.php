@@ -21,6 +21,7 @@ use MoonShine\Laravel\Http\Controllers\PageController;
 use MoonShine\Laravel\Http\Controllers\ProfileController;
 use MoonShine\Laravel\Http\Controllers\ReactiveController;
 use MoonShine\Laravel\Http\Controllers\UpdateFieldController;
+use MoonShine\Laravel\Http\Middleware\VerifyAsyncMethodCsrfToken;
 
 final readonly class DefaultRoutes
 {
@@ -91,7 +92,9 @@ final readonly class DefaultRoutes
             /**
              * @see EndpointsContract::method()
              */
-            Route::any('method/{pageUri}/{resourceUri?}', MethodController::class)->name('method');
+            Route::any('method/{pageUri}/{resourceUri?}', MethodController::class)
+                ->middleware(VerifyAsyncMethodCsrfToken::class)
+                ->name('method');
             /**
              * @see EndpointsContract::reactive()
              */
