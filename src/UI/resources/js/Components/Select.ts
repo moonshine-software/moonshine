@@ -506,6 +506,8 @@ export default (asyncUrl = '', settings: UserSettings = {}, plugins: TPluginHash
 
     morphClear(type: string) {
         if (this.morphClearValue && type && this.morphClearValue !== type) {
+            // The empty option must come first for native required validation.
+            this.$el.replaceChildren()
             this.selectInstance.clear(true)
             this.selectInstance.clearOptions()
             this.asyncSearch()
