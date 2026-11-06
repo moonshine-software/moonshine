@@ -3,6 +3,25 @@ import select from '../../Components/Select.ts'
 
 let component
 
+test.each([false, true])('changing morph type clears native options and preserves validation (required: %s)', required => {
+  document.body.innerHTML = `<form><select ${required ? 'required' : ''}>
+    <option value="1" selected>Old target</option>
+  </select></form>`
+
+  component = select()
+  component.$el = document.querySelector('select')
+  component.$nextTick = callback => callback()
+  component.init()
+  component.asyncSearch = () => {}
+
+  component.morphClear('OldType')
+  component.morphClear('NewType')
+
+  expect(component.selectInstance.getValue()).toBe('')
+  expect(component.$el.checkValidity()).toBe(!required)
+  expect([...component.$el.options].map(option => option.value)).toEqual([''])
+})
+
 afterEach(() => {
   component?.destroy()
   document.body.innerHTML = ''
