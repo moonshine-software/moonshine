@@ -20,6 +20,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      COMPOSER_ROOT_VERSION: 5.x-dev
+
     strategy:
       fail-fast: true
       matrix:
