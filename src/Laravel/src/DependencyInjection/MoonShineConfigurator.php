@@ -375,6 +375,16 @@ final class MoonShineConfigurator implements ConfiguratorContract, DisplayEscapi
         return $this->set('use_database_notifications', true);
     }
 
+    public function isContentSpacing(): bool
+    {
+        return $this->boolValue($this->get('content_spacing', false));
+    }
+
+    public function contentSpacing(bool $enable = true): self
+    {
+        return $this->set('content_spacing', $enable);
+    }
+
     /**
      * @return class-string<Throwable>
      */
