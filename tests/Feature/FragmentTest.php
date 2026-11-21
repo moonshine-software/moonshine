@@ -73,3 +73,13 @@ it('excludes update scripts from the asynchronous fragment response', function (
         ->toContain('Fragment content', 'fragmentUpdate(')
         ->not->toContain('<script>', 'DOMContentLoaded', 'setInterval(');
 });
+
+it('includes the loader in asynchronous fragment markup only when enabled', function () {
+    $unconfigured = Fragment::make()->name('test-fragment')->render()->fragment('test-fragment');
+    $configured = Fragment::make([
+        FlexibleRender::make(content: 'Fragment content'),
+    ])->name('test-fragment')->withLoader()->render()->fragment('test-fragment');
+
+    expect($unconfigured)->not->toContain('data-fragment-content', 'fragment_loading:');
+    expect($configured)->toContain('data-fragment-content', 'fragment_loading:test-fragment', 'Fragment content');
+});

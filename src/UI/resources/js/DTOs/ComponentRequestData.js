@@ -16,6 +16,14 @@ export class ComponentRequestData {
     this._extraProperties = {}
 
     this._signal = null
+
+    this.waitForFragmentUpdates = false
+  }
+
+  withWaitForFragmentUpdates() {
+    this.waitForFragmentUpdates = true
+
+    return this
   }
 
   get signal() {

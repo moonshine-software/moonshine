@@ -1,6 +1,14 @@
 import DOMUpdater, {extractFromEventDetails} from './DOMUpdater.js'
 
-export function dispatchEvents(events, type, component, extraProperties = {}) {
+export const fragmentUpdateWaitUntil = Symbol('fragmentUpdateWaitUntil')
+
+export function dispatchEvents(
+  events,
+  type,
+  component,
+  extraProperties = {},
+  waitForFragments = false,
+) {
   if (!events) {
     return
   }
@@ -9,13 +17,15 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
     return
   }
 
+  const fragmentUpdates = []
+
   if (events !== '') {
     const allEvents = events.split(',')
 
     allEvents.forEach(function (event) {
       let parts = event.split('|')
 
-      let eventName = parts[0]
+      const eventName = parts[0].replaceAll(/\s/g, '').toLowerCase()
 
       const attributes = {}
       Object.assign(attributes, extraProperties)
@@ -29,9 +39,17 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
         }
       }
 
+      let finishDispatch
+      const updates = []
+
+      if (waitForFragments && eventName.startsWith('fragment_updated:')) {
+        fragmentUpdates.push(new Promise(resolve => (finishDispatch = resolve)))
+        attributes[fragmentUpdateWaitUntil] = update => updates.push(update)
+      }
+
       setTimeout(function () {
         dispatchEvent(
-          new CustomEvent(eventName.replaceAll(/\s/g, '').toLowerCase(), {
+          new CustomEvent(eventName, {
             detail: attributes,
             bubbles: true,
             composed: true,
@@ -39,11 +57,17 @@ export function dispatchEvents(events, type, component, extraProperties = {}) {
           }),
         )
 
+        finishDispatch?.(Promise.allSettled(updates))
+
         DOMUpdater({
           htmlData: extractFromEventDetails(attributes.selectors, ['selector', 'html']),
           fields_values: extractFromEventDetails(attributes.fields_values),
         })
       }, attributes['_delay'] ?? 0)
     })
+  }
+
+  if (fragmentUpdates.length) {
+    return Promise.all(fragmentUpdates)
   }
 }

@@ -25,6 +25,15 @@ export default async function request(
     beforeRequest(componentRequestData.beforeRequest, t.$el, t)
   }
 
+  const waitForFragmentUpdates = componentRequestData.waitForFragmentUpdates
+  const loadingEvent = waitForFragmentUpdates && t.$el?.dataset?.asyncFragmentLoadingEvent
+  let finishLoadingFragment
+
+  if (loadingEvent) {
+    const until = new Promise(resolve => (finishLoadingFragment = resolve))
+    window.dispatchEvent(new CustomEvent(loadingEvent, {detail: {until}}))
+  }
+
   try {
     const response = await axios({
       url: prepareUrl(url),
@@ -34,7 +43,9 @@ export default async function request(
       responseType: componentRequestData.responseType,
       signal: componentRequestData.signal ?? undefined,
     }).then(async function (response) {
-      t.loading = false
+      if (!waitForFragmentUpdates) {
+        t.loading = false
+      }
 
       const {isAttachment, data, fileName} = await getResponseData(
         response,
@@ -88,7 +99,17 @@ export default async function request(
       const events = data.events ?? componentRequestData.events
 
       if (events) {
-        dispatchEvents(events, type, t, componentRequestData.extraProperties)
+        const updates = dispatchEvents(
+          events,
+          type,
+          t,
+          componentRequestData.extraProperties,
+          waitForFragmentUpdates,
+        )
+
+        if (updates) {
+          await updates
+        }
       }
 
       if (componentRequestData.hasAfterResponse()) {
@@ -147,6 +168,12 @@ export default async function request(
 
     if (t.$el?.dataset?.withoutErrorToast === undefined) {
       MoonShine.ui.toast(data.message ?? data, 'error')
+    }
+  } finally {
+    finishLoadingFragment?.()
+
+    if (waitForFragmentUpdates) {
+      t.loading = false
     }
   }
 

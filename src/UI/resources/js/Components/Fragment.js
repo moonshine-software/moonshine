@@ -3,29 +3,62 @@ import {ComponentRequestData} from '../DTOs/ComponentRequestData.js'
 import request, {initCallback} from '../Request/Core.js'
 import {getQueryString} from '../Support/Forms.js'
 import {mergeURLString} from '../Support/URLs.js'
+import {fragmentUpdateWaitUntil} from '../Support/DispatchEvents.js'
 
 export default (asyncUpdateRoute = '') => ({
   asyncUpdateRoute: asyncUpdateRoute,
   withParams: '',
   withQueryParams: false,
   loading: false,
+  fragmentRequest: null,
+  pendingRequests: 0,
+
+  get busy() {
+    return this.fragmentRequest !== null || this.pendingRequests > 0
+  },
 
   init() {
     this.loading = false
     this.withParams = this.$el?.dataset?.asyncWithParams
     this.withQueryParams = this.$el?.dataset?.asyncWithQueryParams ?? false
   },
-  async fragmentUpdate(events = '', callback = {}) {
-    if (typeof events !== 'string') {
-      events = ''
+  async fragmentLoading(until) {
+    if (typeof until?.then !== 'function') {
+      return
     }
 
+    this.pendingRequests++
+
+    try {
+      await until
+    } catch {
+      // The request's error handler reports the failure.
+    } finally {
+      this.pendingRequests--
+    }
+  },
+  fragmentUpdate(events = '', callback = {}) {
     if (this.asyncUpdateRoute === '') {
       return
     }
 
-    if (this.loading) {
-      return
+    const detail = this.$event?.detail
+
+    if (!this.fragmentRequest) {
+      this.fragmentRequest = Promise.resolve()
+        .then(() => this.updateFragment(events, callback, detail))
+        .finally(() => {
+          this.fragmentRequest = null
+        })
+    }
+
+    detail?.[fragmentUpdateWaitUntil]?.(this.fragmentRequest)
+
+    return this.fragmentRequest
+  },
+  updateFragment(events, callback, detail) {
+    if (typeof events !== 'string') {
+      events = ''
     }
 
     callback = initCallback(callback)
@@ -47,7 +80,7 @@ export default (asyncUpdateRoute = '') => ({
 
     t.asyncUpdateRoute = mergeURLString(t.asyncUpdateRoute, bodyParams.toString())
 
-    const eventDetailQuery = this.$event ? getQueryString(this.$event.detail) : null
+    const eventDetailQuery = detail ? getQueryString(detail) : null
 
     if (eventDetailQuery) {
       t.asyncUpdateRoute = mergeURLString(t.asyncUpdateRoute, eventDetailQuery)
@@ -70,6 +103,6 @@ export default (asyncUpdateRoute = '') => ({
       })
       .withErrorCallback(stopLoading)
 
-    request(t, t.asyncUpdateRoute, 'get', body, {}, componentRequestData)
+    return request(t, t.asyncUpdateRoute, 'get', body, {}, componentRequestData)
   },
 })

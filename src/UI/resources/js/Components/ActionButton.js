@@ -27,6 +27,15 @@ export default () => ({
     this.loading = false
     const el = this.$el
     const btnText = this.btnText
+    const ariaDisabled = el.getAttribute('aria-disabled')
+
+    this.$watch('inFlight', function (value) {
+      if (value || ariaDisabled !== null) {
+        el.setAttribute('aria-disabled', value ? 'true' : ariaDisabled)
+      } else {
+        el.removeAttribute('aria-disabled')
+      }
+    })
 
     this.$watch('loading', function (value) {
       el.setAttribute('style', 'opacity:' + (value ? '.5' : '1'))
@@ -46,7 +55,11 @@ export default () => ({
     }
   },
 
-  dispatchEvents(componentEvent, exclude = null, extra = {}) {
+  async dispatchEvents(componentEvent, exclude = null, extra = {}) {
+    if (this.inFlight) {
+      return
+    }
+
     let url = new URL(this.$el.href)
 
     if (this.withQueryParams) {
@@ -73,7 +86,19 @@ export default () => ({
 
     extra['_data'] = data
 
-    de(componentEvent, '', this, extra)
+    const updates = de(componentEvent, '', this, extra, true)
+
+    if (updates) {
+      this.inFlight = true
+      this.loading = this.$el.dataset.withoutLoading === undefined
+
+      try {
+        await updates
+      } finally {
+        this.inFlight = false
+        this.loading = false
+      }
+    }
   },
 
   request() {
@@ -81,10 +106,6 @@ export default () => ({
 
     if (this.inFlight || this.$el.dataset?.stopAsync) {
       return
-    }
-
-    if (!this.$el.dataset?.withoutLoading) {
-      this.loading = true
     }
 
     if (this.withParams !== undefined && this.withParams) {
@@ -110,21 +131,18 @@ export default () => ({
       this.url = mergeURLString(this.url, queryParams)
     }
 
-    let stopLoading = function (data, t) {
-      t.loading = false
-    }
-
     let componentRequestData = new ComponentRequestData()
     componentRequestData
       .fromDataset(this.$el?.dataset ?? {})
+      .withWaitForFragmentUpdates()
       .withAfterResponse(() => this.$el?.dataset.asyncAfterResponse)
-      .withBeforeHandleResponse(stopLoading)
-      .withErrorCallback(stopLoading)
 
     this.inFlight = true
+    this.loading = this.$el.dataset.withoutLoading === undefined
 
     return request(this, this.url, this.method, body, {}, componentRequestData).finally(() => {
       this.inFlight = false
+      this.loading = false
     })
   },
   _hotKey(event, hotKeys) {
@@ -144,7 +162,7 @@ export default () => ({
     const match =
       normalizedHotkey.every(k => pressed.includes(k)) && pressed.length === normalizedHotkey.length
 
-    if (match) {
+    if (match && this.$el.isConnected && !this.inFlight && !this.$el.closest('[inert]')) {
       event.preventDefault()
       this.$el.click()
     }

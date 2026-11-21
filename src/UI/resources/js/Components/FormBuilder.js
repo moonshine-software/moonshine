@@ -229,6 +229,7 @@ export default (name = '', initData = {}, reactive = {}) => ({
       .withResponseHandler(callback.responseHandler)
       .withResponseType(form.dataset.asyncResponseType ?? null)
       .withEvents(events)
+      .withWaitForFragmentUpdates()
       .withAfterResponse(function (data, type) {
         if (type !== 'error' && t.inModal && t.autoClose) {
           t.toggleModal()

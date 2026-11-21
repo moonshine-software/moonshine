@@ -33,3 +33,28 @@ test.each([undefined, {detail: {page: 2}}])(
     expect(component.loading).toBe(false)
   },
 )
+
+test('unlocks the fragment after a failed update so it can be retried', async () => {
+  document.body.innerHTML = '<div id="fragment">Original content</div>'
+  const component = fragment('/fragment')
+  component.$el = document.querySelector('#fragment')
+  component.$root = component.$el
+  component.init()
+
+  mockAxios = new MockAdapter(axios)
+  mockAxios.onGet('/fragment').replyOnce(500, {message: 'Update failed'})
+  mockAxios.onGet('/fragment').reply(200, '<div id="fragment">Updated content</div>')
+
+  const update = component.fragmentUpdate()
+  expect(component.busy).toBe(true)
+  expect(component.fragmentUpdate()).toBe(update)
+  await update
+
+  expect(mockAxios.history.get).toHaveLength(1)
+  expect(document.querySelector('#fragment').textContent).toBe('Original content')
+  expect(component.busy).toBe(false)
+
+  await component.fragmentUpdate()
+  expect(document.querySelector('#fragment').textContent).toBe('Updated content')
+  expect(component.busy).toBe(false)
+})
