@@ -23,6 +23,7 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Components\MoonShineComponentAttributeBag;
 use MoonShine\Support\DTOs\AsyncCallback;
 use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Support\Stringify;
 use MoonShine\UI\Enums\DisplayTextType;
 use MoonShine\UI\Traits\ActionButton\InDropdownOrLine;
@@ -294,6 +295,13 @@ class ActionButton extends MoonShineComponent implements
 
         return $this->customAttributes([
             'data-without-loading' => true,
+        ]);
+    }
+
+    public function withFragmentLoader(string $fragment): static
+    {
+        return $this->customAttributes([
+            'data-async-fragment-loading-event' => AlpineJs::event(JsEvent::FRAGMENT_LOADING, $fragment),
         ]);
     }
 

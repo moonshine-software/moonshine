@@ -31,6 +31,8 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
 
     protected Closure|bool $updateOnLoad = false;
 
+    protected bool $withLoader = false;
+
     /**
      * @param  iterable<array-key, ComponentContract>  $components
      *
@@ -134,6 +136,13 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         return $this;
     }
 
+    public function withLoader(): static
+    {
+        $this->withLoader = true;
+
+        return $this;
+    }
+
     /**
      * @throws JsonException
      */
@@ -149,6 +158,13 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
                 JSON_THROW_ON_ERROR
             ) . ')',
         ]);
+
+        if ($this->withLoader) {
+            $this->class('relative isolate')->customAttributes([
+                'x-bind:aria-busy' => 'String(busy)',
+                AlpineJs::eventBlade(JsEvent::FRAGMENT_LOADING, $this->getName()) => 'fragmentLoading($event.detail?.until)',
+            ]);
+        }
     }
 
     protected function viewData(): array
@@ -156,6 +172,7 @@ class Fragment extends AbstractWithComponents implements HasAsyncContract
         return [
             'interval' => $this->interval,
             'updateOnLoad' => value($this->updateOnLoad, $this),
+            'withLoader' => $this->withLoader,
         ];
     }
 }

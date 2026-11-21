@@ -8,6 +8,8 @@ enum JsEvent: string
 {
     case FRAGMENT_UPDATED = 'fragment_updated';
 
+    case FRAGMENT_LOADING = 'fragment_loading';
+
     case TABLE_UPDATED = 'table_updated';
 
     case TABLE_REINDEX = 'table_reindex';

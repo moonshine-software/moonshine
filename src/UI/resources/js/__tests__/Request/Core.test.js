@@ -126,6 +126,7 @@ describe('request function', () => {
     expect(anchorElement.href).toBe('mock-url')
     expect(anchorElement.download).toBe(filename)
     expect(createElementSpy).toHaveBeenCalledWith('a')
+    createElementSpy.mockRestore()
   })
 
   it('should handle errors in axios response with blob non 200', async () => {
@@ -233,7 +234,7 @@ describe('request function', () => {
     const componentRequestData = new ComponentRequestData().withSelector(selector)
     mockAxios.onGet('/test-url').reply(200, {html: content})
 
-    document.querySelectorAll = jest.fn().mockReturnValue([{innerHTML: ''}])
+    document.querySelectorAll = jest.fn().mockReturnValue([document.createElement('div')])
     await request(t, '/test-url', 'get', {}, {}, componentRequestData)
 
     expect(document.querySelectorAll).toHaveBeenCalledWith(selector)
@@ -246,7 +247,7 @@ describe('request function', () => {
     const selector = '.test'
     mockAxios.onGet('/test-url').reply(200, {htmlData: [{html: content, selector: selector}]})
 
-    document.querySelectorAll = jest.fn().mockReturnValue([{innerHTML: ''}])
+    document.querySelectorAll = jest.fn().mockReturnValue([document.createElement('div')])
     await request(t, '/test-url', 'get')
 
     expect(document.querySelectorAll).toHaveBeenCalledWith(selector)

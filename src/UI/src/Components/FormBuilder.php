@@ -228,6 +228,13 @@ final class FormBuilder extends MoonShineComponent implements
         ]);
     }
 
+    public function withFragmentLoader(string $fragment): self
+    {
+        return $this->customAttributes([
+            'data-async-fragment-loading-event' => AlpineJs::event(JsEvent::FRAGMENT_LOADING, $fragment),
+        ]);
+    }
+
     /**
      * @param  (Closure(self $ctx): string)|string  $reactiveUrl
      */

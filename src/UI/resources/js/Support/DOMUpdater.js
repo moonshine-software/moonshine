@@ -115,7 +115,8 @@ function htmlReplace(html, mode, selector, element) {
     htmlMode = mode
   }
   if (htmlMode === HtmlMode.INNER_HTML) {
-    element.innerHTML = html
+    const content = element.querySelector(':scope > [data-fragment-content]') ?? element
+    content.innerHTML = html
   } else if (htmlMode === HtmlMode.OUTER_HTML) {
     element.outerHTML = html
   } else {
