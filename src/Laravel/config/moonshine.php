@@ -41,6 +41,8 @@ return [
     'use_database_notifications' => true,
     'use_routes' => true,
     'use_profile' => true,
+    // Opt-in vertical spacing between page components() (title/subtitle stay outside)
+    'content_spacing' => false,
 
     // Escaping defaults (individual field/component settings take precedence)
     'escapes' => [

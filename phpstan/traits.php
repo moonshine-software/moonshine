@@ -6,7 +6,9 @@ namespace MoonShine\PHPStan;
 
 use MoonShine\Core\Traits\NowOn;
 use MoonShine\Crud\Traits\WithComponentsPusher;
+use MoonShine\Laravel\Pages\Page;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Laravel\Traits\Page\WithContentSpacing;
 use MoonShine\Laravel\Traits\Resource\ResourceWithParent;
 use MoonShine\Support\Concerns\MenuFillerConcern;
 use MoonShine\Support\Traits\WithComponentAttributes;
@@ -49,4 +51,9 @@ abstract class QueueContext
 abstract class TabModeContext extends Field
 {
     use HasTabModeConcern;
+}
+
+abstract class ContentSpacingContext extends Page
+{
+    use WithContentSpacing;
 }

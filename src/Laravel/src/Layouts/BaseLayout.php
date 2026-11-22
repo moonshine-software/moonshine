@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MoonShine\Laravel\Layouts;
 
 use MoonShine\AssetManager\InlineCss;
+use MoonShine\Contracts\UI\Collection\ComponentsContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Crud\Components\Fragment;
 use MoonShine\Crud\Components\Layout\Locales;
@@ -14,6 +15,7 @@ use MoonShine\Crud\Layouts\AbstractLayout;
 use MoonShine\Laravel\Components\Layout\Profile;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\Laravel\Traits\Page\WithContentSpacing;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Components;
@@ -43,7 +45,26 @@ abstract class BaseLayout extends AbstractLayout
 {
     public const CONTENT_FRAGMENT_NAME = '_content';
 
+    public const CONTENT_SPACING_NAME = '_spacing';
+
     public const CONTENT_ID = '_moonshine-content';
+
+    public static function isContentSpacingWrapped(ComponentsContract $components): bool
+    {
+        if ($components->count() !== 1) {
+            return false;
+        }
+
+        $root = $components->first();
+
+        if (! $root instanceof Div) {
+            return false;
+        }
+
+        $class = $root->getAttribute('class');
+
+        return \is_string($class) && preg_match('/(?:^|\s)space-elements(?:\s|$)/', $class) === 1;
+    }
 
     protected bool $topBar = false;
 
@@ -322,9 +343,26 @@ abstract class BaseLayout extends AbstractLayout
      */
     protected function getContentComponents(): array
     {
+        $pageComponents = $this->getPage()->getComponents();
+
+        if (
+            (
+                $this->getCore()->getConfig()->get('content_spacing', false) === true
+                || \in_array(WithContentSpacing::class, class_uses_recursive($this->getPage()), true)
+            )
+            && $pageComponents->isNotEmpty()
+            && ! self::isContentSpacingWrapped($pageComponents)
+        ) {
+            $pageComponents = [
+                Div::make($pageComponents)
+                    ->class('space-elements')
+                    ->name(self::CONTENT_SPACING_NAME),
+            ];
+        }
+
         $components = [
             Components::make(
-                $this->getPage()->getComponents(),
+                $pageComponents,
             ),
         ];
 
