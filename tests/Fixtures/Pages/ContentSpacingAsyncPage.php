@@ -35,6 +35,7 @@ final class ContentSpacingAsyncPage extends Dashboard
             FlexibleRender::make(
                 '<p data-test="' . self::NEIGHBOR_MARKER . '">Neighbor content</p>'
             ),
+            FlexibleRender::make('Named spacing component')->name('_spacing'),
         ];
     }
 }

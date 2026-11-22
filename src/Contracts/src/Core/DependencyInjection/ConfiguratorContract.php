@@ -28,8 +28,6 @@ interface ConfiguratorContract extends ArrayAccess
 
     public function isUseNotifications(): bool;
 
-    public function isContentSpacing(): bool;
-
     public function isAuthEnabled(): bool;
 
     /**

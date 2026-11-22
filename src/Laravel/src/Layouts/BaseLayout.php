@@ -15,6 +15,7 @@ use MoonShine\Crud\Layouts\AbstractLayout;
 use MoonShine\Laravel\Components\Layout\Profile;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\Pages\ProfilePage;
+use MoonShine\Laravel\Traits\Page\WithContentSpacing;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Breadcrumbs;
 use MoonShine\UI\Components\Components;
@@ -62,7 +63,7 @@ abstract class BaseLayout extends AbstractLayout
 
         $class = $root->getAttribute('class');
 
-        return \is_string($class) && str_contains($class, 'space-elements');
+        return \is_string($class) && preg_match('/(?:^|\s)space-elements(?:\s|$)/', $class) === 1;
     }
 
     protected bool $topBar = false;
@@ -345,7 +346,10 @@ abstract class BaseLayout extends AbstractLayout
         $pageComponents = $this->getPage()->getComponents();
 
         if (
-            $this->getCore()->getConfig()->isContentSpacing()
+            (
+                $this->getCore()->getConfig()->get('content_spacing', false) === true
+                || \in_array(WithContentSpacing::class, class_uses_recursive($this->getPage()), true)
+            )
             && $pageComponents->isNotEmpty()
             && ! self::isContentSpacingWrapped($pageComponents)
         ) {
