@@ -35,6 +35,30 @@ it('empty value save', function () {
     ;
 });
 
+it('preserves escaped text and textarea values when resaving the form', function (): void {
+    $resource = app(TestItemResource::class);
+    $url = $resource->getRoute('crud.update', $this->item->getKey());
+    $value = '<b>Tom & "Jerry\'s"</b>';
+    $escaped = '&lt;b&gt;Tom &amp; &quot;Jerry&#039;s&quot;&lt;/b&gt;';
+
+    asAdmin()->put($url, ['name' => $value, 'content' => $value])->assertRedirect();
+
+    expect($this->item->refresh()->name)->toBe($escaped)
+        ->and($this->item->content)->toBe($escaped);
+
+    $response = asAdmin()->get($resource->getFormPageUrl($this->item->getKey()))->assertOk();
+    $document = Dom\HTMLDocument::createFromString($response->getContent(), LIBXML_NOERROR);
+    $name = $document->querySelector('main input[name="name"]')->getAttribute('value');
+    $content = $document->querySelector('main textarea[name="content"]')->textContent;
+
+    expect($name)->toBe($escaped)->and($content)->toBe($escaped);
+
+    asAdmin()->put($url, ['name' => $name, 'content' => $content])->assertRedirect();
+
+    expect($this->item->refresh()->name)->toBe($escaped)
+        ->and($this->item->content)->toBe($escaped);
+});
+
 it('saves text using the configured apply escaping', function (string $mode, string $expected): void {
     $field = Text::make('Name', 'name');
 
