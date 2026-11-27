@@ -68,17 +68,26 @@ class Text extends Field implements HasDefaultValueContract, CanBeString, HasUpd
     protected function prepareRequestValue(mixed $value): mixed
     {
         if (\is_string($value)) {
-            return $this->isUnescapeOnApply() ? $value : $this->escapeValue($value);
+            return $this->isEscapedOnApply() ? $this->escapeValue($value) : $value;
         }
 
         return $value;
+    }
+
+    protected function resolveValue(): mixed
+    {
+        $value = parent::resolveValue();
+
+        return \is_string($value) ? $this->decodeEscapedOnApplyValue($value) : $value;
     }
 
     protected function resolvePreview(): Renderable|string
     {
         return $this->isUnescape()
             ? parent::resolvePreview()
-            : $this->escapeValue($this->stringifySlotContent(parent::resolvePreview()));
+            : $this->escapeValue(
+                $this->decodeEscapedOnApplyValue($this->stringifySlotContent(parent::resolvePreview()))
+            );
     }
 
     protected function viewData(): array

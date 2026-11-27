@@ -342,6 +342,11 @@ class Json extends Field implements
                 }
 
                 $field->setRequestKeyPrefix($parent->getRequestKeyPrefix());
+
+                // Nested values are stored as submitted, so they must not be decoded as escaped values.
+                if ($field instanceof Text || $field instanceof Textarea) {
+                    $field->escapeOnApply(static fn (): bool => false);
+                }
             }, except: fn (FieldContract $parent): bool => $parent instanceof self && $parent->isObjectMode());
 
 
