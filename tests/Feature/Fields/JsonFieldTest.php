@@ -216,6 +216,31 @@ it('apply as object', function () {
     ]);
 })->todo('Changed sort of inner_title');
 
+it('shows nested text values as they are stored', function (): void {
+    $value = 'A &amp; B <b>';
+    $resource = addFieldsToTestResource([
+        Json::make('Data')->fields([Text::make('Title')]),
+        RelationRepeater::make('Comments', resource: TestCommentResource::class),
+    ]);
+
+    asAdmin()->put($resource->getRoute('crud.update', $this->item->getKey()), [
+        'data' => [['title' => $value]],
+        'comments' => [['id' => '', 'content' => $value, 'user_id' => 1]],
+    ])->assertSessionHasNoErrors()->assertRedirect();
+
+    $this->item->refresh();
+
+    // Nested values are saved as submitted, so the form must show them without decoding.
+    expect($this->item->data->toArray())->toBe([['title' => $value]])
+        ->and($this->item->comments->first()->content)->toBe($value);
+
+    $response = asAdmin()->get($resource->getFormPageUrl($this->item->getKey()))->assertOk();
+    $document = Dom\HTMLDocument::createFromString($response->getContent(), LIBXML_NOERROR);
+
+    expect($document->querySelector('main input[name="data[0][title]"]')?->getAttribute('value'))->toBe($value)
+        ->and($document->querySelector('main [name="comments[0][content]"]')?->getAttribute('value'))->toBe($value);
+});
+
 it('apply as relation', function () {
     $resource = addFieldsToTestResource(
         RelationRepeater::make('Comments', resource: TestCommentResource::class)

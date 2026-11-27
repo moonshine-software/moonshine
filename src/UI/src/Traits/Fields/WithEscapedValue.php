@@ -64,6 +64,28 @@ trait WithEscapedValue
     }
 
     /**
+     * Whether values saved through this field are stored as HTML entities.
+     */
+    protected function isEscapedOnApply(): bool
+    {
+        return ! $this->isUnescapeOnApply();
+    }
+
+    /**
+     * Values saved with escaping are stored as HTML entities. They are decoded once before
+     * being escaped again for output, so a form shows and resubmits the text that was typed.
+     * Submitted (old) values and defaults have not been saved and are returned unchanged.
+     */
+    protected function decodeEscapedOnApplyValue(string $value): string
+    {
+        if (! $this->isEscapedOnApply() || $this->isOldValue() || $this->isBlankValue()) {
+            return $value;
+        }
+
+        return htmlspecialchars_decode($value, ENT_QUOTES);
+    }
+
+    /**
      * Fields with this trait escape their own preview, so link names get it decoded
      * and are escaped once afterwards instead of twice.
      */

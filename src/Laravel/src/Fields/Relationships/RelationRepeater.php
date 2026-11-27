@@ -35,6 +35,8 @@ use MoonShine\UI\Fields\Field;
 use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 use MoonShine\UI\Traits\Fields\HasVerticalMode;
 use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use MoonShine\UI\Traits\Removable;
@@ -259,6 +261,11 @@ class RelationRepeater extends ModelRelationField implements
                 ->withoutWrapper()
                 ->setRequestKeyPrefix($parent->getRequestKeyPrefix())
             ;
+
+            // Nested values are stored as submitted, so they must not be decoded as escaped values.
+            if ($field instanceof Text || $field instanceof Textarea) {
+                $field->escapeOnApply(static fn (): bool => false);
+            }
         });
 
         return $fields;

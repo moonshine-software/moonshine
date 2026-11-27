@@ -280,8 +280,11 @@ it('does not double escape URL field previews', function () {
     expect((string) $field->preview())->toContain('a=1&amp;b=2')->not->toContain('&amp;amp;');
 });
 
-it('preserves text returned by preview link name callbacks', function (string $value): void {
-    $field = Text::make('Title', 'title')->setValue($value)
+it('preserves text returned by preview link name callbacks', function (string $value, bool $escapeOnApply): void {
+    $field = Text::make('Title', 'title')
+        ->escapeOnApply(static fn (): bool => $escapeOnApply)
+        // Values saved with escaping are stored as entities and shown as the text that was typed.
+        ->setValue($escapeOnApply ? htmlspecialchars($value, ENT_QUOTES) : $value)
         ->link('/test', name: static fn (string $preview): string => 'Open ' . $preview);
 
     $document = new DOMDocument();
@@ -289,7 +292,10 @@ it('preserves text returned by preview link name callbacks', function (string $v
 
     expect(trim($document->getElementsByTagName('a')->item(0)->textContent))->toBe('Open ' . $value);
     expect($document->getElementsByTagName('b')->length)->toBe(0);
-})->with(['A & B', '<b>A & B</b>', 'A &amp; B', '"A" & \'B\'']);
+})->with(['A & B', '<b>A & B</b>', 'A &amp; B', '"A" & \'B\''])->with([
+    'stored escaped' => true,
+    'stored as is' => false,
+]);
 
 it('escapes markup introduced by preview link names according to link name preferences', function (bool $callback, bool $escape): void {
     moonshine()->getConfig()->escapeLabel(! $escape);
